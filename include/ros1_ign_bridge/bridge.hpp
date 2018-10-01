@@ -23,7 +23,7 @@
 #include "ros/node_handle.h"
 
 #include <ignition/transport/Node.hh>
-//#include "ros1_bridge/factory_interface.hpp"
+#include "ros1_ign_bridge/factory_interface.hpp"
 
 namespace ros1_ign_bridge
 {
@@ -75,6 +75,6 @@ create_bridge_from_ros_to_ign(
   return handles;
 }
 
-}  // namespace ros1_bridge
+}  // namespace ros1_ign_bridge
 
 #endif  // ROS1_BRIDGE__BRIDGE_HPP_
