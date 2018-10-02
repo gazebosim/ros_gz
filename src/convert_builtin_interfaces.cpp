@@ -21,7 +21,7 @@ template<>
 void
 convert_1_to_ign(
   const std_msgs::String & ros1_type,
-  ignition::msg::StringMsg & ign_msg)
+  ignition::msgs::StringMsg & ign_msg)
 {
   ign_msg.set_data(ros1_type.data);
 }
@@ -29,7 +29,7 @@ convert_1_to_ign(
 template<>
 void
 convert_ign_to_1(
-  const ignition::msg::StringMsg & ign_msg,
+  const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_type)
 {
   ros1_type.data = ign_msg.data();

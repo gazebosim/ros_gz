@@ -12,32 +12,48 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
-#define ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
+#ifndef ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#define ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 
-#include "ros1_ign_bridge/convert_decl.hpp"
+// include ROS 1 messages
+#include <std_msgs/String.h>
 
-// include ROS 1 builtin messages
-#include "std_msgs/String.h"
-
-// include Ignition Transport builtin messages
+// include Ignition Transport messages
 #include <ignition/msgs.hh>
+
+#include <memory>
+#include <string>
+
+#include "ros1_ign_bridge/factory.hpp"
 
 namespace ros1_ign_bridge
 {
 
+std::shared_ptr<FactoryInterface>
+get_factory_builtin_interfaces(
+  const std::string & ros1_type_name,
+  const std::string & ign_type_name);
+
+// conversion functions for available interfaces
+
 template<>
 void
-convert_1_to_ign(
-  const std_msgs::String & ros1_type,
+Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_1_to_ign(
+  const std_msgs::String & ros1_msg,
   ignition::msgs::StringMsg & ign_msg);
 
 template<>
 void
-convert_ign_to_1(
+Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
-  std_msgs::String & ros1_type);
+  std_msgs::String & ros1_msg);
 
 }  // namespace ros1_ign_bridge
 
-#endif  // ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
+#endif  // ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
