@@ -52,7 +52,7 @@ public:
   create_ign_subscriber(
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
-    size_t queue_size,
+    size_t /*queue_size*/,
     ros::Publisher ros1_pub)
   {
 

@@ -30,7 +30,7 @@ get_factory_builtin_interfaces(
   // mapping from string to specialized template
   if (
     (ros1_type_name == "std_msgs/String" || ros1_type_name == "") &&
-     ign_type_name == "ignition::msgs::StringMsg")
+     ign_type_name == "ignition.msgs.StringMsg")
   {
     return std::make_shared<
       Factory<
@@ -42,17 +42,29 @@ get_factory_builtin_interfaces(
   return std::shared_ptr<FactoryInterface>();
 }
 
+std::shared_ptr<FactoryInterface>
+get_factory(const std::string & ros1_type_name,
+            const std::string & ign_type_name)
+{
+  std::shared_ptr<FactoryInterface> factory;
+  factory = get_factory_builtin_interfaces(ros1_type_name, ign_type_name);
+  if (factory)
+    return factory;
+
+  throw std::runtime_error("No template specialization for the pair");
+};
+
 // conversion functions for available interfaces
 template<>
 void
 Factory<
   std_msgs::String,
   ignition::msgs::StringMsg
->::convert_1_to_ros(
+>::convert_1_to_ign(
   const std_msgs::String & ros1_msg,
-  ignition::msgs::StringMSg & ign_msg)
+  ignition::msgs::StringMsg & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_2(ros1_msg.data, ign_msg);
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
 }
 
 template<>
@@ -64,7 +76,7 @@ Factory<
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg.data);
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }
 
 }  // namespace ros1_ign_bridge

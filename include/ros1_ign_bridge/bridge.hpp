@@ -23,7 +23,7 @@
 #include "ros/node_handle.h"
 
 #include <ignition/transport/Node.hh>
-#include "ros1_ign_bridge/factory_interface.hpp"
+#include "ros1_ign_bridge/builtin_interfaces_factories.hpp"
 
 namespace ros1_ign_bridge
 {
@@ -46,32 +46,27 @@ struct BridgeHandles
   BridgeIgnto1Handles bridgeIgnto1;
 };
 
-// std::shared_ptr<FactoryInterface>
-// get_factory(
-//   const std::string & ros1_type_name,
-//   const std::string & ros2_type_name);
-
-Bridge1toIgnHandles
-create_bridge_from_ros_to_ign(
-  ros::NodeHandle /*ros1_node*/,
-  std::shared_ptr<ignition::transport::Node> /*ign_node*/,
-  const std::string & /*ros1_type_name*/,
-  const std::string & /*ros1_topic_name*/,
-  size_t /*subscriber_queue_size*/,
-  const std::string & /*ign_type_name*/,
-  const std::string & /*ign_topic_name*/,
-  size_t /*publisher_queue_size*/)
+BridgeIgnto1Handles
+create_bridge_from_ign_to_ros(
+  std::shared_ptr<ignition::transport::Node> ign_node,
+  ros::NodeHandle ros1_node,
+  const std::string & ign_type_name,
+  const std::string & ign_topic_name,
+  size_t subscriber_queue_size,
+  const std::string & ros1_type_name,
+  const std::string & ros1_topic_name,
+  size_t publisher_queue_size)
 {
-  //auto factory = get_factory(ros1_type_name, ign_type_name);
-  //auto ign_pub = factory->create_ign_publisher(
-  //  ign_node, ign_topic_name, publisher_queue_size);
+  auto factory = get_factory(ros1_type_name, ign_type_name);
+  auto ros1_pub = factory->create_ros1_publisher(
+    ros1_node, ros1_topic_name, publisher_queue_size);
 
-  //auto ros1_sub = factory->create_ros1_subscriber(
-  //  ros1_node, ros1_topic_name, subscriber_queue_size, ign_pub);
+  factory->create_ign_subscriber(
+    ign_node, ign_topic_name, subscriber_queue_size, ros1_pub);
 
-  Bridge1toIgnHandles handles;
-  // handles.ros1_subscriber = ros1_sub;
-  // handles.ign_publisher = ign_pub;
+  BridgeIgnto1Handles handles;
+  handles.ign_subscriber = ign_node;
+  handles.ros1_publisher = ros1_pub;
   return handles;
 }
 

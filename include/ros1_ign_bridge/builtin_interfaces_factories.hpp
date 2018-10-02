@@ -34,6 +34,10 @@ get_factory_builtin_interfaces(
   const std::string & ros1_type_name,
   const std::string & ign_type_name);
 
+std::shared_ptr<FactoryInterface>
+get_factory(const std::string & ros1_type_name,
+            const std::string & ign_type_name);
+
 // conversion functions for available interfaces
 
 template<>

@@ -45,17 +45,20 @@ int main(int argc, char * argv[])
   // bridge one example topic
   std::string topic_name = "chatter";
   std::string ros1_type_name = "std_msgs/String";
-  std::string ign_type_name = "ignition::msgs::StringMsg";
+  std::string ign_type_name = "ignition.msgs.StringMsg";
   size_t queue_size = 10;
 
-  auto handles = ros1_ign_bridge::create_bridge_from_ros_to_ign(
-    ros1_node, ign_node,
-    ros1_type_name, topic_name, queue_size,
-    ign_type_name, topic_name, queue_size);
+  auto handles = ros1_ign_bridge::create_bridge_from_ign_to_ros(
+    ign_node, ros1_node,
+    ign_type_name, topic_name, queue_size,
+    ros1_type_name, topic_name, queue_size);
 
   // ROS 1 asynchronous spinner
   ros::AsyncSpinner async_spinner(1);
   async_spinner.start();
+
+  // Zzzzzz.
+  ignition::transport::waitForShutdown();
 
   return 0;
 }
