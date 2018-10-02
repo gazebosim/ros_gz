@@ -73,7 +73,7 @@ protected:
     ros::Publisher ros1_pub)
   {
     ROS1_T ros1_msg;
-    // convert_ign_to_1(ign_msg, ros1_msg);
+    convert_ign_to_1(ign_msg, ros1_msg);
     ros1_pub.publish(ros1_msg);
   }
 
