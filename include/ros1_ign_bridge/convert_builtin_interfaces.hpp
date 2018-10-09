@@ -15,13 +15,13 @@
 #ifndef ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 #define ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 
-#include "ros1_ign_bridge/convert_decl.hpp"
-
 // include ROS 1 builtin messages
-#include "std_msgs/String.h"
+#include <std_msgs/String.h>
 
 // include Ignition Transport builtin messages
 #include <ignition/msgs.hh>
+
+#include "ros1_ign_bridge/convert_decl.hpp"
 
 namespace ros1_ign_bridge
 {

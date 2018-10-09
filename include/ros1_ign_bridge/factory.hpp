@@ -22,7 +22,7 @@
 #include <ignition/transport/Node.hh>
 
 // include ROS 1 message event
-#include "ros/message.h"
+#include <ros/message.h>
 
 #include "ros1_ign_bridge/factory_interface.hpp"
 

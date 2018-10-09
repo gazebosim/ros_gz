@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #include <iostream>
+#include <memory>
 #include <string>
 
 // include ROS 1
@@ -20,7 +21,7 @@
 # pragma clang diagnostic push
 # pragma clang diagnostic ignored "-Wunused-parameter"
 #endif
-#include "ros/ros.h"
+#include <ros/ros.h>
 #ifdef __clang__
 # pragma clang diagnostic pop
 #endif
@@ -33,8 +34,6 @@
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
-  std::cout << "ROS<-->Ignition bridge!" << std::endl;
-
   // ROS 1 node
   ros::init(argc, argv, "ros_ign_bridge");
   ros::NodeHandle ros1_node;

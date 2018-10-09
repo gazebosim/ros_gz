@@ -27,3 +27,13 @@ target_link_libraries(static_bridge
   ${catkin_LIBRARIES}
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
+
+add_executable(parameter_bridge
+  src/parameter_bridge.cpp
+  src/convert_builtin_interfaces.cpp
+  src/builtin_interfaces_factories.cpp
+)
+target_link_libraries(parameter_bridge
+  ${catkin_LIBRARIES}
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)

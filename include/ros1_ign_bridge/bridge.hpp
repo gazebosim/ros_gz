@@ -15,14 +15,15 @@
 #ifndef ROS1_IGN_BRIDGE__BRIDGE_HPP_
 #define ROS1_IGN_BRIDGE__BRIDGE_HPP_
 
-#include <map>
 #include <memory>
 #include <string>
 
 // include ROS 1
-#include "ros/node_handle.h"
+#include <ros/node_handle.h>
 
+// include Ignition Transport
 #include <ignition/transport/Node.hh>
+
 #include "ros1_ign_bridge/builtin_interfaces_factories.hpp"
 
 namespace ros1_ign_bridge
