@@ -32,7 +32,7 @@ namespace ros1_ign_bridge
 struct Bridge1toIgnHandles
 {
   ros::Subscriber ros1_subscriber;
-  std::shared_ptr<ignition::transport::Node::Publisher> ign_publisher;
+  ignition::transport::Node::Publisher ign_publisher;
 };
 
 struct BridgeIgnto1Handles
@@ -46,6 +46,30 @@ struct BridgeHandles
   Bridge1toIgnHandles bridge1toIgn;
   BridgeIgnto1Handles bridgeIgnto1;
 };
+
+Bridge1toIgnHandles
+create_bridge_from_ros_to_ign(
+  ros::NodeHandle ros1_node,
+  std::shared_ptr<ignition::transport::Node> ign_node,
+  const std::string & ros1_type_name,
+  const std::string & ros1_topic_name,
+  size_t subscriber_queue_size,
+  const std::string & ign_type_name,
+  const std::string & ign_topic_name,
+  size_t publisher_queue_size)
+{
+  auto factory = get_factory(ros1_type_name, ign_type_name);
+  auto ign_pub = factory->create_ign_publisher(
+    ign_node, ign_topic_name, publisher_queue_size);
+
+  auto ros1_sub = factory->create_ros1_subscriber(
+    ros1_node, ros1_topic_name, subscriber_queue_size, ign_pub);
+
+  Bridge1toIgnHandles handles;
+  handles.ros1_subscriber = ros1_sub;
+  handles.ign_publisher = ign_pub;
+  return handles;
+}
 
 BridgeIgnto1Handles
 create_bridge_from_ign_to_ros(
@@ -68,6 +92,25 @@ create_bridge_from_ign_to_ros(
   BridgeIgnto1Handles handles;
   handles.ign_subscriber = ign_node;
   handles.ros1_publisher = ros1_pub;
+  return handles;
+}
+
+BridgeHandles
+create_bidirectional_bridge(
+  ros::NodeHandle ros1_node,
+  std::shared_ptr<ignition::transport::Node> ign_node,
+  const std::string & ros1_type_name,
+  const std::string & ign_type_name,
+  const std::string & topic_name,
+  size_t queue_size = 10)
+{
+  BridgeHandles handles;
+  handles.bridge1toIgn = create_bridge_from_ros_to_ign(
+   ros1_node, ign_node,
+   ros1_type_name, topic_name, queue_size, ign_type_name, topic_name, queue_size);
+  handles.bridgeIgnto1 = create_bridge_from_ign_to_ros(
+    ign_node, ros1_node,
+    ign_type_name, topic_name, queue_size, ros1_type_name, topic_name, queue_size);
   return handles;
 }
 

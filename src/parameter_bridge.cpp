@@ -58,7 +58,7 @@ int main(int argc, char * argv[])
   // Ignition node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
-  std::list<ros1_ign_bridge::BridgeIgnto1Handles> all_handles;
+  std::list<ros1_ign_bridge::BridgeHandles> all_handles;
 
   // Parse all arguments.
   const std::string delim = "@";
@@ -94,11 +94,11 @@ int main(int argc, char * argv[])
 
     try
     {
-      ros1_ign_bridge::BridgeIgnto1Handles handles =
-        ros1_ign_bridge::create_bridge_from_ign_to_ros(
-          ign_node, ros1_node,
-          ign_type_name, topic_name, queue_size,
-          ros1_type_name, topic_name, queue_size);
+      ros1_ign_bridge::BridgeHandles handles =
+        ros1_ign_bridge::create_bidirectional_bridge(
+          ros1_node, ign_node,
+          ros1_type_name, ign_type_name,
+          topic_name, queue_size);
 
       all_handles.push_back(handles);
     }

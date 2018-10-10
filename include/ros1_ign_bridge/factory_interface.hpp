@@ -38,6 +38,21 @@ public:
     size_t queue_size) = 0;
 
   virtual
+  ignition::transport::Node::Publisher
+  create_ign_publisher(
+    std::shared_ptr<ignition::transport::Node> ign_node,
+    const std::string & topic_name,
+    size_t queue_size) = 0;
+
+  virtual
+  ros::Subscriber
+  create_ros1_subscriber(
+    ros::NodeHandle node,
+    const std::string & topic_name,
+    size_t queue_size,
+    ignition::transport::Node::Publisher & ign_pub) = 0;
+
+  virtual
   void
   create_ign_subscriber(
     std::shared_ptr<ignition::transport::Node> node,

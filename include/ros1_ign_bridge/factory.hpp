@@ -48,6 +48,37 @@ public:
     return node.advertise<ROS1_T>(topic_name, queue_size);
   }
 
+  ignition::transport::Node::Publisher
+  create_ign_publisher(
+    std::shared_ptr<ignition::transport::Node> ign_node,
+    const std::string & topic_name,
+    size_t /*queue_size*/)
+  {
+    return ign_node->Advertise<IGN_T>(topic_name);
+  }
+
+  ros::Subscriber
+  create_ros1_subscriber(
+    ros::NodeHandle node,
+    const std::string & topic_name,
+    size_t queue_size,
+    ignition::transport::Node::Publisher & ign_pub)
+  {
+    // workaround for https://github.com/ros/roscpp_core/issues/22 to get the
+    // connection header
+    ros::SubscribeOptions ops;
+    ops.topic = topic_name;
+    ops.queue_size = queue_size;
+    ops.md5sum = ros::message_traits::md5sum<ROS1_T>();
+    ops.datatype = ros::message_traits::datatype<ROS1_T>();
+    ops.helper = ros::SubscriptionCallbackHelperPtr(
+      new ros::SubscriptionCallbackHelperT<const ros::MessageEvent<ROS1_T const> &>(
+        boost::bind(
+          &Factory<ROS1_T, IGN_T>::ros1_callback,
+          _1, ign_pub, ros1_type_name_, ign_type_name_)));
+    return node.subscribe(ops);
+  }
+
   void
   create_ign_subscriber(
     std::shared_ptr<ignition::transport::Node> node,
@@ -66,6 +97,35 @@ public:
   }
 
 protected:
+
+  static
+  void ros1_callback(
+    const ros::MessageEvent<ROS1_T const> & ros1_msg_event,
+    ignition::transport::Node::Publisher & ign_pub,
+    const std::string & /*ros1_type_name*/,
+    const std::string & /*ign_type_name*/)
+  {
+    const boost::shared_ptr<ros::M_string> & connection_header =
+      ros1_msg_event.getConnectionHeaderPtr();
+    if (!connection_header) {
+      printf("  dropping message without connection header\n");
+      return;
+    }
+
+    std::string key = "callerid";
+    if (connection_header->find(key) != connection_header->end()) {
+      if (connection_header->at(key) == "/ros_ign_bridge") {
+        return;
+      }
+    }
+
+    const boost::shared_ptr<ROS1_T const> & ros1_msg =
+      ros1_msg_event.getConstMessage();
+
+    IGN_T ign_msg;
+    convert_1_to_ign(*ros1_msg, ign_msg);
+    ign_pub.Publish(ign_msg);
+  }
 
   static
   void ign_callback(
