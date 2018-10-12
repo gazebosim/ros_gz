@@ -16,7 +16,10 @@
 #define ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 
 // include ROS 1 messages
+#include <geometry_msgs/Quaternion.h>
+#include <geometry_msgs/Vector3.h>
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Header.h>
@@ -44,6 +47,7 @@ get_factory(const std::string & ros1_type_name,
 
 // conversion functions for available interfaces
 
+// std_msgs
 template<>
 void
 Factory<
@@ -80,6 +84,44 @@ Factory<
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg);
 
+// geometry_msgs
+template<>
+void
+Factory<
+  geometry_msgs::Quaternion,
+  ignition::msgs::Quaternion
+>::convert_1_to_ign(
+  const geometry_msgs::Quaternion & ros1_msg,
+  ignition::msgs::Quaternion & ign_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::Quaternion,
+  ignition::msgs::Quaternion
+>::convert_ign_to_1(
+  const ignition::msgs::Quaternion & ign_msg,
+  geometry_msgs::Quaternion & ros1_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::Vector3,
+  ignition::msgs::Vector3d
+>::convert_1_to_ign(
+  const geometry_msgs::Vector3 & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::Vector3,
+  ignition::msgs::Vector3d
+>::convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Vector3 & ros1_msg);
+
+// sensor_msgs
 template<>
 void
 Factory<
@@ -97,6 +139,24 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::Image & ros1_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg);
 
 template<>
 void

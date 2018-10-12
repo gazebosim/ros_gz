@@ -51,6 +51,39 @@ get_factory_builtin_interfaces(
     >("std_msgs/String", ign_type_name);
   }
   if (
+    (ros1_type_name == "geometry_msgs/Quaternion" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Quaternion")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Quaternion,
+        ignition::msgs::Quaternion
+      >
+    >("geometry_msgs/Quaternion", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "geometry_msgs/Vector3" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Vector3d")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Vector3,
+        ignition::msgs::Vector3d
+      >
+    >("geometry_msgs/Vector3", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.IMU")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::Imu,
+        ignition::msgs::IMU
+      >
+    >("sensor_msgs/Imu", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/Image" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Image")
   {
@@ -100,6 +133,7 @@ get_factory(const std::string & ros1_type_name,
 
 // conversion functions for available interfaces
 
+// std_msgs
 template<>
 void
 Factory<
@@ -144,6 +178,81 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+// geometry_msgs
+template<>
+void
+Factory<
+  geometry_msgs::Quaternion,
+  ignition::msgs::Quaternion
+>::convert_1_to_ign(
+  const geometry_msgs::Quaternion & ros1_msg,
+  ignition::msgs::Quaternion & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Quaternion,
+  ignition::msgs::Quaternion
+>::convert_ign_to_1(
+  const ignition::msgs::Quaternion & ign_msg,
+  geometry_msgs::Quaternion & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Vector3,
+  ignition::msgs::Vector3d
+>::convert_1_to_ign(
+  const geometry_msgs::Vector3 & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Vector3,
+  ignition::msgs::Vector3d
+>::convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Vector3 & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+
+// sensor_msgs
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

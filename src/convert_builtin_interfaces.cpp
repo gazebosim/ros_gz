@@ -88,6 +88,84 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const geometry_msgs::Quaternion & ros1_msg,
+  ignition::msgs::Quaternion & ign_msg)
+{
+  ign_msg.set_x(ros1_msg.x);
+  ign_msg.set_y(ros1_msg.y);
+  ign_msg.set_z(ros1_msg.z);
+  ign_msg.set_w(ros1_msg.w);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Quaternion & ign_msg,
+  geometry_msgs::Quaternion & ros1_msg)
+{
+  ros1_msg.x = ign_msg.x();
+  ros1_msg.y = ign_msg.y();
+  ros1_msg.z = ign_msg.z();
+  ros1_msg.w = ign_msg.w();
+}
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Vector3 & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg)
+{
+  ign_msg.set_x(ros1_msg.x);
+  ign_msg.set_y(ros1_msg.y);
+  ign_msg.set_z(ros1_msg.z);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Vector3 & ros1_msg)
+{
+  ros1_msg.x = ign_msg.x();
+  ros1_msg.y = ign_msg.y();
+  ros1_msg.z = ign_msg.z();
+}
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  // ToDo: Verify that this is the expected value (probably not).
+  ign_msg.set_entity_name(ros1_msg.header.frame_id);
+
+  convert_1_to_ign(ros1_msg.orientation, (*ign_msg.mutable_orientation()));
+  convert_1_to_ign(ros1_msg.angular_velocity,
+                   (*ign_msg.mutable_angular_velocity()));
+  convert_1_to_ign(ros1_msg.linear_acceleration,
+                   (*ign_msg.mutable_linear_acceleration()));
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg.orientation(), ros1_msg.orientation);
+  convert_ign_to_1(ign_msg.angular_velocity(), ros1_msg.angular_velocity);
+  convert_ign_to_1(ign_msg.linear_acceleration(), ros1_msg.linear_acceleration);
+
+  // Covariances not supported in Ignition::msgs::IMU
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::Image & ros1_msg,
   ignition::msgs::Image & ign_msg)
 {

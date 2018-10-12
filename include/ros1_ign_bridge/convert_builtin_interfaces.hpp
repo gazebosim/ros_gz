@@ -16,7 +16,10 @@
 #define ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 
 // include ROS 1 builtin messages
+#include <geometry_msgs/Quaternion.h>
+#include <geometry_msgs/Vector3.h>
 #include <sensor_msgs/Image.h>
+#include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Header.h>
@@ -30,6 +33,7 @@
 namespace ros1_ign_bridge
 {
 
+// std_msgs
 template<>
 void
 convert_1_to_ign(
@@ -54,6 +58,32 @@ convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg);
 
+// geometry_msgs
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Quaternion & ros1_msg,
+  ignition::msgs::Quaternion & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Quaternion & ign_msg,
+  geometry_msgs::Quaternion & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Vector3 & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Vector3 & ros1_msg);
+
+// sensor_msgs
 template<>
 void
 convert_1_to_ign(
@@ -65,6 +95,18 @@ void
 convert_ign_to_1(
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::Image & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg);
 
 template<>
 void
