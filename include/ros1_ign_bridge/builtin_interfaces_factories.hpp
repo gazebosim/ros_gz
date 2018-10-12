@@ -21,6 +21,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -175,6 +176,24 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::LaserScan & ign_msg,
   sensor_msgs::LaserScan & ros1_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::MagneticField,
+  ignition::msgs::Magnetometer
+>::convert_1_to_ign(
+  const sensor_msgs::MagneticField & ros1_msg,
+  ignition::msgs::Magnetometer & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::MagneticField,
+  ignition::msgs::Magnetometer
+>::convert_ign_to_1(
+  const ignition::msgs::Magnetometer & ign_msg,
+  sensor_msgs::MagneticField & ros1_msg);
 
 template<>
 void

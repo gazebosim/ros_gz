@@ -106,6 +106,17 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/LaserScan", ign_type_name);
   }
   if (
+    (ros1_type_name == "sensor_msgs/MagneticField" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Magnetometer")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::MagneticField,
+        ignition::msgs::Magnetometer
+      >
+    >("sensor_msgs/Magnetometer", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/PointCloud2" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.PointCloud")
   {
@@ -301,6 +312,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::LaserScan & ign_msg,
   sensor_msgs::LaserScan & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::MagneticField,
+  ignition::msgs::Magnetometer
+>::convert_1_to_ign(
+  const sensor_msgs::MagneticField & ros1_msg,
+  ignition::msgs::Magnetometer & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::MagneticField,
+  ignition::msgs::Magnetometer
+>::convert_ign_to_1(
+  const ignition::msgs::Magnetometer & ign_msg,
+  sensor_msgs::MagneticField & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

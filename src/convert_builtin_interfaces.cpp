@@ -394,6 +394,28 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const sensor_msgs::MagneticField & ros1_msg,
+  ignition::msgs::Magnetometer & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+  convert_1_to_ign(ros1_msg.magnetic_field, (*ign_msg.mutable_field_tesla()));
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Magnetometer & ign_msg,
+  sensor_msgs::MagneticField & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg.field_tesla(), ros1_msg.magnetic_field);
+
+  // magnetic_field_covariance is not supported in Ignition::Msgs::Magnetometer.
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::PointCloud2 & ros1_msg,
   ignition::msgs::PointCloud & ign_msg)
 {
