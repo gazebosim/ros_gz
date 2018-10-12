@@ -16,6 +16,8 @@
 #define ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 
 // include ROS 1 builtin messages
+#include <sensor_msgs/LaserScan.h>
+#include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
 // include Ignition Transport builtin messages
@@ -25,6 +27,30 @@
 
 namespace ros1_ign_bridge
 {
+
+template<>
+void
+convert_1_to_ign(
+  const std_msgs::Header & ros1_type,
+  ignition::msgs::Header & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Header & ign_msg,
+  std_msgs::Header  & ros1_type);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::LaserScan & ros1_type,
+  ignition::msgs::LaserScan & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::LaserScan & ign_msg,
+  sensor_msgs::LaserScan & ros1_type);
 
 template<>
 void

@@ -29,6 +29,17 @@ get_factory_builtin_interfaces(
 {
   // mapping from string to specialized template
   if (
+    (ros1_type_name == "std_msgs/Header" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Header")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::Header,
+        ignition::msgs::Header
+      >
+    >("std_msgs/Header", ign_type_name);
+  }
+  if (
     (ros1_type_name == "std_msgs/String" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.StringMsg")
   {
@@ -38,6 +49,17 @@ get_factory_builtin_interfaces(
         ignition::msgs::StringMsg
       >
     >("std_msgs/String", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "sensor_msgs/LaserScan" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.LaserScan")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::LaserScan,
+        ignition::msgs::LaserScan
+      >
+    >("sensor_msgs/LaserScan", ign_type_name);
   }
   return std::shared_ptr<FactoryInterface>();
 }
@@ -55,6 +77,55 @@ get_factory(const std::string & ros1_type_name,
 };
 
 // conversion functions for available interfaces
+
+template<>
+void
+Factory<
+  std_msgs::Header,
+  ignition::msgs::Header
+>::convert_1_to_ign(
+  const std_msgs::Header & ros1_msg,
+  ignition::msgs::Header & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::Header,
+  ignition::msgs::Header
+>::convert_ign_to_1(
+  const ignition::msgs::Header & ign_msg,
+  std_msgs::Header & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::LaserScan,
+  ignition::msgs::LaserScan
+>::convert_1_to_ign(
+  const sensor_msgs::LaserScan & ros1_msg,
+  ignition::msgs::LaserScan & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::LaserScan,
+  ignition::msgs::LaserScan
+>::convert_ign_to_1(
+  const ignition::msgs::LaserScan & ign_msg,
+  sensor_msgs::LaserScan & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
 template<>
 void
 Factory<

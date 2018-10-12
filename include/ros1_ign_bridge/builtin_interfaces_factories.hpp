@@ -16,6 +16,8 @@
 #define ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 
 // include ROS 1 messages
+#include <sensor_msgs/LaserScan.h>
+#include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
 // include Ignition Transport messages
@@ -39,6 +41,43 @@ get_factory(const std::string & ros1_type_name,
             const std::string & ign_type_name);
 
 // conversion functions for available interfaces
+
+template<>
+void
+Factory<
+  std_msgs::Header,
+  ignition::msgs::Header
+>::convert_1_to_ign(
+  const std_msgs::Header & ros1_msg,
+  ignition::msgs::Header & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Header,
+  ignition::msgs::Header
+>::convert_ign_to_1(
+  const ignition::msgs::Header & ign_msg,
+  std_msgs::Header & ros1_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::LaserScan,
+  ignition::msgs::LaserScan
+>::convert_1_to_ign(
+  const sensor_msgs::LaserScan & ros1_msg,
+  ignition::msgs::LaserScan & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::LaserScan,
+  ignition::msgs::LaserScan
+>::convert_ign_to_1(
+  const ignition::msgs::LaserScan & ign_msg,
+  sensor_msgs::LaserScan & ros1_msg);
+
 
 template<>
 void
