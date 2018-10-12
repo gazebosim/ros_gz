@@ -141,6 +141,9 @@ convert_1_to_ign(
 
   std::cerr << "Unsupported conversion from [sensor_msgs::FluidPressure] to "
             << "[ignition::msgs::Fluid]" << std::endl;
+
+  // This might be relevant:
+  // https://github.com/ethz-asl/rotors_simulator/blob/master/rotors_gazebo_plugins/src/gazebo_pressure_plugin.cpp#L97
 }
 
 template<>
@@ -155,6 +158,9 @@ convert_ign_to_1(
 
   std::cerr << "Unsupported conversion from [ignition::msgs::Fluid] to "
             << "[sensor_msgs::FluidPressure]" << std::endl;
+
+  // This might be relevant:
+  // https://github.com/ethz-asl/rotors_simulator/blob/master/rotors_gazebo_plugins/src/gazebo_pressure_plugin.cpp#L97
 }
 
 template<>
@@ -201,63 +207,63 @@ convert_1_to_ign(
   ign_msg.set_height(ros1_msg.height);
 
   unsigned int num_channels;
-  unsigned int size_per_channel;
+  unsigned int octets_per_channel;
 
   if (ros1_msg.encoding == "mono8")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::L_INT8);
     num_channels = 1;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "mono16")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::L_INT16);
     num_channels = 1;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "rgb8")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::RGB_INT8);
     num_channels = 3;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgba8")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::RGBA_INT8);
     num_channels = 4;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgra8")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::BGRA_INT8);
     num_channels = 4;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgb16")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::RGB_INT16);
     num_channels = 3;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "bgr8")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::BGR_INT8);
     num_channels = 3;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgr16")
   {
     ign_msg.set_pixel_format(
       ignition::common::Image::PixelFormatType::BGR_INT16);
     num_channels = 3;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else
   {
@@ -268,7 +274,7 @@ convert_1_to_ign(
     return;
   }
 
-  ign_msg.set_step(ign_msg.width() * num_channels * size_per_channel);
+  ign_msg.set_step(ign_msg.width() * num_channels * octets_per_channel);
 
   ign_msg.set_data(&(ros1_msg.data[0]), ign_msg.step() * ign_msg.height());
 }
@@ -285,63 +291,63 @@ convert_ign_to_1(
   ros1_msg.width = ign_msg.width();
 
   unsigned int num_channels;
-  unsigned int size_per_channel;
+  unsigned int octets_per_channel;
 
   if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::L_INT8)
   {
     ros1_msg.encoding = "mono8";
     num_channels = 1;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::L_INT16)
   {
     ros1_msg.encoding = "mono16";
     num_channels = 1;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::RGB_INT8)
   {
     ros1_msg.encoding = "rgb8";
     num_channels = 3;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::RGBA_INT8)
   {
     ros1_msg.encoding = "rgba8";
     num_channels = 4;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::BGRA_INT8)
   {
     ros1_msg.encoding = "bgra8";
     num_channels = 4;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::RGB_INT16)
   {
     ros1_msg.encoding = "rgb16";
     num_channels = 3;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::BGR_INT8)
   {
     ros1_msg.encoding = "bgr8";
     num_channels = 3;
-    size_per_channel = 8u;
+    octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
       ignition::common::Image::PixelFormatType::BGR_INT16)
   {
     ros1_msg.encoding = "bgr16";
     num_channels = 3;
-    size_per_channel = 16u;
+    octets_per_channel = 2u;
   }
   else
   {
@@ -351,7 +357,7 @@ convert_ign_to_1(
   }
 
   ros1_msg.is_bigendian = false;
-  ros1_msg.step = ros1_msg.width * num_channels * size_per_channel;
+  ros1_msg.step = ros1_msg.width * num_channels * octets_per_channel;
 
   ros1_msg.data.resize(ros1_msg.step * ros1_msg.height);
   memcpy(&ros1_msg.data[0], ign_msg.data().c_str(),
