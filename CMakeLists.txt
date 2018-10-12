@@ -20,24 +20,24 @@ catkin_package()
 
 include_directories(include ${catkin_INCLUDE_DIRS})
 
-add_executable(static_bridge
-  src/static_bridge.cpp
+set(common_sources
   src/convert_builtin_interfaces.cpp
   src/builtin_interfaces_factories.cpp
-)
-target_link_libraries(static_bridge
-  ${catkin_LIBRARIES}
-  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
-  ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
-add_executable(parameter_bridge
-  src/parameter_bridge.cpp
-  src/convert_builtin_interfaces.cpp
-  src/builtin_interfaces_factories.cpp
+set(bridge_executables
+  parameter_bridge
+  static_bridge
 )
-target_link_libraries(parameter_bridge
-  ${catkin_LIBRARIES}
-  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
-  ignition-transport${IGN_TRANSPORT_VER}::core
-)
+
+foreach(bridge ${bridge_executables})
+  add_executable(${bridge}
+    src/${bridge}.cpp
+    ${common_sources}
+  )
+  target_link_libraries(${bridge}
+    ${catkin_LIBRARIES}
+    ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+endforeach(bridge)
