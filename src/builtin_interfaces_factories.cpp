@@ -51,6 +51,17 @@ get_factory_builtin_interfaces(
     >("std_msgs/String", ign_type_name);
   }
   if (
+    (ros1_type_name == "sensor_msgs/Image" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Image")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::Image,
+        ignition::msgs::Image
+      >
+    >("sensor_msgs/Image", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/LaserScan" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.LaserScan")
   {
@@ -60,6 +71,17 @@ get_factory_builtin_interfaces(
         ignition::msgs::LaserScan
       >
     >("sensor_msgs/LaserScan", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "sensor_msgs/PointCloud2" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.PointCloud")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::PointCloud2,
+        ignition::msgs::PointCloud
+      >
+    >("sensor_msgs/PointCloud2", ign_type_name);
   }
   return std::shared_ptr<FactoryInterface>();
 }
@@ -105,6 +127,54 @@ Factory<
 template<>
 void
 Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_1_to_ign(
+  const std_msgs::String & ros1_msg,
+  ignition::msgs::StringMsg & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_ign_to_1(
+  const ignition::msgs::StringMsg & ign_msg,
+  std_msgs::String & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::Image,
+  ignition::msgs::Image
+>::convert_1_to_ign(
+  const sensor_msgs::Image & ros1_msg,
+  ignition::msgs::Image & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::Image,
+  ignition::msgs::Image
+>::convert_ign_to_1(
+  const ignition::msgs::Image & ign_msg,
+  sensor_msgs::Image & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
   sensor_msgs::LaserScan,
   ignition::msgs::LaserScan
 >::convert_1_to_ign(
@@ -129,11 +199,11 @@ Factory<
 template<>
 void
 Factory<
-  std_msgs::String,
-  ignition::msgs::StringMsg
+  sensor_msgs::PointCloud2,
+  ignition::msgs::PointCloud
 >::convert_1_to_ign(
-  const std_msgs::String & ros1_msg,
-  ignition::msgs::StringMsg & ign_msg)
+  const sensor_msgs::PointCloud2 & ros1_msg,
+  ignition::msgs::PointCloud & ign_msg)
 {
   ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
 }
@@ -141,11 +211,11 @@ Factory<
 template<>
 void
 Factory<
-  std_msgs::String,
-  ignition::msgs::StringMsg
+  sensor_msgs::PointCloud2,
+  ignition::msgs::PointCloud
 >::convert_ign_to_1(
-  const ignition::msgs::StringMsg & ign_msg,
-  std_msgs::String & ros1_msg)
+  const ignition::msgs::PointCloud & ign_msg,
+  sensor_msgs::PointCloud2 & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

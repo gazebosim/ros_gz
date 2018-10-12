@@ -16,7 +16,9 @@
 #define ROS1_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 
 // include ROS 1 messages
+#include <sensor_msgs/Image.h>
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
@@ -63,6 +65,42 @@ Factory<
 template<>
 void
 Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_1_to_ign(
+  const std_msgs::String & ros1_msg,
+  ignition::msgs::StringMsg & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::String,
+  ignition::msgs::StringMsg
+>::convert_ign_to_1(
+  const ignition::msgs::StringMsg & ign_msg,
+  std_msgs::String & ros1_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::Image,
+  ignition::msgs::Image
+>::convert_1_to_ign(
+  const sensor_msgs::Image & ros1_msg,
+  ignition::msgs::Image & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::Image,
+  ignition::msgs::Image
+>::convert_ign_to_1(
+  const ignition::msgs::Image & ign_msg,
+  sensor_msgs::Image & ros1_msg);
+
+template<>
+void
+Factory<
   sensor_msgs::LaserScan,
   ignition::msgs::LaserScan
 >::convert_1_to_ign(
@@ -78,24 +116,23 @@ Factory<
   const ignition::msgs::LaserScan & ign_msg,
   sensor_msgs::LaserScan & ros1_msg);
 
-
 template<>
 void
 Factory<
-  std_msgs::String,
-  ignition::msgs::StringMsg
+  sensor_msgs::PointCloud2,
+  ignition::msgs::PointCloud
 >::convert_1_to_ign(
-  const std_msgs::String & ros1_msg,
-  ignition::msgs::StringMsg & ign_msg);
+  const sensor_msgs::PointCloud2 & ros1_msg,
+  ignition::msgs::PointCloud & ign_msg);
 
 template<>
 void
 Factory<
-  std_msgs::String,
-  ignition::msgs::StringMsg
+  sensor_msgs::PointCloud2,
+  ignition::msgs::PointCloud
 >::convert_ign_to_1(
-  const ignition::msgs::StringMsg & ign_msg,
-  std_msgs::String & ros1_msg);
+  const ignition::msgs::PointCloud & ign_msg,
+  sensor_msgs::PointCloud2 & ros1_msg);
 
 }  // namespace ros1_ign_bridge
 

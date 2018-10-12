@@ -16,7 +16,9 @@
 #define ROS1_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 
 // include ROS 1 builtin messages
+#include <sensor_msgs/Image.h>
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
@@ -31,38 +33,62 @@ namespace ros1_ign_bridge
 template<>
 void
 convert_1_to_ign(
-  const std_msgs::Header & ros1_type,
+  const std_msgs::Header & ros1_msg,
   ignition::msgs::Header & ign_msg);
 
 template<>
 void
 convert_ign_to_1(
   const ignition::msgs::Header & ign_msg,
-  std_msgs::Header  & ros1_type);
+  std_msgs::Header  & ros1_msg);
 
 template<>
 void
 convert_1_to_ign(
-  const sensor_msgs::LaserScan & ros1_type,
-  ignition::msgs::LaserScan & ign_msg);
-
-template<>
-void
-convert_ign_to_1(
-  const ignition::msgs::LaserScan & ign_msg,
-  sensor_msgs::LaserScan & ros1_type);
-
-template<>
-void
-convert_1_to_ign(
-  const std_msgs::String & ros1_type,
+  const std_msgs::String & ros1_msg,
   ignition::msgs::StringMsg & ign_msg);
 
 template<>
 void
 convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
-  std_msgs::String & ros1_type);
+  std_msgs::String & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::Image & ros1_msg,
+  ignition::msgs::Image & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Image & ign_msg,
+  sensor_msgs::Image & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::LaserScan & ros1_msg,
+  ignition::msgs::LaserScan & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::LaserScan & ign_msg,
+  sensor_msgs::LaserScan & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::PointCloud2 & ros1_msg,
+  ignition::msgs::PointCloud & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::PointCloud & ign_msg,
+  sensor_msgs::PointCloud2 & ros1_msg);
 
 }  // namespace ros1_ign_bridge
 

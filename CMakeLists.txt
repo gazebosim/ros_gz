@@ -11,7 +11,9 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
+find_package(ignition-common2 QUIET REQUIRED)
 find_package(ignition-transport5 QUIET REQUIRED)
+set(IGN_COMMON_VER ${ignition-common2_VERSION_MAJOR})
 set(IGN_TRANSPORT_VER ${ignition-transport5_VERSION_MAJOR})
 
 catkin_package()
@@ -25,6 +27,7 @@ add_executable(static_bridge
 )
 target_link_libraries(static_bridge
   ${catkin_LIBRARIES}
+  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
@@ -35,5 +38,6 @@ add_executable(parameter_bridge
 )
 target_link_libraries(parameter_bridge
   ${catkin_LIBRARIES}
+  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
