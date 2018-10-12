@@ -134,6 +134,32 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const sensor_msgs::FluidPressure & ros1_msg,
+  ignition::msgs::Fluid & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  std::cerr << "Unsupported conversion from [sensor_msgs::FluidPressure] to "
+            << "[ignition::msgs::Fluid]" << std::endl;
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Fluid & ign_msg,
+  sensor_msgs::FluidPressure & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+
+  // variance isn't supported in ignition::msgs::Fluid
+
+  std::cerr << "Unsupported conversion from [ignition::msgs::Fluid] to "
+            << "[sensor_msgs::FluidPressure]" << std::endl;
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::Imu & ros1_msg,
   ignition::msgs::IMU & ign_msg)
 {

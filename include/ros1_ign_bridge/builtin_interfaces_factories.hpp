@@ -18,6 +18,7 @@
 // include ROS 1 messages
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
@@ -123,6 +124,24 @@ Factory<
   geometry_msgs::Vector3 & ros1_msg);
 
 // sensor_msgs
+template<>
+void
+Factory<
+  sensor_msgs::FluidPressure,
+  ignition::msgs::Fluid
+>::convert_1_to_ign(
+  const sensor_msgs::FluidPressure & ros1_msg,
+  ignition::msgs::Fluid & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::FluidPressure,
+  ignition::msgs::Fluid
+>::convert_ign_to_1(
+  const ignition::msgs::Fluid & ign_msg,
+  sensor_msgs::FluidPressure & ros1_msg);
+
 template<>
 void
 Factory<

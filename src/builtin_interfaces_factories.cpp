@@ -73,6 +73,17 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Vector3", ign_type_name);
   }
   if (
+    (ros1_type_name == "sensor_msgs/FluidPressure" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Fluid")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::FluidPressure,
+        ignition::msgs::Fluid
+      >
+    >("sensor_msgs/FluidPressure", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.IMU")
   {
@@ -244,6 +255,30 @@ Factory<
 
 
 // sensor_msgs
+template<>
+void
+Factory<
+  sensor_msgs::FluidPressure,
+  ignition::msgs::Fluid
+>::convert_1_to_ign(
+  const sensor_msgs::FluidPressure & ros1_msg,
+  ignition::msgs::Fluid & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::FluidPressure,
+  ignition::msgs::Fluid
+>::convert_ign_to_1(
+  const ignition::msgs::Fluid & ign_msg,
+  sensor_msgs::FluidPressure & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
 template<>
 void
 Factory<
