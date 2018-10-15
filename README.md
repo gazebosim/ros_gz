@@ -188,3 +188,8 @@ rqt_image_view /default/camera/link/camera/image
 
 You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Ignition Msgs over Ignition Transport).
+
+The screenshot shows all the shell windows and their expected content
+(it was taken using ROS Kinetic):
+
+![Ignition Transport images and ROS 1 rqt](images/bridge_image_exchange.png)
