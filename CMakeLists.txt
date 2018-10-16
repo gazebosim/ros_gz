@@ -49,13 +49,13 @@ endforeach(bridge)
 find_package(rostest REQUIRED)
 
 set(test_publishers
-  ign_string_publisher
-  ros1_string_publisher
+  ign_publisher
+  ros1_publisher
 )
 
 set(test_subscribers
-  ign_string_subscriber
-  ros1_string_subscriber
+  ign_subscriber
+  ros1_subscriber
 )
 
 foreach(test_publisher ${test_publishers})

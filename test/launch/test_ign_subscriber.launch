@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch the bridge -->
+  <node name="parameter_bridge_ign_subscriber" pkg="ros1_ign_bridge"
+        type="parameter_bridge"
+        args="/header@std_msgs/Header@ignition.msgs.Header
+              /string@std_msgs/String@ignition.msgs.StringMsg
+              /quaternion@geometry_msgs/Quaternion@ignition.msgs.Quaternion
+              /vector3@geometry_msgs/Vector3@ignition.msgs.Vector3d
+              /image@sensor_msgs/Image@ignition.msgs.Image
+              /imu@sensor_msgs/Imu@ignition.msgs.IMU
+              /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan"
+  />
+
+  <!-- Launch the ROS 1 publisher -->
+  <node name="ros1_publisher" pkg="ros1_ign_bridge" type="ros1_publisher" />
+
+</launch>

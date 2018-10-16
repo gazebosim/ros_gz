@@ -45,7 +45,6 @@ void usage()
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
-  std::cout << "PARAMETER BRIDGE\n\n\n" << std::endl;
   if (argc < 2)
   {
     usage();

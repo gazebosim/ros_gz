@@ -167,38 +167,6 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
-  const sensor_msgs::Imu & ros1_msg,
-  ignition::msgs::IMU & ign_msg)
-{
-  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
-
-  // ToDo: Verify that this is the expected value (probably not).
-  ign_msg.set_entity_name(ros1_msg.header.frame_id);
-
-  convert_1_to_ign(ros1_msg.orientation, (*ign_msg.mutable_orientation()));
-  convert_1_to_ign(ros1_msg.angular_velocity,
-                   (*ign_msg.mutable_angular_velocity()));
-  convert_1_to_ign(ros1_msg.linear_acceleration,
-                   (*ign_msg.mutable_linear_acceleration()));
-}
-
-template<>
-void
-convert_ign_to_1(
-  const ignition::msgs::IMU & ign_msg,
-  sensor_msgs::Imu & ros1_msg)
-{
-  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
-  convert_ign_to_1(ign_msg.orientation(), ros1_msg.orientation);
-  convert_ign_to_1(ign_msg.angular_velocity(), ros1_msg.angular_velocity);
-  convert_ign_to_1(ign_msg.linear_acceleration(), ros1_msg.linear_acceleration);
-
-  // Covariances not supported in Ignition::msgs::IMU
-}
-
-template<>
-void
-convert_1_to_ign(
   const sensor_msgs::Image & ros1_msg,
   ignition::msgs::Image & ign_msg)
 {
@@ -366,6 +334,38 @@ convert_ign_to_1(
     ign_msg.data().begin(),
     ign_msg.data().begin() + count,
     ros1_msg.data.begin());
+}
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  // ToDo: Verify that this is the expected value (probably not).
+  ign_msg.set_entity_name(ros1_msg.header.frame_id);
+
+  convert_1_to_ign(ros1_msg.orientation, (*ign_msg.mutable_orientation()));
+  convert_1_to_ign(ros1_msg.angular_velocity,
+                   (*ign_msg.mutable_angular_velocity()));
+  convert_1_to_ign(ros1_msg.linear_acceleration,
+                   (*ign_msg.mutable_linear_acceleration()));
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg.orientation(), ros1_msg.orientation);
+  convert_ign_to_1(ign_msg.angular_velocity(), ros1_msg.angular_velocity);
+  convert_ign_to_1(ign_msg.linear_acceleration(), ros1_msg.linear_acceleration);
+
+  // Covariances not supported in Ignition::msgs::IMU
 }
 
 template<>

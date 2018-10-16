@@ -84,17 +84,6 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/FluidPressure", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
-     ign_type_name == "ignition.msgs.IMU")
-  {
-    return std::make_shared<
-      Factory<
-        sensor_msgs::Imu,
-        ignition::msgs::IMU
-      >
-    >("sensor_msgs/Imu", ign_type_name);
-  }
-  if (
     (ros1_type_name == "sensor_msgs/Image" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Image")
   {
@@ -104,6 +93,17 @@ get_factory_builtin_interfaces(
         ignition::msgs::Image
       >
     >("sensor_msgs/Image", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.IMU")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::Imu,
+        ignition::msgs::IMU
+      >
+    >("sensor_msgs/Imu", ign_type_name);
   }
   if (
     (ros1_type_name == "sensor_msgs/LaserScan" || ros1_type_name == "") &&
@@ -282,30 +282,6 @@ Factory<
 template<>
 void
 Factory<
-  sensor_msgs::Imu,
-  ignition::msgs::IMU
->::convert_1_to_ign(
-  const sensor_msgs::Imu & ros1_msg,
-  ignition::msgs::IMU & ign_msg)
-{
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
-}
-
-template<>
-void
-Factory<
-  sensor_msgs::Imu,
-  ignition::msgs::IMU
->::convert_ign_to_1(
-  const ignition::msgs::IMU & ign_msg,
-  sensor_msgs::Imu & ros1_msg)
-{
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
-}
-
-template<>
-void
-Factory<
   sensor_msgs::Image,
   ignition::msgs::Image
 >::convert_1_to_ign(
@@ -323,6 +299,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::Image & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_1_to_ign(
+  const sensor_msgs::Imu & ros1_msg,
+  ignition::msgs::IMU & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::Imu,
+  ignition::msgs::IMU
+>::convert_ign_to_1(
+  const ignition::msgs::IMU & ign_msg,
+  sensor_msgs::Imu & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

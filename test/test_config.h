@@ -18,6 +18,7 @@
 #ifndef ROS1_IGN_BRIDGE__TEST_CONFIG_HH_
 #define ROS1_IGN_BRIDGE__TEST_CONFIG_HH_
 
+#include "ros/ros.h"
 #include <chrono>
 #include <thread>
 
@@ -43,6 +44,30 @@ namespace ros1_ign_bridge
     {
       ++i;
       std::this_thread::sleep_for(_sleepEach);
+    }
+  }
+
+  /// \brief Wait until a boolean variable is set to true for a given number
+  /// of times. This function calls ros::spinOnce each iteration.
+  /// \param[in out] _boolVar The bool variable.
+  /// \param[in] _sleepEach Time duration to wait between each retry.
+  /// \param[in] _retries The number of retries.
+  ///
+  /// E.g.:
+  ///   using namespace std::chrono_literals;
+  ///   waitUntilBoolVar(myVar, 1ms, 10);
+  template <class Rep, class Period>
+  void waitUntilBoolVarAndSpin(
+      bool &_boolVar,
+      const std::chrono::duration<Rep, Period> &_sleepEach,
+      const int _retries)
+  {
+    int i = 0;
+    while (!_boolVar && i < _retries)
+    {
+      ++i;
+      std::this_thread::sleep_for(_sleepEach);
+      ros::spinOnce();
     }
   }
 }

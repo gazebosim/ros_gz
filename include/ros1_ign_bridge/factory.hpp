@@ -23,6 +23,7 @@
 
 // include ROS 1 message event
 #include <ros/message.h>
+#include <ros/ros.h>
 
 #include "ros1_ign_bridge/factory_interface.hpp"
 
@@ -108,13 +109,13 @@ protected:
     const boost::shared_ptr<ros::M_string> & connection_header =
       ros1_msg_event.getConnectionHeaderPtr();
     if (!connection_header) {
-      printf("  dropping message without connection header\n");
+      std::cerr << "  dropping message without connection header" << std::endl;
       return;
     }
 
     std::string key = "callerid";
     if (connection_header->find(key) != connection_header->end()) {
-      if (connection_header->at(key) == "/ros_ign_bridge") {
+      if (connection_header->at(key) == ros::this_node::getName()) {
         return;
       }
     }
