@@ -163,6 +163,24 @@ class MyTestClass
     this->callbackExecuted = true;
   };
 
+  /// \brief Create a subscriber.
+  public: void SubscribeMagnetometer()
+  {
+    EXPECT_TRUE(this->node.Subscribe(
+      "magnetic", &MyTestClass::MagnetometerCb, this));
+  }
+
+  /// \brief Member function called each time a topic update is received.
+  public: void MagnetometerCb(const ignition::msgs::Magnetometer &_msg)
+  {
+    EXPECT_EQ(2, _msg.header().stamp().sec());
+    EXPECT_EQ(2000000003, _msg.header().stamp().nsec());
+    EXPECT_DOUBLE_EQ(1, _msg.field_tesla().x());
+    EXPECT_DOUBLE_EQ(2, _msg.field_tesla().y());
+    EXPECT_DOUBLE_EQ(3, _msg.field_tesla().z());
+    this->callbackExecuted = true;
+  };
+
   /// \brief Member variables that flag when the actions are executed.
   public: bool callbackExecuted;
 
@@ -247,6 +265,18 @@ TEST(IgnSubscriberTest, LaserScan)
 {
   MyTestClass client;
   client.SubscribeLaserScan();
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::waitUntilBoolVar(client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Magnetometer)
+{
+  MyTestClass client;
+  client.SubscribeMagnetometer();
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::waitUntilBoolVar(client.callbackExecuted, 10ms, 200);

@@ -116,6 +116,12 @@ int main(int /*argc*/, char **/*argv*/)
     laserscan_msg.add_intensities(1);
   }
 
+  // ignition::msgs::Magnetometer.
+  auto magnetic_pub = node.Advertise<ignition::msgs::Magnetometer>("magnetic");
+  ignition::msgs::Magnetometer magnetic_msg;
+  magnetic_msg.mutable_header()->CopyFrom(header_msg);
+  magnetic_msg.mutable_field_tesla()->CopyFrom(vector3_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
@@ -126,6 +132,7 @@ int main(int /*argc*/, char **/*argv*/)
     image_pub.Publish(image_msg);
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
+    magnetic_pub.Publish(magnetic_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

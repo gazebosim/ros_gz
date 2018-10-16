@@ -22,6 +22,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/MagneticField.h>
 
 //////////////////////////////////////////////////
 int main(int argc, char ** argv)
@@ -98,6 +99,14 @@ int main(int argc, char ** argv)
   laserscan_msg.ranges.resize(num_readings, 0);
   laserscan_msg.intensities.resize(num_readings, 1);
 
+  // sensor_msgs::MagneticField.
+  ros::Publisher magnetic_pub =
+    n.advertise<sensor_msgs::MagneticField>("magnetic", 1000);
+  sensor_msgs::MagneticField magnetic_msg;
+  magnetic_msg.header = header_msg;
+  magnetic_msg.magnetic_field = vector3_msg;
+  magnetic_msg.magnetic_field_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
   while (ros::ok())
   {
     // Publish all messages.
@@ -108,6 +117,7 @@ int main(int argc, char ** argv)
     image_pub.publish(image_msg);
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
+    magnetic_pub.publish(magnetic_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

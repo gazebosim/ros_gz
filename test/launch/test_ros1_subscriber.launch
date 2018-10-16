@@ -9,7 +9,8 @@
               /vector3@geometry_msgs/Vector3@ignition.msgs.Vector3d
               /image@sensor_msgs/Image@ignition.msgs.Image
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
-              /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan"
+              /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
+              /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer"
   />
 
   <!-- Launch the Ignition Transport publisher -->

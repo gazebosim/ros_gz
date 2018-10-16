@@ -24,6 +24,7 @@
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
+#include <sensor_msgs/MagneticField.h>
 #include <chrono>
 #include "../test_config.h"
 
@@ -168,6 +169,27 @@ class MyTestClass
     this->callbackExecuted = true;
   };
 
+  /// \brief Create a subscriber.
+  public: void SubscribeMagneticField()
+  {
+    this->sub = this->n.subscribe(
+      "magnetic", 1000, &MyTestClass::MagneticFieldCb, this);
+  }
+
+  /// \brief Member function called each time a topic update is received.
+  public: void MagneticFieldCb(const sensor_msgs::MagneticField::ConstPtr& msg)
+  {
+    EXPECT_EQ(2, msg->header.stamp.sec);
+    EXPECT_EQ(3, msg->header.stamp.nsec);
+    EXPECT_EQ(1, msg->magnetic_field.x);
+    EXPECT_EQ(2, msg->magnetic_field.y);
+    EXPECT_EQ(3, msg->magnetic_field.z);
+    for (auto i = 0; i < 9; i++)
+      EXPECT_EQ(0, msg->magnetic_field_covariance[i]);
+
+    this->callbackExecuted = true;
+  };
+
   public: void Reset()
   {
     this->callbackExecuted = false;
@@ -260,6 +282,18 @@ TEST(ROS1SubscriberTest, LaserScan)
 {
   MyTestClass client;
   client.SubscribeLaserScan();
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, MagneticField)
+{
+  MyTestClass client;
+  client.SubscribeMagneticField();
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
