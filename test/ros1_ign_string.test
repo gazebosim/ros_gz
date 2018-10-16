@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find ros1_ign_bridge)/test/launch/test_ros1_ign_string.launch">
+  </include>
+
+  <test test-name="ros1_ign_string" pkg="ros1_ign_bridge" type="test_ros1_ign_string" time-limit="10.0" />
+
+</launch>

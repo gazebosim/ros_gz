@@ -44,3 +44,33 @@ foreach(bridge ${bridge_executables})
           DESTINATION lib/${PROJECT_NAME}
   )
 endforeach(bridge)
+
+# Tests
+find_package(rostest REQUIRED)
+
+set(common_test_sources
+  test/ros1_string_publisher.cpp
+)
+
+set(test_executables
+  ros1_string_publisher
+)
+
+foreach(test_executable ${test_executables})
+  add_executable(${test_executable}
+    test/${test_executable}.cpp
+    ${common_test_sources}
+  )
+  target_link_libraries(${test_executable}
+    ${catkin_LIBRARIES}
+    ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+endforeach(test_executable)
+
+add_rostest_gtest(test_ros1_ign_string test/ros1_ign_string.test test/ign_subscriber.cpp)
+target_link_libraries(test_ros1_ign_string
+  ${catkin_LIBRARIES}
+  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)

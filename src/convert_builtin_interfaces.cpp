@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <algorithm>
 #include <exception>
 #include <ignition/common/Image.hh>
 
@@ -359,9 +360,12 @@ convert_ign_to_1(
   ros1_msg.is_bigendian = false;
   ros1_msg.step = ros1_msg.width * num_channels * octets_per_channel;
 
+  auto count = ros1_msg.step * ros1_msg.height;
   ros1_msg.data.resize(ros1_msg.step * ros1_msg.height);
-  memcpy(&ros1_msg.data[0], ign_msg.data().c_str(),
-         ros1_msg.step * ros1_msg.height);
+  std::copy(
+    ign_msg.data().begin(),
+    ign_msg.data().begin() + count,
+    ros1_msg.data.begin());
 }
 
 template<>
@@ -412,15 +416,25 @@ convert_ign_to_1(
   ros1_msg.range_min = ign_msg.range_min();
   ros1_msg.range_max = ign_msg.range_max();
 
-  unsigned int num_readings = ign_msg.count();
-  ros1_msg.ranges.resize(num_readings);
-  ros1_msg.intensities.resize(num_readings);
+  auto count = ign_msg.count();
+  auto vertical_count = ign_msg.vertical_count();
 
-  for (auto i = 0u; i < num_readings; ++i)
-  {
-    ros1_msg.ranges[i] = ign_msg.ranges(i);
-    ros1_msg.intensities[i] = ign_msg.intensities(i);
-  }
+  // If there are multiple vertical beams, use the one in the middle.
+  size_t start = (vertical_count / 2) * count;
+
+  // Copy ranges into ROS message.
+  ros1_msg.ranges.resize(count);
+  std::copy(
+    ign_msg.ranges().begin() + start,
+    ign_msg.ranges().begin() + start + count,
+    ros1_msg.ranges.begin());
+
+  // Copy intensities into ROS message.
+  ros1_msg.intensities.resize(count);
+  std::copy(
+    ign_msg.intensities().begin() + start,
+    ign_msg.intensities().begin() + start + count,
+    ros1_msg.intensities.begin());
 }
 
 template<>
