@@ -48,29 +48,34 @@ endforeach(bridge)
 # Tests
 find_package(rostest REQUIRED)
 
-set(common_test_sources
-  test/ros1_string_publisher.cpp
-)
-
-set(test_executables
+set(test_publishers
+  ign_string_publisher
   ros1_string_publisher
 )
 
-foreach(test_executable ${test_executables})
-  add_executable(${test_executable}
-    test/${test_executable}.cpp
-    ${common_test_sources}
+set(test_subscribers
+  ign_string_subscriber
+  ros1_string_subscriber
+)
+
+foreach(test_publisher ${test_publishers})
+  add_executable(${test_publisher}
+    test/publishers/${test_publisher}.cpp
   )
-  target_link_libraries(${test_executable}
+  target_link_libraries(${test_publisher}
     ${catkin_LIBRARIES}
     ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
-endforeach(test_executable)
+endforeach(test_publisher)
 
-add_rostest_gtest(test_ros1_ign_string test/ros1_ign_string.test test/ign_subscriber.cpp)
-target_link_libraries(test_ros1_ign_string
-  ${catkin_LIBRARIES}
-  ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
-  ignition-transport${IGN_TRANSPORT_VER}::core
-)
+foreach(test_subscriber ${test_subscribers})
+  add_rostest_gtest(test_${test_subscriber}
+    test/${test_subscriber}.test
+    test/subscribers/${test_subscriber}.cpp)
+  target_link_libraries(test_${test_subscriber}
+    ${catkin_LIBRARIES}
+    ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+endforeach(test_subscriber)
