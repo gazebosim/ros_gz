@@ -147,18 +147,19 @@ class MyTestClass
   /// \brief Member function called each time a topic update is received.
   public: void LaserCb(const ignition::msgs::LaserScan &_msg)
   {
-    EXPECT_EQ(-0.5, _msg.angle_min());
-    EXPECT_EQ(0.5, _msg.angle_max());
-    EXPECT_EQ(0.5, _msg.angle_step());
-    EXPECT_EQ(1, _msg.range_min());
-    EXPECT_EQ(2, _msg.range_max());
-    EXPECT_EQ(3, _msg.count());
-    EXPECT_EQ(0, _msg.vertical_angle_min());
-    EXPECT_EQ(0, _msg.vertical_angle_max());
-    EXPECT_EQ(0, _msg.vertical_angle_step());
+    const unsigned int expected_num_readings = 100u;
+    EXPECT_FLOAT_EQ(-1.57, _msg.angle_min());
+    EXPECT_FLOAT_EQ(1.57, _msg.angle_max());
+    EXPECT_FLOAT_EQ(3.14 / expected_num_readings, _msg.angle_step());
+    EXPECT_DOUBLE_EQ(1, _msg.range_min());
+    EXPECT_DOUBLE_EQ(2, _msg.range_max());
+    EXPECT_EQ(expected_num_readings, _msg.count());
+    EXPECT_DOUBLE_EQ(0, _msg.vertical_angle_min());
+    EXPECT_DOUBLE_EQ(0, _msg.vertical_angle_max());
+    EXPECT_DOUBLE_EQ(0, _msg.vertical_angle_step());
     EXPECT_EQ(0, _msg.vertical_count());
-    EXPECT_EQ(3, _msg.ranges_size());
-    EXPECT_EQ(3, _msg.intensities_size());
+    EXPECT_EQ(expected_num_readings, _msg.ranges_size());
+    EXPECT_EQ(expected_num_readings, _msg.intensities_size());
     this->callbackExecuted = true;
   };
 
@@ -242,16 +243,16 @@ TEST(IgnSubscriberTest, Imu)
 }
 
 /////////////////////////////////////////////////
-// TEST(IgnSubscriberTest, LaserScan)
-// {
-//   MyTestClass client;
-//   client.SubscribeLaserScan();
+TEST(IgnSubscriberTest, LaserScan)
+{
+  MyTestClass client;
+  client.SubscribeLaserScan();
 
-//   using namespace std::chrono_literals;
-//   ros1_ign_bridge::waitUntilBoolVar(client.callbackExecuted, 10ms, 200);
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::waitUntilBoolVar(client.callbackExecuted, 10ms, 200);
 
-//   EXPECT_TRUE(client.callbackExecuted);
-// }
+  EXPECT_TRUE(client.callbackExecuted);
+}
 
 /////////////////////////////////////////////////
 int main(int argc, char **argv)

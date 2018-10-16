@@ -70,8 +70,7 @@ int main(int argc, char ** argv)
   image_msg.encoding = "rgb8";
   image_msg.is_bigendian = false;
   image_msg.step = image_msg.width * 3;
-  image_msg.data.resize(image_msg.height * image_msg.step);
-  std::memset(&image_msg.data[0], 1, sizeof image_msg.data);
+  image_msg.data.resize(image_msg.height * image_msg.step, 1);
 
   // sensor_msgs::Imu.
   ros::Publisher imu_pub =
@@ -85,21 +84,19 @@ int main(int argc, char ** argv)
   // sensor_msgs::LaserScan.
   ros::Publisher laserscan_pub =
     n.advertise<sensor_msgs::LaserScan>("laserscan", 1000);
+  const unsigned int num_readings = 100u;
+  const double laser_frequency = 40;
   sensor_msgs::LaserScan laserscan_msg;
   laserscan_msg.header = header_msg;
-  laserscan_msg.angle_min = -0.5;
-  laserscan_msg.angle_max = 0.5;
-  laserscan_msg.angle_increment = 0.5;
-  laserscan_msg.time_increment = 0;
+  laserscan_msg.angle_min = -1.57;
+  laserscan_msg.angle_max = 1.57;
+  laserscan_msg.angle_increment = 3.14 / num_readings;
+  laserscan_msg.time_increment = (1 / laser_frequency) / (num_readings);
   laserscan_msg.scan_time = 0;
   laserscan_msg.range_min = 1;
   laserscan_msg.range_max = 2;
-  laserscan_msg.ranges.resize(3);
-  laserscan_msg.intensities.resize(3);
-  std::memset(&laserscan_msg.ranges[0], 1,
-    sizeof laserscan_msg.ranges);
-  std::memset(&laserscan_msg.intensities[0], 2,
-    sizeof laserscan_msg.intensities);
+  laserscan_msg.ranges.resize(num_readings, 0);
+  laserscan_msg.intensities.resize(num_readings, 1);
 
   while (ros::ok())
   {
@@ -110,7 +107,7 @@ int main(int argc, char ** argv)
     vector3_pub.publish(vector3_msg);
     image_pub.publish(image_msg);
     imu_pub.publish(imu_msg);
-    //laserscan_pub.publish(laserscan_msg);
+    laserscan_pub.publish(laserscan_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

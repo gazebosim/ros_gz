@@ -374,6 +374,9 @@ convert_1_to_ign(
   const sensor_msgs::LaserScan & ros1_msg,
   ignition::msgs::LaserScan & ign_msg)
 {
+  const unsigned int num_readings =
+    (ros1_msg.angle_max - ros1_msg.angle_min) / ros1_msg.angle_increment;
+
   convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
   ign_msg.set_frame(ros1_msg.header.frame_id);
   ign_msg.set_angle_min(ros1_msg.angle_min);
@@ -381,7 +384,7 @@ convert_1_to_ign(
   ign_msg.set_angle_step(ros1_msg.angle_increment);
   ign_msg.set_range_min(ros1_msg.range_min);
   ign_msg.set_range_max(ros1_msg.range_max);
-  ign_msg.set_count(sizeof(ros1_msg.ranges));
+  ign_msg.set_count(num_readings);
 
   // Not supported in sensor_msgs::LaserScan.
   ign_msg.set_vertical_angle_min(0.0);
@@ -392,7 +395,7 @@ convert_1_to_ign(
   for (auto i = 0u; i < ign_msg.count(); ++i)
   {
     ign_msg.add_ranges(ros1_msg.ranges[i]);
-    ign_msg.add_ranges(ros1_msg.intensities[i]);
+    ign_msg.add_intensities(ros1_msg.intensities[i]);
   }
 }
 
