@@ -47,8 +47,10 @@ class MyTestClass
   /// \brief Member function called each time a topic update is received.
   public: void HeaderCb(const std_msgs::Header::ConstPtr& msg)
   {
+    EXPECT_EQ(1u, msg->seq);
     EXPECT_EQ(2, msg->stamp.sec);
     EXPECT_EQ(3, msg->stamp.nsec);
+    EXPECT_EQ("frame_id_value", msg->frame_id);
     this->callbackExecuted = true;
   };
 

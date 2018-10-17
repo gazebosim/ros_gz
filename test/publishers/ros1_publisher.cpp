@@ -37,7 +37,7 @@ int main(int argc, char ** argv)
   header_msg.seq = 1;
   header_msg.stamp.sec = 2;
   header_msg.stamp.nsec = 3;
-  header_msg.frame_id = "frame_id";
+  header_msg.frame_id = "frame_id_value";
 
   // std_msgs::String.
   ros::Publisher string_pub = n.advertise<std_msgs::String>("string", 1000);

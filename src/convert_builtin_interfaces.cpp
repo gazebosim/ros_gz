@@ -27,8 +27,8 @@ convert_1_to_ign(
   const std_msgs::Header & ros1_msg,
   ignition::msgs::Header & ign_msg)
 {
-  ign_msg.mutable_stamp()->set_sec(ros1_msg.stamp.toSec());
-  ign_msg.mutable_stamp()->set_nsec(ros1_msg.stamp.toNSec());
+  ign_msg.mutable_stamp()->set_sec(ros1_msg.stamp.sec);
+  ign_msg.mutable_stamp()->set_nsec(ros1_msg.stamp.nsec);
   auto newPair = ign_msg.add_data();
   newPair->set_key("seq");
   newPair->add_value(std::to_string(ros1_msg.seq));

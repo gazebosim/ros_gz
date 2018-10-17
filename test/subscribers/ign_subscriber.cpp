@@ -42,7 +42,15 @@ class MyTestClass
   public: void HeaderCb(const ignition::msgs::Header &_msg)
   {
     EXPECT_EQ(2, _msg.stamp().sec());
-    EXPECT_EQ(2000000003, _msg.stamp().nsec());
+    EXPECT_EQ(3, _msg.stamp().nsec());
+
+    ASSERT_EQ(2, _msg.data_size());
+    EXPECT_EQ("seq", _msg.data(0).key());
+    ASSERT_EQ(1, _msg.data(0).value_size());
+    EXPECT_EQ("1", _msg.data(0).value(0));
+    EXPECT_EQ("frame_id", _msg.data(1).key());
+    ASSERT_EQ(1, _msg.data(1).value_size());
+    EXPECT_EQ("frame_id_value", _msg.data(1).value(0));
     this->callbackExecuted = true;
   };
 
@@ -174,7 +182,7 @@ class MyTestClass
   public: void MagnetometerCb(const ignition::msgs::Magnetometer &_msg)
   {
     EXPECT_EQ(2, _msg.header().stamp().sec());
-    EXPECT_EQ(2000000003, _msg.header().stamp().nsec());
+    EXPECT_EQ(3, _msg.header().stamp().nsec());
     EXPECT_DOUBLE_EQ(1, _msg.field_tesla().x());
     EXPECT_DOUBLE_EQ(2, _msg.field_tesla().y());
     EXPECT_DOUBLE_EQ(3, _msg.field_tesla().z());

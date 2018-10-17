@@ -51,8 +51,14 @@ int main(int /*argc*/, char **/*argv*/)
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
+  auto seq_entry = header_msg.add_data();
+  seq_entry->set_key("seq");
+  seq_entry->add_value("1");
   header_msg.mutable_stamp()->set_sec(2);
   header_msg.mutable_stamp()->set_nsec(3);
+  auto frame_id_entry = header_msg.add_data();
+  frame_id_entry->set_key("frame_id");
+  frame_id_entry->add_value("frame_id_value");
 
   // ignition::msgs::StringMsg.
   auto string_pub = node.Advertise<ignition::msgs::StringMsg>("string");
