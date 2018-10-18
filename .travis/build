@@ -1,7 +1,11 @@
 #!/bin/sh
 set -ev
 
+# No interactive dialogs.
 export DEBIAN_FRONTEND=noninteractive
+
+echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-prerelease melodic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
+apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys D2486D2DD83DB69272AFE98867170598AF249743
 apt-get install -qq -y wget
 sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'
 wget http://packages.ros.org/ros.key -O - | apt-key add -
@@ -10,3 +14,4 @@ apt-get install -qq -y python-rosdep python-catkin-tools
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
+apt-get install libignition-common3-dev libignition-transport6-dev
