@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)
+
 # Bridge communication between ROS 1 and Ignition Transport
 
 This package provides a network bridge which enables the exchange of messages
@@ -12,10 +14,10 @@ service calls.Its support is limited to only the following message types:
 | std_msgs/String             | ignition::msgs::StringMsg    |
 | geometry_msgs/Quaternion    | ignition::msgs::Quaternion   |
 | geometry_msgs/Vector3       | ignition::msgs::Vector3d     |
-| geometry_msgs/Imu           | ignition::msgs::IMU          |
-| geometry_msgs/Image         | ignition::msgs::Image        |
-| geometry_msgs/LaserScan     | ignition::msgs::LaserScan    |
-| geometry_msgs/MagneticField | ignition::msgs::Magnetometer |
+| sensor_msgs/Imu             | ignition::msgs::IMU          |
+| sensor_msgs/Image           | ignition::msgs::Image        |
+| sensor_msgs/LaserScan       | ignition::msgs::LaserScan    |
+| sensor_msgs/MagneticField   | ignition::msgs::Magnetometer |
 
 Run `parameter_bridge -h` for instructions.
 
