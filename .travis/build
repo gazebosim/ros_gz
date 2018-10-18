@@ -6,22 +6,23 @@ export CATKIN_WS=~/catkin_ws
 export CATKIN_WS_SRC=${CATKIN_WS}/src
 export DEBIAN_FRONTEND=noninteractive
 
+# Dependencies.
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
 echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
 apt-get update -qq
-apt-get install -qq -y python-rosdep \
-                       python-catkin-tools \
-                       libignition-common3-dev \
+apt-get install -qq -y libignition-common3-dev \
                        libignition-transport6-dev \
-                       ros-melodic-rostest \
+                       python-catkin-tools \
+                       python-rosdep \
                        ros-melodic-geometry-msgs \
+                       ros-melodic-rostest \
                        ros-melodic-sensor-msgs
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
 
-# Create ROS workspace and compile our package.
+# Build.
 source /opt/ros/melodic/setup.bash
 mkdir -p $CATKIN_WS_SRC
 ln -s /code $CATKIN_WS_SRC
@@ -30,4 +31,6 @@ catkin init
 catkin config --install
 catkin build --limit-status-rate 0.1 --no-notify -DCMAKE_BUILD_TYPE=Release
 catkin build --limit-status-rate 0.1 --no-notify --make-args tests
+
+# Tests.
 catkin run_tests
