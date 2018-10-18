@@ -27,7 +27,11 @@ locate setup.bash
 # Create ROS workspace and compile our package.
 source /opt/ros/melodic/setup.bash
 mkdir -p $CATKIN_WS_SRC
-ln -sf $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
+
+echo $TRAVIS_BUILD_DIR
+echo $CATKIN_WS_SRC
+
+ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
 cd $CATKIN_WS
 catkin init
 catkin config --install
