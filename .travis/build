@@ -1,6 +1,7 @@
 #!/bin/sh
 set -ev
 
+export DEBIAN_FRONTEND=noninteractive
 apt-get install -qq -y wget
 sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'
 wget http://packages.ros.org/ros.key -O - | apt-key add -
