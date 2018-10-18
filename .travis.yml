@@ -23,13 +23,4 @@ before_script:
   - docker exec $(docker ps -aq) /bin/bash -c 'apt-get install -y --force-yes build-essential'
 
 script:
-  - docker exec $(docker ps -aq) /bin/bash -c ' \
-      sh -c \'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list\' \
-      wget http://packages.ros.org/ros.key -O - | sudo apt-key add - \
-      apt-get update -qq \
-      apt-get install -qq -y python-rosdep python-catkin-tools \
-      rosdep init \
-      rosdep update \
-      rosdep install --from-paths ./ -i -y --rosdistro melodic \
-      cd /code && ls \
-    '
+  - docker exec $(docker ps -aq) /bin/bash -c 'cd /code && ./travis/build'
