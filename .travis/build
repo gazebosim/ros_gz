@@ -28,7 +28,8 @@ locate setup.bash
 source /opt/ros/melodic/setup.bash
 mkdir -p $CATKIN_WS_SRC
 
-echo $TRAVIS_BUILD_DIR
+ls
+pwd
 echo $CATKIN_WS_SRC
 
 ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
