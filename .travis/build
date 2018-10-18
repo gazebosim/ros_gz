@@ -14,11 +14,15 @@ apt-get install -qq -y python-rosdep python-catkin-tools
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
-apt-get install -qq -y libignition-tools-dev libignition-common3-dev libignition-transport6-dev
+apt-get install -qq -y libignition-common3-dev libignition-transport6-dev locate
 
 # Configuration.
 export CATKIN_WS=~/catkin_ws
 export CATKIN_WS_SRC=${CATKIN_WS}/src
+
+# Testing
+updatedb
+locate setup.bash
 
 # Create ROS workspace and compile our package.
 source /opt/ros/melodic/setup.bash
