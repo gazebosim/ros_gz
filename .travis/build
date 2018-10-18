@@ -1,4 +1,10 @@
 #!/bin/sh
 set -ev
 
-ls
+sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'
+wget http://packages.ros.org/ros.key -O - | apt-key add -
+apt-get update -qq
+apt-get install -qq -y python-rosdep python-catkin-tools
+rosdep init
+rosdep update
+rosdep install --from-paths ./ -i -y --rosdistro melodic
