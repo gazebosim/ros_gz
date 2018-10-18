@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -ev
 
 # No interactive dialogs.
@@ -26,6 +26,7 @@ locate setup.bash
 
 # Create ROS workspace and compile our package.
 source /opt/ros/melodic/setup.bash
+       /opt/ros/melodic/setup.bash
 mkdir -p $CATKIN_WS_SRC
 ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
 cd $CATKIN_WS
