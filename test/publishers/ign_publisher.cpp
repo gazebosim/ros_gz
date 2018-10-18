@@ -24,7 +24,7 @@
 #include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
-#include "../test_config.h"
+#include "../test_utils.h"
 
 /// \brief Flag used to break the publisher loop and terminate the program.
 static std::atomic<bool> g_terminatePub(false);

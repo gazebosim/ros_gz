@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef ROS1_IGN_BRIDGE__TEST_CONFIG_HH_
-#define ROS1_IGN_BRIDGE__TEST_CONFIG_HH_
+#ifndef ROS1_IGN_BRIDGE__TEST_UTILS_HH_
+#define ROS1_IGN_BRIDGE__TEST_UTILS_HH_
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -83,6 +83,246 @@ namespace testing
       ros::spinOnce();
     }
   }
+
+  //////////////////////////////////////////////////
+  /// ROS 1 test utils
+  //////////////////////////////////////////////////
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::Header &_msg)
+  {
+    _msg.seq        = 1;
+    _msg.stamp.sec  = 2;
+    _msg.stamp.nsec = 3;
+    _msg.frame_id   = "frame_id_value";
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::Header &_msg)
+  {
+    std_msgs::Header expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_GE(_msg.seq,         0);
+    EXPECT_EQ(2,                _msg.stamp.sec);
+    EXPECT_EQ(3,                _msg.stamp.nsec);
+    EXPECT_EQ("frame_id_value", _msg.frame_id);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::String &_msg)
+  {
+    _msg.data = "string";
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::String &_msg)
+  {
+    std_msgs::String expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ("string", _msg.data);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Quaternion &_msg)
+  {
+    _msg.x = 1;
+    _msg.y = 2;
+    _msg.z = 3;
+    _msg.w = 4;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Quaternion &_msg)
+  {
+    geometry_msgs::Quaternion expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(1, _msg.x);
+    EXPECT_EQ(2, _msg.y);
+    EXPECT_EQ(3, _msg.z);
+    EXPECT_EQ(4, _msg.w);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Vector3 &_msg)
+  {
+    _msg.x = 1;
+    _msg.y = 2;
+    _msg.z = 3;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Vector3 &_msg)
+  {
+    geometry_msgs::Vector3 expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(1, _msg.x);
+    EXPECT_EQ(2, _msg.y);
+    EXPECT_EQ(3, _msg.z);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::Image &_msg)
+  {
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header       = header_msg;
+    _msg.width        = 320;
+    _msg.height       = 240;
+    _msg.encoding     = "rgb8";
+    _msg.is_bigendian = false;
+    _msg.step         = _msg.width * 3;
+    _msg.data.resize(_msg.height * _msg.step, '1');
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::Image &_msg)
+  {
+    sensor_msgs::Image expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_EQ(expected_msg.width,        _msg.width);
+    EXPECT_EQ(expected_msg.height,       _msg.height);
+    EXPECT_EQ(expected_msg.encoding,     _msg.encoding);
+    EXPECT_EQ(expected_msg.is_bigendian, _msg.is_bigendian);
+    EXPECT_EQ(expected_msg.step,         _msg.step);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::Imu &_msg)
+  {
+    std_msgs::Header header_msg;
+    geometry_msgs::Quaternion quaternion_msg;
+    geometry_msgs::Vector3 vector3_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(quaternion_msg);
+    createTestMsg(vector3_msg);
+
+    _msg.header                         = header_msg;
+    _msg.orientation                    = quaternion_msg;
+    _msg.orientation_covariance         = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    _msg.angular_velocity               = vector3_msg;
+    _msg.angular_velocity_covariance    = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    _msg.linear_acceleration            = vector3_msg;
+    _msg.linear_acceleration_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::Imu &_msg)
+  {
+    sensor_msgs::Imu expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.orientation);
+    compareTestMsg(_msg.angular_velocity);
+    compareTestMsg(_msg.linear_acceleration);
+
+    for (auto i = 0; i < 9; ++i)
+    {
+      EXPECT_FLOAT_EQ(0, _msg.orientation_covariance[i]);
+      EXPECT_FLOAT_EQ(0, _msg.angular_velocity_covariance[i]);
+      EXPECT_FLOAT_EQ(0, _msg.linear_acceleration_covariance[i]);
+    }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::LaserScan &_msg)
+  {
+    const unsigned int num_readings = 100u;
+    const double laser_frequency    = 40;
+
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header          = header_msg;
+    _msg.angle_min       = -1.57;
+    _msg.angle_max       = 1.57;
+    _msg.angle_increment = 3.14 / num_readings;
+    _msg.time_increment  = (1 / laser_frequency) / (num_readings);
+    _msg.scan_time       = 0;
+    _msg.range_min       = 1;
+    _msg.range_max       = 2;
+    _msg.ranges.resize(num_readings, 0);
+    _msg.intensities.resize(num_readings, 1);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::LaserScan &_msg)
+  {
+    sensor_msgs::LaserScan expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_FLOAT_EQ(expected_msg.angle_min,       _msg.angle_min);
+    EXPECT_FLOAT_EQ(expected_msg.angle_max,       _msg.angle_max);
+    EXPECT_FLOAT_EQ(expected_msg.angle_increment, _msg.angle_increment);
+    EXPECT_FLOAT_EQ(0,                            _msg.time_increment);
+    EXPECT_FLOAT_EQ(0,                            _msg.scan_time);
+    EXPECT_FLOAT_EQ(expected_msg.range_min,       _msg.range_min);
+    EXPECT_FLOAT_EQ(expected_msg.range_max,       _msg.range_max);
+
+    const unsigned int num_readings =
+      (_msg.angle_max - _msg.angle_min) / _msg.angle_increment;
+    for (auto i = 0u; i < num_readings; ++i)
+    {
+      EXPECT_FLOAT_EQ(expected_msg.ranges[i],      _msg.ranges[i]);
+      EXPECT_FLOAT_EQ(expected_msg.intensities[i], _msg.intensities[i]);
+    }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::MagneticField &_msg)
+  {
+    std_msgs::Header header_msg;
+    geometry_msgs::Vector3 vector3_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(vector3_msg);
+
+    _msg.header                    = header_msg;
+    _msg.magnetic_field            = vector3_msg;
+    _msg.magnetic_field_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::MagneticField &_msg)
+  {
+    sensor_msgs::MagneticField expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.magnetic_field);
+
+    for (auto i = 0u; i < 9; ++i)
+      EXPECT_FLOAT_EQ(0, _msg.magnetic_field_covariance[i]);
+  }
+
+  //////////////////////////////////////////////////
+  /// Ignition::msgs test utils
+  //////////////////////////////////////////////////
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
@@ -257,6 +497,7 @@ namespace testing
 
     const unsigned int num_readings = 100u;
     _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.set_frame("frame_id_value");
     _msg.set_angle_min(-1.57);
     _msg.set_angle_max(1.57);
     _msg.set_angle_step(3.14 / num_readings);
@@ -329,113 +570,6 @@ namespace testing
 
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.field_tesla());
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(std_msgs::Header &_msg)
-  {
-    _msg.seq = 1;
-    _msg.stamp.sec = 2;
-    _msg.stamp.nsec = 3;
-    _msg.frame_id = "frame_id_value";
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(std_msgs::String &_msg)
-  {
-    _msg.data = "string";
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(geometry_msgs::Quaternion &_msg)
-  {
-    _msg.x = 1;
-    _msg.y = 2;
-    _msg.z = 3;
-    _msg.w = 4;
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(geometry_msgs::Vector3 &_msg)
-  {
-    _msg.x = 1;
-    _msg.y = 2;
-    _msg.z = 3;
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(sensor_msgs::Image &_msg)
-  {
-    std_msgs::Header header_msg;
-    createTestMsg(header_msg);
-
-    _msg.header = header_msg;
-    _msg.width = 320;
-    _msg.height = 240;
-    _msg.encoding = "rgb8";
-    _msg.is_bigendian = false;
-    _msg.step = _msg.width * 3;
-    _msg.data.resize(_msg.height * _msg.step, '1');
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(sensor_msgs::Imu &_msg)
-  {
-    std_msgs::Header header_msg;
-    geometry_msgs::Quaternion quaternion_msg;
-    geometry_msgs::Vector3 vector3_msg;
-
-    createTestMsg(header_msg);
-    createTestMsg(quaternion_msg);
-    createTestMsg(vector3_msg);
-
-    _msg.header = header_msg;
-    _msg.orientation = quaternion_msg;
-    _msg.angular_velocity = vector3_msg;
-    _msg.linear_acceleration = vector3_msg;
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(sensor_msgs::LaserScan &_msg)
-  {
-    const unsigned int num_readings = 100u;
-    const double laser_frequency = 40;
-
-    std_msgs::Header header_msg;
-    createTestMsg(header_msg);
-
-    _msg.header = header_msg;
-    _msg.angle_min = -1.57;
-    _msg.angle_max = 1.57;
-    _msg.angle_increment = 3.14 / num_readings;
-    _msg.time_increment = (1 / laser_frequency) / (num_readings);
-    _msg.scan_time = 0;
-    _msg.range_min = 1;
-    _msg.range_max = 2;
-    _msg.ranges.resize(num_readings, 0);
-    _msg.intensities.resize(num_readings, 1);
-  }
-
-  /// \brief Create a message used for testing.
-  /// \param[out] _msg The message populated.
-  void createTestMsg(sensor_msgs::MagneticField &_msg)
-  {
-    std_msgs::Header header_msg;
-    geometry_msgs::Vector3 vector3_msg;
-
-    createTestMsg(header_msg);
-    createTestMsg(vector3_msg);
-
-    _msg.header = header_msg;
-    _msg.magnetic_field = vector3_msg;
-    _msg.magnetic_field_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
   }
 }
 }

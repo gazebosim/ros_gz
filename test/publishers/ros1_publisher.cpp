@@ -23,7 +23,7 @@
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
-#include "../test_config.h"
+#include "../test_utils.h"
 
 //////////////////////////////////////////////////
 int main(int argc, char ** argv)
