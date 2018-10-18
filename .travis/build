@@ -4,6 +4,7 @@ set -ev
 # No interactive dialogs.
 export DEBIAN_FRONTEND=noninteractive
 
+echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
 apt-get install -qq -y wget
 sh -c 'echo "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'
@@ -14,3 +15,8 @@ rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
 apt-get install -qq -y libignition-tools-dev libignition-common3-dev libignition-transport6-dev
+
+# Create ROS workspace and compile our package.
+ls -a
+pwd
+mkdir -p ~/bridge_ws/src cd bridge_ws/src

@@ -11,10 +11,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
-find_package(ignition-common3 QUIET REQUIRED)
-find_package(ignition-transport6 QUIET REQUIRED)
-set(IGN_COMMON_VER ${ignition-common3_VERSION_MAJOR})
-set(IGN_TRANSPORT_VER ${ignition-transport6_VERSION_MAJOR})
+find_package(ignition-common2 QUIET REQUIRED)
+find_package(ignition-transport5 QUIET REQUIRED)
+set(IGN_COMMON_VER ${ignition-common2_VERSION_MAJOR})
+set(IGN_TRANSPORT_VER ${ignition-transport5_VERSION_MAJOR})
 
 catkin_package()
 
