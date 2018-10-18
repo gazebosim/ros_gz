@@ -13,4 +13,4 @@ apt-get install -qq -y python-rosdep python-catkin-tools
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
-apt-get install libignition-common3-dev libignition-transport6-dev
+apt-get install -qq -y libignition-tools-dev libignition-common3-dev libignition-transport6-dev
