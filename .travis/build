@@ -6,7 +6,7 @@ export DEBIAN_FRONTEND=noninteractive
 
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
-sh -c 'echo [trusted=yes] "deb http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list'
+echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
 apt-get update -qq
 apt-get install -qq -y python-rosdep \
                        python-catkin-tools \
@@ -19,10 +19,6 @@ rosdep install --from-paths ./ -i -y --rosdistro melodic
 # Configuration.
 export CATKIN_WS=~/catkin_ws
 export CATKIN_WS_SRC=${CATKIN_WS}/src
-
-# Testing
-updatedb
-locate setup.bash
 
 # Create ROS workspace and compile our package.
 source /opt/ros/melodic/setup.bash
