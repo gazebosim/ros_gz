@@ -28,8 +28,6 @@
 #include <chrono>
 #include "../test_utils.h"
 
-using namespace ros1_ign_bridge;
-
 //////////////////////////////////////////////////
 /// \brief A class for testing ROS 1 topic subscription.
 template <typename ROS_T>
@@ -64,7 +62,8 @@ TEST(ROS1SubscriberTest, Header)
   MyTestClass<std_msgs::Header> client("header");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -75,7 +74,8 @@ TEST(ROS1SubscriberTest, String)
   MyTestClass<std_msgs::String> client("string");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -86,7 +86,8 @@ TEST(ROS1SubscriberTest, Quaternion)
   MyTestClass<geometry_msgs::Quaternion> client("quaternion");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -97,7 +98,8 @@ TEST(ROS1SubscriberTest, Vector3)
   MyTestClass<geometry_msgs::Vector3> client("vector3");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -108,7 +110,8 @@ TEST(ROS1SubscriberTest, Image)
   MyTestClass<sensor_msgs::Image> client("image");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -119,7 +122,8 @@ TEST(ROS1SubscriberTest, Imu)
   MyTestClass<sensor_msgs::Imu> client("imu");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -130,7 +134,8 @@ TEST(ROS1SubscriberTest, LaserScan)
   MyTestClass<sensor_msgs::LaserScan> client("laserscan");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -141,7 +146,8 @@ TEST(ROS1SubscriberTest, MagneticField)
   MyTestClass<sensor_msgs::MagneticField> client("magnetic");
 
   using namespace std::chrono_literals;
-  testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }

@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef ROS1_IGN_BRIDGE__TEST_UTILS_HH_
-#define ROS1_IGN_BRIDGE__TEST_UTILS_HH_
+#ifndef ROS1_IGN_BRIDGE__TEST_UTILS_H_
+#define ROS1_IGN_BRIDGE__TEST_UTILS_H_
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -29,6 +29,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <chrono>
+#include <string>
 #include <thread>
 #include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
@@ -353,7 +354,7 @@ namespace testing
     std::string value = _msg.data(0).value(0);
     try
     {
-      unsigned long ul = std::stoul(value, nullptr);
+      uint32_t ul = std::stoul(value, nullptr);
       EXPECT_GE(ul, 0);
     }
     catch (std::exception & e)
@@ -363,7 +364,6 @@ namespace testing
     EXPECT_EQ(expected_msg.data(1).key(),    _msg.data(1).key());
     EXPECT_EQ(1u,                            _msg.data(1).value_size());
     EXPECT_EQ(expected_msg.data(1).value(0), _msg.data(1).value(0));
-
   }
 
   /// \brief Create a message used for testing.
@@ -574,4 +574,4 @@ namespace testing
 }
 }
 
-#endif  // header guard
+#endif  // ROS1_IGN_BRIDGE__TEST_UTILS_H_

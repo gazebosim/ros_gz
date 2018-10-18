@@ -73,10 +73,11 @@ public:
     ops.md5sum = ros::message_traits::md5sum<ROS1_T>();
     ops.datatype = ros::message_traits::datatype<ROS1_T>();
     ops.helper = ros::SubscriptionCallbackHelperPtr(
-      new ros::SubscriptionCallbackHelperT<const ros::MessageEvent<ROS1_T const> &>(
-        boost::bind(
-          &Factory<ROS1_T, IGN_T>::ros1_callback,
-          _1, ign_pub, ros1_type_name_, ign_type_name_)));
+      new ros::SubscriptionCallbackHelperT
+        <const ros::MessageEvent<ROS1_T const> &>(
+          boost::bind(
+            &Factory<ROS1_T, IGN_T>::ros1_callback,
+            _1, ign_pub, ros1_type_name_, ign_type_name_)));
     return node.subscribe(ops);
   }
 
