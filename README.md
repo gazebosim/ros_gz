@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)
+
 # Bridge communication between ROS 1 and Ignition Transport
 
 This package provides a network bridge which enables the exchange of messages
