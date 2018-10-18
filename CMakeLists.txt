@@ -66,6 +66,8 @@ foreach(test_publisher ${test_publishers})
     ${catkin_LIBRARIES}
     ignition-common${IGN_COMMON_VER}::ignition-common${IGN_COMMON_VER}
     ignition-transport${IGN_TRANSPORT_VER}::core
+    gtest
+    gtest_main
   )
 endforeach(test_publisher)
 

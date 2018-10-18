@@ -24,6 +24,7 @@
 #include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
+#include "../test_config.h"
 
 /// \brief Flag used to break the publisher loop and terminate the program.
 static std::atomic<bool> g_terminatePub(false);
@@ -51,82 +52,43 @@ int main(int /*argc*/, char **/*argv*/)
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
-  auto seq_entry = header_msg.add_data();
-  seq_entry->set_key("seq");
-  seq_entry->add_value("1");
-  header_msg.mutable_stamp()->set_sec(2);
-  header_msg.mutable_stamp()->set_nsec(3);
-  auto frame_id_entry = header_msg.add_data();
-  frame_id_entry->set_key("frame_id");
-  frame_id_entry->add_value("frame_id_value");
+  ros1_ign_bridge::testing::createTestMsg(header_msg);
 
   // ignition::msgs::StringMsg.
   auto string_pub = node.Advertise<ignition::msgs::StringMsg>("string");
   ignition::msgs::StringMsg string_msg;
-  string_msg.set_data("string");
+  ros1_ign_bridge::testing::createTestMsg(string_msg);
 
   // ignition::msgs::Quaternion.
   auto quaternion_pub =
     node.Advertise<ignition::msgs::Quaternion>("quaternion");
   ignition::msgs::Quaternion quaternion_msg;
-  quaternion_msg.set_x(1.0);
-  quaternion_msg.set_y(2.0);
-  quaternion_msg.set_z(3.0);
-  quaternion_msg.set_w(4.0);
+  ros1_ign_bridge::testing::createTestMsg(quaternion_msg);
 
   // ignition::msgs::Vector3d.
   auto vector3_pub = node.Advertise<ignition::msgs::Vector3d>("vector3");
   ignition::msgs::Vector3d vector3_msg;
-  vector3_msg.set_x(1.0);
-  vector3_msg.set_y(2.0);
-  vector3_msg.set_z(3.0);
+  ros1_ign_bridge::testing::createTestMsg(vector3_msg);
 
   // ignition::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
   ignition::msgs::Image image_msg;
-  image_msg.mutable_header()->CopyFrom(header_msg);
-  image_msg.set_width(320);
-  image_msg.set_height(240);
-  image_msg.set_pixel_format(
-    ignition::common::Image::PixelFormatType::RGB_INT8);
-  image_msg.set_step(image_msg.width() * 3);
-  image_msg.set_data(std::string(image_msg.height() * image_msg.step(), '0'));
+  ros1_ign_bridge::testing::createTestMsg(image_msg);
 
   // ignition::msgs::IMU.
   auto imu_pub = node.Advertise<ignition::msgs::IMU>("imu");
   ignition::msgs::IMU imu_msg;
-  imu_msg.mutable_header()->CopyFrom(header_msg);
-  imu_msg.mutable_orientation()->CopyFrom(quaternion_msg);
-  imu_msg.mutable_angular_velocity()->CopyFrom(vector3_msg);
-  imu_msg.mutable_linear_acceleration()->CopyFrom(vector3_msg);
+  ros1_ign_bridge::testing::createTestMsg(imu_msg);
 
   // ignition::msgs::LaserScan.
   auto laserscan_pub = node.Advertise<ignition::msgs::LaserScan>("laserscan");
-  const unsigned int num_readings = 100u;
   ignition::msgs::LaserScan laserscan_msg;
-  laserscan_msg.mutable_header()->CopyFrom(header_msg);
-  laserscan_msg.set_angle_min(-1.57);
-  laserscan_msg.set_angle_max(1.57);
-  laserscan_msg.set_angle_step(3.14 / num_readings);
-  laserscan_msg.set_range_min(1);
-  laserscan_msg.set_range_max(2);
-  laserscan_msg.set_count(num_readings);
-  laserscan_msg.set_vertical_angle_min(0);
-  laserscan_msg.set_vertical_angle_max(0);
-  laserscan_msg.set_vertical_angle_step(0);
-  laserscan_msg.set_vertical_count(0);
-
-  for (auto i = 0u; i < laserscan_msg.count(); ++i)
-  {
-    laserscan_msg.add_ranges(0);
-    laserscan_msg.add_intensities(1);
-  }
+  ros1_ign_bridge::testing::createTestMsg(laserscan_msg);
 
   // ignition::msgs::Magnetometer.
   auto magnetic_pub = node.Advertise<ignition::msgs::Magnetometer>("magnetic");
-  ignition::msgs::Magnetometer magnetic_msg;
-  magnetic_msg.mutable_header()->CopyFrom(header_msg);
-  magnetic_msg.mutable_field_tesla()->CopyFrom(vector3_msg);
+  ignition::msgs::Magnetometer magnetometer_msg;
+  ros1_ign_bridge::testing::createTestMsg(magnetometer_msg);
 
   // Publish messages at 1Hz.
   while (!g_terminatePub)
@@ -138,7 +100,7 @@ int main(int /*argc*/, char **/*argv*/)
     image_pub.Publish(image_msg);
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
-    magnetic_pub.Publish(magnetic_msg);
+    magnetic_pub.Publish(magnetometer_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

@@ -214,7 +214,7 @@ TEST(ROS1SubscriberTest, Header)
   client.SubscribeHeader();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -226,7 +226,7 @@ TEST(ROS1SubscriberTest, String)
   client.SubscribeString();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -238,7 +238,7 @@ TEST(ROS1SubscriberTest, Quaternion)
   client.SubscribeQuaternion();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -250,7 +250,7 @@ TEST(ROS1SubscriberTest, Vector3)
   client.SubscribeVector3();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -262,7 +262,7 @@ TEST(ROS1SubscriberTest, Image)
   client.SubscribeImage();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -274,7 +274,7 @@ TEST(ROS1SubscriberTest, Imu)
   client.SubscribeImu();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -286,7 +286,7 @@ TEST(ROS1SubscriberTest, LaserScan)
   client.SubscribeLaserScan();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -298,7 +298,7 @@ TEST(ROS1SubscriberTest, MagneticField)
   client.SubscribeMagneticField();
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
