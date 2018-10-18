@@ -41,6 +41,10 @@ To run the following examples you will also need these ROS 1 packages:
 * `rostopic`
 * `rqt_image_view`
 
+The following Ignition dependencies are also needed:
+* `libignition-common3-dev`
+* `libignition-transport6-dev`
+
 ### Building the bridge from source
 
 Before continuing you should have the prerequisites for building the bridge from
