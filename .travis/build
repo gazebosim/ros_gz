@@ -16,7 +16,17 @@ rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic
 apt-get install -qq -y libignition-tools-dev libignition-common3-dev libignition-transport6-dev
 
+# Configuration.
+export CATKIN_WS=~/catkin_ws
+export CATKIN_WS_SRC=${CATKIN_WS}/src
+
 # Create ROS workspace and compile our package.
-ls -a
-pwd
-mkdir -p ~/bridge_ws/src cd bridge_ws/src
+source /opt/ros/melodic/setup.bash
+mkdir -p $CATKIN_WS_SRC
+ln -s $TRAVIS_BUILD_DIR $CATKIN_WS_SRC
+cd $CATKIN_WS
+catkin init
+catkin config --install
+catkin build --limit-status-rate 0.1 --no-notify -DCMAKE_BUILD_TYPE=Release
+catkin build --limit-status-rate 0.1 --no-notify --make-args tests
+catkin run_tests
