@@ -23,4 +23,4 @@ before_script:
   - docker exec $(docker ps -aq) /bin/bash -c 'apt-get install -y --force-yes build-essential'
 
 script:
-  - docker exec $(docker ps -aq) /bin/bash -c 'cd /code && ls -a && bash ./.travis/build'
+  - docker exec $(docker ps -aq) /bin/bash -c 'cd /code && ls -a && ./.travis/build'
