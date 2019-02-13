@@ -24,6 +24,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
@@ -171,6 +172,25 @@ namespace testing
     EXPECT_EQ(1, _msg.x);
     EXPECT_EQ(2, _msg.y);
     EXPECT_EQ(3, _msg.z);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(rosgraph_msgs::Clock &_msg)
+  {
+    _msg.clock.sec  = 1;
+    _msg.clock.nsec = 2;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const rosgraph_msgs::Clock &_msg)
+  {
+    rosgraph_msgs::Clock expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(1,                _msg.clock.sec);
+    EXPECT_EQ(2,                _msg.clock.nsec);
   }
 
   /// \brief Create a message used for testing.
@@ -364,6 +384,25 @@ namespace testing
     EXPECT_EQ(expected_msg.data(1).key(),    _msg.data(1).key());
     EXPECT_EQ(1u,                            _msg.data(1).value_size());
     EXPECT_EQ(expected_msg.data(1).value(0), _msg.data(1).value(0));
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Clock &_msg)
+  {
+    _msg.mutable_sim()->set_sec(1);
+    _msg.mutable_sim()->set_nsec(2);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Clock &_msg)
+  {
+    ignition::msgs::Clock expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.sim().sec(),    _msg.sim().sec());
+    EXPECT_EQ(expected_msg.sim().nsec(),   _msg.sim().nsec());
   }
 
   /// \brief Create a message used for testing.

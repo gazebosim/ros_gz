@@ -19,6 +19,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
@@ -54,6 +55,12 @@ int main(int argc, char ** argv)
   geometry_msgs::Vector3 vector3_msg;
   ros1_ign_bridge::testing::createTestMsg(vector3_msg);
 
+  // sensor_msgs::Clock.
+  ros::Publisher clock_pub =
+    n.advertise<rosgraph_msgs::Clock>("clock", 1000);
+  rosgraph_msgs::Clock clock_msg;
+  ros1_ign_bridge::testing::createTestMsg(clock_msg);
+
   // sensor_msgs::Image.
   ros::Publisher image_pub =
     n.advertise<sensor_msgs::Image>("image", 1000);
@@ -85,6 +92,7 @@ int main(int argc, char ** argv)
     string_pub.publish(string_msg);
     quaternion_pub.publish(quaternion_msg);
     vector3_pub.publish(vector3_msg);
+    clock_pub.publish(clock_msg);
     image_pub.publish(image_msg);
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);

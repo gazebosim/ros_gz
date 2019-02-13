@@ -62,6 +62,17 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Quaternion", ign_type_name);
   }
   if (
+    (ros1_type_name == "rosgraph_msgs/Clock" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Clock")
+  {
+    return std::make_shared<
+      Factory<
+        rosgraph_msgs::Clock,
+        ignition::msgs::Clock
+      >
+    >("rosgraph_msgs/Clock", ign_type_name);
+  }
+  if (
     (ros1_type_name == "geometry_msgs/Vector3" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Vector3d")
   {
@@ -176,6 +187,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Header & ign_msg,
   std_msgs::Header & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

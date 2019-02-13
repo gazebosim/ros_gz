@@ -14,6 +14,7 @@ service calls.Its support is limited to only the following message types:
 | std_msgs/String             | ignition::msgs::StringMsg    |
 | geometry_msgs/Quaternion    | ignition::msgs::Quaternion   |
 | geometry_msgs/Vector3       | ignition::msgs::Vector3d     |
+| rosgraph_msgs/Clock         | ignition::msgs::Clock        |
 | sensor_msgs/Imu             | ignition::msgs::IMU          |
 | sensor_msgs/Image           | ignition::msgs::Image        |
 | sensor_msgs/LaserScan       | ignition::msgs::LaserScan    |

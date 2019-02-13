@@ -96,6 +96,18 @@ TEST(IgnSubscriberTest, Vector3)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Clock)
+{
+  MyTestClass<ignition::msgs::Clock> client("clock");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Image)
 {
   MyTestClass<ignition::msgs::Image> client("image");

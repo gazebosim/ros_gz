@@ -7,6 +7,7 @@
               /string@std_msgs/String@ignition.msgs.StringMsg
               /quaternion@geometry_msgs/Quaternion@ignition.msgs.Quaternion
               /vector3@geometry_msgs/Vector3@ignition.msgs.Vector3d
+              /clock@rosgraph_msgs/Clock@ignition.msgs.Clock
               /image@sensor_msgs/Image@ignition.msgs.Image
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan

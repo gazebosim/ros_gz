@@ -18,6 +18,7 @@
 // include ROS 1 builtin messages
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
