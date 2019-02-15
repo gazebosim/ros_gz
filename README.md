@@ -59,7 +59,7 @@ on Windows).
 
 ```
 # Setup the workspace
-mkdir -p ~/subt_ws/src
+mkdir -p ~/bridge_ws/src
 cd ~/bridge_ws/src
 
 # Download needed software
