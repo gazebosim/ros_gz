@@ -106,9 +106,9 @@ namespace testing
     std_msgs::Header expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_GE(_msg.seq,         0);
-    EXPECT_EQ(2,                _msg.stamp.sec);
-    EXPECT_EQ(3,                _msg.stamp.nsec);
+    EXPECT_GE(_msg.seq,         0u);
+    EXPECT_EQ(2u,                _msg.stamp.sec);
+    EXPECT_EQ(3u,                _msg.stamp.nsec);
     EXPECT_EQ("frame_id_value", _msg.frame_id);
   }
 
@@ -348,21 +348,21 @@ namespace testing
 
     EXPECT_EQ(expected_msg.stamp().sec(),    _msg.stamp().sec());
     EXPECT_EQ(expected_msg.stamp().nsec(),   _msg.stamp().nsec());
-    EXPECT_EQ(2u,                            _msg.data_size());
+    EXPECT_EQ(2,                             _msg.data_size());
     EXPECT_EQ(expected_msg.data(0).key(),    _msg.data(0).key());
-    EXPECT_EQ(1u,                            _msg.data(0).value_size());
+    EXPECT_EQ(1,                             _msg.data(0).value_size());
     std::string value = _msg.data(0).value(0);
     try
     {
       uint32_t ul = std::stoul(value, nullptr);
-      EXPECT_GE(ul, 0);
+      EXPECT_GE(ul, 0u);
     }
     catch (std::exception & e)
     {
       FAIL();
     }
     EXPECT_EQ(expected_msg.data(1).key(),    _msg.data(1).key());
-    EXPECT_EQ(1u,                            _msg.data(1).value_size());
+    EXPECT_EQ(1,                             _msg.data(1).value_size());
     EXPECT_EQ(expected_msg.data(1).value(0), _msg.data(1).value(0));
   }
 
