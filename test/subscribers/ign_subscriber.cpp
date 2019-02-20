@@ -96,6 +96,66 @@ TEST(IgnSubscriberTest, Vector3)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Point)
+{
+  MyTestClass<ignition::msgs::Vector3d> client("point");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Pose)
+{
+  MyTestClass<ignition::msgs::Pose> client("pose");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, PoseStamped)
+{
+  MyTestClass<ignition::msgs::Pose> client("pose_stamped");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Transform)
+{
+  MyTestClass<ignition::msgs::Pose> client("transform");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, TransformStamped)
+{
+  MyTestClass<ignition::msgs::Pose> client("transform_stamped");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Image)
 {
   MyTestClass<ignition::msgs::Image> client("image");

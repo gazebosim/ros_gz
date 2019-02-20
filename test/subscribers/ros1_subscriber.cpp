@@ -19,6 +19,11 @@
 #include <ros/ros.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
+#include <geometry_msgs/Point.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Transform.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <sensor_msgs/Image.h>
@@ -96,6 +101,66 @@ TEST(ROS1SubscriberTest, Quaternion)
 TEST(ROS1SubscriberTest, Vector3)
 {
   MyTestClass<geometry_msgs::Vector3> client("vector3");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Point)
+{
+  MyTestClass<geometry_msgs::Point> client("point");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Pose)
+{
+  MyTestClass<geometry_msgs::Pose> client("pose");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, PoseStamped)
+{
+  MyTestClass<geometry_msgs::PoseStamped> client("pose_stamped");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Transform)
+{
+  MyTestClass<geometry_msgs::Transform> client("transform");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, TransformStamped)
+{
+  MyTestClass<geometry_msgs::TransformStamped> client("transform_stamped");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(

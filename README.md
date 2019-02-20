@@ -8,16 +8,21 @@ between ROS 1 and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls.Its support is limited to only the following message types:
 
-| ROS 1 type                  | Ignition Transport type      |
-|-----------------------------|:----------------------------:|
-| std_msgs/Header             | ignition::msgs::Header       |
-| std_msgs/String             | ignition::msgs::StringMsg    |
-| geometry_msgs/Quaternion    | ignition::msgs::Quaternion   |
-| geometry_msgs/Vector3       | ignition::msgs::Vector3d     |
-| sensor_msgs/Imu             | ignition::msgs::IMU          |
-| sensor_msgs/Image           | ignition::msgs::Image        |
-| sensor_msgs/LaserScan       | ignition::msgs::LaserScan    |
-| sensor_msgs/MagneticField   | ignition::msgs::Magnetometer |
+| ROS 1 type                     | Ignition Transport type      |
+|--------------------------------|:----------------------------:|
+| std_msgs/Header                | ignition::msgs::Header       |
+| std_msgs/String                | ignition::msgs::StringMsg    |
+| geometry_msgs/Quaternion       | ignition::msgs::Quaternion   |
+| geometry_msgs/Vector3          | ignition::msgs::Vector3d     |
+| geometry_msgs/Point            | ignition::msgs::Vector3d     |
+| geometry_msgs/Pose             | ignition::msgs::Pose         |
+| geometry_msgs/PoseStamped      | ignition::msgs::Pose         |
+| geometry_msgs/Transform        | ignition::msgs::Pose         |
+| geometry_msgs/TransformStamped | ignition::msgs::Pose         |
+| sensor_msgs/Imu                | ignition::msgs::IMU          |
+| sensor_msgs/Image              | ignition::msgs::Image        |
+| sensor_msgs/LaserScan          | ignition::msgs::LaserScan    |
+| sensor_msgs/MagneticField      | ignition::msgs::Magnetometer |
 
 Run `parameter_bridge -h` for instructions.
 

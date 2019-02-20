@@ -19,6 +19,10 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Transform.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/LaserScan.h>
@@ -54,6 +58,36 @@ int main(int argc, char ** argv)
   geometry_msgs::Vector3 vector3_msg;
   ros1_ign_bridge::testing::createTestMsg(vector3_msg);
 
+  // geometry_msgs::Point.
+  ros::Publisher point_pub =
+    n.advertise<geometry_msgs::Point>("point", 1000);
+  geometry_msgs::Point point_msg;
+  ros1_ign_bridge::testing::createTestMsg(point_msg);
+
+  // geometry_msgs::Pose.
+  ros::Publisher pose_pub =
+    n.advertise<geometry_msgs::Pose>("pose", 1000);
+  geometry_msgs::Pose pose_msg;
+  ros1_ign_bridge::testing::createTestMsg(pose_msg);
+
+  // geometry_msgs::PoseStamped.
+  ros::Publisher pose_stamped_pub =
+    n.advertise<geometry_msgs::PoseStamped>("pose_stamped", 1000);
+  geometry_msgs::PoseStamped pose_stamped_msg;
+  ros1_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+
+  // geometry_msgs::Transform.
+  ros::Publisher transform_pub =
+    n.advertise<geometry_msgs::Transform>("transform", 1000);
+  geometry_msgs::Transform transform_msg;
+  ros1_ign_bridge::testing::createTestMsg(transform_msg);
+
+  // geometry_msgs::TransformStamped.
+  ros::Publisher transform_stamped_pub =
+    n.advertise<geometry_msgs::TransformStamped>("transform_stampted", 1000);
+  geometry_msgs::TransformStamped transform_stamped_msg;
+  ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+
   // sensor_msgs::Image.
   ros::Publisher image_pub =
     n.advertise<sensor_msgs::Image>("image", 1000);
@@ -85,6 +119,11 @@ int main(int argc, char ** argv)
     string_pub.publish(string_msg);
     quaternion_pub.publish(quaternion_msg);
     vector3_pub.publish(vector3_msg);
+    point_pub.publish(point_msg);
+    pose_pub.publish(pose_msg);
+    pose_stamped_pub.publish(pose_stamped_msg);
+    transform_pub.publish(transform_msg);
+    transform_stamped_pub.publish(transform_stamped_msg);
     image_pub.publish(image_msg);
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
