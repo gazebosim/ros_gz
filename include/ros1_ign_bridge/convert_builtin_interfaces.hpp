@@ -17,7 +17,12 @@
 
 // include ROS 1 builtin messages
 #include <geometry_msgs/Quaternion.h>
+#include <geometry_msgs/Point.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3.h>
+#include <geometry_msgs/Transform.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -84,6 +89,66 @@ void
 convert_ign_to_1(
   const ignition::msgs::Vector3d & ign_msg,
   geometry_msgs::Vector3 & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Point & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Point & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Pose & ros1_msg,
+  ignition::msgs::Pose & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Pose & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::PoseStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::PoseStamped & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Transform & ros1_msg,
+  ignition::msgs::Pose & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Transform & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::TransformStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::TransformStamped & ros1_msg);
 
 // sensor_msgs
 template<>
