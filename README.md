@@ -96,9 +96,8 @@ Then we start the parameter bridge which will watch the specified topics.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
 Now we start the ROS 1 listener.
@@ -130,9 +129,8 @@ Then we start the parameter bridge which will watch the specified topics.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
 Now we start the Ignition Transport listener.
@@ -184,9 +182,8 @@ Then we start the parameter bridge with the previous topic.
 
 ```
 # Shell D:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
+rosrun ros1_ign_bridge parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
 ```
 
 Now we start the ROS 1 GUI:
