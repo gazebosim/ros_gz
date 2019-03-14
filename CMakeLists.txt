@@ -10,7 +10,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra)
 endif()
 
-find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
+find_package(catkin REQUIRED COMPONENTS
+               geometry_msgs
+               roscpp
+               rostest
+               sensor_msgs
+               std_msgs)
 find_package(ignition-common3 QUIET REQUIRED)
 find_package(ignition-transport6 QUIET REQUIRED)
 set(IGN_COMMON_VER ${ignition-common3_VERSION_MAJOR})
@@ -41,7 +46,7 @@ foreach(bridge ${bridge_executables})
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   install(TARGETS ${bridge}
-          DESTINATION lib/${PROJECT_NAME}
+          DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
   )
 endforeach(bridge)
 
