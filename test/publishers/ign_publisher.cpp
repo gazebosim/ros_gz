@@ -21,7 +21,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 #include "../test_utils.h"

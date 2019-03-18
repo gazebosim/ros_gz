@@ -36,7 +36,6 @@
 #include <chrono>
 #include <string>
 #include <thread>
-#include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 
 namespace ros1_ign_bridge
@@ -564,7 +563,7 @@ namespace testing
     _msg.mutable_header()->CopyFrom(header_msg);
     _msg.set_width(320);
     _msg.set_height(240);
-    _msg.set_pixel_format(ignition::common::Image::PixelFormatType::RGB_INT8);
+    _msg.set_pixel_format(ignition::msgs::PixelFormatType::RGB_INT8);
     _msg.set_step(_msg.width() * 3);
     _msg.set_data(std::string(_msg.height() * _msg.step(), '1'));
   }

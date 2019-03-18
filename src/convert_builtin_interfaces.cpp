@@ -14,7 +14,6 @@
 
 #include <algorithm>
 #include <exception>
-#include <ignition/common/Image.hh>
 
 #include "ros1_ign_bridge/convert_builtin_interfaces.hpp"
 
@@ -296,63 +295,63 @@ convert_1_to_ign(
   if (ros1_msg.encoding == "mono8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::L_INT8);
+      ignition::msgs::PixelFormatType::L_INT8);
     num_channels = 1;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "mono16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::L_INT16);
+      ignition::msgs::PixelFormatType::L_INT16);
     num_channels = 1;
     octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "rgb8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGB_INT8);
+      ignition::msgs::PixelFormatType::RGB_INT8);
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgba8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGBA_INT8);
+      ignition::msgs::PixelFormatType::RGBA_INT8);
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgra8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGRA_INT8);
+      ignition::msgs::PixelFormatType::BGRA_INT8);
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgb16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGB_INT16);
+      ignition::msgs::PixelFormatType::RGB_INT16);
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "bgr8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGR_INT8);
+      ignition::msgs::PixelFormatType::BGR_INT8);
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgr16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGR_INT16);
+      ignition::msgs::PixelFormatType::BGR_INT16);
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
+      ignition::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
     std::cerr << "Unsupported pixel format [" << ros1_msg.encoding << "]"
               << std::endl;
     return;
@@ -378,56 +377,56 @@ convert_ign_to_1(
   unsigned int octets_per_channel;
 
   if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::L_INT8)
+      ignition::msgs::PixelFormatType::L_INT8)
   {
     ros1_msg.encoding = "mono8";
     num_channels = 1;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::L_INT16)
+      ignition::msgs::PixelFormatType::L_INT16)
   {
     ros1_msg.encoding = "mono16";
     num_channels = 1;
     octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGB_INT8)
+      ignition::msgs::PixelFormatType::RGB_INT8)
   {
     ros1_msg.encoding = "rgb8";
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGBA_INT8)
+      ignition::msgs::PixelFormatType::RGBA_INT8)
   {
     ros1_msg.encoding = "rgba8";
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGRA_INT8)
+      ignition::msgs::PixelFormatType::BGRA_INT8)
   {
     ros1_msg.encoding = "bgra8";
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGB_INT16)
+      ignition::msgs::PixelFormatType::RGB_INT16)
   {
     ros1_msg.encoding = "rgb16";
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGR_INT8)
+      ignition::msgs::PixelFormatType::BGR_INT8)
   {
     ros1_msg.encoding = "bgr8";
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGR_INT16)
+      ignition::msgs::PixelFormatType::BGR_INT16)
   {
     ros1_msg.encoding = "bgr16";
     num_channels = 3;
