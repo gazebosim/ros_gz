@@ -11,6 +11,10 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(catkin REQUIRED COMPONENTS roscpp std_msgs)
+
+find_package(ignition-msgs3 QUIET REQUIRED)
+set(IGN_MSGS_VER ${ignition-msgs3_VERSION_MAJOR})
+
 find_package(ignition-transport6 QUIET REQUIRED)
 set(IGN_TRANSPORT_VER ${ignition-transport6_VERSION_MAJOR})
 
@@ -35,6 +39,7 @@ foreach(bridge ${bridge_executables})
   )
   target_link_libraries(${bridge}
     ${catkin_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   install(TARGETS ${bridge}
@@ -61,6 +66,7 @@ foreach(test_publisher ${test_publishers})
   )
   target_link_libraries(${test_publisher}
     ${catkin_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
     gtest
     gtest_main
@@ -73,6 +79,7 @@ foreach(test_subscriber ${test_subscribers})
     test/subscribers/${test_subscriber}.cpp)
   target_link_libraries(test_${test_subscriber}
     ${catkin_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
 endforeach(test_subscriber)
