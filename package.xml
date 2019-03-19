@@ -7,6 +7,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>rosgraph_msgs</depend>
   <depend>roscpp</depend>
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
