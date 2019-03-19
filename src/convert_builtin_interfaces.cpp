@@ -14,7 +14,6 @@
 
 #include <algorithm>
 #include <exception>
-#include <ignition/common/Image.hh>
 
 #include "ros1_ign_bridge/convert_builtin_interfaces.hpp"
 
@@ -154,6 +153,121 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const geometry_msgs::Point & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg)
+{
+  ign_msg.set_x(ros1_msg.x);
+  ign_msg.set_y(ros1_msg.y);
+  ign_msg.set_z(ros1_msg.z);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Point & ros1_msg)
+{
+  ros1_msg.x = ign_msg.x();
+  ros1_msg.y = ign_msg.y();
+  ros1_msg.z = ign_msg.z();
+}
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Pose & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.position, *ign_msg.mutable_position());
+  convert_1_to_ign(ros1_msg.orientation, *ign_msg.mutable_orientation());
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Pose & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.position(), ros1_msg.position);
+  convert_ign_to_1(ign_msg.orientation(), ros1_msg.orientation);
+}
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::PoseStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+  convert_1_to_ign(ros1_msg.pose, ign_msg);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::PoseStamped & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg, ros1_msg.pose);
+}
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Transform & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.translation , *ign_msg.mutable_position());
+  convert_1_to_ign(ros1_msg.rotation, *ign_msg.mutable_orientation());
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Transform & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.position(), ros1_msg.translation);
+  convert_ign_to_1(ign_msg.orientation(), ros1_msg.rotation);
+}
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::TransformStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+  convert_1_to_ign(ros1_msg.transform, ign_msg);
+
+  auto newPair = ign_msg.mutable_header()->add_data();
+  newPair->set_key("child_frame_id");
+  newPair->add_value(ros1_msg.child_frame_id);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::TransformStamped & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg, ros1_msg.transform);
+  for (auto i = 0; i < ign_msg.header().data_size(); ++i)
+  {
+    auto aPair = ign_msg.header().data(i);
+    if (aPair.key() == "child_frame_id" && aPair.value_size() > 0)
+    {
+      ros1_msg.child_frame_id = aPair.value(0);
+      break;
+    }
+  }
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::FluidPressure & ros1_msg,
   ignition::msgs::Fluid & ign_msg)
 {
@@ -200,63 +314,63 @@ convert_1_to_ign(
   if (ros1_msg.encoding == "mono8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::L_INT8);
+      ignition::msgs::PixelFormatType::L_INT8);
     num_channels = 1;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "mono16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::L_INT16);
+      ignition::msgs::PixelFormatType::L_INT16);
     num_channels = 1;
     octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "rgb8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGB_INT8);
+      ignition::msgs::PixelFormatType::RGB_INT8);
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgba8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGBA_INT8);
+      ignition::msgs::PixelFormatType::RGBA_INT8);
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgra8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGRA_INT8);
+      ignition::msgs::PixelFormatType::BGRA_INT8);
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "rgb16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::RGB_INT16);
+      ignition::msgs::PixelFormatType::RGB_INT16);
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else if (ros1_msg.encoding == "bgr8")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGR_INT8);
+      ignition::msgs::PixelFormatType::BGR_INT8);
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ros1_msg.encoding == "bgr16")
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::BGR_INT16);
+      ignition::msgs::PixelFormatType::BGR_INT16);
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else
   {
     ign_msg.set_pixel_format(
-      ignition::common::Image::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
+      ignition::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
     std::cerr << "Unsupported pixel format [" << ros1_msg.encoding << "]"
               << std::endl;
     return;
@@ -282,56 +396,56 @@ convert_ign_to_1(
   unsigned int octets_per_channel;
 
   if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::L_INT8)
+      ignition::msgs::PixelFormatType::L_INT8)
   {
     ros1_msg.encoding = "mono8";
     num_channels = 1;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::L_INT16)
+      ignition::msgs::PixelFormatType::L_INT16)
   {
     ros1_msg.encoding = "mono16";
     num_channels = 1;
     octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGB_INT8)
+      ignition::msgs::PixelFormatType::RGB_INT8)
   {
     ros1_msg.encoding = "rgb8";
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGBA_INT8)
+      ignition::msgs::PixelFormatType::RGBA_INT8)
   {
     ros1_msg.encoding = "rgba8";
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGRA_INT8)
+      ignition::msgs::PixelFormatType::BGRA_INT8)
   {
     ros1_msg.encoding = "bgra8";
     num_channels = 4;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::RGB_INT16)
+      ignition::msgs::PixelFormatType::RGB_INT16)
   {
     ros1_msg.encoding = "rgb16";
     num_channels = 3;
     octets_per_channel = 2u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGR_INT8)
+      ignition::msgs::PixelFormatType::BGR_INT8)
   {
     ros1_msg.encoding = "bgr8";
     num_channels = 3;
     octets_per_channel = 1u;
   }
   else if (ign_msg.pixel_format() ==
-      ignition::common::Image::PixelFormatType::BGR_INT16)
+      ignition::msgs::PixelFormatType::BGR_INT16)
   {
     ros1_msg.encoding = "bgr16";
     num_channels = 3;

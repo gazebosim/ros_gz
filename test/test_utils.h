@@ -22,6 +22,11 @@
 #include <ros/ros.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
+#include <geometry_msgs/Point.h>
+#include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/Transform.h>
+#include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <rosgraph_msgs/Clock.h>
@@ -32,7 +37,6 @@
 #include <chrono>
 #include <string>
 #include <thread>
-#include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 
 namespace ros1_ign_bridge
@@ -107,9 +111,9 @@ namespace testing
     std_msgs::Header expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_GE(_msg.seq,         0);
-    EXPECT_EQ(2,                _msg.stamp.sec);
-    EXPECT_EQ(3,                _msg.stamp.nsec);
+    EXPECT_GE(_msg.seq,         0u);
+    EXPECT_EQ(2u,                _msg.stamp.sec);
+    EXPECT_EQ(3u,                _msg.stamp.nsec);
     EXPECT_EQ("frame_id_value", _msg.frame_id);
   }
 
@@ -182,6 +186,15 @@ namespace testing
     _msg.clock.nsec = 2;
   }
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Point &_msg)
+  {
+    _msg.x = 1;
+    _msg.y = 2;
+    _msg.z = 3;
+  }
+
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const rosgraph_msgs::Clock &_msg)
@@ -189,8 +202,90 @@ namespace testing
     rosgraph_msgs::Clock expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_EQ(1,                _msg.clock.sec);
-    EXPECT_EQ(2,                _msg.clock.nsec);
+    EXPECT_EQ(expected_msg.clock.sec, _msg.clock.sec);
+    EXPECT_EQ(expected_msg.clock.nsec, _msg.clock.nsec);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Point &_msg)
+  {
+    geometry_msgs::Point expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.x, _msg.x);
+    EXPECT_EQ(expected_msg.y, _msg.y);
+    EXPECT_EQ(expected_msg.z, _msg.z);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Pose &_msg)
+  {
+    createTestMsg(_msg.position);
+    createTestMsg(_msg.orientation);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Pose &_msg)
+  {
+    compareTestMsg(_msg.position);
+    compareTestMsg(_msg.orientation);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::PoseStamped &_msg)
+  {
+    createTestMsg(_msg.header);
+    createTestMsg(_msg.pose);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::PoseStamped &_msg)
+  {
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.pose);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Transform &_msg)
+  {
+    createTestMsg(_msg.translation);
+    createTestMsg(_msg.rotation);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Transform &_msg)
+  {
+    compareTestMsg(_msg.translation);
+    compareTestMsg(_msg.rotation);
+  }
+
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::TransformStamped &_msg)
+  {
+    createTestMsg(_msg.header);
+    createTestMsg(_msg.transform);
+    _msg.child_frame_id = "child_frame_id_value";
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::TransformStamped &_msg)
+  {
+    geometry_msgs::TransformStamped expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.transform);
+    EXPECT_EQ(expected_msg.child_frame_id, _msg.child_frame_id);
   }
 
   /// \brief Create a message used for testing.
@@ -368,21 +463,21 @@ namespace testing
 
     EXPECT_EQ(expected_msg.stamp().sec(),    _msg.stamp().sec());
     EXPECT_EQ(expected_msg.stamp().nsec(),   _msg.stamp().nsec());
-    EXPECT_EQ(2u,                            _msg.data_size());
+    EXPECT_GE(_msg.data_size(),              2);
     EXPECT_EQ(expected_msg.data(0).key(),    _msg.data(0).key());
-    EXPECT_EQ(1u,                            _msg.data(0).value_size());
+    EXPECT_EQ(1,                             _msg.data(0).value_size());
     std::string value = _msg.data(0).value(0);
     try
     {
       uint32_t ul = std::stoul(value, nullptr);
-      EXPECT_GE(ul, 0);
+      EXPECT_GE(ul, 0u);
     }
     catch (std::exception & e)
     {
       FAIL();
     }
     EXPECT_EQ(expected_msg.data(1).key(),    _msg.data(1).key());
-    EXPECT_EQ(1u,                            _msg.data(1).value_size());
+    EXPECT_EQ(1,                             _msg.data(1).value_size());
     EXPECT_EQ(expected_msg.data(1).value(0), _msg.data(1).value(0));
   }
 
@@ -468,6 +563,37 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Pose &_msg)
+  {
+    createTestMsg(*_msg.mutable_header());
+    auto child_frame_id_entry = _msg.mutable_header()->add_data();
+    child_frame_id_entry->set_key("child_frame_id");
+    child_frame_id_entry->add_value("child_frame_id_value");
+
+    createTestMsg(*_msg.mutable_position());
+    createTestMsg(*_msg.mutable_orientation());
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Pose &_msg)
+  {
+    compareTestMsg(_msg.header());
+
+    ignition::msgs::Pose expected_msg;
+    createTestMsg(expected_msg);
+    // child_frame_id
+    EXPECT_EQ(expected_msg.header().data(2).key(), _msg.header().data(2).key());
+    EXPECT_EQ(1, _msg.header().data(2).value_size());
+    EXPECT_EQ(expected_msg.header().data(2).value(0),
+        _msg.header().data(2).value(0));
+
+    compareTestMsg(_msg.position());
+    compareTestMsg(_msg.orientation());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
   void createTestMsg(ignition::msgs::Image &_msg)
   {
     ignition::msgs::Header header_msg;
@@ -476,7 +602,7 @@ namespace testing
     _msg.mutable_header()->CopyFrom(header_msg);
     _msg.set_width(320);
     _msg.set_height(240);
-    _msg.set_pixel_format(ignition::common::Image::PixelFormatType::RGB_INT8);
+    _msg.set_pixel_format(ignition::msgs::PixelFormatType::RGB_INT8);
     _msg.set_step(_msg.width() * 3);
     _msg.set_data(std::string(_msg.height() * _msg.step(), '1'));
   }

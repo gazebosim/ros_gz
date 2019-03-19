@@ -84,6 +84,61 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Vector3", ign_type_name);
   }
   if (
+    (ros1_type_name == "geometry_msgs/Point" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Vector3d")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Point,
+        ignition::msgs::Vector3d
+      >
+    >("geometry_msgs/Point", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "geometry_msgs/Pose" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Pose,
+        ignition::msgs::Pose
+      >
+    >("geometry_msgs/Pose", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "geometry_msgs/PoseStamped" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::PoseStamped,
+        ignition::msgs::Pose
+      >
+    >("geometry_msgs/PoseStamped", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "geometry_msgs/Transform" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Transform,
+        ignition::msgs::Pose
+      >
+    >("geometry_msgs/Transform", ign_type_name);
+  }
+  if (
+    (ros1_type_name == "geometry_msgs/TransformStamped" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::TransformStamped,
+        ignition::msgs::Pose
+      >
+    >("geometry_msgs/TransformStamped", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/FluidPressure" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Fluid")
   {
@@ -288,6 +343,125 @@ Factory<
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }
 
+template<>
+void
+Factory<
+  geometry_msgs::Point,
+  ignition::msgs::Vector3d
+>::convert_1_to_ign(
+  const geometry_msgs::Point & ros1_msg,
+  ignition::msgs::Vector3d & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Point,
+  ignition::msgs::Vector3d
+>::convert_ign_to_1(
+  const ignition::msgs::Vector3d & ign_msg,
+  geometry_msgs::Point & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Pose,
+  ignition::msgs::Pose
+>::convert_1_to_ign(
+  const geometry_msgs::Pose & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Pose,
+  ignition::msgs::Pose
+>::convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Pose & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseStamped,
+  ignition::msgs::Pose
+>::convert_1_to_ign(
+  const geometry_msgs::PoseStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseStamped,
+  ignition::msgs::Pose
+>::convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::PoseStamped & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Transform,
+  ignition::msgs::Pose
+>::convert_1_to_ign(
+  const geometry_msgs::Transform & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Transform,
+  ignition::msgs::Pose
+>::convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::Transform & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::TransformStamped,
+  ignition::msgs::Pose
+>::convert_1_to_ign(
+  const geometry_msgs::TransformStamped & ros1_msg,
+  ignition::msgs::Pose & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::TransformStamped,
+  ignition::msgs::Pose
+>::convert_ign_to_1(
+  const ignition::msgs::Pose & ign_msg,
+  geometry_msgs::TransformStamped & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
 
 // sensor_msgs
 template<>

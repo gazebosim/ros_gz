@@ -8,17 +8,22 @@ between ROS 1 and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls.Its support is limited to only the following message types:
 
-| ROS 1 type                  | Ignition Transport type      |
-|-----------------------------|:----------------------------:|
-| std_msgs/Header             | ignition::msgs::Header       |
-| std_msgs/String             | ignition::msgs::StringMsg    |
-| geometry_msgs/Quaternion    | ignition::msgs::Quaternion   |
-| geometry_msgs/Vector3       | ignition::msgs::Vector3d     |
-| rosgraph_msgs/Clock         | ignition::msgs::Clock        |
-| sensor_msgs/Imu             | ignition::msgs::IMU          |
-| sensor_msgs/Image           | ignition::msgs::Image        |
-| sensor_msgs/LaserScan       | ignition::msgs::LaserScan    |
-| sensor_msgs/MagneticField   | ignition::msgs::Magnetometer |
+| ROS 1 type                     | Ignition Transport type      |
+|--------------------------------|:----------------------------:|
+| std_msgs/Header                | ignition::msgs::Header       |
+| std_msgs/String                | ignition::msgs::StringMsg    |
+| geometry_msgs/Quaternion       | ignition::msgs::Quaternion   |
+| geometry_msgs/Vector3          | ignition::msgs::Vector3d     |
+| geometry_msgs/Point            | ignition::msgs::Vector3d     |
+| geometry_msgs/Pose             | ignition::msgs::Pose         |
+| geometry_msgs/PoseStamped      | ignition::msgs::Pose         |
+| geometry_msgs/Transform        | ignition::msgs::Pose         |
+| geometry_msgs/TransformStamped | ignition::msgs::Pose         |
+| rosgraph_msgs/Clock            | ignition::msgs::Clock        |
+| sensor_msgs/Imu                | ignition::msgs::IMU          |
+| sensor_msgs/Image              | ignition::msgs::Image        |
+| sensor_msgs/LaserScan          | ignition::msgs::LaserScan    |
+| sensor_msgs/MagneticField      | ignition::msgs::Magnetometer |
 
 Run `parameter_bridge -h` for instructions.
 
@@ -45,7 +50,7 @@ To run the following examples you will also need these ROS 1 packages:
 * `rqt_image_view`
 
 The following Ignition dependencies are also needed:
-* `libignition-common3-dev`
+* `libignition-msgs3-dev`
 * `libignition-transport6-dev`
 
 ### Building the bridge from source
@@ -60,7 +65,7 @@ on Windows).
 
 ```
 # Setup the workspace
-mkdir -p ~/subt_ws/src
+mkdir -p ~/bridge_ws/src
 cd ~/bridge_ws/src
 
 # Download needed software
@@ -92,9 +97,8 @@ Then we start the parameter bridge which will watch the specified topics.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
 Now we start the ROS 1 listener.
@@ -126,9 +130,8 @@ Then we start the parameter bridge which will watch the specified topics.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
 Now we start the Ignition Transport listener.
@@ -180,9 +183,8 @@ Then we start the parameter bridge with the previous topic.
 
 ```
 # Shell D:
-. /opt/ros/melodic/setup.bash
 . ~/bridge_ws/install/setup.bash
-parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
+rosrun ros1_ign_bridge parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
 ```
 
 Now we start the ROS 1 GUI:

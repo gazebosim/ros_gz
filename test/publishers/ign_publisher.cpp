@@ -21,7 +21,6 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <ignition/common/Image.hh>
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
 #include "../test_utils.h"
@@ -75,6 +74,33 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Clock clock_msg;
   ros1_ign_bridge::testing::createTestMsg(clock_msg);
 
+  // ignition::msgs::Point.
+  auto point_pub = node.Advertise<ignition::msgs::Vector3d>("point");
+  ignition::msgs::Vector3d point_msg;
+  ros1_ign_bridge::testing::createTestMsg(point_msg);
+
+  // ignition::msgs::Pose.
+  auto pose_pub = node.Advertise<ignition::msgs::Pose>("pose");
+  ignition::msgs::Pose pose_msg;
+  ros1_ign_bridge::testing::createTestMsg(pose_msg);
+
+  // ignition::msgs::PoseStamped.
+  auto pose_stamped_pub = node.Advertise<ignition::msgs::Pose>("pose_stamped");
+  ignition::msgs::Pose pose_stamped_msg;
+  ros1_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+
+  // ignition::msgs::Transform.
+  auto transform_pub =
+      node.Advertise<ignition::msgs::Pose>("transform");
+  ignition::msgs::Pose transform_msg;
+  ros1_ign_bridge::testing::createTestMsg(transform_msg);
+
+  // ignition::msgs::TransformStamped.
+  auto transform_stamped_pub =
+      node.Advertise<ignition::msgs::Pose>("transform_stamped");
+  ignition::msgs::Pose transform_stamped_msg;
+  ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+
   // ignition::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
   ignition::msgs::Image image_msg;
@@ -103,6 +129,11 @@ int main(int /*argc*/, char **/*argv*/)
     quaternion_pub.Publish(quaternion_msg);
     vector3_pub.Publish(vector3_msg);
     clock_pub.Publish(clock_msg);
+    point_pub.Publish(point_msg);
+    pose_pub.Publish(pose_msg);
+    pose_stamped_pub.Publish(pose_stamped_msg);
+    transform_pub.Publish(transform_msg);
+    transform_stamped_pub.Publish(transform_stamped_msg);
     image_pub.Publish(image_msg);
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
