@@ -96,11 +96,18 @@ TEST(IgnSubscriberTest, Vector3)
 }
 
 /////////////////////////////////////////////////
-<<<<<<< HEAD
 TEST(IgnSubscriberTest, Clock)
 {
   MyTestClass<ignition::msgs::Clock> client("clock");
-=======
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Point)
 {
   MyTestClass<ignition::msgs::Vector3d> client("point");
@@ -152,7 +159,6 @@ TEST(IgnSubscriberTest, Transform)
 TEST(IgnSubscriberTest, TransformStamped)
 {
   MyTestClass<ignition::msgs::Pose> client("transform_stamped");
->>>>>>> master
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVar(

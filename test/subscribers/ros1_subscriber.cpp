@@ -111,11 +111,18 @@ TEST(ROS1SubscriberTest, Vector3)
 }
 
 /////////////////////////////////////////////////
-<<<<<<< HEAD
 TEST(ROS1SubscriberTest, Clock)
 {
   MyTestClass<rosgraph_msgs::Clock> client("clock");
-=======
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROS1SubscriberTest, Point)
 {
   MyTestClass<geometry_msgs::Point> client("point");
@@ -167,7 +174,6 @@ TEST(ROS1SubscriberTest, Transform)
 TEST(ROS1SubscriberTest, TransformStamped)
 {
   MyTestClass<geometry_msgs::TransformStamped> client("transform_stamped");
->>>>>>> master
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
