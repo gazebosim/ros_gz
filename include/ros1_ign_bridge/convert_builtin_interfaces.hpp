@@ -21,6 +21,7 @@
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <sensor_msgs/FluidPressure.h>
@@ -64,6 +65,19 @@ void
 convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg);
+
+// rosgraph_msgs
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg);
 
 // geometry_msgs
 template<>

@@ -69,6 +69,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Vector3d vector3_msg;
   ros1_ign_bridge::testing::createTestMsg(vector3_msg);
 
+  // ignition::msgs::Clock.
+  auto clock_pub = node.Advertise<ignition::msgs::Clock>("clock");
+  ignition::msgs::Clock clock_msg;
+  ros1_ign_bridge::testing::createTestMsg(clock_msg);
+
   // ignition::msgs::Point.
   auto point_pub = node.Advertise<ignition::msgs::Vector3d>("point");
   ignition::msgs::Vector3d point_msg;
@@ -123,6 +128,7 @@ int main(int /*argc*/, char **/*argv*/)
     string_pub.Publish(string_msg);
     quaternion_pub.Publish(quaternion_msg);
     vector3_pub.Publish(vector3_msg);
+    clock_pub.Publish(clock_msg);
     point_pub.Publish(point_msg);
     pose_pub.Publish(pose_msg);
     pose_stamped_pub.Publish(pose_stamped_msg);

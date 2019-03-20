@@ -87,6 +87,25 @@ convert_ign_to_1(
 
 template<>
 void
+convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg)
+{
+  ros1_msg.clock = ros::Time(ign_msg.sim().sec(), ign_msg.sim().nsec());
+}
+
+template<>
+void
+convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg)
+{
+  ign_msg.mutable_sim()->set_sec(ros1_msg.clock.sec);
+  ign_msg.mutable_sim()->set_nsec(ros1_msg.clock.nsec);
+}
+
+template<>
+void
 convert_1_to_ign(
   const geometry_msgs::Quaternion & ros1_msg,
   ignition::msgs::Quaternion & ign_msg)

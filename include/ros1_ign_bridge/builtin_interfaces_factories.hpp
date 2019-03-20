@@ -23,6 +23,7 @@
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -90,6 +91,25 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg);
+
+// rosgraph_msgs
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg);
+
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg);
 
 // geometry_msgs
 template<>

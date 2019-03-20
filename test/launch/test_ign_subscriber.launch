@@ -7,6 +7,7 @@
               /string@std_msgs/String@ignition.msgs.StringMsg
               /quaternion@geometry_msgs/Quaternion@ignition.msgs.Quaternion
               /vector3@geometry_msgs/Vector3@ignition.msgs.Vector3d
+              /clock@rosgraph_msgs/Clock@ignition.msgs.Clock
               /point@geometry_msgs/Point@ignition.msgs.Vector3d
               /pose@geometry_msgs/Pose@ignition.msgs.Pose
               /pose_stamped@geometry_msgs/PoseStamped@ignition.msgs.Pose

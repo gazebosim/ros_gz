@@ -19,6 +19,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <rosgraph_msgs/Clock.h>
 #include <geometry_msgs/Pose.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
@@ -57,6 +58,12 @@ int main(int argc, char ** argv)
     n.advertise<geometry_msgs::Vector3>("vector3", 1000);
   geometry_msgs::Vector3 vector3_msg;
   ros1_ign_bridge::testing::createTestMsg(vector3_msg);
+
+  // sensor_msgs::Clock.
+  ros::Publisher clock_pub =
+    n.advertise<rosgraph_msgs::Clock>("clock", 1000);
+  rosgraph_msgs::Clock clock_msg;
+  ros1_ign_bridge::testing::createTestMsg(clock_msg);
 
   // geometry_msgs::Point.
   ros::Publisher point_pub =
@@ -119,6 +126,7 @@ int main(int argc, char ** argv)
     string_pub.publish(string_msg);
     quaternion_pub.publish(quaternion_msg);
     vector3_pub.publish(vector3_msg);
+    clock_pub.publish(clock_msg);
     point_pub.publish(point_msg);
     pose_pub.publish(pose_msg);
     pose_stamped_pub.publish(pose_stamped_msg);
