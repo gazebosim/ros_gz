@@ -66,6 +66,19 @@ convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg);
 
+// rosgraph_msgs
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg);
+
 // geometry_msgs
 template<>
 void

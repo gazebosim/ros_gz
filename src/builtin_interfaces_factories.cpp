@@ -249,30 +249,6 @@ Factory<
 template<>
 void
 Factory<
-  rosgraph_msgs::Clock,
-  ignition::msgs::Clock
->::convert_1_to_ign(
-  const rosgraph_msgs::Clock & ros1_msg,
-  ignition::msgs::Clock & ign_msg)
-{
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
-}
-
-template<>
-void
-Factory<
-  rosgraph_msgs::Clock,
-  ignition::msgs::Clock
->::convert_ign_to_1(
-  const ignition::msgs::Clock & ign_msg,
-  rosgraph_msgs::Clock & ros1_msg)
-{
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
-}
-
-template<>
-void
-Factory<
   std_msgs::String,
   ignition::msgs::StringMsg
 >::convert_1_to_ign(
@@ -290,6 +266,31 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::String & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+// rosgraph_msgs
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_1_to_ign(
+  const rosgraph_msgs::Clock & ros1_msg,
+  ignition::msgs::Clock & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  rosgraph_msgs::Clock,
+  ignition::msgs::Clock
+>::convert_ign_to_1(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }
