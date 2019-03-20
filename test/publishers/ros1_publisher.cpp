@@ -84,7 +84,7 @@ int main(int argc, char ** argv)
 
   // geometry_msgs::TransformStamped.
   ros::Publisher transform_stamped_pub =
-    n.advertise<geometry_msgs::TransformStamped>("transform_stampted", 1000);
+    n.advertise<geometry_msgs::TransformStamped>("transform_stamped", 1000);
   geometry_msgs::TransformStamped transform_stamped_msg;
   ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
 

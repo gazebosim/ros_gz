@@ -539,15 +539,24 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const ignition::msgs::Pose &_msg)
   {
-    compareTestMsg(_msg.header());
+    if (_msg.header().data_size() > 0)
+    {
+      compareTestMsg(_msg.header());
 
-    ignition::msgs::Pose expected_msg;
-    createTestMsg(expected_msg);
-    // child_frame_id
-    EXPECT_EQ(expected_msg.header().data(2).key(), _msg.header().data(2).key());
-    EXPECT_EQ(1, _msg.header().data(2).value_size());
-    EXPECT_EQ(expected_msg.header().data(2).value(0),
-        _msg.header().data(2).value(0));
+      ignition::msgs::Pose expected_msg;
+      createTestMsg(expected_msg);
+
+      if (_msg.header().data_size() > 2)
+      {
+        // child_frame_id
+        ASSERT_EQ(3, expected_msg.header().data_size());
+        ASSERT_EQ(3, _msg.header().data_size());
+        EXPECT_EQ(expected_msg.header().data(2).key(), _msg.header().data(2).key());
+        EXPECT_EQ(1, _msg.header().data(2).value_size());
+        EXPECT_EQ(expected_msg.header().data(2).value(0),
+            _msg.header().data(2).value(0));
+      }
+    }
 
     compareTestMsg(_msg.position());
     compareTestMsg(_msg.orientation());
