@@ -230,7 +230,7 @@ TEST(IgnSubscriberTest, Actuators)
 /////////////////////////////////////////////////
 TEST(IgnSubscriberTest, JointStates)
 {
-  MyTestClass<ignition::msgs::Joint> client("joint_states");
+  MyTestClass<ignition::msgs::Model> client("joint_states");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVar(

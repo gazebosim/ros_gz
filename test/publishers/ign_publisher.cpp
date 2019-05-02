@@ -126,9 +126,9 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Actuators actuators_msg;
   ros1_ign_bridge::testing::createTestMsg(actuators_msg);
 
-  // ignition::msgs::Joint.
-  auto joint_states_pub = node.Advertise<ignition::msgs::Joint>("joint_states");
-  ignition::msgs::Joint joint_states_msg;
+  // ignition::msgs::Model.
+  auto joint_states_pub = node.Advertise<ignition::msgs::Model>("joint_states");
+  ignition::msgs::Model joint_states_msg;
   ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
 
   // Publish messages at 1Hz.

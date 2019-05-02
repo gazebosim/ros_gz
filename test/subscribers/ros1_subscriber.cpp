@@ -211,7 +211,7 @@ TEST(ROS1SubscriberTest, Imu)
 /////////////////////////////////////////////////
 TEST(ROS1SubscriberTest, JointStates)
 {
-  MyTestClass<sensor_msgs::JointStates> client("joint_states");
+  MyTestClass<sensor_msgs::JointState> client("joint_states");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(

@@ -184,12 +184,12 @@ get_factory_builtin_interfaces(
   }
   if (
     (ros1_type_name == "sensor_msgs/JointState" || ros1_type_name == "") &&
-     ign_type_name == "ignition.msgs.Joint")
+     ign_type_name == "ignition.msgs.Model")
   {
     return std::make_shared<
       Factory<
         sensor_msgs::JointState,
-        ignition::msgs::Joint
+        ignition::msgs::Model
       >
     >("sensor_msgs/JointState", ign_type_name);
   }
@@ -588,10 +588,10 @@ template<>
 void
 Factory<
   sensor_msgs::JointState,
-  ignition::msgs::Joint
+  ignition::msgs::Model
 >::convert_1_to_ign(
   const sensor_msgs::JointState & ros1_msg,
-  ignition::msgs::Joint & ign_msg)
+  ignition::msgs::Model & ign_msg)
 {
   ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
 }
@@ -600,9 +600,9 @@ template<>
 void
 Factory<
   sensor_msgs::JointState,
-  ignition::msgs::Joint
+  ignition::msgs::Model
 >::convert_ign_to_1(
-  const ignition::msgs::Joint & ign_msg,
+  const ignition::msgs::Model & ign_msg,
   sensor_msgs::JointState & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);

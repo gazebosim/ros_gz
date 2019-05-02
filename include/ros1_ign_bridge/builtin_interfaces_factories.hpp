@@ -318,18 +318,18 @@ template<>
 void
 Factory<
   sensor_msgs::JointState,
-  ignition::msgs::Joint
+  ignition::msgs::Model
 >::convert_1_to_ign(
   const sensor_msgs::JointState & ros1_msg,
-  ignition::msgs::Joint & ign_msg);
+  ignition::msgs::Model & ign_msg);
 
 template<>
 void
 Factory<
   sensor_msgs::JointState,
-  ignition::msgs::Joint
+  ignition::msgs::Model
 >::convert_ign_to_1(
-  const ignition::msgs::Joint & ign_msg,
+  const ignition::msgs::Model & ign_msg,
   sensor_msgs::JointState & ros1_msg);
 
 template<>

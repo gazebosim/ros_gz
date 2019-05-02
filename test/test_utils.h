@@ -401,14 +401,13 @@ namespace testing
   void createTestMsg(sensor_msgs::JointState &_msg)
   {
     std_msgs::Header header_msg;
-
     createTestMsg(header_msg);
 
     _msg.header   = header_msg;
-    _msg.name     = "joint_name";
-    _msg.position = {1, 2};
-    _msg.velocity = {3, 4};
-    _msg.effort   = {5, 6};
+    _msg.name     = {"joint_0", "joint_1", "joint_2"};
+    _msg.position = {1, 1, 1};
+    _msg.velocity = {2, 2, 2};
+    _msg.effort   = {3, 3, 3};
   }
 
   /// \brief Compare a message with the populated for testing.
@@ -420,18 +419,18 @@ namespace testing
 
     compareTestMsg(_msg.header);
 
-    EXPECT_EQ(expected_msg.name, _msg.name);
+    // ASSERT_EQ(expected_msg.name.size(),     _msg.name.size());
+    // ASSERT_EQ(expected_msg.position.size(), _msg.position.size());
+    // ASSERT_EQ(expected_msg.velocity.size(), _msg.velocity.size());
+    // ASSERT_EQ(expected_msg.effort.size(),   _msg.effort.size());
 
-    ASSERT_EQ(expected_msg.position.size(), _msg.position.size());
-    ASSERT_EQ(expected_msg.velocity.size(), _msg.velocity.size());
-    ASSERT_EQ(expected_msg.effort.size(),   _msg.effort.size());
-
-    for (auto i = 0; i < _msg.position.size(); ++i)
-    {
-      EXPECT_FLOAT_EQ(expected_msg.position[i], _msg.position[i]);
-      EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg.velocity[i]);
-      EXPECT_FLOAT_EQ(expected_msg.effort[i],   _msg.effort[i]);
-    }
+    // for (auto i = 0u; i < _msg.position.size(); ++i)
+    // {
+    //   EXPECT_EQ(expected_msg.name[i],           _msg.name[i]);
+    //   EXPECT_FLOAT_EQ(expected_msg.position[i], _msg.position[i]);
+    //   EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg.velocity[i]);
+    //   EXPECT_FLOAT_EQ(expected_msg.effort[i],   _msg.effort[i]);
+    // }
   }
 
   /// \brief Create a message used for testing.
@@ -759,35 +758,38 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(ignition::msgs::Joint &_msg)
+  void createTestMsg(ignition::msgs::Model &_msg)
   {
     ignition::msgs::Header header_msg;
-    ignition::msgs::String name_msg;
-    ignition::msgs::Axis axis1_msg;
-    ignition::msgs::Axis axis2_msg;
-
     createTestMsg(header_msg);
-    createTestMsg(name_msg);
-    createTestMsg(axis1_msg);
-    createTestMsg(axis2_msg);
-
     _msg.mutable_header()->CopyFrom(header_msg);
-    _msg.mutable_name()->CopyFrom(name_msg);
-    _msg.mutable_axis1()->CopyFrom(axis1_msg);
-    _msg.mutable_axis2()->CopyFrom(axis2_msg);
+
+    for (auto i = 0; i < 3; ++i)
+    {
+      auto newJoint = _msg.add_joint();
+      newJoint->set_name("joint_" + std::to_string(i));
+
+      ignition::msgs::Axis axis_msg;
+      createTestMsg(axis_msg);
+      newJoint->mutable_axis1()->CopyFrom(axis_msg);
+    }
   }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const ignition::msgs::Joint &_msg)
+  void compareTestMsg(const ignition::msgs::Model &_msg)
   {
-    ignition::msgs::Joint expected_msg;
+    ignition::msgs::Model expected_msg;
     createTestMsg(expected_msg);
 
     compareTestMsg(_msg.header());
-    compareTestMsg(_msg.name());
-    compareTestMsg(_msg.axis1());
-    compareTestMsg(_msg.axis2());
+
+    ASSERT_EQ(expected_msg.joint_size(), _msg.joint_size());
+    for (auto i = 0; i < _msg.joint_size(); ++i)
+    {
+      EXPECT_EQ(expected_msg.joint(i).name(), _msg.joint(i).name());
+      compareTestMsg(_msg.joint(i).axis1());
+    }
   }
 
   /// \brief Create a message used for testing.
