@@ -265,6 +265,28 @@ convert_ign_to_1(
   }
 }
 
+
+
+template<>
+void
+convert_1_to_ign(
+  const mav_msgs::Actuators & ros1_msg,
+  ignition::msgs::Actuators & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Actuators & ign_msg,
+  mav_msgs::Actuators & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+}
+
+
+
 template<>
 void
 convert_1_to_ign(

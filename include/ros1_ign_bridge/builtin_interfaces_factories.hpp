@@ -23,6 +23,7 @@
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Vector3.h>
+#include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
@@ -237,6 +238,25 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros1_msg);
+
+// mav_msgs
+template<>
+void
+Factory<
+  mav_msgs::Actuators,
+  ignition::msgs::Actuators
+>::convert_1_to_ign(
+  const mav_msgs::Actuators & ros1_msg,
+  ignition::msgs::Actuators & ign_msg);
+
+template<>
+void
+Factory<
+  mav_msgs::Actuators,
+  ignition::msgs::Actuators
+>::convert_ign_to_1(
+  const ignition::msgs::Actuators & ign_msg,
+  mav_msgs::Actuators & ros1_msg);
 
 // sensor_msgs
 template<>

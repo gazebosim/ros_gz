@@ -17,8 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
                sensor_msgs
                std_msgs)
 
-find_package(ignition-msgs3 QUIET REQUIRED)
-set(IGN_MSGS_VER ${ignition-msgs3_VERSION_MAJOR})
+find_package(ignition-msgs4 QUIET REQUIRED)
+set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 
 find_package(ignition-transport6 QUIET REQUIRED)
 set(IGN_TRANSPORT_VER ${ignition-transport6_VERSION_MAJOR})

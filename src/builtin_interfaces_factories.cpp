@@ -139,6 +139,17 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/TransformStamped", ign_type_name);
   }
   if (
+    (ros1_type_name == "mav_msgs/Actuators" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Actuators")
+  {
+    return std::make_shared<
+      Factory<
+        mav_msgs::Actuators,
+        ignition::msgs::Actuators
+      >
+    >("mav_msgs/Actuators", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/FluidPressure" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Fluid")
   {
@@ -460,6 +471,31 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+// mav_msgs
+template<>
+void
+Factory<
+  mav_msgs::Actuators,
+  ignition::msgs::Actuators
+>::convert_1_to_ign(
+  const mav_msgs::Actuators & ros1_msg,
+  ignition::msgs::Actuators & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  mav_msgs::Actuators,
+  ignition::msgs::Actuators
+>::convert_ign_to_1(
+  const ignition::msgs::Actuators & ign_msg,
+  mav_msgs::Actuators & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

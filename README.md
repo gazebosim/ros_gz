@@ -19,6 +19,7 @@ service calls.Its support is limited to only the following message types:
 | geometry_msgs/PoseStamped      | ignition::msgs::Pose         |
 | geometry_msgs/Transform        | ignition::msgs::Pose         |
 | geometry_msgs/TransformStamped | ignition::msgs::Pose         |
+| mav_msgs/Actuators             | ignition::msgs::Actuators    |
 | rosgraph_msgs/Clock            | ignition::msgs::Clock        |
 | sensor_msgs/Imu                | ignition::msgs::IMU          |
 | sensor_msgs/Image              | ignition::msgs::Image        |
@@ -37,6 +38,7 @@ set the `ROS_MASTER_URI` and run a `roscore`.
 The following ROS 1 packages are required to build and use the bridge:
 * `catkin`
 * `geometry_msgs`
+* `mav_msgs`
 * `roscpp`
 * `roslaunch` (for `roscore` executable)
 * `rosmsg`
@@ -50,8 +52,8 @@ To run the following examples you will also need these ROS 1 packages:
 * `rqt_image_view`
 
 The following Ignition dependencies are also needed:
-* `libignition-msgs3-dev`
-* `libignition-transport6-dev`
+* `libignition-msgs4-dev`
+* `libignition-transport7-dev`
 
 ### Building the bridge from source
 
