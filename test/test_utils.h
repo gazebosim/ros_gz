@@ -419,18 +419,18 @@ namespace testing
 
     compareTestMsg(_msg.header);
 
-    // ASSERT_EQ(expected_msg.name.size(),     _msg.name.size());
-    // ASSERT_EQ(expected_msg.position.size(), _msg.position.size());
-    // ASSERT_EQ(expected_msg.velocity.size(), _msg.velocity.size());
-    // ASSERT_EQ(expected_msg.effort.size(),   _msg.effort.size());
+    ASSERT_EQ(expected_msg.name.size(),     _msg.name.size());
+    ASSERT_EQ(expected_msg.position.size(), _msg.position.size());
+    ASSERT_EQ(expected_msg.velocity.size(), _msg.velocity.size());
+    ASSERT_EQ(expected_msg.effort.size(),   _msg.effort.size());
 
-    // for (auto i = 0u; i < _msg.position.size(); ++i)
-    // {
-    //   EXPECT_EQ(expected_msg.name[i],           _msg.name[i]);
-    //   EXPECT_FLOAT_EQ(expected_msg.position[i], _msg.position[i]);
-    //   EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg.velocity[i]);
-    //   EXPECT_FLOAT_EQ(expected_msg.effort[i],   _msg.effort[i]);
-    // }
+    for (auto i = 0u; i < _msg.position.size(); ++i)
+    {
+      EXPECT_EQ(expected_msg.name[i],           _msg.name[i]);
+      EXPECT_FLOAT_EQ(expected_msg.position[i], _msg.position[i]);
+      EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg.velocity[i]);
+      EXPECT_FLOAT_EQ(expected_msg.effort[i],   _msg.effort[i]);
+    }
   }
 
   /// \brief Create a message used for testing.
