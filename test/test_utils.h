@@ -33,6 +33,7 @@
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <chrono>
@@ -397,6 +398,44 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::JointState &_msg)
+  {
+    std_msgs::Header header_msg;
+
+    createTestMsg(header_msg);
+
+    _msg.header   = header_msg;
+    _msg.name     = "joint_name";
+    _msg.position = {1, 2};
+    _msg.velocity = {3, 4};
+    _msg.effort   = {5, 6};
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::JointState &_msg)
+  {
+    sensor_msgs::JointState expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+
+    EXPECT_EQ(expected_msg.name, _msg.name);
+
+    ASSERT_EQ(expected_msg.position.size(), _msg.position.size());
+    ASSERT_EQ(expected_msg.velocity.size(), _msg.velocity.size());
+    ASSERT_EQ(expected_msg.effort.size(),   _msg.effort.size());
+
+    for (auto i = 0; i < _msg.position.size(); ++i)
+    {
+      EXPECT_FLOAT_EQ(expected_msg.position[i], _msg.position[i]);
+      EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg.velocity[i]);
+      EXPECT_FLOAT_EQ(expected_msg.effort[i],   _msg.effort[i]);
+    }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
   void createTestMsg(sensor_msgs::LaserScan &_msg)
   {
     const unsigned int num_readings = 100u;
@@ -695,6 +734,60 @@ namespace testing
     compareTestMsg(_msg.orientation());
     compareTestMsg(_msg.angular_velocity());
     compareTestMsg(_msg.linear_acceleration());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Axis &_msg)
+  {
+    _msg.set_position(1.0);
+    _msg.set_velocity(2.0);
+    _msg.set_force(3.0);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Axis &_msg)
+  {
+    ignition::msgs::Axis expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_DOUBLE_EQ(expected_msg.position(), _msg.position());
+    EXPECT_DOUBLE_EQ(expected_msg.velocity(), _msg.velocity());
+    EXPECT_DOUBLE_EQ(expected_msg.force(),    _msg.force());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Joint &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    ignition::msgs::String name_msg;
+    ignition::msgs::Axis axis1_msg;
+    ignition::msgs::Axis axis2_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(name_msg);
+    createTestMsg(axis1_msg);
+    createTestMsg(axis2_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.mutable_name()->CopyFrom(name_msg);
+    _msg.mutable_axis1()->CopyFrom(axis1_msg);
+    _msg.mutable_axis2()->CopyFrom(axis2_msg);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Joint &_msg)
+  {
+    ignition::msgs::Joint expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header());
+    compareTestMsg(_msg.name());
+    compareTestMsg(_msg.axis1());
+    compareTestMsg(_msg.axis2());
   }
 
   /// \brief Create a message used for testing.

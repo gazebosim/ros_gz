@@ -183,6 +183,17 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/Imu", ign_type_name);
   }
   if (
+    (ros1_type_name == "sensor_msgs/JointState" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Joint")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::JointState,
+        ignition::msgs::Joint
+      >
+    >("sensor_msgs/JointState", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/LaserScan" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.LaserScan")
   {
@@ -569,6 +580,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::IMU & ign_msg,
   sensor_msgs::Imu & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::JointState,
+  ignition::msgs::Joint
+>::convert_1_to_ign(
+  const sensor_msgs::JointState & ros1_msg,
+  ignition::msgs::Joint & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::JointState,
+  ignition::msgs::Joint
+>::convert_ign_to_1(
+  const ignition::msgs::Joint & ign_msg,
+  sensor_msgs::JointState & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

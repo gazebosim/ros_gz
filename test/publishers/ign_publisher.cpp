@@ -126,6 +126,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Actuators actuators_msg;
   ros1_ign_bridge::testing::createTestMsg(actuators_msg);
 
+  // ignition::msgs::Joint.
+  auto joint_states_pub = node.Advertise<ignition::msgs::Joint>("joint_states");
+  ignition::msgs::Joint joint_states_msg;
+  ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
@@ -144,6 +149,7 @@ int main(int /*argc*/, char **/*argv*/)
     laserscan_pub.Publish(laserscan_msg);
     magnetic_pub.Publish(magnetometer_msg);
     actuators_pub.Publish(actuators_msg);
+    joint_states_pub.Publish(joint_states_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

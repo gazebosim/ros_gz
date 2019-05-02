@@ -23,6 +23,7 @@ service calls.Its support is limited to only the following message types:
 | rosgraph_msgs/Clock            | ignition::msgs::Clock        |
 | sensor_msgs/Imu                | ignition::msgs::IMU          |
 | sensor_msgs/Image              | ignition::msgs::Image        |
+| sensor_msgs/JointState         | ignition::msgs::Joint        |
 | sensor_msgs/LaserScan          | ignition::msgs::LaserScan    |
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer |
 

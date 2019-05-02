@@ -28,6 +28,7 @@
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
@@ -214,6 +215,18 @@ void
 convert_ign_to_1(
   const ignition::msgs::IMU & ign_msg,
   sensor_msgs::Imu & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::JointState & ros1_msg,
+  ignition::msgs::Joint & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Joint & ign_msg,
+  sensor_msgs::JointState & ros1_msg);
 
 template<>
 void

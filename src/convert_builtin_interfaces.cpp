@@ -536,6 +536,80 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const sensor_msgs::JointState & ros1_msg,
+  ignition::msgs::Joint & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+  convert_1_to_ign(ros1_msg.name, (*ign_msg.mutable_name()));
+
+  if (ros1_msg.position.size() > 2u)
+  {
+    std::cerr << "Error converting std_msgs/JointState to ignition::msgs::Joint"
+              << ". Ignition Messages only jupports joints with up to two axis "
+              << "and " << ros1_msg.position.size() << " were found. Only the "
+              << "first two will be copied." << std::endl;
+  }
+
+  for (auto i = 0u; i < ros1_msg.position.size(); ++i)
+  {
+    if (i == 0)
+    {
+      ign_msg.mutable_axis1()->set_position(ros1_msg.position[i]);
+      ign_msg.mutable_axis1()->set_velocity(ros1_msg.velocity[i]);
+      ign_msg.mutable_axis1()->set_force(ros1_msg.effort[i]);
+    }
+    else if (i == 1)
+    {
+      ign_msg.mutable_axis2()->set_position(ros1_msg.position[i]);
+      ign_msg.mutable_axis2()->set_velocity(ros1_msg.velocity[i]);
+      ign_msg.mutable_axis2()->set_force(ros1_msg.effort[i]);
+    }
+  }
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Joint & ign_msg,
+  sensor_msgs::JointState & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg.name(), ros1_msg.name);
+
+  unsigned int numAxis = 0;
+  if (ign_msg.has_axis1())
+  {
+    numAxis++;
+    if (ign_msg.has_axis2())
+    {
+      numAxis++;
+    }
+  }
+
+  ros1_msg.position.resize(numAxis);
+  ros1_msg.velocity.resize(numAxis);
+  ros1_msg.effort.resize(numAxis);
+
+  for (auto i = 0u; i < numAxis; ++i)
+  {
+    if (i == 0)
+    {
+      ros1_msg.position[i] = ign_msg.axis1().position();
+      ros1_msg.velocity[i] = ign_msg.axis1().velocity();
+      ros1_msg.effort[i] = ign_msg.axis1().force();
+    }
+    if (i == 1)
+    {
+      ros1_msg.position[i] = ign_msg.axis2().position();
+      ros1_msg.velocity[i] = ign_msg.axis2().velocity();
+      ros1_msg.effort[i] = ign_msg.axis2().force();
+    }
+  }
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::LaserScan & ros1_msg,
   ignition::msgs::LaserScan & ign_msg)
 {
