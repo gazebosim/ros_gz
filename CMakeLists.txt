@@ -20,8 +20,8 @@ find_package(catkin REQUIRED COMPONENTS
 find_package(ignition-msgs4 QUIET REQUIRED)
 set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 
-find_package(ignition-transport6 QUIET REQUIRED)
-set(IGN_TRANSPORT_VER ${ignition-transport6_VERSION_MAJOR})
+find_package(ignition-transport7 QUIET REQUIRED)
+set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
 
 catkin_package()
 

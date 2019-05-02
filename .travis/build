@@ -8,10 +8,11 @@ export DEBIAN_FRONTEND=noninteractive
 
 # Dependencies.
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
+echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-nightly bionic main" > /etc/apt/sources.list.d/gazebo-nightly.list
 echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
 apt-get update -qq
-apt-get install -qq -y libignition-msgs3-dev \
-                       libignition-transport6-dev \
+apt-get install -qq -y libignition-msgs4-dev \
+                       libignition-transport7-dev \
                        python-catkin-tools \
                        python-rosdep \
                        ros-melodic-geometry-msgs \
