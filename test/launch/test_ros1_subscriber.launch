@@ -3,7 +3,8 @@
   <!-- Launch the bridge -->
   <node name="parameter_bridge_ros1_subscriber" pkg="ros1_ign_bridge"
         type="parameter_bridge"
-        args="/header@std_msgs/Header@ignition.msgs.Header
+        args="/float@std_msgs/Float32@ignition.msgs.Float
+              /header@std_msgs/Header@ignition.msgs.Header
               /string@std_msgs/String@ignition.msgs.StringMsg
               /quaternion@geometry_msgs/Quaternion@ignition.msgs.Quaternion
               /vector3@geometry_msgs/Vector3@ignition.msgs.Vector3d

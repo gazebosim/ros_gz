@@ -48,6 +48,18 @@ class MyTestClass
 };
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Float)
+{
+  MyTestClass<ignition::msgs::Float> client("float");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Header)
 {
   MyTestClass<ignition::msgs::Header> client("header");

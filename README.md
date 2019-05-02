@@ -10,6 +10,7 @@ service calls.Its support is limited to only the following message types:
 
 | ROS 1 type                     | Ignition Transport type      |
 |--------------------------------|:----------------------------:|
+| std_msgs/Float32               | ignition::msgs::Float        |
 | std_msgs/Header                | ignition::msgs::Header       |
 | std_msgs/String                | ignition::msgs::StringMsg    |
 | geometry_msgs/Quaternion       | ignition::msgs::Quaternion   |
