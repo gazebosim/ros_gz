@@ -29,6 +29,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -266,7 +267,6 @@ namespace testing
     compareTestMsg(_msg.rotation);
   }
 
-
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
   void createTestMsg(geometry_msgs::TransformStamped &_msg)
@@ -286,6 +286,41 @@ namespace testing
     compareTestMsg(_msg.header);
     compareTestMsg(_msg.transform);
     EXPECT_EQ(expected_msg.child_frame_id, _msg.child_frame_id);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(mav_msgs::Actuators &_msg)
+  {
+    createTestMsg(_msg.header);
+    for (auto i = 0u; i < 5; ++i)
+    {
+      _msg.angles.push_back(i);
+      _msg.angular_velocities.push_back(i);
+      _msg.normalized.push_back(i);
+    }
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const mav_msgs::Actuators &_msg)
+  {
+    mav_msgs::Actuators expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+
+    ASSERT_EQ(expected_msg.angles.size(), _msg.angles.size());
+    ASSERT_EQ(expected_msg.angular_velocities.size(),
+              _msg.angular_velocities.size());
+    ASSERT_EQ(expected_msg.normalized.size(), _msg.normalized.size());
+
+    for (auto i = 0u; i < _msg.angles.size(); ++i)
+    {
+      EXPECT_EQ(expected_msg.angles[i], _msg.angles[i]);
+      EXPECT_EQ(expected_msg.angular_velocities[i], _msg.angular_velocities[i]);
+      EXPECT_EQ(expected_msg.normalized[i], _msg.normalized[i]);
+    }
   }
 
   /// \brief Create a message used for testing.
@@ -744,6 +779,40 @@ namespace testing
 
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.field_tesla());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Actuators &_msg)
+  {
+    ignition::msgs::Header header_msg;
+
+    createTestMsg(header_msg);
+    _msg.mutable_header()->CopyFrom(header_msg);
+
+    for (int i = 0u; i < 5; ++i)
+    {
+      _msg.add_angle(i);
+      _msg.add_angular_velocity(i);
+      _msg.add_normalized(i);
+    }
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Actuators &_msg)
+  {
+    ignition::msgs::Actuators expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header());
+
+    for (int i = 0; i < expected_msg.angle_size(); ++i)
+    {
+      EXPECT_EQ(expected_msg.angle(i), _msg.angle(i));
+      EXPECT_EQ(expected_msg.angular_velocity(i), _msg.angular_velocity(i));
+      EXPECT_EQ(expected_msg.normalized(i), _msg.normalized(i));
+    }
   }
 }
 }
