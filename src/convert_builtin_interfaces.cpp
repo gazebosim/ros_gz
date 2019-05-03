@@ -559,17 +559,12 @@ convert_ign_to_1(
 {
   convert_ign_to_1(ign_msg.header(), ros1_msg.header);
 
-  unsigned int numJoints = ign_msg.joint_size();
-  ros1_msg.position.resize(numJoints);
-  ros1_msg.velocity.resize(numJoints);
-  ros1_msg.effort.resize(numJoints);
-
-  for (auto i = 0u; i < numJoints; ++i)
+  for (auto i = 0; i < ign_msg.joint_size(); ++i)
   {
-    ros1_msg.name[i]     = ign_msg.joint(i).name();
-    ros1_msg.position[i] = ign_msg.joint(i).axis1().position();
-    ros1_msg.velocity[i] = ign_msg.joint(i).axis1().velocity();
-    ros1_msg.effort[i]   = ign_msg.joint(i).axis1().force();
+    ros1_msg.name.push_back(ign_msg.joint(i).name());
+    ros1_msg.position.push_back(ign_msg.joint(i).axis1().position());
+    ros1_msg.velocity.push_back(ign_msg.joint(i).axis1().velocity());
+    ros1_msg.effort.push_back(ign_msg.joint(i).axis1().force());
   }
 }
 
