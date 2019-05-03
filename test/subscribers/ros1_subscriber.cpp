@@ -26,6 +26,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
+#include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -222,6 +223,18 @@ TEST(ROS1SubscriberTest, LaserScan)
 TEST(ROS1SubscriberTest, MagneticField)
 {
   MyTestClass<sensor_msgs::MagneticField> client("magnetic");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Actuators)
+{
+  MyTestClass<mav_msgs::Actuators> client("actuators");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(

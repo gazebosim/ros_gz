@@ -16,7 +16,8 @@
               /image@sensor_msgs/Image@ignition.msgs.Image
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
-              /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer"
+              /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer
+              /actuators@mav_msgs/Actuators@ignition.msgs.Actuators"
   />
 
   <!-- Launch the ROS 1 publisher -->
