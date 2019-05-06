@@ -100,7 +100,7 @@ namespace testing
   /// \param[out] _msg The message populated.
   void createTestMsg(std_msgs::Float32 &_msg)
   {
-    _msg.data = 1;
+    _msg.data = 1.5;
   }
 
   /// \brief Compare a message with the populated for testing.
@@ -497,7 +497,7 @@ namespace testing
   /// \param[out] _msg The message populated.
   void createTestMsg(ignition::msgs::Float &_msg)
   {
-    _msg.set_data(1);
+    _msg.set_data(1.5);
   }
 
   /// \brief Compare a message with the populated for testing.
