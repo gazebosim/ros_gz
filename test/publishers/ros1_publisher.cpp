@@ -27,6 +27,7 @@
 #include <mav_msgs/Actuators.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
+#include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include "../test_utils.h"
@@ -114,6 +115,12 @@ int main(int argc, char ** argv)
   sensor_msgs::Imu imu_msg;
   ros1_ign_bridge::testing::createTestMsg(imu_msg);
 
+  // sensor_msgs::JointState.
+  ros::Publisher joint_states_pub =
+    n.advertise<sensor_msgs::JointState>("joint_states", 1000);
+  sensor_msgs::JointState joint_states_msg;
+  ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
+
   // sensor_msgs::LaserScan.
   ros::Publisher laserscan_pub =
     n.advertise<sensor_msgs::LaserScan>("laserscan", 1000);
@@ -144,6 +151,7 @@ int main(int argc, char ** argv)
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
     magnetic_pub.publish(magnetic_msg);
+    joint_states_pub.publish(joint_states_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

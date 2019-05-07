@@ -536,6 +536,41 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const sensor_msgs::JointState & ros1_msg,
+  ignition::msgs::Model & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  for (auto i = 0u; i < ros1_msg.position.size(); ++i)
+  {
+    auto newJoint = ign_msg.add_joint();
+    newJoint->set_name(ros1_msg.name[i]);
+    newJoint->mutable_axis1()->set_position(ros1_msg.position[i]);
+    newJoint->mutable_axis1()->set_velocity(ros1_msg.velocity[i]);
+    newJoint->mutable_axis1()->set_force(ros1_msg.effort[i]);
+  }
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Model & ign_msg,
+  sensor_msgs::JointState & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+
+  for (auto i = 0; i < ign_msg.joint_size(); ++i)
+  {
+    ros1_msg.name.push_back(ign_msg.joint(i).name());
+    ros1_msg.position.push_back(ign_msg.joint(i).axis1().position());
+    ros1_msg.velocity.push_back(ign_msg.joint(i).axis1().velocity());
+    ros1_msg.effort.push_back(ign_msg.joint(i).axis1().force());
+  }
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::LaserScan & ros1_msg,
   ignition::msgs::LaserScan & ign_msg)
 {

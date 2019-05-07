@@ -228,6 +228,18 @@ TEST(IgnSubscriberTest, Actuators)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, JointStates)
+{
+  MyTestClass<ignition::msgs::Model> client("joint_states");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

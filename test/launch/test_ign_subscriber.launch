@@ -17,7 +17,8 @@
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
               /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer
-              /actuators@mav_msgs/Actuators@ignition.msgs.Actuators"
+              /actuators@mav_msgs/Actuators@ignition.msgs.Actuators
+              /joint_states@sensor_msgs/JointState@ignition.msgs.Model"
   />
 
   <!-- Launch the ROS 1 publisher -->
