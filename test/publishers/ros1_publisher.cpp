@@ -15,6 +15,7 @@
 #include <thread>
 
 #include <ros/ros.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
@@ -38,6 +39,11 @@ int main(int argc, char ** argv)
   ros::init(argc, argv, "ros1_string_publisher");
   ros::NodeHandle n;
   ros::Rate loop_rate(1);
+
+  // std_msgs::Float32.
+  ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
+  std_msgs::Float32 float_msg;
+  ros1_ign_bridge::testing::createTestMsg(float_msg);
 
   // std_msgs::Header.
   ros::Publisher header_pub = n.advertise<std_msgs::Header>("header", 1000);
@@ -136,6 +142,7 @@ int main(int argc, char ** argv)
   while (ros::ok())
   {
     // Publish all messages.
+    float_pub.publish(float_msg);
     header_pub.publish(header_msg);
     string_pub.publish(string_msg);
     quaternion_pub.publish(quaternion_msg);

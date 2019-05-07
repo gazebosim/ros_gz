@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
@@ -63,6 +64,18 @@ class MyTestClass
   /// \brief ROS subscriber;
   private: ros::Subscriber sub;
 };
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Float)
+{
+  MyTestClass<std_msgs::Float32> client("float");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
 
 /////////////////////////////////////////////////
 TEST(ROS1SubscriberTest, Header)

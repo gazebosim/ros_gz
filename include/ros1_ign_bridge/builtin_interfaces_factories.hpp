@@ -32,6 +32,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
@@ -58,6 +59,24 @@ get_factory(const std::string & ros1_type_name,
 // conversion functions for available interfaces
 
 // std_msgs
+template<>
+void
+Factory<
+  std_msgs::Float32,
+  ignition::msgs::Float
+>::convert_1_to_ign(
+  const std_msgs::Float32 & ros1_msg,
+  ignition::msgs::Float & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Float32,
+  ignition::msgs::Float
+>::convert_ign_to_1(
+  const ignition::msgs::Float & ign_msg,
+  std_msgs::Float32 & ros1_msg);
+
 template<>
 void
 Factory<

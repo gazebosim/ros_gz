@@ -23,6 +23,24 @@ namespace ros1_ign_bridge
 template<>
 void
 convert_1_to_ign(
+  const std_msgs::Float32 & ros1_msg,
+  ignition::msgs::Float & ign_msg)
+{
+  ign_msg.set_data(ros1_msg.data);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Float & ign_msg,
+  std_msgs::Float32 & ros1_msg)
+{
+  ros1_msg.data = ign_msg.data();
+}
+
+template<>
+void
+convert_1_to_ign(
   const std_msgs::Header & ros1_msg,
   ignition::msgs::Header & ign_msg)
 {

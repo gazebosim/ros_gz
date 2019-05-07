@@ -48,6 +48,11 @@ int main(int /*argc*/, char **/*argv*/)
   // Create a transport node and advertise a topic.
   ignition::transport::Node node;
 
+  // ignition::msgs::Float.
+  auto float_pub = node.Advertise<ignition::msgs::Float>("float");
+  ignition::msgs::Float float_msg;
+  ros1_ign_bridge::testing::createTestMsg(float_msg);
+
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
@@ -134,6 +139,7 @@ int main(int /*argc*/, char **/*argv*/)
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
+    float_pub.Publish(float_msg);
     header_pub.Publish(header_msg);
     string_pub.Publish(string_msg);
     quaternion_pub.Publish(quaternion_msg);

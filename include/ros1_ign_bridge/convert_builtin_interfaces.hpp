@@ -32,6 +32,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
@@ -47,6 +48,18 @@ namespace ros1_ign_bridge
 template<>
 void
 convert_1_to_ign(
+  const std_msgs::Float32 & ros1_msg,
+  ignition::msgs::Float & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Float & ign_msg,
+  std_msgs::Float32 & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
   const std_msgs::Header & ros1_msg,
   ignition::msgs::Header & ign_msg);
 
@@ -54,7 +67,7 @@ template<>
 void
 convert_ign_to_1(
   const ignition::msgs::Header & ign_msg,
-  std_msgs::Header  & ros1_msg);
+  std_msgs::Header & ros1_msg);
 
 template<>
 void
