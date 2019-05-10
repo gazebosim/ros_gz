@@ -922,8 +922,8 @@ namespace testing
 
     for (int i = 0u; i < 5; ++i)
     {
-      _msg.add_angle(i);
-      _msg.add_angular_velocity(i);
+      _msg.add_position(i);
+      _msg.add_velocity(i);
       _msg.add_normalized(i);
     }
   }
@@ -937,10 +937,10 @@ namespace testing
 
     compareTestMsg(_msg.header());
 
-    for (int i = 0; i < expected_msg.angle_size(); ++i)
+    for (int i = 0; i < expected_msg.position_size(); ++i)
     {
-      EXPECT_EQ(expected_msg.angle(i), _msg.angle(i));
-      EXPECT_EQ(expected_msg.angular_velocity(i), _msg.angular_velocity(i));
+      EXPECT_EQ(expected_msg.position(i), _msg.position(i));
+      EXPECT_EQ(expected_msg.velocity(i), _msg.velocity(i));
       EXPECT_EQ(expected_msg.normalized(i), _msg.normalized(i));
     }
   }
