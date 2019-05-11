@@ -292,9 +292,9 @@ convert_1_to_ign(
   convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
 
   for (auto i = 0u; i < ros1_msg.angles.size(); ++i)
-    ign_msg.add_angle(ros1_msg.angles[i]);
+    ign_msg.add_position(ros1_msg.angles[i]);
   for (auto i = 0u; i < ros1_msg.angular_velocities.size(); ++i)
-    ign_msg.add_angular_velocity(ros1_msg.angular_velocities[i]);
+    ign_msg.add_velocity(ros1_msg.angular_velocities[i]);
   for (auto i = 0u; i < ros1_msg.normalized.size(); ++i)
     ign_msg.add_normalized(ros1_msg.normalized[i]);
 }
@@ -307,10 +307,10 @@ convert_ign_to_1(
 {
   convert_ign_to_1(ign_msg.header(), ros1_msg.header);
 
-  for (auto i = 0; i < ign_msg.angle_size(); ++i)
-    ros1_msg.angles.push_back(ign_msg.angle(i));
-  for (auto i = 0; i < ign_msg.angular_velocity_size(); ++i)
-    ros1_msg.angular_velocities.push_back(ign_msg.angular_velocity(i));
+  for (auto i = 0; i < ign_msg.position_size(); ++i)
+    ros1_msg.angles.push_back(ign_msg.position(i));
+  for (auto i = 0; i < ign_msg.velocity_size(); ++i)
+    ros1_msg.angular_velocities.push_back(ign_msg.velocity(i));
   for (auto i = 0; i < ign_msg.normalized_size(); ++i)
     ros1_msg.normalized.push_back(ign_msg.normalized(i));
 }
