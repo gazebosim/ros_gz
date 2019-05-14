@@ -132,8 +132,8 @@ namespace testing
     createTestMsg(expected_msg);
 
     EXPECT_GE(_msg.seq,         0u);
-    EXPECT_EQ(2u,                _msg.stamp.sec);
-    EXPECT_EQ(3u,                _msg.stamp.nsec);
+    EXPECT_EQ(2u,               _msg.stamp.sec);
+    EXPECT_EQ(3u,               _msg.stamp.nsec);
     EXPECT_EQ("frame_id_value", _msg.frame_id);
   }
 
@@ -698,7 +698,8 @@ namespace testing
         // child_frame_id
         ASSERT_EQ(3, expected_msg.header().data_size());
         ASSERT_EQ(3, _msg.header().data_size());
-        EXPECT_EQ(expected_msg.header().data(2).key(), _msg.header().data(2).key());
+        EXPECT_EQ(expected_msg.header().data(2).key(),
+          _msg.header().data(2).key());
         EXPECT_EQ(1, _msg.header().data(2).value_size());
         EXPECT_EQ(expected_msg.header().data(2).value(0),
             _msg.header().data(2).value(0));
@@ -719,7 +720,7 @@ namespace testing
     _msg.mutable_header()->CopyFrom(header_msg);
     _msg.set_width(320);
     _msg.set_height(240);
-    _msg.set_pixel_format(ignition::msgs::PixelFormatType::RGB_INT8);
+    _msg.set_pixel_format_type(ignition::msgs::PixelFormatType::RGB_INT8);
     _msg.set_step(_msg.width() * 3);
     _msg.set_data(std::string(_msg.height() * _msg.step(), '1'));
   }
@@ -732,11 +733,11 @@ namespace testing
     createTestMsg(expected_msg);
 
     compareTestMsg(_msg.header());
-    EXPECT_EQ(expected_msg.width(),        _msg.width());
-    EXPECT_EQ(expected_msg.height(),       _msg.height());
-    EXPECT_EQ(expected_msg.pixel_format(), _msg.pixel_format());
-    EXPECT_EQ(expected_msg.step(),         _msg.step());
-    EXPECT_EQ(expected_msg.data(),         _msg.data());
+    EXPECT_EQ(expected_msg.width(),             _msg.width());
+    EXPECT_EQ(expected_msg.height(),            _msg.height());
+    EXPECT_EQ(expected_msg.pixel_format_type(), _msg.pixel_format_type());
+    EXPECT_EQ(expected_msg.step(),              _msg.step());
+    EXPECT_EQ(expected_msg.data(),              _msg.data());
   }
 
   /// \brief Create a message used for testing.
@@ -939,8 +940,8 @@ namespace testing
 
     for (int i = 0; i < expected_msg.position_size(); ++i)
     {
-      EXPECT_EQ(expected_msg.position(i), _msg.position(i));
-      EXPECT_EQ(expected_msg.velocity(i), _msg.velocity(i));
+      EXPECT_EQ(expected_msg.position(i),   _msg.position(i));
+      EXPECT_EQ(expected_msg.velocity(i),   _msg.velocity(i));
       EXPECT_EQ(expected_msg.normalized(i), _msg.normalized(i));
     }
   }
