@@ -20,6 +20,43 @@
 namespace ros1_ign_bridge
 {
 
+// This can be used to replace `::` with `/` to make frame_id compatible with TF
+std::string replace_delimiter(const std::string &input,
+                              const std::string &old_delim,
+                              const std::string new_delim)
+{
+  std::string output;
+  output.reserve(input.size());
+
+  std::size_t last_pos = 0;
+
+  while (last_pos < input.size())
+  {
+    std::size_t pos = input.find(old_delim, last_pos);
+    output += input.substr(last_pos, pos - last_pos);
+    if (pos != std::string::npos)
+    {
+      output += new_delim;
+      pos += old_delim.size();
+    }
+
+    last_pos = pos;
+  }
+
+  return output;
+}
+
+// Frame id from ROS to ign is not supported right now
+// std::string frame_id_1_to_ign(const std::string &frame_id)
+// {
+//   return replace_delimiter(frame_id, "/", "::");
+// }
+
+std::string frame_id_ign_to_1(const std::string &frame_id)
+{
+  return replace_delimiter(frame_id, "::", "/");
+}
+
 template<>
 void
 convert_1_to_ign(
@@ -80,7 +117,7 @@ convert_ign_to_1(
     }
     else if (aPair.key() == "frame_id" && aPair.value_size() > 0)
     {
-      ros1_msg.frame_id = aPair.value(0);
+      ros1_msg.frame_id = frame_id_ign_to_1(aPair.value(0));
     }
   }
 }
@@ -277,7 +314,7 @@ convert_ign_to_1(
     auto aPair = ign_msg.header().data(i);
     if (aPair.key() == "child_frame_id" && aPair.value_size() > 0)
     {
-      ros1_msg.child_frame_id = aPair.value(0);
+      ros1_msg.child_frame_id = frame_id_ign_to_1(aPair.value(0));
       break;
     }
   }
@@ -624,7 +661,7 @@ convert_ign_to_1(
   sensor_msgs::LaserScan & ros1_msg)
 {
   convert_ign_to_1(ign_msg.header(), ros1_msg.header);
-  ros1_msg.header.frame_id = ign_msg.frame();
+  ros1_msg.header.frame_id = frame_id_ign_to_1(ign_msg.frame());
 
   ros1_msg.angle_min = ign_msg.angle_min();
   ros1_msg.angle_max = ign_msg.angle_max();
