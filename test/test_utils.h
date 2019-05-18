@@ -987,7 +987,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const ignition::msgs::Twist &_msg)
   {
-    compareTestMsg(_msg.header());
     compareTestMsg(_msg.linear());
     compareTestMsg(_msg.angular());
   }
