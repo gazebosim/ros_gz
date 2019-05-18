@@ -150,6 +150,17 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/TransformStamped", ign_type_name);
   }
   if (
+    (ros1_type_name == "geometry_msgs/Twist" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Twist")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::Twist,
+        ignition::msgs::Twist
+      >
+    >("geometry_msgs/Twist", ign_type_name);
+  }
+  if (
     (ros1_type_name == "mav_msgs/Actuators" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.Actuators")
   {
@@ -517,6 +528,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Twist,
+  ignition::msgs::Twist
+>::convert_1_to_ign(
+  const geometry_msgs::Twist & ros1_msg,
+  ignition::msgs::Twist & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::Twist,
+  ignition::msgs::Twist
+>::convert_ign_to_1(
+  const ignition::msgs::Twist & ign_msg,
+  geometry_msgs::Twist & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

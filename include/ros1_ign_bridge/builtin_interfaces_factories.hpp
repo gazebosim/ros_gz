@@ -22,6 +22,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
@@ -258,6 +259,24 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros1_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::Twist,
+  ignition::msgs::Twist
+>::convert_1_to_ign(
+  const geometry_msgs::Twist & ros1_msg,
+  ignition::msgs::Twist & ign_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::Twist,
+  ignition::msgs::Twist
+>::convert_ign_to_1(
+  const ignition::msgs::Twist & ign_msg,
+  geometry_msgs::Twist & ros1_msg);
 
 // mav_msgs
 template<>

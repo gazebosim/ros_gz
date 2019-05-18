@@ -20,6 +20,7 @@ service calls.Its support is limited to only the following message types:
 | geometry_msgs/PoseStamped      | ignition::msgs::Pose         |
 | geometry_msgs/Transform        | ignition::msgs::Pose         |
 | geometry_msgs/TransformStamped | ignition::msgs::Pose         |
+| geometry_msgs/Twist            | ignition::msgs::Twist        |
 | mav_msgs/Actuators             | ignition::msgs::Actuators    |
 | rosgraph_msgs/Clock            | ignition::msgs::Clock        |
 | sensor_msgs/Imu                | ignition::msgs::IMU          |

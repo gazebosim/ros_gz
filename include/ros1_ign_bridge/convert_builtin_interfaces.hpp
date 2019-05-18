@@ -24,6 +24,7 @@
 #include <rosgraph_msgs/Clock.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
@@ -178,6 +179,18 @@ void
 convert_ign_to_1(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const geometry_msgs::Twist & ros1_msg,
+  ignition::msgs::Twist & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Twist & ign_msg,
+  geometry_msgs::Twist & ros1_msg);
 
 // mav_msgs
 template<>

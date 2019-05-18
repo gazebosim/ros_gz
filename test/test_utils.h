@@ -28,6 +28,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
@@ -305,6 +306,25 @@ namespace testing
     compareTestMsg(_msg.header);
     compareTestMsg(_msg.transform);
     EXPECT_EQ(expected_msg.child_frame_id, _msg.child_frame_id);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::Twist &_msg)
+  {
+    createTestMsg(_msg.linear);
+    createTestMsg(_msg.angular);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::Twist &_msg)
+  {
+    geometry_msgs::Twist expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.linear);
+    compareTestMsg(_msg.angular);
   }
 
   /// \brief Create a message used for testing.
@@ -944,6 +964,32 @@ namespace testing
       EXPECT_EQ(expected_msg.velocity(i),   _msg.velocity(i));
       EXPECT_EQ(expected_msg.normalized(i), _msg.normalized(i));
     }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Twist &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    ignition::msgs::Vector3d linear_msg;
+    ignition::msgs::Vector3d angular_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(linear_msg);
+    createTestMsg(angular_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.mutable_linear()->CopyFrom(linear_msg);
+    _msg.mutable_angular()->CopyFrom(angular_msg);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Twist &_msg)
+  {
+    compareTestMsg(_msg.header());
+    compareTestMsg(_msg.linear());
+    compareTestMsg(_msg.angular());
   }
 }
 }
