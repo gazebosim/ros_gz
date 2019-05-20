@@ -136,6 +136,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Model joint_states_msg;
   ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
 
+  // ignition::msgs::Twist.
+  auto twist_pub = node.Advertise<ignition::msgs::Twist>("twist");
+  ignition::msgs::Twist twist_msg;
+  ros1_ign_bridge::testing::createTestMsg(twist_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
@@ -156,6 +161,7 @@ int main(int /*argc*/, char **/*argv*/)
     magnetic_pub.Publish(magnetometer_msg);
     actuators_pub.Publish(actuators_msg);
     joint_states_pub.Publish(joint_states_msg);
+    twist_pub.Publish(twist_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

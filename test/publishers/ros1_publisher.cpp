@@ -25,6 +25,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -103,6 +104,12 @@ int main(int argc, char ** argv)
   geometry_msgs::TransformStamped transform_stamped_msg;
   ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
 
+  // geometry_msgs::Twist.
+  ros::Publisher twist_pub =
+    n.advertise<geometry_msgs::Twist>("twist", 1000);
+  geometry_msgs::Twist twist_msg;
+  ros1_ign_bridge::testing::createTestMsg(twist_msg);
+
   // mav_msgs::Actuators.
   ros::Publisher actuators_pub =
     n.advertise<mav_msgs::Actuators>("actuators", 1000);
@@ -153,6 +160,7 @@ int main(int argc, char ** argv)
     pose_stamped_pub.publish(pose_stamped_msg);
     transform_pub.publish(transform_msg);
     transform_stamped_pub.publish(transform_stamped_msg);
+    twist_pub.publish(twist_msg);
     actuators_pub.publish(actuators_msg);
     image_pub.publish(image_msg);
     imu_pub.publish(imu_msg);

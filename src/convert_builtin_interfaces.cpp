@@ -323,6 +323,26 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const geometry_msgs::Twist & ros1_msg,
+  ignition::msgs::Twist & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.linear,  (*ign_msg.mutable_linear()));
+  convert_1_to_ign(ros1_msg.angular, (*ign_msg.mutable_angular()));
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Twist & ign_msg,
+  geometry_msgs::Twist & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.linear(), ros1_msg.linear);
+  convert_ign_to_1(ign_msg.angular(), ros1_msg.angular);
+}
+
+template<>
+void
+convert_1_to_ign(
   const mav_msgs::Actuators & ros1_msg,
   ignition::msgs::Actuators & ign_msg)
 {

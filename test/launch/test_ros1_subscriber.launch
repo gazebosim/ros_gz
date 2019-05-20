@@ -14,6 +14,7 @@
               /pose_stamped@geometry_msgs/PoseStamped@ignition.msgs.Pose
               /transform@geometry_msgs/Transform@ignition.msgs.Pose
               /transform_stamped@geometry_msgs/TransformStamped@ignition.msgs.Pose
+              /twist@geometry_msgs/Twist@ignition.msgs.Twist
               /image@sensor_msgs/Image@ignition.msgs.Image
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
