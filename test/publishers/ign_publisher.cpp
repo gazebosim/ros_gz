@@ -111,6 +111,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Image image_msg;
   ros1_ign_bridge::testing::createTestMsg(image_msg);
 
+  // ignition::msgs::CameraInfo.
+  auto camera_info_pub = node.Advertise<ignition::msgs::CameraInfo>("camera_info");
+  ignition::msgs::CameraInfo camera_info_msg;
+  ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
+
   // ignition::msgs::IMU.
   auto imu_pub = node.Advertise<ignition::msgs::IMU>("imu");
   ignition::msgs::IMU imu_msg;
@@ -156,6 +161,7 @@ int main(int /*argc*/, char **/*argv*/)
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);
     image_pub.Publish(image_msg);
+    camera_info_pub.Publish(camera_info_msg);
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
     magnetic_pub.Publish(magnetometer_msg);

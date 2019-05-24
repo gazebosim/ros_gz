@@ -579,6 +579,129 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const sensor_msgs::CameraInfo & ros1_msg,
+  ignition::msgs::CameraInfo & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  ign_msg.set_width(ros1_msg.width);
+  ign_msg.set_height(ros1_msg.height);
+
+  auto distortion = ign_msg.mutable_distortion();
+  if (ros1_msg.distortion_model == "plumb_bob")
+  {
+    distortion->set_model(ignition::msgs::CameraInfo::Distortion::PLUMB_BOB);
+  }
+  else if (ros1_msg.distortion_model == "rational_polynomial")
+  {
+    distortion->set_model(ignition::msgs::CameraInfo::Distortion::RATIONAL_POLYNOMIAL);
+  }
+  else if (ros1_msg.distortion_model == "equidistant")
+  {
+    distortion->set_model(ignition::msgs::CameraInfo::Distortion::EQUIDISTANT);
+  }
+  else
+  {
+    std::cerr << "Unsupported distortion model [" << ros1_msg.distortion_model << "]"
+              << std::endl;
+  }
+  for (auto i = 0u; i < ros1_msg.D.size(); ++i)
+  {
+    distortion->add_k(ros1_msg.D[i]);
+  }
+
+  auto intrinsics = ign_msg.mutable_intrinsics();
+  for (auto i = 0u; i < ros1_msg.K.size(); ++i)
+  {
+    intrinsics->add_k(ros1_msg.K[i]);
+  }
+
+  auto projection = ign_msg.mutable_projection();
+  for (auto i = 0u; i < ros1_msg.P.size(); ++i)
+  {
+    projection->add_p(ros1_msg.P[i]);
+  }
+
+  for (auto i = 0u; i < ros1_msg.R.size(); ++i)
+  {
+    ign_msg.add_rectification_matrix(ros1_msg.R[i]);
+  }
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::CameraInfo & ign_msg,
+  sensor_msgs::CameraInfo & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+
+  ros1_msg.height = ign_msg.height();
+  ros1_msg.width = ign_msg.width();
+
+  auto distortion = ign_msg.distortion();
+  if (ign_msg.has_distortion())
+  {
+    auto distortion = ign_msg.distortion();
+    if (distortion.model() ==
+        ignition::msgs::CameraInfo::Distortion::PLUMB_BOB)
+    {
+      ros1_msg.distortion_model = "plumb_bob";
+    }
+    else if (distortion.model() ==
+        ignition::msgs::CameraInfo::Distortion::RATIONAL_POLYNOMIAL)
+    {
+      ros1_msg.distortion_model = "rational_polynomial";
+    }
+    else if (distortion.model() ==
+        ignition::msgs::CameraInfo::Distortion::EQUIDISTANT)
+    {
+      ros1_msg.distortion_model = "equidistant";
+    }
+    else
+    {
+      std::cerr << "Unsupported distortion model ["
+                << distortion.model() << "]" << std::endl;
+    }
+
+    ros1_msg.D.resize(distortion.k_size());
+    for (auto i = 0; i < distortion.k_size(); ++i)
+    {
+      ros1_msg.D[i] = distortion.k(i);
+    }
+  }
+
+  auto intrinsics = ign_msg.intrinsics();
+  if (ign_msg.has_intrinsics())
+  {
+    auto intrinsics = ign_msg.intrinsics();
+
+    for (auto i = 0; i < intrinsics.k_size(); ++i)
+    {
+      ros1_msg.K[i] = intrinsics.k(i);
+    }
+  }
+
+  auto projection = ign_msg.projection();
+  if (ign_msg.has_projection())
+  {
+    auto projection = ign_msg.projection();
+
+    for (auto i = 0; i < projection.p_size(); ++i)
+    {
+      ros1_msg.P[i] = projection.p(i);
+    }
+  }
+
+  for (auto i = 0; i < ign_msg.rectification_matrix_size(); ++i)
+  {
+    ros1_msg.R[i] = ign_msg.rectification_matrix(i);
+  }
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::Imu & ros1_msg,
   ignition::msgs::IMU & ign_msg)
 {

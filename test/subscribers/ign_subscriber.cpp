@@ -204,6 +204,18 @@ TEST(IgnSubscriberTest, Image)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, CameraInfo)
+{
+  MyTestClass<ignition::msgs::CameraInfo> client("camera_info");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Imu)
 {
   MyTestClass<ignition::msgs::IMU> client("imu");
