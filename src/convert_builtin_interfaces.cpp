@@ -474,6 +474,13 @@ convert_1_to_ign(
     num_channels = 3;
     octets_per_channel = 2u;
   }
+  else if (ros1_msg.encoding == "32FC1")
+  {
+    ign_msg.set_pixel_format_type(
+      ignition::msgs::PixelFormatType::R_FLOAT32);
+    num_channels = 1;
+    octets_per_channel = 4u;
+  }
   else
   {
     ign_msg.set_pixel_format_type(
@@ -557,6 +564,13 @@ convert_ign_to_1(
     ros1_msg.encoding = "bgr16";
     num_channels = 3;
     octets_per_channel = 2u;
+  }
+  else if (ign_msg.pixel_format_type() ==
+      ignition::msgs::PixelFormatType::R_FLOAT32)
+  {
+    ros1_msg.encoding = "32FC1";
+    num_channels = 1;
+    octets_per_channel = 4u;
   }
   else
   {
