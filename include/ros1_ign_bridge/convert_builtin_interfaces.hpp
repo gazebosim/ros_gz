@@ -26,6 +26,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -229,6 +230,18 @@ void
 convert_ign_to_1(
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::Image & ros1_msg);
+
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::CameraInfo & ros1_msg,
+  ignition::msgs::CameraInfo & ign_msg);
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::CameraInfo & ign_msg,
+  sensor_msgs::CameraInfo & ros1_msg);
 
 template<>
 void

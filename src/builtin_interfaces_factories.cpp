@@ -194,6 +194,17 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/Image", ign_type_name);
   }
   if (
+    (ros1_type_name == "sensor_msgs/CameraInfo" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.CameraInfo")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::CameraInfo,
+        ignition::msgs::CameraInfo
+      >
+    >("sensor_msgs/CameraInfo", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.IMU")
   {
@@ -626,6 +637,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::Image & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::CameraInfo,
+  ignition::msgs::CameraInfo
+>::convert_1_to_ign(
+  const sensor_msgs::CameraInfo & ros1_msg,
+  ignition::msgs::CameraInfo & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::CameraInfo,
+  ignition::msgs::CameraInfo
+>::convert_ign_to_1(
+  const ignition::msgs::CameraInfo & ign_msg,
+  sensor_msgs::CameraInfo & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

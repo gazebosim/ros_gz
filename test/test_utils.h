@@ -33,6 +33,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
@@ -391,6 +392,87 @@ namespace testing
     EXPECT_EQ(expected_msg.encoding,     _msg.encoding);
     EXPECT_EQ(expected_msg.is_bigendian, _msg.is_bigendian);
     EXPECT_EQ(expected_msg.step,         _msg.step);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::CameraInfo &_msg)
+  {
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header       = header_msg;
+    _msg.width        = 320;
+    _msg.height       = 240;
+    _msg.distortion_model = "plumb_bob";
+    _msg.D.resize(5);
+    _msg.D[0] = 1;
+    _msg.D[1] = 2;
+    _msg.D[2] = 3;
+    _msg.D[3] = 4;
+    _msg.D[4] = 5;
+
+    _msg.K[0] = 1;
+    _msg.K[1] = 0;
+    _msg.K[2] = 0;
+    _msg.K[3] = 0;
+    _msg.K[4] = 1;
+    _msg.K[5] = 0;
+    _msg.K[6] = 0;
+    _msg.K[7] = 0;
+    _msg.K[8] = 1;
+
+    _msg.R[0] = 1;
+    _msg.R[1] = 0;
+    _msg.R[2] = 0;
+    _msg.R[3] = 0;
+    _msg.R[4] = 1;
+    _msg.R[5] = 0;
+    _msg.R[6] = 0;
+    _msg.R[7] = 0;
+    _msg.R[8] = 1;
+
+    _msg.P[0] = 1;
+    _msg.P[1] = 0;
+    _msg.P[2] = 0;
+    _msg.P[3] = 0;
+    _msg.P[4] = 0;
+    _msg.P[5] = 1;
+    _msg.P[6] = 0;
+    _msg.P[7] = 0;
+    _msg.P[8] = 0;
+    _msg.P[9] = 0;
+    _msg.P[10] = 1;
+    _msg.P[11] = 0;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::CameraInfo &_msg)
+  {
+    sensor_msgs::CameraInfo expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_EQ(expected_msg.width, _msg.width);
+    EXPECT_EQ(expected_msg.height, _msg.height);
+    EXPECT_EQ(expected_msg.distortion_model, _msg.distortion_model);
+
+    for (auto i = 0; i < 12; ++i)
+    {
+      EXPECT_EQ(expected_msg.P[i], _msg.P[i]);
+
+      if (i > 8)
+        continue;
+
+      EXPECT_EQ(expected_msg.K[i], _msg.K[i]);
+      EXPECT_EQ(expected_msg.R[i], _msg.R[i]);
+
+      if (i > 4)
+        continue;
+
+      EXPECT_EQ(expected_msg.D[i], _msg.D[i]);
+    }
   }
 
   /// \brief Create a message used for testing.
@@ -758,6 +840,108 @@ namespace testing
     EXPECT_EQ(expected_msg.pixel_format_type(), _msg.pixel_format_type());
     EXPECT_EQ(expected_msg.step(),              _msg.step());
     EXPECT_EQ(expected_msg.data(),              _msg.data());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::CameraInfo &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.set_width(320);
+    _msg.set_height(240);
+
+    auto distortion = _msg.mutable_distortion();
+    distortion->set_model(ignition::msgs::CameraInfo::Distortion::PLUMB_BOB);
+    distortion->add_k(1);
+    distortion->add_k(2);
+    distortion->add_k(3);
+    distortion->add_k(4);
+    distortion->add_k(5);
+
+    auto intrinsics = _msg.mutable_intrinsics();
+    intrinsics->add_k(1);
+    intrinsics->add_k(0);
+    intrinsics->add_k(0);
+    intrinsics->add_k(0);
+    intrinsics->add_k(1);
+    intrinsics->add_k(0);
+    intrinsics->add_k(0);
+    intrinsics->add_k(0);
+    intrinsics->add_k(1);
+
+    auto projection = _msg.mutable_projection();
+    projection->add_p(1);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(1);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(0);
+    projection->add_p(1);
+    projection->add_p(0);
+
+    _msg.add_rectification_matrix(1);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(1);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(0);
+    _msg.add_rectification_matrix(1);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::CameraInfo &_msg)
+  {
+    ignition::msgs::CameraInfo expected_msg;
+    createTestMsg(expected_msg);
+
+    ASSERT_TRUE(expected_msg.has_header());
+    ASSERT_TRUE(_msg.has_header());
+
+    compareTestMsg(_msg.header());
+    EXPECT_EQ(expected_msg.width(), _msg.width());
+    EXPECT_EQ(expected_msg.height(), _msg.height());
+
+    ASSERT_TRUE(expected_msg.has_distortion());
+    ASSERT_TRUE(_msg.has_distortion());
+
+    auto distortion = _msg.distortion();
+    auto expected_distortion = expected_msg.distortion();
+    EXPECT_EQ(expected_distortion.model(), distortion.model());
+    ASSERT_EQ(expected_distortion.k_size(), distortion.k_size());
+    for (auto i = 0; i < expected_distortion.k_size(); ++i)
+      EXPECT_EQ(expected_distortion.k(i), distortion.k(i));
+
+    ASSERT_TRUE(expected_msg.has_intrinsics());
+    ASSERT_TRUE(_msg.has_intrinsics());
+
+    auto intrinsics = _msg.intrinsics();
+    auto expected_intrinsics = expected_msg.intrinsics();
+    ASSERT_EQ(expected_intrinsics.k_size(), intrinsics.k_size());
+    for (auto i = 0; i < expected_intrinsics.k_size(); ++i)
+      EXPECT_EQ(expected_intrinsics.k(i), intrinsics.k(i));
+
+    ASSERT_TRUE(expected_msg.has_projection());
+    ASSERT_TRUE(_msg.has_projection());
+
+    auto projection = _msg.projection();
+    auto expected_projection = expected_msg.projection();
+    ASSERT_EQ(expected_projection.p_size(), projection.p_size());
+    for (auto i = 0; i < expected_projection.p_size(); ++i)
+      EXPECT_EQ(expected_projection.p(i), projection.p(i));
+
+    ASSERT_EQ(expected_msg.rectification_matrix_size(), _msg.rectification_matrix_size());
+    for (auto i = 0; i < expected_msg.rectification_matrix_size(); ++i)
+      EXPECT_EQ(expected_msg.rectification_matrix(i), _msg.rectification_matrix(i));
   }
 
   /// \brief Create a message used for testing.

@@ -23,6 +23,7 @@ service calls.Its support is limited to only the following message types:
 | geometry_msgs/Twist            | ignition::msgs::Twist        |
 | mav_msgs/Actuators             | ignition::msgs::Actuators    |
 | rosgraph_msgs/Clock            | ignition::msgs::Clock        |
+| sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo   |
 | sensor_msgs/Imu                | ignition::msgs::IMU          |
 | sensor_msgs/Image              | ignition::msgs::Image        |
 | sensor_msgs/JointState         | ignition::msgs::Model        |

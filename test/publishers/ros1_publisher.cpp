@@ -27,6 +27,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
@@ -122,6 +123,12 @@ int main(int argc, char ** argv)
   sensor_msgs::Image image_msg;
   ros1_ign_bridge::testing::createTestMsg(image_msg);
 
+  // sensor_msgs::CameraInfo.
+  ros::Publisher camera_info_pub =
+    n.advertise<sensor_msgs::CameraInfo>("camera_info", 1000);
+  sensor_msgs::CameraInfo camera_info_msg;
+  ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
+
   // sensor_msgs::Imu.
   ros::Publisher imu_pub =
     n.advertise<sensor_msgs::Imu>("imu", 1000);
@@ -163,6 +170,7 @@ int main(int argc, char ** argv)
     twist_pub.publish(twist_msg);
     actuators_pub.publish(actuators_msg);
     image_pub.publish(image_msg);
+    camera_info_pub.publish(camera_info_msg);
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
     magnetic_pub.publish(magnetic_msg);

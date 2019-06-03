@@ -30,6 +30,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
+#include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
@@ -214,6 +215,18 @@ TEST(ROS1SubscriberTest, Twist)
 TEST(ROS1SubscriberTest, Image)
 {
   MyTestClass<sensor_msgs::Image> client("image");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, CameraInfo)
+{
+  MyTestClass<sensor_msgs::CameraInfo> client("camera_info");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
