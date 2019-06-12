@@ -196,7 +196,7 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   auto secNsec = ignition::math::durationToSecNsec(this->currentTime);
 
   sensor_msgs::PointCloud2 msg;
-  msg.header.frame_id = "map";
+  msg.header.frame_id = "map"; // TODO
   msg.header.stamp.sec = secNsec.first;
   msg.header.stamp.nsec = secNsec.second;
   msg.width = _width;
@@ -211,13 +211,13 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   sensor_msgs::PointCloud2Iterator<float> iterX(msg, "x");
   sensor_msgs::PointCloud2Iterator<float> iterY(msg, "y");
   sensor_msgs::PointCloud2Iterator<float> iterZ(msg, "z");
-  sensor_msgs::PointCloud2Iterator<float> iterRgb(msg, "rgb");
+  sensor_msgs::PointCloud2Iterator<uint8_t> iterRgb(msg, "rgb");
 
   if (this->rgbCamera)
   {
     this->rgbCamera->Capture(this->image);
     fillImage(this->imageMsg, sensor_msgs::image_encodings::RGB8, _height,
-        _width, 3 * _width, this->image.Data());
+        _width, 3 * _width, this->image.Data<unsigned char>());
   }
 
   std::lock_guard<std::mutex> lock(this->scanMutex);
@@ -225,6 +225,7 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   double hfov = this->depthCamera->HFOV().Radian();
   double fl = _width / (2.0 * tan(hfov/2.0));
   int index{0};
+  uint8_t *image_src = (uint8_t *)(&(this->imageMsg.data[0]));
 
   // Convert depth to point cloud
   for (uint32_t j = 0; j < _height; ++j)
@@ -267,13 +268,13 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
       }
 
       // put image color data for each point
-      uint8_t *image_src = (uint8_t *)(&(this->imageMsg.data[0]));
       if (this->imageMsg.data.size() == _height*_width*3)
       {
         // color
-        iterRgb[0] = image_src[i*3+j*_width*3+0];
+        // TODO why does BGR work instead of RGB?!?!
+        iterRgb[2] = image_src[i*3+j*_width*3+0];
         iterRgb[1] = image_src[i*3+j*_width*3+1];
-        iterRgb[2] = image_src[i*3+j*_width*3+2];
+        iterRgb[0] = image_src[i*3+j*_width*3+2];
       }
       else if (this->imageMsg.data.size() == _height*_width)
       {
