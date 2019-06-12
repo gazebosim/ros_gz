@@ -20,6 +20,7 @@
 #include <ignition/gazebo/components/RgbdCamera.hh>
 #include <ignition/gazebo/Util.hh>
 #include <ignition/plugin/Register.hh>
+#include <ignition/rendering/Camera.hh>
 #include <ignition/rendering/DepthCamera.hh>
 #include <ignition/rendering/RenderEngine.hh>
 #include <ignition/rendering/RenderingIface.hh>
@@ -28,6 +29,8 @@
 
 #include <ros/ros.h>
 #include <ros/advertise_options.h>
+#include <sensor_msgs/Image.h>
+#include <sensor_msgs/fill_image.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 IGNITION_ADD_PLUGIN(
@@ -46,7 +49,8 @@ class ros1_ign_pointcloud::PointCloudPrivate
             unsigned int /*_channels*/,
             const std::string &/*_format*/);
 
-  public: void LoadCamera(const ignition::gazebo::EntityComponentManager &_ecm);
+  public: void LoadDepthCamera(const ignition::gazebo::EntityComponentManager &_ecm);
+  public: void LoadRgbCamera(const ignition::gazebo::EntityComponentManager &_ecm);
 
   /// \brief rendering scene to be managed by the scene manager and used to
   /// generate sensor data
@@ -55,6 +59,8 @@ class ros1_ign_pointcloud::PointCloudPrivate
   public: ignition::gazebo::Entity entity;
 
   public: std::shared_ptr<ignition::rendering::DepthCamera> depthCamera;
+  public: std::shared_ptr<ignition::rendering::Camera> rgbCamera;
+  public: ignition::rendering::Image image;
 
   public: ignition::common::ConnectionPtr newDepthFrameConnection;
 
@@ -63,6 +69,7 @@ class ros1_ign_pointcloud::PointCloudPrivate
 
   public: std::unique_ptr<ros::NodeHandle> rosnode;
   public: ros::Publisher pcPub;
+  public: sensor_msgs::Image imageMsg;
 
   public: std::chrono::steady_clock::duration currentTime;
 
@@ -82,6 +89,14 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
     ignition::gazebo::EventManager &)
 {
   this->dataPtr->entity = _entity;
+
+  if (!ros::isInitialized())
+  {
+    int argc = 0;
+    char** argv = NULL;
+    ros::init(argc, argv, "ignition", ros::init_options::NoSigintHandler);
+    ROS_INFO_NAMED("point_cloud", "Initialized ROS");
+  }
 }
 
 //////////////////////////////////////////////////
@@ -97,17 +112,21 @@ void PointCloud::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
       return;
   }
 
-  // Get rendering depth camera
+  // Get rendering cameras
   if (!this->dataPtr->depthCamera)
   {
-    this->dataPtr->LoadCamera(_ecm);
+    this->dataPtr->LoadDepthCamera(_ecm);
+  }
+  if (!this->dataPtr->rgbCamera)
+  {
+    this->dataPtr->LoadRgbCamera(_ecm);
   }
 
   this->dataPtr->currentTime = _info.simTime;
 }
 
 //////////////////////////////////////////////////
-void PointCloudPrivate::LoadCamera(
+void PointCloudPrivate::LoadDepthCamera(
     const ignition::gazebo::EntityComponentManager &_ecm)
 {
   // Sensor name scoped from the model
@@ -134,18 +153,35 @@ void PointCloudPrivate::LoadCamera(
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
       std::placeholders::_4, std::placeholders::_5));
 
-  if (!ros::isInitialized())
-  {
-    int argc = 0;
-    char** argv = NULL;
-    ros::init(argc, argv, "ignition", ros::init_options::NoSigintHandler);
-    ROS_INFO_NAMED("point_cloud", "Initialized ROS");
-  }
-
   this->rosnode = std::make_unique<ros::NodeHandle>(
       ignition::gazebo::scopedName(this->entity, _ecm, "/", false));
 
   this->pcPub = this->rosnode->advertise<sensor_msgs::PointCloud2>("points", 1);
+}
+
+//////////////////////////////////////////////////
+void PointCloudPrivate::LoadRgbCamera(
+    const ignition::gazebo::EntityComponentManager &_ecm)
+{
+  // Sensor name scoped from the model
+  auto sensorName =
+      ignition::gazebo::scopedName(this->entity, _ecm, "::", false);
+  sensorName = sensorName.substr(sensorName.find("::") + 2);
+
+  // Get sensor
+  auto sensor = this->scene->SensorByName(sensorName);
+  if (!sensor)
+  {
+    return;
+  }
+
+  this->rgbCamera = std::dynamic_pointer_cast<ignition::rendering::Camera>(sensor);
+  if (!this->rgbCamera)
+  {
+    return;
+  }
+
+  this->image = this->rgbCamera->CreateImage();
 }
 
 //////////////////////////////////////////////////
@@ -177,26 +213,14 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   sensor_msgs::PointCloud2Iterator<float> iterZ(msg, "z");
   sensor_msgs::PointCloud2Iterator<float> iterRgb(msg, "rgb");
 
-  std::lock_guard<std::mutex> lock(this->scanMutex);
-//  for (unsigned int i = 0; i < _width; i++)
-//  {
-//    for (unsigned int j = 0; j < _height; j++, ++iterX, ++iterY, ++iterZ, ++iterRgb)
-//    {
-//      unsigned int index = (j * _width) + i;
-//
-//      // Mask ranges outside of min/max to +/- inf, as per REP 117
-//      *iterZ =
-//        _scan[4 * index + 2] >= this->depthCamera->FarClipPlane() ?
-//        ignition::math::INF_D :
-//        _scan[4 * index + 2] <= this->depthCamera->NearClipPlane() ?
-//        -ignition::math::INF_D : _scan[4 * index + 2];
-//
-//      *iterX = _scan[4 * index];
-//      *iterY = _scan[4 * index + 1];
-//      *iterRgb = _scan[4 * index + 3];
-//    }
-//  }
+  if (this->rgbCamera)
+  {
+    this->rgbCamera->Capture(this->image);
+    fillImage(this->imageMsg, sensor_msgs::image_encodings::RGB8, _height,
+        _width, 3 * _width, this->image.Data());
+  }
 
+  std::lock_guard<std::mutex> lock(this->scanMutex);
 
   double hfov = this->depthCamera->HFOV().Radian();
   double fl = _width / (2.0 * tan(hfov/2.0));
@@ -242,34 +266,29 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
         *iterZ = depth;
       }
 
-      // TODO: populate color
-      // 1. Get RGB camera
-      // 2. Connect to OnNewImageFrame callback
-      // 3. Store image data to use here
-
-//      // put image color data for each point
-//      uint8_t*  image_src = (uint8_t*)(&(this->image_msg_.data[0]));
-//      if (this->image_msg_.data.size() == _height*_width*3)
-//      {
-//        // color
-//        iterRgb[0] = image_src[i*3+j*_width*3+0];
-//        iterRgb[1] = image_src[i*3+j*_width*3+1];
-//        iterRgb[2] = image_src[i*3+j*_width*3+2];
-//      }
-//      else if (this->image_msg_.data.size() == _height*_width)
-//      {
-//        // mono (or bayer?  @todo; fix for bayer)
-//        iterRgb[0] = image_src[i+j*_width];
-//        iterRgb[1] = image_src[i+j*_width];
-//        iterRgb[2] = image_src[i+j*_width];
-//      }
-//      else
-//      {
-//        // no image
-//        iterRgb[0] = 0;
-//        iterRgb[1] = 0;
-//        iterRgb[2] = 0;
-//      }
+      // put image color data for each point
+      uint8_t *image_src = (uint8_t *)(&(this->imageMsg.data[0]));
+      if (this->imageMsg.data.size() == _height*_width*3)
+      {
+        // color
+        iterRgb[0] = image_src[i*3+j*_width*3+0];
+        iterRgb[1] = image_src[i*3+j*_width*3+1];
+        iterRgb[2] = image_src[i*3+j*_width*3+2];
+      }
+      else if (this->imageMsg.data.size() == _height*_width)
+      {
+        // mono?
+        iterRgb[0] = image_src[i+j*_width];
+        iterRgb[1] = image_src[i+j*_width];
+        iterRgb[2] = image_src[i+j*_width];
+      }
+      else
+      {
+        // no image
+        iterRgb[0] = 0;
+        iterRgb[1] = 0;
+        iterRgb[2] = 0;
+      }
     }
   }
 
