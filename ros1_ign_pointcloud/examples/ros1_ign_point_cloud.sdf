@@ -1,6 +1,28 @@
 <?xml version="1.0" ?>
 <!--
-  TODO
+  Example publishing point cloud messages to ROS from Ignition.
+
+  Try it out:
+
+  1. Start ROS core:
+
+          roscore
+
+  2. Make sure Ignition Gazebo can find the point cloud plugin by adding your lib install directory
+     to the path, for example:
+
+          export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
+
+  3. Load the example world, unpaused:
+
+          ign gazebo -r examples/ros1_ign_point_cloud.sdf
+
+  4. Launch RViz to visualize the point cloud:
+
+          rosrun rviz rviz
+
+  5. On RViz, add the `/ign_demo/pc2` topic for `PointCloud2` messages and change the fixed frame i
+     to `map`.
 -->
 <sdf version="1.6">
   <world name="ros1_ign">
@@ -246,7 +268,10 @@
           <topic>rgbd_camera</topic>
           <plugin
             filename="libRos1IgnPointCloud.so"
-            name="ros1_ign_pointcloud::PointCloud">
+            name="ros1_ign_point_cloud::PointCloud">
+            <node_name>ign_demo</node_name>
+            <topic>pc2</topic>
+            <frame_id>map</frame_id>
           </plugin>
         </sensor>
       </link>

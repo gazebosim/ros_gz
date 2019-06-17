@@ -14,7 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs)
 
-find_package(ignition-gazebo2 QUIET REQUIRED)
+find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
 set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
 
 find_package(ignition-rendering2 QUIET REQUIRED)
@@ -32,7 +32,7 @@ include_directories(
 
 set(plugin_name Ros1IgnPointCloud)
 add_library(${plugin_name} SHARED
-  src/PointCloud.cc
+  src/point_cloud.cc
 )
 target_link_libraries(${plugin_name}
   ignition-gazebo${IGN_GAZEBO_VER}::core

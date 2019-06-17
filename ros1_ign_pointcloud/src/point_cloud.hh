@@ -18,13 +18,21 @@
 #include <memory>
 #include <ignition/gazebo/System.hh>
 
-namespace ros1_ign_pointcloud
+namespace ros1_ign_point_cloud
 {
   // Forward declarations.
   class PointCloudPrivate;
 
-  /// \brief Sample system that implemente the ISystemPostUpdate system
-  /// plugin interface.
+  /// \brief System which publishes ROS PointCloud2 messages for RGBD sensors.
+  ///
+  /// This plugin should be attached to an RGBD sensor (i.e. <sensor...><plugin>)
+  ///
+  /// Important: load `ignition::gazebo::systems::Sensors` as well, which will create the sensor.
+  ///
+  /// SDF parameters:
+  /// * `<node_name>`: Name of ROS node, defaults to sensor scoped name
+  /// * `<topic>`: ROS topic to publish to, defaults to "points"
+  /// * `<frame_id>`: TF frame name to populate message header, defaults to sensor scoped name
   class PointCloud:
     public ignition::gazebo::System,
     public ignition::gazebo::ISystemConfigure,
