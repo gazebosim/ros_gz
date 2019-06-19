@@ -23,6 +23,9 @@ apt-get install -qq -y libignition-msgs4-dev \
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic \
+  --skip-keys=ignition-gazebo2 \
+  --skip-keys=ignition-msgs4 \
+  --skip-keys=ignition-rendering2 \
   --skip-keys=ignition-sensors2 \
   --skip-keys=ignition-transport7
 
