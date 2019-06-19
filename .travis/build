@@ -22,7 +22,9 @@ apt-get install -qq -y libignition-msgs4-dev \
                        ros-melodic-sensor-msgs
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro melodic
+rosdep install --from-paths ./ -i -y --rosdistro melodic \
+  --skip-keys=ignition-sensors2 \
+  --skip-keys=ignition-transport7
 
 # Build.
 source /opt/ros/melodic/setup.bash
