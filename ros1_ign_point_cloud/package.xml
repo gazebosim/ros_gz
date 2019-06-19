@@ -7,6 +7,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>ignition-gazebo2</depend>
+  <depend>ignition-rendering2</depend>
+  <depend>ignition-sensors2</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
 

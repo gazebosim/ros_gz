@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <mutex>
-
 #include "point_cloud.hh"
 #include <ignition/common/Event.hh>
 #include <ignition/gazebo/components/Name.hh>
@@ -96,6 +94,12 @@ class ros1_ign_point_cloud::PointCloudPrivate
 
   /// \brief Frame ID to put in message header. Defaults to sensor scoped name.
   public: std::string frame_id_;
+
+  /// \brief Render engine name
+  public: std::string engine_name_;
+
+  /// \brief Render scene name
+  public: std::string scene_name_;
 };
 
 //////////////////////////////////////////////////
@@ -124,8 +128,8 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
   auto scoped_name = ignition::gazebo::scopedName(this->dataPtr->entity_, _ecm, "/", false);
 
   // ROS node
-  auto node_name = _sdf->Get<std::string>("node_name", scoped_name).first;
-  this->dataPtr->rosnode_ = std::make_unique<ros::NodeHandle>(node_name);
+  auto ns = _sdf->Get<std::string>("namespace", scoped_name).first;
+  this->dataPtr->rosnode_ = std::make_unique<ros::NodeHandle>(ns);
 
   // Publisher
   auto topic = _sdf->Get<std::string>("topic", "points").first;
@@ -133,6 +137,10 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
 
   // TF frame ID
   this->dataPtr->frame_id_ = _sdf->Get<std::string>("frame_id", scoped_name).first;
+
+  // Rendering engine and scene
+  this->dataPtr->engine_name_ = _sdf->Get<std::string>("engine", "ogre2").first;
+  this->dataPtr->scene_name_ = _sdf->Get<std::string>("scene", "scene").first;
 }
 
 //////////////////////////////////////////////////
@@ -144,8 +152,11 @@ void PointCloud::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
   // Find engine / scene
   if (!this->dataPtr->scene_)
   {
-    auto engine = ignition::rendering::engine("ogre2");
-    this->dataPtr->scene_ = engine->SceneByName("scene");
+    auto engine = ignition::rendering::engine(this->dataPtr->engine_name_);
+    if (!engine)
+      return;
+
+    this->dataPtr->scene_ = engine->SceneByName(this->dataPtr->scene_name_);
     if (!this->dataPtr->scene_)
       return;
   }
@@ -261,7 +272,9 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   sensor_msgs::PointCloud2Iterator<float> iter_x(msg, "x");
   sensor_msgs::PointCloud2Iterator<float> iter_y(msg, "y");
   sensor_msgs::PointCloud2Iterator<float> iter_z(msg, "z");
-  sensor_msgs::PointCloud2Iterator<uint8_t> iter_rgb(msg, "rgb");
+  sensor_msgs::PointCloud2Iterator<uint8_t> iter_r(msg, "r");
+  sensor_msgs::PointCloud2Iterator<uint8_t> iter_g(msg, "g");
+  sensor_msgs::PointCloud2Iterator<uint8_t> iter_b(msg, "b");
 
   if (this->rgb_camera_)
   {
@@ -284,7 +297,7 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
     else
       p_angle = 0.0;
 
-    for (uint32_t i=0; i<_width; i++, ++iter_x, ++iter_y, ++iter_z, ++iter_rgb)
+    for (uint32_t i=0; i<_width; i++, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
     {
       double y_angle;
       if (_width>1)
@@ -320,24 +333,23 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
       if (this->rgb_image_msg_.data.size() == _height * _width * 3)
       {
         // color
-        // \TODO(anyone) why do we need to do BHR instead of RGB?
-        iter_rgb[2] = image_src[i*3+j*_width*3+0];
-        iter_rgb[1] = image_src[i*3+j*_width*3+1];
-        iter_rgb[0] = image_src[i*3+j*_width*3+2];
+        *iter_r = image_src[i*3+j*_width*3+0];
+        *iter_g = image_src[i*3+j*_width*3+1];
+        *iter_b = image_src[i*3+j*_width*3+2];
       }
       else if (this->rgb_image_msg_.data.size() == _height*_width)
       {
         // mono?
-        iter_rgb[0] = image_src[i+j*_width];
-        iter_rgb[1] = image_src[i+j*_width];
-        iter_rgb[2] = image_src[i+j*_width];
+        *iter_r = image_src[i+j*_width];
+        *iter_g = image_src[i+j*_width];
+        *iter_b = image_src[i+j*_width];
       }
       else
       {
         // no image
-        iter_rgb[0] = 0;
-        iter_rgb[1] = 0;
-        iter_rgb[2] = 0;
+        *iter_r = 0;
+        *iter_g = 0;
+        *iter_b = 0;
       }
     }
   }

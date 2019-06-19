@@ -30,9 +30,11 @@ namespace ros1_ign_point_cloud
   /// Important: load `ignition::gazebo::systems::Sensors` as well, which will create the sensor.
   ///
   /// SDF parameters:
-  /// * `<node_name>`: Name of ROS node, defaults to sensor scoped name
+  /// * `<namespace>`: Namespace for ROS node, defaults to sensor scoped name
   /// * `<topic>`: ROS topic to publish to, defaults to "points"
   /// * `<frame_id>`: TF frame name to populate message header, defaults to sensor scoped name
+  /// * `<engine>`: Render engine name, defaults to 'ogre2'
+  /// * `<scene>`: Scene name, defaults to 'scene'
   class PointCloud:
     public ignition::gazebo::System,
     public ignition::gazebo::ISystemConfigure,

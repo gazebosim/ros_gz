@@ -1,6 +1,7 @@
 <?xml version="1.0" ?>
 <!--
   Example publishing point cloud messages to ROS from Ignition.
+  There are 2 RGBD cameras: one with custom plugin parameters and another one with default parameters.
 
   Try it out:
 
@@ -21,8 +22,12 @@
 
           rosrun rviz rviz
 
-  5. On RViz, add the `/ign_demo/pc2` topic for `PointCloud2` messages and change the fixed frame i
-     to `map`.
+  5. On RViz, add the `/custom_params/pc2` topic for `PointCloud2` messages and change the fixed frame
+     to `map`. You should see the point cloud from the `custom_params` camera.
+
+  6. On RViz, add the `/default_params/points` topic for `PointCloud2` messages and change the fixed
+     frame to `default_params`. You should see the point cloud from the `default_params` camera.
+
 -->
 <sdf version="1.6">
   <world name="ros1_ign">
@@ -112,13 +117,41 @@
 
       <plugin filename="ImageDisplay" name="Image Display">
         <ignition-gui>
-          <title>Depth image</title>
-          <property type="bool" key="showTitleBar">false</property>
+          <title>Custom: depth</title>
           <property key="width" type="double">400</property>
           <property key="state" type="string">floating</property>
           <anchors target="3D View">
             <line own="left" target="left"/>
             <line own="top" target="top"/>
+          </anchors>
+        </ignition-gui>
+        <topic>custom_params/depth_image</topic>
+        <topic_picker>false</topic_picker>
+      </plugin>
+
+      <plugin filename="ImageDisplay" name="Image Display">
+        <ignition-gui>
+          <title>Custom: RGB</title>
+          <property key="width" type="double">400</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="3D View">
+            <line own="right" target="right"/>
+            <line own="top" target="top"/>
+          </anchors>
+        </ignition-gui>
+        <topic>custom_params/image</topic>
+        <topic_picker>false</topic_picker>
+      </plugin>
+
+      <plugin filename="ImageDisplay" name="Image Display">
+        <ignition-gui>
+          <title>Default: depth</title>
+          <property key="width" type="double">400</property>
+          <property key="height" type="double">315</property>
+          <property key="state" type="string">floating</property>
+          <anchors target="3D View">
+            <line own="left" target="left"/>
+            <line own="bottom" target="bottom"/>
           </anchors>
         </ignition-gui>
         <topic>rgbd_camera/depth_image</topic>
@@ -127,13 +160,13 @@
 
       <plugin filename="ImageDisplay" name="Image Display">
         <ignition-gui>
-          <title>RGB image</title>
-          <property type="bool" key="showTitleBar">false</property>
+          <title>Default: RGB</title>
           <property key="width" type="double">400</property>
+          <property key="height" type="double">315</property>
           <property key="state" type="string">floating</property>
           <anchors target="3D View">
             <line own="right" target="right"/>
-            <line own="top" target="top"/>
+            <line own="bottom" target="bottom"/>
           </anchors>
         </ignition-gui>
         <topic>rgbd_camera/image</topic>
@@ -160,9 +193,6 @@
       <link name="link">
         <collision name="collision">
           <geometry>
-            <!--plane>
-              <normal>0 0 1</normal>
-            </plane-->
             <box>
               <size>20 20 0.1</size>
             </box>
@@ -170,10 +200,6 @@
         </collision>
         <visual name="visual">
           <geometry>
-            <!--plane>
-              <normal>0 0 1</normal>
-              <size>100 100</size>
-            </plane-->
             <box>
               <size>20 20 0.1</size>
             </box>
@@ -188,8 +214,8 @@
     </model>
 
     <model name="box">
-      <pose>0 -1 0.5 0 0 0</pose>
-      <link name="box_link">
+      <pose>0 -1 0.5 0 0 0.7</pose>
+      <link name="link">
         <inertial>
           <inertia>
             <ixx>1</ixx>
@@ -201,7 +227,7 @@
           </inertia>
           <mass>1.0</mass>
         </inertial>
-        <collision name="box_collision">
+        <collision name="collision">
           <geometry>
             <box>
               <size>1 1 1</size>
@@ -209,7 +235,7 @@
           </geometry>
         </collision>
 
-        <visual name="box_visual">
+        <visual name="visual">
           <geometry>
             <box>
               <size>1 1 1</size>
@@ -224,7 +250,44 @@
       </link>
     </model>
 
-    <model name="rgbd_camera">
+    <model name="sphere">
+      <pose>3 0 0.5 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <inertia>
+            <ixx>1</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>1</iyy>
+            <iyz>0</iyz>
+            <izz>1</izz>
+          </inertia>
+          <mass>1.0</mass>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <sphere>
+              <radius>0.2</radius>
+            </sphere>
+          </geometry>
+        </collision>
+
+        <visual name="visual">
+          <geometry>
+            <sphere>
+              <radius>0.2</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>1 1 0 1</ambient>
+            <diffuse>1 1 0 1</diffuse>
+            <specular>1 1 0 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="custom_params">
       <pose>5 0 0.5 0 0.0 3.14</pose>
       <link name="link">
         <pose>0.05 0.05 0.05 0 0 0</pose>
@@ -265,13 +328,55 @@
           <always_on>1</always_on>
           <update_rate>30</update_rate>
           <visualize>true</visualize>
+          <topic>custom_params</topic>
+          <plugin
+            filename="libRos1IgnPointCloud.so"
+            name="ros1_ign_point_cloud::PointCloud">
+            <namespace>custom_params</namespace>
+            <topic>pc2</topic>
+            <frame_id>map</frame_id>
+          </plugin>
+        </sensor>
+      </link>
+    </model>
+
+    <model name="default_params">
+      <pose>9 0 0.5 0 0.0 3.14</pose>
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.1</size>
+            </box>
+          </geometry>
+        </visual>
+        <sensor name="default_params" type="rgbd_camera">
+          <camera>
+            <horizontal_fov>1.047</horizontal_fov>
+            <image>
+              <width>320</width>
+              <height>240</height>
+            </image>
+            <clip>
+              <near>0.1</near>
+              <far>100</far>
+            </clip>
+          </camera>
+          <always_on>1</always_on>
+          <update_rate>30</update_rate>
+          <visualize>true</visualize>
           <topic>rgbd_camera</topic>
           <plugin
             filename="libRos1IgnPointCloud.so"
             name="ros1_ign_point_cloud::PointCloud">
-            <node_name>ign_demo</node_name>
-            <topic>pc2</topic>
-            <frame_id>map</frame_id>
           </plugin>
         </sensor>
       </link>
