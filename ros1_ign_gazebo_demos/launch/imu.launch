@@ -6,7 +6,7 @@
     type="ign_gazebo"
     name="gazebo"
     output="screen"
-    args="-r -v 3 camera_sensor.sdf">
+    args="-r -v 3 sensors.sdf">
   </node>
 
   <node
@@ -14,12 +14,12 @@
     type="parameter_bridge"
     name="$(anon ros1_ign_bridge)"
     output="screen"
-    args="/camera@sensor_msgs/Image@ignition.msgs.Image /camera_info@sensor_msgs/CameraInfo@ignition.msgs.CameraInfo">
+    args="/imu@sensor_msgs/Imu@ignition.msgs.IMU">
   </node>
 
   <node
     type="rviz"
     name="rviz"
     pkg="rviz"
-    args="-d $(find ros1_ign_gazebo_demos)/rviz/camera.rviz" />
+    args="-d $(find ros1_ign_gazebo_demos)/rviz/imu.rviz" />
 </launch>
