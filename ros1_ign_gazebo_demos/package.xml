@@ -6,7 +6,11 @@
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
-  <depend>ignition-gazebo2</depend>
-  <depend>ros1_ign_bridge</depend>
-  <depend>ros1_ign_point_cloud</depend>
+
+  <exec_depend>ignition-gazebo2</exec_depend>
+  <exec_depend>ros1_ign_bridge</exec_depend>
+  <exec_depend>ros1_ign_point_cloud</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>rviz</exec_depend>
+
 </package>
