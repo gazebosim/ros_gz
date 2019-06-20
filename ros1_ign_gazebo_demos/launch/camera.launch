@@ -1,13 +1,9 @@
 <?xml version="1.0"?>
 <launch>
 
-  <node
-    pkg="ros1_ign_gazebo_demos"
-    type="ign_gazebo"
-    name="gazebo"
-    output="screen"
-    args="-r -v 3 camera_sensor.sdf">
-  </node>
+  <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
+    <arg name="args" value="-r -v 3 camera_sensor.sdf"/>
+  </include>
 
   <node
     pkg="ros1_ign_bridge"

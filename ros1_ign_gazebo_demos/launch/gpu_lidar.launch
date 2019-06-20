@@ -2,7 +2,7 @@
 <launch>
 
   <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="-r -v 3 depth_camera_sensor.sdf"/>
+    <arg name="args" value="-r -v 3 gpu_lidar_sensor.sdf"/>
   </include>
 
   <node
@@ -10,13 +10,12 @@
     type="parameter_bridge"
     name="$(anon ros1_ign_bridge)"
     output="screen"
-    args="/depth_camera@sensor_msgs/Image@ignition.msgs.Image">
+    args="/lidar@sensor_msgs/LaserScan@ignition.msgs.LaserScan">
   </node>
 
   <node
-    pkg="rqt_image_view"
-    type="rqt_image_view"
-    name="rqt_image_view"
-    args="/depth_camera">
-  </node>
+    type="rviz"
+    name="rviz"
+    pkg="rviz"
+    args="-d $(find ros1_ign_gazebo_demos)/rviz/gpu_lidar.rviz" />
 </launch>
