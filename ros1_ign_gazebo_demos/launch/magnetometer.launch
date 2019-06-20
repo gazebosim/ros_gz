@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node
+    pkg="ros1_ign_gazebo_demos"
+    type="ign_gazebo"
+    name="gazebo"
+    output="screen"
+    args="-r -v 3 sensors.sdf">
+  </node>
+
+  <node
+    pkg="ros1_ign_bridge"
+    type="parameter_bridge"
+    name="$(anon ros1_ign_bridge)"
+    output="screen"
+    args="/magnetometer@sensor_msgs/MagneticField@ignition.msgs.Magnetometer">
+  </node>
+
+  <node
+    type="rqt_topic"
+    name="rqt_topic"
+    pkg="rqt_topic"
+    args="-t" />
+</launch>
