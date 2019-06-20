@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<launch>
+
+  <node
+    pkg="ros1_ign_gazebo_demos"
+    type="ign_gazebo"
+    name="gazebo"
+    args="-r -v 4 camera_sensor.sdf">
+  </node>
+
+  <node
+    pkg="ros1_ign_bridge"
+    type="parameter_bridge"
+    name="$(anon ros1_ign_bridge)"
+    args="/camera@sensor_msgs/Image@ignition.msgs.Image /camera_info@sensor_msgs/CameraInfo@ignition.msgs.CameraInfo">
+  </node>
+
+  <node
+    type="rviz"
+    name="rviz"
+    pkg="rviz"
+    args="-d $(find ros1_ign_gazebo_demos)/rviz/camera.rviz" />
+</launch>
