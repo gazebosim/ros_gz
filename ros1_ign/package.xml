@@ -9,6 +9,7 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <exec_depend>ros1_ign_bridge</exec_depend>
+  <exec_depend>ros1_ign_point_cloud</exec_depend>
 
   <export>
     <metapackage/>
