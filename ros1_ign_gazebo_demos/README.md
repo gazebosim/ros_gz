@@ -44,6 +44,8 @@ Publishes IMU readings.
 
     roslaunch ros1_ign_gazebo_demos imu.launch
 
+![](images/imu_demo.png)
+
 ## Magnetometer
 
 Publishes magnetic field readings.
