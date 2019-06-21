@@ -116,6 +116,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::CameraInfo camera_info_msg;
   ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
 
+  // ignition::msgs::FluidPressure.
+  auto fluid_pressure_pub = node.Advertise<ignition::msgs::FluidPressure>("fluid_pressure");
+  ignition::msgs::FluidPressure fluid_pressure_msg;
+  ros1_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+
   // ignition::msgs::IMU.
   auto imu_pub = node.Advertise<ignition::msgs::IMU>("imu");
   ignition::msgs::IMU imu_msg;
