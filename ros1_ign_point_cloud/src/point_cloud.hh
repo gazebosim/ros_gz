@@ -23,9 +23,9 @@ namespace ros1_ign_point_cloud
   // Forward declarations.
   class PointCloudPrivate;
 
-  /// \brief System which publishes ROS PointCloud2 messages for RGBD sensors.
+  /// \brief System which publishes ROS PointCloud2 messages for RGBD or GPU lidar sensors.
   ///
-  /// This plugin should be attached to an RGBD sensor (i.e. <sensor...><plugin>)
+  /// This plugin should be attached to an RGBD or GPU lidar sensor (i.e. <sensor...><plugin>)
   ///
   /// Important: load `ignition::gazebo::systems::Sensors` as well, which will create the sensor.
   ///
