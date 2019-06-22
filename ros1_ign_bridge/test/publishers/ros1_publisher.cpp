@@ -28,6 +28,7 @@
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
 #include <sensor_msgs/CameraInfo.h>
+#include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
@@ -129,6 +130,12 @@ int main(int argc, char ** argv)
   sensor_msgs::CameraInfo camera_info_msg;
   ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
 
+  // sensor_msgs::FluidPressure.
+  ros::Publisher fluid_pressure_pub =
+    n.advertise<sensor_msgs::FluidPressure>("fluid_pressure", 1000);
+  sensor_msgs::FluidPressure fluid_pressure_msg;
+  ros1_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+
   // sensor_msgs::Imu.
   ros::Publisher imu_pub =
     n.advertise<sensor_msgs::Imu>("imu", 1000);
@@ -171,6 +178,7 @@ int main(int argc, char ** argv)
     actuators_pub.publish(actuators_msg);
     image_pub.publish(image_msg);
     camera_info_pub.publish(camera_info_msg);
+    fluid_pressure_pub.publish(fluid_pressure_msg);
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
     magnetic_pub.publish(magnetic_msg);

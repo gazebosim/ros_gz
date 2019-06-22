@@ -211,12 +211,12 @@ template<>
 void
 convert_1_to_ign(
   const sensor_msgs::FluidPressure & ros1_msg,
-  ignition::msgs::Fluid & ign_msg);
+  ignition::msgs::FluidPressure & ign_msg);
 
 template<>
 void
 convert_ign_to_1(
-  const ignition::msgs::Fluid & ign_msg,
+  const ignition::msgs::FluidPressure & ign_msg,
   sensor_msgs::FluidPressure & ros1_msg);
 
 template<>

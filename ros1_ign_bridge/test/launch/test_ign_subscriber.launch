@@ -17,6 +17,7 @@
               /twist@geometry_msgs/Twist@ignition.msgs.Twist
               /image@sensor_msgs/Image@ignition.msgs.Image
               /camera_info@sensor_msgs/CameraInfo@ignition.msgs.CameraInfo
+              /fluid_pressure@sensor_msgs/FluidPressure@ignition.msgs.FluidPressure
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
               /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer

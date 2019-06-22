@@ -303,18 +303,18 @@ template<>
 void
 Factory<
   sensor_msgs::FluidPressure,
-  ignition::msgs::Fluid
+  ignition::msgs::FluidPressure
 >::convert_1_to_ign(
   const sensor_msgs::FluidPressure & ros1_msg,
-  ignition::msgs::Fluid & ign_msg);
+  ignition::msgs::FluidPressure & ign_msg);
 
 template<>
 void
 Factory<
   sensor_msgs::FluidPressure,
-  ignition::msgs::Fluid
+  ignition::msgs::FluidPressure
 >::convert_ign_to_1(
-  const ignition::msgs::Fluid & ign_msg,
+  const ignition::msgs::FluidPressure & ign_msg,
   sensor_msgs::FluidPressure & ros1_msg);
 
 template<>

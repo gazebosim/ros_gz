@@ -236,6 +236,18 @@ TEST(ROS1SubscriberTest, CameraInfo)
 }
 
 /////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, FluidPressure)
+{
+  MyTestClass<sensor_msgs::FluidPressure> client("fluid_pressure");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROS1SubscriberTest, Imu)
 {
   MyTestClass<sensor_msgs::Imu> client("imu");

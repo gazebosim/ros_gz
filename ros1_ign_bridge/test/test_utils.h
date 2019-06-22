@@ -34,6 +34,7 @@
 #include <mav_msgs/Actuators.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/CameraInfo.h>
+#include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/JointState.h>
@@ -473,6 +474,30 @@ namespace testing
 
       EXPECT_EQ(expected_msg.D[i], _msg.D[i]);
     }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::FluidPressure &_msg)
+  {
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header = header_msg;
+    _msg.fluid_pressure = 0.123;
+    _msg.variance = 0.456;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::FluidPressure &_msg)
+  {
+    sensor_msgs::FluidPressure expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_FLOAT_EQ(expected_msg.fluid_pressure, _msg.fluid_pressure);
+    EXPECT_FLOAT_EQ(expected_msg.variance, _msg.variance);
   }
 
   /// \brief Create a message used for testing.
@@ -942,6 +967,30 @@ namespace testing
     ASSERT_EQ(expected_msg.rectification_matrix_size(), _msg.rectification_matrix_size());
     for (auto i = 0; i < expected_msg.rectification_matrix_size(); ++i)
       EXPECT_EQ(expected_msg.rectification_matrix(i), _msg.rectification_matrix(i));
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::FluidPressure &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.set_pressure(0.123);
+    _msg.set_variance(0.456);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::FluidPressure &_msg)
+  {
+    ignition::msgs::FluidPressure expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header());
+    EXPECT_FLOAT_EQ(expected_msg.pressure(), _msg.pressure());
+    EXPECT_FLOAT_EQ(expected_msg.variance(), _msg.variance());
   }
 
   /// \brief Create a message used for testing.

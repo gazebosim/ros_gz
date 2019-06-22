@@ -14,6 +14,14 @@ And you can directly call the executable, for example:
 
 ![](images/shapes_demo.png)
 
+## Air pressure
+
+Publishes fluid pressure readings.
+
+    roslaunch ros1_ign_gazebo_demos air_pressure.launch
+
+![](images/air_pressure_demo.png)
+
 ## Camera
 
 Publishes RGB camera image and info.
