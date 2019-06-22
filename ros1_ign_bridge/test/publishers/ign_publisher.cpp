@@ -167,6 +167,7 @@ int main(int /*argc*/, char **/*argv*/)
     transform_stamped_pub.Publish(transform_stamped_msg);
     image_pub.Publish(image_msg);
     camera_info_pub.Publish(camera_info_msg);
+    fluid_pressure_pub.Publish(fluid_pressure_msg);
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
     magnetic_pub.Publish(magnetometer_msg);
