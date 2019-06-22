@@ -1,18 +1,16 @@
-<?xml version="1.0"?>
 <package format="2">
-  <name>ros1_ign</name>
+  <name>ros1_ign_gazebo_demos</name>
   <version>0.1.0</version>
-  <description>Meta-package containing interfaces for using ROS with <a href="https://ignitionrobotics.org">Ignition</a> simulation.</description>
+  <description>Demos using Ignition Gazebo simulation with ROS 1.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <exec_depend>ignition-gazebo2</exec_depend>
   <exec_depend>ros1_ign_bridge</exec_depend>
-  <exec_depend>ros1_ign_gazebo_demos</exec_depend>
   <exec_depend>ros1_ign_point_cloud</exec_depend>
+  <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>rviz</exec_depend>
 
-  <export>
-    <metapackage/>
-  </export>
 </package>

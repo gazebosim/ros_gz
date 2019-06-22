@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
+    <arg name="args" value="-r -v 3 depth_camera_sensor.sdf"/>
+  </include>
+
+  <node
+    pkg="ros1_ign_bridge"
+    type="parameter_bridge"
+    name="$(anon ros1_ign_bridge)"
+    output="screen"
+    args="/depth_camera@sensor_msgs/Image@ignition.msgs.Image">
+  </node>
+
+  <node
+    pkg="rqt_image_view"
+    type="rqt_image_view"
+    name="rqt_image_view"
+    args="/depth_camera">
+  </node>
+</launch>

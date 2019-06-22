@@ -1,0 +1,10 @@
+#!/bin/bash
+new=""
+for arg in "$@"
+do
+  # Ignore roslaunch's args
+  if [[ $arg != __* ]]; then
+    new="$new $arg"
+  fi
+done
+ign gazebo $new
