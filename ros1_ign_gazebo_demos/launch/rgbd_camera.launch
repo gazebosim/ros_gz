@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
+  <env name="IGN_GAZEBO_SYSTEM_PLUGIN_PATH" value="$(optenv LD_LIBRARY_PATH)" />
+
   <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
     <arg name="args" value="-r -v 3 $(find ros1_ign_point_cloud)/examples/ros1_ign_point_cloud.sdf"/>
   </include>
