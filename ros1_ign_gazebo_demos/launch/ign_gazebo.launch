@@ -1,6 +1,9 @@
 <?xml version="1.0"?>
 <launch>
   <arg name="args" default=""/>
+
+  <env name="IGN_GAZEBO_SYSTEM_PLUGIN_PATH" value="$(optenv LD_LIBRARY_PATH)" />
+
   <node
     pkg="ros1_ign_gazebo_demos"
     type="ign_gazebo"
