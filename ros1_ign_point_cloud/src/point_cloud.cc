@@ -233,13 +233,17 @@ void PointCloudPrivate::LoadDepthCamera(
   // Sensor name scoped from the model
   auto sensor_name =
       ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
-  sensor_name = sensor_name.substr(sensor_name.find("::") + 2) + "_depth";
+  sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
 
   // Get sensor
-  auto sensor = this->scene_->SensorByName(sensor_name);
+  auto sensor = this->scene_->SensorByName(sensor_name + "_depth");
   if (!sensor)
   {
-    return;
+    sensor = this->scene_->SensorByName(sensor_name);
+    if (!sensor)
+    {
+      return;
+    }
   }
 
   this->depth_camera_ =
@@ -376,7 +380,7 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   {
     this->rgb_camera_->Capture(this->rgb_image_);
     fillImage(this->rgb_image_msg_, sensor_msgs::image_encodings::RGB8, _height,
-        _width, 3 * _width, this->rgb_image_.Data<unsigned char>());
+        _width, _channels * _width, this->rgb_image_.Data<unsigned char>());
   }
 
   // For depth calculation from image
@@ -418,16 +422,19 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
     if (fl > 0 && _height > 1)
       p_angle = atan2((double)j - 0.5 * (double)(_height-1), fl);
 
+    if (nullptr != this->gpu_rays_)
+    {
+      azimuth = this->gpu_rays_->AngleMin().Radian();
+    }
     for (uint32_t i = 0; i < _width; ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
     {
       // Index of current point
       auto index = j * _width * _channels + i * _channels;
+      double depth = _scan[index];
 
       double y_angle{0.0};
       if (fl > 0 && _width > 1)
         y_angle = atan2((double)i - 0.5 * (double)(_width-1), fl);
-
-      double depth = _scan[index];
 
       if (nullptr != this->depth_camera_)
       {
