@@ -380,7 +380,7 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   {
     this->rgb_camera_->Capture(this->rgb_image_);
     fillImage(this->rgb_image_msg_, sensor_msgs::image_encodings::RGB8, _height,
-        _width, _channels * _width, this->rgb_image_.Data<unsigned char>());
+        _width, 3 * _width, this->rgb_image_.Data<unsigned char>());
   }
 
   // For depth calculation from image
@@ -471,9 +471,9 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
       if (this->rgb_image_msg_.data.size() == _height * _width * 3)
       {
         // color
-        *iter_r = image_src[index+0];
-        *iter_g = image_src[index+1];
-        *iter_b = image_src[index+2];
+        *iter_r = image_src[i*3+j*_width*3+0];
+        *iter_g = image_src[i*3+j*_width*3+1];
+        *iter_b = image_src[i*3+j*_width*3+2];
       }
       else if (this->rgb_image_msg_.data.size() == _height*_width)
       {
