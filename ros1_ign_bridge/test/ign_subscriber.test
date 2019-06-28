@@ -4,6 +4,6 @@
   <include file="$(find ros1_ign_bridge)/test/launch/test_ign_subscriber.launch">
   </include>
 
-  <test test-name="ros1_ign" pkg="ros1_ign_bridge" type="test_ign_subscriber" time-limit="20.0" />
+  <test test-name="ros1_ign" pkg="ros1_ign_bridge" type="test_ign_subscriber" time-limit="60.0" />
 
 </launch>
