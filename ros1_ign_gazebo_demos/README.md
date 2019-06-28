@@ -44,7 +44,7 @@ Then send a command
 
 ## Depth camera
 
-Publishes depth camera image.
+Publishes depth camera images and point clouds.
 
     roslaunch ros1_ign_gazebo_demos depth_camera.launch
 
@@ -52,7 +52,7 @@ Publishes depth camera image.
 
 ## GPU lidar
 
-Publishes 2D laser scans.
+Publishes 2D laser scans and point clouds.
 
     roslaunch ros1_ign_gazebo_demos gpu_lidar.launch
 

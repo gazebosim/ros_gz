@@ -2,7 +2,7 @@
 <launch>
 
   <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="-r -v 3 $(find ros1_ign_point_cloud)/examples/ros1_ign_point_cloud.sdf"/>
+    <arg name="args" value="-r -v 3 $(find ros1_ign_point_cloud)/examples/rgbd_camera.sdf"/>
   </include>
 
   <node

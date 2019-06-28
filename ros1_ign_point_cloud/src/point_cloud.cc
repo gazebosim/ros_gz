@@ -15,15 +15,17 @@
 #include "point_cloud.hh"
 #include <ignition/common/Event.hh>
 #include <ignition/gazebo/components/Name.hh>
+#include <ignition/gazebo/components/DepthCamera.hh>
+#include <ignition/gazebo/components/GpuLidar.hh>
 #include <ignition/gazebo/components/RgbdCamera.hh>
 #include <ignition/gazebo/Util.hh>
 #include <ignition/plugin/Register.hh>
 #include <ignition/rendering/Camera.hh>
 #include <ignition/rendering/DepthCamera.hh>
+#include <ignition/rendering/GpuRays.hh>
 #include <ignition/rendering/RenderEngine.hh>
 #include <ignition/rendering/RenderingIface.hh>
 #include <ignition/rendering/Scene.hh>
-#include <ignition/sensors/RgbdCameraSensor.hh>
 
 #include <ros/ros.h>
 #include <ros/advertise_options.h>
@@ -38,6 +40,18 @@ IGNITION_ADD_PLUGIN(
     ros1_ign_point_cloud::PointCloud::ISystemPostUpdate)
 
 using namespace ros1_ign_point_cloud;
+
+/// \brief Types of sensors supported by this plugin
+enum class SensorType {
+  /// \brief A camera which combines an RGB and a depth camera
+  RGBD_CAMERA,
+
+  /// \brief Depth camera
+  DEPTH_CAMERA,
+
+  /// \brief GPU lidar rays
+  GPU_LIDAR
+};
 
 //////////////////////////////////////////////////
 class ros1_ign_point_cloud::PointCloudPrivate
@@ -62,6 +76,10 @@ class ros1_ign_point_cloud::PointCloudPrivate
   /// \param[in] _ecm Immutable reference to ECM.
   public: void LoadRgbCamera(const ignition::gazebo::EntityComponentManager &_ecm);
 
+  /// \brief Get GPU rays from rendering.
+  /// \param[in] _ecm Immutable reference to ECM.
+  public: void LoadGpuRays(const ignition::gazebo::EntityComponentManager &_ecm);
+
   /// \brief Rendering scene which manages the cameras.
   public: ignition::rendering::ScenePtr scene_;
 
@@ -74,6 +92,9 @@ class ros1_ign_point_cloud::PointCloudPrivate
   /// \brief Rendering RGB camera
   public: std::shared_ptr<ignition::rendering::Camera> rgb_camera_;
 
+  /// \brief Rendering GPU lidar
+  public: std::shared_ptr<ignition::rendering::GpuRays> gpu_rays_;
+
   /// \brief Keep latest image from RGB camera.
   public: ignition::rendering::Image rgb_image_;
 
@@ -82,6 +103,9 @@ class ros1_ign_point_cloud::PointCloudPrivate
 
   /// \brief Connection to depth frame event.
   public: ignition::common::ConnectionPtr depth_connection_;
+
+  /// \brief Connection to GPU rays frame event.
+  public: ignition::common::ConnectionPtr gpu_rays_connection_;
 
   /// \brief Node to publish ROS messages.
   public: std::unique_ptr<ros::NodeHandle> rosnode_;
@@ -100,6 +124,9 @@ class ros1_ign_point_cloud::PointCloudPrivate
 
   /// \brief Render scene name
   public: std::string scene_name_;
+
+  /// \brief Type of sensor which this plugin is attached to.
+  public: SensorType type_;
 };
 
 //////////////////////////////////////////////////
@@ -114,6 +141,25 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
     ignition::gazebo::EventManager &)
 {
   this->dataPtr->entity_ = _entity;
+
+  if (_ecm.Component<ignition::gazebo::components::RgbdCamera>(_entity) != nullptr)
+  {
+    this->dataPtr->type_ = SensorType::RGBD_CAMERA;
+  }
+  else if (_ecm.Component<ignition::gazebo::components::DepthCamera>(_entity) != nullptr)
+  {
+    this->dataPtr->type_ = SensorType::DEPTH_CAMERA;
+  }
+  else if (_ecm.Component<ignition::gazebo::components::GpuLidar>(_entity) != nullptr)
+  {
+    this->dataPtr->type_ = SensorType::GPU_LIDAR;
+  }
+  else
+  {
+    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+        "Point cloud plugin must be attached to an RGBD camera, depth camera or GPU lidar.");
+    return;
+  }
 
   // Initialize ROS
   if (!ros::isInitialized())
@@ -161,14 +207,22 @@ void PointCloud::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
       return;
   }
 
-  // Get rendering cameras
-  if (!this->dataPtr->depth_camera_)
+  // Get rendering objects
+  if (!this->dataPtr->depth_camera_ &&
+      (this->dataPtr->type_ == SensorType::RGBD_CAMERA ||
+       this->dataPtr->type_ == SensorType::DEPTH_CAMERA))
   {
     this->dataPtr->LoadDepthCamera(_ecm);
   }
-  if (!this->dataPtr->rgb_camera_)
+  if (!this->dataPtr->rgb_camera_ &&
+       this->dataPtr->type_ == SensorType::RGBD_CAMERA)
   {
     this->dataPtr->LoadRgbCamera(_ecm);
+  }
+  if (!this->dataPtr->gpu_rays_ &&
+       this->dataPtr->type_ == SensorType::GPU_LIDAR)
+  {
+    this->dataPtr->LoadGpuRays(_ecm);
   }
 }
 
@@ -179,13 +233,17 @@ void PointCloudPrivate::LoadDepthCamera(
   // Sensor name scoped from the model
   auto sensor_name =
       ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
-  sensor_name = sensor_name.substr(sensor_name.find("::") + 2) + "_depth";
+  sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
 
   // Get sensor
-  auto sensor = this->scene_->SensorByName(sensor_name);
+  auto sensor = this->scene_->SensorByName(sensor_name + "_depth");
   if (!sensor)
   {
-    return;
+    sensor = this->scene_->SensorByName(sensor_name);
+    if (!sensor)
+    {
+      return;
+    }
   }
 
   this->depth_camera_ =
@@ -231,6 +289,37 @@ void PointCloudPrivate::LoadRgbCamera(
 }
 
 //////////////////////////////////////////////////
+void PointCloudPrivate::LoadGpuRays(
+    const ignition::gazebo::EntityComponentManager &_ecm)
+{
+  // Sensor name scoped from the model
+  auto sensor_name =
+      ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
+  sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
+
+  // Get sensor
+  auto sensor = this->scene_->SensorByName(sensor_name);
+  if (!sensor)
+  {
+    return;
+  }
+
+  this->gpu_rays_ =
+    std::dynamic_pointer_cast<ignition::rendering::GpuRays>(sensor);
+  if (!this->gpu_rays_)
+  {
+    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+        "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
+    return;
+  }
+
+  this->gpu_rays_connection_ = this->gpu_rays_->ConnectNewGpuRaysFrame(
+      std::bind(&PointCloudPrivate::OnNewDepthFrame, this,
+      std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
+      std::placeholders::_4, std::placeholders::_5));
+}
+
+//////////////////////////////////////////////////
 void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
                     unsigned int _width, unsigned int _height,
                     unsigned int _channels,
@@ -239,16 +328,27 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   if (this->pc_pub_.getNumSubscribers() <= 0 || _height == 0 || _width == 0)
     return;
 
-  // Just sanity checks, but don't prevent publishing
-  if (_channels != 1)
+  // Just sanity check, but don't prevent publishing
+  if (this->type_ == SensorType::RGBD_CAMERA && _channels != 1)
   {
     ROS_WARN_NAMED("ros1_ign_point_cloud",
         "Expected depth image to have 1 channel, but it has [%i]", _channels);
   }
-  if (_format != "FLOAT32")
+  if (this->type_ == SensorType::GPU_LIDAR && _channels != 3)
+  {
+    ROS_WARN_NAMED("ros1_ign_point_cloud",
+        "Expected GPU rays to have 3 channels, but it has [%i]", _channels);
+  }
+  if ((this->type_ == SensorType::RGBD_CAMERA ||
+       this->type_ == SensorType::DEPTH_CAMERA) && _format != "FLOAT32")
   {
     ROS_WARN_NAMED("ros1_ign_point_cloud",
         "Expected depth image to have [FLOAT32] format, but it has [%s]", _format.c_str());
+  }
+  if (this->type_ == SensorType::GPU_LIDAR && _format != "PF_FLOAT32_RGB")
+  {
+    ROS_WARN_NAMED("ros1_ign_point_cloud",
+        "Expected GPU rays to have [PF_FLOAT32_RGB] format, but it has [%s]", _format.c_str());
   }
 
   // Fill message
@@ -283,53 +383,91 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
         _width, 3 * _width, this->rgb_image_.Data<unsigned char>());
   }
 
-  double hfov = this->depth_camera_->HFOV().Radian();
-  double fl = _width / (2.0 * tan(hfov / 2.0));
-  int index{0};
-  uint8_t * image_src = (uint8_t *)(&(this->rgb_image_msg_.data[0]));
+  // For depth calculation from image
+  double fl{0.0};
+  if (nullptr != this->depth_camera_)
+  {
+    auto hfov = this->depth_camera_->HFOV().Radian();
+    fl = _width / (2.0 * tan(hfov / 2.0));
+  }
 
-  // Convert depth to point cloud
+  // For depth calculation from laser scan
+  double angle_step{0.0};
+  double vertical_angle_step{0.0};
+  double inclination{0.0};
+  double azimuth{0.0};
+  if (nullptr != this->gpu_rays_)
+  {
+    angle_step = (this->gpu_rays_->AngleMax() - this->gpu_rays_->AngleMin()).Radian() /
+        (this->gpu_rays_->RangeCount()-1);
+    vertical_angle_step = (this->gpu_rays_->VerticalAngleMax() -
+        this->gpu_rays_->VerticalAngleMin()).Radian() / (this->gpu_rays_->VerticalRangeCount()-1);
+
+    // Angles of ray currently processing, azimuth is horizontal, inclination is vertical
+    inclination = this->gpu_rays_->VerticalAngleMin().Radian();
+    azimuth = this->gpu_rays_->AngleMin().Radian();
+  }
+
+  // For color calculation
+  uint8_t * image_src;
+  if (nullptr != this->rgb_camera_)
+  {
+    image_src = (uint8_t *)(&(this->rgb_image_msg_.data[0]));
+  }
+
+  // Iterate over scan and populate point cloud
   for (uint32_t j = 0; j < _height; ++j)
   {
-    double p_angle;
-    if (_height>1)
-      p_angle = atan2( (double)j - 0.5*(double)(_height-1), fl);
-    else
-      p_angle = 0.0;
+    double p_angle{0.0};
+    if (fl > 0 && _height > 1)
+      p_angle = atan2((double)j - 0.5 * (double)(_height-1), fl);
 
-    for (uint32_t i=0; i<_width; i++, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
+    if (nullptr != this->gpu_rays_)
     {
-      double y_angle;
-      if (_width>1)
-        y_angle = atan2( (double)i - 0.5*(double)(_width-1), fl);
-      else
-        y_angle = 0.0;
+      azimuth = this->gpu_rays_->AngleMin().Radian();
+    }
+    for (uint32_t i = 0; i < _width; ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
+    {
+      // Index of current point
+      auto index = j * _width * _channels + i * _channels;
+      double depth = _scan[index];
 
-      double depth = _scan[index++];
+      double y_angle{0.0};
+      if (fl > 0 && _width > 1)
+        y_angle = atan2((double)i - 0.5 * (double)(_width-1), fl);
 
-      // in optical frame
-      // hardcoded rotation rpy(-M_PI/2, 0, -M_PI/2) is built-in
-      // to urdf, where the *_optical_frame should have above relative
-      // rotation from the physical camera *_frame
-      *iter_x = depth * tan(y_angle);
-      *iter_y = depth * tan(p_angle);
-      if (depth > this->depth_camera_->FarClipPlane())
+      if (nullptr != this->depth_camera_)
       {
-        *iter_z = ignition::math::INF_D;
-        msg.is_dense = false;
-      }
-      if (depth < this->depth_camera_->NearClipPlane())
-      {
-        *iter_z = -ignition::math::INF_D;
-        msg.is_dense = false;
-      }
-      else
-      {
+        // in optical frame
+        // hardcoded rotation rpy(-M_PI/2, 0, -M_PI/2) is built-in
+        // to urdf, where the *_optical_frame should have above relative
+        // rotation from the physical camera *_frame
+        *iter_x = depth * tan(y_angle);
+        *iter_y = depth * tan(p_angle);
         *iter_z = depth;
+
+        // Clamp according to REP 117
+        if (depth > this->depth_camera_->FarClipPlane())
+        {
+          *iter_z = ignition::math::INF_D;
+          msg.is_dense = false;
+        }
+        if (depth < this->depth_camera_->NearClipPlane())
+        {
+          *iter_z = -ignition::math::INF_D;
+          msg.is_dense = false;
+        }
+      }
+      else if (nullptr != this->gpu_rays_)
+      {
+        // Convert spherical coordinates to Cartesian for pointcloud
+        // See https://en.wikipedia.org/wiki/Spherical_coordinate_system
+        *iter_x = depth * cos(inclination) * cos(azimuth);
+        *iter_y = depth * cos(inclination) * sin(azimuth);
+        *iter_z = depth * sin(inclination);
       }
 
       // Put image color data for each point
-      // \TODO(anyone) RGB image seems offset from depth image by 3~4 pixels in both directions
       if (this->rgb_image_msg_.data.size() == _height * _width * 3)
       {
         // color
@@ -351,7 +489,9 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
         *iter_g = 0;
         *iter_b = 0;
       }
+      azimuth += angle_step;
     }
+    inclination += vertical_angle_step;
   }
 
   this->pc_pub_.publish(msg);

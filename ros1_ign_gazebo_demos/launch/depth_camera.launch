@@ -2,7 +2,7 @@
 <launch>
 
   <include file="$(find ros1_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="-r -v 3 depth_camera_sensor.sdf"/>
+    <arg name="args" value="-r -v 3 $(find ros1_ign_point_cloud)/examples/depth_camera.sdf"/>
   </include>
 
   <node
@@ -19,4 +19,10 @@
     name="rqt_image_view"
     args="/depth_camera">
   </node>
+
+  <node
+    type="rviz"
+    name="rviz"
+    pkg="rviz"
+    args="-d $(find ros1_ign_gazebo_demos)/rviz/depth_camera.rviz" />
 </launch>
