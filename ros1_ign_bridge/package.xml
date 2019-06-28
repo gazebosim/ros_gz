@@ -11,6 +11,7 @@
   <depend>ignition-msgs4</depend>
   <depend>ignition-transport7</depend>
   <depend>mav_msgs</depend>
+  <depend>nav_msgs</depend>
   <depend>rosgraph_msgs</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
