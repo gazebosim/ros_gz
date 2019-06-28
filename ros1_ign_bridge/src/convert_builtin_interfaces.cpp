@@ -375,6 +375,42 @@ convert_ign_to_1(
 template<>
 void
 convert_1_to_ign(
+  const nav_msgs::Odometry & ros1_msg,
+  ignition::msgs::Odometry & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+  convert_1_to_ign(ros1_msg.pose.pose, (*ign_msg.mutable_pose()));
+  convert_1_to_ign(ros1_msg.twist.twist, (*ign_msg.mutable_twist()));
+
+  auto childFrame = ign_msg.mutable_header()->add_data();
+  childFrame->set_key("child_frame_id");
+  childFrame->add_value(ros1_msg.child_frame_id);
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::Odometry & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+  convert_ign_to_1(ign_msg.pose(), ros1_msg.pose.pose);
+  convert_ign_to_1(ign_msg.twist(), ros1_msg.twist.twist);
+
+  for (auto i = 0; i < ign_msg.header().data_size(); ++i)
+  {
+    auto aPair = ign_msg.header().data(i);
+    if (aPair.key() == "child_frame_id" && aPair.value_size() > 0)
+    {
+      ros1_msg.child_frame_id = frame_id_ign_to_1(aPair.value(0));
+      break;
+    }
+  }
+}
+
+template<>
+void
+convert_1_to_ign(
   const sensor_msgs::FluidPressure & ros1_msg,
   ignition::msgs::FluidPressure & ign_msg)
 {

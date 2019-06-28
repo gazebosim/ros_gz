@@ -25,6 +25,7 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
@@ -297,6 +298,25 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Actuators & ign_msg,
   mav_msgs::Actuators & ros1_msg);
+
+// nav_msgs
+template<>
+void
+Factory<
+  nav_msgs::Odometry,
+  ignition::msgs::Odometry
+>::convert_1_to_ign(
+  const nav_msgs::Odometry & ros1_msg,
+  ignition::msgs::Odometry & ign_msg);
+
+template<>
+void
+Factory<
+  nav_msgs::Odometry,
+  ignition::msgs::Odometry
+>::convert_ign_to_1(
+  const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::Odometry & ros1_msg);
 
 // sensor_msgs
 template<>

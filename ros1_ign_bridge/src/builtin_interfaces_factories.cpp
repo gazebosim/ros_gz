@@ -172,6 +172,17 @@ get_factory_builtin_interfaces(
     >("mav_msgs/Actuators", ign_type_name);
   }
   if (
+    (ros1_type_name == "nav_msgs/Odometry" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.Odometry")
+  {
+    return std::make_shared<
+      Factory<
+        nav_msgs::Odometry,
+        ignition::msgs::Odometry
+      >
+    >("nav_msgs/Odometry", ign_type_name);
+  }
+  if (
     (ros1_type_name == "sensor_msgs/FluidPressure" || ros1_type_name == "") &&
      ign_type_name == "ignition.msgs.FluidPressure")
   {
@@ -588,6 +599,31 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::Actuators & ign_msg,
   mav_msgs::Actuators & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+// nav_msgs
+template<>
+void
+Factory<
+  nav_msgs::Odometry,
+  ignition::msgs::Odometry
+>::convert_1_to_ign(
+  const nav_msgs::Odometry & ros1_msg,
+  ignition::msgs::Odometry & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  nav_msgs::Odometry,
+  ignition::msgs::Odometry
+>::convert_ign_to_1(
+  const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::Odometry & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }

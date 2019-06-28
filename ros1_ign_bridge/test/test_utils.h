@@ -32,6 +32,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
@@ -134,10 +135,10 @@ namespace testing
     std_msgs::Header expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_GE(_msg.seq,         0u);
-    EXPECT_EQ(2u,               _msg.stamp.sec);
-    EXPECT_EQ(3u,               _msg.stamp.nsec);
-    EXPECT_EQ("frame_id_value", _msg.frame_id);
+    EXPECT_GE(expected_msg.seq,        0u);
+    EXPECT_EQ(expected_msg.stamp.sec,  _msg.stamp.sec);
+    EXPECT_EQ(expected_msg.stamp.nsec, _msg.stamp.nsec);
+    EXPECT_EQ(expected_msg.frame_id,   _msg.frame_id);
   }
 
   /// \brief Create a message used for testing.
@@ -154,7 +155,7 @@ namespace testing
     std_msgs::String expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_EQ("string", _msg.data);
+    EXPECT_EQ(expected_msg.data, _msg.data);
   }
 
   /// \brief Create a message used for testing.
@@ -174,10 +175,10 @@ namespace testing
     geometry_msgs::Quaternion expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_EQ(1, _msg.x);
-    EXPECT_EQ(2, _msg.y);
-    EXPECT_EQ(3, _msg.z);
-    EXPECT_EQ(4, _msg.w);
+    EXPECT_EQ(expected_msg.x, _msg.x);
+    EXPECT_EQ(expected_msg.y, _msg.y);
+    EXPECT_EQ(expected_msg.z, _msg.z);
+    EXPECT_EQ(expected_msg.w, _msg.w);
   }
 
   /// \brief Create a message used for testing.
@@ -196,9 +197,9 @@ namespace testing
     geometry_msgs::Vector3 expected_msg;
     createTestMsg(expected_msg);
 
-    EXPECT_EQ(1, _msg.x);
-    EXPECT_EQ(2, _msg.y);
-    EXPECT_EQ(3, _msg.z);
+    EXPECT_EQ(expected_msg.x, _msg.x);
+    EXPECT_EQ(expected_msg.y, _msg.y);
+    EXPECT_EQ(expected_msg.z, _msg.z);
   }
 
   /// \brief Create a message used for testing.
@@ -322,9 +323,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const geometry_msgs::Twist &_msg)
   {
-    geometry_msgs::Twist expected_msg;
-    createTestMsg(expected_msg);
-
     compareTestMsg(_msg.linear);
     compareTestMsg(_msg.angular);
   }
@@ -362,6 +360,24 @@ namespace testing
       EXPECT_EQ(expected_msg.angular_velocities[i], _msg.angular_velocities[i]);
       EXPECT_EQ(expected_msg.normalized[i], _msg.normalized[i]);
     }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(nav_msgs::Odometry &_msg)
+  {
+    createTestMsg(_msg.header);
+    createTestMsg(_msg.pose.pose);
+    createTestMsg(_msg.twist.twist);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const nav_msgs::Odometry &_msg)
+  {
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.pose.pose);
+    compareTestMsg(_msg.twist.twist);
   }
 
   /// \brief Create a message used for testing.
@@ -525,9 +541,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const sensor_msgs::Imu &_msg)
   {
-    sensor_msgs::Imu expected_msg;
-    createTestMsg(expected_msg);
-
     compareTestMsg(_msg.header);
     compareTestMsg(_msg.orientation);
     compareTestMsg(_msg.angular_velocity);
@@ -644,9 +657,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const sensor_msgs::MagneticField &_msg)
   {
-    sensor_msgs::MagneticField expected_msg;
-    createTestMsg(expected_msg);
-
     compareTestMsg(_msg.header);
     compareTestMsg(_msg.magnetic_field);
 
@@ -839,6 +849,31 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Twist &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    ignition::msgs::Vector3d linear_msg;
+    ignition::msgs::Vector3d angular_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(linear_msg);
+    createTestMsg(angular_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.mutable_linear()->CopyFrom(linear_msg);
+    _msg.mutable_angular()->CopyFrom(angular_msg);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Twist &_msg)
+  {
+    compareTestMsg(_msg.linear());
+    compareTestMsg(_msg.angular());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
   void createTestMsg(ignition::msgs::Image &_msg)
   {
     ignition::msgs::Header header_msg;
@@ -1015,9 +1050,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const ignition::msgs::IMU &_msg)
   {
-    ignition::msgs::IMU expected_msg;
-    createTestMsg(expected_msg);
-
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.orientation());
     compareTestMsg(_msg.angular_velocity());
@@ -1158,9 +1190,6 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const ignition::msgs::Magnetometer &_msg)
   {
-    ignition::msgs::Magnetometer expected_msg;
-    createTestMsg(expected_msg);
-
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.field_tesla());
   }
@@ -1201,27 +1230,28 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(ignition::msgs::Twist &_msg)
+  void createTestMsg(ignition::msgs::Odometry &_msg)
   {
     ignition::msgs::Header header_msg;
-    ignition::msgs::Vector3d linear_msg;
-    ignition::msgs::Vector3d angular_msg;
+    ignition::msgs::Pose pose_msg;
+    ignition::msgs::Twist twist_msg;
 
     createTestMsg(header_msg);
-    createTestMsg(linear_msg);
-    createTestMsg(angular_msg);
+    createTestMsg(pose_msg);
+    createTestMsg(twist_msg);
 
     _msg.mutable_header()->CopyFrom(header_msg);
-    _msg.mutable_linear()->CopyFrom(linear_msg);
-    _msg.mutable_angular()->CopyFrom(angular_msg);
+    _msg.mutable_pose()->CopyFrom(pose_msg);
+    _msg.mutable_twist()->CopyFrom(twist_msg);
   }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const ignition::msgs::Twist &_msg)
+  void compareTestMsg(const ignition::msgs::Odometry &_msg)
   {
-    compareTestMsg(_msg.linear());
-    compareTestMsg(_msg.angular());
+    compareTestMsg(_msg.header());
+    compareTestMsg(_msg.pose());
+    compareTestMsg(_msg.twist());
   }
 }
 }

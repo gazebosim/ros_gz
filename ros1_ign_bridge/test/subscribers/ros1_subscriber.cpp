@@ -29,6 +29,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
@@ -299,6 +300,18 @@ TEST(ROS1SubscriberTest, MagneticField)
 TEST(ROS1SubscriberTest, Actuators)
 {
   MyTestClass<mav_msgs::Actuators> client("actuators");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, Odometry)
+{
+  MyTestClass<nav_msgs::Odometry> client("odometry");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(

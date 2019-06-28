@@ -15,11 +15,8 @@ apt-get install -qq -y libignition-msgs4-dev \
                        libignition-transport7-dev \
                        libignition-gazebo2-dev \
                        python-catkin-tools \
-                       python-rosdep \
-                       ros-melodic-geometry-msgs \
-                       ros-melodic-mav-msgs \
-                       ros-melodic-rostest \
-                       ros-melodic-sensor-msgs
+                       python-rosdep
+                       
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic \
