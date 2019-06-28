@@ -18,6 +18,7 @@ apt-get install -qq -y libignition-msgs4-dev \
                        python-rosdep \
                        ros-melodic-geometry-msgs \
                        ros-melodic-mav-msgs \
+                       ros-melodic-nav-msgs \
                        ros-melodic-rostest \
                        ros-melodic-sensor-msgs
 rosdep init

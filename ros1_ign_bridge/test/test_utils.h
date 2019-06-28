@@ -32,6 +32,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
@@ -362,6 +363,27 @@ namespace testing
       EXPECT_EQ(expected_msg.angular_velocities[i], _msg.angular_velocities[i]);
       EXPECT_EQ(expected_msg.normalized[i], _msg.normalized[i]);
     }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(nav_msgs::Odometry &_msg)
+  {
+    createTestMsg(_msg.header);
+    createTestMsg(_msg.pose.pose);
+    createTestMsg(_msg.twist.twist);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const nav_msgs::Odometry &_msg)
+  {
+    nav_msgs::Odometry expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    compareTestMsg(_msg.pose.pose);
+    compareTestMsg(_msg.twist.twist);
   }
 
   /// \brief Create a message used for testing.
@@ -839,6 +861,31 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Twist &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    ignition::msgs::Vector3d linear_msg;
+    ignition::msgs::Vector3d angular_msg;
+
+    createTestMsg(header_msg);
+    createTestMsg(linear_msg);
+    createTestMsg(angular_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.mutable_linear()->CopyFrom(linear_msg);
+    _msg.mutable_angular()->CopyFrom(angular_msg);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Twist &_msg)
+  {
+    compareTestMsg(_msg.linear());
+    compareTestMsg(_msg.angular());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
   void createTestMsg(ignition::msgs::Image &_msg)
   {
     ignition::msgs::Header header_msg;
@@ -1201,27 +1248,31 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(ignition::msgs::Twist &_msg)
+  void createTestMsg(ignition::msgs::Odometry &_msg)
   {
     ignition::msgs::Header header_msg;
-    ignition::msgs::Vector3d linear_msg;
-    ignition::msgs::Vector3d angular_msg;
+    ignition::msgs::Pose pose_msg;
+    ignition::msgs::Twist twist_msg;
 
     createTestMsg(header_msg);
-    createTestMsg(linear_msg);
-    createTestMsg(angular_msg);
+    createTestMsg(pose_msg);
+    createTestMsg(twist_msg);
 
     _msg.mutable_header()->CopyFrom(header_msg);
-    _msg.mutable_linear()->CopyFrom(linear_msg);
-    _msg.mutable_angular()->CopyFrom(angular_msg);
+    _msg.mutable_pose()->CopyFrom(pose_msg);
+    _msg.mutable_twist()->CopyFrom(twist_msg);
   }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const ignition::msgs::Twist &_msg)
+  void compareTestMsg(const ignition::msgs::Odometry &_msg)
   {
-    compareTestMsg(_msg.linear());
-    compareTestMsg(_msg.angular());
+    ignition::msgs::Odometry expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header());
+    compareTestMsg(_msg.pose());
+    compareTestMsg(_msg.twist());
   }
 }
 }

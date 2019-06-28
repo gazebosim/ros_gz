@@ -141,6 +141,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Actuators actuators_msg;
   ros1_ign_bridge::testing::createTestMsg(actuators_msg);
 
+  // ignition::msgs::Odometry.
+  auto odometry_pub = node.Advertise<ignition::msgs::Odometry>("odometry");
+  ignition::msgs::Odometry odometry_msg;
+  ros1_ign_bridge::testing::createTestMsg(odometry_msg);
+
   // ignition::msgs::Model.
   auto joint_states_pub = node.Advertise<ignition::msgs::Model>("joint_states");
   ignition::msgs::Model joint_states_msg;
@@ -172,6 +177,7 @@ int main(int /*argc*/, char **/*argv*/)
     laserscan_pub.Publish(laserscan_msg);
     magnetic_pub.Publish(magnetometer_msg);
     actuators_pub.Publish(actuators_msg);
+    odometry_pub.Publish(odometry_msg);
     joint_states_pub.Publish(joint_states_msg);
     twist_pub.Publish(twist_msg);
 
