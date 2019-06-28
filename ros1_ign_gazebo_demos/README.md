@@ -30,6 +30,18 @@ Publishes RGB camera image and info.
 
 ![](images/camera_demo.png)
 
+## Diff drive
+
+Send commands to a differential drive vehicle and listen to its odometry.
+
+    roslaunch ros1_ign_gazebo_demos diff_drive.launch
+
+Then send a command
+
+    rostopic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+
+![](images/diff_drive_demo.png)
+
 ## Depth camera
 
 Publishes depth camera image.
