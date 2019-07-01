@@ -2,14 +2,20 @@
 
 The package uses the latest versions of ignition libraries, at this moment only
 availables in the packages.osrfoundation.org repository. This fact makes
-impossible to use bloom to release it. The steps to make a new release of the
-package is:
+impossible to use bloom to release it using ros servers.
 
- 1. Use github to make an official release:
-    https://github.com/osrf/ros1_ign/releases
+The steps to make a new release of the package is:
 
- 1. Update metadata for packaging in:
-    https://bitbucket.org/osrf/ros1_ign_bridge-release/
+ 1. Follow the standard ROS release using catkin_generate_changelog and catkin_prepare_release
+    - http://wiki.ros.org/bloom/Tutorials/ReleaseCatkinPackage
 
- 1. Launch manually the builds in:
-    https://build.osrfoundation.org/job/ros1_ign_bridge-debbuilder/
+ 1. Install rosdep for ignition packages and run rosdep update
+    - sudo wget https://raw.githubusercontent.com/osrf/osrf-rosdep/master/ignition/ignition.yaml -O /etc/ros/rosdep/sources.list.d/00-ignition.list
+    - rosdep update
+
+ 1. Bloom it into a custom repository
+    -  bloom-release --rosdistro melodic --track melodic ros1_ign
+    -  [use repository: git@github.com:osrf/ros1_ign-release.git]
+    -  [will fail fedora: ignore and continue]
+
+ 1. Use release-tools/bloom/ros1_ign_bridge-release.py.bash to launch jenkins jobs
