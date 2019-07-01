@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.3.1 (2019-07-01)
+------------------
 * Merge pull request `#24 <https://github.com/osrf/ros1_ign_bridge/issues/24>`_ from osrf/fix_dep
   ignition-gazebo2 needed at build time
 * ignition-gazebo2 needed at build time
