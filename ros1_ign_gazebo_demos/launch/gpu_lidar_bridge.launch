@@ -17,5 +17,5 @@
     type="rviz"
     name="rviz"
     pkg="rviz"
-    args="-d $(find ros1_ign_gazebo_demos)/rviz/gpu_lidar.rviz" />
+    args="-d $(find ros1_ign_gazebo_demos)/rviz/gpu_lidar_bridge.rviz" />
 </launch>
