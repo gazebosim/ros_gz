@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.4.0 (2019-07-16)
+------------------
 * tests and reverse bridge for pointcloud
 * Bridge point cloud packed
 * Contributors: Nate Koenig
