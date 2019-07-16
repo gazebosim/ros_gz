@@ -6,28 +6,29 @@ between ROS 1 and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls.Its support is limited to only the following message types:
 
-| ROS 1 type                     | Ignition Transport type      |
-|--------------------------------|:----------------------------:|
-| std_msgs/Float32               | ignition::msgs::Float        |
-| std_msgs/Header                | ignition::msgs::Header       |
-| std_msgs/String                | ignition::msgs::StringMsg    |
-| geometry_msgs/Quaternion       | ignition::msgs::Quaternion   |
-| geometry_msgs/Vector3          | ignition::msgs::Vector3d     |
-| geometry_msgs/Point            | ignition::msgs::Vector3d     |
-| geometry_msgs/Pose             | ignition::msgs::Pose         |
-| geometry_msgs/PoseStamped      | ignition::msgs::Pose         |
-| geometry_msgs/Transform        | ignition::msgs::Pose         |
-| geometry_msgs/TransformStamped | ignition::msgs::Pose         |
-| geometry_msgs/Twist            | ignition::msgs::Twist        |
-| mav_msgs/Actuators             | ignition::msgs::Actuators    |
-| nav_msgs/Odometry              | ignition::msgs::Odometry     |
-| rosgraph_msgs/Clock            | ignition::msgs::Clock        |
-| sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo   |
-| sensor_msgs/Imu                | ignition::msgs::IMU          |
-| sensor_msgs/Image              | ignition::msgs::Image        |
-| sensor_msgs/JointState         | ignition::msgs::Model        |
-| sensor_msgs/LaserScan          | ignition::msgs::LaserScan    |
-| sensor_msgs/MagneticField      | ignition::msgs::Magnetometer |
+| ROS 1 type                     | Ignition Transport type          |
+|--------------------------------|:--------------------------------:|
+| std_msgs/Float32               | ignition::msgs::Float            |
+| std_msgs/Header                | ignition::msgs::Header           |
+| std_msgs/String                | ignition::msgs::StringMsg        |
+| geometry_msgs/Quaternion       | ignition::msgs::Quaternion       |
+| geometry_msgs/Vector3          | ignition::msgs::Vector3d         |
+| geometry_msgs/Point            | ignition::msgs::Vector3d         |
+| geometry_msgs/Pose             | ignition::msgs::Pose             |
+| geometry_msgs/PoseStamped      | ignition::msgs::Pose             |
+| geometry_msgs/Transform        | ignition::msgs::Pose             |
+| geometry_msgs/TransformStamped | ignition::msgs::Pose             |
+| geometry_msgs/Twist            | ignition::msgs::Twist            |
+| mav_msgs/Actuators             | ignition::msgs::Actuators        |
+| nav_msgs/Odometry              | ignition::msgs::Odometry         |
+| rosgraph_msgs/Clock            | ignition::msgs::Clock            |
+| sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo       |
+| sensor_msgs/Imu                | ignition::msgs::IMU              |
+| sensor_msgs/Image              | ignition::msgs::Image            |
+| sensor_msgs/JointState         | ignition::msgs::Model            |
+| sensor_msgs/LaserScan          | ignition::msgs::LaserScan        |
+| sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
+| sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
 
 Run `parameter_bridge -h` for instructions.
 

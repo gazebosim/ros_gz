@@ -52,7 +52,16 @@ Publishes depth camera images and point clouds.
 
 ## GPU lidar
 
-Publishes 2D laser scans and point clouds.
+GPU lidar data can be obtained as:
+
+* `sensor_msgs/LaserScan`, through the `ros1_ign_bridge`
+* `sendor_msgs/PointCloud2`, through the `ros1_ign_bridge` or `ros1_ign_point_cloud`
+
+Using the bridge:
+
+    roslaunch ros1_ign_gazebo_demos gpu_lidar_bridge.launch
+
+Using Ignition Gazebo plugin:
 
     roslaunch ros1_ign_gazebo_demos gpu_lidar.launch
 
@@ -76,7 +85,16 @@ Publishes magnetic field readings.
 
 ## RGBD camera
 
-Publishes RGB and depth images, as well as a color point cloud.
+RGBD camera data can be obtained as:
+
+* `sensor_msgs/Image`, through the `ros1_ign_bridge`
+* `sendor_msgs/PointCloud2`, through the `ros1_ign_bridge` or `ros1_ign_point_cloud`
+
+Using the bridge:
+
+    roslaunch ros1_ign_gazebo_demos rgbd_camera_bridge.launch
+
+Using Ignition Gazebo plugin:
 
     roslaunch ros1_ign_gazebo_demos rgbd_camera.launch
 
