@@ -904,11 +904,55 @@ template<>
 void
 convert_1_to_ign(
   const sensor_msgs::PointCloud2 & ros1_msg,
-  ignition::msgs::PointCloudPacked & ign_msg)
+  ignition::msgs::PointCloudPacked &ign_msg)
 {
   convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
-  std::cerr << "Unsupported conversion from [sensor_msgs::PointCloud2] to "
-            << "[ignition::msgs::PointCloud]" << std::endl;
+
+  ign_msg.set_height(ros1_msg.height);
+  ign_msg.set_width(ros1_msg.width);
+  ign_msg.set_is_bigendian(ros1_msg.is_bigendian);
+  ign_msg.set_point_step(ros1_msg.point_step);
+  ign_msg.set_row_step(ros1_msg.row_step);
+  ign_msg.set_is_dense(ros1_msg.is_dense);
+  ign_msg.mutable_data()->resize(ros1_msg.data.size());
+  memcpy(ign_msg.mutable_data()->data(), ros1_msg.data.data(),
+         ros1_msg.data.size());
+
+  for (unsigned int i = 0; i < ros1_msg.fields.size(); ++i)
+  {
+    ignition::msgs::PointCloudPacked::Field *pf = ign_msg.add_field();
+    pf->set_name(ros1_msg.fields[i].name);
+    pf->set_count(ros1_msg.fields[i].count);
+    pf->set_offset(ros1_msg.fields[i].offset);
+    switch (ros1_msg.fields[i].datatype)
+    {
+      default:
+      case sensor_msgs::PointField::INT8:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::INT8);
+        break;
+      case sensor_msgs::PointField::UINT8:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::UINT8);
+        break;
+      case sensor_msgs::PointField::INT16:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::INT16);
+        break;
+      case sensor_msgs::PointField::UINT16:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::UINT16);
+        break;
+      case sensor_msgs::PointField::INT32:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::INT32);
+        break;
+      case sensor_msgs::PointField::UINT32:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::UINT32);
+        break;
+      case sensor_msgs::PointField::FLOAT32:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::FLOAT32);
+        break;
+      case sensor_msgs::PointField::FLOAT64:
+        pf->set_datatype(ignition::msgs::PointCloudPacked::Field::FLOAT64);
+        break;
+    };
+  }
 }
 
 template<>

@@ -37,6 +37,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/PointCloud2.h>
 #include <chrono>
 #include "../test_utils.h"
 
@@ -312,6 +313,18 @@ TEST(ROS1SubscriberTest, Actuators)
 TEST(ROS1SubscriberTest, Odometry)
 {
   MyTestClass<nav_msgs::Odometry> client("odometry");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, PointCloud2)
+{
+  MyTestClass<sensor_msgs::PointCloud2> client("pointcloud2");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
