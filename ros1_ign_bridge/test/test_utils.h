@@ -41,6 +41,8 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/PointCloud2.h>
+#include <sensor_msgs/PointField.h>
 #include <chrono>
 #include <string>
 #include <thread>
@@ -664,6 +666,75 @@ namespace testing
       EXPECT_FLOAT_EQ(0, _msg.magnetic_field_covariance[i]);
   }
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::PointCloud2 &_msg)
+  {
+    createTestMsg(_msg.header);
+
+    sensor_msgs::PointField field;
+    field.name = "x";
+    field.offset = 0;
+    field.datatype = sensor_msgs::PointField::FLOAT32;
+    field.count = 1;
+    _msg.fields.push_back(field);
+
+    uint32_t height = 4;
+    uint32_t width = 2;
+
+    _msg.height = height;
+    _msg.width = width;
+    _msg.is_bigendian = false;
+    _msg.point_step = 4;
+    _msg.row_step = 4 * width;
+    _msg.is_dense = true;
+
+    _msg.data.resize(_msg.row_step * _msg.height);
+    uint8_t *msgBufferIndex = _msg.data.data();
+
+    for (uint32_t j = 0; j < height; ++j)
+    {
+      for (uint32_t i = 0; i < width; ++i)
+      {
+        *reinterpret_cast<float*>(msgBufferIndex + _msg.fields[0].offset) =
+          j * width + i;
+        msgBufferIndex += _msg.point_step;
+      }
+    }
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::PointCloud2 &_msg)
+  {
+    compareTestMsg(_msg.header);
+
+    uint32_t height = 4;
+    uint32_t width = 2;
+
+    EXPECT_EQ(height, _msg.height);
+    EXPECT_EQ(width, _msg.width);
+    EXPECT_FALSE(_msg.is_bigendian);
+    EXPECT_EQ(4u, _msg.point_step);
+    EXPECT_EQ(4U * width, _msg.row_step);
+    EXPECT_TRUE(_msg.is_dense);
+
+    unsigned char *msgBufferIndex =
+      const_cast<unsigned char*>(_msg.data.data());
+
+    for (uint32_t j = 0; j < height; ++j)
+    {
+      for (uint32_t i = 0; i < width; ++i)
+      {
+        float *value =
+          reinterpret_cast<float*>(msgBufferIndex + _msg.fields[0].offset);
+
+        EXPECT_FLOAT_EQ(static_cast<float>(j * width + i), *value);
+        msgBufferIndex += _msg.point_step;
+      }
+    }
+  }
+
   //////////////////////////////////////////////////
   /// Ignition::msgs test utils
   //////////////////////////////////////////////////
@@ -1252,6 +1323,77 @@ namespace testing
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.pose());
     compareTestMsg(_msg.twist());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::PointCloudPacked &_msg)
+  {
+    ignition::msgs::Header header_msg;
+
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    ignition::msgs::PointCloudPacked::Field *field = _msg.add_field();
+    field->set_name("x");
+    field->set_offset(0);
+    field->set_datatype(ignition::msgs::PointCloudPacked::Field::FLOAT32);
+    field->set_count(1);
+
+    uint32_t height = 4;
+    uint32_t width = 2;
+
+    _msg.set_height(height);
+    _msg.set_width(width);
+    _msg.set_is_bigendian(false);
+    _msg.set_point_step(4);
+    _msg.set_row_step(4 * width);
+    _msg.set_is_dense(true);
+
+    std::string *msgBuffer = _msg.mutable_data();
+    msgBuffer->resize(_msg.row_step() * _msg.height());
+    char *msgBufferIndex = msgBuffer->data();
+
+    for (uint32_t j = 0; j < height; ++j)
+    {
+      for (uint32_t i = 0; i < width; ++i)
+      {
+        *reinterpret_cast<float*>(msgBufferIndex + _msg.field(0).offset()) =
+          j * width + i;
+        msgBufferIndex += _msg.point_step();
+      }
+    }
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::PointCloudPacked &_msg)
+  {
+    compareTestMsg(_msg.header());
+
+    uint32_t height = 4;
+    uint32_t width = 2;
+
+    EXPECT_EQ(height, _msg.height());
+    EXPECT_EQ(width, _msg.width());
+    EXPECT_FALSE(_msg.is_bigendian());
+    EXPECT_EQ(4u, _msg.point_step());
+    EXPECT_EQ(4U * width, _msg.row_step());
+    EXPECT_TRUE(_msg.is_dense());
+
+    char *msgBufferIndex = const_cast<char*>(_msg.data().data());
+
+    for (uint32_t j = 0; j < height; ++j)
+    {
+      for (uint32_t i = 0; i < width; ++i)
+      {
+        float *value =
+          reinterpret_cast<float*>(msgBufferIndex + _msg.field(0).offset());
+
+        EXPECT_FLOAT_EQ(static_cast<float>(j * width + i), *value);
+        msgBufferIndex += _msg.point_step();
+      }
+    }
   }
 }
 }

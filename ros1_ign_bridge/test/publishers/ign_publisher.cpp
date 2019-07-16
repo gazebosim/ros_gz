@@ -156,6 +156,13 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Twist twist_msg;
   ros1_ign_bridge::testing::createTestMsg(twist_msg);
 
+  // ignition::msgs::PointCloudPacked.
+  auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
+      "pointcloud2");
+  ignition::msgs::PointCloudPacked pointcloudpacked_msg;
+  ros1_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
+
+
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
@@ -180,6 +187,7 @@ int main(int /*argc*/, char **/*argv*/)
     odometry_pub.Publish(odometry_msg);
     joint_states_pub.Publish(joint_states_msg);
     twist_pub.Publish(twist_msg);
+    pointcloudpacked_pub.Publish(pointcloudpacked_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

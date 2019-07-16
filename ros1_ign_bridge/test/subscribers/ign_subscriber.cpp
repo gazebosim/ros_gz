@@ -300,6 +300,18 @@ TEST(IgnSubscriberTest, JointStates)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, PointCloudPacked)
+{
+  MyTestClass<ignition::msgs::PointCloudPacked> client("pointcloud2");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

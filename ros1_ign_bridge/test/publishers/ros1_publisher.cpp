@@ -35,6 +35,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/PointCloud2.h>
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
@@ -167,6 +168,12 @@ int main(int argc, char ** argv)
   sensor_msgs::MagneticField magnetic_msg;
   ros1_ign_bridge::testing::createTestMsg(magnetic_msg);
 
+  // sensor_msgs::PointCloud2.
+  ros::Publisher pointcloud2_pub =
+    n.advertise<sensor_msgs::PointCloud2>("pointcloud2", 1000);
+  sensor_msgs::PointCloud2 pointcloud2_msg;
+  ros1_ign_bridge::testing::createTestMsg(pointcloud2_msg);
+
   while (ros::ok())
   {
     // Publish all messages.
@@ -191,6 +198,7 @@ int main(int argc, char ** argv)
     laserscan_pub.publish(laserscan_msg);
     magnetic_pub.publish(magnetic_msg);
     joint_states_pub.publish(joint_states_msg);
+    pointcloud2_pub.publish(pointcloud2_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

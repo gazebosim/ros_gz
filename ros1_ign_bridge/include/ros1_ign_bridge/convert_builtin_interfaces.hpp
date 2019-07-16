@@ -309,12 +309,12 @@ template<>
 void
 convert_1_to_ign(
   const sensor_msgs::PointCloud2 & ros1_msg,
-  ignition::msgs::PointCloud & ign_msg);
+  ignition::msgs::PointCloudPacked & ign_msg);
 
 template<>
 void
 convert_ign_to_1(
-  const ignition::msgs::PointCloud & ign_msg,
+  const ignition::msgs::PointCloudPacked & ign_msg,
   sensor_msgs::PointCloud2 & ros1_msg);
 
 }  // namespace ros1_ign_bridge
