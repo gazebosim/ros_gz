@@ -22,6 +22,7 @@ service calls.Its support is limited to only the following message types:
 | mav_msgs/Actuators             | ignition::msgs::Actuators        |
 | nav_msgs/Odometry              | ignition::msgs::Odometry         |
 | rosgraph_msgs/Clock            | ignition::msgs::Clock            |
+| sensor_msgs/BatteryState       | ignition::msgs::BatteryState     |
 | sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo       |
 | sensor_msgs/Imu                | ignition::msgs::IMU              |
 | sensor_msgs/Image              | ignition::msgs::Image            |

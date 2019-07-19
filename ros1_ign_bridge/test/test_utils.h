@@ -34,6 +34,7 @@
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
+#include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
@@ -735,6 +736,38 @@ namespace testing
     }
   }
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::BatteryState &_msg)
+  {
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header = header_msg;
+    _msg.voltage = 123;
+    _msg.current = 456;
+    _msg.charge = 789;
+    _msg.capacity = 321;
+    _msg.percentage = 654;
+    _msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::BatteryState &_msg)
+  {
+    sensor_msgs::BatteryState expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_EQ(expected_msg.voltage, _msg.voltage);
+    EXPECT_EQ(expected_msg.current, _msg.current);
+    EXPECT_EQ(expected_msg.charge, _msg.charge);
+    EXPECT_EQ(expected_msg.capacity, _msg.capacity);
+    EXPECT_EQ(expected_msg.percentage, _msg.percentage);
+    EXPECT_EQ(expected_msg.power_supply_status, _msg.power_supply_status);
+  }
+
   //////////////////////////////////////////////////
   /// Ignition::msgs test utils
   //////////////////////////////////////////////////
@@ -1394,6 +1427,41 @@ namespace testing
         msgBufferIndex += _msg.point_step();
       }
     }
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::BatteryState &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.set_voltage(123);
+    _msg.set_current(456);
+    _msg.set_charge(789);
+    _msg.set_capacity(321);
+    _msg.set_percentage(654);
+    _msg.set_power_supply_status(ignition::msgs::BatteryState::DISCHARGING);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::BatteryState &_msg)
+  {
+    ignition::msgs::BatteryState expected_msg;
+    createTestMsg(expected_msg);
+
+    ASSERT_TRUE(expected_msg.has_header());
+    ASSERT_TRUE(_msg.has_header());
+
+    compareTestMsg(_msg.header());
+    EXPECT_EQ(expected_msg.voltage(), _msg.voltage());
+    EXPECT_EQ(expected_msg.current(), _msg.current());
+    EXPECT_EQ(expected_msg.charge(), _msg.charge());
+    EXPECT_EQ(expected_msg.capacity(), _msg.capacity());
+    EXPECT_EQ(expected_msg.percentage(), _msg.percentage());
+    EXPECT_EQ(expected_msg.power_supply_status(), _msg.power_supply_status());
   }
 }
 }

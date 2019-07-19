@@ -11,6 +11,7 @@
   <exec_depend>ros1_ign_bridge</exec_depend>
   <exec_depend>ros1_ign_point_cloud</exec_depend>
   <exec_depend>rqt_image_view</exec_depend>
+  <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rviz</exec_depend>
 
 </package>

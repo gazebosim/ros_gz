@@ -312,6 +312,18 @@ TEST(IgnSubscriberTest, PointCloudPacked)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, BatteryState)
+{
+  MyTestClass<ignition::msgs::BatteryState> client("battery_state");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
