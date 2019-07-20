@@ -2,6 +2,17 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Battery state (`#30 <https://github.com/osrf/ros1_ign_bridge/issues/30>`_)
+* Packed demo (`#29 <https://github.com/osrf/ros1_ign_bridge/issues/29>`_)
+  * adding demo for point cloud packed bridge
+  * correct rviz file
+  * RGBD bridged cloud demo
+* Merge pull request `#28 <https://github.com/osrf/ros1_ign_bridge/issues/28>`_ from osrf/pointcloudpacked
+  Bridge point cloud packed
+* Contributors: Nate Koenig, chapulina
+
 0.4.0 (2019-07-16)
 ------------------
 * tests and reverse bridge for pointcloud
