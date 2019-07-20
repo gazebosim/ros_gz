@@ -27,6 +27,7 @@
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
+#include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
@@ -462,6 +463,24 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::PointCloudPacked & ign_msg,
   sensor_msgs::PointCloud2 & ros1_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::BatteryState,
+  ignition::msgs::BatteryState
+>::convert_1_to_ign(
+  const sensor_msgs::BatteryState & ros1_msg,
+  ignition::msgs::BatteryState & ign_msg);
+
+template<>
+void
+Factory<
+  sensor_msgs::BatteryState,
+  ignition::msgs::BatteryState
+>::convert_ign_to_1(
+  const ignition::msgs::BatteryState & ign_msg,
+  sensor_msgs::BatteryState & ros1_msg);
 
 }  // namespace ros1_ign_bridge
 

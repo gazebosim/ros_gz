@@ -99,3 +99,15 @@ Using Ignition Gazebo plugin:
     roslaunch ros1_ign_gazebo_demos rgbd_camera.launch
 
 ![](images/rgbd_camera_demo.png)
+
+## Battery
+
+Get the current state of a battery.
+
+    roslaunch ros1_ign_gazebo_demos battery.launch
+
+Then send a command so the vehicle moves and drains the battery
+
+    rostopic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+
+![](images/battery_demo.png)

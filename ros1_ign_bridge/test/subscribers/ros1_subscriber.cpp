@@ -31,6 +31,7 @@
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
+#include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/Image.h>
 #include <sensor_msgs/Imu.h>
@@ -325,6 +326,18 @@ TEST(ROS1SubscriberTest, Odometry)
 TEST(ROS1SubscriberTest, PointCloud2)
 {
   MyTestClass<sensor_msgs::PointCloud2> client("pointcloud2");
+
+  using namespace std::chrono_literals;
+  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROS1SubscriberTest, BatteryState)
+{
+  MyTestClass<sensor_msgs::BatteryState> client("battery_state");
 
   using namespace std::chrono_literals;
   ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(

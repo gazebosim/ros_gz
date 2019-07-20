@@ -162,6 +162,10 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::PointCloudPacked pointcloudpacked_msg;
   ros1_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
 
+  // ignition::msgs::BatteryState.
+  auto battery_state_pub = node.Advertise<ignition::msgs::BatteryState>("battery_state");
+  ignition::msgs::BatteryState battery_state_msg;
+  ros1_ign_bridge::testing::createTestMsg(battery_state_msg);
 
   // Publish messages at 1Hz.
   while (!g_terminatePub)
@@ -188,6 +192,7 @@ int main(int /*argc*/, char **/*argv*/)
     joint_states_pub.Publish(joint_states_msg);
     twist_pub.Publish(twist_msg);
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
+    battery_state_pub.Publish(battery_state_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

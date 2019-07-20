@@ -1010,4 +1010,98 @@ convert_ign_to_1(
   }
 }
 
+template<>
+void
+convert_1_to_ign(
+  const sensor_msgs::BatteryState & ros1_msg,
+  ignition::msgs::BatteryState & ign_msg)
+{
+  convert_1_to_ign(ros1_msg.header, (*ign_msg.mutable_header()));
+
+  ign_msg.set_voltage(ros1_msg.voltage);
+  ign_msg.set_current(ros1_msg.current);
+  ign_msg.set_charge(ros1_msg.charge);
+  ign_msg.set_capacity(ros1_msg.capacity);
+  ign_msg.set_percentage(ros1_msg.percentage);
+
+  if (ros1_msg.power_supply_status == sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN)
+  {
+    ign_msg.set_power_supply_status(ignition::msgs::BatteryState::UNKNOWN);
+  }
+  else if (ros1_msg.power_supply_status == sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING)
+  {
+    ign_msg.set_power_supply_status(ignition::msgs::BatteryState::CHARGING);
+  }
+  else if (ros1_msg.power_supply_status ==
+      sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING)
+  {
+    ign_msg.set_power_supply_status(ignition::msgs::BatteryState::DISCHARGING);
+  }
+  else if (ros1_msg.power_supply_status ==
+      sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING)
+  {
+    ign_msg.set_power_supply_status(ignition::msgs::BatteryState::NOT_CHARGING);
+  }
+  else if (ros1_msg.power_supply_status == sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL)
+  {
+    ign_msg.set_power_supply_status(ignition::msgs::BatteryState::FULL);
+  }
+  else
+  {
+    std::cerr << "Unsupported power supply status [" << ros1_msg.power_supply_status << "]"
+              << std::endl;
+  }
+}
+
+template<>
+void
+convert_ign_to_1(
+  const ignition::msgs::BatteryState & ign_msg,
+  sensor_msgs::BatteryState & ros1_msg)
+{
+  convert_ign_to_1(ign_msg.header(), ros1_msg.header);
+
+  ros1_msg.voltage = ign_msg.voltage();
+  ros1_msg.current = ign_msg.current();
+  ros1_msg.charge = ign_msg.charge();
+  ros1_msg.capacity = ign_msg.capacity();
+  ros1_msg.design_capacity = std::numeric_limits<double>::quiet_NaN();
+  ros1_msg.percentage = ign_msg.percentage();
+
+  if (ign_msg.power_supply_status() ==
+      ignition::msgs::BatteryState::UNKNOWN)
+  {
+    ros1_msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_UNKNOWN;
+  }
+  else if (ign_msg.power_supply_status() ==
+      ignition::msgs::BatteryState::CHARGING)
+  {
+    ros1_msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_CHARGING;
+  }
+  else if (ign_msg.power_supply_status() ==
+      ignition::msgs::BatteryState::DISCHARGING)
+  {
+    ros1_msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_DISCHARGING;
+  }
+  else if (ign_msg.power_supply_status() ==
+      ignition::msgs::BatteryState::NOT_CHARGING)
+  {
+    ros1_msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_NOT_CHARGING;
+  }
+  else if (ign_msg.power_supply_status() ==
+      ignition::msgs::BatteryState::FULL)
+  {
+    ros1_msg.power_supply_status = sensor_msgs::BatteryState::POWER_SUPPLY_STATUS_FULL;
+  }
+  else
+  {
+    std::cerr << "Unsupported power supply status ["
+              << ign_msg.power_supply_status() << "]" << std::endl;
+  }
+
+  ros1_msg.power_supply_health = sensor_msgs::BatteryState::POWER_SUPPLY_HEALTH_UNKNOWN;
+  ros1_msg.power_supply_technology = sensor_msgs::BatteryState::POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
+  ros1_msg.present = true;
+}
+
 }  // namespace ros1_ign_bridge

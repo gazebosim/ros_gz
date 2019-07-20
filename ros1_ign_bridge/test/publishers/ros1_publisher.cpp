@@ -28,6 +28,7 @@
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
+#include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
 #include <sensor_msgs/FluidPressure.h>
 #include <sensor_msgs/Image.h>
@@ -174,6 +175,12 @@ int main(int argc, char ** argv)
   sensor_msgs::PointCloud2 pointcloud2_msg;
   ros1_ign_bridge::testing::createTestMsg(pointcloud2_msg);
 
+  // sensor_msgs::BatteryState.
+  ros::Publisher battery_state_pub =
+    n.advertise<sensor_msgs::BatteryState>("battery_state", 1000);
+  sensor_msgs::BatteryState battery_state_msg;
+  ros1_ign_bridge::testing::createTestMsg(battery_state_msg);
+
   while (ros::ok())
   {
     // Publish all messages.
@@ -199,6 +206,7 @@ int main(int argc, char ** argv)
     magnetic_pub.publish(magnetic_msg);
     joint_states_pub.publish(joint_states_msg);
     pointcloud2_pub.publish(pointcloud2_msg);
+    battery_state_pub.publish(battery_state_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

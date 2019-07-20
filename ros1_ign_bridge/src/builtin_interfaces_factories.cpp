@@ -270,6 +270,17 @@ get_factory_builtin_interfaces(
       >
     >("sensor_msgs/PointCloud2", ign_type_name);
   }
+  if (
+    (ros1_type_name == "sensor_msgs/BatteryState" || ros1_type_name == "") &&
+     ign_type_name == "ignition.msgs.BatteryState")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::BatteryState,
+        ignition::msgs::BatteryState
+      >
+    >("sensor_msgs/BatteryState", ign_type_name);
+  }
   return std::shared_ptr<FactoryInterface>();
 }
 
@@ -817,6 +828,30 @@ Factory<
 >::convert_ign_to_1(
   const ignition::msgs::PointCloudPacked & ign_msg,
   sensor_msgs::PointCloud2 & ros1_msg)
+{
+  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::BatteryState,
+  ignition::msgs::BatteryState
+>::convert_1_to_ign(
+  const sensor_msgs::BatteryState & ros1_msg,
+  ignition::msgs::BatteryState & ign_msg)
+{
+  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::BatteryState,
+  ignition::msgs::BatteryState
+>::convert_ign_to_1(
+  const ignition::msgs::BatteryState & ign_msg,
+  sensor_msgs::BatteryState & ros1_msg)
 {
   ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
 }
