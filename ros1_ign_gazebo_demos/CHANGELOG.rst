@@ -4,6 +4,16 @@ Changelog for package ros1_ign_gazebo_demos
 
 Forthcoming
 -----------
+* 0.5.0
+* Battery state (`#30 <https://github.com/osrf/ros1_ign_bridge/issues/30>`_)
+* Packed demo (`#29 <https://github.com/osrf/ros1_ign_bridge/issues/29>`_)
+  * adding demo for point cloud packed bridge
+  * correct rviz file
+  * RGBD bridged cloud demo
+* Merge pull request `#28 <https://github.com/osrf/ros1_ign_bridge/issues/28>`_ from osrf/pointcloudpacked
+  Bridge point cloud packed
+* Contributors: Nate Koenig, chapulina
+
 * Battery state (`#30 <https://github.com/osrf/ros1_ign_bridge/issues/30>`_)
 * Packed demo (`#29 <https://github.com/osrf/ros1_ign_bridge/issues/29>`_)
   * adding demo for point cloud packed bridge
