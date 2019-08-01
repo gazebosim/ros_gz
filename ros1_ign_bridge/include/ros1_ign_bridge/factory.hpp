@@ -89,10 +89,14 @@ public:
     ros::Publisher ros1_pub)
   {
 
-    std::function<void(const IGN_T&)> subCb =
-    [this, ros1_pub](const IGN_T &_msg)
+    std::function<void(const IGN_T&,
+                       const ignition::transport::MessageInfo &)> subCb =
+    [this, ros1_pub](const IGN_T &_msg,
+                     const ignition::transport::MessageInfo &_info)
     {
-      this->ign_callback(_msg, ros1_pub);
+      // Ignore messages that are published from this bridge.
+      if (!_info.IntraProcess())
+        this->ign_callback(_msg, ros1_pub);
     };
 
     node->Subscribe(topic_name, subCb);
