@@ -44,16 +44,7 @@ Then send a command
 
 ## Depth camera
 
-Depth camera data can be obtained as:
-
-* `sensor_msgs/Image`, through `ros1_ign_bridge`
-* `sendor_msgs/PointCloud2`, through `ros1_ign_bridge` or `ros1_ign_point_cloud`
-
-Using the bridge:
-
-    roslaunch ros1_ign_gazebo_demos depth_camera_bridge.launch
-
-Using Ignition Gazebo plugin:
+Publishes depth camera images and point clouds.
 
     roslaunch ros1_ign_gazebo_demos depth_camera.launch
 
@@ -63,8 +54,8 @@ Using Ignition Gazebo plugin:
 
 GPU lidar data can be obtained as:
 
-* `sensor_msgs/LaserScan`, through `ros1_ign_bridge`
-* `sendor_msgs/PointCloud2`, through `ros1_ign_bridge` or `ros1_ign_point_cloud`
+* `sensor_msgs/LaserScan`, through the `ros1_ign_bridge`
+* `sendor_msgs/PointCloud2`, through the `ros1_ign_bridge` or `ros1_ign_point_cloud`
 
 Using the bridge:
 
