@@ -52,6 +52,30 @@ foreach(bridge ${bridge_executables})
   )
 endforeach(bridge)
 
+set(bridge_lib
+  ros1_ign_bridge_lib
+)
+
+add_library(${bridge_lib}
+  ${common_sources}
+)
+target_link_libraries(${bridge_lib}
+  ${catkin_LIBRARIES}
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)
+
+catkin_package(INCLUDE_DIRS include
+               LIBRARIES ${bridge_lib})
+
+install(TARGETS ${bridge_lib}
+        ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+        RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
+
+install(DIRECTORY include/${PROJECT_NAME}/
+        DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
+
 # Tests
 find_package(rostest REQUIRED)
 

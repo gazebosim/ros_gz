@@ -26,6 +26,14 @@ Publishes fluid pressure readings.
 
 Publishes RGB camera image and info.
 
+Images can be exposed to ROS through `ros1_ign_bridge` or `ros1_ign_image`.
+
+Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
+
+    roslaunch ros1_ign_gazebo_demos image_bridge.launch
+
+Using the regular bridge:
+
     roslaunch ros1_ign_gazebo_demos camera.launch
 
 ![](images/camera_demo.png)
@@ -44,7 +52,20 @@ Then send a command
 
 ## Depth camera
 
-Publishes depth camera images and point clouds.
+Depth camera data can be obtained as:
+
+* `sensor_msgs/Image`, through `ros1_ign_bridge` or `ros1_ign_image`
+* `sendor_msgs/PointCloud2`, through `ros1_ign_bridge` or `ros1_ign_point_cloud`
+
+Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
+
+    roslaunch ros1_ign_gazebo_demos image_bridge.launch
+
+Using the regular bridge:
+
+    roslaunch ros1_ign_gazebo_demos depth_camera_bridge.launch
+
+Using Ignition Gazebo plugin:
 
     roslaunch ros1_ign_gazebo_demos depth_camera.launch
 
@@ -87,10 +108,14 @@ Publishes magnetic field readings.
 
 RGBD camera data can be obtained as:
 
-* `sensor_msgs/Image`, through the `ros1_ign_bridge`
-* `sendor_msgs/PointCloud2`, through the `ros1_ign_bridge` or `ros1_ign_point_cloud`
+* `sensor_msgs/Image`, through `ros1_ign_bridge` or `ros1_ign_image`
+* `sendor_msgs/PointCloud2`, through `ros1_ign_bridge` or `ros1_ign_point_cloud`
 
-Using the bridge:
+Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
+
+    roslaunch ros1_ign_gazebo_demos image_bridge.launch
+
+Using the regular bridge:
 
     roslaunch ros1_ign_gazebo_demos rgbd_camera_bridge.launch
 

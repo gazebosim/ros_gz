@@ -1,0 +1,16 @@
+<package format="2">
+  <name>ros1_ign_image</name>
+  <version>0.5.0</version>
+  <description>Image utilities for Ignition simulation with ROS 1.</description>
+  <license>Apache 2.0</license>
+  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>ignition-msgs4</depend>
+  <depend>ignition-transport7</depend>
+  <depend>image_transport</depend>
+  <depend>ros1_ign_bridge</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+</package>
