@@ -4,6 +4,19 @@ Changelog for package ros1_ign_bridge
 
 Forthcoming
 -----------
+* Merge pull request `#33 <https://github.com/osrf/ros1_ign_bridge/issues/33>`_ from osrf/issue_31
+  Fix issue `#31 <https://github.com/osrf/ros1_ign_bridge/issues/31>`_
+* Image bridge using image_transport (`#34 <https://github.com/osrf/ros1_ign_bridge/issues/34>`_)
+  * Image bridge using image_transport
+  * tests for image
+  * correct metapackage
+  * tests with catkin
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+  * Revert changes from `#32 <https://github.com/osrf/ros1_ign_bridge/issues/32>`_
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Use intra-process field from messageInfo.
+* Contributors: Carlos Aguero, Nate Koenig, chapulina
+
 * 0.5.0
 * Battery state (`#30 <https://github.com/osrf/ros1_ign_bridge/issues/30>`_)
 * Packed demo (`#29 <https://github.com/osrf/ros1_ign_bridge/issues/29>`_)

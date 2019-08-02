@@ -4,6 +4,19 @@ Changelog for package ros1_ign_gazebo_demos
 
 Forthcoming
 -----------
+* Image bridge using image_transport (`#34 <https://github.com/osrf/ros1_ign_bridge/issues/34>`_)
+  * Image bridge using image_transport
+  * tests for image
+  * correct metapackage
+  * tests with catkin
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+  * Revert changes from `#32 <https://github.com/osrf/ros1_ign_bridge/issues/32>`_
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Revert "Pointcloud bridge demo for depth camera"
+  This reverts commit 094cd40f21aed734d59c204172ad5afd7a26c8d6.
+* Pointcloud bridge demo for depth camera
+* Contributors: Louise Poubel, chapulina
+
 * 0.5.0
 * Battery state (`#30 <https://github.com/osrf/ros1_ign_bridge/issues/30>`_)
 * Packed demo (`#29 <https://github.com/osrf/ros1_ign_bridge/issues/29>`_)
