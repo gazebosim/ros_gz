@@ -4,7 +4,7 @@ This package provides a network bridge which enables the exchange of messages
 between ROS 1 and Ignition Transport.
 
 The bridge is currently implemented in C++. At this point there's no support for
-service calls.Its support is limited to only the following message types:
+service calls. Its support is limited to only the following message types:
 
 | ROS 1 type                     | Ignition Transport type          |
 |--------------------------------|:--------------------------------:|
