@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)](https://travis-ci.org/osrf/ros1_ign_bridge.svg?branch=master)
+[![Build Status](https://travis-ci.org/osrf/ros1_ign.svg?branch=master)](https://travis-ci.org/osrf/ros1_ign.svg?branch=master)
 
 # Integration between ROS 1 and Ignition
 
