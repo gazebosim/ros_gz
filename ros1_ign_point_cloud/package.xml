@@ -1,6 +1,6 @@
 <package format="2">
   <name>ros1_ign_point_cloud</name>
-  <version>0.5.0</version>
+  <version>0.6.0</version>
   <description>Point cloud utilities for Ignition simulation with ROS 1.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
