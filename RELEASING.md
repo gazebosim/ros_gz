@@ -10,7 +10,7 @@ The steps to make a new release of the package is:
     - http://wiki.ros.org/bloom/Tutorials/ReleaseCatkinPackage
 
  1. Install rosdep for ignition packages and run rosdep update
-    - sudo echo "yaml https://github.com/osrf/osrf-rosdep/raw/master/ignition/ignition.yaml" >> /etc/ros/rosdep/sources.list.d/00-ignition.list
+    - sudo bash -c 'echo "yaml https://github.com/osrf/osrf-rosdep/raw/master/ignition/ignition.yaml" >> /etc/ros/rosdep/sources.list.d/00-ignition.list'
     - rosdep update
 
  1. Bloom it into a custom repository
