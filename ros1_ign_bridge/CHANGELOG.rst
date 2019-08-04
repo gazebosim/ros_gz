@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.6.1 (2019-08-04)
 ------------------
 * Update README.md
