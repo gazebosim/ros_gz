@@ -2,8 +2,8 @@
 Changelog for package ros1_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.6.1 (2019-08-04)
+------------------
 * Merge pull request `#35 <https://github.com/osrf/ros1_ign_bridge/issues/35>`_ from osrf/image_meta
   Add ros_ign_image to metapackage
 * Add ros_ign_image to metapackage
