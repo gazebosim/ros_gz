@@ -2,6 +2,16 @@
 Changelog for package ros1_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#35 <https://github.com/osrf/ros1_ign_bridge/issues/35>`_ from osrf/image_meta
+  Add ros_ign_image to metapackage
+* Add ros_ign_image to metapackage
+  Signed-off-by: chapulina <louise@openrobotics.org>
+  typo
+  Signed-off-by: chapulina <louise@openrobotics.org>
+* Contributors: Nate Koenig, chapulina
+
 0.6.0 (2019-08-02)
 ------------------
 
