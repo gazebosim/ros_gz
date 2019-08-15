@@ -49,14 +49,14 @@ void usage()
 {
   ROS_ERROR_STREAM(
       "Bridge a collection of ROS1 and Ignition Transport topics.\n\n"
-      << "  parameter_bridge <topic@ROS1_type[@,<,>]Ign_type> .. "
+      << "  parameter_bridge <topic@ROS1_type(@,[,])Ign_type> .. "
       << " <topic@ROS1_type@Ign_type>\n\n"
       << "The first @ symbol delimits the topic name from the message types.\n"
       << "Following the first @ symbol is the ROS1 message type.\n"
-      << "The ROS1 message type is followed by an @, <, or > symbol where\n"
+      << "The ROS1 message type is followed by an @, [, or ] symbol where\n"
       << "    @  ==  a bidirectional bridge, \n"
-      << "    <  == a bridge from Ignition to ROS1,\n"
-      << "    >  == a bridge from ROS1 to Ignition.\n"
+      << "    [  == a bridge from Ignition to ROS1,\n"
+      << "    ]  == a bridge from ROS1 to Ignition.\n"
       << "Following the direction symbol is the Ignition Transport message "
       << "type.\n"
       << "A bidirectional bridge example:\n"
@@ -101,16 +101,16 @@ int main(int argc, char * argv[])
 
     // Get the direction delimeter, which should be one of:
     //   @ == bidirectional, or
-    //   < == only from IGN to ROS, or
-    //   > == only from ROS to IGN.
+    //   [ == only from IGN to ROS, or
+    //   ] == only from ROS to IGN.
     delimPos = arg.find("@");
     Direction direction = BIDIRECTIONAL;
     if (delimPos == std::string::npos || delimPos == 0)
     {
-      delimPos = arg.find("<");
+      delimPos = arg.find("[");
       if (delimPos == std::string::npos || delimPos == 0)
       {
-        delimPos = arg.find(">");
+        delimPos = arg.find("]");
         if (delimPos == std::string::npos || delimPos == 0)
         {
           usage();
