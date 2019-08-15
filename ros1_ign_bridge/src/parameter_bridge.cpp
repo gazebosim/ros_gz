@@ -50,17 +50,23 @@ void usage()
   ROS_ERROR_STREAM(
       "Bridge a collection of ROS1 and Ignition Transport topics.\n\n"
       << "  parameter_bridge <topic@ROS1_type(@,[,])Ign_type> .. "
-      << " <topic@ROS1_type@Ign_type>\n\n"
+      << " <topic@ROS1_type(@,[,])Ign_type>\n\n"
       << "The first @ symbol delimits the topic name from the message types.\n"
       << "Following the first @ symbol is the ROS1 message type.\n"
       << "The ROS1 message type is followed by an @, [, or ] symbol where\n"
-      << "    @  ==  a bidirectional bridge, \n"
+      << "    @  == a bidirectional bridge, \n"
       << "    [  == a bridge from Ignition to ROS1,\n"
       << "    ]  == a bridge from ROS1 to Ignition.\n"
       << "Following the direction symbol is the Ignition Transport message "
-      << "type.\n"
+      << "type.\n\n"
       << "A bidirectional bridge example:\n"
       << "    parameter_bridge /chatter@std_msgs/String@ignition.msgs"
+      << ".StringMsg\n\n"
+      << "A bridge from Ignition to ROS1 example:\n"
+      << "    parameter_bridge /chatter@std_msgs/String[ignition.msgs"
+      << ".StringMsg\n\n"
+      << "A bridge from ROS1 to Ignition example:\n"
+      << "    parameter_bridge /chatter@std_msgs/String]ignition.msgs"
       << ".StringMsg" << std::endl);
 }
 
