@@ -2,6 +2,20 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Merge pull request `#38 <https://github.com/osrf/ros1_ign_bridge/issues/38>`_ from osrf/unidirectional
+  Support unidirectional bridge topics
+* More examples
+* Merge pull request `#37 <https://github.com/osrf/ros1_ign_bridge/issues/37>`_ from osrf/debug
+  Adding debug and error statements
+* Switch to characters supported by ros
+* Merge branch 'debug' into unidirectional
+* More output, and rosconsole depend
+* Support specification of bridge direction
+* Adding debug and error statements
+* Contributors: Nate Koenig
+
 0.6.3 (2019-08-04)
 ------------------
 
