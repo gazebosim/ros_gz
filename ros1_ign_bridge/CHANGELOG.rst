@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.0 (2019-08-15)
+------------------
 * Merge pull request `#38 <https://github.com/osrf/ros1_ign_bridge/issues/38>`_ from osrf/unidirectional
   Support unidirectional bridge topics
 * More examples
