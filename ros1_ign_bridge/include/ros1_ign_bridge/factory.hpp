@@ -22,6 +22,7 @@
 #include <ignition/transport/Node.hh>
 
 // include ROS 1 message event
+#include <ros/console.h>
 #include <ros/message.h>
 #include <ros/ros.h>
 
@@ -114,7 +115,7 @@ protected:
     const boost::shared_ptr<ros::M_string> & connection_header =
       ros1_msg_event.getConnectionHeaderPtr();
     if (!connection_header) {
-      std::cerr << "  dropping message without connection header" << std::endl;
+      ROS_ERROR("  dropping message without connection header");
       return;
     }
 
