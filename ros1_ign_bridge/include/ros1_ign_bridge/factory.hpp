@@ -109,13 +109,14 @@ protected:
   void ros1_callback(
     const ros::MessageEvent<ROS1_T const> & ros1_msg_event,
     ignition::transport::Node::Publisher & ign_pub,
-    const std::string & /*ros1_type_name*/,
-    const std::string & /*ign_type_name*/)
+    const std::string &ros1_type_name,
+    const std::string &ign_type_name)
   {
     const boost::shared_ptr<ros::M_string> & connection_header =
       ros1_msg_event.getConnectionHeaderPtr();
     if (!connection_header) {
-      ROS_ERROR("  dropping message without connection header");
+      ROS_ERROR("Dropping message %s without connection header",
+          ros1_type_name.c_str());
       return;
     }
 
@@ -132,6 +133,8 @@ protected:
     IGN_T ign_msg;
     convert_1_to_ign(*ros1_msg, ign_msg);
     ign_pub.Publish(ign_msg);
+    ROS_INFO_ONCE("Passing message from ROS1 %s to Ignition %s (showing msg"\
+        " only once per type", ros1_type_name.c_str(), ign_type_name.c_str());
   }
 
   static

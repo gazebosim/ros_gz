@@ -12,6 +12,7 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS
                geometry_msgs
+               rosconsole
                roscpp
                rostest
                sensor_msgs
