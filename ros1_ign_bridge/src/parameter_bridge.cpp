@@ -23,6 +23,7 @@
 # pragma clang diagnostic ignored "-Wunused-parameter"
 #endif
 #include <ros/ros.h>
+#include <ros/console.h>
 #ifdef __clang__
 # pragma clang diagnostic pop
 #endif
@@ -35,11 +36,12 @@
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cerr << "Bridge a collection of ROS1 and Ignition Transport topics.\n\n"
-            << "  parameter_bridge <topic@ROS1_type@Ign_type> .. "
-            << " <topic@ROS1_type@Ign_type>\n\n"
-            << "E.g.: parameter_bridge /chatter@std_msgs/String@ignition.msgs"
-            << ".StringMsg" << std::endl;
+  ROS_ERROR_STREAM(
+      "Bridge a collection of ROS1 and Ignition Transport topics.\n\n"
+      << "  parameter_bridge <topic@ROS1_type@Ign_type> .. "
+      << " <topic@ROS1_type@Ign_type>\n\n"
+      << "E.g.: parameter_bridge /chatter@std_msgs/String@ignition.msgs"
+      << ".StringMsg" << std::endl);
 }
 
 //////////////////////////////////////////////////
@@ -104,10 +106,11 @@ int main(int argc, char * argv[])
     }
     catch (std::runtime_error &_e)
     {
-      std::cerr << "Failed to create a bridge for topic [" << topic_name << "] "
-                << "with ROS1 type [" << ros1_type_name << "] and "
-                << "Ignition Transport type [" << ign_type_name << "]"
-                << std::endl;
+      ROS_ERROR_STREAM("Failed to create a bridge for topic ["
+          << topic_name << "] "
+          << "with ROS1 type [" << ros1_type_name << "] and "
+          << "Ignition Transport type [" << ign_type_name << "]"
+          << std::endl);
     }
   }
 

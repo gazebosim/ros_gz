@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <exception>
+#include <ros/console.h>
 
 #include "ros1_ign_bridge/convert_builtin_interfaces.hpp"
 
@@ -111,8 +112,8 @@ convert_ign_to_1(
       }
       catch (std::exception & e)
       {
-        std::cerr << "Exception converting [" << value << "] to an "
-                  << "unsigned int" << std::endl;
+        ROS_ERROR_STREAM("Exception converting [" << value << "] to an "
+                  << "unsigned int" << std::endl);
       }
     }
     else if (aPair.key() == "frame_id" && aPair.value_size() > 0)
@@ -511,8 +512,8 @@ convert_1_to_ign(
   {
     ign_msg.set_pixel_format_type(
       ignition::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
-    std::cerr << "Unsupported pixel format [" << ros1_msg.encoding << "]"
-              << std::endl;
+    ROS_ERROR_STREAM("Unsupported pixel format [" << ros1_msg.encoding << "]"
+              << std::endl);
     return;
   }
 
@@ -600,8 +601,8 @@ convert_ign_to_1(
   }
   else
   {
-    std::cerr << "Unsupported pixel format [" << ign_msg.pixel_format_type() << "]"
-              << std::endl;
+    ROS_ERROR_STREAM("Unsupported pixel format ["
+        << ign_msg.pixel_format_type() << "]" << std::endl);
     return;
   }
 
@@ -642,8 +643,8 @@ convert_1_to_ign(
   }
   else
   {
-    std::cerr << "Unsupported distortion model [" << ros1_msg.distortion_model << "]"
-              << std::endl;
+    ROS_ERROR_STREAM("Unsupported distortion model ["
+        << ros1_msg.distortion_model << "]" << std::endl);
   }
   for (auto i = 0u; i < ros1_msg.D.size(); ++i)
   {
@@ -700,8 +701,8 @@ convert_ign_to_1(
     }
     else
     {
-      std::cerr << "Unsupported distortion model ["
-                << distortion.model() << "]" << std::endl;
+      ROS_ERROR_STREAM("Unsupported distortion model ["
+                << distortion.model() << "]" << std::endl);
     }
 
     ros1_msg.D.resize(distortion.k_size());
@@ -1048,8 +1049,8 @@ convert_1_to_ign(
   }
   else
   {
-    std::cerr << "Unsupported power supply status [" << ros1_msg.power_supply_status << "]"
-              << std::endl;
+    ROS_ERROR_STREAM("Unsupported power supply status ["
+        << ros1_msg.power_supply_status << "]" << std::endl);
   }
 }
 
@@ -1095,8 +1096,8 @@ convert_ign_to_1(
   }
   else
   {
-    std::cerr << "Unsupported power supply status ["
-              << ign_msg.power_supply_status() << "]" << std::endl;
+    ROS_ERROR_STREAM("Unsupported power supply status ["
+              << ign_msg.power_supply_status() << "]" << std::endl);
   }
 
   ros1_msg.power_supply_health = sensor_msgs::BatteryState::POWER_SUPPLY_HEALTH_UNKNOWN;

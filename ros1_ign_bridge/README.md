@@ -45,6 +45,7 @@ The following ROS 1 packages are required to build and use the bridge:
 * `geometry_msgs`
 * `mav_msgs`
 * `nav_msgs`
+* `rosconsole`
 * `roscpp`
 * `roslaunch` (for `roscore` executable)
 * `rosmsg`

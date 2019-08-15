@@ -19,6 +19,7 @@
 #include <string>
 
 // include ROS 1
+#include <ros/console.h>
 #include <ros/node_handle.h>
 
 // include Ignition Transport
@@ -104,6 +105,10 @@ create_bidirectional_bridge(
   const std::string & topic_name,
   size_t queue_size = 10)
 {
+  ROS_DEBUG_STREAM("Creating bidirectional bridge for topic" << topic_name
+      << " with ROS1 type [" << ros1_type_name << "] and Ignition Transport"
+      << " type [" << ign_type_name << "]");
+
   BridgeHandles handles;
   handles.bridge1toIgn = create_bridge_from_ros_to_ign(
    ros1_node, ign_node,
