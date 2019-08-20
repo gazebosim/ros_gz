@@ -19,17 +19,17 @@
 #include "ros_ign_bridge/builtin_interfaces_factories.hpp"
 #include "ros_ign_bridge/convert_builtin_interfaces.hpp"
 
-namespace ros1_ign_bridge
+namespace ros_ign_bridge
 {
 
 std::shared_ptr<FactoryInterface>
 get_factory_builtin_interfaces(
-  const std::string & ros1_type_name,
+  const std::string & ros_type_name,
   const std::string & ign_type_name)
 {
   // mapping from string to specialized template
   if (
-    (ros1_type_name == "std_msgs/Float32" || ros1_type_name == "") &&
+    (ros_type_name == "std_msgs/Float32" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Float")
   {
     return std::make_shared<
@@ -40,7 +40,7 @@ get_factory_builtin_interfaces(
     >("std_msgs/Float32", ign_type_name);
   }
   if (
-    (ros1_type_name == "std_msgs/Header" || ros1_type_name == "") &&
+    (ros_type_name == "std_msgs/Header" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Header")
   {
     return std::make_shared<
@@ -51,7 +51,7 @@ get_factory_builtin_interfaces(
     >("std_msgs/Header", ign_type_name);
   }
   if (
-    (ros1_type_name == "std_msgs/String" || ros1_type_name == "") &&
+    (ros_type_name == "std_msgs/String" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.StringMsg")
   {
     return std::make_shared<
@@ -62,7 +62,7 @@ get_factory_builtin_interfaces(
     >("std_msgs/String", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Quaternion" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Quaternion" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Quaternion")
   {
     return std::make_shared<
@@ -73,7 +73,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Quaternion", ign_type_name);
   }
   if (
-    (ros1_type_name == "rosgraph_msgs/Clock" || ros1_type_name == "") &&
+    (ros_type_name == "rosgraph_msgs/Clock" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Clock")
   {
     return std::make_shared<
@@ -84,7 +84,7 @@ get_factory_builtin_interfaces(
     >("rosgraph_msgs/Clock", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Vector3" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Vector3" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Vector3d")
   {
     return std::make_shared<
@@ -95,7 +95,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Vector3", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Point" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Point" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Vector3d")
   {
     return std::make_shared<
@@ -106,7 +106,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Point", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Pose" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Pose" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Pose")
   {
     return std::make_shared<
@@ -117,7 +117,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Pose", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/PoseStamped" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/PoseStamped" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Pose")
   {
     return std::make_shared<
@@ -128,7 +128,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/PoseStamped", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Transform" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Transform" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Pose")
   {
     return std::make_shared<
@@ -139,7 +139,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Transform", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/TransformStamped" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/TransformStamped" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Pose")
   {
     return std::make_shared<
@@ -150,7 +150,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/TransformStamped", ign_type_name);
   }
   if (
-    (ros1_type_name == "geometry_msgs/Twist" || ros1_type_name == "") &&
+    (ros_type_name == "geometry_msgs/Twist" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Twist")
   {
     return std::make_shared<
@@ -161,7 +161,7 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/Twist", ign_type_name);
   }
   if (
-    (ros1_type_name == "mav_msgs/Actuators" || ros1_type_name == "") &&
+    (ros_type_name == "mav_msgs/Actuators" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Actuators")
   {
     return std::make_shared<
@@ -172,7 +172,7 @@ get_factory_builtin_interfaces(
     >("mav_msgs/Actuators", ign_type_name);
   }
   if (
-    (ros1_type_name == "nav_msgs/Odometry" || ros1_type_name == "") &&
+    (ros_type_name == "nav_msgs/Odometry" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Odometry")
   {
     return std::make_shared<
@@ -183,7 +183,7 @@ get_factory_builtin_interfaces(
     >("nav_msgs/Odometry", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/FluidPressure" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/FluidPressure" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.FluidPressure")
   {
     return std::make_shared<
@@ -194,7 +194,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/FluidPressure", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/Image" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/Image" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Image")
   {
     return std::make_shared<
@@ -205,7 +205,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/Image", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/CameraInfo" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/CameraInfo" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.CameraInfo")
   {
     return std::make_shared<
@@ -216,7 +216,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/CameraInfo", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/Imu" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/Imu" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.IMU")
   {
     return std::make_shared<
@@ -227,7 +227,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/Imu", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/JointState" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/JointState" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Model")
   {
     return std::make_shared<
@@ -238,7 +238,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/JointState", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/LaserScan" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/LaserScan" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.LaserScan")
   {
     return std::make_shared<
@@ -249,7 +249,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/LaserScan", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/MagneticField" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/MagneticField" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Magnetometer")
   {
     return std::make_shared<
@@ -260,7 +260,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/Magnetometer", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/PointCloud2" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/PointCloud2" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.PointCloudPacked")
   {
     return std::make_shared<
@@ -271,7 +271,7 @@ get_factory_builtin_interfaces(
     >("sensor_msgs/PointCloud2", ign_type_name);
   }
   if (
-    (ros1_type_name == "sensor_msgs/BatteryState" || ros1_type_name == "") &&
+    (ros_type_name == "sensor_msgs/BatteryState" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.BatteryState")
   {
     return std::make_shared<
@@ -285,11 +285,11 @@ get_factory_builtin_interfaces(
 }
 
 std::shared_ptr<FactoryInterface>
-get_factory(const std::string & ros1_type_name,
+get_factory(const std::string & ros_type_name,
             const std::string & ign_type_name)
 {
   std::shared_ptr<FactoryInterface> factory;
-  factory = get_factory_builtin_interfaces(ros1_type_name, ign_type_name);
+  factory = get_factory_builtin_interfaces(ros_type_name, ign_type_name);
   if (factory)
     return factory;
 
@@ -304,11 +304,11 @@ void
 Factory<
   std_msgs::Float32,
   ignition::msgs::Float
->::convert_1_to_ign(
-  const std_msgs::Float32 & ros1_msg,
+>::convert_ros_to_ign(
+  const std_msgs::Float32 & ros_msg,
   ignition::msgs::Float & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -316,11 +316,11 @@ void
 Factory<
   std_msgs::Float32,
   ignition::msgs::Float
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Float & ign_msg,
-  std_msgs::Float32 & ros1_msg)
+  std_msgs::Float32 & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -328,11 +328,11 @@ void
 Factory<
   std_msgs::Header,
   ignition::msgs::Header
->::convert_1_to_ign(
-  const std_msgs::Header & ros1_msg,
+>::convert_ros_to_ign(
+  const std_msgs::Header & ros_msg,
   ignition::msgs::Header & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -340,11 +340,11 @@ void
 Factory<
   std_msgs::Header,
   ignition::msgs::Header
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Header & ign_msg,
-  std_msgs::Header & ros1_msg)
+  std_msgs::Header & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -352,11 +352,11 @@ void
 Factory<
   std_msgs::String,
   ignition::msgs::StringMsg
->::convert_1_to_ign(
-  const std_msgs::String & ros1_msg,
+>::convert_ros_to_ign(
+  const std_msgs::String & ros_msg,
   ignition::msgs::StringMsg & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -364,11 +364,11 @@ void
 Factory<
   std_msgs::String,
   ignition::msgs::StringMsg
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::StringMsg & ign_msg,
-  std_msgs::String & ros1_msg)
+  std_msgs::String & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 // rosgraph_msgs
@@ -377,11 +377,11 @@ void
 Factory<
   rosgraph_msgs::Clock,
   ignition::msgs::Clock
->::convert_1_to_ign(
-  const rosgraph_msgs::Clock & ros1_msg,
+>::convert_ros_to_ign(
+  const rosgraph_msgs::Clock & ros_msg,
   ignition::msgs::Clock & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -389,11 +389,11 @@ void
 Factory<
   rosgraph_msgs::Clock,
   ignition::msgs::Clock
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Clock & ign_msg,
-  rosgraph_msgs::Clock & ros1_msg)
+  rosgraph_msgs::Clock & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 // geometry_msgs
@@ -402,11 +402,11 @@ void
 Factory<
   geometry_msgs::Quaternion,
   ignition::msgs::Quaternion
->::convert_1_to_ign(
-  const geometry_msgs::Quaternion & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Quaternion & ros_msg,
   ignition::msgs::Quaternion & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -414,11 +414,11 @@ void
 Factory<
   geometry_msgs::Quaternion,
   ignition::msgs::Quaternion
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Quaternion & ign_msg,
-  geometry_msgs::Quaternion & ros1_msg)
+  geometry_msgs::Quaternion & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -426,11 +426,11 @@ void
 Factory<
   geometry_msgs::Vector3,
   ignition::msgs::Vector3d
->::convert_1_to_ign(
-  const geometry_msgs::Vector3 & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Vector3 & ros_msg,
   ignition::msgs::Vector3d & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -438,11 +438,11 @@ void
 Factory<
   geometry_msgs::Vector3,
   ignition::msgs::Vector3d
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Vector3d & ign_msg,
-  geometry_msgs::Vector3 & ros1_msg)
+  geometry_msgs::Vector3 & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -450,11 +450,11 @@ void
 Factory<
   geometry_msgs::Point,
   ignition::msgs::Vector3d
->::convert_1_to_ign(
-  const geometry_msgs::Point & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Point & ros_msg,
   ignition::msgs::Vector3d & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -462,11 +462,11 @@ void
 Factory<
   geometry_msgs::Point,
   ignition::msgs::Vector3d
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Vector3d & ign_msg,
-  geometry_msgs::Point & ros1_msg)
+  geometry_msgs::Point & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -474,11 +474,11 @@ void
 Factory<
   geometry_msgs::Pose,
   ignition::msgs::Pose
->::convert_1_to_ign(
-  const geometry_msgs::Pose & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Pose & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -486,11 +486,11 @@ void
 Factory<
   geometry_msgs::Pose,
   ignition::msgs::Pose
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
-  geometry_msgs::Pose & ros1_msg)
+  geometry_msgs::Pose & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -498,11 +498,11 @@ void
 Factory<
   geometry_msgs::PoseStamped,
   ignition::msgs::Pose
->::convert_1_to_ign(
-  const geometry_msgs::PoseStamped & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -510,11 +510,11 @@ void
 Factory<
   geometry_msgs::PoseStamped,
   ignition::msgs::Pose
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
-  geometry_msgs::PoseStamped & ros1_msg)
+  geometry_msgs::PoseStamped & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -522,11 +522,11 @@ void
 Factory<
   geometry_msgs::Transform,
   ignition::msgs::Pose
->::convert_1_to_ign(
-  const geometry_msgs::Transform & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Transform & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -534,11 +534,11 @@ void
 Factory<
   geometry_msgs::Transform,
   ignition::msgs::Pose
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
-  geometry_msgs::Transform & ros1_msg)
+  geometry_msgs::Transform & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -546,11 +546,11 @@ void
 Factory<
   geometry_msgs::TransformStamped,
   ignition::msgs::Pose
->::convert_1_to_ign(
-  const geometry_msgs::TransformStamped & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::TransformStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -558,11 +558,11 @@ void
 Factory<
   geometry_msgs::TransformStamped,
   ignition::msgs::Pose
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
-  geometry_msgs::TransformStamped & ros1_msg)
+  geometry_msgs::TransformStamped & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -570,11 +570,11 @@ void
 Factory<
   geometry_msgs::Twist,
   ignition::msgs::Twist
->::convert_1_to_ign(
-  const geometry_msgs::Twist & ros1_msg,
+>::convert_ros_to_ign(
+  const geometry_msgs::Twist & ros_msg,
   ignition::msgs::Twist & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -582,11 +582,11 @@ void
 Factory<
   geometry_msgs::Twist,
   ignition::msgs::Twist
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Twist & ign_msg,
-  geometry_msgs::Twist & ros1_msg)
+  geometry_msgs::Twist & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 // mav_msgs
@@ -595,11 +595,11 @@ void
 Factory<
   mav_msgs::Actuators,
   ignition::msgs::Actuators
->::convert_1_to_ign(
-  const mav_msgs::Actuators & ros1_msg,
+>::convert_ros_to_ign(
+  const mav_msgs::Actuators & ros_msg,
   ignition::msgs::Actuators & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -607,11 +607,11 @@ void
 Factory<
   mav_msgs::Actuators,
   ignition::msgs::Actuators
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Actuators & ign_msg,
-  mav_msgs::Actuators & ros1_msg)
+  mav_msgs::Actuators & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 // nav_msgs
@@ -620,11 +620,11 @@ void
 Factory<
   nav_msgs::Odometry,
   ignition::msgs::Odometry
->::convert_1_to_ign(
-  const nav_msgs::Odometry & ros1_msg,
+>::convert_ros_to_ign(
+  const nav_msgs::Odometry & ros_msg,
   ignition::msgs::Odometry & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -632,11 +632,11 @@ void
 Factory<
   nav_msgs::Odometry,
   ignition::msgs::Odometry
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Odometry & ign_msg,
-  nav_msgs::Odometry & ros1_msg)
+  nav_msgs::Odometry & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 // sensor_msgs
@@ -645,11 +645,11 @@ void
 Factory<
   sensor_msgs::FluidPressure,
   ignition::msgs::FluidPressure
->::convert_1_to_ign(
-  const sensor_msgs::FluidPressure & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::FluidPressure & ros_msg,
   ignition::msgs::FluidPressure & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -657,11 +657,11 @@ void
 Factory<
   sensor_msgs::FluidPressure,
   ignition::msgs::FluidPressure
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::FluidPressure & ign_msg,
-  sensor_msgs::FluidPressure & ros1_msg)
+  sensor_msgs::FluidPressure & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -669,11 +669,11 @@ void
 Factory<
   sensor_msgs::Image,
   ignition::msgs::Image
->::convert_1_to_ign(
-  const sensor_msgs::Image & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::Image & ros_msg,
   ignition::msgs::Image & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -681,11 +681,11 @@ void
 Factory<
   sensor_msgs::Image,
   ignition::msgs::Image
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Image & ign_msg,
-  sensor_msgs::Image & ros1_msg)
+  sensor_msgs::Image & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -693,11 +693,11 @@ void
 Factory<
   sensor_msgs::CameraInfo,
   ignition::msgs::CameraInfo
->::convert_1_to_ign(
-  const sensor_msgs::CameraInfo & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::CameraInfo & ros_msg,
   ignition::msgs::CameraInfo & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -705,11 +705,11 @@ void
 Factory<
   sensor_msgs::CameraInfo,
   ignition::msgs::CameraInfo
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::CameraInfo & ign_msg,
-  sensor_msgs::CameraInfo & ros1_msg)
+  sensor_msgs::CameraInfo & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -717,11 +717,11 @@ void
 Factory<
   sensor_msgs::Imu,
   ignition::msgs::IMU
->::convert_1_to_ign(
-  const sensor_msgs::Imu & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::Imu & ros_msg,
   ignition::msgs::IMU & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -729,11 +729,11 @@ void
 Factory<
   sensor_msgs::Imu,
   ignition::msgs::IMU
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::IMU & ign_msg,
-  sensor_msgs::Imu & ros1_msg)
+  sensor_msgs::Imu & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -741,11 +741,11 @@ void
 Factory<
   sensor_msgs::JointState,
   ignition::msgs::Model
->::convert_1_to_ign(
-  const sensor_msgs::JointState & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::JointState & ros_msg,
   ignition::msgs::Model & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -753,11 +753,11 @@ void
 Factory<
   sensor_msgs::JointState,
   ignition::msgs::Model
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Model & ign_msg,
-  sensor_msgs::JointState & ros1_msg)
+  sensor_msgs::JointState & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -765,11 +765,11 @@ void
 Factory<
   sensor_msgs::LaserScan,
   ignition::msgs::LaserScan
->::convert_1_to_ign(
-  const sensor_msgs::LaserScan & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::LaserScan & ros_msg,
   ignition::msgs::LaserScan & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -777,11 +777,11 @@ void
 Factory<
   sensor_msgs::LaserScan,
   ignition::msgs::LaserScan
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::LaserScan & ign_msg,
-  sensor_msgs::LaserScan & ros1_msg)
+  sensor_msgs::LaserScan & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -789,11 +789,11 @@ void
 Factory<
   sensor_msgs::MagneticField,
   ignition::msgs::Magnetometer
->::convert_1_to_ign(
-  const sensor_msgs::MagneticField & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::MagneticField & ros_msg,
   ignition::msgs::Magnetometer & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -801,11 +801,11 @@ void
 Factory<
   sensor_msgs::MagneticField,
   ignition::msgs::Magnetometer
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::Magnetometer & ign_msg,
-  sensor_msgs::MagneticField & ros1_msg)
+  sensor_msgs::MagneticField & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -813,11 +813,11 @@ void
 Factory<
   sensor_msgs::PointCloud2,
   ignition::msgs::PointCloudPacked
->::convert_1_to_ign(
-  const sensor_msgs::PointCloud2 & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::PointCloud2 & ros_msg,
   ignition::msgs::PointCloudPacked & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -825,11 +825,11 @@ void
 Factory<
   sensor_msgs::PointCloud2,
   ignition::msgs::PointCloudPacked
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::PointCloudPacked & ign_msg,
-  sensor_msgs::PointCloud2 & ros1_msg)
+  sensor_msgs::PointCloud2 & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -837,11 +837,11 @@ void
 Factory<
   sensor_msgs::BatteryState,
   ignition::msgs::BatteryState
->::convert_1_to_ign(
-  const sensor_msgs::BatteryState & ros1_msg,
+>::convert_ros_to_ign(
+  const sensor_msgs::BatteryState & ros_msg,
   ignition::msgs::BatteryState & ign_msg)
 {
-  ros1_ign_bridge::convert_1_to_ign(ros1_msg, ign_msg);
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -849,11 +849,11 @@ void
 Factory<
   sensor_msgs::BatteryState,
   ignition::msgs::BatteryState
->::convert_ign_to_1(
+>::convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
-  sensor_msgs::BatteryState & ros1_msg)
+  sensor_msgs::BatteryState & ros_msg)
 {
-  ros1_ign_bridge::convert_ign_to_1(ign_msg, ros1_msg);
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
-}  // namespace ros1_ign_bridge
+}  // namespace ros_ign_bridge

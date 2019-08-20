@@ -44,7 +44,7 @@ class Handler
   private: void OnImage(const ignition::msgs::Image & _ign_msg)
   {
     sensor_msgs::Image ros_msg;
-    ros1_ign_bridge::convert_ign_to_1(_ign_msg, ros_msg);
+    ros_ign_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
     this->ros_pub.publish(ros_msg);
   }
 
@@ -72,7 +72,7 @@ int main(int argc, char * argv[])
 
   ros::init(argc, argv, "ros_ign_image");
 
-  // ROS 1 node
+  // ROS node
   ros::NodeHandle ros_node;
   auto it_node = std::make_shared<image_transport::ImageTransport>(ros_node);
 

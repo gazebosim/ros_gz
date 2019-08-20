@@ -42,144 +42,144 @@
 //////////////////////////////////////////////////
 int main(int argc, char ** argv)
 {
-  ros::init(argc, argv, "ros1_string_publisher");
+  ros::init(argc, argv, "ros_string_publisher");
   ros::NodeHandle n;
   ros::Rate loop_rate(1);
 
   // std_msgs::Float32.
   ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
   std_msgs::Float32 float_msg;
-  ros1_ign_bridge::testing::createTestMsg(float_msg);
+  ros_ign_bridge::testing::createTestMsg(float_msg);
 
   // std_msgs::Header.
   ros::Publisher header_pub = n.advertise<std_msgs::Header>("header", 1000);
   std_msgs::Header header_msg;
-  ros1_ign_bridge::testing::createTestMsg(header_msg);
+  ros_ign_bridge::testing::createTestMsg(header_msg);
 
   // std_msgs::String.
   ros::Publisher string_pub = n.advertise<std_msgs::String>("string", 1000);
   std_msgs::String string_msg;
-  ros1_ign_bridge::testing::createTestMsg(string_msg);
+  ros_ign_bridge::testing::createTestMsg(string_msg);
 
   // geometry_msgs::Quaternion.
   ros::Publisher quaternion_pub =
     n.advertise<geometry_msgs::Quaternion>("quaternion", 1000);
   geometry_msgs::Quaternion quaternion_msg;
-  ros1_ign_bridge::testing::createTestMsg(quaternion_msg);
+  ros_ign_bridge::testing::createTestMsg(quaternion_msg);
 
   // geometry_msgs::Vector3.
   ros::Publisher vector3_pub =
     n.advertise<geometry_msgs::Vector3>("vector3", 1000);
   geometry_msgs::Vector3 vector3_msg;
-  ros1_ign_bridge::testing::createTestMsg(vector3_msg);
+  ros_ign_bridge::testing::createTestMsg(vector3_msg);
 
   // sensor_msgs::Clock.
   ros::Publisher clock_pub =
     n.advertise<rosgraph_msgs::Clock>("clock", 1000);
   rosgraph_msgs::Clock clock_msg;
-  ros1_ign_bridge::testing::createTestMsg(clock_msg);
+  ros_ign_bridge::testing::createTestMsg(clock_msg);
 
   // geometry_msgs::Point.
   ros::Publisher point_pub =
     n.advertise<geometry_msgs::Point>("point", 1000);
   geometry_msgs::Point point_msg;
-  ros1_ign_bridge::testing::createTestMsg(point_msg);
+  ros_ign_bridge::testing::createTestMsg(point_msg);
 
   // geometry_msgs::Pose.
   ros::Publisher pose_pub =
     n.advertise<geometry_msgs::Pose>("pose", 1000);
   geometry_msgs::Pose pose_msg;
-  ros1_ign_bridge::testing::createTestMsg(pose_msg);
+  ros_ign_bridge::testing::createTestMsg(pose_msg);
 
   // geometry_msgs::PoseStamped.
   ros::Publisher pose_stamped_pub =
     n.advertise<geometry_msgs::PoseStamped>("pose_stamped", 1000);
   geometry_msgs::PoseStamped pose_stamped_msg;
-  ros1_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+  ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
 
   // geometry_msgs::Transform.
   ros::Publisher transform_pub =
     n.advertise<geometry_msgs::Transform>("transform", 1000);
   geometry_msgs::Transform transform_msg;
-  ros1_ign_bridge::testing::createTestMsg(transform_msg);
+  ros_ign_bridge::testing::createTestMsg(transform_msg);
 
   // geometry_msgs::TransformStamped.
   ros::Publisher transform_stamped_pub =
     n.advertise<geometry_msgs::TransformStamped>("transform_stamped", 1000);
   geometry_msgs::TransformStamped transform_stamped_msg;
-  ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+  ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
 
   // geometry_msgs::Twist.
   ros::Publisher twist_pub =
     n.advertise<geometry_msgs::Twist>("twist", 1000);
   geometry_msgs::Twist twist_msg;
-  ros1_ign_bridge::testing::createTestMsg(twist_msg);
+  ros_ign_bridge::testing::createTestMsg(twist_msg);
 
   // mav_msgs::Actuators.
   ros::Publisher actuators_pub =
     n.advertise<mav_msgs::Actuators>("actuators", 1000);
   mav_msgs::Actuators actuators_msg;
-  ros1_ign_bridge::testing::createTestMsg(actuators_msg);
+  ros_ign_bridge::testing::createTestMsg(actuators_msg);
 
   // nav_msgs::Odometry.
   ros::Publisher odometry_pub =
     n.advertise<nav_msgs::Odometry>("odometry", 1000);
   nav_msgs::Odometry odometry_msg;
-  ros1_ign_bridge::testing::createTestMsg(odometry_msg);
+  ros_ign_bridge::testing::createTestMsg(odometry_msg);
 
   // sensor_msgs::Image.
   ros::Publisher image_pub =
     n.advertise<sensor_msgs::Image>("image", 1000);
   sensor_msgs::Image image_msg;
-  ros1_ign_bridge::testing::createTestMsg(image_msg);
+  ros_ign_bridge::testing::createTestMsg(image_msg);
 
   // sensor_msgs::CameraInfo.
   ros::Publisher camera_info_pub =
     n.advertise<sensor_msgs::CameraInfo>("camera_info", 1000);
   sensor_msgs::CameraInfo camera_info_msg;
-  ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
+  ros_ign_bridge::testing::createTestMsg(camera_info_msg);
 
   // sensor_msgs::FluidPressure.
   ros::Publisher fluid_pressure_pub =
     n.advertise<sensor_msgs::FluidPressure>("fluid_pressure", 1000);
   sensor_msgs::FluidPressure fluid_pressure_msg;
-  ros1_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+  ros_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
 
   // sensor_msgs::Imu.
   ros::Publisher imu_pub =
     n.advertise<sensor_msgs::Imu>("imu", 1000);
   sensor_msgs::Imu imu_msg;
-  ros1_ign_bridge::testing::createTestMsg(imu_msg);
+  ros_ign_bridge::testing::createTestMsg(imu_msg);
 
   // sensor_msgs::JointState.
   ros::Publisher joint_states_pub =
     n.advertise<sensor_msgs::JointState>("joint_states", 1000);
   sensor_msgs::JointState joint_states_msg;
-  ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
+  ros_ign_bridge::testing::createTestMsg(joint_states_msg);
 
   // sensor_msgs::LaserScan.
   ros::Publisher laserscan_pub =
     n.advertise<sensor_msgs::LaserScan>("laserscan", 1000);
   sensor_msgs::LaserScan laserscan_msg;
-  ros1_ign_bridge::testing::createTestMsg(laserscan_msg);
+  ros_ign_bridge::testing::createTestMsg(laserscan_msg);
 
   // sensor_msgs::MagneticField.
   ros::Publisher magnetic_pub =
     n.advertise<sensor_msgs::MagneticField>("magnetic", 1000);
   sensor_msgs::MagneticField magnetic_msg;
-  ros1_ign_bridge::testing::createTestMsg(magnetic_msg);
+  ros_ign_bridge::testing::createTestMsg(magnetic_msg);
 
   // sensor_msgs::PointCloud2.
   ros::Publisher pointcloud2_pub =
     n.advertise<sensor_msgs::PointCloud2>("pointcloud2", 1000);
   sensor_msgs::PointCloud2 pointcloud2_msg;
-  ros1_ign_bridge::testing::createTestMsg(pointcloud2_msg);
+  ros_ign_bridge::testing::createTestMsg(pointcloud2_msg);
 
   // sensor_msgs::BatteryState.
   ros::Publisher battery_state_pub =
     n.advertise<sensor_msgs::BatteryState>("battery_state", 1000);
   sensor_msgs::BatteryState battery_state_msg;
-  ros1_ign_bridge::testing::createTestMsg(battery_state_msg);
+  ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
   while (ros::ok())
   {

@@ -43,7 +43,7 @@
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
-/// \brief A class for testing ROS 1 topic subscription.
+/// \brief A class for testing ROS topic subscription.
 template <typename ROS_T>
 class MyTestClass
 {
@@ -56,7 +56,7 @@ class MyTestClass
   /// \brief Member function called each time a topic update is received.
   public: void Cb(const ROS_T& _msg)
   {
-    ros1_ign_bridge::testing::compareTestMsg(_msg);
+    ros_ign_bridge::testing::compareTestMsg(_msg);
     this->callbackExecuted = true;
   };
 
@@ -71,276 +71,276 @@ class MyTestClass
 };
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Float)
+TEST(ROSSubscriberTest, Float)
 {
   MyTestClass<std_msgs::Float32> client("float");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Header)
+TEST(ROSSubscriberTest, Header)
 {
   MyTestClass<std_msgs::Header> client("header");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, String)
+TEST(ROSSubscriberTest, String)
 {
   MyTestClass<std_msgs::String> client("string");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Quaternion)
+TEST(ROSSubscriberTest, Quaternion)
 {
   MyTestClass<geometry_msgs::Quaternion> client("quaternion");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Vector3)
+TEST(ROSSubscriberTest, Vector3)
 {
   MyTestClass<geometry_msgs::Vector3> client("vector3");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Clock)
+TEST(ROSSubscriberTest, Clock)
 {
   MyTestClass<rosgraph_msgs::Clock> client("clock");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Point)
+TEST(ROSSubscriberTest, Point)
 {
   MyTestClass<geometry_msgs::Point> client("point");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Pose)
+TEST(ROSSubscriberTest, Pose)
 {
   MyTestClass<geometry_msgs::Pose> client("pose");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, PoseStamped)
+TEST(ROSSubscriberTest, PoseStamped)
 {
   MyTestClass<geometry_msgs::PoseStamped> client("pose_stamped");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Transform)
+TEST(ROSSubscriberTest, Transform)
 {
   MyTestClass<geometry_msgs::Transform> client("transform");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, TransformStamped)
+TEST(ROSSubscriberTest, TransformStamped)
 {
   MyTestClass<geometry_msgs::TransformStamped> client("transform_stamped");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Twist)
+TEST(ROSSubscriberTest, Twist)
 {
   MyTestClass<geometry_msgs::Twist> client("twist");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Image)
+TEST(ROSSubscriberTest, Image)
 {
   MyTestClass<sensor_msgs::Image> client("image");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, CameraInfo)
+TEST(ROSSubscriberTest, CameraInfo)
 {
   MyTestClass<sensor_msgs::CameraInfo> client("camera_info");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, FluidPressure)
+TEST(ROSSubscriberTest, FluidPressure)
 {
   MyTestClass<sensor_msgs::FluidPressure> client("fluid_pressure");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Imu)
+TEST(ROSSubscriberTest, Imu)
 {
   MyTestClass<sensor_msgs::Imu> client("imu");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, JointStates)
+TEST(ROSSubscriberTest, JointStates)
 {
   MyTestClass<sensor_msgs::JointState> client("joint_states");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, LaserScan)
+TEST(ROSSubscriberTest, LaserScan)
 {
   MyTestClass<sensor_msgs::LaserScan> client("laserscan");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, MagneticField)
+TEST(ROSSubscriberTest, MagneticField)
 {
   MyTestClass<sensor_msgs::MagneticField> client("magnetic");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Actuators)
+TEST(ROSSubscriberTest, Actuators)
 {
   MyTestClass<mav_msgs::Actuators> client("actuators");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Odometry)
+TEST(ROSSubscriberTest, Odometry)
 {
   MyTestClass<nav_msgs::Odometry> client("odometry");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, PointCloud2)
+TEST(ROSSubscriberTest, PointCloud2)
 {
   MyTestClass<sensor_msgs::PointCloud2> client("pointcloud2");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, BatteryState)
+TEST(ROSSubscriberTest, BatteryState)
 {
   MyTestClass<sensor_msgs::BatteryState> client("battery_state");
 
   using namespace std::chrono_literals;
-  ros1_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -350,7 +350,7 @@ TEST(ROS1SubscriberTest, BatteryState)
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
-  ros::init(argc, argv, "ros1_string_subscriber");
+  ros::init(argc, argv, "ros_string_subscriber");
 
   return RUN_ALL_TESTS();
 }

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef  ROS1_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
-#define  ROS1_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
+#ifndef  ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
+#define  ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
 
 #include <string>
 
-// include ROS 1
+// include ROS
 #include <ros/node_handle.h>
 #include <ros/publisher.h>
 
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-namespace ros1_ign_bridge
+namespace ros_ign_bridge
 {
 
 class FactoryInterface
@@ -32,7 +32,7 @@ class FactoryInterface
 public:
   virtual
   ros::Publisher
-  create_ros1_publisher(
+  create_ros_publisher(
     ros::NodeHandle node,
     const std::string & topic_name,
     size_t queue_size) = 0;
@@ -46,7 +46,7 @@ public:
 
   virtual
   ros::Subscriber
-  create_ros1_subscriber(
+  create_ros_subscriber(
     ros::NodeHandle node,
     const std::string & topic_name,
     size_t queue_size,
@@ -58,9 +58,9 @@ public:
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
     size_t queue_size,
-    ros::Publisher ros1_pub) = 0;
+    ros::Publisher ros_pub) = 0;
 };
 
-}  // namespace ros1_ign_bridge
+}  // namespace ros_ign_bridge
 
-#endif  // ROS1_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
+#endif  // ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_

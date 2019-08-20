@@ -30,7 +30,7 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-set(plugin_name Ros1IgnPointCloud)
+set(plugin_name RosIgnPointCloud)
 add_library(${plugin_name} SHARED
   src/point_cloud.cc
 )

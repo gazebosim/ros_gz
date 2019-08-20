@@ -30,7 +30,7 @@
 
 -->
 <sdf version="1.6">
-  <world name="ros1_ign">
+  <world name="ros_ign">
     <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -86,8 +86,8 @@
         <play_pause>true</play_pause>
         <step>true</step>
         <start_paused>true</start_paused>
-        <service>/world/ros1_ign/control</service>
-        <stats_topic>/world/ros1_ign/stats</stats_topic>
+        <service>/world/ros_ign/control</service>
+        <stats_topic>/world/ros_ign/stats</stats_topic>
 
       </plugin>
 
@@ -112,7 +112,7 @@
         <real_time>true</real_time>
         <real_time_factor>true</real_time_factor>
         <iterations>true</iterations>
-        <topic>/world/ros1_ign/stats</topic>
+        <topic>/world/ros_ign/stats</topic>
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
@@ -330,8 +330,8 @@
           <visualize>true</visualize>
           <topic>custom_params</topic>
           <plugin
-            filename="libRos1IgnPointCloud.so"
-            name="ros1_ign_point_cloud::PointCloud">
+            filename="libRosIgnPointCloud.so"
+            name="ros_ign_point_cloud::PointCloud">
             <namespace>custom_params</namespace>
             <topic>pc2</topic>
             <frame_id>map</frame_id>
@@ -375,8 +375,8 @@
           <visualize>true</visualize>
           <topic>rgbd_camera</topic>
           <plugin
-            filename="libRos1IgnPointCloud.so"
-            name="ros1_ign_point_cloud::PointCloud">
+            filename="libRosIgnPointCloud.so"
+            name="ros_ign_point_cloud::PointCloud">
           </plugin>
         </sensor>
       </link>

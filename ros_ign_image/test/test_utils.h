@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef ROS1_IGN_IMAGE__TEST_UTILS_H_
-#define ROS1_IGN_IMAGE__TEST_UTILS_H_
+#ifndef ROS_IGN_IMAGE__TEST_UTILS_H_
+#define ROS_IGN_IMAGE__TEST_UTILS_H_
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -27,7 +27,7 @@
 #include <thread>
 #include <ignition/msgs.hh>
 
-namespace ros1_ign_image
+namespace ros_ign_image
 {
 namespace testing
 {
@@ -79,7 +79,7 @@ namespace testing
   }
 
   //////////////////////////////////////////////////
-  /// ROS 1 test utils
+  /// ROS test utils
   //////////////////////////////////////////////////
 
   /// \brief Create a message used for testing.
@@ -213,4 +213,4 @@ namespace testing
 }
 }
 
-#endif  // ROS1_IGN_BRIDGE__TEST_UTILS_H_
+#endif  // ROS_IGN_BRIDGE__TEST_UTILS_H_

@@ -34,12 +34,12 @@
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 IGNITION_ADD_PLUGIN(
-    ros1_ign_point_cloud::PointCloud,
+    ros_ign_point_cloud::PointCloud,
     ignition::gazebo::System,
-    ros1_ign_point_cloud::PointCloud::ISystemConfigure,
-    ros1_ign_point_cloud::PointCloud::ISystemPostUpdate)
+    ros_ign_point_cloud::PointCloud::ISystemConfigure,
+    ros_ign_point_cloud::PointCloud::ISystemPostUpdate)
 
-using namespace ros1_ign_point_cloud;
+using namespace ros_ign_point_cloud;
 
 /// \brief Types of sensors supported by this plugin
 enum class SensorType {
@@ -54,7 +54,7 @@ enum class SensorType {
 };
 
 //////////////////////////////////////////////////
-class ros1_ign_point_cloud::PointCloudPrivate
+class ros_ign_point_cloud::PointCloudPrivate
 {
   /// \brief Callback when the depth camera generates a new frame.
   /// This is called in the rendering thread.
@@ -156,7 +156,7 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
   }
   else
   {
-    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+    ROS_ERROR_NAMED("ros_ign_point_cloud",
         "Point cloud plugin must be attached to an RGBD camera, depth camera or GPU lidar.");
     return;
   }
@@ -167,7 +167,7 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
     int argc = 0;
     char** argv = NULL;
     ros::init(argc, argv, "ignition", ros::init_options::NoSigintHandler);
-    ROS_INFO_NAMED("ros1_ign_point_cloud", "Initialized ROS");
+    ROS_INFO_NAMED("ros_ign_point_cloud", "Initialized ROS");
   }
 
   // Sensor scoped name
@@ -250,7 +250,7 @@ void PointCloudPrivate::LoadDepthCamera(
     std::dynamic_pointer_cast<ignition::rendering::DepthCamera>(sensor);
   if (!this->depth_camera_)
   {
-    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+    ROS_ERROR_NAMED("ros_ign_point_cloud",
         "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
     return;
   }
@@ -280,7 +280,7 @@ void PointCloudPrivate::LoadRgbCamera(
   this->rgb_camera_ = std::dynamic_pointer_cast<ignition::rendering::Camera>(sensor);
   if (!this->rgb_camera_)
   {
-    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+    ROS_ERROR_NAMED("ros_ign_point_cloud",
         "Rendering sensor named [%s] is not an RGB camera", sensor_name.c_str());
     return;
   }
@@ -308,7 +308,7 @@ void PointCloudPrivate::LoadGpuRays(
     std::dynamic_pointer_cast<ignition::rendering::GpuRays>(sensor);
   if (!this->gpu_rays_)
   {
-    ROS_ERROR_NAMED("ros1_ign_point_cloud",
+    ROS_ERROR_NAMED("ros_ign_point_cloud",
         "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
     return;
   }
@@ -331,23 +331,23 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
   // Just sanity check, but don't prevent publishing
   if (this->type_ == SensorType::RGBD_CAMERA && _channels != 1)
   {
-    ROS_WARN_NAMED("ros1_ign_point_cloud",
+    ROS_WARN_NAMED("ros_ign_point_cloud",
         "Expected depth image to have 1 channel, but it has [%i]", _channels);
   }
   if (this->type_ == SensorType::GPU_LIDAR && _channels != 3)
   {
-    ROS_WARN_NAMED("ros1_ign_point_cloud",
+    ROS_WARN_NAMED("ros_ign_point_cloud",
         "Expected GPU rays to have 3 channels, but it has [%i]", _channels);
   }
   if ((this->type_ == SensorType::RGBD_CAMERA ||
        this->type_ == SensorType::DEPTH_CAMERA) && _format != "FLOAT32")
   {
-    ROS_WARN_NAMED("ros1_ign_point_cloud",
+    ROS_WARN_NAMED("ros_ign_point_cloud",
         "Expected depth image to have [FLOAT32] format, but it has [%s]", _format.c_str());
   }
   if (this->type_ == SensorType::GPU_LIDAR && _format != "PF_FLOAT32_RGB")
   {
-    ROS_WARN_NAMED("ros1_ign_point_cloud",
+    ROS_WARN_NAMED("ros_ign_point_cloud",
         "Expected GPU rays to have [PF_FLOAT32_RGB] format, but it has [%s]", _format.c_str());
   }
 

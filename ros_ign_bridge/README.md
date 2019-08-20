@@ -1,12 +1,12 @@
-# Bridge communication between ROS 1 and Ignition Transport
+# Bridge communication between ROS and Ignition Transport
 
 This package provides a network bridge which enables the exchange of messages
-between ROS 1 and Ignition Transport.
+between ROS and Ignition Transport.
 
 The bridge is currently implemented in C++. At this point there's no support for
 service calls. Its support is limited to only the following message types:
 
-| ROS 1 type                     | Ignition Transport type          |
+| ROS type                     | Ignition Transport type          |
 |--------------------------------|:--------------------------------:|
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Header                | ignition::msgs::Header           |
@@ -37,10 +37,10 @@ Run `parameter_bridge -h` for instructions.
 
 For all examples you need to source the environment of the install space where
 the bridge was built or unpacked to.
-Additionally you will need to either source the ROS 1 environment or at least
+Additionally you will need to either source the ROS environment or at least
 set the `ROS_MASTER_URI` and run a `roscore`.
 
-The following ROS 1 packages are required to build and use the bridge:
+The following ROS packages are required to build and use the bridge:
 * `catkin`
 * `geometry_msgs`
 * `mav_msgs`
@@ -52,7 +52,7 @@ The following ROS 1 packages are required to build and use the bridge:
 * `sensor_msgs`
 * `std_msgs`
 
-To run the following examples you will also need these ROS 1 packages:
+To run the following examples you will also need these ROS packages:
 * `rosbash` (for `rosrun` executable)
 * `roscpp_tutorials`
 * `rostopic`
@@ -67,7 +67,7 @@ The following Ignition dependencies are also needed:
 Before continuing you should have the prerequisites for building the bridge from
 source installed.
 
-Here are the steps (for Linux and OSX; you probably don't have ROS 1 installed
+Here are the steps (for Linux and OSX; you probably don't have ROS installed
 on Windows).
 
 1. Create a catkin workspace:
@@ -78,7 +78,7 @@ mkdir -p ~/bridge_ws/src
 cd ~/bridge_ws/src
 
 # Download needed software
-git clone https://github.com/osrf/ros1_ign_bridge.git
+git clone https://github.com/osrf/ros_ign_bridge.git
 ```
 
 2. Build the workspace:
@@ -92,9 +92,9 @@ cd ~/bridge_ws/
 catkin_make install
 ```
 
-## Example 1a: Ignition Transport talker and ROS 1 listener
+## Example 1a: Ignition Transport talker and ROS listener
 
-First we start a ROS 1 `roscore`:
+First we start a ROS `roscore`:
 
 ```
 # Shell A:
@@ -107,10 +107,10 @@ Then we start the parameter bridge which will watch the specified topics.
 ```
 # Shell B:
 . ~/bridge_ws/install/setup.bash
-rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
-Now we start the ROS 1 listener.
+Now we start the ROS listener.
 
 ```
 # Shell C:
@@ -125,9 +125,9 @@ Now we start the Ignition Transport talker.
 ign topic pub -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
 ```
 
-## Example 1b: ROS 1 talker and Ignition Transport listener
+## Example 1b: ROS talker and Ignition Transport listener
 
-First we start a ROS 1 `roscore`:
+First we start a ROS `roscore`:
 
 ```
 # Shell A:
@@ -140,7 +140,7 @@ Then we start the parameter bridge which will watch the specified topics.
 ```
 # Shell B:
 . ~/bridge_ws/install/setup.bash
-rosrun ros1_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
+rosrun ros_ign_bridge parameter_bridge /chatter@std_msgs/String@ignition.msgs.StringMsg
 ```
 
 Now we start the Ignition Transport listener.
@@ -150,7 +150,7 @@ Now we start the Ignition Transport listener.
 ign topic -e -t /chatter
 ```
 
-Now we start the ROS 1 talker.
+Now we start the ROS talker.
 
 ```
 # Shell D:
@@ -161,9 +161,9 @@ rostopic pub /chatter std_msgs/String "data: 'Hi'" --once
 ## Example 2: Run the bridge and exchange images
 
 In this example, we're going to generate Ignition Transport images using Gazebo,
-that will be converted into ROS 1 images, and visualized with `rqt_viewer`.
+that will be converted into ROS images, and visualized with `rqt_viewer`.
 
-First we start a ROS 1 `roscore`:
+First we start a ROS `roscore`:
 
 ```
 # Shell A:
@@ -193,10 +193,10 @@ Then we start the parameter bridge with the previous topic.
 ```
 # Shell D:
 . ~/bridge_ws/install/setup.bash
-rosrun ros1_ign_bridge parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
+rosrun ros_ign_bridge parameter_bridge /default/camera/link/camera/image@sensor_msgs/Image@ignition.msgs.Image
 ```
 
-Now we start the ROS 1 GUI:
+Now we start the ROS GUI:
 
 ```
 # Shell E:
@@ -210,4 +210,4 @@ Gazebo (published as Ignition Msgs over Ignition Transport).
 The screenshot shows all the shell windows and their expected content
 (it was taken using ROS Kinetic):
 
-![Ignition Transport images and ROS 1 rqt](images/bridge_image_exchange.png)
+![Ignition Transport images and ROS rqt](images/bridge_image_exchange.png)

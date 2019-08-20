@@ -1,4 +1,4 @@
-# Image utilities for using ROS 1 and Ignition Transport
+# Image utilities for using ROS and Ignition Transport
 
 This package provides a unidirectional bridge for images from Ignition to ROS.
 The bridge subscribes to Ignition image messages (`ignition::msgs::Image`)

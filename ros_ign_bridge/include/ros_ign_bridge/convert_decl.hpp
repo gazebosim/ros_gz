@@ -12,24 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS1_IGN_BRIDGE__CONVERT_DECL_HPP_
-#define ROS1_IGN_BRIDGE__CONVERT_DECL_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
+#define ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
 
-namespace ros1_ign_bridge
+namespace ros_ign_bridge
 {
 
-template<typename ROS1_T, typename IGN_T>
+template<typename ROS_T, typename IGN_T>
 void
-convert_1_to_ign(
-  const ROS1_T & ros1_msg,
+convert_ros_to_ign(
+  const ROS_T & ros_msg,
   IGN_T & ign_msg);
 
-template<typename ROS1_T, typename IGN_T>
+template<typename ROS_T, typename IGN_T>
 void
-convert_ign_to_1(
+convert_ign_to_ros(
   const IGN_T & ign_msg,
-  ROS1_T & ros1_msg);
+  ROS_T & ros_msg);
 
-}  // namespace ros1_ign_bridge
+}  // namespace ros_ign_bridge
 
-#endif  // ROS1_IGN_BRIDGE__CONVERT_DECL_HPP_
+#endif  // ROS_IGN_BRIDGE__CONVERT_DECL_HPP_

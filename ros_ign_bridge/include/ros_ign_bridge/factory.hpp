@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS1_IGN_BRIDGE__FACTORY_HPP_
-#define ROS1_IGN_BRIDGE__FACTORY_HPP_
+#ifndef ROS_IGN_BRIDGE__FACTORY_HPP_
+#define ROS_IGN_BRIDGE__FACTORY_HPP_
 
 #include <functional>
 #include <memory>
@@ -21,33 +21,33 @@
 
 #include <ignition/transport/Node.hh>
 
-// include ROS 1 message event
+// include ROS message event
 #include <ros/console.h>
 #include <ros/message.h>
 #include <ros/ros.h>
 
 #include "ros_ign_bridge/factory_interface.hpp"
 
-namespace ros1_ign_bridge
+namespace ros_ign_bridge
 {
 
-template<typename ROS1_T, typename IGN_T>
+template<typename ROS_T, typename IGN_T>
 class Factory : public FactoryInterface
 {
 public:
   Factory(
-    const std::string & ros1_type_name, const std::string & ign_type_name)
-  : ros1_type_name_(ros1_type_name),
+    const std::string & ros_type_name, const std::string & ign_type_name)
+  : ros_type_name_(ros_type_name),
     ign_type_name_(ign_type_name)
   {}
 
   ros::Publisher
-  create_ros1_publisher(
+  create_ros_publisher(
     ros::NodeHandle node,
     const std::string & topic_name,
     size_t queue_size)
   {
-    return node.advertise<ROS1_T>(topic_name, queue_size);
+    return node.advertise<ROS_T>(topic_name, queue_size);
   }
 
   ignition::transport::Node::Publisher
@@ -60,7 +60,7 @@ public:
   }
 
   ros::Subscriber
-  create_ros1_subscriber(
+  create_ros_subscriber(
     ros::NodeHandle node,
     const std::string & topic_name,
     size_t queue_size,
@@ -71,14 +71,14 @@ public:
     ros::SubscribeOptions ops;
     ops.topic = topic_name;
     ops.queue_size = queue_size;
-    ops.md5sum = ros::message_traits::md5sum<ROS1_T>();
-    ops.datatype = ros::message_traits::datatype<ROS1_T>();
+    ops.md5sum = ros::message_traits::md5sum<ROS_T>();
+    ops.datatype = ros::message_traits::datatype<ROS_T>();
     ops.helper = ros::SubscriptionCallbackHelperPtr(
       new ros::SubscriptionCallbackHelperT
-        <const ros::MessageEvent<ROS1_T const> &>(
+        <const ros::MessageEvent<ROS_T const> &>(
           boost::bind(
-            &Factory<ROS1_T, IGN_T>::ros1_callback,
-            _1, ign_pub, ros1_type_name_, ign_type_name_)));
+            &Factory<ROS_T, IGN_T>::ros_callback,
+            _1, ign_pub, ros_type_name_, ign_type_name_)));
     return node.subscribe(ops);
   }
 
@@ -87,17 +87,17 @@ public:
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
     size_t /*queue_size*/,
-    ros::Publisher ros1_pub)
+    ros::Publisher ros_pub)
   {
 
     std::function<void(const IGN_T&,
                        const ignition::transport::MessageInfo &)> subCb =
-    [this, ros1_pub](const IGN_T &_msg,
+    [this, ros_pub](const IGN_T &_msg,
                      const ignition::transport::MessageInfo &_info)
     {
       // Ignore messages that are published from this bridge.
       if (!_info.IntraProcess())
-        this->ign_callback(_msg, ros1_pub);
+        this->ign_callback(_msg, ros_pub);
     };
 
     node->Subscribe(topic_name, subCb);
@@ -106,17 +106,17 @@ public:
 protected:
 
   static
-  void ros1_callback(
-    const ros::MessageEvent<ROS1_T const> & ros1_msg_event,
+  void ros_callback(
+    const ros::MessageEvent<ROS_T const> & ros_msg_event,
     ignition::transport::Node::Publisher & ign_pub,
-    const std::string &ros1_type_name,
+    const std::string &ros_type_name,
     const std::string &ign_type_name)
   {
     const boost::shared_ptr<ros::M_string> & connection_header =
-      ros1_msg_event.getConnectionHeaderPtr();
+      ros_msg_event.getConnectionHeaderPtr();
     if (!connection_header) {
       ROS_ERROR("Dropping message %s without connection header",
-          ros1_type_name.c_str());
+          ros_type_name.c_str());
       return;
     }
 
@@ -127,24 +127,24 @@ protected:
       }
     }
 
-    const boost::shared_ptr<ROS1_T const> & ros1_msg =
-      ros1_msg_event.getConstMessage();
+    const boost::shared_ptr<ROS_T const> & ros_msg =
+      ros_msg_event.getConstMessage();
 
     IGN_T ign_msg;
-    convert_1_to_ign(*ros1_msg, ign_msg);
+    convert_ros_to_ign(*ros_msg, ign_msg);
     ign_pub.Publish(ign_msg);
-    ROS_INFO_ONCE("Passing message from ROS1 %s to Ignition %s (showing msg"\
-        " only once per type", ros1_type_name.c_str(), ign_type_name.c_str());
+    ROS_INFO_ONCE("Passing message from ROS %s to Ignition %s (showing msg"\
+        " only once per type", ros_type_name.c_str(), ign_type_name.c_str());
   }
 
   static
   void ign_callback(
     const IGN_T & ign_msg,
-    ros::Publisher ros1_pub)
+    ros::Publisher ros_pub)
   {
-    ROS1_T ros1_msg;
-    convert_ign_to_1(ign_msg, ros1_msg);
-    ros1_pub.publish(ros1_msg);
+    ROS_T ros_msg;
+    convert_ign_to_ros(ign_msg, ros_msg);
+    ros_pub.publish(ros_msg);
   }
 
 public:
@@ -152,19 +152,19 @@ public:
   // public defined outside of the class
   static
   void
-  convert_1_to_ign(
-    const ROS1_T & ros1_msg,
+  convert_ros_to_ign(
+    const ROS_T & ros_msg,
     IGN_T & ign_msg);
   static
   void
-  convert_ign_to_1(
+  convert_ign_to_ros(
     const IGN_T & ign_msg,
-    ROS1_T & ros1_msg);
+    ROS_T & ros_msg);
 
-  std::string ros1_type_name_;
+  std::string ros_type_name_;
   std::string ign_type_name_;
 };
 
-}  // namespace ros1_ign_bridge
+}  // namespace ros_ign_bridge
 
-#endif  // ROS1_BRIDGE__FACTORY_HPP_
+#endif  // ROS_BRIDGE__FACTORY_HPP_

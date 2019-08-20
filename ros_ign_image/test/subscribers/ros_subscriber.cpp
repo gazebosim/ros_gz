@@ -22,7 +22,7 @@
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
-/// \brief A class for testing ROS 1 topic subscription.
+/// \brief A class for testing ROS topic subscription.
 template <typename ROS_T>
 class MyTestClass
 {
@@ -35,7 +35,7 @@ class MyTestClass
   /// \brief Member function called each time a topic update is received.
   public: void Cb(const ROS_T& _msg)
   {
-    ros1_ign_image::testing::compareTestMsg(_msg);
+    ros_ign_image::testing::compareTestMsg(_msg);
     this->callbackExecuted = true;
   };
 
@@ -50,12 +50,12 @@ class MyTestClass
 };
 
 /////////////////////////////////////////////////
-TEST(ROS1SubscriberTest, Image)
+TEST(ROSSubscriberTest, Image)
 {
   MyTestClass<sensor_msgs::Image> client("image");
 
   using namespace std::chrono_literals;
-  ros1_ign_image::testing::waitUntilBoolVarAndSpin(
+  ros_ign_image::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -65,7 +65,7 @@ TEST(ROS1SubscriberTest, Image)
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
-  ros::init(argc, argv, "ros1_image_subscriber");
+  ros::init(argc, argv, "ros_image_subscriber");
 
   return RUN_ALL_TESTS();
 }

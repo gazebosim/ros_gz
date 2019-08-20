@@ -51,121 +51,121 @@ int main(int /*argc*/, char **/*argv*/)
   // ignition::msgs::Float.
   auto float_pub = node.Advertise<ignition::msgs::Float>("float");
   ignition::msgs::Float float_msg;
-  ros1_ign_bridge::testing::createTestMsg(float_msg);
+  ros_ign_bridge::testing::createTestMsg(float_msg);
 
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
-  ros1_ign_bridge::testing::createTestMsg(header_msg);
+  ros_ign_bridge::testing::createTestMsg(header_msg);
 
   // ignition::msgs::StringMsg.
   auto string_pub = node.Advertise<ignition::msgs::StringMsg>("string");
   ignition::msgs::StringMsg string_msg;
-  ros1_ign_bridge::testing::createTestMsg(string_msg);
+  ros_ign_bridge::testing::createTestMsg(string_msg);
 
   // ignition::msgs::Quaternion.
   auto quaternion_pub =
     node.Advertise<ignition::msgs::Quaternion>("quaternion");
   ignition::msgs::Quaternion quaternion_msg;
-  ros1_ign_bridge::testing::createTestMsg(quaternion_msg);
+  ros_ign_bridge::testing::createTestMsg(quaternion_msg);
 
   // ignition::msgs::Vector3d.
   auto vector3_pub = node.Advertise<ignition::msgs::Vector3d>("vector3");
   ignition::msgs::Vector3d vector3_msg;
-  ros1_ign_bridge::testing::createTestMsg(vector3_msg);
+  ros_ign_bridge::testing::createTestMsg(vector3_msg);
 
   // ignition::msgs::Clock.
   auto clock_pub = node.Advertise<ignition::msgs::Clock>("clock");
   ignition::msgs::Clock clock_msg;
-  ros1_ign_bridge::testing::createTestMsg(clock_msg);
+  ros_ign_bridge::testing::createTestMsg(clock_msg);
 
   // ignition::msgs::Point.
   auto point_pub = node.Advertise<ignition::msgs::Vector3d>("point");
   ignition::msgs::Vector3d point_msg;
-  ros1_ign_bridge::testing::createTestMsg(point_msg);
+  ros_ign_bridge::testing::createTestMsg(point_msg);
 
   // ignition::msgs::Pose.
   auto pose_pub = node.Advertise<ignition::msgs::Pose>("pose");
   ignition::msgs::Pose pose_msg;
-  ros1_ign_bridge::testing::createTestMsg(pose_msg);
+  ros_ign_bridge::testing::createTestMsg(pose_msg);
 
   // ignition::msgs::PoseStamped.
   auto pose_stamped_pub = node.Advertise<ignition::msgs::Pose>("pose_stamped");
   ignition::msgs::Pose pose_stamped_msg;
-  ros1_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+  ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
 
   // ignition::msgs::Transform.
   auto transform_pub =
       node.Advertise<ignition::msgs::Pose>("transform");
   ignition::msgs::Pose transform_msg;
-  ros1_ign_bridge::testing::createTestMsg(transform_msg);
+  ros_ign_bridge::testing::createTestMsg(transform_msg);
 
   // ignition::msgs::TransformStamped.
   auto transform_stamped_pub =
       node.Advertise<ignition::msgs::Pose>("transform_stamped");
   ignition::msgs::Pose transform_stamped_msg;
-  ros1_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+  ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
 
   // ignition::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
   ignition::msgs::Image image_msg;
-  ros1_ign_bridge::testing::createTestMsg(image_msg);
+  ros_ign_bridge::testing::createTestMsg(image_msg);
 
   // ignition::msgs::CameraInfo.
   auto camera_info_pub = node.Advertise<ignition::msgs::CameraInfo>("camera_info");
   ignition::msgs::CameraInfo camera_info_msg;
-  ros1_ign_bridge::testing::createTestMsg(camera_info_msg);
+  ros_ign_bridge::testing::createTestMsg(camera_info_msg);
 
   // ignition::msgs::FluidPressure.
   auto fluid_pressure_pub = node.Advertise<ignition::msgs::FluidPressure>("fluid_pressure");
   ignition::msgs::FluidPressure fluid_pressure_msg;
-  ros1_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+  ros_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
 
   // ignition::msgs::IMU.
   auto imu_pub = node.Advertise<ignition::msgs::IMU>("imu");
   ignition::msgs::IMU imu_msg;
-  ros1_ign_bridge::testing::createTestMsg(imu_msg);
+  ros_ign_bridge::testing::createTestMsg(imu_msg);
 
   // ignition::msgs::LaserScan.
   auto laserscan_pub = node.Advertise<ignition::msgs::LaserScan>("laserscan");
   ignition::msgs::LaserScan laserscan_msg;
-  ros1_ign_bridge::testing::createTestMsg(laserscan_msg);
+  ros_ign_bridge::testing::createTestMsg(laserscan_msg);
 
   // ignition::msgs::Magnetometer.
   auto magnetic_pub = node.Advertise<ignition::msgs::Magnetometer>("magnetic");
   ignition::msgs::Magnetometer magnetometer_msg;
-  ros1_ign_bridge::testing::createTestMsg(magnetometer_msg);
+  ros_ign_bridge::testing::createTestMsg(magnetometer_msg);
 
   // ignition::msgs::Actuators.
   auto actuators_pub = node.Advertise<ignition::msgs::Actuators>("actuators");
   ignition::msgs::Actuators actuators_msg;
-  ros1_ign_bridge::testing::createTestMsg(actuators_msg);
+  ros_ign_bridge::testing::createTestMsg(actuators_msg);
 
   // ignition::msgs::Odometry.
   auto odometry_pub = node.Advertise<ignition::msgs::Odometry>("odometry");
   ignition::msgs::Odometry odometry_msg;
-  ros1_ign_bridge::testing::createTestMsg(odometry_msg);
+  ros_ign_bridge::testing::createTestMsg(odometry_msg);
 
   // ignition::msgs::Model.
   auto joint_states_pub = node.Advertise<ignition::msgs::Model>("joint_states");
   ignition::msgs::Model joint_states_msg;
-  ros1_ign_bridge::testing::createTestMsg(joint_states_msg);
+  ros_ign_bridge::testing::createTestMsg(joint_states_msg);
 
   // ignition::msgs::Twist.
   auto twist_pub = node.Advertise<ignition::msgs::Twist>("twist");
   ignition::msgs::Twist twist_msg;
-  ros1_ign_bridge::testing::createTestMsg(twist_msg);
+  ros_ign_bridge::testing::createTestMsg(twist_msg);
 
   // ignition::msgs::PointCloudPacked.
   auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
       "pointcloud2");
   ignition::msgs::PointCloudPacked pointcloudpacked_msg;
-  ros1_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
+  ros_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
 
   // ignition::msgs::BatteryState.
   auto battery_state_pub = node.Advertise<ignition::msgs::BatteryState>("battery_state");
   ignition::msgs::BatteryState battery_state_msg;
-  ros1_ign_bridge::testing::createTestMsg(battery_state_msg);
+  ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
   // Publish messages at 1Hz.
   while (!g_terminatePub)
