@@ -16,8 +16,8 @@
 #include <string>
 
 // include builtin interfaces
-#include "ros1_ign_bridge/builtin_interfaces_factories.hpp"
-#include "ros1_ign_bridge/convert_builtin_interfaces.hpp"
+#include "ros_ign_bridge/builtin_interfaces_factories.hpp"
+#include "ros_ign_bridge/convert_builtin_interfaces.hpp"
 
 namespace ros1_ign_bridge
 {

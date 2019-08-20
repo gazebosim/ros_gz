@@ -1,5 +1,5 @@
 <package format="2">
-  <name>ros1_ign_image</name>
+  <name>ros_ign_image</name>
   <version>0.7.0</version>
   <description>Image utilities for Ignition simulation with ROS 1.</description>
   <license>Apache 2.0</license>
@@ -10,7 +10,7 @@
   <depend>ignition-msgs4</depend>
   <depend>ignition-transport7</depend>
   <depend>image_transport</depend>
-  <depend>ros1_ign_bridge</depend>
+  <depend>ros_ign_bridge</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
 

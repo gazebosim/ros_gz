@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros1_ign_point_cloud)
+project(ros_ign_point_cloud)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)

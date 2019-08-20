@@ -43,7 +43,7 @@
 // include Ignition builtin messages
 #include <ignition/msgs.hh>
 
-#include "ros1_ign_bridge/convert_decl.hpp"
+#include "ros_ign_bridge/convert_decl.hpp"
 
 namespace ros1_ign_bridge
 {

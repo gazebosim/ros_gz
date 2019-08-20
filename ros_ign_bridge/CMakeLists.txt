@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros1_ign_bridge)
+project(ros_ign_bridge)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -54,7 +54,7 @@ foreach(bridge ${bridge_executables})
 endforeach(bridge)
 
 set(bridge_lib
-  ros1_ign_bridge_lib
+  ros_ign_bridge_lib
 )
 
 add_library(${bridge_lib}
@@ -82,12 +82,12 @@ find_package(rostest REQUIRED)
 
 set(test_publishers
   ign_publisher
-  ros1_publisher
+  ros_publisher
 )
 
 set(test_subscribers
   ign_subscriber
-  ros1_subscriber
+  ros_subscriber
 )
 
 foreach(test_publisher ${test_publishers})

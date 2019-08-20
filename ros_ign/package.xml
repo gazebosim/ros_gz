@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>ros1_ign</name>
+  <name>ros_ign</name>
   <version>0.7.0</version>
   <description>Meta-package containing interfaces for using ROS with <a href="https://ignitionrobotics.org">Ignition</a> simulation.</description>
   <license>Apache 2.0</license>
@@ -8,10 +8,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <exec_depend>ros1_ign_bridge</exec_depend>
-  <exec_depend>ros1_ign_gazebo_demos</exec_depend>
-  <exec_depend>ros1_ign_image</exec_depend>
-  <exec_depend>ros1_ign_point_cloud</exec_depend>
+  <exec_depend>ros_ign_bridge</exec_depend>
+  <exec_depend>ros_ign_gazebo_demos</exec_depend>
+  <exec_depend>ros_ign_image</exec_depend>
+  <exec_depend>ros_ign_point_cloud</exec_depend>
 
   <export>
     <metapackage/>

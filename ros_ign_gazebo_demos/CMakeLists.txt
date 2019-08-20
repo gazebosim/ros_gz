@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros1_ign_gazebo_demos)
+project(ros_ign_gazebo_demos)
 
 find_package(catkin REQUIRED)
 find_package(ignition-gazebo2 2.1 QUIET REQUIRED)

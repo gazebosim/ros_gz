@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Launch the bridge -->
-  <node name="parameter_bridge_ign_subscriber" pkg="ros1_ign_bridge"
+  <node name="parameter_bridge_ign_subscriber" pkg="ros_ign_bridge"
         type="parameter_bridge"
         args="/float@std_msgs/Float32@ignition.msgs.Float
               /header@std_msgs/Header@ignition.msgs.Header
@@ -28,7 +28,7 @@
               /battery_state@sensor_msgs/BatteryState@ignition.msgs.BatteryState"
   />
 
-  <!-- Launch the ROS 1 publisher -->
-  <node name="ros1_publisher" pkg="ros1_ign_bridge" type="ros1_publisher" />
+  <!-- Launch the ROS publisher -->
+  <node name="ros_publisher" pkg="ros_ign_bridge" type="ros_publisher" />
 
 </launch>

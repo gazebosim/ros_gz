@@ -31,7 +31,7 @@
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include "ros1_ign_bridge/bridge.hpp"
+#include "ros_ign_bridge/bridge.hpp"
 
 // Direction of bridge.
 enum Direction

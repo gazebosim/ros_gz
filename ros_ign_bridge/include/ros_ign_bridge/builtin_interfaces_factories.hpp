@@ -46,7 +46,7 @@
 #include <memory>
 #include <string>
 
-#include "ros1_ign_bridge/factory.hpp"
+#include "ros_ign_bridge/factory.hpp"
 
 namespace ros1_ign_bridge
 {

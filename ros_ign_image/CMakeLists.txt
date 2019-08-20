@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros1_ign_image)
+project(ros_ign_image)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -12,7 +12,7 @@ endif()
 
 find_package(catkin REQUIRED COMPONENTS
   image_transport
-  ros1_ign_bridge
+  ros_ign_bridge
   roscpp
   sensor_msgs)
 
@@ -52,7 +52,7 @@ set(test_publishers
 )
 
 set(test_subscribers
-  ros1_subscriber
+  ros_subscriber
 )
 
 foreach(test_publisher ${test_publishers})

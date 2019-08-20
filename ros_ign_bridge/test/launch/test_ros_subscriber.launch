@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <launch>
   <!-- Launch the bridge -->
-  <node name="parameter_bridge_ros1_subscriber" pkg="ros1_ign_bridge"
+  <node name="parameter_bridge_ros_subscriber" pkg="ros_ign_bridge"
         type="parameter_bridge"
         args="/float@std_msgs/Float32@ignition.msgs.Float
               /header@std_msgs/Header@ignition.msgs.Header
@@ -29,6 +29,6 @@
   />
 
   <!-- Launch the Ignition Transport publisher -->
-  <node name="ign_publisher" pkg="ros1_ign_bridge" type="ign_publisher" />
+  <node name="ign_publisher" pkg="ros_ign_bridge" type="ign_publisher" />
 
 </launch>

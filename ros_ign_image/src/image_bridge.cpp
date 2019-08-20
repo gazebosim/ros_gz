@@ -19,7 +19,7 @@
 
 #include <image_transport/image_transport.h>
 #include <ros/ros.h>
-#include <ros1_ign_bridge/convert_builtin_interfaces.hpp>
+#include <ros_ign_bridge/convert_builtin_interfaces.hpp>
 
 //////////////////////////////////////////////////
 /// \brief Bridges one topic
