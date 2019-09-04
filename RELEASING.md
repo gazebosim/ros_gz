@@ -17,5 +17,6 @@ The steps to make a new release of the package is:
     -  bloom-release --rosdistro melodic --track melodic ros1_ign
     -  [use repository: git@github.com:osrf/ros1_ign-release.git]
     -  [will fail fedora: ignore and continue]
+    -  IMPORTANT: once bloom finishes of pushing tasg and branches to the repo control+c the process before it sends a PR to rosdistro
 
  1. Use release-tools/bloom/ros1_ign_bridge-release.py.bash to launch jenkins jobs
