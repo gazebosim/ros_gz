@@ -13,6 +13,8 @@
   <exec_depend>ros_ign_image</exec_depend>
   <exec_depend>ros_ign_point_cloud</exec_depend>
 
+  <replace>ros1_ign</replace>
+
   <export>
     <metapackage/>
   </export>

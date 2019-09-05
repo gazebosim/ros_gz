@@ -14,4 +14,6 @@
   <depend>sensor_msgs</depend>
 
   <exec_depend>message_runtime</exec_depend>
+
+  <replace>ros1_ign_point_cloud</replace>
 </package>

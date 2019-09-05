@@ -15,4 +15,6 @@
   <depend>sensor_msgs</depend>
 
   <test_depend>rostest</test_depend>
+
+  <replace>ros1_ign_image</replace>
 </package>

@@ -22,4 +22,6 @@
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
   <test_depend>rostest</test_depend>
+
+  <replace>ros1_ign_bridge</replace>
 </package>
