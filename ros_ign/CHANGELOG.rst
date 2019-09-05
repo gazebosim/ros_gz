@@ -2,6 +2,15 @@
 Changelog for package ros1_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add replaces for each package
+* Rename packages and fix compilation + tests
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Move files ros1 -> ros
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: Jose Luis Rivero, Louise Poubel
+
 0.7.0 (2019-08-15)
 ------------------
 

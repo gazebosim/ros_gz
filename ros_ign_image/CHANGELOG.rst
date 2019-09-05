@@ -2,6 +2,17 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add replaces for each package
+* Make all API and comments ROS-version agnostic
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Rename packages and fix compilation + tests
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Move files ros1 -> ros
+  Signed-off-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: Jose Luis Rivero, Louise Poubel
+
 0.7.0 (2019-08-15)
 ------------------
 
