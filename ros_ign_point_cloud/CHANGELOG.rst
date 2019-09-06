@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_point_cloud
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.7.1 (2019-09-06)
+------------------
 * Add replaces for each package
 * Make all API and comments ROS-version agnostic
   Signed-off-by: Louise Poubel <louise@openrobotics.org>
