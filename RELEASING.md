@@ -19,5 +19,4 @@ The steps to make a new release of the package are:
     -  [will fail fedora: ignore and continue]
     -  **IMPORTANT**: once bloom finishes pushing tags and branches to the repo, `control+c` the process before it sends a PR to rosdistro
 
- 1. Use release-tools/bloom/ros_ign_bridge-release.py.bash to launch
- jenkins jobs
+ 1. Use release-tools/bloom/ros_ign_bridge-release.py.bash to launch jenkins jobs
