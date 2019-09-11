@@ -1,25 +1,24 @@
-<package format="2">
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
   <name>ros_ign_bridge</name>
-  <version>0.7.0</version>
+  <version>2.0.0</version>
   <description>Bridge communication between ROS and Ignition Transport</description>
+  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+
   <license>Apache 2.0</license>
-  <maintainer email="caguero@openrobotics.org">Carlos Agüero</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <author>Shivesh Khaitan</author>
 
-  <depend>geometry_msgs</depend>
-  <depend>ignition-msgs4</depend>
-  <depend>ignition-transport7</depend>
-  <depend>mav_msgs</depend>
-  <depend>nav_msgs</depend>
-  <depend>rosgraph_msgs</depend>
-  <depend>rosconsole</depend>
-  <depend>roscpp</depend>
-  <depend>sensor_msgs</depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <depend>rclcpp</depend>
   <depend>std_msgs</depend>
-  <depend>std_srvs</depend>
 
-  <build_depend>message_generation</build_depend>
-  <exec_depend>message_runtime</exec_depend>
-  <test_depend>rostest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
