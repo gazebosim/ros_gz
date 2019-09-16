@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2019 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,49 +12,38 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <iostream>
-#include <memory>
-#include <string>
-
-// include ROS
-#ifdef __clang__
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
-#include <ros/ros.h>
-#ifdef __clang__
-# pragma clang diagnostic pop
-#endif
+#include <rclcpp/rclcpp.hpp>
 
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include "ros_ign_bridge/bridge.hpp"
+#include <ros_ign_bridge/bridge.hpp>
+
+#include <memory>
+#include <string>
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
   // ROS node
-  ros::init(argc, argv, "ros_ign_bridge");
-  ros::NodeHandle ros_node;
+  rclcpp::init(argc, argv);
+  auto ros_node = std::make_shared<rclcpp::Node>("test_node");
 
   // Ignition node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
   // bridge one example topic
   std::string topic_name = "chatter";
-  std::string ros_type_name = "std_msgs/String";
+  std::string ros_type_name = "std_msgs/msg/String";
   std::string ign_type_name = "ignition.msgs.StringMsg";
   size_t queue_size = 10;
 
   auto handles = ros_ign_bridge::create_bidirectional_bridge(
     ros_node, ign_node, ros_type_name, ign_type_name, topic_name, queue_size);
 
-  // ROS asynchronous spinner
-  ros::AsyncSpinner async_spinner(1);
-  async_spinner.start();
+  rclcpp::spin(ros_node);
 
-  // Zzzzzz.
+  // Wait for ign node shutdown
   ignition::transport::waitForShutdown();
 
   return 0;

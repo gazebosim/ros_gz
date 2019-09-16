@@ -11,7 +11,11 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rosgraph_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
 find_package(ignition-msgs4 QUIET REQUIRED)
@@ -19,6 +23,40 @@ set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 
 find_package(ignition-transport7 QUIET REQUIRED)
 set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+
+include_directories(include)
+
+set(common_sources
+  src/convert_builtin_interfaces.cpp
+  src/builtin_interfaces_factories.cpp
+)
+
+set(bridge_executables
+  parameter_bridge
+  static_bridge
+)
+
+foreach(bridge ${bridge_executables})
+  add_executable(${bridge}
+    src/${bridge}.cpp
+    ${common_sources}
+  )
+  target_link_libraries(${bridge}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  ament_target_dependencies(${bridge}
+    "geometry_msgs"
+    "nav_msgs"
+    "rclcpp"
+    "rosgraph_msgs"
+    "sensor_msgs"
+    "std_msgs"
+  )
+  install(TARGETS ${bridge}
+    DESTINATION lib/${PROJECT_NAME}
+  )
+endforeach()
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -32,35 +70,7 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-ament_package()
-
 # TODO(anyone) Uncomment parts as they're ported to ROS 2
-# include_directories(include ${catkin_INCLUDE_DIRS})
-#
-# set(common_sources
-#   src/convert_builtin_interfaces.cpp
-#   src/builtin_interfaces_factories.cpp
-# )
-#
-# set(bridge_executables
-#   parameter_bridge
-#   static_bridge
-# )
-#
-# foreach(bridge ${bridge_executables})
-#   add_executable(${bridge}
-#     src/${bridge}.cpp
-#     ${common_sources}
-#   )
-#   target_link_libraries(${bridge}
-#     ${catkin_LIBRARIES}
-#     ignition-msgs${IGN_MSGS_VER}::core
-#     ignition-transport${IGN_TRANSPORT_VER}::core
-#   )
-#   install(TARGETS ${bridge}
-#           DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-#   )
-# endforeach(bridge)
 #
 # set(bridge_lib
 #   ros_ign_bridge_lib
@@ -122,3 +132,5 @@ ament_package()
 #     ignition-transport${IGN_TRANSPORT_VER}::core
 #   )
 # endforeach(test_subscriber)
+
+ament_package()
