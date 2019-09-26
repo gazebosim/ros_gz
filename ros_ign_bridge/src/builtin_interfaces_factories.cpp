@@ -1,4 +1,4 @@
-// Copyright 2019 Open Source Robotics Foundation, Inc.
+// Copyright 2018 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -148,6 +148,18 @@ get_factory_builtin_interfaces(
       >
     >("geometry_msgs/msg/Twist", ign_type_name);
   }
+  /**
+  if ((ros_type_name == "mav_msgs/msg/Actuators" || ros_type_name.empty()) &&
+     ign_type_name == "ignition.msgs.Actuators")
+  {
+    return std::make_shared<
+        Factory<
+          mav_msgs::Actuators,
+          ignition::msgs::Actuators
+        >
+    >("mav_msgs/Actuators", ign_type_name);
+  }
+  */
   if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Odometry")
   {
@@ -557,6 +569,33 @@ Factory<
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
+
+// mav_msgs
+/**
+template<>
+void
+Factory<
+  mav_msgs::msg::Actuators,
+  ignition::msgs::Actuators
+>::convert_ros_to_ign(
+  const mav_msgs::Actuators & ros_msg,
+  ignition::msgs::Actuators & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  mav_msgs::msg::Actuators,
+  ignition::msgs::Actuators
+>::convert_ign_to_ros(
+  const ignition::msgs::Actuators & ign_msg,
+  mav_msgs::Actuators & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+*/
 
 // nav_msgs
 template<>

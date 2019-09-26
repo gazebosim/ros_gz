@@ -1,4 +1,4 @@
-// Copyright 2019 Open Source Robotics Foundation, Inc.
+// Copyright 2018 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,8 @@ public:
   ignition::transport::Node::Publisher
   create_ign_publisher(
     std::shared_ptr<ignition::transport::Node> ign_node,
-    const std::string & topic_name) = 0;
+    const std::string & topic_name,
+    size_t queue_size) = 0;
 
   virtual
   rclcpp::SubscriptionBase::SharedPtr
@@ -56,6 +57,7 @@ public:
   create_ign_subscriber(
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
+    size_t queue_size,
     rclcpp::PublisherBase::SharedPtr ros_pub) = 0;
 };
 

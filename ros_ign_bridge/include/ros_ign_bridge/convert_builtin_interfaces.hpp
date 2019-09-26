@@ -1,4 +1,4 @@
-// Copyright 2019 Open Source Robotics Foundation, Inc.
+// Copyright 2018 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
+// #include <mav_msgs/msg/actuators.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
@@ -192,6 +193,21 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Twist & ign_msg,
   geometry_msgs::msg::Twist & ros_msg);
+
+/**
+// mav_msgs
+template<>
+void
+convert_ros_to_ign(
+  const mav_msgs::msg::Actuators & ros_msg,
+  ignition::msgs::Actuators & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Actuators & ign_msg,
+  mav_msgs::msg::Actuators & ros_msg);
+*/
 
 // nav_msgs
 template<>
