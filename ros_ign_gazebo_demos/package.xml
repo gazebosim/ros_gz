@@ -16,4 +16,5 @@
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rviz</exec_depend>
 
+  <replace>ros1_ign_gazebo_demos</replace>
 </package>
