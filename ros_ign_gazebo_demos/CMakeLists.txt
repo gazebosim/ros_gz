@@ -3,7 +3,16 @@ cmake_minimum_required(VERSION 3.5)
 project(ros_ign_gazebo_demos)
 
 find_package(catkin REQUIRED)
-find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
+
+# Citadel
+find_package(ignition-gazebo3 QUIET)
+if (NOT ignition-gazebo3_FOUND)
+  # Blueprint
+  find_package(ignition-gazebo2 QUIET)
+  if (NOT ignition-gazebo2_FOUND)
+    BUILD_ERROR ("Missing: Ignition Gazebo version 2 or 3")
+  endif()
+endif()
 
 catkin_package()
 
