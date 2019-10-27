@@ -15,7 +15,7 @@ The steps to make a new release of the package are:
     - rosdep update
 
  1. Bloom it into a custom repository
-    -  BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --rosdistro melodic --track melodic ros1_ign
+    -  BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --rosdistro melodic --track melodic ros_ign
     -  [will fail fedora: ignore and continue]
     -  **IMPORTANT**: once bloom finishes pushing tags and branches to the repo, `control+c` the process before it sends a PR to rosdistro
 
