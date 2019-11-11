@@ -15,31 +15,27 @@
 #ifndef ROS_IGN_BRIDGE__BRIDGE_HPP_
 #define ROS_IGN_BRIDGE__BRIDGE_HPP_
 
-#include <memory>
-#include <string>
-
-// include ROS
-#include <ros/console.h>
-#include <ros/node_handle.h>
-
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include "ros_ign_bridge/builtin_interfaces_factories.hpp"
+#include <ros_ign_bridge/builtin_interfaces_factories.hpp>
+
+#include <memory>
+#include <string>
 
 namespace ros_ign_bridge
 {
 
 struct BridgeRosToIgnHandles
 {
-  ros::Subscriber ros_subscriber;
+  rclcpp::SubscriptionBase::SharedPtr ros_subscriber;
   ignition::transport::Node::Publisher ign_publisher;
 };
 
 struct BridgeIgnToRosHandles
 {
   std::shared_ptr<ignition::transport::Node> ign_subscriber;
-  ros::Publisher ros_publisher;
+  rclcpp::PublisherBase::SharedPtr ros_publisher;
 };
 
 struct BridgeHandles
@@ -50,7 +46,7 @@ struct BridgeHandles
 
 BridgeRosToIgnHandles
 create_bridge_from_ros_to_ign(
-  ros::NodeHandle ros_node,
+  rclcpp::Node::SharedPtr ros_node,
   std::shared_ptr<ignition::transport::Node> ign_node,
   const std::string & ros_type_name,
   const std::string & ros_topic_name,
@@ -60,8 +56,7 @@ create_bridge_from_ros_to_ign(
   size_t publisher_queue_size)
 {
   auto factory = get_factory(ros_type_name, ign_type_name);
-  auto ign_pub = factory->create_ign_publisher(
-    ign_node, ign_topic_name, publisher_queue_size);
+  auto ign_pub = factory->create_ign_publisher(ign_node, ign_topic_name, publisher_queue_size);
 
   auto ros_sub = factory->create_ros_subscriber(
     ros_node, ros_topic_name, subscriber_queue_size, ign_pub);
@@ -75,7 +70,7 @@ create_bridge_from_ros_to_ign(
 BridgeIgnToRosHandles
 create_bridge_from_ign_to_ros(
   std::shared_ptr<ignition::transport::Node> ign_node,
-  ros::NodeHandle ros_node,
+  rclcpp::Node::SharedPtr ros_node,
   const std::string & ign_type_name,
   const std::string & ign_topic_name,
   size_t subscriber_queue_size,
@@ -84,11 +79,9 @@ create_bridge_from_ign_to_ros(
   size_t publisher_queue_size)
 {
   auto factory = get_factory(ros_type_name, ign_type_name);
-  auto ros_pub = factory->create_ros_publisher(
-    ros_node, ros_topic_name, publisher_queue_size);
+  auto ros_pub = factory->create_ros_publisher(ros_node, ros_topic_name, publisher_queue_size);
 
-  factory->create_ign_subscriber(
-    ign_node, ign_topic_name, subscriber_queue_size, ros_pub);
+  factory->create_ign_subscriber(ign_node, ign_topic_name, subscriber_queue_size, ros_pub);
 
   BridgeIgnToRosHandles handles;
   handles.ign_subscriber = ign_node;
@@ -98,21 +91,17 @@ create_bridge_from_ign_to_ros(
 
 BridgeHandles
 create_bidirectional_bridge(
-  ros::NodeHandle ros_node,
+  rclcpp::Node::SharedPtr ros_node,
   std::shared_ptr<ignition::transport::Node> ign_node,
   const std::string & ros_type_name,
   const std::string & ign_type_name,
   const std::string & topic_name,
   size_t queue_size = 10)
 {
-  ROS_DEBUG_STREAM("Creating bidirectional bridge for topic" << topic_name
-      << " with ROS type [" << ros_type_name << "] and Ignition Transport"
-      << " type [" << ign_type_name << "]");
-
   BridgeHandles handles;
   handles.bridgeRosToIgn = create_bridge_from_ros_to_ign(
-   ros_node, ign_node,
-   ros_type_name, topic_name, queue_size, ign_type_name, topic_name, queue_size);
+    ros_node, ign_node,
+    ros_type_name, topic_name, queue_size, ign_type_name, topic_name, queue_size);
   handles.bridgeIgnToRos = create_bridge_from_ign_to_ros(
     ign_node, ros_node,
     ign_type_name, topic_name, queue_size, ros_type_name, topic_name, queue_size);
@@ -121,4 +110,4 @@ create_bidirectional_bridge(
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_BRIDGE__BRIDGE_HPP_
+#endif  // ROS_IGN_BRIDGE__BRIDGE_HPP_
