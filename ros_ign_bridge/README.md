@@ -6,8 +6,9 @@ between ROS and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls. Its support is limited to only the following message types:
 
-| ROS type                     | Ignition Transport type          |
+| ROS type                       | Ignition Transport type          |
 |--------------------------------|:--------------------------------:|
+| std_msgs/Bool                  | ignition::msgs::Boolean          |
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Header                | ignition::msgs::Header           |
 | std_msgs/String                | ignition::msgs::StringMsg        |
