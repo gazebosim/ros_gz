@@ -20,6 +20,7 @@
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -104,6 +105,22 @@ namespace testing
   /// ROS test utils
   //////////////////////////////////////////////////
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::Bool &_msg)
+  {
+    _msg.data = true;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::Bool &_msg)
+  {
+    std_msgs::Bool expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.data, _msg.data);
+  }
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
   void createTestMsg(std_msgs::Float32 &_msg)
@@ -771,6 +788,23 @@ namespace testing
   //////////////////////////////////////////////////
   /// Ignition::msgs test utils
   //////////////////////////////////////////////////
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Boolean &_msg)
+  {
+    _msg.set_data(true);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Boolean &_msg)
+  {
+    ignition::msgs::Boolean expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.data(), _msg.data());
+  }
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
