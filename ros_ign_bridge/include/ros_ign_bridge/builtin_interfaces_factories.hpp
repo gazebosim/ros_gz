@@ -36,6 +36,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -63,6 +64,24 @@ get_factory(const std::string & ros_type_name,
 // conversion functions for available interfaces
 
 // std_msgs
+template<>
+void
+Factory<
+  std_msgs::Bool,
+  ignition::msgs::Boolean
+>::convert_ros_to_ign(
+  const std_msgs::Bool & ros_msg,
+  ignition::msgs::Boolean & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Bool,
+  ignition::msgs::Boolean
+>::convert_ign_to_ros(
+  const ignition::msgs::Boolean & ign_msg,
+  std_msgs::Bool & ros_msg);
+
 template<>
 void
 Factory<
