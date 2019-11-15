@@ -53,6 +53,24 @@ std::string frame_id_ign_to_ros(const std::string & frame_id)
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::msg::Bool & ros_msg,
+  ignition::msgs::Boolean & ign_msg)
+{
+  ign_msg.set_data(ros_msg.data);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Boolean & ign_msg,
+  std_msgs::msg::Bool & ros_msg)
+{
+  ros_msg.data = ign_msg.data();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::msg::Float32 & ros_msg,
   ignition::msgs::Float & ign_msg)
 {

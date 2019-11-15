@@ -28,6 +28,16 @@ get_factory_builtin_interfaces(
   const std::string & ign_type_name)
 {
   // mapping from string to specialized template
+  if ((ros_type_name == "std_msgs/msg/Bool" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Boolean")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::msg::Bool,
+        ignition::msgs::Boolean
+      >
+    >("std_msgs/msg/Bool", ign_type_name);
+  }
   if ((ros_type_name == "std_msgs/msg/Float32" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Float")
   {
@@ -280,6 +290,30 @@ get_factory(
 // conversion functions for available interfaces
 
 // std_msgs
+template<>
+void
+Factory<
+  std_msgs::msg::Bool,
+  ignition::msgs::Boolean
+>::convert_ros_to_ign(
+  const std_msgs::msg::Bool & ros_msg,
+  ignition::msgs::Boolean & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::msg::Bool,
+  ignition::msgs::Boolean
+>::convert_ign_to_ros(
+  const ignition::msgs::Boolean & ign_msg,
+  std_msgs::msg::Bool & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
 template<>
 void
 Factory<
