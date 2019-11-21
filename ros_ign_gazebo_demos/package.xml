@@ -7,7 +7,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>gflags</depend>
   <depend>ignition-gazebo3</depend>
+  <depend>roscpp</depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
@@ -17,5 +19,4 @@
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rviz</exec_depend>
 
-  <replace>ros1_ign_gazebo_demos</replace>
 </package>
