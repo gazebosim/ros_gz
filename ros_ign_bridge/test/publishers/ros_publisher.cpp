@@ -15,6 +15,7 @@
 #include <thread>
 
 #include <ros/ros.h>
+#include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -45,6 +46,15 @@ int main(int argc, char ** argv)
   ros::init(argc, argv, "ros_string_publisher");
   ros::NodeHandle n;
   ros::Rate loop_rate(1);
+
+  // std_msgs::Bool.
+  ros::Publisher bool_pub = n.advertise<std_msgs::Bool>("bool", 1000);
+  std_msgs::Bool bool_msg;
+  ros_ign_bridge::testing::createTestMsg(bool_msg);
+
+  // std_msgs::Empty.
+  ros::Publisher empty_pub = n.advertise<std_msgs::Empty>("empty", 1000);
+  std_msgs::Empty empty_msg;
 
   // std_msgs::Float32.
   ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
@@ -184,6 +194,8 @@ int main(int argc, char ** argv)
   while (ros::ok())
   {
     // Publish all messages.
+    bool_pub.publish(bool_msg);
+    empty_pub.publish(empty_msg);
     float_pub.publish(float_msg);
     header_pub.publish(header_msg);
     string_pub.publish(string_msg);
