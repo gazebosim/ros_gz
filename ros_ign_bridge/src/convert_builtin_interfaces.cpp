@@ -79,6 +79,22 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::Empty &,
+  ignition::msgs::Empty &)
+{
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Empty &,
+  std_msgs::Empty &)
+{
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::Float32 & ros_msg,
   ignition::msgs::Float & ign_msg)
 {

@@ -52,6 +52,10 @@ int main(int argc, char ** argv)
   std_msgs::Bool bool_msg;
   ros_ign_bridge::testing::createTestMsg(bool_msg);
 
+  // std_msgs::Empty.
+  ros::Publisher empty_pub = n.advertise<std_msgs::Empty>("empty", 1000);
+  std_msgs::Empty empty_msg;
+
   // std_msgs::Float32.
   ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
   std_msgs::Float32 float_msg;
@@ -191,6 +195,7 @@ int main(int argc, char ** argv)
   {
     // Publish all messages.
     bool_pub.publish(bool_msg);
+    empty_pub.publish(empty_msg);
     float_pub.publish(float_msg);
     header_pub.publish(header_msg);
     string_pub.publish(string_msg);

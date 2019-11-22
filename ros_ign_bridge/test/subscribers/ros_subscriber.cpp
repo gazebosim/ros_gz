@@ -84,6 +84,18 @@ TEST(ROSSubscriberTest, Bool)
 }
 
 /////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Empty)
+{
+  MyTestClass<std_msgs::Empty> client("empty");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Float)
 {
   MyTestClass<std_msgs::Float32> client("float");
