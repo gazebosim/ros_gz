@@ -37,6 +37,7 @@
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/Empty.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -81,6 +82,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::Bool & ros_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Empty,
+  ignition::msgs::Empty
+>::convert_ros_to_ign(
+  const std_msgs::Empty & ros_msg,
+  ignition::msgs::Empty & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Empty,
+  ignition::msgs::Empty
+>::convert_ign_to_ros(
+  const ignition::msgs::Empty & ign_msg,
+  std_msgs::Empty & ros_msg);
 
 template<>
 void
