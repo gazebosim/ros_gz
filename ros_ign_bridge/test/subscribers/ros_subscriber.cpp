@@ -17,6 +17,7 @@
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
+#include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
@@ -69,6 +70,30 @@ class MyTestClass
   /// \brief ROS subscriber;
   private: ros::Subscriber sub;
 };
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Bool)
+{
+  MyTestClass<std_msgs::Bool> client("bool");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Empty)
+{
+  MyTestClass<std_msgs::Empty> client("empty");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
 
 /////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Float)
