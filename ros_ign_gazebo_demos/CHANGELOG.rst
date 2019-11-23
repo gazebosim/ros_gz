@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.0 (2019-11-22)
+------------------
 * Add replaces for each package (`#46 <https://github.com/osrf/ros_ign/issues/46>`_)
 * Make all API and comments ROS-version agnostic
   Signed-off-by: Louise Poubel <louise@openrobotics.org>

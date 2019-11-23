@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.8.0 (2019-11-22)
+------------------
 * Add support for std_msgs/Empty (`#52 <https://github.com/osrf/ros_ign/issues/52>`_)
 * Add support for std_msgs/Bool (`#49 <https://github.com/osrf/ros_ign/issues/49>`_)
   Signed-off-by: Michael Carroll <michael@openrobotics.org>
