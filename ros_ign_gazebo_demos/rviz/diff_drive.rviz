@@ -91,7 +91,7 @@ Visualization Manager:
   Global Options:
     Background Color: 197; 197; 197
     Default Light: true
-    Fixed Frame: vehicle_blue
+    Fixed Frame: vehicle_blue/odom
     Frame Rate: 30
   Name: root
   Tools:
