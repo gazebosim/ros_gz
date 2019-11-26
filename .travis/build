@@ -16,7 +16,7 @@ apt-get install -qq -y libignition-msgs4-dev \
                        libignition-gazebo2-dev \
                        python-catkin-tools \
                        python-rosdep
-                       
+
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro melodic \

@@ -18,11 +18,25 @@ find_package(catkin REQUIRED COMPONENTS
                sensor_msgs
                std_msgs)
 
-find_package(ignition-msgs4 QUIET REQUIRED)
-set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+# Citadel
+find_package(ignition-transport8 REQUIRED)
+if (ignition-transport8_FOUND)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
-find_package(ignition-transport7 QUIET REQUIRED)
-set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+# Blueprint
+else()
+  find_package(ignition-transport7 REQUIRED)
+  if (NOT ignition-transport7_FOUND)
+    BUILD_ERROR ("Missing: Ignition Transport version 7 or 8")
+  endif()
+  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+
+  find_package(ignition-msggs4 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+endif()
 
 catkin_package()
 
