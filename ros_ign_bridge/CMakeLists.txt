@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
                std_msgs)
 
 # Citadel
-find_package(ignition-transport8 REQUIRED)
+find_package(ignition-transport8 QUIET)
 if (ignition-transport8_FOUND)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
@@ -29,12 +29,9 @@ if (ignition-transport8_FOUND)
 # Blueprint
 else()
   find_package(ignition-transport7 REQUIRED)
-  if (NOT ignition-transport7_FOUND)
-    BUILD_ERROR ("Missing: Ignition Transport version 7 or 8")
-  endif()
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
 
-  find_package(ignition-msggs4 REQUIRED)
+  find_package(ignition-msgs4 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 endif()
 
