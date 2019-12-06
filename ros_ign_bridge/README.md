@@ -80,7 +80,7 @@ mkdir -p ~/bridge_ws/src
 cd ~/bridge_ws/src
 
 # Download needed software
-git clone https://github.com/osrf/ros_ign_bridge.git
+git clone https://github.com/osrf/ros_ign.git
 ```
 
 2. Build the workspace:
