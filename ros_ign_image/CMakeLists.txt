@@ -16,11 +16,22 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs)
 
-find_package(ignition-msgs4 QUIET REQUIRED)
-set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+# Citadel
+find_package(ignition-transport8 QUIET)
+if (ignition-transport8_FOUND)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
-find_package(ignition-transport7 QUIET REQUIRED)
-set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+# Blueprint
+else()
+  find_package(ignition-transport7 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+
+  find_package(ignition-msgs4 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+endif()
 
 catkin_package()
 

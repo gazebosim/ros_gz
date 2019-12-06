@@ -11,7 +11,8 @@
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo_demos</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
-  <exec_depend>ros_ign_point_cloud</exec_depend>
+  <!-- See https://github.com/osrf/ros_ign/issues/40 -->
+  <!--exec_depend>ros_ign_point_cloud</exec_depend-->
 
   <replace>ros1_ign</replace>
 
