@@ -61,7 +61,15 @@ To run the following examples you will also need these ROS packages:
 * `rostopic`
 * `rqt_image_view`
 
-The following Ignition dependencies are also needed:
+The following Ignition dependencies are also needed, depending on the Ignition collection that you are using:
+
+1. Ignition Blueprint:
+
+* `libignition-msgs4-dev`
+* `libignition-transport7-dev`
+
+2. Ignition Citadel:
+
 * `libignition-msgs5-dev`
 * `libignition-transport8-dev`
 
