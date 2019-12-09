@@ -26,6 +26,7 @@ service calls. Its support is limited to only the following message types:
 | rosgraph_msgs/Clock            | ignition::msgs::Clock            |
 | sensor_msgs/BatteryState       | ignition::msgs::BatteryState     |
 | sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo       |
+| sensor_msgs/FluidPressure      | ignition::msgs::FluidPressure    |
 | sensor_msgs/Imu                | ignition::msgs::IMU              |
 | sensor_msgs/Image              | ignition::msgs::Image            |
 | sensor_msgs/JointState         | ignition::msgs::Model            |
@@ -61,8 +62,8 @@ To run the following examples you will also need these ROS packages:
 * `rqt_image_view`
 
 The following Ignition dependencies are also needed:
-* `libignition-msgs4-dev`
-* `libignition-transport7-dev`
+* `libignition-msgs5-dev`
+* `libignition-transport8-dev`
 
 ### Building the bridge from source
 
@@ -80,7 +81,7 @@ mkdir -p ~/bridge_ws/src
 cd ~/bridge_ws/src
 
 # Download needed software
-git clone https://github.com/osrf/ros_ign.git
+git clone https://github.com/osrf/ros_ign.git -b melodic
 ```
 
 2. Build the workspace:
