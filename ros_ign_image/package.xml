@@ -7,8 +7,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>ignition-msgs4</depend>
-  <depend>ignition-transport7</depend>
+  <depend>ignition-msgs5</depend>
+  <depend>ignition-transport8</depend>
   <depend>image_transport</depend>
   <depend>ros_ign_bridge</depend>
   <depend>roscpp</depend>
