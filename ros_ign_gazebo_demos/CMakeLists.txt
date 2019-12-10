@@ -2,28 +2,30 @@ cmake_minimum_required(VERSION 3.5)
 
 project(ros_ign_gazebo_demos)
 
-find_package(catkin REQUIRED)
-find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
+find_package(ament_cmake REQUIRED)
 
-catkin_package()
+# Citadel
+find_package(ignition-gazebo3 QUIET)
+if (NOT ignition-gazebo3_FOUND)
+  # Blueprint
+  find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
+endif()
+
+ament_package()
 
 install(
   PROGRAMS
     scripts/ign_gazebo
-  DESTINATION
-    ${CATKIN_PACKAGE_BIN_DESTINATION})
+  RUNTIME DESTINATION bin)
 
 install(
   DIRECTORY
     launch/
-  DESTINATION
-    ${CATKIN_PACKAGE_SHARE_DESTINATION}/launch
+  DESTINATION share
 )
 
 install(
   DIRECTORY
     rviz/
-  DESTINATION
-    ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz
+  DESTINATION share/rviz
 )
-
