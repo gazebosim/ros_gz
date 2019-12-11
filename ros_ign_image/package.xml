@@ -11,8 +11,12 @@
   <depend>ignition-transport8</depend>
   <depend>image_transport</depend>
   <depend>ros_ign_bridge</depend>
-  <depend>roscpp</depend>
+  <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 
-  <test_depend>rostest</test_depend>
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>
