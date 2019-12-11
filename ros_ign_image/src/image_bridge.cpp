@@ -17,8 +17,8 @@
 
 #include <ignition/transport/Node.hh>
 
+#include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.h>
-#include <ros/ros.h>
 #include <ros_ign_bridge/convert_builtin_interfaces.hpp>
 
 //////////////////////////////////////////////////
@@ -43,7 +43,7 @@ class Handler
   /// \param[in] _ign_msg Ignition message
   private: void OnImage(const ignition::msgs::Image & _ign_msg)
   {
-    sensor_msgs::Image ros_msg;
+    sensor_msgs::msg::Image ros_msg;
     ros_ign_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
     this->ros_pub.publish(ros_msg);
   }
@@ -70,11 +70,11 @@ int main(int argc, char * argv[])
     return -1;
   }
 
-  ros::init(argc, argv, "ros_ign_image");
+  rclcpp::init(argc, argv);
 
   // ROS node
-  ros::NodeHandle ros_node;
-  auto it_node = std::make_shared<image_transport::ImageTransport>(ros_node);
+  auto node_ = rclcpp::Node::make_shared("ros_ign_image");
+  auto it_node = std::make_shared<image_transport::ImageTransport>(node_);
 
   // Ignition node
   auto ign_node = std::make_shared<ignition::transport::Node>();
@@ -89,8 +89,7 @@ int main(int argc, char * argv[])
   }
 
   // Spin ROS and Ign until shutdown
-  ros::AsyncSpinner async_spinner(1);
-  async_spinner.start();
+  rclcpp::spin(node_);
 
   ignition::transport::waitForShutdown();
 
