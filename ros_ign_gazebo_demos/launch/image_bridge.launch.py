@@ -43,7 +43,6 @@ def generate_launch_description():
     )
 
     # Bridge
-    # TODO: Pending ros_ign_image_bridge port
     bridge = Node(
         package='ros_ign_image',
         node_executable='image_bridge',
