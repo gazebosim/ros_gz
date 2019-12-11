@@ -24,8 +24,6 @@ Publishes fluid pressure readings.
 
 Publishes RGB camera image and info.
 
-*TODO*: Pending `ros_ign_image` port.
-
 Images can be exposed to ROS through `ros_ign_bridge` or `ros_ign_image`.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
@@ -56,8 +54,6 @@ Depth camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
 * `sensor_msgs/msg/PointCloud2`, through `ros_ign_point_cloud`
-
-*TODO*: Pending `ros_ign_image` port.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
@@ -112,8 +108,6 @@ RGBD camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
 * `sensor_msgs/msg/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
-
-*TODO*: Pending `ros_ign_image` port.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
