@@ -5,15 +5,20 @@
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
+  <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>ignition-gazebo2</depend>
+  <depend>ignition-gazebo3</depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
-  <exec_depend>ros_ign_point_cloud</exec_depend>
+  <!-- See https://github.com/osrf/ros_ign/issues/40 -->
+  <!--exec_depend>ros_ign_point_cloud</exec_depend-->
   <exec_depend>rqt_image_view</exec_depend>
   <exec_depend>rqt_plot</exec_depend>
-  <exec_depend>rviz</exec_depend>
+  <exec_depend>rqt_topic</exec_depend>
+  <exec_depend>rviz2</exec_depend>
 
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
 </package>

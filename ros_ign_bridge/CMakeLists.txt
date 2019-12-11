@@ -18,11 +18,22 @@ find_package(rosgraph_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
-find_package(ignition-msgs4 QUIET REQUIRED)
-set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+# Citadel
+find_package(ignition-transport8 QUIET)
+if (ignition-transport8_FOUND)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
-find_package(ignition-transport7 QUIET REQUIRED)
-set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+# Blueprint
+else()
+  find_package(ignition-transport7 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+
+  find_package(ignition-msgs4 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+endif()
 
 include_directories(include)
 
@@ -35,6 +46,40 @@ set(bridge_executables
   parameter_bridge
   static_bridge
 )
+
+set(bridge_lib
+  ros_ign_bridge_lib
+)
+
+add_library(${bridge_lib}
+  ${common_sources}
+)
+
+target_link_libraries(${bridge_lib}
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)
+ament_target_dependencies(${bridge_lib}
+  "geometry_msgs"
+  "nav_msgs"
+  "rclcpp"
+  "rosgraph_msgs"
+  "sensor_msgs"
+  "std_msgs"
+)
+
+install(TARGETS ${bridge_lib}
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin)
+
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+ament_export_include_directories(include)
+ament_export_libraries(${bridge_lib})
 
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
@@ -64,30 +109,6 @@ if(BUILD_TESTING)
 endif()
 
 # TODO(anyone) Uncomment parts as they're ported to ROS 2
-#
-# set(bridge_lib
-#   ros_ign_bridge_lib
-# )
-#
-# add_library(${bridge_lib}
-#   ${common_sources}
-# )
-# target_link_libraries(${bridge_lib}
-#   ${catkin_LIBRARIES}
-#   ignition-msgs${IGN_MSGS_VER}::core
-#   ignition-transport${IGN_TRANSPORT_VER}::core
-# )
-#
-# catkin_package(INCLUDE_DIRS include
-#                LIBRARIES ${bridge_lib})
-#
-# install(TARGETS ${bridge_lib}
-#         ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#         LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#         RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION})
-#
-# install(DIRECTORY include/${PROJECT_NAME}/
-#         DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION})
 #
 # # Tests
 # find_package(rostest REQUIRED)

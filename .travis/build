@@ -11,20 +11,20 @@ echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable b
 echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
 echo "deb [trusted=yes] http://packages.ros.org/ros2/ubuntu bionic main" > /etc/apt/sources.list.d/ros2-latest.list
 apt-get update -qq
-apt-get install -qq -y libignition-msgs4-dev \
-                       libignition-transport7-dev \
-                       libignition-gazebo2-dev \
+apt-get install -qq -y libignition-msgs5-dev \
+                       libignition-transport8-dev \
+                       libignition-gazebo3-dev \
                        python3-colcon-common-extensions \
                        python-rosdep
 
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y --rosdistro dashing \
-  --skip-keys=ignition-gazebo2 \
-  --skip-keys=ignition-msgs4 \
-  --skip-keys=ignition-rendering2 \
-  --skip-keys=ignition-sensors2 \
-  --skip-keys=ignition-transport7
+  --skip-keys=ignition-gazebo3 \
+  --skip-keys=ignition-msgs5 \
+  --skip-keys=ignition-rendering3 \
+  --skip-keys=ignition-sensors3 \
+  --skip-keys=ignition-transport8
 
 # Build.
 source /opt/ros/dashing/setup.bash
