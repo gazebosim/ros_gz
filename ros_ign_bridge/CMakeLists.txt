@@ -75,9 +75,10 @@ install(TARGETS ${bridge_lib}
 
 install(
   DIRECTORY include/
-  DESTINATION include  
+  DESTINATION include
 )
 
+ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
 
 foreach(bridge ${bridge_executables})
@@ -108,9 +109,6 @@ if(BUILD_TESTING)
 endif()
 
 # TODO(anyone) Uncomment parts as they're ported to ROS 2
-#
-# catkin_package(INCLUDE_DIRS include
-#                LIBRARIES ${bridge_lib})
 #
 # # Tests
 # find_package(rostest REQUIRED)

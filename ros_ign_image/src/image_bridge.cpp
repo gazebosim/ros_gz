@@ -12,36 +12,40 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <iostream>
-#include <string>
-
 #include <ignition/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.h>
 #include <ros_ign_bridge/convert_builtin_interfaces.hpp>
 
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
+
 //////////////////////////////////////////////////
 /// \brief Bridges one topic
 class Handler
 {
+public:
   /// \brief Constructor
   /// \param[in] _topic Image base topic
   /// \param[in] _it_node Pointer to image transport node
   /// \param[in] _ign_node Pointer to Ignition node
-  public: Handler(
-      const std::string & _topic,
-      std::shared_ptr<image_transport::ImageTransport> _it_node,
-      std::shared_ptr<ignition::transport::Node> _ign_node)
+  Handler(
+    const std::string & _topic,
+    std::shared_ptr<image_transport::ImageTransport> _it_node,
+    std::shared_ptr<ignition::transport::Node> _ign_node)
   {
     this->ros_pub = _it_node->advertise(_topic, 1);
 
     _ign_node->Subscribe(_topic, &Handler::OnImage, this);
   }
 
+private:
   /// \brief Callback when Ignition image is received
   /// \param[in] _ign_msg Ignition message
-  private: void OnImage(const ignition::msgs::Image & _ign_msg)
+  void OnImage(const ignition::msgs::Image & _ign_msg)
   {
     sensor_msgs::msg::Image ros_msg;
     ros_ign_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
@@ -49,23 +53,22 @@ class Handler
   }
 
   /// \brief ROS image publisher
-  private: image_transport::Publisher ros_pub;
+  image_transport::Publisher ros_pub;
 };
 
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cerr << "Bridge a collection of Ignition Transport image topics to ROS "
-            << "using image_transport.\n\n"
-            << "  image_bridge <topic> <topic> ..\n\n"
-            << "E.g.: image_bridge /camera/front/image_raw" << std::endl;
+  std::cerr << "Bridge a collection of Ignition Transport image topics to ROS " <<
+    "using image_transport.\n\n" <<
+    "  image_bridge <topic> <topic> ..\n\n" <<
+    "E.g.: image_bridge /camera/front/image_raw" << std::endl;
 }
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
-  if (argc < 2)
-  {
+  if (argc < 2) {
     usage();
     return -1;
   }
@@ -82,8 +85,7 @@ int main(int argc, char * argv[])
   std::vector<std::shared_ptr<Handler>> handlers;
 
   // Create publishers and subscribers
-  for (auto i = 1; i < argc; ++i)
-  {
+  for (auto i = 1; i < argc; ++i) {
     auto topic = std::string(argv[i]);
     handlers.push_back(std::make_shared<Handler>(topic, it_node, ign_node));
   }
