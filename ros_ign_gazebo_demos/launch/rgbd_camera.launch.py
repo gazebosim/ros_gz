@@ -34,12 +34,13 @@ def generate_launch_description():
         )
     )
 
-    rviz = Node(
-        package='rviz2',
-        node_executable='rviz2',
-        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'rgbd_camera.rviz')],
-        condition=IfCondition(LaunchConfiguration('rviz'))
-    )
+    # FIXME: need rviz configuration migration
+    # rviz = Node(
+    #    package='rviz2',
+    #    node_executable='rviz2',
+    #    arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'rgbd_camera.rviz')],
+    #    condition=IfCondition(LaunchConfiguration('rviz'))
+    # )
 
     # Bridge
     bridge = Node(
@@ -60,6 +61,6 @@ def generate_launch_description():
                               description='Open RViz.'),
         ign_gazebo,
         bridge,
-        rviz,
+        # rviz,
     ])
 
