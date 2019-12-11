@@ -14,6 +14,7 @@
   <exec_depend>ros_ign_point_cloud</exec_depend>
   <exec_depend>rqt_image_view</exec_depend>
   <exec_depend>rqt_plot</exec_depend>
+  <exec_depend>rqt_topic</exec_depend>
   <exec_depend>rviz2</exec_depend>
 
   <export>

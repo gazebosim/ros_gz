@@ -38,17 +38,18 @@ def generate_launch_description():
     # Ignition Gazebo
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo_demos, 'ign_gazebo.launch.py'),
+            os.path.join(pkg_ros_ign_gazebo_demos, 'launch', 'ign_gazebo.launch.py'),
         )
     )
 
     # Bridge
-    bridge = Node(
-        package='ros_ign_bridge',
-        node_executable='parameter_bridge',
-        arguments=["/air_pressure@sensor_msgs/FluidPressure@ignition.msgs.FluidPressure"],
-        output='screen'
-    )
+    # TODO: Needs sensor_msgs/msg/FluidPressure to be supported on bridge
+    # bridge = Node(
+    #     package='ros_ign_bridge',
+    #     node_executable='parameter_bridge',
+    #     arguments=["/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure"],
+    #     output='screen'
+    # )
 
     # RQt
     rqt = Node(
@@ -66,6 +67,6 @@ def generate_launch_description():
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         ign_gazebo,
-        bridge,
+    #    bridge,
         rqt
     ])

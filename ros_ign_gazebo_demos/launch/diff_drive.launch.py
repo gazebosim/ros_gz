@@ -35,22 +35,21 @@ def generate_launch_description():
     )
 
     # RViz
-    # FIXME: Add once there's an Orbit display for RViz2
-    # rviz = Node(
-    #    package='rviz2',
-    #     node_executable='rviz2',
-    #     arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'diff_drive.rviz')],
-    #     condition=IfCondition(LaunchConfiguration('rviz'))
-    # )
+    rviz = Node(
+       package='rviz2',
+        node_executable='rviz2',
+        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'diff_drive.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/Twist@ignition.msgs.Twist',
-                   '/model/vehicle_blue/odometry@nav_msgs/Odometry@ignition.msgs.Odometry',
-                   '/model/vehicle_green/cmd_vel@geometry_msgs/Twist@ignition.msgs.Twist',
-                   '/model/vehicle_green/odometry@nav_msgs/Odometry@ignition.msgs.Odometry'],
+        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
+                   '/model/vehicle_blue/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
+                   '/model/vehicle_green/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
+                   '/model/vehicle_green/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry'],
         output='screen'
     )
 
@@ -63,5 +62,5 @@ def generate_launch_description():
                               description='Open RViz.'),
         ign_gazebo,
         bridge,
-        # rviz
+        rviz
     ])

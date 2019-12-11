@@ -43,12 +43,13 @@ def generate_launch_description():
     )
 
     # Bridge
-    bridge = Node(
-        package='ros_ign_bridge',
-        node_executable='image_bridge',
-        arguments=['camera', 'depth_camera', 'rgbd_camera/image', 'rgbd_camera/depth_image'],
-        output='screen'
-    )
+    # TODO: Pending ros_ign_image_bridge port
+    # bridge = Node(
+    #     package='ros_ign_image_bridge',
+    #     node_executable='image_bridge',
+    #     arguments=['camera', 'depth_camera', 'rgbd_camera/image', 'rgbd_camera/depth_image'],
+    #     output='screen'
+    # )
 
     return LaunchDescription([
         DeclareLaunchArgument(
@@ -58,6 +59,6 @@ def generate_launch_description():
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         ign_gazebo,
-        bridge,
+    #    bridge,
         rqt
     ])

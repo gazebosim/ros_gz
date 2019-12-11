@@ -35,20 +35,19 @@ def generate_launch_description():
     )
 
     # RViz
-    # FIXME: Add once there's an Grid display for RVIZ2
-    # rviz = Node(
-    #     package='rviz2',
-    #     node_executable='rviz2',
-    #     arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'camera.rviz')],
-    #     condition=IfCondition(LaunchConfiguration('rviz'))
-    # )
+    rviz = Node(
+        package='rviz2',
+        node_executable='rviz2',
+        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'camera.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/camera@sensor_msgs/Image@ignition.msgs.Image',
-                   '/camera_info@sensor_msgs/CameraInfo@ignition.msgs.CameraInfo'],
+        arguments=['/camera@sensor_msgs/msg/Image@ignition.msgs.Image',
+                   '/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo'],
         output='screen'
     )
 
@@ -57,9 +56,9 @@ def generate_launch_description():
           'args',
           default_value=['-r camera_sensor.sdf'],
           description='Ignition Gazebo arguments'),
-        # DeclareLaunchArgument('rviz', default_value='true',
-        #                      description='Open RViz.'),
+        DeclareLaunchArgument('rviz', default_value='true',
+                             description='Open RViz.'),
         ign_gazebo,
         bridge,
-        # rviz
+        rviz
     ])

@@ -12,9 +12,11 @@ There's a convenient launch file, try for example:
 
 ## Air pressure
 
+*TODO*: Pending bridge for `sensor_msgs/msg/FluidPressure`.
+
 Publishes fluid pressure readings.
 
-    ros2 launch ros_ign_gazebo_demos air_pressure.launch
+    ros2 launch ros_ign_gazebo_demos air_pressure.launch.py
 
 ![](images/air_pressure_demo.png)
 
@@ -22,15 +24,17 @@ Publishes fluid pressure readings.
 
 Publishes RGB camera image and info.
 
+*TODO*: Pending `ros_ign_image_bridge` port. 
+
 Images can be exposed to ROS through `ros_ign_bridge` or `ros_ign_image`.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
 
 Using the regular bridge:
 
-    ros2 launch ros_ign_gazebo_demos camera.launch
+    ros2 launch ros_ign_gazebo_demos camera.launch.py
 
 ![](images/camera_demo.png)
 
@@ -38,11 +42,11 @@ Using the regular bridge:
 
 Send commands to a differential drive vehicle and listen to its odometry.
 
-    ros2 launch ros_ign_gazebo_demos diff_drive.launch
+    ros2 launch ros_ign_gazebo_demos diff_drive.launch.py
 
 Then send a command
 
-    rostopic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
 ![](images/diff_drive_demo.png)
 
@@ -50,16 +54,16 @@ Then send a command
 
 Depth camera data can be obtained as:
 
-* `sensor_msgs/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sendor_msgs/PointCloud2`, through `ros_ign_point_cloud`
+* `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
+* `sendor_msgs/msg/PointCloud2`, through `ros_ign_point_cloud`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
 
 Using Ignition Gazebo plugin:
 
-    ros2 launch ros_ign_gazebo_demos depth_camera.launch
+    ros2 launch ros_ign_gazebo_demos depth_camera.launch.py
 
 ![](images/depth_camera_demo.png)
 
@@ -67,16 +71,16 @@ Using Ignition Gazebo plugin:
 
 GPU lidar data can be obtained as:
 
-* `sensor_msgs/LaserScan`, through the `ros_ign_bridge`
-* `sendor_msgs/PointCloud2`, through the `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/LaserScan`, through the `ros_ign_bridge`
+* `sendor_msgs/msg/PointCloud2`, through the `ros_ign_bridge` or `ros_ign_point_cloud`
 
 Using the bridge:
 
-    ros2 launch ros_ign_gazebo_demos gpu_lidar_bridge.launch
+    ros2 launch ros_ign_gazebo_demos gpu_lidar_bridge.launch.py
 
 Using Ignition Gazebo plugin:
 
-    ros2 launch ros_ign_gazebo_demos gpu_lidar.launch
+    ros2 launch ros_ign_gazebo_demos gpu_lidar.launch.py
 
 ![](images/gpu_lidar_demo.png)
 
@@ -84,7 +88,7 @@ Using Ignition Gazebo plugin:
 
 Publishes IMU readings.
 
-    ros2 launch ros_ign_gazebo_demos imu.launch
+    ros2 launch ros_ign_gazebo_demos imu.launch.py
 
 ![](images/imu_demo.png)
 
@@ -92,7 +96,7 @@ Publishes IMU readings.
 
 Publishes magnetic field readings.
 
-    ros2 launch ros_ign_gazebo_demos magnetometer.launch
+    ros2 launch ros_ign_gazebo_demos magnetometer.launch.py
 
 ![](images/magnetometer_demo.png)
 
@@ -100,20 +104,20 @@ Publishes magnetic field readings.
 
 RGBD camera data can be obtained as:
 
-* `sensor_msgs/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sendor_msgs/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
+* `sendor_msgs/msg/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
 
 Using the regular bridge:
 
-    ros2 launch ros_ign_gazebo_demos rgbd_camera_bridge.launch
+    ros2 launch ros_ign_gazebo_demos rgbd_camera_bridge.launch.py
 
 Using Ignition Gazebo plugin:
 
-    ros2 launch ros_ign_gazebo_demos rgbd_camera.launch
+    ros2 launch ros_ign_gazebo_demos rgbd_camera.launch.py
 
 ![](images/rgbd_camera_demo.png)
 
@@ -121,10 +125,10 @@ Using Ignition Gazebo plugin:
 
 Get the current state of a battery.
 
-    ros2 launch ros_ign_gazebo_demos battery.launch
+    ros2 launch ros_ign_gazebo_demos battery.launch.py
 
 Then send a command so the vehicle moves and drains the battery
 
-    rostopic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
 ![](images/battery_demo.png)
