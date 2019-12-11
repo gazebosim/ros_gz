@@ -46,7 +46,8 @@ def generate_launch_description():
     rviz = Node(
         package='rviz2',
         node_executable='rviz2',
-        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'depth_camera.rviz')],
+        # FIXME: Generate new RViz config once this demo is usable again
+        #arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'depth_camera.rviz')],
         condition=IfCondition(LaunchConfiguration('rviz'))
     )
 
@@ -54,20 +55,20 @@ def generate_launch_description():
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/depth_camera@sensor_msgs/Image@ignition.msgs.Image'],
+        arguments=['/depth_camera@sensor_msgs/msg/Image@ignition.msgs.Image'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (depth_camera.sdf) inside ros_ign_point_cloud/
+    # FIXME: need a SDF file (depth_camera.sdf) inside ros_ign_point_cloud
     return LaunchDescription([
         DeclareLaunchArgument(
           'args',
-          default_value=['depth_camera.sdf'],
+          #default_value=['depth_camera.sdf'],
           description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         ign_gazebo,
         bridge,
         rviz,
-        rqt,
+        rqt
     ])

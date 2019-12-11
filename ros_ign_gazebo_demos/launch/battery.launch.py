@@ -36,9 +36,10 @@ def generate_launch_description():
 
     # RQt
     rqt = Node(
-        package='rqt_topic',
-        node_executable='rqt_topic',
-        # arguments=['/model/vehicle_blue/battery/linear_battery/state/percentage'],
+        package='rqt_plot',
+        node_executable='rqt_plot',
+        # FIXME: Why isn't the topic being populated on the UI? RQt issue?
+        arguments=['--force-discover', '/model/vehicle_blue/battery/linear_battery/state/percentage'],
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
@@ -46,15 +47,15 @@ def generate_launch_description():
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/Twist@ignition.msgs.Twist',
-                   '/model/vehicle_blue/battery/linear_battery/state@sensor_msgs/BatteryState@ignition.msgs.BatteryState'],
+        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
+                   '/model/vehicle_blue/battery/linear_battery/state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState'],
         output='screen'
     )
 
     return LaunchDescription([
         DeclareLaunchArgument(
           'args',
-          default_value=['linear_battery_demo.sdf'],
+          default_value=['-r -z 1000000 linear_battery_demo.sdf'],
           description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),

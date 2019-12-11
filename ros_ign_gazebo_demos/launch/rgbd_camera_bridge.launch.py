@@ -34,6 +34,7 @@ def generate_launch_description():
         )
     )
 
+    # RViz
     rviz = Node(
         package='rviz2',
         node_executable='rviz2',
@@ -45,9 +46,9 @@ def generate_launch_description():
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/rgbd_camera/image@sensor_msgs/Image@ignition.msgs.Image',
-                   '/rgbd_camera/depth_image@sensor_msgs/Image@ignition.msgs.Image',
-                   '/rgbd_camera/points@sensor_msgs/PointCloud2@ignition.msgs.PointCloudPacked'],
+        arguments=['/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image',
+                   '/rgbd_camera/depth_image@sensor_msgs/msg/Image@ignition.msgs.Image',
+                   '/rgbd_camera/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked'],
         output='screen'
     )
 

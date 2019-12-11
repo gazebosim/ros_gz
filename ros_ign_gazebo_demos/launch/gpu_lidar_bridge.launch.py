@@ -34,24 +34,23 @@ def generate_launch_description():
         )
     )
 
-    # FIXME: need rviz configuration migration
-    # rviz = Node(
-    #    package='rviz2',
-    #    node_executable='rviz2',
-    #    arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
-    #    condition=IfCondition(LaunchConfiguration('rviz'))
-    # )
+    # RViz
+    rviz = Node(
+       package='rviz2',
+       node_executable='rviz2',
+       arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
+       condition=IfCondition(LaunchConfiguration('rviz'))
+    )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['lidar@sensor_msgs/LaserScan@ignition.msgs.LaserScan',
-                   '/lidar/points@sensor_msgs/PointCloud2@ignition.msgs.PointCloudPacked'],
+        arguments=['lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
+                   '/lidar/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (depth_camera.sdf) inside ros_ign_point_cloud/
     return LaunchDescription([
         DeclareLaunchArgument(
           'args',
@@ -61,6 +60,6 @@ def generate_launch_description():
                               description='Open RViz.'),
         ign_gazebo,
         bridge,
-        # rviz,
+        rviz,
     ])
 

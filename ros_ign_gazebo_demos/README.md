@@ -24,7 +24,7 @@ Publishes fluid pressure readings.
 
 Publishes RGB camera image and info.
 
-*TODO*: Pending `ros_ign_image_bridge` port. 
+*TODO*: Pending `ros_ign_image` port.
 
 Images can be exposed to ROS through `ros_ign_bridge` or `ros_ign_image`.
 
@@ -55,11 +55,15 @@ Then send a command
 Depth camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sendor_msgs/msg/PointCloud2`, through `ros_ign_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through `ros_ign_point_cloud`
+
+*TODO*: Pending `ros_ign_image` port.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
     ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
+
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
 Using Ignition Gazebo plugin:
 
@@ -72,11 +76,13 @@ Using Ignition Gazebo plugin:
 GPU lidar data can be obtained as:
 
 * `sensor_msgs/msg/LaserScan`, through the `ros_ign_bridge`
-* `sendor_msgs/msg/PointCloud2`, through the `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through the `ros_ign_bridge` or `ros_ign_point_cloud`
 
 Using the bridge:
 
     ros2 launch ros_ign_gazebo_demos gpu_lidar_bridge.launch.py
+
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
 Using Ignition Gazebo plugin:
 
@@ -105,7 +111,9 @@ Publishes magnetic field readings.
 RGBD camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sendor_msgs/msg/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
+
+*TODO*: Pending `ros_ign_image` port.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
@@ -114,6 +122,8 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 Using the regular bridge:
 
     ros2 launch ros_ign_gazebo_demos rgbd_camera_bridge.launch.py
+
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
 Using Ignition Gazebo plugin:
 

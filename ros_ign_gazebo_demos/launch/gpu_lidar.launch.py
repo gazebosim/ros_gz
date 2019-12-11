@@ -35,32 +35,32 @@ def generate_launch_description():
     )
 
     # RViz
-    # FIXME: Add once there's an Orbit display for RViz2
-    # rviz = Node(
-    #    package='rviz2',
-    #     node_executable='rviz2',
-    #     arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar.rviz')],
-    #     condition=IfCondition(LaunchConfiguration('rviz'))
-    # )
+    rviz = Node(
+       package='rviz2',
+        node_executable='rviz2',
+        # FIXME: Generate new RViz config once this demo is usable again
+        #arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
         node_executable='parameter_bridge',
-        arguments=['/lidar@sensor_msgs/LaserScan@ignition.msgs.LaserScan/'],
+        arguments=['/lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan/'],
         output='screen'
     )
 
     # FIXME: need a SDF file (gpu_lidar.sdf) inside ros_ign_point_cloud/
     return LaunchDescription([
-        DeclareLaunchArgument(
-          'args',
-          default_value=['gpu_lidar.sdf'],
-          description='Ignition Gazebo arguments'),
+        # DeclareLaunchArgument(
+        #   'args',
+        #   default_value=['gpu_lidar.sdf'],
+        #   description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         ign_gazebo,
         bridge,
-        # rviz
+        rviz
     ])
 
