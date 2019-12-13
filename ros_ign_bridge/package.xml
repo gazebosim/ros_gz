@@ -12,6 +12,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>ignition-msgs5</depend>
+  <depend>ignition-transport8</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
