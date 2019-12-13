@@ -48,9 +48,6 @@ target_link_libraries(${executable}
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
-install(TARGETS ${executable}
-        DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
 
 ament_target_dependencies(${executable}
   "image_transport"
