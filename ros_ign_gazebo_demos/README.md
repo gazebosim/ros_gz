@@ -2,18 +2,6 @@
 
 This package contains demos showing how to use Ignition Gazebo with ROS.
 
-## Run Ignition Gazebo
-
-There's a convenient launch file, try for example:
-
-    roslaunch ros_ign_gazebo_demos ign_gazebo.launch args:="shapes.sdf"
-
-And you can directly call the executable, for example:
-
-    rosrun ros_ign_gazebo_demos ign_gazebo shapes.sdf
-
-![](images/shapes_demo.png)
-
 ## Air pressure
 
 Publishes fluid pressure readings.

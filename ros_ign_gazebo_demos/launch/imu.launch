@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find ros_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="-r -v 3 sensors.sdf"/>
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="-r -v 3 sensors.sdf"/>
   </include>
 
   <node

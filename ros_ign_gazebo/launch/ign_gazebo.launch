@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <launch>
-  <arg name="args" default=""/>
+  <arg name="ign_args" default=""/>
 
   <env name="IGN_GAZEBO_SYSTEM_PLUGIN_PATH" value="$(optenv LD_LIBRARY_PATH)" />
 
@@ -10,6 +10,6 @@
     name="ign_gazebo"
     output="screen"
     required="true"
-    args="$(arg args)">
+    args="$(arg ign_args)">
   </node>
 </launch>
