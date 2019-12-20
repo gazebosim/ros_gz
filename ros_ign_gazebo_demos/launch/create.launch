@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="world" default="empty"/>
+  <arg name="ign_args" default=""/>
+
+  <include file="$(find ros_ign_gazebo_demos)/launch/ign_gazebo.launch">
+    <arg name="args" value="$(arg ign_args) $(arg world).sdf"/>
+  </include>
+
+  <!-- URDF from param, package model -->
+  <param name="robot_description" textfile="$(find ros_ign_gazebo_demos)/models/sphere.urdf" />
+
+  <node
+    pkg="ros_ign_gazebo_demos"
+    type="create"
+    name="$(anon ros_ign_create_sphere)"
+    output="screen"
+    args="-world $(arg world) -param robot_description -name spawned -allow_renaming true -z 10">
+  </node>
+
+  <!-- SDF from file, Ignition Fuel -->
+  <node
+    pkg="ros_ign_gazebo_demos"
+    type="create"
+    name="$(anon ros_ign_create_box)"
+    output="screen"
+    args="-world $(arg world) -file 'https://fuel.ignitionrobotics.org/1.0/chapulina/models/Test box' -name spawned -allow_renaming true -z 10 -y 2">
+  </node>
+
+  <!-- SDF from file, package model -->
+  <node
+    pkg="ros_ign_gazebo_demos"
+    type="create"
+    name="$(anon ros_ign_create_cylinder)"
+    output="screen"
+    args="-world $(arg world) -file $(find ros_ign_gazebo_demos)/models/cylinder.sdf -name spawned -allow_renaming true -z 10 -y -2">
+  </node>
+</launch>

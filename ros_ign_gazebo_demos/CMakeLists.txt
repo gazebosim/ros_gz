@@ -20,3 +20,9 @@ install(
     ${CATKIN_PACKAGE_SHARE_DESTINATION}/rviz
 )
 
+install(
+  DIRECTORY
+    models/
+  DESTINATION
+    ${CATKIN_PACKAGE_SHARE_DESTINATION}/models
+)

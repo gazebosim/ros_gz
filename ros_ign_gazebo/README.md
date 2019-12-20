@@ -6,9 +6,9 @@ Ignition, such as:
 * Launch files
 * ROS-enabled executables
 
-# Try it out
+# Usage
 
-More usage examples can be seen on the
+> More usage examples can be seen on the
 [ros_ign_gazebo_demos](https://github.com/osrf/ros_ign/tree/melodic/ros_ign_gazebo_demos)
 package.
 
@@ -24,4 +24,21 @@ And you can directly call the executable, for example:
 
 ![](images/shapes_demo.png)
 
+## Spawn entities
 
+The `create` executable can be used to spawn SDF or URDF entities from:
+
+* A file on disk or from Ignition Fuel
+* A ROS parameter
+
+For example, start Ignition Gazebo:
+
+`ign gazebo`
+
+Then spawn a model:
+
+`rosrun ros_ign_gazebo create -world default -file 'https://fuel.ignitionrobotics.org/1.0/openrobotics/models/Gazebo'`
+
+See more options with:
+
+`rosrun ros_ign_gazebo create --helpshort`

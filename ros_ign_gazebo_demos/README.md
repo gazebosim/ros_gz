@@ -120,3 +120,15 @@ Then send a command so the vehicle moves and drains the battery
     rostopic pub /model/vehicle_blue/cmd_vel geometry_msgs/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
 ![](images/battery_demo.png)
+
+## Create entity
+
+Launch simulation and spawn entities:
+
+* Sphere from URDF loaded into ROS param
+* Box from SDF file on Ignition Fuel
+* Cylinder from SDF file
+
+`roslaunch ros_ign_gazebo_demos create.launch`
+
+![](images/create.png)
