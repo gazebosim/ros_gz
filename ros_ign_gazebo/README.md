@@ -20,6 +20,7 @@ There's a convenient launch file, try for example:
 
 And you can directly call the executable, for example:
 
+    roscore
     rosrun ros_ign_gazebo ign_gazebo shapes.sdf
 
 ![](images/shapes_demo.png)
@@ -34,6 +35,11 @@ The `create` executable can be used to spawn SDF or URDF entities from:
 For example, start Ignition Gazebo:
 
 `ign gazebo`
+
+
+And a ROS core:
+
+`roscore`
 
 Then spawn a model:
 
