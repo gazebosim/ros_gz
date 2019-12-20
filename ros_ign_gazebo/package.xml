@@ -7,7 +7,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>gflags</depend>
+  <depend>libgflags-dev</depend>
   <exec_depend>ignition-gazebo3</exec_depend>
   <depend>roscpp</depend>
 </package>
