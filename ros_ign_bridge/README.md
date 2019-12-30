@@ -26,12 +26,15 @@ service calls. Its support is limited to only the following message types:
 | rosgraph_msgs/Clock            | ignition::msgs::Clock            |
 | sensor_msgs/BatteryState       | ignition::msgs::BatteryState     |
 | sensor_msgs/CameraInfo         | ignition::msgs::CameraInfo       |
+| sensor_msgs/FluidPressure (TODO) | ignition::msgs::FluidPressure (TODO) |
 | sensor_msgs/Imu                | ignition::msgs::IMU              |
 | sensor_msgs/Image              | ignition::msgs::Image            |
 | sensor_msgs/JointState         | ignition::msgs::Model            |
 | sensor_msgs/LaserScan          | ignition::msgs::LaserScan        |
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
 | sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
+
+Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 
 ## Prerequisites
 
@@ -45,25 +48,43 @@ source installed.
 
 1. Create a colcon workspace:
 
-```
-# Setup the workspace
-mkdir -p ~/bridge_ws/src
-cd ~/bridge_ws/src
+    ```
+    # Setup the workspace
+    mkdir -p ~/bridge_ws/src
+    cd ~/bridge_ws/src
 
-# Download needed software
-git clone https://github.com/osrf/ros_ign.git
-```
+    # Download needed software
+    git clone https://github.com/osrf/ros_ign.git -b dashing
+    ```
 
-2. Build the workspace:
+1. Install ROS dependencies:
 
-```
-# Source ROS distro's setup.bash
-source /opt/ros/dashing/setup.bash
+    ```
+    cd ~/bridge_ws
+    rosdep install --from-paths src -i -y --rosdistro dashing \
+      --skip-keys=ignition-gazebo2 \
+      --skip-keys=ignition-gazebo3 \
+      --skip-keys=ignition-msgs4 \
+      --skip-keys=ignition-msgs5 \
+      --skip-keys=ignition-rendering2 \
+      --skip-keys=ignition-rendering3 \
+      --skip-keys=ignition-sensors2 \
+      --skip-keys=ignition-sensors3 \
+      --skip-keys=ignition-transport7 \
+      --skip-keys=ignition-transport8
 
-# Build and install into workspace
-cd ~/bridge_ws/
-colcon build
-```
+    ```
+
+1. Build the workspace:
+
+    ```
+    # Source ROS distro's setup.bash
+    source /opt/ros/dashing/setup.bash
+
+    # Build and install into workspace
+    cd ~/bridge_ws/
+    colcon build
+    ```
 
 ## Example 1a: Ignition Transport talker and ROS 2 listener
 
