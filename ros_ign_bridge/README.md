@@ -34,74 +34,77 @@ service calls. Its support is limited to only the following message types:
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
 | sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
 
-Run `parameter_bridge -h` for instructions.
+Run `rosmaster & rosrun ros_ign_bridge parameter_bridge -h` for instructions.
 
 ## Prerequisites
 
-For all examples you need to source the environment of the install space where
-the bridge was built or unpacked to.
-Additionally you will need to either source the ROS environment or at least
-set the `ROS_MASTER_URI` and run a `roscore`.
+### ROS
 
-The following ROS packages are required to build and use the bridge:
-* `catkin`
-* `geometry_msgs`
-* `mav_msgs`
-* `nav_msgs`
-* `rosconsole`
-* `roscpp`
-* `roslaunch` (for `roscore` executable)
-* `rosmsg`
-* `sensor_msgs`
-* `std_msgs`
+Be sure you've installed
+[ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) (at least ROS-Base).
+More ROS dependencies will be installed below.
 
-To run the following examples you will also need these ROS packages:
-* `rosbash` (for `rosrun` executable)
-* `roscpp_tutorials`
-* `rostopic`
-* `rqt_image_view`
+### Ignition
 
-The following Ignition dependencies are also needed, depending on the Ignition collection that you are using:
+The following Ignition dependencies are also needed, depending on the Ignition
+collection that you are using:
 
 1. Ignition Blueprint:
 
-* `libignition-msgs4-dev`
-* `libignition-transport7-dev`
+    * `libignition-msgs4-dev`
+    * `libignition-transport7-dev`
 
 2. Ignition Citadel:
 
-* `libignition-msgs5-dev`
-* `libignition-transport8-dev`
+    * `libignition-msgs5-dev`
+    * `libignition-transport8-dev`
 
 ### Building the bridge from source
 
 Before continuing you should have the prerequisites for building the bridge from
 source installed.
 
-Here are the steps (for Linux and OSX; you probably don't have ROS installed
-on Windows).
+The following steps are for Linux and OSX.
 
 1. Create a catkin workspace:
 
-```
-# Setup the workspace
-mkdir -p ~/bridge_ws/src
-cd ~/bridge_ws/src
+    ```
+    # Setup the workspace
+    mkdir -p ~/bridge_ws/src
+    cd ~/bridge_ws/src
 
-# Download needed software
-git clone https://github.com/osrf/ros_ign.git -b melodic
-```
+    # Download needed software
+    git clone https://github.com/osrf/ros_ign.git -b melodic
+    ```
 
-2. Build the workspace:
+1. Install ROS dependencies:
 
-```
-# Source ROS distro's setup.bash
-source /opt/ros/melodic/setup.bash
+    ```
+    cd ~/bridge_ws
+    rosdep install --from-paths src -i -y --rosdistro melodic \
+      --skip-keys=ignition-gazebo2 \
+      --skip-keys=ignition-gazebo3 \
+      --skip-keys=ignition-msgs4 \
+      --skip-keys=ignition-msgs5 \
+      --skip-keys=ignition-rendering2 \
+      --skip-keys=ignition-rendering3 \
+      --skip-keys=ignition-sensors2 \
+      --skip-keys=ignition-sensors3 \
+      --skip-keys=ignition-transport7 \
+      --skip-keys=ignition-transport8
 
-# Build and install into workspace
-cd ~/bridge_ws/
-catkin_make install
-```
+    ```
+
+1. Build the workspace:
+
+    ```
+    # Source ROS distro's setup.bash
+    source /opt/ros/melodic/setup.bash
+
+    # Build and install into workspace
+    cd ~/bridge_ws/
+    catkin_make install
+    ```
 
 ## Example 1a: Ignition Transport talker and ROS listener
 
