@@ -47,7 +47,7 @@ enum Direction
 //////////////////////////////////////////////////
 void usage()
 {
-  ROS_ERROR_STREAM(
+  ROS_INFO_STREAM(
       "Bridge a collection of ROS and Ignition Transport topics.\n\n"
       << "  parameter_bridge <topic@ROS_type(@,[,])Ign_type> .. "
       << " <topic@ROS_type(@,[,])Ign_type>\n\n"
