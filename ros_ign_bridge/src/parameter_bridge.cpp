@@ -39,7 +39,7 @@ enum Direction
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cerr << "Bridge a collection of ROS2 and Ignition Transport topics.\n\n" <<
+  std::cout << "Bridge a collection of ROS2 and Ignition Transport topics.\n\n" <<
     "  parameter_bridge <topic@ROS2_type@Ign_type> .. " <<
     " <topic@ROS2_type@Ign_type>\n\n" <<
     "The first @ symbol delimits the topic name from the message types.\n" <<
