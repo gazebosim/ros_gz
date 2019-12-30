@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <launch>
 
-  <include file="$(find ros_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="-r -v 3 $(find ros_ign_point_cloud)/examples/rgbd_camera.sdf"/>
+  <!--
+    TODO(anyone) Re-enable demo once point cloud package is back.
+    See https://github.com/osrf/ros_ign/issues/40
+
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="-r -v 3 $(find ros_ign_point_cloud)/examples/rgbd_camera.sdf"/>
   </include>
 
   <node
@@ -18,4 +22,5 @@
     name="rviz"
     pkg="rviz"
     args="-d $(find ros_ign_gazebo_demos)/rviz/rgbd_camera.rviz" />
+  -->
 </launch>

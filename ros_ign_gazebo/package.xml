@@ -1,0 +1,13 @@
+<package format="2">
+  <name>ros_ign_gazebo</name>
+  <version>0.1.0</version>
+  <description>Tools for using Ignition Gazebo simulation with ROS.</description>
+  <license>Apache 2.0</license>
+  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>libgflags-dev</depend>
+  <exec_depend>ignition-gazebo3</exec_depend>
+  <depend>roscpp</depend>
+</package>
