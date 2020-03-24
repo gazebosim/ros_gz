@@ -39,6 +39,7 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 
@@ -118,6 +119,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Float & ign_msg,
   std_msgs::Float32 & ros_msg);
+  
+template<>
+void
+Factory<
+  std_msgs::Float64,
+  ignition::msgs::Double
+>::convert_ros_to_ign(
+  const std_msgs::Float64 & ros_msg,
+  ignition::msgs::Double & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Float64,
+  ignition::msgs::Double
+>::convert_ign_to_ros(
+  const ignition::msgs::Double & ign_msg,
+  std_msgs::Float64 & ros_msg);
 
 template<>
 void

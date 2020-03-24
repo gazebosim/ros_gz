@@ -6,6 +6,7 @@
         args="/bool@std_msgs/Bool@ignition.msgs.Boolean
               /empty@std_msgs/Empty@ignition.msgs.Empty
               /float@std_msgs/Float32@ignition.msgs.Float
+              /double@std_msgs/Float64@ignition.msgs.Double
               /header@std_msgs/Header@ignition.msgs.Header
               /string@std_msgs/String@ignition.msgs.StringMsg
               /quaternion@geometry_msgs/Quaternion@ignition.msgs.Quaternion
