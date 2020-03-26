@@ -17,6 +17,7 @@
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Quaternion.h>
@@ -60,6 +61,11 @@ int main(int argc, char ** argv)
   ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
   std_msgs::Float32 float_msg;
   ros_ign_bridge::testing::createTestMsg(float_msg);
+  
+  // std_msgs::Float64.
+  ros::Publisher double_pub = n.advertise<std_msgs::Float64>("double", 1000);
+  std_msgs::Float64 double_msg;
+  ros_ign_bridge::testing::createTestMsg(double_msg);
 
   // std_msgs::Header.
   ros::Publisher header_pub = n.advertise<std_msgs::Header>("header", 1000);
@@ -197,6 +203,7 @@ int main(int argc, char ** argv)
     bool_pub.publish(bool_msg);
     empty_pub.publish(empty_msg);
     float_pub.publish(float_msg);
+    double_pub.publish(double_msg);
     header_pub.publish(header_msg);
     string_pub.publish(string_msg);
     quaternion_pub.publish(quaternion_msg);

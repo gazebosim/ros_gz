@@ -23,6 +23,7 @@
 #include <std_msgs/Bool.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/Float32.h>
+#include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
@@ -135,6 +136,13 @@ namespace testing
   {
     _msg.data = 1.5;
   }
+  
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::Float64 &_msg)
+  {
+    _msg.data = 1.5;
+  }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
@@ -144,6 +152,16 @@ namespace testing
     createTestMsg(expected_msg);
 
     EXPECT_FLOAT_EQ(expected_msg.data, _msg.data);
+  }
+  
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::Float64 &_msg)
+  {
+    std_msgs::Float64 expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_DOUBLE_EQ(expected_msg.data, _msg.data);
   }
 
   /// \brief Create a message used for testing.
