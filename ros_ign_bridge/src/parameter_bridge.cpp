@@ -86,6 +86,9 @@ int main(int argc, char * argv[])
   const size_t queue_size = 10;
   for (auto i = 1; i < argc; ++i) {
     std::string arg = std::string(argv[i]);
+    // Don't parse appended ros args
+    if (arg == "--ros-args")
+      break;
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
