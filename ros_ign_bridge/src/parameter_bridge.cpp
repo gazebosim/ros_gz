@@ -24,6 +24,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <vector>
 
 // Direction of bridge.
 enum Direction
@@ -62,6 +63,24 @@ void usage()
 }
 
 //////////////////////////////////////////////////
+std::vector<std::string> filter_args(int argc, char * argv[])
+{
+  const std::string rosArgsBeginDelim = "--ros-args";
+  const std::string rosArgsEndDelim = "--";
+  // Skip first argument (executable path)
+  std::vector<std::string> args(argv + 1, argv + argc);
+  auto rosArgsPos = std::find(args.begin(), args.end(), rosArgsBeginDelim);
+  auto rosArgsEndPos = std::find(rosArgsPos, args.end(), rosArgsEndDelim);
+  // If -- was found, delete it as well
+  if (rosArgsEndPos != args.end())
+    ++rosArgsEndPos;
+  // Delete args between --ros-args and -- (or --ros-args to end if not found)
+  if (rosArgsPos != args.end())
+    args.erase(rosArgsPos, rosArgsEndPos);
+  return args;
+}
+
+//////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
   if (argc < 2) {
@@ -81,14 +100,11 @@ int main(int argc, char * argv[])
   std::list<ros_ign_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
   std::list<ros_ign_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
 
-  // Parse all arguments.
+  // Filter arguments (i.e. remove ros args) then parse all the remaining ones
   const std::string delim = "@";
   const size_t queue_size = 10;
-  for (auto i = 1; i < argc; ++i) {
-    std::string arg = std::string(argv[i]);
-    // Don't parse appended ros args
-    if (arg == "--ros-args")
-      break;
+  auto filteredArgs = filter_args(argc, argv);
+  for (auto& arg : filteredArgs) {
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
