@@ -72,11 +72,13 @@ std::vector<std::string> filter_args(int argc, char * argv[])
   auto rosArgsPos = std::find(args.begin(), args.end(), rosArgsBeginDelim);
   auto rosArgsEndPos = std::find(rosArgsPos, args.end(), rosArgsEndDelim);
   // If -- was found, delete it as well
-  if (rosArgsEndPos != args.end())
+  if (rosArgsEndPos != args.end()) {
     ++rosArgsEndPos;
+  }
   // Delete args between --ros-args and -- (or --ros-args to end if not found)
-  if (rosArgsPos != args.end())
+  if (rosArgsPos != args.end()) {
     args.erase(rosArgsPos, rosArgsEndPos);
+  }
   return args;
 }
 
@@ -104,7 +106,7 @@ int main(int argc, char * argv[])
   const std::string delim = "@";
   const size_t queue_size = 10;
   auto filteredArgs = filter_args(argc, argv);
-  for (auto& arg : filteredArgs) {
+  for (auto & arg : filteredArgs) {
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
