@@ -20,7 +20,7 @@ find_package(std_msgs REQUIRED)
 
 # Citadel
 find_package(ignition-transport8 QUIET)
-if (ignition-transport8_FOUND)
+if(ignition-transport8_FOUND)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
   find_package(ignition-msgs5 REQUIRED)
