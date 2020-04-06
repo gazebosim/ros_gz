@@ -4,15 +4,15 @@
   <arg name="world" default="empty"/>
   <arg name="ign_args" default=""/>
 
-  <include file="$(find ros_ign_gazebo_demos)/launch/ign_gazebo.launch">
-    <arg name="args" value="$(arg ign_args) $(arg world).sdf"/>
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="-r -v 3 $(arg world).sdf"/>
   </include>
 
   <!-- URDF from param, package model -->
   <param name="robot_description" textfile="$(find ros_ign_gazebo_demos)/models/sphere.urdf" />
 
   <node
-    pkg="ros_ign_gazebo_demos"
+    pkg="ros_ign_gazebo"
     type="create"
     name="$(anon ros_ign_create_sphere)"
     output="screen"
@@ -21,7 +21,7 @@
 
   <!-- SDF from file, Ignition Fuel -->
   <node
-    pkg="ros_ign_gazebo_demos"
+    pkg="ros_ign_gazebo"
     type="create"
     name="$(anon ros_ign_create_box)"
     output="screen"
@@ -30,7 +30,7 @@
 
   <!-- SDF from file, package model -->
   <node
-    pkg="ros_ign_gazebo_demos"
+    pkg="ros_ign_gazebo"
     type="create"
     name="$(anon ros_ign_create_cylinder)"
     output="screen"
