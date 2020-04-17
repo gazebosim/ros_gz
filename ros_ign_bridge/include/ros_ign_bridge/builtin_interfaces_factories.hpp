@@ -42,6 +42,7 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
+#include <tf2_msgs/TFMessage.h>
 
 // include Ignition Transport messages
 #include <ignition/msgs.hh>
@@ -119,7 +120,7 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Float & ign_msg,
   std_msgs::Float32 & ros_msg);
-  
+
 template<>
 void
 Factory<
@@ -319,6 +320,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros_msg);
+
+template<>
+void
+Factory<
+  tf2_msgs::TFMessage,
+  ignition::msgs::Pose_V
+>::convert_ros_to_ign(
+  const tf2_msgs::TFMessage & ros_msg,
+  ignition::msgs::Pose_V & ign_msg);
+
+template<>
+void
+Factory<
+  tf2_msgs::TFMessage,
+  ignition::msgs::Pose_V
+>::convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  tf2_msgs::TFMessage & ros_msg);
 
 template<>
 void

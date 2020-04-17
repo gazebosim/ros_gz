@@ -16,7 +16,8 @@ find_package(catkin REQUIRED COMPONENTS
                roscpp
                rostest
                sensor_msgs
-               std_msgs)
+               std_msgs
+               tf2_msgs)
 
 # Citadel
 find_package(ignition-transport8 QUIET)

@@ -39,6 +39,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <tf2_msgs/TFMessage.h>
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
@@ -124,6 +125,12 @@ int main(int argc, char ** argv)
     n.advertise<geometry_msgs::TransformStamped>("transform_stamped", 1000);
   geometry_msgs::TransformStamped transform_stamped_msg;
   ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+
+  // tf2_msgs::TFMessage.
+  ros::Publisher tf2_message_pub =
+    n.advertise<tf2_msgs::TFMessage>("tf2_message", 1000);
+  tf2_msgs::TFMessage tf2_msg;
+  ros_ign_bridge::testing::createTestMsg(tf2_msg);
 
   // geometry_msgs::Twist.
   ros::Publisher twist_pub =
@@ -214,6 +221,7 @@ int main(int argc, char ** argv)
     pose_stamped_pub.publish(pose_stamped_msg);
     transform_pub.publish(transform_msg);
     transform_stamped_pub.publish(transform_stamped_msg);
+    tf2_message_pub.publish(tf2_msg);
     twist_pub.publish(twist_msg);
     actuators_pub.publish(actuators_msg);
     odometry_pub.publish(odometry_msg);

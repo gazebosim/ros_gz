@@ -62,6 +62,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Float float_msg;
   ros_ign_bridge::testing::createTestMsg(float_msg);
 
+  // ignition::msgs::Double.
+  auto double_pub = node.Advertise<ignition::msgs::Double>("double");
+  ignition::msgs::Double double_msg;
+  ros_ign_bridge::testing::createTestMsg(double_msg);
+
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
@@ -114,6 +119,12 @@ int main(int /*argc*/, char **/*argv*/)
       node.Advertise<ignition::msgs::Pose>("transform_stamped");
   ignition::msgs::Pose transform_stamped_msg;
   ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+
+  // ignition::msgs::Pose_V.
+  auto tf2_message_pub =
+      node.Advertise<ignition::msgs::Pose_V>("tf2_message");
+  ignition::msgs::Pose_V tf2_msg;
+  ros_ign_bridge::testing::createTestMsg(tf2_msg);
 
   // ignition::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
@@ -182,6 +193,7 @@ int main(int /*argc*/, char **/*argv*/)
     bool_pub.Publish(bool_msg);
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);
+    double_pub.Publish(double_msg);
     header_pub.Publish(header_msg);
     string_pub.Publish(string_msg);
     quaternion_pub.Publish(quaternion_msg);
@@ -192,6 +204,7 @@ int main(int /*argc*/, char **/*argv*/)
     pose_stamped_pub.Publish(pose_stamped_msg);
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);
+    tf2_message_pub.Publish(tf2_msg);
     image_pub.Publish(image_msg);
     camera_info_pub.Publish(camera_info_msg);
     fluid_pressure_pub.Publish(fluid_pressure_msg);
