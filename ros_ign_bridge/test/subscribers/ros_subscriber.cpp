@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #include <gtest/gtest.h>
-
 #include <chrono>
 #include <memory>
 #include <string>
@@ -42,6 +41,7 @@
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/header.hpp"
 #include "std_msgs/msg/string.hpp"
+#include "tf2_msgs/msg/tf_message.hpp"
 
 #include "../test_utils.hpp"
 
@@ -235,6 +235,18 @@ TEST(ROSSubscriberTest, TransformStamped)
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, TF2Message)
+{
+  MyTestClass<tf2_msgs::msg::TFMessage> client("tf2_message");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }

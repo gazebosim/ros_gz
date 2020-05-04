@@ -37,6 +37,7 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <tf2_msgs/msg/tf_message.hpp>
 #include "../test_utils.hpp"
 
 //////////////////////////////////////////////////
@@ -123,6 +124,12 @@ int main(int argc, char ** argv)
     node->create_publisher<geometry_msgs::msg::Twist>("twist", 1000);
   geometry_msgs::msg::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
+
+  auto tf2_message_pub =
+    node->create_publisher<tf2_msgs::msg::TFMessage>("tf2_message", 1000);
+  tf2_msgs::msg::TFMessage tf2_msg;
+  ros_ign_bridge::testing::createTestMsg(tf2_msg);
+
 
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
@@ -217,6 +224,8 @@ int main(int argc, char ** argv)
     joint_states_pub->publish(joint_states_msg);
     pointcloud2_pub->publish(pointcloud2_msg);
     battery_state_pub->publish(battery_state_msg);
+    tf2_message_pub->publish(tf2_msg);
+
 
     rclcpp::spin_some(node);
     loop_rate.sleep();

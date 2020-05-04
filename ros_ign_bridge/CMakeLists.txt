@@ -17,6 +17,7 @@ find_package(rclcpp REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2_msgs REQUIRED)
 
 # Dome
 if("$ENV{IGNITION_VERSION}" STREQUAL "dome")
@@ -69,6 +70,7 @@ ament_target_dependencies(${bridge_lib}
   "rosgraph_msgs"
   "sensor_msgs"
   "std_msgs"
+  "tf2_msgs"
 )
 
 install(TARGETS ${bridge_lib}
@@ -100,6 +102,7 @@ foreach(bridge ${bridge_executables})
     "rosgraph_msgs"
     "sensor_msgs"
     "std_msgs"
+    "tf2_msgs"
   )
   install(TARGETS ${bridge}
     DESTINATION lib/${PROJECT_NAME}
@@ -122,6 +125,7 @@ if(BUILD_TESTING)
     rosgraph_msgs
     sensor_msgs
     std_msgs
+    tf2_msgs
   )
   target_link_libraries(test_ros_publisher
     ${GTEST_LIBRARIES}
@@ -138,6 +142,7 @@ if(BUILD_TESTING)
     rosgraph_msgs
     sensor_msgs
     std_msgs
+    tf2_msgs
   )
 
   target_link_libraries(test_ros_subscriber
