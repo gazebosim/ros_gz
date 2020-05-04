@@ -17,6 +17,7 @@
               /pose_stamped@geometry_msgs/PoseStamped@ignition.msgs.Pose
               /transform@geometry_msgs/Transform@ignition.msgs.Pose
               /transform_stamped@geometry_msgs/TransformStamped@ignition.msgs.Pose
+              /tf2_message@tf2_msgs/TFMessage@ignition.msgs.Pose_V
               /twist@geometry_msgs/Twist@ignition.msgs.Twist
               /image@sensor_msgs/Image@ignition.msgs.Image
               /camera_info@sensor_msgs/CameraInfo@ignition.msgs.CameraInfo

@@ -204,6 +204,18 @@ TEST(IgnSubscriberTest, TransformStamped)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, TF2Message)
+{
+  MyTestClass<ignition::msgs::Pose_V> client("tf2_message");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Twist)
 {
   MyTestClass<ignition::msgs::Twist> client("twist");

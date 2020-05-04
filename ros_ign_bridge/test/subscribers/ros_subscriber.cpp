@@ -41,6 +41,7 @@
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <tf2_msgs/TFMessage.h>
 #include <chrono>
 #include "../test_utils.h"
 
@@ -232,6 +233,18 @@ TEST(ROSSubscriberTest, Transform)
 TEST(ROSSubscriberTest, TransformStamped)
 {
   MyTestClass<geometry_msgs::TransformStamped> client("transform_stamped");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, TF2Message)
+{
+  MyTestClass<tf2_msgs::TFMessage> client("tf2_message");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

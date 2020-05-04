@@ -183,6 +183,17 @@ get_factory_builtin_interfaces(
     >("geometry_msgs/TransformStamped", ign_type_name);
   }
   if (
+    (ros_type_name == "tf2_msgs/TFMessage" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose_V")
+  {
+    return std::make_shared<
+      Factory<
+        tf2_msgs::TFMessage,
+        ignition::msgs::Pose_V
+      >
+    >("tf2_msgs/TFMessage", ign_type_name);
+  }
+  if (
     (ros_type_name == "geometry_msgs/Twist" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Twist")
   {
@@ -666,6 +677,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  tf2_msgs::TFMessage,
+  ignition::msgs::Pose_V
+>::convert_ros_to_ign(
+  const tf2_msgs::TFMessage & ros_msg,
+  ignition::msgs::Pose_V & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  tf2_msgs::TFMessage,
+  ignition::msgs::Pose_V
+>::convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  tf2_msgs::TFMessage & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

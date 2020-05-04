@@ -42,6 +42,7 @@
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
+#include <tf2_msgs/TFMessage.h>
 
 // include Ignition builtin messages
 #include <ignition/msgs.hh>
@@ -221,6 +222,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::TransformStamped & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const tf2_msgs::TFMessage & ros_msg,
+  ignition::msgs::Pose_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  tf2_msgs::TFMessage & ros_msg);
 
 template<>
 void
