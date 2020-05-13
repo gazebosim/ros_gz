@@ -8,6 +8,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>libgflags-dev</depend>
-  <exec_depend>ignition-gazebo3</exec_depend>
+  <exec_depend>ignition-gazebo2</exec_depend>
   <depend>roscpp</depend>
 </package>
