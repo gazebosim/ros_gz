@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.0 (2020-05-13)
+------------------
 * Corrected error in launch (`#66 <https://github.com/ignitionrobotics/ros_ign/issues/66>`_)
 * ros_ign_gazebo package, with launch and spawn (`#60 <https://github.com/ignitionrobotics/ros_ign/issues/60>`_)
   * create ros_ign_gazebo package and move ign_gazebo exec and launch files there
