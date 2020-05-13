@@ -2,6 +2,28 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add ignition::msgs::Pose_V to tf2_msgs::TFMessage conversion (`#67 <https://github.com/ignitionrobotics/ros_ign/issues/67>`_)
+  * add ign pose_v to ros tf2_message bridge
+  * add tf2 msgs dependency
+* Add Float64 to ignition Double conversions.  This is needed for suppo… (`#64 <https://github.com/ignitionrobotics/ros_ign/issues/64>`_)
+  * Add Float64 to ignition Double conversions.  This is needed for supporting joint controller (such as for a pan/tilt gimbal)
+  * Update README to reflect that bridge now supports double message conversions.
+* Update Melodic docs (`#61 <https://github.com/ignitionrobotics/ros_ign/issues/61>`_)
+* Patches for Citadel release (`#56 <https://github.com/ignitionrobotics/ros_ign/issues/56>`_)
+  * Patches for Citadel release
+  * Mention Citadel or Blueprint deps
+* Merge pull request `#55 <https://github.com/ignitionrobotics/ros_ign/issues/55>`_ from osrf/fix_repo_url
+  Update repo URL in README install isntructions
+* Update repo URL in README install isntructions
+* [Citadel] Citadel support (`#48 <https://github.com/ignitionrobotics/ros_ign/issues/48>`_)
+  * Citadel support
+  * more citadel deps
+  * addressing feedback, fix typos and better find logic
+  * fix CI
+* Contributors: Jose Luis Rivero, chapulina, iche033, realdealneil
+
 0.8.0 (2019-11-22)
 ------------------
 * Add support for std_msgs/Empty (`#52 <https://github.com/osrf/ros_ign/issues/52>`_)

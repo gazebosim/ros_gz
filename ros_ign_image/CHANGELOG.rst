@@ -2,6 +2,15 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [Citadel] Citadel support (`#48 <https://github.com/ignitionrobotics/ros_ign/issues/48>`_)
+  * Citadel support
+  * more citadel deps
+  * addressing feedback, fix typos and better find logic
+  * fix CI
+* Contributors: chapulina
+
 0.8.0 (2019-11-22)
 ------------------
 * Add replaces for each package (`#46 <https://github.com/osrf/ros_ign/issues/46>`_)

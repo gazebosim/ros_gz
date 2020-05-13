@@ -1,0 +1,12 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package ros_ign_gazebo
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* ros_ign_gazebo package, with launch and spawn (`#60 <https://github.com/ignitionrobotics/ros_ign/issues/60>`_)
+  * create ros_ign_gazebo package and move ign_gazebo exec and launch files there
+  * Port create executable from create branch - ROS interface to spawn entities
+  * use correct gflags key
+  * PR feedback
+* Contributors: chapulina
