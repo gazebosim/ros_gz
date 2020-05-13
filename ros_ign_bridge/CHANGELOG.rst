@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.9.0 (2020-05-13)
 ------------------
 * Add ignition::msgs::Pose_V to tf2_msgs::TFMessage conversion (`#67 <https://github.com/ignitionrobotics/ros_ign/issues/67>`_)
