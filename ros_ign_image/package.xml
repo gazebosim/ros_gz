@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_image</name>
   <version>0.9.1</version>
   <description>Image utilities for Ignition simulation with ROS.</description>
@@ -7,8 +7,12 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
+  <!-- Default to citadel, support blueprint -->
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-transport8</depend>
+
   <depend>image_transport</depend>
   <depend>ros_ign_bridge</depend>
   <depend>roscpp</depend>

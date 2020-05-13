@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_bridge</name>
   <version>0.9.1</version>
   <description>Bridge communication between ROS and Ignition Transport</description>
@@ -8,8 +8,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>geometry_msgs</depend>
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
   <depend>mav_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rosgraph_msgs</depend>
@@ -19,6 +17,12 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf2_msgs</depend>
+
+  <!-- Default to citadel, support blueprint -->
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-transport8</depend>
 
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>

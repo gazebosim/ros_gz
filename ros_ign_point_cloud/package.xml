@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_point_cloud</name>
   <version>0.8.0</version>
   <description>Point cloud utilities for Ignition simulation with ROS.</description>
@@ -7,9 +7,14 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>ignition-gazebo2</depend>
-  <depend>ignition-rendering2</depend>
-  <depend>ignition-sensors2</depend>
+  <!-- Default to citadel, support blueprint -->
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-rendering2</depend>
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-sensors2</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-rendering3</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-sensors3</depend>
+
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
 
