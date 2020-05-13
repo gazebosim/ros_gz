@@ -1,6 +1,6 @@
 <package format="2">
   <name>ros_ign_bridge</name>
-  <version>0.9.0</version>
+  <version>0.9.1</version>
   <description>Bridge communication between ROS and Ignition Transport</description>
   <license>Apache 2.0</license>
   <maintainer email="caguero@openrobotics.org">Carlos Agüero</maintainer>

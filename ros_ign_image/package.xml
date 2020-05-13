@@ -1,6 +1,6 @@
 <package format="2">
   <name>ros_ign_image</name>
-  <version>0.9.0</version>
+  <version>0.9.1</version>
   <description>Image utilities for Ignition simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
