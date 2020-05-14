@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.3 (2020-05-14)
+------------------
 * Revert msgs5 and transport8 dependencies to keep compatibility
 * Contributors: Jose Luis Rivero
 
