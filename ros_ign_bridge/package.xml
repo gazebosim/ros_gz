@@ -8,8 +8,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>geometry_msgs</depend>
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
+  <depend>ignition-msgs4</depend>
+  <depend>ignition-transport7</depend>
   <depend>mav_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rosgraph_msgs</depend>
