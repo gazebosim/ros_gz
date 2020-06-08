@@ -1,0 +1,16 @@
+#!/bin/bash
+# TODO This approach has way too many intermediate steps:
+# * roslaunch runs this bash script
+# * this script calls the ign tool (ruby)
+# * the ruby tool finally calls the C interface
+# This will make things harder to debug. A better approach could
+# call directly into the C interface, but we need to avoid duplication.
+new=""
+for arg in "$@"
+do
+  # Ignore roslaunch's args
+  if [[ $arg != __* ]]; then
+    new="$new $arg"
+  fi
+done
+ign gazebo $new
