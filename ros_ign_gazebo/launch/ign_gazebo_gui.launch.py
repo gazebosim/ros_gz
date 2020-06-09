@@ -23,11 +23,14 @@ def generate_launch_description():
 
     ros_ign_gazebo = get_package_prefix('ros_ign_gazebo')
 
-    cmd = [[ros_ign_gazebo + '/lib/ros_ign_gazebo/ign_gazebo', ' ', '-g', ' ']]
-
     return LaunchDescription([
+        DeclareLaunchArgument(
+            'ignition_gui_args', default_value='',
+            description='Extra arguments to be passed to Ignition'
+        ),
         ExecuteProcess(
-            cmd=cmd,
+            cmd=[[ros_ign_gazebo + '/lib/ros_ign_gazebo/ign_gazebo', ' ', '-g', ' ',
+                  LaunchConfiguration('ignition_gui_args')]],
             output='screen',
             on_exit=Shutdown(),
             shell=True,

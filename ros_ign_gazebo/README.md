@@ -10,7 +10,7 @@ This package contains things that make it convenient to integrate ROS with Ignit
 There's a convenient launch file, try for example:
 
 ```bash
-ros2 launch ros_ign_gazebo ign_gazebo.launch.py ignition_args:="shapes.sdf"
+ros2 launch ros_ign_gazebo ign_gazebo.launch.py ignition_server_args:="shapes.sdf"
 ```
 
 And you can directly call the executable, for example:
