@@ -23,16 +23,11 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
 
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
-
-    # Ignition Gazebo
-    ign_gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo_demos, 'launch', 'ign_gazebo.launch.py'),
-        )
-    )
+    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
     # RViz
     rviz = Node(
@@ -52,13 +47,13 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-          'args',
-          default_value=['-r camera_sensor.sdf'],
-          description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rviz', default_value='true',
-                             description='Open RViz.'),
-        ign_gazebo,
+                              description='Open RViz.'),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            launch_arguments={'ignition_server_args': '-r camera_sensor.sdf'}.items(),
+        ),
         bridge,
         rviz
     ])

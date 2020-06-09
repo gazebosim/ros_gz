@@ -26,30 +26,18 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-# TODO; execution broken
-# Failed to create a bridge for topic [/air_pressure] with ROS2 type
-# [sensor_msgs/FluidPressure] and Ignition Transport type
-# [ignition.msgs.FluidPressure]
 
 def generate_launch_description():
 
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
+    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
-    # Ignition Gazebo
-    ign_gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo_demos, 'launch', 'ign_gazebo.launch.py'),
-        )
+    bridge = Node(
+        package='ros_ign_bridge',
+        node_executable='parameter_bridge',
+        arguments=['/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure'],
+        output='screen'
     )
-
-    # Bridge
-    # TODO: Needs sensor_msgs/msg/FluidPressure to be supported on bridge
-    # bridge = Node(
-    #     package='ros_ign_bridge',
-    #     node_executable='parameter_bridge',
-    #     arguments=["/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure"],
-    #     output='screen'
-    # )
 
     # RQt
     rqt = Node(
@@ -58,15 +46,14 @@ def generate_launch_description():
         arguments=['-t'],
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
-
     return LaunchDescription([
-        DeclareLaunchArgument(
-          'args',
-          default_value=['sensors.sdf'],
-          description='Ignition Gazebo arguments'),
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            launch_arguments={'ignition_server_args': '-r sensors.sdf'}.items(),
+        ),
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
-        ign_gazebo,
-    #    bridge,
+        bridge,
         rqt
     ])
