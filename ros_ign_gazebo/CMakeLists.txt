@@ -31,11 +31,6 @@ target_link_libraries(create
   gflags
 )
 
-install(PROGRAMS
-  scripts/ign_gazebo
-  DESTINATION lib/${PROJECT_NAME}
-)
-
 install(DIRECTORY
   launch
   DESTINATION share/${PROJECT_NAME}
