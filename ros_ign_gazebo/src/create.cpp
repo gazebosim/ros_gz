@@ -51,11 +51,38 @@ int main(int _argc, char ** _argv)
   auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
 
   // World
-  if (FLAGS_world.empty()) {
-    RCLCPP_INFO(ros2_node->get_logger(), "World not set.");
-    return -1;
+  std::string world_name = FLAGS_world;
+  if (world_name.empty()) {
+
+    // If caller doesn't provide a world name, get list of worlds from ign-gazebo server
+    ignition::transport::Node node;
+
+    bool executed{false};
+    bool result{false};
+    unsigned int timeout{5000};
+    std::string service{"/gazebo/worlds"};
+    ignition::msgs::StringMsg_V worlds_msg;
+
+    // This loop is here to allow the server time to download resources.
+    while (!executed) {
+      RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
+      executed = node.Request(service, timeout, worlds_msg, result);
+    }
+
+    if (!executed) {
+      RCLCPP_INFO(ros2_node->get_logger(),
+          "Timed out when getting world names.");
+      return -1;
+    }
+
+    if (!result || worlds_msg.data().empty()) {
+      RCLCPP_INFO(ros2_node->get_logger(), "Failed to get world names.");
+      return -1;
+    }
+
+    world_name = worlds_msg.data(0);
   }
-  std::string service{"/world/" + FLAGS_world + "/create"};
+  std::string service{"/world/" + world_name + "/create"};
 
   // Request message
   ignition::msgs::EntityFactory req;
