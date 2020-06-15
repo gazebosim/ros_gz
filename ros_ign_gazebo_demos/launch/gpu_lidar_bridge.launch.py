@@ -29,6 +29,14 @@ def generate_launch_description():
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ignition_server_args': '-r gpu_lidar_sensor.sdf'
+        }.items(),
+    )
+
     # RViz
     rviz = Node(
        package='rviz2',
@@ -47,13 +55,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-            launch_arguments={
-                'ignition_server_args': '-r gpu_lidar_sensor.sdf'
-            }.items(),
-        ),
+        ign_gazebo,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         bridge,

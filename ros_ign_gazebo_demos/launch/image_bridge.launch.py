@@ -29,10 +29,18 @@ def generate_launch_description():
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ignition_server_args': '-r sensors_demo.sdf'
+        }.items(),
+    )
+
     # RQt
     rqt = Node(
         package='rqt_image_view',
-        node_executable='rqt_image_view',
+        executable='rqt_image_view',
         arguments=['/camera'],
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
@@ -40,19 +48,13 @@ def generate_launch_description():
     # Bridge
     bridge = Node(
         package='ros_ign_image',
-        node_executable='image_bridge',
+        executable='image_bridge',
         arguments=['camera', 'depth_camera', 'rgbd_camera/image', 'rgbd_camera/depth_image'],
         output='screen'
     )
 
     return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-            launch_arguments={
-                'ignition_server_args': '-r sensors_demo.sdf'
-            }.items(),
-        ),
+        ign_gazebo,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         bridge,

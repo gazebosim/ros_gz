@@ -28,6 +28,14 @@ def generate_launch_description():
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ignition_server_args': '-r sensors.sdf'
+        }.items(),
+    )
+
     # RViz
     # FIXME: Add once there's an IMU display for RViz2
     # rviz = Node(
@@ -46,13 +54,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-            launch_arguments={
-                'ignition_server_args': '-r sensors.sdf'
-            }.items(),
-        ),
+        ign_gazebo,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         bridge,

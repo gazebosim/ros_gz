@@ -37,6 +37,14 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ignition_server_args': '-r -z 1000000 linear_battery_demo.sdf'
+        }.items(),
+    )
+
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
@@ -47,13 +55,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        IncludeLaunchDescription(
-            PythonLaunchDescriptionSource(
-                os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-            launch_arguments={
-                'ignition_server_args': '-r -z 1000000 linear_battery_demo.sdf'
-            }.items(),
-        ),
+        ign_gazebo,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         bridge,
