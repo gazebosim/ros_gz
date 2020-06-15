@@ -39,11 +39,11 @@ add_executable(create src/create.cpp)
 ament_target_dependencies(create
   rclcpp
   ignition-math6
-  ignition-msgs5
-  ignition-transport8
 )
 target_link_libraries(create
   gflags
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
 install(DIRECTORY
