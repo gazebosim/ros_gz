@@ -32,7 +32,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
         launch_arguments={
-            'ignition_server_args': '-r diff_drive.sdf'
+            'ign_args': '-r diff_drive.sdf'
         }.items(),
     )
 

@@ -32,7 +32,7 @@ def generate_launch_description():
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-        launch_arguments={'ignition_server_args': '-r camera_sensor.sdf'}.items(),
+        launch_arguments={'ign_args': '-r camera_sensor.sdf'}.items(),
     )
 
     # RViz
