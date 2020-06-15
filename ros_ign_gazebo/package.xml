@@ -15,8 +15,8 @@
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
-  <depend>ignition-msgs</depend>
-  <depend>ignition-transport</depend>
+  <depend>ignition-msgs5</depend>
+  <depend>ignition-transport8</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
