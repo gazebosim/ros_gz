@@ -53,7 +53,6 @@ int main(int _argc, char ** _argv)
   // World
   std::string world_name = FLAGS_world;
   if (world_name.empty()) {
-
     // If caller doesn't provide a world name, get list of worlds from ign-gazebo server
     ignition::transport::Node node;
 
@@ -71,7 +70,7 @@ int main(int _argc, char ** _argv)
 
     if (!executed) {
       RCLCPP_INFO(ros2_node->get_logger(),
-          "Timed out when getting world names.");
+        "Timed out when getting world names.");
       return -1;
     }
 

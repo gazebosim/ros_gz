@@ -21,6 +21,7 @@ from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.substitutions import LaunchConfiguration
 
+
 def generate_launch_description():
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH': environ['LD_LIBRARY_PATH']}
 
