@@ -12,6 +12,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
   <depend>ignition-msgs5</depend>
