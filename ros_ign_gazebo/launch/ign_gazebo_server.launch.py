@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ament_index_python.packages import get_package_prefix
-
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
@@ -23,15 +21,13 @@ from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
 
-    ros_ign_gazebo = get_package_prefix('ros_ign_gazebo')
-
     return LaunchDescription([
         DeclareLaunchArgument(
             'ignition_server_args', default_value='',
             description='Extra arguments to be passed to Ignition'
         ),
         ExecuteProcess(
-            cmd=[[ros_ign_gazebo + '/lib/ros_ign_gazebo/ign_gazebo', ' ', '-s', ' ',
+            cmd=[['ign', ' ', 'gazebo', ' ', '-s', ' ',
                   LaunchConfiguration('ignition_server_args')]],
             output='screen',
             on_exit=Shutdown(),
