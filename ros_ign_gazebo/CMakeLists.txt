@@ -12,9 +12,24 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(ignition-math6 REQUIRED)
-find_package(ignition-msgs5 REQUIRED)
-find_package(ignition-transport8 REQUIRED)
 find_package(rclcpp REQUIRED)
+
+# Citadel
+find_package(ignition-transport8 QUIET)
+if(ignition-transport8_FOUND)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
+
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+# Blueprint
+else()
+  find_package(ignition-transport7 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
+
+  find_package(ignition-msgs4 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+endif()
 
 ign_find_package(gflags
     REQUIRED
@@ -24,11 +39,11 @@ add_executable(create src/create.cpp)
 ament_target_dependencies(create
   rclcpp
   ignition-math6
-  ignition-msgs5
-  ignition-transport8
 )
 target_link_libraries(create
   gflags
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
 install(DIRECTORY
