@@ -43,8 +43,8 @@ source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $COLCON_WS_SRC
 ln -s /code $COLCON_WS_SRC
 cd $COLCON_WS
-colcon build
+colcon build --event-handlers console_direct+
 
 # Tests.
-colcon test
+colcon test --event-handlers console_direct+
 colcon test-result
