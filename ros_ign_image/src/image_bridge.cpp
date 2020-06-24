@@ -87,7 +87,7 @@ int main(int argc, char * argv[])
   auto args = rclcpp::remove_ros_arguments(argc, argv);
 
   // Create publishers and subscribers
-  for (auto topic: args) {
+  for (auto topic : args) {
     handlers.push_back(std::make_shared<Handler>(topic, it_node, ign_node));
   }
 
