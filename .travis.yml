@@ -2,8 +2,10 @@ sudo: required
 
 env:
   matrix:
-    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="blueprint"
-    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="citadel"
+    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="blueprint" ROS_DISTRO="dashing"
+    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="blueprint" ROS_DISTRO="eloquent"
+    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="citadel" ROS_DISTRO="dashing"
+    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="citadel" ROS_DISTRO="eloquent"
 
 services:
   - docker

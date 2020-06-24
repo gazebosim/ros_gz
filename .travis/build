@@ -25,7 +25,7 @@ apt-get install -qq -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro dashing \
+rosdep install --from-paths ./ -i -y \
   --skip-keys=ignition-gazebo2 \
   --skip-keys=ignition-gazebo3 \
   --skip-keys=ignition-math6 \
@@ -39,7 +39,7 @@ rosdep install --from-paths ./ -i -y --rosdistro dashing \
   --skip-keys=ignition-transport8
 
 # Build.
-source /opt/ros/dashing/setup.bash
+source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $COLCON_WS_SRC
 ln -s /code $COLCON_WS_SRC
 cd $COLCON_WS
@@ -47,3 +47,4 @@ colcon build
 
 # Tests.
 colcon test
+colcon test-result
