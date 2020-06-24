@@ -10,6 +10,7 @@
   <depend>ignition-gazebo3</depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
+  <exec_depend>ros_ign_gazebo</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
   <!-- See https://github.com/osrf/ros_ign/issues/40 -->
   <!--exec_depend>ros_ign_point_cloud</exec_depend-->
