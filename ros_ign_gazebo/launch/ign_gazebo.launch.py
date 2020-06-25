@@ -1,4 +1,4 @@
-# Copyright 2019 Open Source Robotics Foundation, Inc.
+# Copyright 2020 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -21,19 +21,19 @@ from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.substitutions import LaunchConfiguration
 
+
 def generate_launch_description():
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH': environ['LD_LIBRARY_PATH']}
 
     return LaunchDescription([
-        DeclareLaunchArgument('args', default_value='',
+        DeclareLaunchArgument('ign_args', default_value='',
                               description='Arguments to be passed to Ignition Gazebo'),
         ExecuteProcess(
             cmd=['ign gazebo',
-                 LaunchConfiguration('args'),
+                 LaunchConfiguration('ign_args'),
                  ],
             output='screen',
             additional_env=env,
             shell=True
         )
     ])
-

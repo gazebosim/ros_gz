@@ -3,9 +3,11 @@
 * ROS 1 branches:
     * [melodic](https://github.com/osrf/ros_ign/tree/melodic)
         * Blueprint and Citadel
+        * Melodic
 * ROS 2 branches:
     * [dashing](https://github.com/osrf/ros_ign/tree/dashing)
         * Blueprint and Citadel
+        * Dashing and Eloquent
 
 # Integration between ROS and Ignition
 
