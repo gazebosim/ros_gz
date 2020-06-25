@@ -6,13 +6,13 @@ This package contains demos showing how to use Ignition Gazebo with ROS.
 
 There's a convenient launch file, try for example:
 
-    ros2 launch ros_ign_gazebo_demos ign_gazebo.launch.py args:="shapes.sdf"
+    ros2 launch ros_ign_gazebo ign_gazebo.launch.py ign_args:="shapes.sdf"
 
 ![](images/shapes_demo.png)
 
 ## Air pressure
 
-*TODO*: Pending bridge for `sensor_msgs/msg/FluidPressure`.
+*TODO*: Pending bridge for `sensor_msgs/msg/FluidPressure`, [issue](https://github.com/osrf/ros_ign/issues/78).
 
 Publishes fluid pressure readings.
 
@@ -42,7 +42,7 @@ Send commands to a differential drive vehicle and listen to its odometry.
 
     ros2 launch ros_ign_gazebo_demos diff_drive.launch.py
 
-Then send a command
+Then unpause and send a command
 
     ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
@@ -93,6 +93,8 @@ Publishes IMU readings.
     ros2 launch ros_ign_gazebo_demos imu.launch.py
 
 ![](images/imu_demo.png)
+
+*TODO*: IMU display missing for RViz2
 
 ## Magnetometer
 

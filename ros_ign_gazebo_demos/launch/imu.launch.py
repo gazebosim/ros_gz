@@ -26,11 +26,12 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
+    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
     # Ignition Gazebo
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo_demos, 'launch', 'ign_gazebo.launch.py'),
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
         )
     )
 
@@ -53,7 +54,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument(
-          'args',
+          'ign_args',
           default_value=['sensors.sdf'],
           description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rviz', default_value='true',
