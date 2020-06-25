@@ -64,6 +64,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument(
           'ign_args',
+          default_value=[],
           #default_value=['depth_camera.sdf'],
           description='Ignition Gazebo arguments'),
         DeclareLaunchArgument('rviz', default_value='true',
