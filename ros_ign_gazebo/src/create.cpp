@@ -69,7 +69,8 @@ int main(int _argc, char ** _argv)
     }
 
     if (!executed) {
-      RCLCPP_INFO(ros2_node->get_logger(),
+      RCLCPP_INFO(
+        ros2_node->get_logger(),
         "Timed out when getting world names.");
       return -1;
     }

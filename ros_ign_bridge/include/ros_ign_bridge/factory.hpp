@@ -66,11 +66,11 @@ public:
     size_t queue_size,
     ignition::transport::Node::Publisher & ign_pub)
   {
-    std::function<void(std::shared_ptr<const ROS_T>)> fn = std::bind(&Factory<ROS_T,
-        IGN_T>::ros_callback,
-        std::placeholders::_1, ign_pub,
-        ros_type_name_, ign_type_name_,
-        ros_node);
+    std::function<void(std::shared_ptr<const ROS_T>)> fn = std::bind(
+      &Factory<ROS_T, IGN_T>::ros_callback,
+      std::placeholders::_1, ign_pub,
+      ros_type_name_, ign_type_name_,
+      ros_node);
     std::shared_ptr<rclcpp::Subscription<ROS_T>> subscription =
       ros_node->create_subscription<ROS_T>(
       topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)), fn);
@@ -110,7 +110,8 @@ protected:
     IGN_T ign_msg;
     convert_ros_to_ign(*ros_msg, ign_msg);
     ign_pub.Publish(ign_msg);
-    RCLCPP_INFO_ONCE(ros_node->get_logger(),
+    RCLCPP_INFO_ONCE(
+      ros_node->get_logger(),
       "Passing message from ROS %s to Ignition %s (showing msg only once per type",
       ros_type_name.c_str(), ign_type_name.c_str());
   }
