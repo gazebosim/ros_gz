@@ -15,30 +15,34 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+
 from launch_ros.actions import Node
+
 
 def generate_launch_description():
 
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
-    # Ignition Gazebo
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
-        )
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ign_args': '-r gpu_lidar_sensor.sdf'
+        }.items(),
     )
 
     # RViz
     rviz = Node(
        package='rviz2',
-       node_executable='rviz2',
+       executable='rviz2',
        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
        condition=IfCondition(LaunchConfiguration('rviz'))
     )
@@ -46,21 +50,16 @@ def generate_launch_description():
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
-        node_executable='parameter_bridge',
+        executable='parameter_bridge',
         arguments=['lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
                    '/lidar/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked'],
         output='screen'
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-          'ign_args',
-          default_value=['gpu_lidar_sensor.sdf'],
-          description='Ignition Gazebo arguments'),
+        ign_gazebo,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
-        ign_gazebo,
         bridge,
         rviz,
     ])
-

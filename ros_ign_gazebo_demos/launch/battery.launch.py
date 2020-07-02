@@ -15,52 +15,52 @@
 import os
 
 from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+
 from launch_ros.actions import Node
+
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
-
-    # Ignition Gazebo
-    ign_gazebo = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
-        )
-    )
 
     # RQt
     rqt = Node(
         package='rqt_plot',
-        node_executable='rqt_plot',
+        executable='rqt_plot',
         # FIXME: Why isn't the topic being populated on the UI? RQt issue?
-        arguments=['--force-discover', '/model/vehicle_blue/battery/linear_battery/state/percentage'],
+        arguments=['--force-discover',
+                   '/model/vehicle_blue/battery/linear_battery/state/percentage'],
         condition=IfCondition(LaunchConfiguration('rqt'))
+    )
+
+    ign_gazebo = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+        launch_arguments={
+            'ign_args': '-r -z 1000000 linear_battery_demo.sdf'
+        }.items(),
     )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
-        node_executable='parameter_bridge',
+        executable='parameter_bridge',
         arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
                    '/model/vehicle_blue/battery/linear_battery/state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState'],
         output='screen'
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-          'ign_args',
-          default_value=['-r -z 1000000 linear_battery_demo.sdf'],
-          description='Ignition Gazebo arguments'),
+        ign_gazebo,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
-        ign_gazebo,
         bridge,
         rqt
     ])
