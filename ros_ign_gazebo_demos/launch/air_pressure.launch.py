@@ -27,6 +27,10 @@ from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 
+# TODO; execution broken
+# Failed to create a bridge for topic [/air_pressure] with ROS2 type
+# [sensor_msgs/FluidPressure] and Ignition Transport type
+# [ignition.msgs.FluidPressure]
 
 def generate_launch_description():
 

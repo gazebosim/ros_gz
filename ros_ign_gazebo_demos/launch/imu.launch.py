@@ -38,6 +38,7 @@ def generate_launch_description():
 
     # RViz
     # FIXME: Add once there's an IMU display for RViz2
+    # pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     # rviz = Node(
     #     package='rviz2',
     #     executable='rviz2',

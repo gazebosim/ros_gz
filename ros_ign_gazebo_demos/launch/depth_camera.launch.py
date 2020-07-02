@@ -69,7 +69,7 @@ def generate_launch_description():
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         DeclareLaunchArgument('rqt', default_value='true',
-                              description='Open RViz.'),
+                              description='Open RQt.'),
         bridge,
         rviz,
         rqt
