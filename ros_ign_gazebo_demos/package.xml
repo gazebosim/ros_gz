@@ -7,7 +7,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>ignition-gazebo3</depend>
+  <depend>libignition-gazebo3-dev</depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>

@@ -13,10 +13,10 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <depend>libgflags-dev</depend>
+  <depend>libignition-math6-dev</depend>
+  <depend>libignition-msgs5-dev</depend>
+  <depend>libignition-transport8-dev</depend>
   <depend>rclcpp</depend>
-  <depend>ignition-math6</depend>
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
