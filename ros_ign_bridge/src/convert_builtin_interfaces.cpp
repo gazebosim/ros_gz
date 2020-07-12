@@ -105,6 +105,24 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::msg::Int32 & ros_msg,
+  ignition::msgs::Int32 & ign_msg)
+{
+  ign_msg.set_data(ros_msg.data);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Int32 & ign_msg,
+  std_msgs::msg::Int32 & ros_msg)
+{
+  ros_msg.data = ign_msg.data();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::msg::Header & ros_msg,
   ignition::msgs::Header & ign_msg)
 {
