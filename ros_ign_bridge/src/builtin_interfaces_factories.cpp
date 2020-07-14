@@ -58,16 +58,6 @@ get_factory_builtin_interfaces(
       >
     >("std_msgs/msg/Float32", ign_type_name);
   }
-  if ((ros_type_name == "std_msgs/msg/Int32" || ros_type_name.empty()) &&
-    ign_type_name == "ignition.msgs.Int32")
-  {
-    return std::make_shared<
-      Factory<
-        std_msgs::msg::Int32,
-        ignition::msgs::Int32
-      >
-    >("std_msgs/msg/Int32", ign_type_name);
-  }
   if ((ros_type_name == "std_msgs/msg/Header" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Header")
   {
@@ -77,6 +67,16 @@ get_factory_builtin_interfaces(
         ignition::msgs::Header
       >
     >("std_msgs/msg/Header", ign_type_name);
+  }
+  if ((ros_type_name == "std_msgs/msg/Int32" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Int32")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::msg::Int32,
+        ignition::msgs::Int32
+      >
+    >("std_msgs/msg/Int32", ign_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/String" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.StringMsg")

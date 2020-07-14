@@ -105,6 +105,19 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::msg::Header & ros_msg,
+  ignition::msgs::Header & ign_msg)
+{
+  ign_msg.mutable_stamp()->set_sec(ros_msg.stamp.sec);
+  ign_msg.mutable_stamp()->set_nsec(ros_msg.stamp.nanosec);
+  auto newPair = ign_msg.add_data();
+  newPair->set_key("frame_id");
+  newPair->add_value(ros_msg.frame_id);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::msg::Int32 & ros_msg,
   ignition::msgs::Int32 & ign_msg)
 {
@@ -118,19 +131,6 @@ convert_ign_to_ros(
   std_msgs::msg::Int32 & ros_msg)
 {
   ros_msg.data = ign_msg.data();
-}
-
-template<>
-void
-convert_ros_to_ign(
-  const std_msgs::msg::Header & ros_msg,
-  ignition::msgs::Header & ign_msg)
-{
-  ign_msg.mutable_stamp()->set_sec(ros_msg.stamp.sec);
-  ign_msg.mutable_stamp()->set_nsec(ros_msg.stamp.nanosec);
-  auto newPair = ign_msg.add_data();
-  newPair->set_key("frame_id");
-  newPair->add_value(ros_msg.frame_id);
 }
 
 template<>

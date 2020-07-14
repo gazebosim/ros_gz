@@ -37,8 +37,8 @@
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/string.hpp>
 #include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/string.hpp>
 
 // include Ignition Transport messages
 #include <ignition/msgs.hh>
@@ -121,24 +121,6 @@ Factory<
 template<>
 void
 Factory<
-  std_msgs::msg::Int32,
-  ignition::msgs::Int32
->::convert_ros_to_ign(
-  const std_msgs::msg::Int32 & ros_msg,
-  ignition::msgs::Int32 & ign_msg);
-
-template<>
-void
-Factory<
-  std_msgs::msg::Int32,
-  ignition::msgs::Int32
->::convert_ign_to_ros(
-  const ignition::msgs::Int32 & ign_msg,
-  std_msgs::msg::Int32 & ros_msg);
-
-template<>
-void
-Factory<
   std_msgs::msg::Header,
   ignition::msgs::Header
 >::convert_ros_to_ign(
@@ -153,6 +135,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Header & ign_msg,
   std_msgs::msg::Header & ros_msg);
+
+template<>
+void
+Factory<
+  std_msgs::msg::Int32,
+  ignition::msgs::Int32
+>::convert_ros_to_ign(
+  const std_msgs::msg::Int32 & ros_msg,
+  ignition::msgs::Int32 & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::msg::Int32,
+  ignition::msgs::Int32
+>::convert_ign_to_ros(
+  const ignition::msgs::Int32 & ign_msg,
+  std_msgs::msg::Int32 & ros_msg);
 
 template<>
 void
