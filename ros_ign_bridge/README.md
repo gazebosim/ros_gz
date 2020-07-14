@@ -12,6 +12,7 @@ service calls. Its support is limited to only the following message types:
 | std_msgs/Empty                 | ignition::msgs::Empty            |
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Header                | ignition::msgs::Header           |
+| std_msgs/Int32                 | ignition::msgs::Int32            |
 | std_msgs/String                | ignition::msgs::StringMsg        |
 | geometry_msgs/Quaternion       | ignition::msgs::Quaternion       |
 | geometry_msgs/Vector3          | ignition::msgs::Vector3d         |
