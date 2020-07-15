@@ -39,6 +39,7 @@
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/string.hpp>
 
 // include Ignition builtin messages
@@ -97,6 +98,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Header & ign_msg,
   std_msgs::msg::Header & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::msg::Int32 & ros_msg,
+  ignition::msgs::Int32 & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Int32 & ign_msg,
+  std_msgs::msg::Int32 & ros_msg);
 
 template<>
 void
