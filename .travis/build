@@ -6,18 +6,17 @@ export CATKIN_WS=~/catkin_ws
 export CATKIN_WS_SRC=${CATKIN_WS}/src
 export DEBIAN_FRONTEND=noninteractive
 
-if [ "$IGN_COLLECTION" == "blueprint" ]; then
+if [ "$IGNITION_VERSION" == "blueprint" ]; then
   IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
-elif [ "$IGN_COLLECTION" == "citadel" ]; then
+elif [ "$IGNITION_VERSION" == "citadel" ]; then
   IGN_DEPS="libignition-msgs5-dev libignition-transport8-dev libignition-gazebo3-dev"
 else
   exit 1
 fi
 
 # Dependencies.
-echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
-echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
-echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
+echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -sc) main" > /etc/apt/sources.list.d/gazebo-stable.list
+echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list
 apt-get update -qq
 apt-get install -qq -y $IGN_DEPS \
                        python-catkin-tools \
@@ -25,7 +24,7 @@ apt-get install -qq -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro melodic \
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO \
   --skip-keys=ignition-gazebo2 \
   --skip-keys=ignition-gazebo3 \
   --skip-keys=ignition-msgs4 \
@@ -38,7 +37,7 @@ rosdep install --from-paths ./ -i -y --rosdistro melodic \
   --skip-keys=ignition-transport8
 
 # Build.
-source /opt/ros/melodic/setup.bash
+source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $CATKIN_WS_SRC
 ln -s /code $CATKIN_WS_SRC
 cd $CATKIN_WS

@@ -4,6 +4,9 @@
     * [melodic](https://github.com/osrf/ros_ign/tree/melodic)
         * Blueprint and Citadel
         * Melodic
+    * [noetic](https://github.com/osrf/ros_ign/tree/noetic)
+        * Citadel
+        * Noetic
 * ROS 2 branches:
     * [dashing](https://github.com/osrf/ros_ign/tree/dashing)
         * Blueprint and Citadel
