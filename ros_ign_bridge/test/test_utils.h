@@ -34,7 +34,7 @@
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Vector3.h>
-#include <mav_msgs/Actuators.h>
+// #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/BatteryState.h>
@@ -137,7 +137,7 @@ namespace testing
   {
     _msg.data = 1.5;
   }
-  
+
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
   void createTestMsg(std_msgs::Float64 &_msg)
@@ -154,7 +154,7 @@ namespace testing
 
     EXPECT_FLOAT_EQ(expected_msg.data, _msg.data);
   }
-  
+
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const std_msgs::Float64 &_msg)
@@ -395,38 +395,38 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(mav_msgs::Actuators &_msg)
-  {
-    createTestMsg(_msg.header);
-    for (auto i = 0u; i < 5; ++i)
-    {
-      _msg.angles.push_back(i);
-      _msg.angular_velocities.push_back(i);
-      _msg.normalized.push_back(i);
-    }
-  }
+//  void createTestMsg(mav_msgs::Actuators &_msg)
+//  {
+//    createTestMsg(_msg.header);
+//    for (auto i = 0u; i < 5; ++i)
+//    {
+//      _msg.angles.push_back(i);
+//      _msg.angular_velocities.push_back(i);
+//      _msg.normalized.push_back(i);
+//    }
+//  }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const mav_msgs::Actuators &_msg)
-  {
-    mav_msgs::Actuators expected_msg;
-    createTestMsg(expected_msg);
-
-    compareTestMsg(_msg.header);
-
-    ASSERT_EQ(expected_msg.angles.size(), _msg.angles.size());
-    ASSERT_EQ(expected_msg.angular_velocities.size(),
-              _msg.angular_velocities.size());
-    ASSERT_EQ(expected_msg.normalized.size(), _msg.normalized.size());
-
-    for (auto i = 0u; i < _msg.angles.size(); ++i)
-    {
-      EXPECT_EQ(expected_msg.angles[i], _msg.angles[i]);
-      EXPECT_EQ(expected_msg.angular_velocities[i], _msg.angular_velocities[i]);
-      EXPECT_EQ(expected_msg.normalized[i], _msg.normalized[i]);
-    }
-  }
+//  void compareTestMsg(const mav_msgs::Actuators &_msg)
+//  {
+//    mav_msgs::Actuators expected_msg;
+//    createTestMsg(expected_msg);
+//
+//    compareTestMsg(_msg.header);
+//
+//    ASSERT_EQ(expected_msg.angles.size(), _msg.angles.size());
+//    ASSERT_EQ(expected_msg.angular_velocities.size(),
+//              _msg.angular_velocities.size());
+//    ASSERT_EQ(expected_msg.normalized.size(), _msg.normalized.size());
+//
+//    for (auto i = 0u; i < _msg.angles.size(); ++i)
+//    {
+//      EXPECT_EQ(expected_msg.angles[i], _msg.angles[i]);
+//      EXPECT_EQ(expected_msg.angular_velocities[i], _msg.angular_velocities[i]);
+//      EXPECT_EQ(expected_msg.normalized[i], _msg.normalized[i]);
+//    }
+//  }
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.

@@ -24,7 +24,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <geometry_msgs/Vector3.h>
-#include <mav_msgs/Actuators.h>
+// #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <rosgraph_msgs/Clock.h>
 #include <sensor_msgs/BatteryState.h>
@@ -352,23 +352,23 @@ Factory<
   geometry_msgs::Twist & ros_msg);
 
 // mav_msgs
-template<>
-void
-Factory<
-  mav_msgs::Actuators,
-  ignition::msgs::Actuators
->::convert_ros_to_ign(
-  const mav_msgs::Actuators & ros_msg,
-  ignition::msgs::Actuators & ign_msg);
-
-template<>
-void
-Factory<
-  mav_msgs::Actuators,
-  ignition::msgs::Actuators
->::convert_ign_to_ros(
-  const ignition::msgs::Actuators & ign_msg,
-  mav_msgs::Actuators & ros_msg);
+// template<>
+// void
+// Factory<
+//   mav_msgs::Actuators,
+//   ignition::msgs::Actuators
+// >::convert_ros_to_ign(
+//   const mav_msgs::Actuators & ros_msg,
+//   ignition::msgs::Actuators & ign_msg);
+//
+// template<>
+// void
+// Factory<
+//   mav_msgs::Actuators,
+//   ignition::msgs::Actuators
+// >::convert_ign_to_ros(
+//   const ignition::msgs::Actuators & ign_msg,
+//   mav_msgs::Actuators & ros_msg);
 
 // nav_msgs
 template<>

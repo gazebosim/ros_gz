@@ -7,11 +7,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <depend>ignition-gazebo3</depend>
   <depend>libgflags-dev</depend>
-
-  <!-- Default to citadel, support blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
-
   <depend>roscpp</depend>
 </package>
