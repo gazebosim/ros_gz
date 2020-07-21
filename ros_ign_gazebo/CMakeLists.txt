@@ -8,21 +8,8 @@ find_package(catkin
     roscpp
 )
 
-# Citadel
-find_package(ignition-gazebo3 QUIET)
-if (ignition-gazebo3_FOUND)
-  set(IGN_GAZEBO_VER ${ignition-gazebo3_VERSION_MAJOR})
-
-  find_package(ignition-transport8 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
-
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Citadel")
-
-# Blueprint
-else()
+# Default to Citadel, support Blueprint
+if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-gazebo2 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
 
@@ -33,6 +20,17 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Blueprint")
+else()
+  find_package(ignition-gazebo3 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo3_VERSION_MAJOR})
+
+  find_package(ignition-transport8 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
+
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Citadel")
 endif()
 
 ign_find_package(gflags

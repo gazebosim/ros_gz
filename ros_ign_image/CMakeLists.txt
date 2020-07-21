@@ -16,21 +16,23 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs)
 
-# Citadel
-find_package(ignition-transport8 QUIET)
-if (ignition-transport8_FOUND)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
-
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
-
-# Blueprint
-else()
+# Default to Citadel, support Blueprint
+if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-transport7 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
 
   find_package(ignition-msgs4 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Blueprint")
+else()
+  find_package(ignition-transport8 QUIET)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
+
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Citadel")
 endif()
 
 catkin_package()
