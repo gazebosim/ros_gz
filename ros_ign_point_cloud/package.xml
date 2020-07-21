@@ -7,14 +7,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- Default to citadel, support blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-rendering2</depend>
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-sensors2</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-rendering3</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-sensors3</depend>
-
+  <depend>ignition-gazebo3</depend>
+  <depend>ignition-rendering3</depend>
+  <depend>ignition-sensors3</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
 

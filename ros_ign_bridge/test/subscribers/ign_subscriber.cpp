@@ -300,16 +300,16 @@ TEST(IgnSubscriberTest, Magnetometer)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Actuators)
-{
-  MyTestClass<ignition::msgs::Actuators> client("actuators");
-
-  using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVar(
-    client.callbackExecuted, 10ms, 200);
-
-  EXPECT_TRUE(client.callbackExecuted);
-}
+//TEST(IgnSubscriberTest, Actuators)
+//{
+//  MyTestClass<ignition::msgs::Actuators> client("actuators");
+//
+//  using namespace std::chrono_literals;
+//  ros_ign_bridge::testing::waitUntilBoolVar(
+//    client.callbackExecuted, 10ms, 200);
+//
+//  EXPECT_TRUE(client.callbackExecuted);
+//}
 
 /////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Odometry)

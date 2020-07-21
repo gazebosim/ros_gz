@@ -2,49 +2,28 @@
 set -ev
 
 # Configuration.
-export CATKIN_WS=~/catkin_ws
-export CATKIN_WS_SRC=${CATKIN_WS}/src
+export COLCON_WS=~/ws
+export COLCON_WS_SRC=${COLCON_WS}/src
 export DEBIAN_FRONTEND=noninteractive
-
-if [ "$IGNITION_VERSION" == "blueprint" ]; then
-  IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
-elif [ "$IGNITION_VERSION" == "citadel" ]; then
-  IGN_DEPS="libignition-msgs5-dev libignition-transport8-dev libignition-gazebo3-dev"
-else
-  exit 1
-fi
+export ROS_PYTHON_VERSION=3
 
 # Dependencies.
-echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
-echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu bionic main" > /etc/apt/sources.list.d/ros-latest.list
+echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list
 apt-get update -qq
-apt-get install -qq -y $IGN_DEPS \
-                       python-catkin-tools \
-                       python-rosdep
+apt-get install -qq -y python3-colcon-common-extensions \
+                       python3-rosdep
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO \
-  --skip-keys=ignition-gazebo2 \
-  --skip-keys=ignition-gazebo3 \
-  --skip-keys=ignition-msgs4 \
-  --skip-keys=ignition-msgs5 \
-  --skip-keys=ignition-rendering2 \
-  --skip-keys=ignition-rendering3 \
-  --skip-keys=ignition-sensors2 \
-  --skip-keys=ignition-sensors3 \
-  --skip-keys=ignition-transport7 \
-  --skip-keys=ignition-transport8
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
-mkdir -p $CATKIN_WS_SRC
-ln -s /code $CATKIN_WS_SRC
-cd $CATKIN_WS
-catkin init
-catkin config --install
-catkin build --limit-status-rate 0.1 --no-notify -DCMAKE_BUILD_TYPE=Release
-catkin build --limit-status-rate 0.1 --no-notify --make-args tests
+mkdir -p $COLCON_WS_SRC
+ln -s /code $COLCON_WS_SRC
+cd $COLCON_WS
+colcon build --event-handlers console_direct+
 
 # Tests.
-catkin run_tests
+colcon test --event-handlers console_direct+
+colcon test-result
