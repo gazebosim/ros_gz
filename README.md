@@ -1,11 +1,16 @@
-[![Build Status](https://travis-ci.org/osrf/ros_ign.svg?branch=melodic)](https://travis-ci.org/osrf/ros_ign/branches)
+[![Build Status](https://travis-ci.org/ignitionrobotics/ros_ign.svg?branch=melodic)](https://travis-ci.org/ignitionrobotics/ros_ign/branches)
 
 * ROS 1 branches:
     * [melodic](https://github.com/osrf/ros_ign/tree/melodic)
         * Blueprint and Citadel
+        * Melodic
 * ROS 2 branches:
     * [dashing](https://github.com/osrf/ros_ign/tree/dashing)
         * Blueprint and Citadel
+        * Dashing and Eloquent
+    * [ros2](https://github.com/osrf/ros_ign/tree/ros2)
+        * Citadel
+        * Foxy
 
 # Integration between ROS and Ignition
 

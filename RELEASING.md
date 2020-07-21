@@ -32,5 +32,5 @@ The steps to make a new release of the package are:
 1. Use [release-tools](https://bitbucket.org/osrf/release-tools)'s script to launch jenkins jobs:
     ```
     cd release-tools/bloom
-    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/osrf/ros_ign-release token
+    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/osrf/ros_ign-release <ros_distro> <token>
     ```
