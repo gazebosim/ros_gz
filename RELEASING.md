@@ -20,7 +20,7 @@ The steps to make a new release of the package are:
 
 1. Bloom it into a custom repository
     ```
-    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_ign
+    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro <ros_distro> --track <ros_distro> ros_ign
     ```
 
     Will fail fedora: ignore and continue:
