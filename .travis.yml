@@ -2,8 +2,8 @@ sudo: required
 
 env:
   matrix:
-    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="blueprint"
-    - DOCKER_IMAGE=ubuntu:18.04 IGN_COLLECTION="citadel"
+    - DOCKER_IMAGE=ubuntu:18.04 IGNITION_VERSION="blueprint" ROS_DISTRO="melodic"
+    - DOCKER_IMAGE=ubuntu:18.04 IGNITION_VERSION="citadel" ROS_DISTRO="melodic"
 
 services:
   - docker
@@ -15,9 +15,9 @@ compiler:
 
 before_install:
   - echo $DOCKER_IMAGE
-  - echo $IGN_COLLECTION
+  - echo $IGNITION_VERSION
   - docker pull $DOCKER_IMAGE
-  - docker run  -e IGN_COLLECTION -d -v $(pwd):/code $DOCKER_IMAGE /bin/bash -c 'while true; do sleep 1; done'
+  - docker run  -e IGNITION_VERSION -e ROS_DISTRO -d -v $(pwd):/code $DOCKER_IMAGE /bin/bash -c 'while true; do sleep 1; done'
   - docker exec $(docker ps -aq) /bin/bash -c 'id'
 
 before_script:

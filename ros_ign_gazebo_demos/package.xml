@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_gazebo_demos</name>
   <version>0.9.2</version>
   <description>Demos using Ignition Gazebo simulation with ROS.</description>
@@ -7,7 +7,10 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>ignition-gazebo2</depend>
+  <!-- Default to citadel, support blueprint -->
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
+
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>
