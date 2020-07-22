@@ -26,7 +26,7 @@
 #include <ros/message.h>
 #include <ros/ros.h>
 
-#include "ros_ign_bridge/factory_interface.hpp"
+#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {

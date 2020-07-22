@@ -15,15 +15,14 @@
 #include <memory>
 #include <string>
 
-// include builtin interfaces
-#include "ros_ign_bridge/builtin_interfaces_factories.hpp"
-#include "ros_ign_bridge/convert_builtin_interfaces.hpp"
+#include "factories.hpp"
+#include "ros_ign_bridge/convert.hpp"
 
 namespace ros_ign_bridge
 {
 
 std::shared_ptr<FactoryInterface>
-get_factory_builtin_interfaces(
+get_factory_impl(
   const std::string & ros_type_name,
   const std::string & ign_type_name)
 {
@@ -333,12 +332,12 @@ get_factory(const std::string & ros_type_name,
             const std::string & ign_type_name)
 {
   std::shared_ptr<FactoryInterface> factory;
-  factory = get_factory_builtin_interfaces(ros_type_name, ign_type_name);
+  factory = get_factory_impl(ros_type_name, ign_type_name);
   if (factory)
     return factory;
 
   throw std::runtime_error("No template specialization for the pair");
-};
+}
 
 // conversion functions for available interfaces
 

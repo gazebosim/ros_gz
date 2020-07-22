@@ -16,7 +16,7 @@
 #include <exception>
 #include <ros/console.h>
 
-#include "ros_ign_bridge/convert_builtin_interfaces.hpp"
+#include "ros_ign_bridge/convert.hpp"
 
 namespace ros_ign_bridge
 {
