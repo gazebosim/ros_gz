@@ -18,13 +18,13 @@
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include <ros_ign_bridge/bridge.hpp>
-
 #include <iostream>
 #include <list>
 #include <memory>
 #include <string>
 #include <vector>
+
+#include "bridge.hpp"
 
 // Direction of bridge.
 enum Direction

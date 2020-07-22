@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
-#define ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#ifndef FACTORIES_HPP_
+#define FACTORIES_HPP_
 
-// include ROS 2 messages
+// ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
@@ -39,22 +39,16 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/string.hpp>
 
-// include Ignition Transport messages
+// Ignition messages
 #include <ignition/msgs.hh>
-
-#include <ros_ign_bridge/factory.hpp>
 
 #include <memory>
 #include <string>
 
+#include "factory.hpp"
+
 namespace ros_ign_bridge
 {
-
-std::shared_ptr<FactoryInterface>
-get_factory_builtin_interfaces(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
-
 std::shared_ptr<FactoryInterface>
 get_factory(
   const std::string & ros_type_name,
@@ -522,4 +516,4 @@ Factory<
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#endif  // FACTORIES_HPP_
