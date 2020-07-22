@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 #define ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
 
-// include ROS messages
+// ROS messages
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
@@ -44,22 +44,16 @@
 #include <std_msgs/String.h>
 #include <tf2_msgs/TFMessage.h>
 
-// include Ignition Transport messages
+// Ignition messages
 #include <ignition/msgs.hh>
+
+#include "factory.hpp"
 
 #include <memory>
 #include <string>
 
-#include "ros_ign_bridge/factory.hpp"
-
 namespace ros_ign_bridge
 {
-
-std::shared_ptr<FactoryInterface>
-get_factory_builtin_interfaces(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
-
 std::shared_ptr<FactoryInterface>
 get_factory(const std::string & ros_type_name,
             const std::string & ign_type_name);

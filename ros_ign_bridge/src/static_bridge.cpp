@@ -29,7 +29,7 @@
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include "ros_ign_bridge/bridge.hpp"
+#include "bridge.hpp"
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])

@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 #define ROS_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
 
-// include ROS builtin messages
+// ROS messages
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
@@ -44,7 +44,7 @@
 #include <std_msgs/String.h>
 #include <tf2_msgs/TFMessage.h>
 
-// include Ignition builtin messages
+// include Ignition messages
 #include <ignition/msgs.hh>
 
 #include "ros_ign_bridge/convert_decl.hpp"
@@ -88,7 +88,7 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Float & ign_msg,
   std_msgs::Float32 & ros_msg);
-  
+
 template<>
 void
 convert_ros_to_ign(

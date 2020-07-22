@@ -43,8 +43,8 @@ catkin_package()
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 set(common_sources
-  src/convert_builtin_interfaces.cpp
-  src/builtin_interfaces_factories.cpp
+  src/convert.cpp
+  src/factories.cpp
 )
 
 set(bridge_executables
