@@ -18,7 +18,7 @@
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include <ros_ign_bridge/bridge.hpp>
+#include "bridge.hpp"
 
 #include <iostream>
 #include <list>

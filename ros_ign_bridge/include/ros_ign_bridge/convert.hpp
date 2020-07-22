@@ -17,7 +17,7 @@
 
 #include <rclcpp/time.hpp>
 
-// include ROS 2 builtin messages
+// ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
@@ -42,7 +42,7 @@
 #include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/string.hpp>
 
-// include Ignition builtin messages
+// Ignition messages
 #include <ignition/msgs.hh>
 
 #include <ros_ign_bridge/convert_decl.hpp>

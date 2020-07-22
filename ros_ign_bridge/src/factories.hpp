@@ -43,14 +43,13 @@
 // include Ignition Transport messages
 #include <ignition/msgs.hh>
 
-#include <ros_ign_bridge/factory.hpp>
+#include "factory.hpp"
 
 #include <memory>
 #include <string>
 
 namespace ros_ign_bridge
 {
-
 std::shared_ptr<FactoryInterface>
 get_factory_builtin_interfaces(
   const std::string & ros_type_name,
