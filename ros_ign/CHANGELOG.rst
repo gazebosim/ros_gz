@@ -2,8 +2,8 @@
 Changelog for package ros_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.0 (2020-07-23)
+--------------------
 * Added ros_ign_gazebo to ros_ign package.xml (`#81 <https://github.com/osrf/ros_ign/issues/81>`_)
 * Update Dashing docs (`#62 <https://github.com/osrf/ros_ign/issues/62>`_)
 * Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/osrf/ros_ign/issues/58>`_)

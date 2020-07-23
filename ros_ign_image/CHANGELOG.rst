@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.0 (2020-07-23)
+--------------------
 * Install only what's necessary, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
 * Add CI for Eloquent (`#86 <https://github.com/osrf/ros_ign/issues/86>`_)
 * Avoid the use of --ros-args arguments outside ros (`#84 <https://github.com/osrf/ros_ign/issues/84>`_)

@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.0 (2020-07-23)
+--------------------
 * Install only what's necessary, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
 * Move headers to src, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
 * Integer support (`#91 <https://github.com/osrf/ros_ign/issues/91>`_)
