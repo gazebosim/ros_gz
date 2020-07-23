@@ -22,7 +22,7 @@ service calls. Its support is limited to only the following message types:
 | geometry_msgs/Transform        | ignition::msgs::Pose             |
 | geometry_msgs/TransformStamped | ignition::msgs::Pose             |
 | geometry_msgs/Twist            | ignition::msgs::Twist            |
-| mav_msgs/Actuators             | ignition::msgs::Actuators        |
+| mav_msgs/Actuators ([not on Noetic](https://github.com/ethz-asl/mav_comm/issues/86)) | ignition::msgs::Actuators        |
 | nav_msgs/Odometry              | ignition::msgs::Odometry         |
 | rosgraph_msgs/Clock            | ignition::msgs::Clock            |
 | sensor_msgs/BatteryState       | ignition::msgs::BatteryState     |
@@ -44,7 +44,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -60,7 +60,7 @@ Now we start the ROS listener.
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rostopic echo /chatter
 ```
 
@@ -77,7 +77,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -100,7 +100,7 @@ Now we start the ROS talker.
 
 ```
 # Shell D:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rostopic pub /chatter std_msgs/String "data: 'Hi'" --once
 ```
 
@@ -113,7 +113,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -146,7 +146,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell E:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rqt_image_view /default/camera/link/camera/image
 ```
 

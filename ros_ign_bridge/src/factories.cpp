@@ -203,17 +203,17 @@ get_factory_impl(
       >
     >("geometry_msgs/Twist", ign_type_name);
   }
-  if (
-    (ros_type_name == "mav_msgs/Actuators" || ros_type_name == "") &&
-     ign_type_name == "ignition.msgs.Actuators")
-  {
-    return std::make_shared<
-      Factory<
-        mav_msgs::Actuators,
-        ignition::msgs::Actuators
-      >
-    >("mav_msgs/Actuators", ign_type_name);
-  }
+//  if (
+//    (ros_type_name == "mav_msgs/Actuators" || ros_type_name == "") &&
+//     ign_type_name == "ignition.msgs.Actuators")
+//  {
+//    return std::make_shared<
+//      Factory<
+//        mav_msgs::Actuators,
+//        ignition::msgs::Actuators
+//      >
+//    >("mav_msgs/Actuators", ign_type_name);
+//  }
   if (
     (ros_type_name == "nav_msgs/Odometry" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Odometry")
@@ -729,29 +729,29 @@ Factory<
 }
 
 // mav_msgs
-template<>
-void
-Factory<
-  mav_msgs::Actuators,
-  ignition::msgs::Actuators
->::convert_ros_to_ign(
-  const mav_msgs::Actuators & ros_msg,
-  ignition::msgs::Actuators & ign_msg)
-{
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
-}
-
-template<>
-void
-Factory<
-  mav_msgs::Actuators,
-  ignition::msgs::Actuators
->::convert_ign_to_ros(
-  const ignition::msgs::Actuators & ign_msg,
-  mav_msgs::Actuators & ros_msg)
-{
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
-}
+//template<>
+//void
+//Factory<
+//  mav_msgs::Actuators,
+//  ignition::msgs::Actuators
+//>::convert_ros_to_ign(
+//  const mav_msgs::Actuators & ros_msg,
+//  ignition::msgs::Actuators & ign_msg)
+//{
+//  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+//}
+//
+//template<>
+//void
+//Factory<
+//  mav_msgs::Actuators,
+//  ignition::msgs::Actuators
+//>::convert_ign_to_ros(
+//  const ignition::msgs::Actuators & ign_msg,
+//  mav_msgs::Actuators & ros_msg)
+//{
+//  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+//}
 
 // nav_msgs
 template<>

@@ -25,7 +25,7 @@
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
-#include <mav_msgs/Actuators.h>
+// #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -248,17 +248,17 @@ convert_ign_to_ros(
   geometry_msgs::Twist & ros_msg);
 
 // mav_msgs
-template<>
-void
-convert_ros_to_ign(
-  const mav_msgs::Actuators & ros_msg,
-  ignition::msgs::Actuators & ign_msg);
-
-template<>
-void
-convert_ign_to_ros(
-  const ignition::msgs::Actuators & ign_msg,
-  mav_msgs::Actuators & ros_msg);
+// template<>
+// void
+// convert_ros_to_ign(
+//   const mav_msgs::Actuators & ros_msg,
+//   ignition::msgs::Actuators & ign_msg);
+//
+// template<>
+// void
+// convert_ign_to_ros(
+//   const ignition::msgs::Actuators & ign_msg,
+//   mav_msgs::Actuators & ros_msg);
 
 // nav_msgs
 template<>

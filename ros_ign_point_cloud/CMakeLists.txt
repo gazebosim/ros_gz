@@ -14,13 +14,13 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs)
 
-find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
+find_package(ignition-gazebo3  QUIET REQUIRED)
 set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
 
-find_package(ignition-rendering2 QUIET REQUIRED)
+find_package(ignition-rendering3 QUIET REQUIRED)
 set(IGN_RENDERING_VER ${ignition-rendering2_VERSION_MAJOR})
 
-find_package(ignition-sensors2 QUIET REQUIRED)
+find_package(ignition-sensors3 QUIET REQUIRED)
 set(IGN_SENSORS_VER ${ignition-sensors2_VERSION_MAJOR})
 
 catkin_package()

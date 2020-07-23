@@ -28,7 +28,7 @@
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
-#include <mav_msgs/Actuators.h>
+// #include <mav_msgs/Actuators.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -62,7 +62,7 @@ int main(int argc, char ** argv)
   ros::Publisher float_pub = n.advertise<std_msgs::Float32>("float", 1000);
   std_msgs::Float32 float_msg;
   ros_ign_bridge::testing::createTestMsg(float_msg);
-  
+
   // std_msgs::Float64.
   ros::Publisher double_pub = n.advertise<std_msgs::Float64>("double", 1000);
   std_msgs::Float64 double_msg;
@@ -139,10 +139,10 @@ int main(int argc, char ** argv)
   ros_ign_bridge::testing::createTestMsg(twist_msg);
 
   // mav_msgs::Actuators.
-  ros::Publisher actuators_pub =
-    n.advertise<mav_msgs::Actuators>("actuators", 1000);
-  mav_msgs::Actuators actuators_msg;
-  ros_ign_bridge::testing::createTestMsg(actuators_msg);
+//  ros::Publisher actuators_pub =
+//    n.advertise<mav_msgs::Actuators>("actuators", 1000);
+//  mav_msgs::Actuators actuators_msg;
+//  ros_ign_bridge::testing::createTestMsg(actuators_msg);
 
   // nav_msgs::Odometry.
   ros::Publisher odometry_pub =
@@ -223,7 +223,7 @@ int main(int argc, char ** argv)
     transform_stamped_pub.publish(transform_stamped_msg);
     tf2_message_pub.publish(tf2_msg);
     twist_pub.publish(twist_msg);
-    actuators_pub.publish(actuators_msg);
+    // actuators_pub.publish(actuators_msg);
     odometry_pub.publish(odometry_msg);
     image_pub.publish(image_msg);
     camera_info_pub.publish(camera_info_msg);

@@ -25,12 +25,12 @@
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
               /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer
-              /actuators@mav_msgs/Actuators@ignition.msgs.Actuators
               /odometry@nav_msgs/Odometry@ignition.msgs.Odometry
               /pointcloud2@sensor_msgs/PointCloud2@ignition.msgs.PointCloudPacked
               /joint_states@sensor_msgs/JointState@ignition.msgs.Model
               /battery_state@sensor_msgs/BatteryState@ignition.msgs.BatteryState"
   />
+              <!-- /actuators@mav_msgs/Actuators@ignition.msgs.Actuators -->
 
   <!-- Launch the Ignition Transport publisher -->
   <node name="ign_publisher" pkg="ros_ign_bridge" type="ign_publisher" />

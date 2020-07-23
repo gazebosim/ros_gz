@@ -428,37 +428,37 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.angular(), ros_msg.angular);
 }
 
-template<>
-void
-convert_ros_to_ign(
-  const mav_msgs::Actuators & ros_msg,
-  ignition::msgs::Actuators & ign_msg)
-{
-  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
-
-  for (auto i = 0u; i < ros_msg.angles.size(); ++i)
-    ign_msg.add_position(ros_msg.angles[i]);
-  for (auto i = 0u; i < ros_msg.angular_velocities.size(); ++i)
-    ign_msg.add_velocity(ros_msg.angular_velocities[i]);
-  for (auto i = 0u; i < ros_msg.normalized.size(); ++i)
-    ign_msg.add_normalized(ros_msg.normalized[i]);
-}
-
-template<>
-void
-convert_ign_to_ros(
-  const ignition::msgs::Actuators & ign_msg,
-  mav_msgs::Actuators & ros_msg)
-{
-  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-
-  for (auto i = 0; i < ign_msg.position_size(); ++i)
-    ros_msg.angles.push_back(ign_msg.position(i));
-  for (auto i = 0; i < ign_msg.velocity_size(); ++i)
-    ros_msg.angular_velocities.push_back(ign_msg.velocity(i));
-  for (auto i = 0; i < ign_msg.normalized_size(); ++i)
-    ros_msg.normalized.push_back(ign_msg.normalized(i));
-}
+// template<>
+// void
+// convert_ros_to_ign(
+//   const mav_msgs::Actuators & ros_msg,
+//   ignition::msgs::Actuators & ign_msg)
+// {
+//   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+//
+//   for (auto i = 0u; i < ros_msg.angles.size(); ++i)
+//     ign_msg.add_position(ros_msg.angles[i]);
+//   for (auto i = 0u; i < ros_msg.angular_velocities.size(); ++i)
+//     ign_msg.add_velocity(ros_msg.angular_velocities[i]);
+//   for (auto i = 0u; i < ros_msg.normalized.size(); ++i)
+//     ign_msg.add_normalized(ros_msg.normalized[i]);
+// }
+//
+// template<>
+// void
+// convert_ign_to_ros(
+//   const ignition::msgs::Actuators & ign_msg,
+//   mav_msgs::Actuators & ros_msg)
+// {
+//   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+//
+//   for (auto i = 0; i < ign_msg.position_size(); ++i)
+//     ros_msg.angles.push_back(ign_msg.position(i));
+//   for (auto i = 0; i < ign_msg.velocity_size(); ++i)
+//     ros_msg.angular_velocities.push_back(ign_msg.velocity(i));
+//   for (auto i = 0; i < ign_msg.normalized_size(); ++i)
+//     ros_msg.normalized.push_back(ign_msg.normalized(i));
+// }
 
 template<>
 void
