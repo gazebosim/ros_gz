@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.0 (2020-07-23)
+--------------------
 * Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)
   Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
 * Install only what's necessary, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)

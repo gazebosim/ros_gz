@@ -2,8 +2,8 @@
 Changelog for package ros_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.0 (2020-07-23)
+--------------------
 * Install only what's necessary, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)
 * Choose collection based on environment variable (`#72 <https://github.com/osrf/ros_ign/issues/72>`_)
   * Choose collection based on the environment variable IGNITION_VERSION

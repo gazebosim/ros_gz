@@ -2,8 +2,8 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.0 (2020-07-23)
+--------------------
 * Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)
   Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
 * Choose collection based on environment variable (`#72 <https://github.com/osrf/ros_ign/issues/72>`_)
