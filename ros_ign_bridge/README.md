@@ -44,7 +44,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -60,7 +60,7 @@ Now we start the ROS listener.
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rostopic echo /chatter
 ```
 
@@ -77,7 +77,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -100,7 +100,7 @@ Now we start the ROS talker.
 
 ```
 # Shell D:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rostopic pub /chatter std_msgs/String "data: 'Hi'" --once
 ```
 
@@ -113,7 +113,7 @@ First we start a ROS `roscore`:
 
 ```
 # Shell A:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 roscore
 ```
 
@@ -146,7 +146,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell E:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/noetic/setup.bash
 rqt_image_view /default/camera/link/camera/image
 ```
 
