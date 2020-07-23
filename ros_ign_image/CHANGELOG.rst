@@ -1,6 +1,13 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros1_ign_image
+Changelog for package ros_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Install only what's necessary, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)
+* Choose collection based on environment variable (`#72 <https://github.com/osrf/ros_ign/issues/72>`_)
+  * Choose collection based on the environment variable IGNITION_VERSION
+* Contributors: Louise Poubel
 
 0.9.2 (2020-05-14)
 ------------------

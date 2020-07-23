@@ -1,6 +1,16 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros1_ign_bridge
+Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)
+  Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
+* Install only what's necessary, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)
+* Move headers to src, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)
+* Choose collection based on environment variable (`#72 <https://github.com/osrf/ros_ign/issues/72>`_)
+  * Choose collection based on the environment variable IGNITION_VERSION
+* Contributors: Louise Poubel
 
 0.9.2 (2020-05-14)
 ------------------

@@ -2,6 +2,14 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)
+  Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
+* Choose collection based on environment variable (`#72 <https://github.com/osrf/ros_ign/issues/72>`_)
+  * Choose collection based on the environment variable IGNITION_VERSION
+* Contributors: Louise Poubel
+
 0.9.2 (2020-05-14)
 ------------------
 * Merge pull request `#77 <https://github.com/osrf/ros_ign/issues/77>`_ from ignitionrobotics/j-rivero-patch-2
