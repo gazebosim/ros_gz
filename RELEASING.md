@@ -21,6 +21,12 @@ Ignition version:
     * https://packages.osrfoundation.org: all Ubuntu versions
     * https://packages.ros.org: only Ubuntu Focal
 
+Another factor to take into consideration is which Ignition version is officially
+supported for each ROS distro according to the following REPS:
+
+* ROS 1: [REP-0003](https://ros.org/reps/rep-0003.html)
+* ROS 2: [REP-2000](https://www.ros.org/reps/rep-2000.html)
+
 These factors determine which ROS + Ignition combinations are released into each
 repository.
 
