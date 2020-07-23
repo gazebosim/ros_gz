@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__BRIDGE_HPP_
-#define ROS_IGN_BRIDGE__BRIDGE_HPP_
+#ifndef BRIDGE_HPP_
+#define BRIDGE_HPP_
 
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
-#include <ros_ign_bridge/builtin_interfaces_factories.hpp>
-
 #include <memory>
 #include <string>
+
+#include "factories.hpp"
 
 namespace ros_ign_bridge
 {
@@ -110,4 +110,4 @@ create_bidirectional_bridge(
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__BRIDGE_HPP_
+#endif  // BRIDGE_HPP_
