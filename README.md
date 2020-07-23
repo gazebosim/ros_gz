@@ -45,43 +45,25 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Melodic. See above for other ROS versions.
-
-### Binaries
-
-At the moment, Melodic binaries are only available for Blueprint.
-They are hosted at https://packages.osrfoundation.org.
-
-1. Add https://packages.osrfoundation.org
-
-        sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-        wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-        sudo apt-get update
-
-1. Install `ros_ign`
-
-        sudo apt install ros-melodic-ros-ign
-
-### From source
+This branch supports ROS Noetic. See above for other ROS versions.
 
 ### ROS
 
 Be sure you've installed
-[ROS Melodic](http://wiki.ros.org/melodic/Installation/Ubuntu) (at least ROS-Base).
-More ROS dependencies will be installed below.
+[ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu) (at least ROS-Base).
 
-### Ignition
+### Binaries
 
-Install either [Blueprint or Citadel](https://ignitionrobotics.org/docs).
+Noetic binaries will *soon* be available for Citadel.
+They will be hosted at https://packages.ros.org.
 
-Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
-like to compile against. For example:
+1. Make sure you have ROS Noetic installed.
 
-    export IGNITION_VERSION=citadel
+1. Install `ros_ign`
 
-> You only need to set this variable when compiling, not when running.
+        sudo apt install ros-noetic-ros-ign
 
-### Compile ros_ign
+### From source
 
 The following steps are for Linux and OSX.
 
@@ -93,32 +75,21 @@ The following steps are for Linux and OSX.
     cd ~/ws/src
 
     # Download needed software
-    git clone https://github.com/osrf/ros_ign.git -b melodic
+    git clone https://github.com/osrf/ros_ign.git -b noetic
     ```
 
-1. Install ROS dependencies:
+1. Install dependencies (this will also install Ignition):
 
     ```
     cd ~/ws
-    rosdep install --from-paths src -i -y --rosdistro melodic \
-      --skip-keys=ignition-gazebo2 \
-      --skip-keys=ignition-gazebo3 \
-      --skip-keys=ignition-msgs4 \
-      --skip-keys=ignition-msgs5 \
-      --skip-keys=ignition-rendering2 \
-      --skip-keys=ignition-rendering3 \
-      --skip-keys=ignition-sensors2 \
-      --skip-keys=ignition-sensors3 \
-      --skip-keys=ignition-transport7 \
-      --skip-keys=ignition-transport8
-
+    rosdep install --from-paths src -i -y --rosdistro noetic
     ```
 
 1. Build the workspace:
 
     ```
     # Source ROS distro's setup.bash
-    source /opt/ros/melodic/setup.bash
+    source /opt/ros/noetic/setup.bash
 
     # Build and install into workspace
     cd ~/ws/
