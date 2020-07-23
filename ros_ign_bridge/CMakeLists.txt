@@ -38,8 +38,8 @@ endif()
 include_directories(include)
 
 set(common_sources
-  src/convert_builtin_interfaces.cpp
-  src/builtin_interfaces_factories.cpp
+  src/convert.cpp
+  src/factories.cpp
 )
 
 set(bridge_executables

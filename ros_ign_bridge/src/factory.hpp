@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__FACTORY_HPP_
-#define ROS_IGN_BRIDGE__FACTORY_HPP_
+#ifndef FACTORY_HPP_
+#define FACTORY_HPP_
 
 #include <ignition/transport/Node.hh>
 
@@ -24,7 +24,7 @@
 #include <memory>
 #include <string>
 
-#include "ros_ign_bridge/factory_interface.hpp"
+#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
@@ -149,4 +149,4 @@ public:
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__FACTORY_HPP_
+#endif  // FACTORY_HPP_
