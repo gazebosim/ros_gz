@@ -2,6 +2,21 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Updated launch file to use ros_ign_gazebo (`#82 <https://github.com/osrf/ros_ign/issues/82>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Use new ros_ign_gazebo package on ROS 2 demos (`#85 <https://github.com/osrf/ros_ign/issues/85>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/osrf/ros_ign/issues/58>`_)
+  Port ros_ign_image to ROS2
+  Port ros_ign_gazebo_demos to ROS2
+* Enable ROS2 CI for Dashing branch (`#43 <https://github.com/osrf/ros_ign/issues/43>`_)
+* Make all API and comments ROS-version agnostic
+* Rename packages and fix compilation + tests
+* Move files ros1 -> ros
+* Contributors: Alejandro Hernández Cordero, Jose Luis Rivero, Louise Poubel, chapulina
+
 0.7.0 (2019-08-15)
 ------------------
 

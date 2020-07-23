@@ -1,6 +1,29 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros1_ign_bridge
+Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Forthcoming
+-----------
+* Install only what's necessary, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
+* Move headers to src, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
+* Integer support (`#91 <https://github.com/osrf/ros_ign/issues/91>`_)
+  Adds Int32 to the bridge.
+* [ros2] Fixed CI - Added Foxy (`#89 <https://github.com/osrf/ros_ign/issues/89>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Ignore ros-args in parameter bridge (`#65 <https://github.com/osrf/ros_ign/issues/65>`_)
+* Update Dashing docs (`#62 <https://github.com/osrf/ros_ign/issues/62>`_)
+* Update dependencies to Citadel (`#57 <https://github.com/osrf/ros_ign/issues/57>`_)
+* [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/osrf/ros_ign/issues/58>`_)
+  Port ros_ign_image to ROS2
+  Port ros_ign_gazebo_demos to ROS2
+* Add support for std_msgs/Empty (`#53 <https://github.com/osrf/ros_ign/issues/53>`_)
+* Add support for std_msgs/Bool (`#50 <https://github.com/osrf/ros_ign/issues/50>`_)
+* [ros2] Port ros_ign_bridge to ROS2 (`#45 <https://github.com/osrf/ros_ign/issues/45>`_)
+* Enable ROS2 CI for Dashing branch (`#43 <https://github.com/osrf/ros_ign/issues/43>`_)
+* Make all API and comments ROS-version agnostic
+* Rename packages and fix compilation + tests
+* Move files ros1 -> ros
+* Contributors: Addisu Taddese, Alejandro Hernández Cordero, Jose Luis Rivero, Louise Poubel, Luca Della Vedova, Michael Carroll, Mohamed Ahmed, Shivesh Khaitan, chapulina
 
 0.7.0 (2019-08-15)
 ------------------

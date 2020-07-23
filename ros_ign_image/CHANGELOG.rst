@@ -2,6 +2,20 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Install only what's necessary, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)
+* Add CI for Eloquent (`#86 <https://github.com/osrf/ros_ign/issues/86>`_)
+* Avoid the use of --ros-args arguments outside ros (`#84 <https://github.com/osrf/ros_ign/issues/84>`_)
+* [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/osrf/ros_ign/issues/58>`_)
+  Port ros_ign_image to ROS2
+  Port ros_ign_gazebo_demos to ROS2
+* Enable ROS2 CI for Dashing branch (`#43 <https://github.com/osrf/ros_ign/issues/43>`_)
+* Make all API and comments ROS-version agnostic
+* Rename packages and fix compilation + tests
+* Move files ros1 -> ros
+* Contributors: Alejandro Hernández Cordero, Jose Luis Rivero, Louise Poubel, chapulina
+
 0.7.0 (2019-08-15)
 ------------------
 
