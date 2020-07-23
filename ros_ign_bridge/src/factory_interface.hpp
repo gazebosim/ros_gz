@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef  ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
-#define  ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
+#ifndef  FACTORY_INTERFACE_HPP_
+#define  FACTORY_INTERFACE_HPP_
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
@@ -63,4 +63,4 @@ public:
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__FACTORY_INTERFACE_HPP_
+#endif  // FACTORY_INTERFACE_HPP_

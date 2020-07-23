@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
-#define ROS_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
+#define ROS_IGN_BRIDGE__CONVERT_HPP_
 
 #include <rclcpp/time.hpp>
 
-// include ROS 2 builtin messages
+// ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
@@ -42,7 +42,7 @@
 #include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/string.hpp>
 
-// include Ignition builtin messages
+// Ignition messages
 #include <ignition/msgs.hh>
 
 #include <ros_ign_bridge/convert_decl.hpp>
@@ -372,4 +372,4 @@ convert_ign_to_ros(
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_BUILTIN_INTERFACES_HPP_
+#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
