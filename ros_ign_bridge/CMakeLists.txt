@@ -106,45 +106,81 @@ endforeach()
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
-endif()
 
-# TODO(anyone) Uncomment parts as they're ported to ROS 2
-#
-# # Tests
-# find_package(rostest REQUIRED)
-#
-# set(test_publishers
-#   ign_publisher
-#   ros_publisher
-# )
-#
-# set(test_subscribers
-#   ign_subscriber
-#   ros_subscriber
-# )
-#
-# foreach(test_publisher ${test_publishers})
-#   add_executable(${test_publisher}
-#     test/publishers/${test_publisher}.cpp
-#   )
-#   target_link_libraries(${test_publisher}
-#     ${catkin_LIBRARIES}
-#     ignition-msgs${IGN_MSGS_VER}::core
-#     ignition-transport${IGN_TRANSPORT_VER}::core
-#     gtest
-#     gtest_main
-#   )
-# endforeach(test_publisher)
-#
-# foreach(test_subscriber ${test_subscribers})
-#   add_rostest_gtest(test_${test_subscriber}
-#     test/${test_subscriber}.test
-#     test/subscribers/${test_subscriber}.cpp)
-#   target_link_libraries(test_${test_subscriber}
-#     ${catkin_LIBRARIES}
-#     ignition-msgs${IGN_MSGS_VER}::core
-#     ignition-transport${IGN_TRANSPORT_VER}::core
-#   )
-# endforeach(test_subscriber)
+  find_package(ament_cmake_gtest REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
+  ament_find_gtest()
+
+  add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
+  ament_target_dependencies(test_ros_publisher
+    geometry_msgs
+    nav_msgs
+    rclcpp
+    rosgraph_msgs
+    sensor_msgs
+    std_msgs
+  )
+  target_link_libraries(test_ros_publisher
+    ${GTEST_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  target_include_directories(test_ros_publisher PUBLIC ${GTEST_INCLUDE_DIRS})
+
+  add_executable(test_ros_subscriber test/subscribers/ign_subscriber.cpp)
+  ament_target_dependencies(test_ros_subscriber
+    geometry_msgs
+    nav_msgs
+    rclcpp
+    rosgraph_msgs
+    sensor_msgs
+    std_msgs
+  )
+
+  target_link_libraries(test_ros_subscriber
+    ${GTEST_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  target_include_directories(test_ros_subscriber PUBLIC ${GTEST_INCLUDE_DIRS})
+
+  add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
+  ament_target_dependencies(test_ign_publisher
+    rclcpp
+  )
+  target_link_libraries(test_ign_publisher
+    ${GTEST_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  target_include_directories(test_ign_publisher PUBLIC ${GTEST_INCLUDE_DIRS})
+
+  add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
+  ament_target_dependencies(test_ign_subscriber
+    rclcpp
+  )
+  target_link_libraries(test_ign_subscriber
+    ${GTEST_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  target_include_directories(test_ign_subscriber PUBLIC ${GTEST_INCLUDE_DIRS})
+
+  install(TARGETS
+    test_ros_publisher
+    test_ros_subscriber
+    test_ign_publisher
+    test_ign_subscriber
+    DESTINATION lib/${PROJECT_NAME}
+  )
+
+  add_launch_test(test/launch/test_ros_subscriber.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_ign_subscriber.launch.py
+    TIMEOUT 200
+  )
+endif()
 
 ament_package()
