@@ -1,19 +1,19 @@
-/*
- * Copyright (C) 2018 Open Source Robotics Foundation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
-*/
+// Copyright 2018 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#include <ignition/msgs.hh>
+#include <ignition/transport.hh>
 
 #include <atomic>
 #include <chrono>
@@ -21,9 +21,8 @@
 #include <iostream>
 #include <string>
 #include <thread>
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
-#include "../test_utils.h"
+
+#include "../test_utils.hpp"
 
 /// \brief Flag used to break the publisher loop and terminate the program.
 static std::atomic<bool> g_terminatePub(false);
@@ -34,15 +33,16 @@ static std::atomic<bool> g_terminatePub(false);
 /// and exit the program smoothly.
 void signal_handler(int _signal)
 {
-  if (_signal == SIGINT || _signal == SIGTERM)
+  if (_signal == SIGINT || _signal == SIGTERM) {
     g_terminatePub = true;
+  }
 }
 
 //////////////////////////////////////////////////
 int main(int /*argc*/, char **/*argv*/)
 {
   // Install a signal handler for SIGINT and SIGTERM.
-  std::signal(SIGINT,  signal_handler);
+  std::signal(SIGINT, signal_handler);
   std::signal(SIGTERM, signal_handler);
 
   // Create a transport node and advertise a topic.
@@ -105,13 +105,13 @@ int main(int /*argc*/, char **/*argv*/)
 
   // ignition::msgs::Transform.
   auto transform_pub =
-      node.Advertise<ignition::msgs::Pose>("transform");
+    node.Advertise<ignition::msgs::Pose>("transform");
   ignition::msgs::Pose transform_msg;
   ros_ign_bridge::testing::createTestMsg(transform_msg);
 
   // ignition::msgs::TransformStamped.
   auto transform_stamped_pub =
-      node.Advertise<ignition::msgs::Pose>("transform_stamped");
+    node.Advertise<ignition::msgs::Pose>("transform_stamped");
   ignition::msgs::Pose transform_stamped_msg;
   ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
 
@@ -167,7 +167,7 @@ int main(int /*argc*/, char **/*argv*/)
 
   // ignition::msgs::PointCloudPacked.
   auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
-      "pointcloud2");
+    "pointcloud2");
   ignition::msgs::PointCloudPacked pointcloudpacked_msg;
   ros_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
 
@@ -177,8 +177,7 @@ int main(int /*argc*/, char **/*argv*/)
   ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
   // Publish messages at 1Hz.
-  while (!g_terminatePub)
-  {
+  while (!g_terminatePub) {
     bool_pub.Publish(bool_msg);
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);
