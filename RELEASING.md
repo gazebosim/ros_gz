@@ -97,5 +97,5 @@ Foxy | Citadel | 0.221.X
 1. Use [release-tools](https://bitbucket.org/osrf/release-tools)'s script to launch jenkins jobs:
     ```
     cd release-tools/bloom
-    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/osrf/ros_ign-release <ros_distro> <token>
+    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/osrf/ros_ign-release <ros_distro> <token> --ignition-collection <collection_name>
     ```
