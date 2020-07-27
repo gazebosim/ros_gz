@@ -15,29 +15,30 @@
 import unittest
 
 from launch import LaunchDescription
+from launch.actions import OpaqueFunction
 
 from launch_ros.actions import Node
 
 import launch_testing
 
 
-def generate_test_description():
+def generate_test_description(ready_fn):
 
     publisher = Node(
         package='ros_ign_bridge',
-        executable='test_ros_publisher',
+        node_executable='test_ros_publisher',
         output='screen'
     )
     process_under_test = Node(
         package='ros_ign_bridge',
-        executable='test_ign_subscriber',
+        node_executable='test_ign_subscriber',
         output='screen'
     )
 
     # Bridge
     bridge = Node(
         package='ros_ign_bridge',
-        executable='parameter_bridge',
+        node_executable='parameter_bridge',
         arguments=[
           '/bool@std_msgs/msg/Bool@ignition.msgs.Boolean',
           '/empty@std_msgs/msg/Empty@ignition.msgs.Empty',
@@ -71,8 +72,7 @@ def generate_test_description():
         bridge,
         publisher,
         process_under_test,
-        launch_testing.util.KeepAliveProc(),
-        launch_testing.actions.ReadyToTest(),
+        OpaqueFunction(function=lambda context: ready_fn()),
     ]), locals()
 
 
