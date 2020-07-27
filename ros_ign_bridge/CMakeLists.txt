@@ -80,6 +80,14 @@ install(
 
 ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
+ament_export_dependencies(
+  geometry_msgs
+  nav_msgs
+  rclcpp
+  rosgraph_msgs
+  sensor_msgs
+  std_msgs
+)
 
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
@@ -146,7 +154,11 @@ if(BUILD_TESTING)
 
   add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
   ament_target_dependencies(test_ign_publisher
+    geometry_msgs
+    nav_msgs
     rclcpp
+    sensor_msgs
+    std_msgs
   )
   target_link_libraries(test_ign_publisher
     ${GTEST_LIBRARIES}
@@ -157,7 +169,11 @@ if(BUILD_TESTING)
 
   add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
   ament_target_dependencies(test_ign_subscriber
+    geometry_msgs
+    nav_msgs
     rclcpp
+    sensor_msgs
+    std_msgs
   )
   target_link_libraries(test_ign_subscriber
     ${GTEST_LIBRARIES}
