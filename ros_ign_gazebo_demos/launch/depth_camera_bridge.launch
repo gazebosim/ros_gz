@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="-r -v 3 sensors_demo.sdf"/>
+  </include>
+
+  <node
+    pkg="ros_ign_bridge"
+    type="parameter_bridge"
+    name="$(anon ros_ign_bridge)"
+    output="screen"
+    args="/depth_camera@sensor_msgs/Image@ignition.msgs.Image /depth_camera/points@sensor_msgs/PointCloud2@ignition.msgs.PointCloudPacked">
+  </node>
+
+  <node
+    type="rviz"
+    name="rviz"
+    pkg="rviz"
+    args="-d $(find ros_ign_gazebo_demos)/rviz/depth_camera_bridge.rviz" />
+</launch>
