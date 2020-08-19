@@ -11,6 +11,7 @@
   <author>Shivesh Khaitan</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>ignition-msgs5</depend>
   <depend>ignition-transport8</depend>
