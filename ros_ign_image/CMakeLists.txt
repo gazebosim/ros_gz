@@ -16,13 +16,21 @@ find_package(ros_ign_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-# Citadel
 find_package(ignition-transport8 QUIET)
+find_package(ignition-transport9 QUIET)
+# Citadel
 if(ignition-transport8_FOUND)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
   find_package(ignition-msgs5 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+# Dome
+elseif(ignition-transport9_FOUND)
+  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
+
+  find_package(ignition-msgs6 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
 
 # Blueprint
 else()
