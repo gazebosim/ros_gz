@@ -2,6 +2,9 @@
 Changelog for package ros_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.221.0 (2020-07-23)
 --------------------
 * Added ros_ign_gazebo to ros_ign package.xml (`#81 <https://github.com/osrf/ros_ign/issues/81>`_)

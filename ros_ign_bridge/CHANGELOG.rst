@@ -2,6 +2,13 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add pkg-config as a buildtool dependency (`#102 <https://github.com/osrf/ros_ign/issues/102>`_)
+* Port ros_ign_bridge tests to ROS 2 (`#98 <https://github.com/osrf/ros_ign/issues/98>`_)
+* Rename test_utils.hpp (`#98 <https://github.com/osrf/ros_ign/issues/98>`_)
+* Contributors: Louise Poubel, ahcorde
+
 0.221.0 (2020-07-23)
 --------------------
 * Install only what's necessary, rename builtin_interfaces (`#95 <https://github.com/osrf/ros_ign/issues/95>`_)

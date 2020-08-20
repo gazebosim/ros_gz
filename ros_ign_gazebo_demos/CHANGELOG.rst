@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.221.0 (2020-07-23)
 --------------------
 * Updated launch file to use ros_ign_gazebo (`#82 <https://github.com/osrf/ros_ign/issues/82>`_)

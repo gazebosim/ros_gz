@@ -2,6 +2,11 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add pkg-config as a buildtool dependency (`#102 <https://github.com/osrf/ros_ign/issues/102>`_)
+* Contributors: Louise Poubel
+
 0.221.0 (2020-07-23)
 --------------------
 * [ros2] Fixed CI - Added Foxy (`#89 <https://github.com/osrf/ros_ign/issues/89>`_)
