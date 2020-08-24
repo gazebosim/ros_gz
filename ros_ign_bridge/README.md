@@ -39,7 +39,7 @@ Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 
 ## Prerequisites
 
-* ROS 2 [Dashing](https://index.ros.org/doc/ros2/Installation/Dashing)
+* ROS 2 [Foxy](https://index.ros.org/doc/ros2/Installation/Foxy)
 * Ignition [Blueprint](https://ignitionrobotics.org/docs/blueprint/install)
 
 ### Building the bridge from source
@@ -55,14 +55,14 @@ source installed.
     cd ~/bridge_ws/src
 
     # Download needed software
-    git clone https://github.com/osrf/ros_ign.git -b dashing
+    git clone https://github.com/osrf/ros_ign.git -b foxy
     ```
 
 1. Install ROS dependencies:
 
     ```
     cd ~/bridge_ws
-    rosdep install --from-paths src -i -y --rosdistro dashing \
+    rosdep install --from-paths src -i -y --rosdistro foxy \
       --skip-keys=ignition-gazebo2 \
       --skip-keys=ignition-gazebo3 \
       --skip-keys=ignition-msgs4 \
@@ -80,7 +80,7 @@ source installed.
 
     ```
     # Source ROS distro's setup.bash
-    source /opt/ros/dashing/setup.bash
+    source /opt/ros/foxy/setup.bash
 
     # Build and install into workspace
     cd ~/bridge_ws/
