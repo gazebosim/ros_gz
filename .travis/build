@@ -7,15 +7,25 @@ export COLCON_WS_SRC=${COLCON_WS}/src
 export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
+# Citadel gets Ignition with rosdep
+if [ "$IGNITION_VERSION" == "dome" ]; then
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable focal main" > /etc/apt/sources.list.d/gazebo-stable.list
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly focal main" > /etc/apt/sources.list.d/gazebo-nightly.list
+  apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+
+  IGN_DEPS="libignition-msgs6-dev libignition-transport9-dev libignition-gazebo4-dev"
+fi
+
 # Dependencies.
-echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list
+echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list
+apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 apt-get update -qq
 apt-get install -qq -y python3-colcon-common-extensions \
                        python3-rosdep
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
