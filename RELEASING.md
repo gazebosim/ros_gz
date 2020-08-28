@@ -16,7 +16,7 @@ Ignition libraries are available either through official Ubuntu packages, or
 directly from https://packages.ros.org. This situation varies according to the
 Ignition version:
 
-* Blueprint is only available from https://packages.osrfoundation.org
+* Blueprint and Dome are only available from https://packages.osrfoundation.org
 * Citadel is available from:
     * https://packages.osrfoundation.org: all Ubuntu versions
     * https://packages.ros.org: only Ubuntu Focal
@@ -51,6 +51,7 @@ versions:
 * 3rd digit:
     * Blueprint: 0
     * Citadel: 1
+    * Dome: 2
 
 ROS | Ignition | Version
 -- | -- | --
@@ -58,12 +59,14 @@ Melodic | Blueprint | 0.100.X
 Melodic | Citadel | 0.101.X
 Noetic | Blueprint | :x:
 Noetic | Citadel | 0.111.X
+Noetic | Dome | 0.112.X
 Dashing | Blueprint | 0.200.X
 Dashing | Citadel | 0.201.X
 Eloquent | Blueprint | 0.210.X
 Eloquent | Citadel | 0.211.X
 Foxy | Blueprint | :x:
 Foxy | Citadel | 0.221.X
+Foxy | Dome | 0.222.X
 
 ## Releasing into https://packages.ros.org
 

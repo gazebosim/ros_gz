@@ -5,13 +5,15 @@ ROS version | Ignition version | Branch | Binaries hosted at
 Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | :x:
 Noetic | Blueprint | not supported | :x:
-Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org (coming soon)
+Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
+Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | :x:
 Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
 Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
 Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
 Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
 Foxy | Blueprint | not supported | :x:
-Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org (coming soon)
+Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | :x:
 
 > Binaries marked with :x: mean that the combination is only supported from source.
 
