@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_image</name>
   <version>0.7.0</version>
   <description>Image utilities for Ignition simulation with ROS.</description>

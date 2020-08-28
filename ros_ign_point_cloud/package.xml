@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_point_cloud</name>
   <version>0.7.0</version>
   <description>Point cloud utilities for Ignition simulation with ROS.</description>
