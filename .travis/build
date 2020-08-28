@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
 apt update -qq
-apt install lsb-release wget curl
+apt install -qq -y lsb-release wget curl
 
 # Citadel gets Ignition with rosdep
 if [ "$IGNITION_VERSION" == "dome" ]; then
