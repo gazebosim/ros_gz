@@ -12,15 +12,15 @@ apt install lsb-release wget curl
 
 # Citadel gets Ignition with rosdep
 if [ "$IGNITION_VERSION" == "dome" ]; then
-  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable focal main" > /etc/apt/sources.list.d/gazebo-stable.list
-  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly focal main" > /etc/apt/sources.list.d/gazebo-nightly.list
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list
   wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
   IGN_DEPS="libignition-msgs6-dev libignition-transport9-dev libignition-gazebo4-dev"
 fi
 
 # Dependencies.
-echo "deb http://packages.ros.org/ros/ubuntu focal main" > /etc/apt/sources.list.d/ros-latest.list
+echo "deb http://packages.ros.org/ros/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros-latest.list
 curl -sSL 'http://keyserver.ubuntu.com/pks/lookup?op=get&search=0xC1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' | apt-key add -
 apt-get update -qq
 apt-get install -qq -y python3-colcon-common-extensions \
