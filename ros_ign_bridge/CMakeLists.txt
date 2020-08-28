@@ -19,7 +19,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # Dome
-if ("$ENV{IGNITION_VERSION}" STREQUAL "dome")
+if("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   find_package(ignition-transport9 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
 

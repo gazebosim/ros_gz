@@ -15,7 +15,7 @@ find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
 
 # Dome
-if ("$ENV{IGNITION_VERSION}" STREQUAL "dome")
+if("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   find_package(ignition-transport9 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
 
