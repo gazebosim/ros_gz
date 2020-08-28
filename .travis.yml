@@ -2,7 +2,8 @@ sudo: required
 
 env:
   matrix:
-    - DOCKER_IMAGE=ubuntu:20.04 ROS_DISTRO="foxy"
+    - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="citadel" ROS_DISTRO="foxy"
+    - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="dome" ROS_DISTRO="foxy"
 
 services:
   - docker
@@ -16,7 +17,7 @@ before_install:
   - echo $DOCKER_IMAGE
   - echo $ROS_DISTRO
   - docker pull $DOCKER_IMAGE
-  - docker run  -e ROS_DISTRO -d -v $(pwd):/code $DOCKER_IMAGE /bin/bash -c 'while true; do sleep 1; done'
+  - docker run -e IGNITION_VERSION -e ROS_DISTRO -d -v $(pwd):/code $DOCKER_IMAGE /bin/bash -c 'while true; do sleep 1; done'
   - docker exec $(docker ps -aq) /bin/bash -c 'id'
 
 before_script:

@@ -13,14 +13,19 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
 
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rosgraph_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+
+  <!-- Dome -->
+  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
+  <!-- Citadel (default) -->
+  <depend condition="$IGNITION_VERSION != dome">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != dome">ignition-transport8</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>

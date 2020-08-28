@@ -1,4 +1,4 @@
-<package format="2">
+<package format="3">
   <name>ros_ign_gazebo_demos</name>
   <version>0.221.1</version>
   <description>Demos using Ignition Gazebo simulation with ROS.</description>
@@ -7,7 +7,6 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>ignition-gazebo3</depend>
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>
@@ -18,6 +17,11 @@
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rqt_topic</exec_depend>
   <exec_depend>rviz2</exec_depend>
+
+  <!-- Dome -->
+  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
+  <!-- Citadel (default) -->
+  <depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
