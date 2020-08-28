@@ -3,19 +3,20 @@
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
 Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
-Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | :x:
-Noetic | Blueprint | not supported | :x:
+Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
+Melodic | Dome | not supported |
+Noetic | Blueprint | not supported |
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
-Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | :x:
-Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
-Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
-Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
-Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | :x:
-Foxy | Blueprint | not supported | :x:
+Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
+Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Dashing | Dome | not supported |
+Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Eloquent | Dome | not supported |
+Foxy | Blueprint | not supported |
 Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
-Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | :x:
-
-> Binaries marked with :x: mean that the combination is only supported from source.
+Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
