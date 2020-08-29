@@ -19,7 +19,7 @@ find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # Blueprint
-if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
+if("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-transport7 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
 
