@@ -7,6 +7,11 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- Dome -->
+  <exec_depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</exec_depend>
+  <!-- Citadel (default) -->
+  <exec_depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</exec_depend>
+
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>
@@ -17,11 +22,6 @@
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rqt_topic</exec_depend>
   <exec_depend>rviz2</exec_depend>
-
-  <!-- Dome -->
-  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
-  <!-- Citadel (default) -->
-  <depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</depend>
 
   <export>
     <build_type>ament_cmake</build_type>
