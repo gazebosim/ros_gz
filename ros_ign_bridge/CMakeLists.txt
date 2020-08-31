@@ -18,31 +18,24 @@ find_package(rosgraph_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 
-find_package(ignition-transport8 QUIET)
-# Citadel
-if(ignition-transport8_FOUND)
+# Dome
+if("$ENV{IGNITION_VERSION}" STREQUAL "dome")
+  find_package(ignition-transport9 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
+
+  find_package(ignition-msgs6 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Dome")
+# Default to Citadel
+else()
+  find_package(ignition-transport8 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
   find_package(ignition-msgs5 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
-else()
-  find_package(ignition-transport9 QUIET)
-  # Dome
-  if(ignition-transport9_FOUND)
-    set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
-
-    find_package(ignition-msgs6 REQUIRED)
-    set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
-
-  # Blueprint
-  else()
-    find_package(ignition-transport7 REQUIRED)
-    set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
-
-    find_package(ignition-msgs4 REQUIRED)
-    set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
-  endif()
+  message(STATUS "Compiling against Ignition Citadel")
 endif()
 
 include_directories(include)
