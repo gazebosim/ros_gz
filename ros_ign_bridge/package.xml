@@ -23,9 +23,8 @@
   <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
   <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
   <!-- Citadel (default) -->
-  <!--depend condition="$IGNITION_VERSION == citadel or $IGNITION_VERSION == ''">ignition-msgs5</depend>
-  <depend condition="$IGNITION_VERSION == citadel or $IGNITION_VERSION == ''">ignition-transport8</depend-->
-  <depend condition="$IGNITION_VERSION == \"\"">ignition-transport8</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-transport8</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
