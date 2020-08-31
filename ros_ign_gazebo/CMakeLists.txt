@@ -14,21 +14,24 @@ find_package(ament_cmake REQUIRED)
 find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# Citadel
-find_package(ignition-transport8 QUIET)
-if(ignition-transport8_FOUND)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
-
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
-
 # Blueprint
-else()
+if("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-transport7 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
 
   find_package(ignition-msgs4 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Blueprint")
+# Default to Citadel
+else()
+  find_package(ignition-transport8 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
+
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Citadel")
 endif()
 
 ign_find_package(gflags

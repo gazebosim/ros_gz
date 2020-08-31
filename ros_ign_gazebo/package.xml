@@ -15,8 +15,13 @@
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
+
+  <!-- Blueprint -->
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
+  <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
+  <!-- Citadel (default) -->
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != blueprint">ignition-transport8</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

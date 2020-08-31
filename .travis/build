@@ -6,6 +6,9 @@ export COLCON_WS=~/ws
 export COLCON_WS_SRC=${COLCON_WS}/src
 export DEBIAN_FRONTEND=noninteractive
 
+apt update -qq
+apt install -qq -y lsb-release wget curl
+
 if [ "$IGNITION_VERSION" == "blueprint" ]; then
   IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
 elif [ "$IGNITION_VERSION" == "citadel" ]; then
@@ -15,9 +18,10 @@ else
 fi
 
 # Dependencies.
-echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable bionic main" > /etc/apt/sources.list.d/gazebo-stable.list
-echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-prerelease bionic main" > /etc/apt/sources.list.d/gazebo-prerelease.list
-echo "deb [trusted=yes] http://packages.ros.org/ros2/ubuntu bionic main" > /etc/apt/sources.list.d/ros2-latest.list
+echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+echo "deb http://packages.ros.org/ros2/ubuntu bionic main" > /etc/apt/sources.list.d/ros2-latest.list
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
 apt-get install -qq -y $IGN_DEPS \
                        python3-colcon-common-extensions \
