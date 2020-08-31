@@ -8,9 +8,9 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <!-- Blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
+  <exec_depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</exec_depend>
   <!-- Citadel (default) -->
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
+  <exec_depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</exec_depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
