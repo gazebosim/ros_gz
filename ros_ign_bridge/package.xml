@@ -8,8 +8,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>geometry_msgs</depend>
-  <depend>ignition-msgs5</depend>
-  <depend>ignition-transport8</depend>
   <!-- Not on Noetic https://github.com/ethz-asl/mav_comm/issues/86
   <depend>mav_msgs</depend-->
   <depend>nav_msgs</depend>
@@ -20,6 +18,13 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf2_msgs</depend>
+
+  <!-- Dome -->
+  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
+  <!-- Citadel (default) -->
+  <depend condition="$IGNITION_VERSION != dome">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION != dome">ignition-transport8</depend>
 
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>

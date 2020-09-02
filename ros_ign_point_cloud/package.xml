@@ -7,11 +7,17 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>ignition-gazebo3</depend>
-  <depend>ignition-rendering3</depend>
-  <depend>ignition-sensors3</depend>
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
+
+  <!-- Dome -->
+  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-rendering4</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-sensors4</depend>
+  <!-- Citadel (default) -->
+  <depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</depend>
+  <depend condition="$IGNITION_VERSION != dome">ignition-rendering3</depend>
+  <depend condition="$IGNITION_VERSION != dome">ignition-sensors3</depend>
 
   <exec_depend>message_runtime</exec_depend>
 

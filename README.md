@@ -1,19 +1,24 @@
 [![Build Status](https://travis-ci.org/ignitionrobotics/ros_ign.svg?branch=noetic)](https://travis-ci.org/ignitionrobotics/ros_ign/branches)
 
-* ROS 1 branches:
-    * [melodic](https://github.com/osrf/ros_ign/tree/melodic)
-        * Blueprint and Citadel
-        * Melodic
-    * [noetic](https://github.com/osrf/ros_ign/tree/noetic)
-        * Citadel
-        * Noetic
-* ROS 2 branches:
-    * [dashing](https://github.com/osrf/ros_ign/tree/dashing)
-        * Blueprint and Citadel
-        * Dashing and Eloquent
-    * [ros2](https://github.com/osrf/ros_ign/tree/ros2)
-        * Citadel
-        * Foxy
+ROS version | Ignition version | Branch | Binaries hosted at
+-- | -- | -- | --
+Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
+Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
+Melodic | Dome | not supported |
+Noetic | Blueprint | not supported |
+Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
+Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
+Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Dashing | Dome | not supported |
+Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
+Eloquent | Dome | not supported |
+Foxy | Blueprint | not supported |
+Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
+
+> Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
 # Integration between ROS and Ignition
 
@@ -47,23 +52,41 @@ This repository holds packages that provide integration between
 
 This branch supports ROS Noetic. See above for other ROS versions.
 
-### ROS
-
-Be sure you've installed
-[ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu) (at least ROS-Base).
-
 ### Binaries
 
-Noetic binaries will *soon* be available for Citadel.
-They will be hosted at https://packages.ros.org.
+Noetic binaries are only available for Citadel.
+They are hosted at https://packages.ros.org.
 
-1. Make sure you have ROS Noetic installed.
+1. Add https://packages.ros.org
+
+        sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+        sudo apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
+        sudo apt-get update
 
 1. Install `ros_ign`
 
         sudo apt install ros-noetic-ros-ign
 
 ### From source
+
+### ROS
+
+Be sure you've installed
+[ROS Noetic](http://wiki.ros.org/noetic/Installation/Ubuntu) (at least ROS-Base).
+More ROS dependencies will be installed below.
+
+### Ignition
+
+Install either [Blueprint, Citadel or Dome](https://ignitionrobotics.org/docs).
+
+Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
+like to compile against. For example:
+
+    export IGNITION_VERSION=citadel
+
+> You only need to set this variable when compiling, not when running.
+
+### Compile ros_ign
 
 The following steps are for Linux and OSX.
 
@@ -78,7 +101,7 @@ The following steps are for Linux and OSX.
     git clone https://github.com/osrf/ros_ign.git -b noetic
     ```
 
-1. Install dependencies (this will also install Ignition):
+1. Install dependencies (this may also install Ignition):
 
     ```
     cd ~/ws
