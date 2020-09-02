@@ -88,7 +88,7 @@ Foxy | Dome | 0.222.X
 
 1. Bloom it into a custom repository
     ```
-    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_ign
+    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro noetic --track noetic ros_ign
     ```
 
     Will fail fedora: ignore and continue:
