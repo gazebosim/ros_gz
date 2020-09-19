@@ -18,9 +18,11 @@
   <depend>ignition-math6</depend>
 
   <!-- Dome -->
+  <exec_depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</exec_depend>
   <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
   <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
   <!-- Citadel (default) -->
+  <exec_depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</exec_depend>
   <depend condition="$IGNITION_VERSION != dome">ignition-msgs5</depend>
   <depend condition="$IGNITION_VERSION != dome">ignition-transport8</depend>
 
