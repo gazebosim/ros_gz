@@ -40,7 +40,7 @@ Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 ## Prerequisites
 
 * ROS 2 [Foxy](https://index.ros.org/doc/ros2/Installation/Foxy)
-* Ignition [Blueprint](https://ignitionrobotics.org/docs/blueprint/install)
+* Ignition [Citadel](https://ignitionrobotics.org/docs/citadel/install) or [Dome](https://ignitionrobotics.org/docs/dome/install)
 
 ### Building the bridge from source
 
@@ -55,7 +55,7 @@ source installed.
     cd ~/bridge_ws/src
 
     # Download needed software
-    git clone https://github.com/osrf/ros_ign.git -b foxy
+    git clone https://github.com/osrf/ros_ign.git -b ros2
     ```
 
 1. Install ROS dependencies:
