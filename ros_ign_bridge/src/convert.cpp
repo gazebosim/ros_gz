@@ -105,6 +105,24 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::msg::Float64 & ros_msg,
+  ignition::msgs::Double & ign_msg)
+{
+  ign_msg.set_data(ros_msg.data);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Double & ign_msg,
+  std_msgs::msg::Float64 & ros_msg)
+{
+  ros_msg.data = ign_msg.data();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::msg::Header & ros_msg,
   ignition::msgs::Header & ign_msg)
 {
@@ -351,16 +369,15 @@ convert_ros_to_ign(
   ignition::msgs::Pose_V & ign_msg)
 {
   ign_msg.clear_pose();
-  for (auto const &t : ros_msg.transforms)
-  {
+  for (auto const & t : ros_msg.transforms) {
     auto p = ign_msg.add_pose();
     convert_ros_to_ign(t, *p);
   }
 
-  if (!ros_msg.transforms.empty())
-  {
-    convert_ros_to_ign(ros_msg.transforms[0].header,
-        (*ign_msg.mutable_header()));
+  if (!ros_msg.transforms.empty()) {
+    convert_ros_to_ign(
+      ros_msg.transforms[0].header,
+      (*ign_msg.mutable_header()));
   }
 }
 
@@ -371,8 +388,7 @@ convert_ign_to_ros(
   tf2_msgs::msg::TFMessage & ros_msg)
 {
   ros_msg.transforms.clear();
-  for (auto const &p : ign_msg.pose())
-  {
+  for (auto const & p : ign_msg.pose()) {
     geometry_msgs::msg::TransformStamped tf;
     convert_ign_to_ros(p, tf);
     ros_msg.transforms.push_back(tf);

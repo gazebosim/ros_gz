@@ -120,6 +120,18 @@ TEST(ROSSubscriberTest, Float)
 }
 
 /////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Double)
+{
+  MyTestClass<std_msgs::Float64> client("double");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Header)
 {
   MyTestClass<std_msgs::msg::Header> client("header");

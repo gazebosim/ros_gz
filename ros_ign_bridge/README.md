@@ -34,7 +34,7 @@ service calls. Its support is limited to only the following message types:
 | sensor_msgs/LaserScan          | ignition::msgs::LaserScan        |
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
 | sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
-| tf_msgs/TFMessage              | ignition::msgs::Pose_V           |
+| tf2_msgs/TFMessage             | ignition::msgs::Pose_V           |
 
 Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 

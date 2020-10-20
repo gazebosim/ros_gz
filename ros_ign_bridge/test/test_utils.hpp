@@ -25,6 +25,7 @@
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <geometry_msgs/msg/point.hpp>
@@ -144,6 +145,23 @@ void createTestMsg(std_msgs::msg::Float32 & _msg)
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32> & _msg)
 {
   std_msgs::msg::Float32 expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
+}
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::Float64 & _msg)
+{
+  _msg.data = 1.5;
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float64> & _msg)
+{
+  std_msgs::msg::Float64 expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
@@ -395,7 +413,9 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TransformStamped> 
   EXPECT_EQ(expected_msg.child_frame_id, _msg->child_frame_id);
 }
 
-void createTestMsg(tf2_msgs::msg::TFMessage &_msg)
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(tf2_msgs::msg::TFMessage & _msg)
 {
   geometry_msgs::msg::TransformStamped tf;
   createTestMsg(tf);
@@ -404,7 +424,7 @@ void createTestMsg(tf2_msgs::msg::TFMessage &_msg)
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const tf2_msgs::msg::TFMessage &_msg)
+void compareTestMsg(const tf2_msgs::msg::TFMessage & _msg)
 {
   tf2_msgs::msg::TFMessage expected_msg;
   createTestMsg(expected_msg);
@@ -905,6 +925,8 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Float> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data(), _msg->data());
 }
 
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Double & _msg)
 {
   _msg.set_data(1.5);
@@ -914,10 +936,10 @@ void createTestMsg(ignition::msgs::Double & _msg)
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Double> & _msg)
 {
-    ignition::msgs::Double expected_msg;
-    createTestMsg(expected_msg);
+  ignition::msgs::Double expected_msg;
+  createTestMsg(expected_msg);
 
-    EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());
+  EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());
 }
 
 /// \brief Create a message used for testing.
@@ -1082,7 +1104,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose> & _msg)
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Pose_V &_msg)
+void createTestMsg(ignition::msgs::Pose_V & _msg)
 {
   createTestMsg(*(_msg.mutable_header()));
   createTestMsg(*(_msg.add_pose()));

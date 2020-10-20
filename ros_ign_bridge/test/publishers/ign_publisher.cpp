@@ -122,7 +122,7 @@ int main(int /*argc*/, char **/*argv*/)
 
   // ignition::msgs::Pose_V.
   auto tf2_message_pub =
-      node.Advertise<ignition::msgs::Pose_V>("tf2_message");
+    node.Advertise<ignition::msgs::Pose_V>("tf2_message");
   ignition::msgs::Pose_V tf2_msg;
   ros_ign_bridge::testing::createTestMsg(tf2_msg);
 

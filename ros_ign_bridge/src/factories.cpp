@@ -57,6 +57,16 @@ get_factory_impl(
       >
     >("std_msgs/msg/Float32", ign_type_name);
   }
+  if ((ros_type_name == "std_msgs/msg/Float64" || ros_type_name == "") &&
+    ign_type_name == "ignition.msgs.Double")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::msg::Float64,
+        ignition::msgs::Double
+      >
+    >("std_msgs/msg/Float64", ign_type_name);
+  }
   if ((ros_type_name == "std_msgs/msg/Header" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Header")
   {
@@ -169,7 +179,7 @@ get_factory_impl(
   }
   if (
     (ros_type_name == "tf2_msgs/msg/TFMessage" || ros_type_name == "") &&
-     ign_type_name == "ignition.msgs.Pose_V")
+    ign_type_name == "ignition.msgs.Pose_V")
   {
     return std::make_shared<
       Factory<
@@ -180,7 +190,7 @@ get_factory_impl(
   }
   if (
     (ros_type_name == "geometry_msgs/msg/Twist" || ros_type_name.empty()) &&
-     ign_type_name == "ignition.msgs.Twist")
+    ign_type_name == "ignition.msgs.Twist")
   {
     return std::make_shared<
       Factory<
@@ -389,6 +399,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Float & ign_msg,
   std_msgs::msg::Float32 & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::msg::Float64,
+  ignition::msgs::Double
+>::convert_ros_to_ign(
+  const std_msgs::msg::Float64 & ros_msg,
+  ignition::msgs::Double & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::msg::Float64,
+  ignition::msgs::Double
+>::convert_ign_to_ros(
+  const ignition::msgs::Double & ign_msg,
+  std_msgs::msg::Float64 & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
