@@ -186,7 +186,7 @@ get_factory_impl(
         tf2_msgs::msg::TFMessage,
         ignition::msgs::Pose_V
       >
-    >("tf2_msgs/TFMessage", ign_type_name);
+    >("tf2_msgs/msg/TFMessage", ign_type_name);
   }
   if (
     (ros_type_name == "geometry_msgs/msg/Twist" || ros_type_name.empty()) &&
