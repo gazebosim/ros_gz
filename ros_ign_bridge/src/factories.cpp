@@ -311,6 +311,16 @@ get_factory_impl(
       >
     >("sensor_msgs/msg/BatteryState", ign_type_name);
   }
+  if ((ros_type_name == "trajectory_msgs/msg/JointTrajectory" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.JointTrajectory")
+  {
+    return std::make_shared<
+      Factory<
+        trajectory_msgs::msg::JointTrajectory,
+        ignition::msgs::JointTrajectory
+      >
+    >("trajectory_msgs/msg/JointTrajectory", ign_type_name);
+  }
   return std::shared_ptr<FactoryInterface>();
 }
 
@@ -1005,6 +1015,55 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::msg::BatteryState & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+// trajectory_msgs
+template<>
+void
+Factory<
+  trajectory_msgs::msg::JointTrajectoryPoint,
+  ignition::msgs::JointTrajectoryPoint
+>::convert_ros_to_ign(
+  const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
+  ignition::msgs::JointTrajectoryPoint & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  trajectory_msgs::msg::JointTrajectoryPoint,
+  ignition::msgs::JointTrajectoryPoint
+>::convert_ign_to_ros(
+  const ignition::msgs::JointTrajectoryPoint & ign_msg,
+  trajectory_msgs::msg::JointTrajectoryPoint & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  trajectory_msgs::msg::JointTrajectory,
+  ignition::msgs::JointTrajectory
+>::convert_ros_to_ign(
+  const trajectory_msgs::msg::JointTrajectory & ros_msg,
+  ignition::msgs::JointTrajectory & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  trajectory_msgs::msg::JointTrajectory,
+  ignition::msgs::JointTrajectory
+>::convert_ign_to_ros(
+  const ignition::msgs::JointTrajectory & ign_msg,
+  trajectory_msgs::msg::JointTrajectory & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
