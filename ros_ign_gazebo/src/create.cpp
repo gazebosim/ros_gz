@@ -40,7 +40,6 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 // If these are not needed, just use the `ign service` command line instead.
 int main(int _argc, char ** _argv)
 {
-
   rclcpp::init(_argc, _argv);
   auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
 
