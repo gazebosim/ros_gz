@@ -40,15 +40,15 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 // If these are not needed, just use the `ign service` command line instead.
 int main(int _argc, char ** _argv)
 {
+  rclcpp::init(_argc, _argv);
+  auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
+
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
     R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-string STRING]
                        [-name NAME] [-X X] [-Y Y] [-Z Z] [-Roll ROLL]
                        [-Pitch PITCH] [-Yaw YAW])");
   gflags::ParseCommandLineFlags(&_argc, &_argv, true);
-
-  rclcpp::init(_argc, _argv);
-  auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
 
   // World
   std::string world_name = FLAGS_world;
