@@ -1061,20 +1061,16 @@ convert_ros_to_ign(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
   ignition::msgs::JointTrajectoryPoint & ign_msg)
 {
-  for (const auto & ros_position : ros_msg.positions)
-  {
+  for (const auto & ros_position : ros_msg.positions) {
     ign_msg.add_positions(ros_position);
   }
-  for (const auto & ros_velocitie : ros_msg.velocities)
-  {
-    ign_msg.add_velocities(ros_velocitie);
+  for (const auto & ros_velocity : ros_msg.velocities) {
+    ign_msg.add_velocities(ros_velocity);
   }
-  for (const auto & ros_acceleration : ros_msg.accelerations)
-  {
+  for (const auto & ros_acceleration : ros_msg.accelerations) {
     ign_msg.add_accelerations(ros_acceleration);
   }
-  for (const auto & ros_effort : ros_msg.effort)
-  {
+  for (const auto & ros_effort : ros_msg.effort) {
     ign_msg.add_effort(ros_effort);
   }
 
@@ -1089,24 +1085,22 @@ convert_ign_to_ros(
   const ignition::msgs::JointTrajectoryPoint & ign_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg)
 {
-  for (auto i = 0; i < ign_msg.positions_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.positions_size(); ++i) {
     ros_msg.positions.push_back(ign_msg.positions(i));
   }
-  for (auto i = 0; i < ign_msg.velocities_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.velocities_size(); ++i) {
     ros_msg.velocities.push_back(ign_msg.velocities(i));
   }
-  for (auto i = 0; i < ign_msg.accelerations_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.accelerations_size(); ++i) {
     ros_msg.accelerations.push_back(ign_msg.accelerations(i));
   }
-  for (auto i = 0; i < ign_msg.effort_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.effort_size(); ++i) {
     ros_msg.effort.push_back(ign_msg.effort(i));
   }
 
-  ros_msg.time_from_start = rclcpp::Duration(ign_msg.time_from_start().sec(), ign_msg.time_from_start().nsec());
+  ros_msg.time_from_start = rclcpp::Duration(
+    ign_msg.time_from_start().sec(),
+    ign_msg.time_from_start().nsec());
 }
 
 template<>
@@ -1117,8 +1111,7 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
-  for (const auto & ros_joint_name : ros_msg.joint_names)
-  {
+  for (const auto & ros_joint_name : ros_msg.joint_names) {
     ign_msg.add_joint_names(ros_joint_name);
   }
 
@@ -1136,13 +1129,11 @@ convert_ign_to_ros(
 {
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
 
-  for (auto i = 0; i < ign_msg.joint_names_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.joint_names_size(); ++i) {
     ros_msg.joint_names.push_back(ign_msg.joint_names(i));
   }
 
-  for (auto i = 0; i < ign_msg.points_size(); ++i)
-  {
+  for (auto i = 0; i < ign_msg.points_size(); ++i) {
     trajectory_msgs::msg::JointTrajectoryPoint ros_point;
     convert_ign_to_ros(ign_msg.points(i), ros_point);
     ros_msg.points.push_back(ros_point);

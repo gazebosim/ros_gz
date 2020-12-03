@@ -905,19 +905,19 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectoryP
   trajectory_msgs::msg::JointTrajectoryPoint expected_msg;
   createTestMsg(expected_msg);
 
-  for (size_t i = 0; i < _msg->positions.size(); ++i) {
+  for (auto i = 0u; i < _msg->positions.size(); ++i) {
     EXPECT_EQ(expected_msg.positions[i], _msg->positions[i]);
   }
 
-  for (size_t i = 0; i < _msg->velocities.size(); ++i) {
+  for (auto i = 0u; i < _msg->velocities.size(); ++i) {
     EXPECT_EQ(expected_msg.velocities[i], _msg->velocities[i]);
   }
 
-  for (size_t i = 0; i < _msg->accelerations.size(); ++i) {
+  for (auto i = 0u; i < _msg->accelerations.size(); ++i) {
     EXPECT_EQ(expected_msg.accelerations[i], _msg->accelerations[i]);
   }
 
-  for (size_t i = 0; i < _msg->effort.size(); ++i) {
+  for (auto i = 0u; i < _msg->effort.size(); ++i) {
     EXPECT_EQ(expected_msg.effort[i], _msg->effort[i]);
   }
 
@@ -956,11 +956,11 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>
 
   compareTestMsg(_msg->header);
 
-  for (size_t i = 0; i < _msg->joint_names.size(); ++i) {
+  for (auto i = 0u; i < _msg->joint_names.size(); ++i) {
     EXPECT_EQ(expected_msg.joint_names[i], _msg->joint_names[i]);
   }
 
-  for (size_t i = 0; i < _msg->points.size(); ++i) {
+  for (auto i = 0u; i < _msg->points.size(); ++i) {
     compareTestMsg(std::make_shared<trajectory_msgs::msg::JointTrajectoryPoint>(_msg->points[i]));
   }
 }
