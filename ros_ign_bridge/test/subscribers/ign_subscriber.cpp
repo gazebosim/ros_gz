@@ -380,6 +380,18 @@ TEST(IgnSubscriberTest, BatteryState)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, JointTrajectory)
+{
+  MyTestClass<ignition::msgs::JointTrajectory> client("joint_trajectory");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 int main(int argc, char ** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

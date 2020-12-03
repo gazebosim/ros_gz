@@ -49,6 +49,7 @@
 #include <sensor_msgs/msg/magnetic_field.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/msg/point_field.hpp>
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 
 #include <chrono>
@@ -881,6 +882,89 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::BatteryState> & _msg
   EXPECT_EQ(expected_msg.power_supply_status, _msg->power_supply_status);
 }
 
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(trajectory_msgs::msg::JointTrajectoryPoint & _msg)
+{
+  const auto NUMBER_OF_JOINTS = 7;
+
+  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+    _msg.positions.push_back(1.1 * i);
+    _msg.velocities.push_back(2.2 * i);
+    _msg.accelerations.push_back(3.3 * i);
+    _msg.effort.push_back(4.4 * i);
+  }
+  _msg.time_from_start.sec = 12345;
+  _msg.time_from_start.nanosec = 67890;
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectoryPoint> & _msg)
+{
+  trajectory_msgs::msg::JointTrajectoryPoint expected_msg;
+  createTestMsg(expected_msg);
+
+  for (size_t i = 0; i < _msg->positions.size(); ++i) {
+    EXPECT_EQ(expected_msg.positions[i], _msg->positions[i]);
+  }
+
+  for (size_t i = 0; i < _msg->velocities.size(); ++i) {
+    EXPECT_EQ(expected_msg.velocities[i], _msg->velocities[i]);
+  }
+
+  for (size_t i = 0; i < _msg->accelerations.size(); ++i) {
+    EXPECT_EQ(expected_msg.accelerations[i], _msg->accelerations[i]);
+  }
+
+  for (size_t i = 0; i < _msg->effort.size(); ++i) {
+    EXPECT_EQ(expected_msg.effort[i], _msg->effort[i]);
+  }
+
+  EXPECT_EQ(expected_msg.time_from_start.sec, _msg->time_from_start.sec);
+  EXPECT_EQ(expected_msg.time_from_start.nanosec, _msg->time_from_start.nanosec);
+}
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(trajectory_msgs::msg::JointTrajectory & _msg)
+{
+  const auto NUMBER_OF_JOINTS = 7;
+  const auto NUMBER_OF_TRAJECTORY_POINTS = 10;
+
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.header = header_msg;
+
+  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+    _msg.joint_names.push_back("joint_" + std::to_string(i));
+  }
+
+  for (auto j = 0; j < NUMBER_OF_TRAJECTORY_POINTS; ++j) {
+    trajectory_msgs::msg::JointTrajectoryPoint point;
+    createTestMsg(point);
+    _msg.points.push_back(point);
+  }
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory> & _msg)
+{
+  trajectory_msgs::msg::JointTrajectory expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  for (size_t i = 0; i < _msg->joint_names.size(); ++i) {
+    EXPECT_EQ(expected_msg.joint_names[i], _msg->joint_names[i]);
+  }
+
+  for (size_t i = 0; i < _msg->points.size(); ++i) {
+    compareTestMsg(std::make_shared<trajectory_msgs::msg::JointTrajectoryPoint>(_msg->points[i]));
+  }
+}
+
 //////////////////////////////////////////////////
 /// Ignition::msgs test utils
 //////////////////////////////////////////////////
@@ -1631,6 +1715,92 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::BatteryState> & _msg)
   EXPECT_EQ(expected_msg.percentage(), _msg->percentage());
   EXPECT_EQ(expected_msg.power_supply_status(), _msg->power_supply_status());
 }
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::JointTrajectoryPoint & _msg)
+{
+  const auto NUMBER_OF_JOINTS = 7;
+  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+    _msg.add_positions(1.1 * i);
+    _msg.add_velocities(2.2 * i);
+    _msg.add_accelerations(3.3 * i);
+    _msg.add_effort(4.4 * i);
+  }
+  auto time_from_start = _msg.mutable_time_from_start();
+  time_from_start->set_sec(12345);
+  time_from_start->set_nsec(67890);
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectoryPoint> & _msg)
+{
+  ignition::msgs::JointTrajectoryPoint expected_msg;
+  createTestMsg(expected_msg);
+
+  for (int i = 0; i < _msg->positions_size(); ++i) {
+    EXPECT_EQ(expected_msg.positions(i), _msg->positions(i));
+  }
+
+  for (int i = 0; i < _msg->velocities_size(); ++i) {
+    EXPECT_EQ(expected_msg.velocities(i), _msg->velocities(i));
+  }
+
+  for (int i = 0; i < _msg->accelerations_size(); ++i) {
+    EXPECT_EQ(expected_msg.accelerations(i), _msg->accelerations(i));
+  }
+
+  for (int i = 0; i < _msg->effort_size(); ++i) {
+    EXPECT_EQ(expected_msg.effort(i), _msg->effort(i));
+  }
+
+  EXPECT_EQ(expected_msg.time_from_start().sec(), _msg->time_from_start().sec());
+  EXPECT_EQ(expected_msg.time_from_start().nsec(), _msg->time_from_start().nsec());
+}
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::JointTrajectory & _msg)
+{
+  const auto NUMBER_OF_JOINTS = 7;
+  const auto NUMBER_OF_TRAJECTORY_POINTS = 10;
+
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+    _msg.add_joint_names("joint_" + std::to_string(i));
+  }
+
+  for (auto j = 0; j < NUMBER_OF_TRAJECTORY_POINTS; ++j) {
+    ignition::msgs::JointTrajectoryPoint point;
+    createTestMsg(point);
+    _msg.add_points();
+    _msg.mutable_points(j)->CopyFrom(point);
+  }
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectory> & _msg)
+{
+  ignition::msgs::JointTrajectory expected_msg;
+  createTestMsg(expected_msg);
+
+  ASSERT_TRUE(expected_msg.has_header());
+  ASSERT_TRUE(_msg->has_header());
+
+  for (int i = 0; i < _msg->joint_names_size(); ++i) {
+    EXPECT_EQ(expected_msg.joint_names(i), _msg->joint_names(i));
+  }
+
+  for (int i = 0; i < _msg->points_size(); ++i) {
+    compareTestMsg(std::make_shared<ignition::msgs::JointTrajectoryPoint>(_msg->points(i)));
+  }
+}
+
 }  // namespace testing
 }  // namespace ros_ign_bridge
 

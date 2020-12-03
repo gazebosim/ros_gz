@@ -187,6 +187,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::BatteryState battery_state_msg;
   ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
+  // ignition::msgs::JointTrajectory.
+  auto joint_trajectory_pub = node.Advertise<ignition::msgs::JointTrajectory>("joint_trajectory");
+  ignition::msgs::JointTrajectory joint_trajectory_msg;
+  ros_ign_bridge::testing::createTestMsg(joint_trajectory_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub) {
     bool_pub.Publish(bool_msg);
@@ -216,6 +221,7 @@ int main(int /*argc*/, char **/*argv*/)
     twist_pub.Publish(twist_msg);
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
+    joint_trajectory_pub.Publish(joint_trajectory_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
