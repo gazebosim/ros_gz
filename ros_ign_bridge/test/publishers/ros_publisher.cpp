@@ -38,8 +38,8 @@
 #include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
-#include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
+#include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include "../test_utils.hpp"
 
 //////////////////////////////////////////////////
