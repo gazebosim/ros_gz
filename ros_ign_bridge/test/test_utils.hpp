@@ -886,9 +886,9 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::BatteryState> & _msg
 /// \param[out] _msg The message populated.
 void createTestMsg(trajectory_msgs::msg::JointTrajectoryPoint & _msg)
 {
-  const auto NUMBER_OF_JOINTS = 7;
+  const auto number_of_joints = 7;
 
-  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+  for (auto i = 0; i < number_of_joints; ++i) {
     _msg.positions.push_back(1.1 * i);
     _msg.velocities.push_back(2.2 * i);
     _msg.accelerations.push_back(3.3 * i);
@@ -929,18 +929,18 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectoryP
 /// \param[out] _msg The message populated.
 void createTestMsg(trajectory_msgs::msg::JointTrajectory & _msg)
 {
-  const auto NUMBER_OF_JOINTS = 7;
-  const auto NUMBER_OF_TRAJECTORY_POINTS = 10;
+  const auto number_of_joints = 7;
+  const auto number_of_trajectory_points = 10;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
   _msg.header = header_msg;
 
-  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+  for (auto i = 0; i < number_of_joints; ++i) {
     _msg.joint_names.push_back("joint_" + std::to_string(i));
   }
 
-  for (auto j = 0; j < NUMBER_OF_TRAJECTORY_POINTS; ++j) {
+  for (auto j = 0; j < number_of_trajectory_points; ++j) {
     trajectory_msgs::msg::JointTrajectoryPoint point;
     createTestMsg(point);
     _msg.points.push_back(point);
@@ -1720,8 +1720,9 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::BatteryState> & _msg)
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::JointTrajectoryPoint & _msg)
 {
-  const auto NUMBER_OF_JOINTS = 7;
-  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+  const auto number_of_joints = 7;
+
+  for (auto i = 0; i < number_of_joints; ++i) {
     _msg.add_positions(1.1 * i);
     _msg.add_velocities(2.2 * i);
     _msg.add_accelerations(3.3 * i);
@@ -1763,18 +1764,18 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectoryPoint> 
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::JointTrajectory & _msg)
 {
-  const auto NUMBER_OF_JOINTS = 7;
-  const auto NUMBER_OF_TRAJECTORY_POINTS = 10;
+  const auto number_of_joints = 7;
+  const auto number_of_trajectory_points = 10;
 
   ignition::msgs::Header header_msg;
   createTestMsg(header_msg);
   _msg.mutable_header()->CopyFrom(header_msg);
 
-  for (auto i = 0; i < NUMBER_OF_JOINTS; ++i) {
+  for (auto i = 0; i < number_of_joints; ++i) {
     _msg.add_joint_names("joint_" + std::to_string(i));
   }
 
-  for (auto j = 0; j < NUMBER_OF_TRAJECTORY_POINTS; ++j) {
+  for (auto j = 0; j < number_of_trajectory_points; ++j) {
     ignition::msgs::JointTrajectoryPoint point;
     createTestMsg(point);
     _msg.add_points();
