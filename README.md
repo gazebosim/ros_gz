@@ -4,7 +4,7 @@ ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
 Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
-Melodic | Dome | not supported |
+Melodic | Dome | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Noetic | Blueprint | not supported |
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
 Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source

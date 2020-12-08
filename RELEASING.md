@@ -57,6 +57,7 @@ ROS | Ignition | Version
 -- | -- | --
 Melodic | Blueprint | 0.100.X
 Melodic | Citadel | 0.101.X
+Melodic | Dome | 0.102.X
 Noetic | Blueprint | :x:
 Noetic | Citadel | 0.111.X
 Noetic | Dome | 0.112.X
