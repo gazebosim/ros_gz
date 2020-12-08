@@ -23,8 +23,9 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH': ':'.join([environ['IGN_GAZEBO_SYSTEM_PLUGIN_PATH'],
-                                                      environ['LD_LIBRARY_PATH']])}
+    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+                     environ.get('LD_LIBRARY_PATH', default='')])}
 
     return LaunchDescription([
         DeclareLaunchArgument('ign_args', default_value='',
