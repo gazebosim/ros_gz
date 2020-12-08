@@ -13,6 +13,8 @@ if [ "$IGNITION_VERSION" == "blueprint" ]; then
   IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
 elif [ "$IGNITION_VERSION" == "citadel" ]; then
   IGN_DEPS="libignition-msgs5-dev libignition-transport8-dev libignition-gazebo3-dev"
+elif [ "$IGNITION_VERSION" == "dome" ]; then
+  IGN_DEPS="libignition-msgs6-dev libignition-transport9-dev libignition-gazebo4-dev"
 else
   exit 1
 fi
