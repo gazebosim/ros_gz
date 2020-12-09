@@ -63,12 +63,12 @@ int main(int _argc, char ** _argv)
     ignition::msgs::StringMsg_V worlds_msg;
 
     // This loop is here to allow the server time to download resources.
-    while (!executed) {
+    while (rclcpp::ok() && !executed) {
       RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
       executed = node.Request(service, timeout, worlds_msg, result);
     }
 
-    if (!executed) {  // TODO: executed it is always false add timeout at while loop?
+    if (!executed) {
       RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
       return -1;
     }
