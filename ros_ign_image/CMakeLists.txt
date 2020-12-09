@@ -16,7 +16,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   sensor_msgs)
 
-# Default to Citadel, support Blueprint
+# Default to Dome, support Citadel and Blueprint
 if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-transport7 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})

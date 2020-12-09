@@ -8,7 +8,7 @@ find_package(catkin
     roscpp
 )
 
-# Default to Citadel, support Blueprint
+# Default to Dome, support Citadel and Blueprint
 if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-gazebo2 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
