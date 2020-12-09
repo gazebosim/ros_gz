@@ -135,4 +135,3 @@ foreach(test_subscriber ${test_subscribers})
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
 endforeach(test_subscriber)
-
