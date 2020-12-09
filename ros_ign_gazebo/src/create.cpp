@@ -13,12 +13,12 @@
 // limitations under the License.
 
 #include <gflags/gflags.h>
-#include <ignition/math/Pose3.hh>
 #include <ignition/msgs/entity_factory.pb.h>
+
+#include <ignition/math/Pose3.hh>
 #include <ignition/msgs/Utility.hh>
 #include <ignition/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
-
 #include <sstream>
 #include <string>
 
@@ -68,10 +68,8 @@ int main(int _argc, char ** _argv)
       executed = node.Request(service, timeout, worlds_msg, result);
     }
 
-    if (!executed) {
-      RCLCPP_INFO(
-        ros2_node->get_logger(),
-        "Timed out when getting world names.");
+    if (!executed) {  // TODO: executed it is always false add timeout at while loop?
+      RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
       return -1;
     }
 
@@ -98,8 +96,7 @@ int main(int _argc, char ** _argv)
       req.set_sdf(xmlStr);
     } else {
       RCLCPP_ERROR(
-        ros2_node->get_logger(), "Failed to get XML from param [%s].",
-        FLAGS_param.c_str());
+        ros2_node->get_logger(), "Failed to get XML from param [%s].", FLAGS_param.c_str());
       return -1;
     }
   } else if (!FLAGS_string.empty()) {  // string
@@ -110,15 +107,7 @@ int main(int _argc, char ** _argv)
   }
 
   // Pose
-  ignition::math::Pose3d pose
-  {
-    FLAGS_x,
-    FLAGS_y,
-    FLAGS_z,
-    FLAGS_R,
-    FLAGS_P,
-    FLAGS_Y
-  };
+  ignition::math::Pose3d pose{FLAGS_x, FLAGS_y, FLAGS_z, FLAGS_R, FLAGS_P, FLAGS_Y};
   ignition::msgs::Set(req.mutable_pose(), pose);
 
   // Name
