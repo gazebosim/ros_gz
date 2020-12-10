@@ -13,15 +13,14 @@
 // limitations under the License.
 
 #include <gflags/gflags.h>
-#include <ignition/msgs/entity_factory.pb.h>
-
 #include <ignition/math/Pose3.hh>
+#include <ignition/msgs/entity_factory.pb.h>
 #include <ignition/msgs/Utility.hh>
 #include <ignition/transport/Node.hh>
-#include <rclcpp/executors.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <sstream>
 #include <std_msgs/msg/string.hpp>
+
+#include <sstream>
 #include <string>
 
 DEFINE_string(world, "", "World name.");
