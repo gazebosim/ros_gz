@@ -127,7 +127,6 @@ int main(int _argc, char ** _argv)
     } while (rclcpp::ok() && future_ret != rclcpp::FutureReturnCode::SUCCESS);
 
     if (future_ret == rclcpp::FutureReturnCode::SUCCESS) {
-      RCLCPP_INFO(ros2_node->get_logger(), xml_future.get());
       req.set_sdf(xml_future.get());
     } else {
       RCLCPP_ERROR(
