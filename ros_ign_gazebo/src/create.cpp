@@ -105,30 +105,25 @@ int main(int _argc, char ** _argv)
   } else if (!FLAGS_string.empty()) {  // string
     req.set_sdf(FLAGS_string);
   } else if (!FLAGS_topic.empty()) {  // topic
-    // https://github.com/ros2/rclcpp/issues/520
-    // https://answers.ros.org/question/295551/how-to-understand-the-difference-rclcppspin-and-rclcppexecutorexecutorspin_once/
-    RCLCPP_INFO(ros2_node->get_logger(), "TOPIC.");
     const auto timeout = std::chrono::seconds(1);
     std::promise<std::string> xml_promise;
     std::shared_future<std::string> xml_future(xml_promise.get_future());
 
     std::function<void(const std_msgs::msg::String::SharedPtr)> fun =
-      [&xml_promise, &ros2_node](const std_msgs::msg::String::SharedPtr msg) {
-        RCLCPP_INFO(ros2_node->get_logger(), "CALLBACK.");
+      [&xml_promise](const std_msgs::msg::String::SharedPtr msg) {
         xml_promise.set_value(msg->data);
       };
 
     rclcpp::executors::SingleThreadedExecutor executor;
     executor.add_node(ros2_node);
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr description_subs;
-    RCLCPP_INFO(ros2_node->get_logger(), FLAGS_topic);
     // Transient local is similar to latching in ROS 1.
     description_subs = ros2_node->create_subscription<std_msgs::msg::String>(
       FLAGS_topic, rclcpp::QoS(1).transient_local(), fun);
 
     rclcpp::FutureReturnCode future_ret;
     do {
-      RCLCPP_INFO(ros2_node->get_logger(), "LOOP.");
+      RCLCPP_INFO(ros2_node->get_logger(), "Waiting messages on topic [%s].", FLAGS_topic.c_str());
       future_ret = executor.spin_until_future_complete(xml_future, timeout);
     } while (rclcpp::ok() && future_ret != rclcpp::FutureReturnCode::SUCCESS);
 
