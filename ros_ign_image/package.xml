@@ -7,11 +7,15 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- Default to citadel, support blueprint -->
+  <!-- Default to Dome, support Citadel and blueprint -->
   <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
   <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-msgs5</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-transport8</depend>
+  <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
+  <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport9</depend>
 
   <depend>image_transport</depend>
   <depend>ros_ign_bridge</depend>

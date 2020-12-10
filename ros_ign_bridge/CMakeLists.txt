@@ -19,7 +19,7 @@ find_package(catkin REQUIRED COMPONENTS
                std_msgs
                tf2_msgs)
 
-# Default to Citadel, support Blueprint
+# Default to Dome, support Citadel and Blueprint
 if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   find_package(ignition-transport7 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
@@ -28,7 +28,7 @@ if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
   set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Blueprint")
-else()
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
   find_package(ignition-transport8 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
@@ -36,6 +36,14 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Citadel")
+else()
+  find_package(ignition-transport9 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
+
+  find_package(ignition-msgs6 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Dome")
 endif()
 
 catkin_package()

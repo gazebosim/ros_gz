@@ -11,9 +11,15 @@
   <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
   <depend condition="$IGNITION_VERSION == blueprint">ignition-rendering2</depend>
   <depend condition="$IGNITION_VERSION == blueprint">ignition-sensors2</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-gazebo3</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-rendering3</depend>
-  <depend condition="$IGNITION_VERSION != blueprint">ignition-sensors3</depend>
+  <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
+  <depend condition="$IGNITION_VERSION == citadel">ignition-rendering3</depend>
+  <depend condition="$IGNITION_VERSION == citadel">ignition-sensors3</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-rendering4</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-sensors4</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo4</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-rendering4</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-sensors4</depend>
 
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>

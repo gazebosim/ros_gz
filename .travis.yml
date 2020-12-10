@@ -4,6 +4,7 @@ env:
   matrix:
     - DOCKER_IMAGE=ubuntu:18.04 IGNITION_VERSION="blueprint" ROS_DISTRO="melodic"
     - DOCKER_IMAGE=ubuntu:18.04 IGNITION_VERSION="citadel" ROS_DISTRO="melodic"
+    - DOCKER_IMAGE=ubuntu:18.04 IGNITION_VERSION="dome" ROS_DISTRO="melodic"
 
 services:
   - docker
