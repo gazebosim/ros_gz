@@ -23,8 +23,10 @@
   <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
-  <depend condition="$IGNITION_VERSION == dome or $IGNITION_VERSION == ''">ignition-msgs6</depend>
-  <depend condition="$IGNITION_VERSION == dome or $IGNITION_VERSION == ''">ignition-transport9</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs6</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport9</depend>
 
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>
