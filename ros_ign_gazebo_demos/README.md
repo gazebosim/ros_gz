@@ -138,3 +138,13 @@ Then send a command so the vehicle moves and drains the battery
     ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
 ![](images/battery_demo.png)
+
+## Robot description publisher
+
+Leverage the robot description publisher to spawn a new urdf model in gazebo and
+show it in rviz2.
+To try the demo launch:
+
+    ros2 launch ros_ign_gazebo_demos robot_description_publisher.launch.py
+
+![](images/robot_state_publisher_demo.png)
