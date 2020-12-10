@@ -45,7 +45,7 @@ def generate_launch_description():
         '<inertia ixx="1" ixy="0.0" ixz="0.0" iyy="1" iyz="0.0" izz="1"/>'\
         '</inertial>'\
         '</link>'\
-        '</robot>" '
+        '</robot>'
 
     # Robot state publisher
     params = {'use_sim_time': True, 'robot_description': robot_desc}
