@@ -2,6 +2,17 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add dome + melodic to CI (`#126 <https://github.com/ignitionrobotics/ros_ign/issues/126>`_)
+  Co-authored-by: Nate Koenig <nate@openrobotics.org>
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* [melodic] Update releases (`#105 <https://github.com/ignitionrobotics/ros_ign/issues/105>`_)
+* Pointcloud bridge demo for depth camera (`#39 <https://github.com/ignitionrobotics/ros_ign/issues/39>`_)
+* Choose collection based on environment variable (`#72 <https://github.com/ignitionrobotics/ros_ign/issues/72>`_)
+  * Choose collection based on the environment variable IGNITION_VERSION
+* Contributors: Louise Poubel, Nate Koenig
+
 0.9.2 (2020-05-14)
 ------------------
 
