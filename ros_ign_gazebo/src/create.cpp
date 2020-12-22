@@ -18,6 +18,7 @@
 #include <ignition/msgs/Utility.hh>
 #include <ignition/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <sstream>
 #include <string>
@@ -26,6 +27,7 @@ DEFINE_string(world, "", "World name.");
 DEFINE_string(file, "", "Load XML from a file.");
 DEFINE_string(param, "", "Load XML from a ROS param.");
 DEFINE_string(string, "", "Load XML from a string.");
+DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
 DEFINE_string(name, "", "Name for spawned entity.");
 DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
 DEFINE_double(x, 0, "X component of initial position, in meters.");
@@ -45,9 +47,9 @@ int main(int _argc, char ** _argv)
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
-    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-string STRING]
-                       [-name NAME] [-X X] [-Y Y] [-Z Z] [-Roll ROLL]
-                       [-Pitch PITCH] [-Yaw YAW])");
+    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
+                       [-string STRING] [-name NAME] [-X X] [-Y Y] [-Z Z]
+                       [-Roll ROLL] [-Pitch PITCH] [-Yaw YAW])");
   gflags::ParseCommandLineFlags(&_argc, &_argv, true);
 
   // World
@@ -63,15 +65,13 @@ int main(int _argc, char ** _argv)
     ignition::msgs::StringMsg_V worlds_msg;
 
     // This loop is here to allow the server time to download resources.
-    while (!executed) {
+    while (rclcpp::ok() && !executed) {
       RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
       executed = node.Request(service, timeout, worlds_msg, result);
     }
 
     if (!executed) {
-      RCLCPP_INFO(
-        ros2_node->get_logger(),
-        "Timed out when getting world names.");
+      RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
       return -1;
     }
 
@@ -98,27 +98,48 @@ int main(int _argc, char ** _argv)
       req.set_sdf(xmlStr);
     } else {
       RCLCPP_ERROR(
-        ros2_node->get_logger(), "Failed to get XML from param [%s].",
-        FLAGS_param.c_str());
+        ros2_node->get_logger(), "Failed to get XML from param [%s].", FLAGS_param.c_str());
       return -1;
     }
   } else if (!FLAGS_string.empty()) {  // string
     req.set_sdf(FLAGS_string);
+  } else if (!FLAGS_topic.empty()) {  // topic
+    const auto timeout = std::chrono::seconds(1);
+    std::promise<std::string> xml_promise;
+    std::shared_future<std::string> xml_future(xml_promise.get_future());
+
+    std::function<void(const std_msgs::msg::String::SharedPtr)> fun =
+      [&xml_promise](const std_msgs::msg::String::SharedPtr msg) {
+        xml_promise.set_value(msg->data);
+      };
+
+    rclcpp::executors::SingleThreadedExecutor executor;
+    executor.add_node(ros2_node);
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr description_subs;
+    // Transient local is similar to latching in ROS 1.
+    description_subs = ros2_node->create_subscription<std_msgs::msg::String>(
+      FLAGS_topic, rclcpp::QoS(1).transient_local(), fun);
+
+    rclcpp::FutureReturnCode future_ret;
+    do {
+      RCLCPP_INFO(ros2_node->get_logger(), "Waiting messages on topic [%s].", FLAGS_topic.c_str());
+      future_ret = executor.spin_until_future_complete(xml_future, timeout);
+    } while (rclcpp::ok() && future_ret != rclcpp::FutureReturnCode::SUCCESS);
+
+    if (future_ret == rclcpp::FutureReturnCode::SUCCESS) {
+      req.set_sdf(xml_future.get());
+    } else {
+      RCLCPP_ERROR(
+        ros2_node->get_logger(), "Failed to get XML from topic [%s].", FLAGS_topic.c_str());
+      return -1;
+    }
   } else {
-    RCLCPP_ERROR(ros2_node->get_logger(), "Must specify either -file, -param or -stdin");
+    RCLCPP_ERROR(ros2_node->get_logger(), "Must specify either -file, -param, -stdin or -topic");
     return -1;
   }
 
   // Pose
-  ignition::math::Pose3d pose
-  {
-    FLAGS_x,
-    FLAGS_y,
-    FLAGS_z,
-    FLAGS_R,
-    FLAGS_P,
-    FLAGS_Y
-  };
+  ignition::math::Pose3d pose{FLAGS_x, FLAGS_y, FLAGS_z, FLAGS_R, FLAGS_P, FLAGS_Y};
   ignition::msgs::Set(req.mutable_pose(), pose);
 
   // Name
