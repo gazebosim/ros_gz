@@ -65,7 +65,8 @@ def generate_test_description():
           '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
           '/pointcloud2@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
           '/joint_states@sensor_msgs/msg/JointState@ignition.msgs.Model',
-          '/battery_state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState'
+          '/battery_state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',
+          '/joint_trajectory@trajectory_msgs/msg/JointTrajectory@ignition.msgs.JointTrajectory'
         ],
         output='screen'
     )

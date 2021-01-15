@@ -42,6 +42,7 @@
 #include "std_msgs/msg/header.hpp"
 #include "std_msgs/msg/string.hpp"
 #include "tf2_msgs/msg/tf_message.hpp"
+#include "trajectory_msgs/msg/joint_trajectory.hpp"
 
 #include "../test_utils.hpp"
 
@@ -399,6 +400,18 @@ TEST(ROSSubscriberTest, PointCloud2)
 TEST(ROSSubscriberTest, BatteryState)
 {
   MyTestClass<sensor_msgs::msg::BatteryState> client("battery_state");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, JointTrajectory)
+{
+  MyTestClass<trajectory_msgs::msg::JointTrajectory> client("joint_trajectory");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
