@@ -24,6 +24,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -197,6 +198,18 @@ TEST(ROSSubscriberTest, Point)
 TEST(ROSSubscriberTest, Pose)
 {
   MyTestClass<geometry_msgs::Pose> client("pose");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, PoseArray)
+{
+  MyTestClass<geometry_msgs::PoseArray> client("pose_array");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

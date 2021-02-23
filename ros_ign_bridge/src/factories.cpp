@@ -149,6 +149,17 @@ get_factory_impl(
     >("geometry_msgs/Pose", ign_type_name);
   }
   if (
+    (ros_type_name == "geometry_msgs/PoseArray" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Pose_V")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::PoseArray,
+        ignition::msgs::Pose_V
+      >
+    >("geometry_msgs/PoseArray", ign_type_name);
+  }
+  if (
     (ros_type_name == "geometry_msgs/PoseStamped" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Pose")
   {
@@ -604,6 +615,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::Pose & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseArray,
+  ignition::msgs::Pose_V
+>::convert_ros_to_ign(
+  const geometry_msgs::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseArray,
+  ignition::msgs::Pose_V
+>::convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  geometry_msgs::PoseArray & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

@@ -24,6 +24,7 @@
 #include <geometry_msgs/Vector3.h>
 #include <rosgraph_msgs/Clock.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -107,6 +108,12 @@ int main(int argc, char ** argv)
     n.advertise<geometry_msgs::Pose>("pose", 1000);
   geometry_msgs::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
+
+  // geometry_msgs::PoseArray.
+  ros::Publisher pose_array_pub =
+    n.advertise<geometry_msgs::PoseArray>("pose_array", 1000);
+  geometry_msgs::PoseArray pose_array_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_array_msg);
 
   // geometry_msgs::PoseStamped.
   ros::Publisher pose_stamped_pub =
@@ -218,6 +225,7 @@ int main(int argc, char ** argv)
     clock_pub.publish(clock_msg);
     point_pub.publish(point_msg);
     pose_pub.publish(pose_msg);
+    pose_array_pub.publish(pose_array_msg);
     pose_stamped_pub.publish(pose_stamped_msg);
     transform_pub.publish(transform_msg);
     transform_stamped_pub.publish(transform_stamped_msg);

@@ -19,6 +19,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -260,6 +261,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::Pose & ros_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseArray,
+  ignition::msgs::Pose_V
+>::convert_ros_to_ign(
+  const geometry_msgs::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & ign_msg);
+
+template<>
+void
+Factory<
+  geometry_msgs::PoseArray,
+  ignition::msgs::Pose_V
+>::convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  geometry_msgs::PoseArray & ros_msg);
 
 template<>
 void

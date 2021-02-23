@@ -303,6 +303,38 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & ign_msg)
+{
+  ign_msg.clear_pose();
+  for (auto const &t : ros_msg.poses)
+  {
+    auto p = ign_msg.add_pose();
+    convert_ros_to_ign(t, *p);
+  }
+
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  geometry_msgs::PoseArray & ros_msg)
+{
+  ros_msg.poses.clear();
+  for (auto const &p : ign_msg.pose())
+  {
+    geometry_msgs::Pose pose;
+    convert_ign_to_ros(p, pose);
+    ros_msg.poses.push_back(pose);
+  }
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
