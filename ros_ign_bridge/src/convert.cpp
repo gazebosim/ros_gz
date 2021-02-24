@@ -867,13 +867,26 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
-  for (auto i = 0u; i < ros_msg.position.size(); ++i)
+  const auto nan = std::numeric_limits<double>::quiet_NaN();
+  for (auto i = 0u; i < ros_msg.name.size(); ++i)
   {
     auto newJoint = ign_msg.add_joint();
     newJoint->set_name(ros_msg.name[i]);
-    newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
-    newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
-    newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    
+    if (ros_msg.position.size() > i)
+      newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
+    else
+      newJoint->mutable_axis1()->set_position(nan);
+    
+    if (ros_msg.velocity.size() > i)
+      newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
+    else
+      newJoint->mutable_axis1()->set_velocity(nan);
+    
+    if (ros_msg.effort.size() > i)
+      newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    else
+      newJoint->mutable_axis1()->set_force(nan);
   }
 }
 
