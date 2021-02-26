@@ -108,7 +108,7 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Pose pose_stamped_msg;
   ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
 
-  // ignition::msgs::PoseStamped.
+  // ignition::msgs::Pose_V.
   auto pose_v_pub = node.Advertise<ignition::msgs::Pose_V>("pose_array");
   ignition::msgs::Pose_V pose_v_msg;
   ros_ign_bridge::testing::createTestMsg(pose_v_msg);
