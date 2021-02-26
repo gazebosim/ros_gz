@@ -519,6 +519,52 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  ign_msg.mutable_info()->mutable_map_load_time()->set_sec(
+      ros_msg.info.map_load_time.sec);
+  ign_msg.mutable_info()->mutable_map_load_time()->set_sec(
+      ros_msg.info.map_load_time.nsec);
+
+  ign_msg.mutable_info()->set_resolution(
+      ros_msg.info.resolution);
+  ign_msg.mutable_info()->set_width(
+      ros_msg.info.width);
+  ign_msg.mutable_info()->set_height(
+      ros_msg.info.height);
+
+  convert_ros_to_ign(ros_msg.info.origin, 
+      (*ign_msg.mutable_info()->mutable_origin()));
+
+  ign_msg.set_data(&ros_msg.data[0], ros_msg.data.size());
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid & ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  ros_msg.info.map_load_time.sec = ign_msg.info().map_load_time().sec();
+  ros_msg.info.map_load_time.nsec = ign_msg.info().map_load_time().nsec();
+  ros_msg.info.resolution = ign_msg.info().resolution();
+  ros_msg.info.width = ign_msg.info().width();
+  ros_msg.info.height = ign_msg.info().height();
+
+  convert_ign_to_ros(ign_msg.info().origin(), ros_msg.info.origin);
+
+  ros_msg.data.resize(ign_msg.data().size());
+  memcpy(&ros_msg.data[0], ign_msg.data().c_str(), ign_msg.data().size());
+}
+
+template<>
+void
+convert_ros_to_ign(
   const nav_msgs::Odometry & ros_msg,
   ignition::msgs::Odometry & ign_msg)
 {

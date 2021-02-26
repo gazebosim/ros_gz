@@ -350,7 +350,6 @@ get_factory_impl(
     (ros_type_name == "visualization_msgs/Marker" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Marker")
   {
-    ROS_ERROR_STREAM("visualization_msgs/Marker");
     return std::make_shared<
       Factory<
         visualization_msgs::Marker,
@@ -362,7 +361,6 @@ get_factory_impl(
     (ros_type_name == "visualization_msgs/MarkerArray" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Marker_V")
   {
-    ROS_ERROR_STREAM("visualization_msgs/MarkerArray");
     return std::make_shared<
       Factory<
         visualization_msgs::MarkerArray,

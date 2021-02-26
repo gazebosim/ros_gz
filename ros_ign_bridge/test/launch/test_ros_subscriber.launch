@@ -28,6 +28,7 @@
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
               /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer
               /actuators@mav_msgs/Actuators@ignition.msgs.Actuators
+              /map@nav_msgs/OccupancyGrid@ignition.msgs.OccupancyGrid
               /odometry@nav_msgs/Odometry@ignition.msgs.Odometry
               /pointcloud2@sensor_msgs/PointCloud2@ignition.msgs.PointCloudPacked
               /joint_states@sensor_msgs/JointState@ignition.msgs.Model

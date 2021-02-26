@@ -27,6 +27,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -289,6 +290,18 @@ convert_ign_to_ros(
   mav_msgs::Actuators & ros_msg);
 
 // nav_msgs
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid& ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg);
+
 template<>
 void
 convert_ros_to_ign(

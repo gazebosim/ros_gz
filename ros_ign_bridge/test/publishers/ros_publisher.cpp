@@ -31,6 +31,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 #include <mav_msgs/Actuators.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -159,6 +160,12 @@ int main(int argc, char ** argv)
   mav_msgs::Actuators actuators_msg;
   ros_ign_bridge::testing::createTestMsg(actuators_msg);
 
+  // nav_msgs::OccupancyGrid.
+  ros::Publisher map_pub =
+    n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
+  nav_msgs::OccupancyGrid map_msg;
+  ros_ign_bridge::testing::createTestMsg(map_msg);
+
   // nav_msgs::Odometry.
   ros::Publisher odometry_pub =
     n.advertise<nav_msgs::Odometry>("odometry", 1000);
@@ -253,6 +260,7 @@ int main(int argc, char ** argv)
     tf2_message_pub.publish(tf2_msg);
     twist_pub.publish(twist_msg);
     actuators_pub.publish(actuators_msg);
+    map_pub.publish(map_msg);
     odometry_pub.publish(odometry_msg);
     image_pub.publish(image_msg);
     camera_info_pub.publish(camera_info_msg);
