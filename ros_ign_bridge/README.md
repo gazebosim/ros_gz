@@ -9,6 +9,7 @@ service calls. Its support is limited to only the following message types:
 | ROS type                       | Ignition Transport type          |
 |--------------------------------|:--------------------------------:|
 | std_msgs/Bool                  | ignition::msgs::Boolean          |
+| std_msgs/ColorRGBA             | ignition::msgs::Color            |
 | std_msgs/Empty                 | ignition::msgs::Empty            |
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Float64               | ignition::msgs::Double           |

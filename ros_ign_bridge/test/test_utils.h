@@ -126,6 +126,29 @@ namespace testing
     EXPECT_EQ(expected_msg.data, _msg.data);
   }
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::ColorRGBA &_msg)
+  {
+    _msg.r = 10.0;
+    _msg.g = 11.0;
+    _msg.b = 12.0;
+    _msg.a = 13.0;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::ColorRGBA &_msg)
+  {
+    std_msgs::ColorRGBA expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.r, _msg.r);
+    EXPECT_EQ(expected_msg.g, _msg.g);
+    EXPECT_EQ(expected_msg.b, _msg.b);
+    EXPECT_EQ(expected_msg.a, _msg.a);
+  }
+
   /// \brief Compare a message with the populated for testing. Noop for Empty
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const std_msgs::Empty &)
@@ -870,6 +893,29 @@ namespace testing
     createTestMsg(expected_msg);
 
     EXPECT_EQ(expected_msg.data(), _msg.data());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Color &_msg)
+  {
+    _msg.set_r(10.0);
+    _msg.set_g(11.0);
+    _msg.set_b(12.0);
+    _msg.set_a(13.0);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Color &_msg)
+  {
+    ignition::msgs::Color expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.r(), _msg.r());
+    EXPECT_EQ(expected_msg.g(), _msg.g());
+    EXPECT_EQ(expected_msg.b(), _msg.b());
+    EXPECT_EQ(expected_msg.a(), _msg.a());
   }
 
   /// \brief Compare a message with the populated for testing. Noop for Empty

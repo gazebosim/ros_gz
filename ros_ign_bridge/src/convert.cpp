@@ -79,6 +79,30 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ign_msg.set_r(ros_msg.r);
+  ign_msg.set_g(ros_msg.g);
+  ign_msg.set_b(ros_msg.b);
+  ign_msg.set_a(ros_msg.a);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::ColorRGBA & ros_msg)
+{
+  ros_msg.r = ign_msg.r();
+  ros_msg.g = ign_msg.g();
+  ros_msg.b = ign_msg.b();
+  ros_msg.a = ign_msg.a();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::Empty &,
   ignition::msgs::Empty &)
 {

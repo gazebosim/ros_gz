@@ -39,6 +39,17 @@ get_factory_impl(
     >("std_msgs/Bool", ign_type_name);
   }
   if (
+    (ros_type_name == "std_msgs/ColorRGBA" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Color")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::ColorRGBA,
+        ignition::msgs::Color
+      >
+    >("std_msgs/Bool", ign_type_name);
+  }
+  if (
     (ros_type_name == "std_msgs/Empty" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Empty")
   {
@@ -373,6 +384,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::Bool & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ros_to_ign(
+  const std_msgs::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::ColorRGBA & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

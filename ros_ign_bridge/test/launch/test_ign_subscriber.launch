@@ -4,6 +4,7 @@
   <node name="parameter_bridge_ign_subscriber" pkg="ros_ign_bridge"
         type="parameter_bridge"
         args="/bool@std_msgs/Bool@ignition.msgs.Boolean
+              /color@std_msgs/ColorRGBA@ignition.msgs.Color
               /empty@std_msgs/Empty@ignition.msgs.Empty
               /float@std_msgs/Float32@ignition.msgs.Float
               /double@std_msgs/Float64@ignition.msgs.Double

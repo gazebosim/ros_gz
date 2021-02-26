@@ -18,6 +18,7 @@
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/ColorRGBA.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
@@ -78,6 +79,18 @@ class MyTestClass
 TEST(ROSSubscriberTest, Bool)
 {
   MyTestClass<std_msgs::Bool> client("bool");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, ColorRGBA)
+{
+  MyTestClass<std_msgs::ColorRGBA> client("color");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

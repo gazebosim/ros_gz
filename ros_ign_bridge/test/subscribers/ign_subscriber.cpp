@@ -60,6 +60,18 @@ TEST(IgnSubscriberTest, Boolean)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Color)
+{
+  MyTestClass<ignition::msgs::Color> client("color");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Empty)
 {
   MyTestClass<ignition::msgs::Empty> client("empty");

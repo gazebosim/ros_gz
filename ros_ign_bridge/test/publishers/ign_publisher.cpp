@@ -53,6 +53,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Boolean bool_msg;
   ros_ign_bridge::testing::createTestMsg(bool_msg);
 
+  // ignition::msgs::Color.
+  auto color_pub = node.Advertise<ignition::msgs::Color>("color");
+  ignition::msgs::Color color_msg;
+  ros_ign_bridge::testing::createTestMsg(color_msg);
+
   // ignition::msgs::Empty.
   auto empty_pub = node.Advertise<ignition::msgs::Empty>("empty");
   ignition::msgs::Empty empty_msg;
@@ -196,6 +201,7 @@ int main(int /*argc*/, char **/*argv*/)
   while (!g_terminatePub)
   {
     bool_pub.Publish(bool_msg);
+    color_pub.Publish(color_msg);
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);
     double_pub.Publish(double_msg);
