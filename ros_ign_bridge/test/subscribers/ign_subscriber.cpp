@@ -384,6 +384,30 @@ TEST(IgnSubscriberTest, BatteryState)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Marker)
+{
+  MyTestClass<ignition::msgs::Marker> client("marker");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, MarkerArray)
+{
+  MyTestClass<ignition::msgs::Marker_V> client("marker_array");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 int main(int argc, char **argv)
 {
   ::testing::InitGoogleTest(&argc, argv);

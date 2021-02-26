@@ -42,6 +42,8 @@
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <tf2_msgs/TFMessage.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
@@ -217,6 +219,18 @@ int main(int argc, char ** argv)
   sensor_msgs::BatteryState battery_state_msg;
   ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
+  // visualization_msgs::Marker.
+  ros::Publisher marker_pub =
+    n.advertise<visualization_msgs::Marker>("marker", 1000);
+  visualization_msgs::Marker marker_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_msg);
+
+  // visualization_msgs::MarkerArray.
+  ros::Publisher marker_array_pub =
+    n.advertise<visualization_msgs::MarkerArray>("marker_array", 1000);
+  visualization_msgs::MarkerArray marker_array_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_array_msg);
+
   while (ros::ok())
   {
     // Publish all messages.
@@ -249,6 +263,8 @@ int main(int argc, char ** argv)
     joint_states_pub.publish(joint_states_msg);
     pointcloud2_pub.publish(pointcloud2_msg);
     battery_state_pub.publish(battery_state_msg);
+    marker_pub.publish(marker_msg);
+    marker_array_pub.publish(marker_array_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

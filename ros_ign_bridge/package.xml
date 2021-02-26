@@ -17,6 +17,7 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf2_msgs</depend>
+  <depend>visualization_msgs</depend>
 
   <!-- Default to Dome, support Citadel and Blueprint -->
   <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>

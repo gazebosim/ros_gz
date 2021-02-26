@@ -45,6 +45,8 @@
 #include <std_msgs/Header.h>
 #include <std_msgs/String.h>
 #include <tf2_msgs/TFMessage.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
 // Ignition messages
 #include <ignition/msgs.hh>
@@ -589,6 +591,42 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::BatteryState & ros_msg);
+
+template<>
+void
+Factory<
+  visualization_msgs::Marker,
+  ignition::msgs::Marker
+>::convert_ros_to_ign(
+    const visualization_msgs::Marker & ros_msg,
+    ignition::msgs::Marker & ign_msg);
+
+template<>
+void
+Factory<
+  visualization_msgs::Marker,
+  ignition::msgs::Marker
+>::convert_ign_to_ros(
+    const ignition::msgs::Marker & ign_msg,
+    visualization_msgs::Marker & ros_msg);
+
+template<>
+void
+Factory<
+  visualization_msgs::MarkerArray,
+  ignition::msgs::Marker_V
+>::convert_ros_to_ign(
+    const visualization_msgs::MarkerArray & ros_msg,
+    ignition::msgs::Marker_V & ign_msg);
+
+template<>
+void
+Factory<
+  visualization_msgs::MarkerArray,
+  ignition::msgs::Marker_V
+>::convert_ign_to_ros(
+    const ignition::msgs::Marker_V & ign_msg,
+    visualization_msgs::MarkerArray & ros_msg);
 
 }  // namespace ros_ign_bridge
 

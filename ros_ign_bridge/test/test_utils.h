@@ -49,6 +49,9 @@
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/PointField.h>
 #include <tf2_msgs/TFMessage.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
+
 #include <chrono>
 #include <string>
 #include <thread>
@@ -874,6 +877,79 @@ namespace testing
     EXPECT_EQ(expected_msg.power_supply_status, _msg.power_supply_status);
   }
 
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(visualization_msgs::Marker &_msg)
+  {
+    ROS_ERROR_STREAM("createTestMsg: Marker");
+    createTestMsg(_msg.header);
+
+    _msg.ns = "foo";
+    _msg.id = 123;
+    _msg.type = visualization_msgs::Marker::CUBE;
+    _msg.action = visualization_msgs::Marker::ADD;
+
+    createTestMsg(_msg.pose);
+    createTestMsg(_msg.scale);
+    createTestMsg(_msg.color);
+
+    _msg.lifetime.sec = 100;
+    _msg.lifetime.nsec = 200;
+
+    geometry_msgs::Point pt;
+    createTestMsg(pt);
+    _msg.points.push_back(pt);
+    _msg.text = "bar";
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const visualization_msgs::Marker &_msg)
+  {
+    visualization_msgs::Marker expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+
+    EXPECT_EQ(expected_msg.ns, _msg.ns);
+    EXPECT_EQ(expected_msg.id, _msg.id);
+    EXPECT_EQ(expected_msg.type, _msg.type);
+    EXPECT_EQ(expected_msg.action, _msg.action);
+
+    compareTestMsg(_msg.pose);
+    compareTestMsg(_msg.scale);
+    compareTestMsg(_msg.color);
+
+    EXPECT_EQ(expected_msg.lifetime.sec, _msg.lifetime.sec);
+    EXPECT_EQ(expected_msg.lifetime.nsec, _msg.lifetime.nsec);
+
+    compareTestMsg(_msg.points[0]);
+
+    EXPECT_EQ(expected_msg.text, _msg.text);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(visualization_msgs::MarkerArray &_msg)
+  {
+    ROS_ERROR_STREAM("createTestMsg: MarkerArray");
+    _msg.markers.clear();
+    visualization_msgs::Marker marker;
+    createTestMsg(marker);
+    _msg.markers.push_back(marker);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const visualization_msgs::MarkerArray &_msg)
+  {
+    visualization_msgs::MarkerArray expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(1u, _msg.markers.size());
+    compareTestMsg(_msg.markers[0]);
+  }
+
   //////////////////////////////////////////////////
   /// Ignition::msgs test utils
   //////////////////////////////////////////////////
@@ -1650,6 +1726,83 @@ namespace testing
     EXPECT_EQ(expected_msg.capacity(), _msg.capacity());
     EXPECT_EQ(expected_msg.percentage(), _msg.percentage());
     EXPECT_EQ(expected_msg.power_supply_status(), _msg.power_supply_status());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Marker &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+
+    _msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
+    _msg.set_ns("foo");
+    _msg.set_id(123);
+    _msg.set_type(ignition::msgs::Marker::BOX);
+    _msg.mutable_lifetime()->set_sec(100);
+    _msg.mutable_lifetime()->set_nsec(200);
+
+    createTestMsg(*_msg.mutable_pose());
+    createTestMsg(*_msg.mutable_scale());
+
+    createTestMsg(*_msg.mutable_material()->mutable_ambient());
+    createTestMsg(*_msg.mutable_material()->mutable_diffuse());
+    createTestMsg(*_msg.mutable_material()->mutable_specular());
+
+    createTestMsg(*_msg.add_point());
+    
+    _msg.set_text("bar");
+
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Marker &_msg)
+  {
+    ignition::msgs::Marker expected_msg;
+    createTestMsg(expected_msg);
+
+    ASSERT_TRUE(expected_msg.has_header());
+    ASSERT_TRUE(_msg.has_header());
+
+    compareTestMsg(_msg.header());
+
+    EXPECT_EQ(expected_msg.action(), _msg.action());
+    EXPECT_EQ(expected_msg.ns(), _msg.ns());
+    EXPECT_EQ(expected_msg.id(), _msg.id());
+    EXPECT_EQ(expected_msg.type(), _msg.type());
+    EXPECT_EQ(expected_msg.lifetime().sec(), _msg.lifetime().sec());
+    EXPECT_EQ(expected_msg.lifetime().nsec(), _msg.lifetime().nsec());
+
+    compareTestMsg(_msg.pose());
+    compareTestMsg(_msg.scale());
+    compareTestMsg(_msg.material().ambient());
+    compareTestMsg(_msg.material().diffuse());
+    compareTestMsg(_msg.material().specular());
+
+    compareTestMsg(_msg.point(0));
+    
+    EXPECT_EQ(expected_msg.text(), _msg.text());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Marker_V &_msg)
+  {
+    // Not setting header because the ROS MarkerArray doesn't use it.
+    createTestMsg(*_msg.add_marker());
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Marker_V &_msg)
+  {
+    ignition::msgs::Marker_V expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.marker(0));
   }
 }
 }
