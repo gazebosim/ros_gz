@@ -14,6 +14,7 @@
               /clock@rosgraph_msgs/Clock@ignition.msgs.Clock
               /point@geometry_msgs/Point@ignition.msgs.Vector3d
               /pose@geometry_msgs/Pose@ignition.msgs.Pose
+              /pose_array@geometry_msgs/PoseArray@ignition.msgs.Pose_V
               /pose_stamped@geometry_msgs/PoseStamped@ignition.msgs.Pose
               /transform@geometry_msgs/Transform@ignition.msgs.Pose
               /transform_stamped@geometry_msgs/TransformStamped@ignition.msgs.Pose

@@ -28,6 +28,7 @@
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
@@ -303,6 +304,25 @@ namespace testing
   {
     compareTestMsg(_msg.position);
     compareTestMsg(_msg.orientation);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(geometry_msgs::PoseArray &_msg)
+  {
+    geometry_msgs::Pose pose;
+    createTestMsg(pose);
+    _msg.poses.push_back(pose);
+
+    createTestMsg(_msg.header);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const geometry_msgs::PoseArray &_msg)
+  {
+    compareTestMsg(_msg.poses[0]);
+    compareTestMsg(_msg.header);
   }
 
   /// \brief Create a message used for testing.

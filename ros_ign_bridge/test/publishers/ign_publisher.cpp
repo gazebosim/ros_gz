@@ -108,6 +108,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Pose pose_stamped_msg;
   ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
 
+  // ignition::msgs::Pose_V.
+  auto pose_v_pub = node.Advertise<ignition::msgs::Pose_V>("pose_array");
+  ignition::msgs::Pose_V pose_v_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_v_msg);
+
   // ignition::msgs::Transform.
   auto transform_pub =
       node.Advertise<ignition::msgs::Pose>("transform");
@@ -201,6 +206,7 @@ int main(int /*argc*/, char **/*argv*/)
     clock_pub.Publish(clock_msg);
     point_pub.Publish(point_msg);
     pose_pub.Publish(pose_msg);
+    pose_v_pub.Publish(pose_v_msg);
     pose_stamped_pub.Publish(pose_stamped_msg);
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);

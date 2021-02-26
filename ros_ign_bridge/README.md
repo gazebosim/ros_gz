@@ -18,6 +18,7 @@ service calls. Its support is limited to only the following message types:
 | geometry_msgs/Vector3          | ignition::msgs::Vector3d         |
 | geometry_msgs/Point            | ignition::msgs::Vector3d         |
 | geometry_msgs/Pose             | ignition::msgs::Pose             |
+| geometry_msgs/PoseArray        | ignition::msgs::Pose_V           |
 | geometry_msgs/PoseStamped      | ignition::msgs::Pose             |
 | geometry_msgs/Transform        | ignition::msgs::Pose             |
 | geometry_msgs/TransformStamped | ignition::msgs::Pose             |
