@@ -1269,12 +1269,11 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
+  // Note, in ROS's Marker message ADD and MODIFY both map to a value of "0", 
+  // so that case is not needed here.
   switch(ros_msg.action)
   {
     case visualization_msgs::Marker::ADD:
-      ign_msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
-      break;
-    case visualization_msgs::Marker::MODIFY:
       ign_msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
       break;
     case visualization_msgs::Marker::DELETE:
