@@ -1274,6 +1274,9 @@ convert_ros_to_ign(
     case visualization_msgs::Marker::ADD:
       ign_msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
       break;
+    case visualization_msgs::Marker::MODIFY:
+      ign_msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
+      break;
     case visualization_msgs::Marker::DELETE:
       ign_msg.set_action(ignition::msgs::Marker::DELETE_MARKER);
       break;

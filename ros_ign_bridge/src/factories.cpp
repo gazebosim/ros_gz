@@ -47,7 +47,7 @@ get_factory_impl(
         std_msgs::ColorRGBA,
         ignition::msgs::Color
       >
-    >("std_msgs/Bool", ign_type_name);
+    >("std_msgs/ColorRGBA", ign_type_name);
   }
   if (
     (ros_type_name == "std_msgs/Empty" || ros_type_name == "") &&
