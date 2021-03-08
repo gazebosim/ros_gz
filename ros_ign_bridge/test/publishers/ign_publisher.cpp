@@ -53,6 +53,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Boolean bool_msg;
   ros_ign_bridge::testing::createTestMsg(bool_msg);
 
+  // ignition::msgs::Color.
+  auto color_pub = node.Advertise<ignition::msgs::Color>("color");
+  ignition::msgs::Color color_msg;
+  ros_ign_bridge::testing::createTestMsg(color_msg);
+
   // ignition::msgs::Empty.
   auto empty_pub = node.Advertise<ignition::msgs::Empty>("empty");
   ignition::msgs::Empty empty_msg;
@@ -192,10 +197,19 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::BatteryState battery_state_msg;
   ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
+  auto marker_pub = node.Advertise<ignition::msgs::Marker>("marker");
+  ignition::msgs::Marker marker_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_msg);
+
+  auto marker_array_pub = node.Advertise<ignition::msgs::Marker_V>("marker_array");
+  ignition::msgs::Marker_V marker_array_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_array_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub)
   {
     bool_pub.Publish(bool_msg);
+    color_pub.Publish(color_msg);
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);
     double_pub.Publish(double_msg);
@@ -223,6 +237,8 @@ int main(int /*argc*/, char **/*argv*/)
     twist_pub.Publish(twist_msg);
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
+    marker_pub.Publish(marker_msg);
+    marker_array_pub.Publish(marker_array_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }

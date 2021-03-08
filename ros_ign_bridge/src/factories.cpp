@@ -39,6 +39,17 @@ get_factory_impl(
     >("std_msgs/Bool", ign_type_name);
   }
   if (
+    (ros_type_name == "std_msgs/ColorRGBA" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Color")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::ColorRGBA,
+        ignition::msgs::Color
+      >
+    >("std_msgs/ColorRGBA", ign_type_name);
+  }
+  if (
     (ros_type_name == "std_msgs/Empty" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Empty")
   {
@@ -335,6 +346,30 @@ get_factory_impl(
       >
     >("sensor_msgs/BatteryState", ign_type_name);
   }
+  if (
+    (ros_type_name == "visualization_msgs/Marker" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Marker")
+  {
+    ROS_ERROR_STREAM("visualization_msgs/Marker");
+    return std::make_shared<
+      Factory<
+        visualization_msgs::Marker,
+        ignition::msgs::Marker
+      >
+    >("visualization_msgs/Marker", ign_type_name);
+  }
+  if (
+    (ros_type_name == "visualization_msgs/MarkerArray" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.Marker_V")
+  {
+    ROS_ERROR_STREAM("visualization_msgs/MarkerArray");
+    return std::make_shared<
+      Factory<
+        visualization_msgs::MarkerArray,
+        ignition::msgs::Marker_V
+      >
+    >("visualization_msgs/MarkerArray", ign_type_name);
+  }
   return std::shared_ptr<FactoryInterface>();
 }
 
@@ -373,6 +408,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::Bool & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ros_to_ign(
+  const std_msgs::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::ColorRGBA & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
@@ -1026,6 +1085,54 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::BatteryState & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  visualization_msgs::Marker,
+  ignition::msgs::Marker
+>::convert_ros_to_ign(
+    const visualization_msgs::Marker & ros_msg,
+    ignition::msgs::Marker & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  visualization_msgs::Marker,
+  ignition::msgs::Marker
+>::convert_ign_to_ros(
+    const ignition::msgs::Marker & ign_msg,
+    visualization_msgs::Marker & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  visualization_msgs::MarkerArray,
+  ignition::msgs::Marker_V
+>::convert_ros_to_ign(
+    const visualization_msgs::MarkerArray & ros_msg,
+    ignition::msgs::Marker_V & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  visualization_msgs::MarkerArray,
+  ignition::msgs::Marker_V
+>::convert_ign_to_ros(
+    const ignition::msgs::Marker_V & ign_msg,
+    visualization_msgs::MarkerArray & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

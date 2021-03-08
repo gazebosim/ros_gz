@@ -9,6 +9,7 @@ service calls. Its support is limited to only the following message types:
 | ROS type                       | Ignition Transport type          |
 |--------------------------------|:--------------------------------:|
 | std_msgs/Bool                  | ignition::msgs::Boolean          |
+| std_msgs/ColorRGBA             | ignition::msgs::Color            |
 | std_msgs/Empty                 | ignition::msgs::Empty            |
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Float64               | ignition::msgs::Double           |
@@ -36,6 +37,8 @@ service calls. Its support is limited to only the following message types:
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
 | sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
 | tf_msgs/TFMessage              | ignition::msgs::Pose_V           |
+| visualization_msgs/Marker      | ignition::msgs::Marker           |
+| visualization_msgs/MarkerArray | ignition::msgs::Marker_V         |
 
 Run `rosmaster & rosrun ros_ign_bridge parameter_bridge -h` for instructions.
 
