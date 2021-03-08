@@ -1295,9 +1295,11 @@ convert_ros_to_ign(
   // Type
   switch(ros_msg.type)
   {
+#ifdef IGNITION_DOME
     case visualization_msgs::Marker::ARROW:
       ign_msg.set_type(ignition::msgs::Marker::ARROW);
       break;
+#endif
     case visualization_msgs::Marker::CUBE:
       ign_msg.set_type(ignition::msgs::Marker::BOX);
       break;
@@ -1399,6 +1401,19 @@ convert_ign_to_ros(
 
   switch(ign_msg.type())
   {
+#ifdef IGNITION_DOME
+    case ignition::msgs::Marker::ARROW:
+      ros_msg.type = visualization_msgs::Marker::TRIANGLE_LIST;
+      break;
+    case ignition::msgs::Marker::AXIS:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[AXIS]\n");
+      break;
+    case ignition::msgs::Marker::CONE:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[CONE]\n");
+      break;
+#endif
     case ignition::msgs::Marker::NONE:
       ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
           "[NONE]\n");
@@ -1434,17 +1449,6 @@ convert_ign_to_ros(
     case ignition::msgs::Marker::TRIANGLE_STRIP:
       ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
           "[TRIANGLE_STRIP]\n");
-      break;
-    case ignition::msgs::Marker::CONE:
-      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
-          "[CONE]\n");
-      break;
-    case ignition::msgs::Marker::ARROW:
-      ros_msg.type = visualization_msgs::Marker::TRIANGLE_LIST;
-      break;
-    case ignition::msgs::Marker::AXIS:
-      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
-          "[AXIS]\n");
       break;
     default:
       ROS_ERROR_STREAM("Unknown ignition.msgs.marker type " <<
