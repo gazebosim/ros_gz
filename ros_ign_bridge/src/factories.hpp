@@ -41,6 +41,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
+#include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
 #include <tf2_msgs/TFMessage.h>
 
@@ -96,6 +97,24 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Empty & ign_msg,
   std_msgs::Empty & ros_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Int32,
+  ignition::msgs::Int32
+>::convert_ros_to_ign(
+  const std_msgs::Int32 & ros_msg,
+  ignition::msgs::Int32 & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::Int32,
+  ignition::msgs::Int32
+>::convert_ign_to_ros(
+  const ignition::msgs::Int32 & ign_msg,
+  std_msgs::Int32 & ros_msg);
 
 template<>
 void

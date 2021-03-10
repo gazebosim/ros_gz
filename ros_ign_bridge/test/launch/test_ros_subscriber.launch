@@ -5,6 +5,7 @@
         type="parameter_bridge"
         args="/bool@std_msgs/Bool@ignition.msgs.Boolean
               /empty@std_msgs/Empty@ignition.msgs.Empty
+              /int32@std_msgs/Int32@ignition.msgs.Int32
               /float@std_msgs/Float32@ignition.msgs.Float
               /double@std_msgs/Float64@ignition.msgs.Double
               /header@std_msgs/Header@ignition.msgs.Header
