@@ -415,6 +415,24 @@ Factory<
 template<>
 void
 Factory<
+  nav_msgs::OccupancyGrid,
+  ignition::msgs::OccupancyGrid
+>::convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg);
+
+template<>
+void
+Factory<
+  nav_msgs::OccupancyGrid,
+  ignition::msgs::OccupancyGrid
+>::convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid & ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg);
+
+template<>
+void
+Factory<
   nav_msgs::Odometry,
   ignition::msgs::Odometry
 >::convert_ros_to_ign(

@@ -500,9 +500,9 @@ namespace testing
     compareTestMsg(_msg.header);
     EXPECT_EQ(expected_msg.info.map_load_time.sec,
               _msg.info.map_load_time.sec);
-    EXPECT_EQ(expected_msg.info.map_load_time.sec,
+    EXPECT_EQ(expected_msg.info.map_load_time.nsec,
               _msg.info.map_load_time.nsec);
-    EXPECT_EQ(expected_msg.info.resolution, _msg.info.resolution);
+    EXPECT_FLOAT_EQ(expected_msg.info.resolution, _msg.info.resolution);
     EXPECT_EQ(expected_msg.info.width, _msg.info.width);
     EXPECT_EQ(expected_msg.info.height, _msg.info.height);
 
@@ -919,7 +919,6 @@ namespace testing
   /// \param[out] _msg The message populated.
   void createTestMsg(visualization_msgs::Marker &_msg)
   {
-    ROS_ERROR_STREAM("createTestMsg: Marker");
     createTestMsg(_msg.header);
 
     _msg.ns = "foo";
@@ -970,7 +969,6 @@ namespace testing
   /// \param[out] _msg The message populated.
   void createTestMsg(visualization_msgs::MarkerArray &_msg)
   {
-    ROS_ERROR_STREAM("createTestMsg: MarkerArray");
     _msg.markers.clear();
     visualization_msgs::Marker marker;
     createTestMsg(marker);
@@ -1666,7 +1664,7 @@ namespace testing
 
     EXPECT_EQ(100, _msg.info().map_load_time().sec());
     EXPECT_EQ(200, _msg.info().map_load_time().nsec());
-    EXPECT_EQ(0.05, _msg.info().resolution());
+    EXPECT_FLOAT_EQ(0.05, _msg.info().resolution());
     EXPECT_EQ(10, _msg.info().width());
     EXPECT_EQ(20, _msg.info().height());
     compareTestMsg(_msg.info().origin());

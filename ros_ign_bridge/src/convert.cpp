@@ -526,7 +526,7 @@ convert_ros_to_ign(
 
   ign_msg.mutable_info()->mutable_map_load_time()->set_sec(
       ros_msg.info.map_load_time.sec);
-  ign_msg.mutable_info()->mutable_map_load_time()->set_sec(
+  ign_msg.mutable_info()->mutable_map_load_time()->set_nsec(
       ros_msg.info.map_load_time.nsec);
 
   ign_msg.mutable_info()->set_resolution(
