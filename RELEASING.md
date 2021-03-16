@@ -16,10 +16,13 @@ Ignition libraries are available either through official Ubuntu packages, or
 directly from https://packages.ros.org. This situation varies according to the
 Ignition version:
 
-* Blueprint and Dome are only available from https://packages.osrfoundation.org
 * Citadel is available from:
     * https://packages.osrfoundation.org: all Ubuntu versions
     * https://packages.ros.org: only Ubuntu Focal
+* Dome is only available from https://packages.osrfoundation.org
+* Edifice is available from:
+    * https://packages.osrfoundation.org: all Ubuntu versions
+    * https://packages.ros.org: only Ubuntu Focal, once ROS 2 Galactic is out
 
 Another factor to take into consideration is which Ignition version is officially
 supported for each ROS distro according to the following REPS:
@@ -52,6 +55,7 @@ versions:
     * Blueprint: 0
     * Citadel: 1
     * Dome: 2
+    * Edifice: 3
 
 ROS | Ignition | Version
 -- | -- | --
@@ -60,6 +64,7 @@ Melodic | Citadel | 0.101.X
 Noetic | Blueprint | :x:
 Noetic | Citadel | 0.111.X
 Noetic | Dome | 0.112.X
+Noetic | Edifice | 0.113.X
 Dashing | Blueprint | 0.200.X
 Dashing | Citadel | 0.201.X
 Eloquent | Blueprint | 0.210.X
@@ -67,6 +72,7 @@ Eloquent | Citadel | 0.211.X
 Foxy | Blueprint | :x:
 Foxy | Citadel | 0.221.X
 Foxy | Dome | 0.222.X
+Foxy | Edifice | 0.223.X
 
 ## Releasing into https://packages.ros.org
 
