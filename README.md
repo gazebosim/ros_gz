@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ignitionrobotics/ros_ign.svg?branch=noetic)](https://travis-ci.org/ignitionrobotics/ros_ign/branches)
+
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
 Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
@@ -6,6 +8,7 @@ Melodic | Dome | not supported |
 Noetic | Blueprint | not supported |
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
 Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
+Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
 Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
 Dashing | Dome | not supported |
@@ -15,10 +18,13 @@ Eloquent | Dome | not supported |
 Foxy | Blueprint | not supported |
 Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
 Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
+Foxy | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
 # Integration between ROS and Ignition
+
+## Packages
 
 This repository holds packages that provide integration between
 [ROS](http://www.ros.org/) and [Ignition](https://ignitionrobotics.org):
@@ -73,7 +79,7 @@ More ROS dependencies will be installed below.
 
 ### Ignition
 
-Install either [Citadel or Dome](https://ignitionrobotics.org/docs).
+Install either [Citadel, Dome or Edifice](https://ignitionrobotics.org/docs).
 
 Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
 like to compile against. For example:
@@ -96,7 +102,7 @@ The following steps are for Linux and OSX.
     git clone https://github.com/osrf/ros_ign.git -b ros2
     ```
 
-1. Install dependencies:
+1. Install dependencies (this may also install Ignition):
 
     ```
     cd ~/ws
@@ -107,7 +113,7 @@ The following steps are for Linux and OSX.
 
     ```
     # Source ROS distro's setup.bash
-    source /opt/ros/dashing/setup.bash
+    source /opt/ros/foxy/setup.bash
     # Build and install into workspace
     cd ~/ws/
     colcon build
