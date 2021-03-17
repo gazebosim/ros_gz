@@ -7,10 +7,13 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <!-- Edifice -->
+  <exec_depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
   <!-- Dome -->
   <exec_depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</exec_depend>
   <!-- Citadel (default) -->
-  <exec_depend condition="$IGNITION_VERSION != dome">ignition-gazebo3</exec_depend>
+  <exec_depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</exec_depend>
+  <exec_depend condition="$IGNITION_VERSION == ''">ignition-gazebo3</exec_depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
