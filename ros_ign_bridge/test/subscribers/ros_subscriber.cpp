@@ -22,6 +22,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
+#include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
@@ -106,6 +107,18 @@ TEST(ROSSubscriberTest, ColorRGBA)
 TEST(ROSSubscriberTest, Empty)
 {
   MyTestClass<std_msgs::Empty> client("empty");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Int32)
+{
+  MyTestClass<std_msgs::Int32> client("int32");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
