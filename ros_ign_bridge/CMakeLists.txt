@@ -21,7 +21,7 @@ find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
 # Edifice
-if ("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
@@ -30,7 +30,7 @@ if ("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
 
   message(STATUS "Compiling against Ignition Edifice")
 # Dome
-elseif ("$ENV{IGNITION_VERSION}" STREQUAL "dome")
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   find_package(ignition-transport9 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
 
