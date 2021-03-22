@@ -1700,11 +1700,11 @@ namespace testing
     EXPECT_EQ(100, _msg.info().map_load_time().sec());
     EXPECT_EQ(200, _msg.info().map_load_time().nsec());
     EXPECT_FLOAT_EQ(0.05, _msg.info().resolution());
-    EXPECT_EQ(10, _msg.info().width());
-    EXPECT_EQ(20, _msg.info().height());
+    EXPECT_EQ(10u, _msg.info().width());
+    EXPECT_EQ(20u, _msg.info().height());
     compareTestMsg(_msg.info().origin());
 
-    EXPECT_EQ(20 * 10, _msg.data().size());
+    EXPECT_EQ(20u * 10u, _msg.data().size());
     EXPECT_EQ('\1', _msg.data()[0]);
   }
 
