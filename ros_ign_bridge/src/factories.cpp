@@ -248,6 +248,17 @@ get_factory_impl(
     >("mav_msgs/Actuators", ign_type_name);
   }
   if (
+    (ros_type_name == "nav_msgs/OccupancyGrid" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.OccupancyGrid")
+  {
+    return std::make_shared<
+      Factory<
+        nav_msgs::OccupancyGrid,
+        ignition::msgs::OccupancyGrid
+      >
+    >("nav_msgs/OccupancyGrid", ign_type_name);
+  }
+  if (
     (ros_type_name == "nav_msgs/Odometry" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Odometry")
   {
@@ -361,7 +372,6 @@ get_factory_impl(
     (ros_type_name == "visualization_msgs/Marker" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Marker")
   {
-    ROS_ERROR_STREAM("visualization_msgs/Marker");
     return std::make_shared<
       Factory<
         visualization_msgs::Marker,
@@ -373,7 +383,6 @@ get_factory_impl(
     (ros_type_name == "visualization_msgs/MarkerArray" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.Marker_V")
   {
-    ROS_ERROR_STREAM("visualization_msgs/MarkerArray");
     return std::make_shared<
       Factory<
         visualization_msgs::MarkerArray,
@@ -883,6 +892,30 @@ Factory<
 }
 
 // nav_msgs
+template<>
+void
+Factory<
+  nav_msgs::OccupancyGrid,
+  ignition::msgs::OccupancyGrid
+>::convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  nav_msgs::OccupancyGrid,
+  ignition::msgs::OccupancyGrid
+>::convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid & ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
 template<>
 void
 Factory<
