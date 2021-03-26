@@ -55,7 +55,7 @@ Depth camera data can be obtained as:
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/depth_camera
 
 *TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
@@ -111,7 +111,10 @@ RGBD camera data can be obtained as:
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
+    # RGB image
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/rgbd_camera/image
+    # Depth image
+    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/rgbd_camera/depth_image
 
 Using the regular bridge:
 
