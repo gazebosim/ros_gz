@@ -56,11 +56,11 @@ Visualization Manager:
       Value: true
     - Class: rviz_default_plugins/Image
       Enabled: true
-      Max Value: 1
+      Max Value: 10
       Median window: 5
       Min Value: 0
       Name: Image
-      Normalize Range: true
+      Normalize Range: false
       Queue Size: 10
       Topic: /rgbd_camera/depth_image
       Unreliable: false
