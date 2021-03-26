@@ -71,13 +71,13 @@ They are hosted at https://packages.ros.org.
 
 ### From source
 
-### ROS
+#### ROS
 
 Be sure you've installed
 [ROS Foxy](https://index.ros.org/doc/ros2/Installation/) (at least ROS-Base).
 More ROS dependencies will be installed below.
 
-### Ignition
+#### Ignition
 
 Install either [Citadel, Dome or Edifice](https://ignitionrobotics.org/docs).
 
@@ -88,7 +88,7 @@ like to compile against. For example:
 
 > You only need to set this variable when compiling, not when running.
 
-### Compile ros_ign
+#### Compile ros_ign
 
 The following steps are for Linux and OSX.
 
@@ -98,15 +98,31 @@ The following steps are for Linux and OSX.
     # Setup the workspace
     mkdir -p ~/ws/src
     cd ~/ws/src
+
     # Download needed software
     git clone https://github.com/osrf/ros_ign.git -b ros2
     ```
 
-1. Install dependencies (this may also install Ignition):
+1. Install ROS dependencies:
 
     ```
     cd ~/ws
-    rosdep install --from-paths src -i -y --rosdistro foxy
+    rosdep install --from-paths src -i -y --rosdistro foxy \
+      --skip-keys=ignition-gazebo3 \
+      --skip-keys=ignition-gazebo4 \
+      --skip-keys=ignition-gazebo5 \
+      --skip-keys=ignition-msgs5 \
+      --skip-keys=ignition-msgs6 \
+      --skip-keys=ignition-msgs7 \
+      --skip-keys=ignition-rendering3 \
+      --skip-keys=ignition-rendering4 \
+      --skip-keys=ignition-rendering5 \
+      --skip-keys=ignition-sensors3 \
+      --skip-keys=ignition-sensors4 \
+      --skip-keys=ignition-sensors5 \
+      --skip-keys=ignition-transport8 \
+      --skip-keys=ignition-transport9 \
+      --skip-keys=ignition-transport10
     ```
 
 1. Build the workspace:
@@ -114,7 +130,8 @@ The following steps are for Linux and OSX.
     ```
     # Source ROS distro's setup.bash
     source /opt/ros/foxy/setup.bash
+
     # Build and install into workspace
-    cd ~/ws/
+    cd ~/ws
     colcon build
     ```
