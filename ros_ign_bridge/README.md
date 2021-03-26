@@ -54,7 +54,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -86,7 +86,7 @@ Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -108,6 +108,7 @@ Let's see the topic where camera images are published.
 ```
 # Shell B:
 ign topic -l | grep image
+/rgbd_camera/depth_image
 /rgbd_camera/image
 ```
 
@@ -123,7 +124,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
