@@ -40,56 +40,6 @@ service calls. Its support is limited to only the following message types:
 
 Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 
-## Prerequisites
-
-* ROS 2 [Foxy](https://index.ros.org/doc/ros2/Installation/Foxy)
-* Ignition [Citadel](https://ignitionrobotics.org/docs/citadel/install) or [Dome](https://ignitionrobotics.org/docs/dome/install)
-
-### Building the bridge from source
-
-Before continuing you should have the prerequisites for building the bridge from
-source installed.
-
-1. Create a colcon workspace:
-
-    ```
-    # Setup the workspace
-    mkdir -p ~/bridge_ws/src
-    cd ~/bridge_ws/src
-
-    # Download needed software
-    git clone https://github.com/osrf/ros_ign.git -b ros2
-    ```
-
-1. Install ROS dependencies:
-
-    ```
-    cd ~/bridge_ws
-    rosdep install --from-paths src -i -y --rosdistro foxy \
-      --skip-keys=ignition-gazebo2 \
-      --skip-keys=ignition-gazebo3 \
-      --skip-keys=ignition-msgs4 \
-      --skip-keys=ignition-msgs5 \
-      --skip-keys=ignition-rendering2 \
-      --skip-keys=ignition-rendering3 \
-      --skip-keys=ignition-sensors2 \
-      --skip-keys=ignition-sensors3 \
-      --skip-keys=ignition-transport7 \
-      --skip-keys=ignition-transport8
-
-    ```
-
-1. Build the workspace:
-
-    ```
-    # Source ROS distro's setup.bash
-    source /opt/ros/foxy/setup.bash
-
-    # Build and install into workspace
-    cd ~/bridge_ws/
-    colcon build
-    ```
-
 ## Example 1a: Ignition Transport talker and ROS 2 listener
 
 Start the parameter bridge which will watch the specified topics.
