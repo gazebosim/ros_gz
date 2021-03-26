@@ -103,27 +103,14 @@ The following steps are for Linux and OSX.
     git clone https://github.com/osrf/ros_ign.git -b ros2
     ```
 
-1. Install ROS dependencies:
+1. Install dependencies (this may also install Ignition):
 
     ```
     cd ~/ws
-    rosdep install --from-paths src -i -y --rosdistro foxy \
-      --skip-keys=ignition-gazebo3 \
-      --skip-keys=ignition-gazebo4 \
-      --skip-keys=ignition-gazebo5 \
-      --skip-keys=ignition-msgs5 \
-      --skip-keys=ignition-msgs6 \
-      --skip-keys=ignition-msgs7 \
-      --skip-keys=ignition-rendering3 \
-      --skip-keys=ignition-rendering4 \
-      --skip-keys=ignition-rendering5 \
-      --skip-keys=ignition-sensors3 \
-      --skip-keys=ignition-sensors4 \
-      --skip-keys=ignition-sensors5 \
-      --skip-keys=ignition-transport8 \
-      --skip-keys=ignition-transport9 \
-      --skip-keys=ignition-transport10
+    rosdep install -r --from-paths src -i -y --rosdistro foxy
     ```
+
+    > If `rosdep` fails to install Ignition libraries and you have not installed them before, please follow [Ignition installation instructions](https://ignitionrobotics.org/docs/latest/install).
 
 1. Build the workspace:
 
