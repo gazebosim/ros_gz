@@ -132,7 +132,7 @@ You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Ignition Msgs over Ignition Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS Kinetic):
+(it was taken using ROS 2 Foxy and Ignition Edifice):
 
 ![Ignition Transport images and ROS rqt](images/bridge_image_exchange.png)
 
