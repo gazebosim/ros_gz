@@ -12,8 +12,6 @@ There's a convenient launch file, try for example:
 
 ## Air pressure
 
-*TODO*: Pending bridge for `sensor_msgs/msg/FluidPressure`, [issue](https://github.com/osrf/ros_ign/issues/78).
-
 Publishes fluid pressure readings.
 
     ros2 launch ros_ign_gazebo_demos air_pressure.launch.py

@@ -27,23 +27,18 @@ from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 
-# TODO; execution broken
-# Failed to create a bridge for topic [/air_pressure] with ROS2 type
-# [sensor_msgs/FluidPressure] and Ignition Transport type
-# [ignition.msgs.FluidPressure]
 
 def generate_launch_description():
 
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 
     # Bridge
-    # TODO: Needs sensor_msgs/msg/FluidPressure to be supported on bridge
-    # bridge = Node(
-    #     package='ros_ign_bridge',
-    #     executable='parameter_bridge',
-    #     arguments=["/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure"],
-    #     output='screen'
-    # )
+    bridge = Node(
+        package='ros_ign_bridge',
+        executable='parameter_bridge',
+        arguments=["/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure"],
+        output='screen'
+    )
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -62,6 +57,6 @@ def generate_launch_description():
         ign_gazebo,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
-        # bridge,
+        bridge,
         rqt
     ])
