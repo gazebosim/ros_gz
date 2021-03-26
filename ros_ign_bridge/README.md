@@ -6,37 +6,37 @@ between ROS and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls. Its support is limited to only the following message types:
 
-| ROS type                       | Ignition Transport type          |
-|--------------------------------|:--------------------------------:|
-| std_msgs/msg/Bool                  | ignition::msgs::Boolean          |
-| std_msgs/msg/Empty                 | ignition::msgs::Empty            |
-| std_msgs/msg/Float32               | ignition::msgs::Float            |
-| std_msgs/msg/Float64               | ignition::msgs::Double            |
-| std_msgs/msg/Header                | ignition::msgs::Header           |
-| std_msgs/msg/Int32                 | ignition::msgs::Int32            |
-| std_msgs/msg/String                | ignition::msgs::StringMsg        |
-| geometry_msgs/msg/Quaternion       | ignition::msgs::Quaternion       |
-| geometry_msgs/msg/Vector3          | ignition::msgs::Vector3d         |
-| geometry_msgs/msg/Point            | ignition::msgs::Vector3d         |
-| geometry_msgs/msg/Pose             | ignition::msgs::Pose             |
-| geometry_msgs/msg/PoseStamped      | ignition::msgs::Pose             |
-| geometry_msgs/msg/Transform        | ignition::msgs::Pose             |
-| geometry_msgs/msg/TransformStamped | ignition::msgs::Pose             |
-| geometry_msgs/msg/Twist            | ignition::msgs::Twist            |
-| mav_msgs/msg/Actuators (TODO)      | ignition::msgs::Actuators (TODO) |
-| nav_msgs/msg/Odometry              | ignition::msgs::Odometry         |
-| rosgraph_msgs/msg/Clock            | ignition::msgs::Clock            |
-| sensor_msgs/msg/BatteryState       | ignition::msgs::BatteryState     |
-| sensor_msgs/msg/CameraInfo         | ignition::msgs::CameraInfo       |
+| ROS type                             | Ignition Transport type              |
+|--------------------------------------|:------------------------------------:|
+| std_msgs/msg/Bool                    | ignition::msgs::Boolean              |
+| std_msgs/msg/Empty                   | ignition::msgs::Empty                |
+| std_msgs/msg/Float32                 | ignition::msgs::Float                |
+| std_msgs/msg/Float64                 | ignition::msgs::Double               |
+| std_msgs/msg/Header                  | ignition::msgs::Header               |
+| std_msgs/msg/Int32                   | ignition::msgs::Int32                |
+| std_msgs/msg/String                  | ignition::msgs::StringMsg            |
+| geometry_msgs/msg/Quaternion         | ignition::msgs::Quaternion           |
+| geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d             |
+| geometry_msgs/msg/Point              | ignition::msgs::Vector3d             |
+| geometry_msgs/msg/Pose               | ignition::msgs::Pose                 |
+| geometry_msgs/msg/PoseStamped        | ignition::msgs::Pose                 |
+| geometry_msgs/msg/Transform          | ignition::msgs::Pose                 |
+| geometry_msgs/msg/TransformStamped   | ignition::msgs::Pose                 |
+| geometry_msgs/msg/Twist              | ignition::msgs::Twist                |
+| mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)     |
+| nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
+| rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
+| sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
+| sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |
 | sensor_msgs/msg/FluidPressure (TODO) | ignition::msgs::FluidPressure (TODO) |
-| sensor_msgs/msg/Imu                | ignition::msgs::IMU              |
-| sensor_msgs/msg/Image              | ignition::msgs::Image            |
-| sensor_msgs/msg/JointState         | ignition::msgs::Model            |
-| sensor_msgs/msg/LaserScan          | ignition::msgs::LaserScan        |
-| sensor_msgs/msg/MagneticField      | ignition::msgs::Magnetometer     |
-| sensor_msgs/msg/PointCloud2        | ignition::msgs::PointCloudPacked |
-| tf2_msgs/msg/TFMessage             | ignition::msgs::Pose_V           |
-| trajectory_msgs/msg/JointTrajectory | ignition::msgs::JointTrajectory |
+| sensor_msgs/msg/Imu                  | ignition::msgs::IMU                  |
+| sensor_msgs/msg/Image                | ignition::msgs::Image                |
+| sensor_msgs/msg/JointState           | ignition::msgs::Model                |
+| sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan            |
+| sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer         |
+| sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked     |
+| tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V               |
+| trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory      |
 
 Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 
