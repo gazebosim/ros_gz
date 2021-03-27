@@ -6,89 +6,39 @@ between ROS and Ignition Transport.
 The bridge is currently implemented in C++. At this point there's no support for
 service calls. Its support is limited to only the following message types:
 
-| ROS type                       | Ignition Transport type          |
-|--------------------------------|:--------------------------------:|
-| std_msgs/msg/Bool                  | ignition::msgs::Boolean          |
-| std_msgs/msg/Empty                 | ignition::msgs::Empty            |
-| std_msgs/msg/Float32               | ignition::msgs::Float            |
-| std_msgs/msg/Float64               | ignition::msgs::Double            |
-| std_msgs/msg/Header                | ignition::msgs::Header           |
-| std_msgs/msg/Int32                 | ignition::msgs::Int32            |
-| std_msgs/msg/String                | ignition::msgs::StringMsg        |
-| geometry_msgs/msg/Quaternion       | ignition::msgs::Quaternion       |
-| geometry_msgs/msg/Vector3          | ignition::msgs::Vector3d         |
-| geometry_msgs/msg/Point            | ignition::msgs::Vector3d         |
-| geometry_msgs/msg/Pose             | ignition::msgs::Pose             |
-| geometry_msgs/msg/PoseStamped      | ignition::msgs::Pose             |
-| geometry_msgs/msg/Transform        | ignition::msgs::Pose             |
-| geometry_msgs/msg/TransformStamped | ignition::msgs::Pose             |
-| geometry_msgs/msg/Twist            | ignition::msgs::Twist            |
-| mav_msgs/msg/Actuators (TODO)      | ignition::msgs::Actuators (TODO) |
-| nav_msgs/msg/Odometry              | ignition::msgs::Odometry         |
-| rosgraph_msgs/msg/Clock            | ignition::msgs::Clock            |
-| sensor_msgs/msg/BatteryState       | ignition::msgs::BatteryState     |
-| sensor_msgs/msg/CameraInfo         | ignition::msgs::CameraInfo       |
-| sensor_msgs/msg/FluidPressure (TODO) | ignition::msgs::FluidPressure (TODO) |
-| sensor_msgs/msg/Imu                | ignition::msgs::IMU              |
-| sensor_msgs/msg/Image              | ignition::msgs::Image            |
-| sensor_msgs/msg/JointState         | ignition::msgs::Model            |
-| sensor_msgs/msg/LaserScan          | ignition::msgs::LaserScan        |
-| sensor_msgs/msg/MagneticField      | ignition::msgs::Magnetometer     |
-| sensor_msgs/msg/PointCloud2        | ignition::msgs::PointCloudPacked |
-| tf2_msgs/msg/TFMessage             | ignition::msgs::Pose_V           |
-| trajectory_msgs/msg/JointTrajectory | ignition::msgs::JointTrajectory |
+| ROS type                             | Ignition Transport type              |
+|--------------------------------------|:------------------------------------:|
+| std_msgs/msg/Bool                    | ignition::msgs::Boolean              |
+| std_msgs/msg/Empty                   | ignition::msgs::Empty                |
+| std_msgs/msg/Float32                 | ignition::msgs::Float                |
+| std_msgs/msg/Float64                 | ignition::msgs::Double               |
+| std_msgs/msg/Header                  | ignition::msgs::Header               |
+| std_msgs/msg/Int32                   | ignition::msgs::Int32                |
+| std_msgs/msg/String                  | ignition::msgs::StringMsg            |
+| geometry_msgs/msg/Quaternion         | ignition::msgs::Quaternion           |
+| geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d             |
+| geometry_msgs/msg/Point              | ignition::msgs::Vector3d             |
+| geometry_msgs/msg/Pose               | ignition::msgs::Pose                 |
+| geometry_msgs/msg/PoseStamped        | ignition::msgs::Pose                 |
+| geometry_msgs/msg/Transform          | ignition::msgs::Pose                 |
+| geometry_msgs/msg/TransformStamped   | ignition::msgs::Pose                 |
+| geometry_msgs/msg/Twist              | ignition::msgs::Twist                |
+| mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)     |
+| nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
+| rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
+| sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
+| sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |
+| sensor_msgs/msg/FluidPressure        | ignition::msgs::FluidPressure        |
+| sensor_msgs/msg/Imu                  | ignition::msgs::IMU                  |
+| sensor_msgs/msg/Image                | ignition::msgs::Image                |
+| sensor_msgs/msg/JointState           | ignition::msgs::Model                |
+| sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan            |
+| sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer         |
+| sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked     |
+| tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V               |
+| trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory      |
 
 Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
-
-## Prerequisites
-
-* ROS 2 [Foxy](https://index.ros.org/doc/ros2/Installation/Foxy)
-* Ignition [Citadel](https://ignitionrobotics.org/docs/citadel/install) or [Dome](https://ignitionrobotics.org/docs/dome/install)
-
-### Building the bridge from source
-
-Before continuing you should have the prerequisites for building the bridge from
-source installed.
-
-1. Create a colcon workspace:
-
-    ```
-    # Setup the workspace
-    mkdir -p ~/bridge_ws/src
-    cd ~/bridge_ws/src
-
-    # Download needed software
-    git clone https://github.com/osrf/ros_ign.git -b ros2
-    ```
-
-1. Install ROS dependencies:
-
-    ```
-    cd ~/bridge_ws
-    rosdep install --from-paths src -i -y --rosdistro foxy \
-      --skip-keys=ignition-gazebo2 \
-      --skip-keys=ignition-gazebo3 \
-      --skip-keys=ignition-msgs4 \
-      --skip-keys=ignition-msgs5 \
-      --skip-keys=ignition-rendering2 \
-      --skip-keys=ignition-rendering3 \
-      --skip-keys=ignition-sensors2 \
-      --skip-keys=ignition-sensors3 \
-      --skip-keys=ignition-transport7 \
-      --skip-keys=ignition-transport8
-
-    ```
-
-1. Build the workspace:
-
-    ```
-    # Source ROS distro's setup.bash
-    source /opt/ros/foxy/setup.bash
-
-    # Build and install into workspace
-    cd ~/bridge_ws/
-    colcon build
-    ```
 
 ## Example 1a: Ignition Transport talker and ROS 2 listener
 
@@ -104,7 +54,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -136,7 +86,7 @@ Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -158,6 +108,7 @@ Let's see the topic where camera images are published.
 ```
 # Shell B:
 ign topic -l | grep image
+/rgbd_camera/depth_image
 /rgbd_camera/image
 ```
 
@@ -173,7 +124,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/melodic/setup.bash
+. /opt/ros/foxy/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -181,7 +132,7 @@ You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Ignition Msgs over Ignition Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS Kinetic):
+(it was taken using ROS 2 Foxy and Ignition Edifice):
 
 ![Ignition Transport images and ROS rqt](images/bridge_image_exchange.png)
 

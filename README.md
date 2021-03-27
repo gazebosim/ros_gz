@@ -71,13 +71,13 @@ They are hosted at https://packages.ros.org.
 
 ### From source
 
-### ROS
+#### ROS
 
 Be sure you've installed
 [ROS Foxy](https://index.ros.org/doc/ros2/Installation/) (at least ROS-Base).
 More ROS dependencies will be installed below.
 
-### Ignition
+#### Ignition
 
 Install either [Citadel, Dome or Edifice](https://ignitionrobotics.org/docs).
 
@@ -88,7 +88,7 @@ like to compile against. For example:
 
 > You only need to set this variable when compiling, not when running.
 
-### Compile ros_ign
+#### Compile ros_ign
 
 The following steps are for Linux and OSX.
 
@@ -98,6 +98,7 @@ The following steps are for Linux and OSX.
     # Setup the workspace
     mkdir -p ~/ws/src
     cd ~/ws/src
+
     # Download needed software
     git clone https://github.com/osrf/ros_ign.git -b ros2
     ```
@@ -106,15 +107,18 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install --from-paths src -i -y --rosdistro foxy
+    rosdep install -r --from-paths src -i -y --rosdistro foxy
     ```
+
+    > If `rosdep` fails to install Ignition libraries and you have not installed them before, please follow [Ignition installation instructions](https://ignitionrobotics.org/docs/latest/install).
 
 1. Build the workspace:
 
     ```
     # Source ROS distro's setup.bash
     source /opt/ros/foxy/setup.bash
+
     # Build and install into workspace
-    cd ~/ws/
+    cd ~/ws
     colcon build
     ```
