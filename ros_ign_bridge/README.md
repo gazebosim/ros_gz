@@ -28,7 +28,7 @@ service calls. Its support is limited to only the following message types:
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |
-| sensor_msgs/msg/FluidPressure (TODO) | ignition::msgs::FluidPressure (TODO) |
+| sensor_msgs/msg/FluidPressure        | ignition::msgs::FluidPressure        |
 | sensor_msgs/msg/Imu                  | ignition::msgs::IMU                  |
 | sensor_msgs/msg/Image                | ignition::msgs::Image                |
 | sensor_msgs/msg/JointState           | ignition::msgs::Model                |
