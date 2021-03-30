@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.9.5 (2021-03-30)
+------------------
 * Add support for nav_msgs/OccupancyGrid (`#137 <https://github.com/ignitionrobotics/ros_ign/issues/137>`_)
 * Bridge int32 messages (`#138 <https://github.com/ignitionrobotics/ros_ign/issues/138>`_)
 * Add visualization_msgs/Marker (`#136 <https://github.com/ignitionrobotics/ros_ign/issues/136>`_)
