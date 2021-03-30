@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+
 0.9.4 (2020-12-10)
 ------------------
 * Add dome + melodic to CI (`#126 <https://github.com/ignitionrobotics/ros_ign/issues/126>`_)

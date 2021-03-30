@@ -2,6 +2,20 @@
 Changelog for package ros1_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add support for nav_msgs/OccupancyGrid (`#137 <https://github.com/ignitionrobotics/ros_ign/issues/137>`_)
+* Bridge int32 messages (`#138 <https://github.com/ignitionrobotics/ros_ign/issues/138>`_)
+* Add visualization_msgs/Marker (`#136 <https://github.com/ignitionrobotics/ros_ign/issues/136>`_)
+  * Add support for std_msgs/ColorRGBA
+  * Add support for visualization_msgs/Marker
+  * Address reviewer feedback
+  * Revert ADD/MODIFY cases and add note
+  * Handle Citadel vs Dome
+* Add support for Pose_V to PoseArray (`#134 <https://github.com/ignitionrobotics/ros_ign/issues/134>`_)
+* Prevent segfault caused by missing values in sensor_msgs::JointState (`#135 <https://github.com/ignitionrobotics/ros_ign/issues/135>`_)
+* Contributors: Ian Chen, Martin Pecka, Michael Carroll
+
 0.9.4 (2020-12-10)
 ------------------
 * Add dome + melodic to CI (`#126 <https://github.com/ignitionrobotics/ros_ign/issues/126>`_)
