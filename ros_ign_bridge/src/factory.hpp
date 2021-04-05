@@ -19,6 +19,7 @@
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp/subscription_options.hpp>
 
 #include <functional>
 #include <memory>
@@ -71,9 +72,12 @@ public:
       std::placeholders::_1, ign_pub,
       ros_type_name_, ign_type_name_,
       ros_node);
+    // Ignore messages that are published from this bridge.
+    auto options = rclcpp::SubscriptionOptions();
+    options.ignore_local_publications = true;
     std::shared_ptr<rclcpp::Subscription<ROS_T>> subscription =
       ros_node->create_subscription<ROS_T>(
-      topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)), fn);
+      topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)), fn, options);
     return subscription;
   }
 
@@ -112,7 +116,7 @@ protected:
     ign_pub.Publish(ign_msg);
     RCLCPP_INFO_ONCE(
       ros_node->get_logger(),
-      "Passing message from ROS %s to Ignition %s (showing msg only once per type",
+      "Passing message from ROS %s to Ignition %s (showing msg only once per type)",
       ros_type_name.c_str(), ign_type_name.c_str());
   }
 
