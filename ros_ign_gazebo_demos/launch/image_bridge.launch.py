@@ -42,7 +42,7 @@ def generate_launch_description():
     rqt = Node(
         package='rqt_image_view',
         executable='rqt_image_view',
-        arguments=['/camera'],
+        arguments=[LaunchConfiguration('image_topic')],
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
@@ -58,6 +58,8 @@ def generate_launch_description():
         ign_gazebo,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
+        DeclareLaunchArgument('image_topic', default_value='/camera',
+                              description='Topic to start viewing in RQt.'),
         bridge,
         rqt
     ])
