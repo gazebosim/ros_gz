@@ -5,6 +5,7 @@ env:
     - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="citadel" ROS_DISTRO="foxy"
     - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="dome" ROS_DISTRO="foxy"
     - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="edifice" ROS_DISTRO="foxy"
+    - DOCKER_IMAGE=ubuntu:20.04 IGNITION_VERSION="edifice" ROS_DISTRO="rolling"
 
 services:
   - docker

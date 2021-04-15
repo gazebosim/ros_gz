@@ -19,6 +19,7 @@ Foxy | Blueprint | not supported |
 Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
 Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 Foxy | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
+Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
@@ -52,7 +53,7 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Foxy. See above for other ROS versions.
+This branch supports ROS Foxy and Rolling. See above for other ROS versions.
 
 ### Binaries
 
@@ -74,8 +75,8 @@ They are hosted at https://packages.ros.org.
 #### ROS
 
 Be sure you've installed
-[ROS Foxy](https://index.ros.org/doc/ros2/Installation/) (at least ROS-Base).
-More ROS dependencies will be installed below.
+[ROS Foxy or Rolling](https://index.ros.org/doc/ros2/Installation/)
+(at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Ignition
 
@@ -107,8 +108,10 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro foxy
+    rosdep install -r --from-paths src -i -y --rosdistro <distro>
     ```
+
+    Where `<distro>` can be `foxy` or `rolling`.
 
     > If `rosdep` fails to install Ignition libraries and you have not installed them before, please follow [Ignition installation instructions](https://ignitionrobotics.org/docs/latest/install).
 
@@ -116,7 +119,7 @@ The following steps are for Linux and OSX.
 
     ```
     # Source ROS distro's setup.bash
-    source /opt/ros/foxy/setup.bash
+    source /opt/ros/<distro>/setup.bash
 
     # Build and install into workspace
     cd ~/ws
