@@ -2,8 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.233.0 (2021-04-16)
---------------------
+Forthcoming
+-----------
+* Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)
 * Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
 * Update releases (`#108 <https://github.com/osrf/ros_ign/issues/108>`_)
 * Add support for Dome (`#103 <https://github.com/osrf/ros_ign/issues/103>`_)

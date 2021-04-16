@@ -2,8 +2,9 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.233.0 (2021-04-16)
---------------------
+Forthcoming
+-----------
+* Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)
 * Minor updates for demos (`#144 <https://github.com/osrf/ros_ign/issues/144>`_)
   * Re-enable air pressure demo
   - Resolves https://github.com/ignitionrobotics/ros_ign/issues/78

@@ -2,8 +2,9 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.233.0 (2021-04-16)
---------------------
+Forthcoming
+-----------
+* Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)
 * Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
   Co-authored-by: Alejandro Hernández <ahcorde@gmail.com>
 * Add topic flag to create robot  (`#128 <https://github.com/osrf/ros_ign/issues/128>`_)
