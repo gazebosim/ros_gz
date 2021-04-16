@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.233.0 (2021-04-16)
+--------------------
 * Minor updates for demos (`#144 <https://github.com/osrf/ros_ign/issues/144>`_)
   * Re-enable air pressure demo
   - Resolves https://github.com/ignitionrobotics/ros_ign/issues/78

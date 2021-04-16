@@ -2,8 +2,8 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.233.0 (2021-04-16)
+--------------------
 * Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
   Co-authored-by: Alejandro Hernández <ahcorde@gmail.com>
 * Add topic flag to create robot  (`#128 <https://github.com/osrf/ros_ign/issues/128>`_)

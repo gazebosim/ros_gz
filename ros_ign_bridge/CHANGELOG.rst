@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.233.0 (2021-04-16)
+--------------------
 * Ignore local publications for ROS 2 subscriber (`#146 <https://github.com/osrf/ros_ign/issues/146>`_)
   - Note: Does not work with all rmw implementations (e.g.: FastRTPS)
 * Update documentation for installation instructions and bridge examples (`#142 <https://github.com/osrf/ros_ign/issues/142>`_)
