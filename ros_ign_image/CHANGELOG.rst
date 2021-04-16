@@ -2,6 +2,13 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
+* Update releases (`#108 <https://github.com/osrf/ros_ign/issues/108>`_)
+* Add support for Dome (`#103 <https://github.com/osrf/ros_ign/issues/103>`_)
+* Contributors: Louise Poubel, Luca Della Vedova
+
 0.221.1 (2020-08-19)
 --------------------
 * Add pkg-config as a buildtool dependency (`#102 <https://github.com/osrf/ros_ign/issues/102>`_)
