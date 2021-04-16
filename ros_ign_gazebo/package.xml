@@ -17,13 +17,13 @@
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
 
-  <!-- Edifice -->
+  <!-- Edifice (default) -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>
   <!-- Dome -->
   <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
-  <!-- Citadel (default) -->
+  <!-- Citadel -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo3</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

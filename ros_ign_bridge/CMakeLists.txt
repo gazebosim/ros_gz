@@ -20,15 +20,15 @@ find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
-# Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
-  find_package(ignition-transport10 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+# Citadel
+if("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
+  find_package(ignition-transport8 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
-  find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  find_package(ignition-msgs5 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Edifice")
+  message(STATUS "Compiling against Ignition Citadel")
 # Dome
 elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   find_package(ignition-transport9 REQUIRED)
@@ -38,15 +38,15 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Dome")
-# Default to Citadel
+# Default to Edifice
 else()
-  find_package(ignition-transport8 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
+  find_package(ignition-transport10 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
+  find_package(ignition-msgs7 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Citadel")
+  message(STATUS "Compiling against Ignition Edifice")
 endif()
 
 include_directories(include)
