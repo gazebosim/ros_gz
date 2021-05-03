@@ -135,6 +135,12 @@ protected:
     ign_pub.Publish(ign_msg);
     ROS_INFO_ONCE("Passing message from ROS %s to Ignition %s (showing msg"\
         " only once per type", ros_type_name.c_str(), ign_type_name.c_str());
+
+    if (ign_type_name == "ignition.msgs.Empty")
+    {
+      ROS_INFO("Passing message from ROS %s to Ignition %s",
+          ros_type_name.c_str(), ign_type_name.c_str());
+    }
   }
 
   static
