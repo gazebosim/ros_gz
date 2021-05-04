@@ -1,0 +1,11 @@
+bool pause                        
+bool step                       
+uint32 multi_step  0  
+bool reset_time    false             
+bool reset_model   false          
+uint32 seed
+builtin_interfaces/Time run_to_sim_time     # A simulation time in the future to run to and 
+                                            # then pause.
+---
+bool success                                # Return true if spawned successfully.
+string status_message                       # Comments if available.

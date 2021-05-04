@@ -1,0 +1,5 @@
+string name                       # Name of the Ignition Gazebo entity to be deleted. 
+uint8 type                        # Type: Model or Light
+---
+bool success                      # Return true if deletion is successful.
+string status_message             # Comments if available.

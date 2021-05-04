@@ -1,0 +1,25 @@
+<package format="3">
+  <name>ros_ign_interfaces</name>
+  <version>0.233.1</version>
+  <description>Message and service data structures for interacting with Ignition from ROS2.</description>
+  <license>Apache 2.0</license>
+  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+
+  <build_depend>builtin_interfaces</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>geometry_msgs</build_depend>
+
+  <exec_depend>builtin_interfaces</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>geometry_msgs</exec_depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+
+  <test_depend>ament_lint_common</test_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
