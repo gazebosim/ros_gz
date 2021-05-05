@@ -18,8 +18,12 @@ find_package(rosidl_default_generators REQUIRED)
 
 
 set(msg_files
-  "msg/ContactState.msg"
-  "msg/ContactStates.msg"
+  "msg/Contact.msg"
+  "msg/Contacts.msg"
+  "msg/Entity.msg"
+  "msg/EntityFactory.msg"
+  "msg/WorldControl.msg"
+  "msg/WorldReset.msg"
 )
 
 set(srv_files

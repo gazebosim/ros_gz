@@ -1,5 +1,4 @@
-string name                 # Entity's scoped name.
-geometry_msgs/Pose pose     
+ros_ign_interfaces/Entity entity    # Ignition Gazebo entity.
+geometry_msgs/Pose pose             # Pose of entity.
 ---
-bool success                # Return true if spawned successfully.
-string status_message       # Comments if available.
+bool success                        # Return true if set successfully.
