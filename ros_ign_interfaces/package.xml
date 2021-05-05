@@ -4,7 +4,8 @@
   <description>Message and service data structures for interacting with Ignition from ROS2.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
-
+  <maintainer email="zhenpeng.ge@qq.com">Zhenpeng Ge</maintainer>
+  <author>Zhenpeng Ge</author>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>rosidl_default_generators</buildtool_depend>
 
