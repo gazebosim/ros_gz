@@ -1,0 +1,3 @@
+ros_ign_interfaces/Entity entity  # Ignition Gazebo entity to be deleted. 
+---
+bool success                      # Return true if deletion is successful.
