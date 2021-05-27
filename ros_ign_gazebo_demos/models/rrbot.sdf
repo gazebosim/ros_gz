@@ -1,0 +1,152 @@
+<sdf version='1.7'>
+  <model name='rrbot'>
+    <link name='link1'>
+      <pose>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 1 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.334167</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.334167</iyy>
+          <iyz>0</iyz>
+          <izz>0.00166667</izz>
+        </inertia>
+      </inertial>
+      <collision name='link1_collision'>
+        <pose>0 0 1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 2</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='link1_visual'>
+        <pose>0 0 1 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 2</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+          <ambient> 1 0.423529412 0.039215686 1</ambient>
+          <specular>1 0.423529412 0.039215686 1</specular>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint1' type='revolute'>
+      <pose relative_to='link1'>0 0.1 1.95 0 -0 0</pose>
+      <parent>link1</parent>
+      <child>link2</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+          <friction>0.0</friction>          
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link2'>
+      <pose relative_to='joint1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.0841667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0841667</iyy>
+          <iyz>0</iyz>
+          <izz>0.00166667</izz>
+        </inertia>
+      </inertial>
+      <collision name='link2_collision'>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='link2_visual'>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 1</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse> 0 0 0 1</diffuse>
+          <ambient> 0 0 0 1</ambient>
+          <specular>0 0 0 1</specular>
+        </material>
+      </visual>
+    </link>
+    <joint name='joint2' type='revolute'>
+      <pose relative_to='link2'>0 0.1 0.9 0 -0 0</pose>
+      <parent>link2</parent>
+      <child>link3</child>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+          <friction>0.0</friction>          
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='link3'>
+      <pose relative_to='joint2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.0841667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0841667</iyy>
+          <iyz>0</iyz>
+          <izz>0.00166667</izz>
+        </inertia>
+      </inertial>
+      <collision name='link3_collision'>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 1</size>
+          </box>
+        </geometry>
+      </collision>
+      <visual name='link3_visual'>
+        <pose>0 0 0.45 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 1</size>
+          </box>
+        </geometry>
+        <material>
+          <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+          <ambient> 1 0.423529412 0.039215686 1</ambient>
+          <specular>1 0.423529412 0.039215686 1</specular>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Joint state publisher -->
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+
+  </model>
+</sdf>
