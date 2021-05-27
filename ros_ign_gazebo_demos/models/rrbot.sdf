@@ -1,7 +1,25 @@
 <sdf version='1.7'>
   <model name='rrbot'>
+    <link name='base_link'>
+      <inertial>
+        <pose>0 0 1 0 -0 0</pose>
+        <mass>10</mass>
+        <inertia>
+          <ixx>1</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1</iyy>
+          <iyz>0</iyz>
+          <izz>1</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <joint name='fixed_joint' type='fixed'>
+      <parent>base_link</parent>
+      <child>link1</child>
+    </joint>
     <link name='link1'>
-      <pose>0 0 0 0 -0 0</pose>
+      <pose relative_to='base_link'>0 0 0 0 -0 0</pose>
       <inertial>
         <pose>0 0 1 0 -0 0</pose>
         <mass>1</mass>
@@ -47,8 +65,8 @@
           <upper>1e+16</upper>
         </limit>
         <dynamics>
-          <damping>0.7</damping>
-          <friction>0.0</friction>          
+          <damping>21.75</damping>
+          <friction>3.48</friction>          
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -101,8 +119,8 @@
           <upper>1e+16</upper>
         </limit>
         <dynamics>
-          <damping>0.7</damping>
-          <friction>0.0</friction>          
+          <damping>21.75</damping>
+          <friction>3.48</friction>          
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>

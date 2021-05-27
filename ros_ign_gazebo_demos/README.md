@@ -149,3 +149,13 @@ To try the demo launch:
     ros2 launch ros_ign_gazebo_demos robot_description_publisher.launch.py
 
 ![](images/robot_state_publisher_demo.png)
+
+## Joint States Publisher
+
+Publishes joint states of the robot.
+
+To try the demo launch:
+
+    ros2 launch ros_ign_gazebo_demos joint_states.launch.py
+
+![](images/joint_states.png)

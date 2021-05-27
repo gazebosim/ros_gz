@@ -13,16 +13,16 @@ def generate_launch_description():
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
 
     # Parse robot description from urdf
-    robot_description_file =  os.path.join(pkg_ros_ign_gazebo_demos, "models", "rrbot.urdf")
+    robot_description_file =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.urdf')
     robot_description_config = open(robot_description_file).read()
-    robot_description = {"robot_description": robot_description_config}
+    robot_description = {'robot_description': robot_description_config}
 
     # Robot state publisher
     robot_state_publisher = Node(
-        package="robot_state_publisher",
-        executable="robot_state_publisher",
-        name="robot_state_publisher",
-        output="both",
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='both',
         parameters=[robot_description],
     )
 
@@ -30,6 +30,7 @@ def generate_launch_description():
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            launch_arguments={'ign_args': '-r empty.sdf'}.items(),
     )
 
     # RViz
@@ -41,7 +42,8 @@ def generate_launch_description():
     )
 
     # Spawn
-    rrbot_sdf_path =  os.path.join(pkg_ros_ign_gazebo_demos, "models", "rrbot.sdf")
+    rrbot_sdf_path =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.sdf')
+    # rrbot_sdf_path =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot2.sdf')
     print(rrbot_sdf_path)
     spawn = Node(package='ros_ign_gazebo', executable='create',
                 arguments=[
@@ -51,7 +53,7 @@ def generate_launch_description():
                 output='screen',
                 )
 
-    # Ign Bridge
+    # Ign - ROS Bridge
     bridge = Node(
         package='ros_ign_bridge',
         executable='parameter_bridge',
@@ -59,10 +61,10 @@ def generate_launch_description():
                 # Clock (IGN -> ROS2)
                 '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
                 # Joint states (IGN -> ROS2)
-                '/world/default/model/rrbot/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
+                '/world/empty/model/rrbot/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
                 ],
         remappings=[
-            ("/world/default/model/rrbot/joint_state", "joint_states"),
+            ('/world/empty/model/rrbot/joint_state', 'joint_states'),
         ],
         output='screen'
     )
@@ -72,7 +74,7 @@ def generate_launch_description():
                         executable='static_transform_publisher',
                         name='world_static_tf',
                         output='log',
-                        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'link1', 'world'])
+                        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'base_link', 'world'])
 
     return LaunchDescription(
         [

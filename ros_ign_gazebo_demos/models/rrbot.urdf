@@ -8,6 +8,13 @@
   <material name="orange">
     <color rgba="1.0 0.423529411765 0.0392156862745 1.0"/>
   </material>
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="base_link"/>
+  <joint name="fixed_joint" type="fixed">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin rpy="0 0 0" xyz="0 0 0"/>
+  </joint>
   <!-- Base Link -->
   <link name="link1">
     <collision>
