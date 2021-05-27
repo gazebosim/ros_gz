@@ -2,8 +2,8 @@
   <model name='rrbot'>
     <link name='base_link'>
       <inertial>
-        <pose>0 0 1 0 -0 0</pose>
-        <mass>10</mass>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>100</mass>
         <inertia>
           <ixx>1</ixx>
           <ixy>0</ixy>
@@ -65,8 +65,8 @@
           <upper>1e+16</upper>
         </limit>
         <dynamics>
-          <damping>21.75</damping>
-          <friction>3.48</friction>          
+          <damping>0.7</damping>
+          <friction>0</friction>          
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>
@@ -119,8 +119,8 @@
           <upper>1e+16</upper>
         </limit>
         <dynamics>
-          <damping>21.75</damping>
-          <friction>3.48</friction>          
+          <damping>0.7</damping>
+          <friction>0</friction>            
           <spring_reference>0</spring_reference>
           <spring_stiffness>0</spring_stiffness>
         </dynamics>

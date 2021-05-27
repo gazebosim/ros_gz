@@ -12,10 +12,12 @@ def generate_launch_description():
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
 
-    # Parse robot description from urdf
-    robot_description_file =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.urdf')
-    robot_description_config = open(robot_description_file).read()
-    robot_description = {'robot_description': robot_description_config}
+    # Parse robot description from xacro
+    robot_description_file =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.xacro')
+    robot_description_config = xacro.process_file(
+        robot_description_file
+    )
+    robot_description = {"robot_description": robot_description_config.toxml()}
 
     # Robot state publisher
     robot_state_publisher = Node(
@@ -38,17 +40,14 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'joint_states.rviz')],
-        parameters=[]
     )
 
     # Spawn
-    rrbot_sdf_path =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.sdf')
-    # rrbot_sdf_path =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot2.sdf')
-    print(rrbot_sdf_path)
+    rrbot_sdf =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.sdf')
     spawn = Node(package='ros_ign_gazebo', executable='create',
                 arguments=[
                     '-name', 'rrbot',
-                    '-file', rrbot_sdf_path,
+                    '-file', rrbot_sdf,
                     ],
                 output='screen',
                 )
