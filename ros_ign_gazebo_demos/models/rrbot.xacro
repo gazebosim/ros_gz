@@ -21,10 +21,10 @@
   </material>
 
   <!-- Used for fixing robot to Gazebo 'base_link' -->
-  <link name="base_link"/>
+  <link name="world"/>
 
   <joint name="fixed" type="fixed">
-    <parent link="base_link"/>
+    <parent link="world"/>
     <child link="link1"/>
   </joint>
 
@@ -49,9 +49,9 @@
       <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
       <mass value="${mass}"/>
       <inertia
-	  ixx="${mass / 12.0 * (width*width + height1*height1)}" ixy="0.0" ixz="0.0"
-	  iyy="${mass / 12.0 * (height1*height1 + width*width)}" iyz="0.0"
-	  izz="${mass / 12.0 * (width*width + width*width)}"/>
+    ixx="${mass / 12.0 * (width*width + height1*height1)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height1*height1 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
     </inertial>
   </link>
 
@@ -75,7 +75,7 @@
     <visual>
       <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
       <geometry>
-          <box size="${width} ${width} ${height2}"/>
+        <box size="${width} ${width} ${height2}"/>
       </geometry>
       <material name="black"/>
     </visual>
@@ -84,9 +84,9 @@
       <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
       <mass value="${mass}"/>
       <inertia
-	  ixx="${mass / 12.0 * (width*width + height2*height2)}" ixy="0.0" ixz="0.0"
-	  iyy="${mass / 12.0 * (height2*height2 + width*width)}" iyz="0.0"
-	  izz="${mass / 12.0 * (width*width + width*width)}"/>
+    ixx="${mass / 12.0 * (width*width + height2*height2)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height2*height2 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
     </inertial>
   </link>
 
@@ -119,10 +119,47 @@
       <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
       <mass value="${mass}"/>
       <inertia
-	  ixx="${mass / 12.0 * (width*width + height3*height3)}" ixy="0.0" ixz="0.0"
-	  iyy="${mass / 12.0 * (height3*height3 + width*width)}" iyz="0.0"
-	  izz="${mass / 12.0 * (width*width + width*width)}"/>
+    ixx="${mass / 12.0 * (width*width + height3*height3)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height3*height3 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
     </inertial>
   </link>
+
+  <!-- Gazebo colors and frictions -->
+  <!-- Link1 -->
+  <gazebo reference="link1">
+    <material>
+      <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+      <ambient> 1 0.423529412 0.039215686 1</ambient>
+      <specular>1 0.423529412 0.039215686 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Link2 -->
+  <gazebo reference="link2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>
+      <diffuse> 0 0 0 1</diffuse>
+      <ambient> 0 0 0 1</ambient>
+      <specular>0 0 0 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Link3 -->
+  <gazebo reference="link3">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>
+      <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+      <ambient> 1 0.423529412 0.039215686 1</ambient>
+      <specular>1 0.423529412 0.039215686 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Joint states plugin -->
+  <gazebo>
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+  </gazebo>
 
 </robot>

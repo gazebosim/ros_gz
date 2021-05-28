@@ -43,11 +43,10 @@ def generate_launch_description():
     )
 
     # Spawn
-    rrbot_sdf =  os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.sdf')
     spawn = Node(package='ros_ign_gazebo', executable='create',
                 arguments=[
                     '-name', 'rrbot',
-                    '-file', rrbot_sdf,
+                    '-topic', 'robot_description',
                     ],
                 output='screen',
                 )
@@ -68,13 +67,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Static TF between world and robot
-    world_static_tf = Node(package='tf2_ros',
-                        executable='static_transform_publisher',
-                        name='world_static_tf',
-                        output='log',
-                        arguments=['0.0', '0.0', '0.0', '0.0', '0.0', '0.0', 'base_link', 'world'])
-
     return LaunchDescription(
         [
             # Nodes and Launches
@@ -82,7 +74,6 @@ def generate_launch_description():
             spawn,
             bridge,
             robot_state_publisher,
-            world_static_tf,
             rviz,
         ]
     )
