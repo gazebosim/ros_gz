@@ -25,6 +25,7 @@
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
+#include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
@@ -133,6 +134,13 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
+  void createTestMsg(std_msgs::Int32 &_msg)
+  {
+    _msg.data = 5;
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
   void createTestMsg(std_msgs::Float32 &_msg)
   {
     _msg.data = 1.5;
@@ -143,6 +151,16 @@ namespace testing
   void createTestMsg(std_msgs::Float64 &_msg)
   {
     _msg.data = 1.5;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const std_msgs::Int32 &_msg)
+  {
+    std_msgs::Int32 expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.data, _msg.data);
   }
 
   /// \brief Compare a message with the populated for testing.
@@ -856,6 +874,23 @@ namespace testing
   /// \param[in] _msg The message to compare.
   void compareTestMsg(const ignition::msgs::Empty &)
   {
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::Int32 &_msg)
+  {
+    _msg.set_data(5);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::Int32 &_msg)
+  {
+    ignition::msgs::Int32 expected_msg;
+    createTestMsg(expected_msg);
+
+    EXPECT_EQ(expected_msg.data(), _msg.data());
   }
 
   /// \brief Create a message used for testing.

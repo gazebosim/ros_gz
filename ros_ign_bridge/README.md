@@ -10,6 +10,7 @@ service calls. Its support is limited to only the following message types:
 |--------------------------------|:--------------------------------:|
 | std_msgs/Bool                  | ignition::msgs::Boolean          |
 | std_msgs/Empty                 | ignition::msgs::Empty            |
+| std_msgs/Int32                 | ignition::msgs::Int32            |
 | std_msgs/Float32               | ignition::msgs::Float            |
 | std_msgs/Float64               | ignition::msgs::Double           |
 | std_msgs/Header                | ignition::msgs::Header           |
