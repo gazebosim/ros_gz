@@ -15,7 +15,7 @@
 #include <ignition/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
-#include <image_transport/image_transport.h>
+#include <image_transport/image_transport.hpp>
 #include <ros_ign_bridge/convert.hpp>
 
 #include <iostream>
