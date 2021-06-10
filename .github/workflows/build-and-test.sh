@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
 apt update -qq
-apt install -qq -y lsb-release wget curl
+apt install -qq -y lsb-release wget curl build-essential
 
 # Citadel gets Ignition with rosdep
 if [ "$IGNITION_VERSION" != "citadel" ]; then
@@ -41,7 +41,7 @@ rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $COLCON_WS_SRC
-ln -s /code $COLCON_WS_SRC
+cp -r $GITHUB_WORKSPACE $COLCON_WS_SRC
 cd $COLCON_WS
 colcon build --event-handlers console_direct+
 
