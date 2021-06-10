@@ -1,0 +1,165 @@
+<?xml version="1.0"?>
+<!-- Revolute-Revolute Manipulator -->
+<robot name="rrbot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- Constants for robot dimensions -->
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="mass" value="1" /> <!-- arbitrary value for mass -->
+  <xacro:property name="width" value="0.1" /> <!-- Square dimensions (widthxwidth) of beams -->
+  <xacro:property name="height1" value="2" /> <!-- Link 1 -->
+  <xacro:property name="height2" value="1" /> <!-- Link 2 -->
+  <xacro:property name="height3" value="1" /> <!-- Link 3 -->
+  <xacro:property name="axel_offset" value="0.05" /> <!-- Space btw top of beam and the each joint -->
+
+  <!-- Define colors -->
+  <material name="black">
+    <color rgba="0.0 0.0 0.0 1.0"/>
+  </material>
+
+  <material name="orange">
+    <color rgba="${255/255} ${108/255} ${10/255} 1.0"/>
+  </material>
+
+  <!-- Used for fixing robot to Gazebo 'base_link' -->
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="link1"/>
+  </joint>
+
+  <!-- Base Link -->
+  <link name="link1">
+    <collision>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height1}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height1}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height1/2}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+    ixx="${mass / 12.0 * (width*width + height1*height1)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height1*height1 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
+    </inertial>
+  </link>
+
+  <joint name="joint1" type="continuous">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 ${width} ${height1 - axel_offset}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+  <!-- Middle Link -->
+  <link name="link2">
+    <collision>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height2}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height2}"/>
+      </geometry>
+      <material name="black"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height2/2 - axel_offset}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+    ixx="${mass / 12.0 * (width*width + height2*height2)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height2*height2 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
+    </inertial>
+  </link>
+
+  <joint name="joint2" type="continuous">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 ${width} ${height2 - axel_offset*2}" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+  <!-- Top Link -->
+  <link name="link3">
+    <collision>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height3}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
+      <geometry>
+        <box size="${width} ${width} ${height3}"/>
+      </geometry>
+      <material name="orange"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 ${height3/2 - axel_offset}" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <inertia
+    ixx="${mass / 12.0 * (width*width + height3*height3)}" ixy="0.0" ixz="0.0"
+    iyy="${mass / 12.0 * (height3*height3 + width*width)}" iyz="0.0"
+    izz="${mass / 12.0 * (width*width + width*width)}"/>
+    </inertial>
+  </link>
+
+  <!-- Gazebo colors and frictions -->
+  <!-- Link1 -->
+  <gazebo reference="link1">
+    <material>
+      <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+      <ambient> 1 0.423529412 0.039215686 1</ambient>
+      <specular>1 0.423529412 0.039215686 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Link2 -->
+  <gazebo reference="link2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>
+      <diffuse> 0 0 0 1</diffuse>
+      <ambient> 0 0 0 1</ambient>
+      <specular>0 0 0 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Link3 -->
+  <gazebo reference="link3">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>
+      <diffuse> 1 0.423529412 0.039215686 1</diffuse>
+      <ambient> 1 0.423529412 0.039215686 1</ambient>
+      <specular>1 0.423529412 0.039215686 1</specular>
+    </material>
+  </gazebo>
+
+  <!-- Joint states plugin -->
+  <gazebo>
+    <plugin filename="libignition-gazebo-joint-state-publisher-system.so" name="ignition::gazebo::systems::JointStatePublisher"/>
+  </gazebo>
+
+</robot>
