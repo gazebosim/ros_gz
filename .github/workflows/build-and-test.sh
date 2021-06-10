@@ -7,7 +7,7 @@ export CATKIN_WS_SRC=${CATKIN_WS}/src
 export DEBIAN_FRONTEND=noninteractive
 
 apt update -qq
-apt install -qq -y lsb-release wget curl
+apt install -qq -y lsb-release wget curl build-essential
 
 if [ "$IGNITION_VERSION" == "blueprint" ]; then
   IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
@@ -49,7 +49,7 @@ rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO \
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $CATKIN_WS_SRC
-ln -s /code $CATKIN_WS_SRC
+ln -s $GITHUB_WORKSPACE $CATKIN_WS_SRC
 cd $CATKIN_WS
 catkin init
 catkin config --install
