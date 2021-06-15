@@ -56,6 +56,7 @@ versions:
     * Citadel: 1
     * Dome: 2
     * Edifice: 3
+    * Fortress: 4
 
 ROS | Ignition | Version
 -- | -- | --

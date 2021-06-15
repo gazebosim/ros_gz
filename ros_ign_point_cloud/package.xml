@@ -10,6 +10,10 @@
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
 
+  <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-rendering6</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-sensors6</depend>
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-rendering5</depend>

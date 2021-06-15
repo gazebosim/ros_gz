@@ -8,6 +8,18 @@ find_package(catkin
     roscpp
 )
 
+# Fortress
+if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  find_package(ignition-gazebo6 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 # Edifice
 if ("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
