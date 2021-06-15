@@ -51,7 +51,7 @@ This branch supports ROS Melodic. See above for other ROS versions.
 
 ### Binaries
 
-At the moment, Melodic binaries are only available for Blueprint.
+At the moment, Melodic binaries are only available for Dome.
 They are hosted at https://packages.osrfoundation.org.
 
 1. Add https://packages.osrfoundation.org
@@ -74,7 +74,7 @@ More ROS dependencies will be installed below.
 
 ### Ignition
 
-Install either [Blueprint or Citadel](https://ignitionrobotics.org/docs).
+Install either [Citadel or Dome](https://ignitionrobotics.org/docs).
 
 Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
 like to compile against. For example:
