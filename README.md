@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/melodic-ci.yml/badge.svg)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/melodic-ci.yml)
+[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/melodic-ci.yml/badge.svg?branch=melodic)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/melodic-ci.yml)
 
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
