@@ -1,6 +1,6 @@
 name: ROS2 CI
 
-on: 
+on:
   pull_request:
   push:
     branches:
@@ -17,16 +17,13 @@ jobs:
       matrix:
         include:
           - docker-image: "ubuntu:20.04"
-            ignition-version: "citadel"
-            ros-distro: "foxy"
-          - docker-image: "ubuntu:20.04"
-            ignition-version: "dome"
-            ros-distro: "foxy"
+            ignition-version: "edifice"
+            ros-distro: "galactic"
           - docker-image: "ubuntu:20.04"
             ignition-version: "edifice"
-            ros-distro: "foxy"
+            ros-distro: "rolling"
           - docker-image: "ubuntu:20.04"
-            ignition-version: "edifice"
+            ignition-version: "fortress"
             ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}

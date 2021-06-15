@@ -1,25 +1,19 @@
-[![Build Status](https://travis-ci.org/ignitionrobotics/ros_ign.svg?branch=noetic)](https://travis-ci.org/ignitionrobotics/ros_ign/branches)
+[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml)
 
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
-Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
-Melodic | Dome | not supported |
-Noetic | Blueprint | not supported |
+Melodic | Dome | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
 Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
-Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Dashing | Dome | not supported |
-Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Eloquent | Dome | not supported |
-Foxy | Blueprint | not supported |
+Noetic | Fortress (not released) | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
 Foxy | Dome | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
 Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
-Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
+Galactic | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Rolling | Fortress (not released) | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
@@ -53,11 +47,11 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Foxy and Rolling. See above for other ROS versions.
+This branch supports ROS Galactic and Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Foxy binaries are only available for Citadel.
+Foxy binaries are available for Galactic and Rolling.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org
@@ -68,24 +62,24 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_ign`
 
-        sudo apt install ros-foxy-ros-ign
+        sudo apt install ros-galactic-ros-ign
 
 ### From source
 
 #### ROS
 
 Be sure you've installed
-[ROS Foxy or Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Galactic or Rolling](https://index.ros.org/doc/ros2/Installation/)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Ignition
 
-Install either [Citadel, Dome or Edifice](https://ignitionrobotics.org/docs).
+Install either [Edifice or Fortress](https://ignitionrobotics.org/docs).
 
 Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
 like to compile against. For example:
 
-    export IGNITION_VERSION=citadel
+    export IGNITION_VERSION=edifice
 
 > You only need to set this variable when compiling, not when running.
 
@@ -111,7 +105,7 @@ The following steps are for Linux and OSX.
     rosdep install -r --from-paths src -i -y --rosdistro <distro>
     ```
 
-    Where `<distro>` can be `foxy` or `rolling`.
+    Where `<distro>` can be `galactic` or `rolling`.
 
     > If `rosdep` fails to install Ignition libraries and you have not installed them before, please follow [Ignition installation instructions](https://ignitionrobotics.org/docs/latest/install).
 
