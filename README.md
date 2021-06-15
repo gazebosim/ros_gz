@@ -51,7 +51,7 @@ This branch supports ROS Galactic and Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Foxy binaries are available for Galactic and Rolling.
+Galactic and Rolling binaries are available for Edifice.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org
@@ -62,7 +62,9 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_ign`
 
-        sudo apt install ros-galactic-ros-ign
+        sudo apt install ros-<distro>-ros-ign
+
+    Where `<distro>` can be `galactic` or `rolling`.
 
 ### From source
 
