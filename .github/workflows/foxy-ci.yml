@@ -1,13 +1,6 @@
 name: Foxy CI
 
-on:
-  pull_request:
-  push:
-    branches:
-      - ros2
-    schedule:
-      # Run the CI automatically once per day to look for flakyness.
-      - cron: "0 0 * * *"
+on: [push, pull_request]
 
 jobs:
   ros_ign_ci:
