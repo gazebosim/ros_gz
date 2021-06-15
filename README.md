@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/foxy-ci.yml/badge.svg)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/foxy-ci.yml)
+[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/foxy-ci.yml/badge.svg?branch=foxy)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/foxy-ci.yml)
 
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
