@@ -1,10 +1,10 @@
 name: Melodic CI
 
-on: 
+on:
   pull_request:
   push:
     branches:
-      - melodic 
+      - melodic
     schedule:
       # Run the CI automatically once per day to look for flakyness.
       - cron: "0 0 * * *"

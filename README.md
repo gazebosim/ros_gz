@@ -2,21 +2,18 @@
 
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
-Melodic | Blueprint | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
 Melodic | Dome | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
-Noetic | Blueprint | not supported |
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
 Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
-Dashing | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Dashing | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Dashing | Dome | not supported |
-Eloquent | Blueprint | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Eloquent | Citadel | [dashing](https://github.com/osrf/ros_ign/tree/dashing) | only from source
-Eloquent | Dome | not supported |
-Foxy | Blueprint | not supported |
-Foxy | Citadel | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
-Foxy | Dome | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
+Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
+Noetic | Fortress (not released) | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
+Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
+Foxy | Dome | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
+Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
+Galactic | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Rolling | Fortress (not released) | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
