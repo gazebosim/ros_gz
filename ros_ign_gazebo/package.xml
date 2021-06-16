@@ -10,6 +10,8 @@
   <depend>libgflags-dev</depend>
   <depend>roscpp</depend>
 
+  <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <!-- Dome -->

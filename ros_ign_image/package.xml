@@ -7,6 +7,9 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>

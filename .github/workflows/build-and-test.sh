@@ -24,6 +24,10 @@ if [ "$IGNITION_VERSION" != "citadel" ]; then
   if [ "$IGNITION_VERSION" == "edifice" ]; then
     IGN_DEPS="libignition-msgs7-dev libignition-transport10-dev libignition-gazebo5-dev"
   fi
+
+  if [ "$IGNITION_VERSION" == "fortress" ]; then
+    IGN_DEPS="libignition-msgs8-dev libignition-transport11-dev libignition-gazebo6-dev"
+  fi
 fi
 
 # Dependencies.
