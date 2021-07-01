@@ -972,7 +972,20 @@ convert_ign_to_ros(
   sensor_msgs::Imu & ros_msg)
 {
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-  convert_ign_to_ros(ign_msg.orientation(), ros_msg.orientation);
+
+  if (ign_msg.has_orientation())
+  {
+    convert_ign_to_ros(ign_msg.orientation(), ros_msg.orientation);
+  }
+  else
+  {
+    // ign may not publish orientation values.
+    // So set 1st element of orientation covariance matrix to -1 to indicate
+    // there are not orientation estimates, see ROS imu msg documentation:
+    // http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/Imu.html
+    ros_msg.orientation_covariance[0] = -1.0f;
+  }
+
   convert_ign_to_ros(ign_msg.angular_velocity(), ros_msg.angular_velocity);
   convert_ign_to_ros(ign_msg.linear_acceleration(), ros_msg.linear_acceleration);
 
