@@ -958,7 +958,14 @@ convert_ros_to_ign(
   // ToDo: Verify that this is the expected value (probably not).
   ign_msg.set_entity_name(ros_msg.header.frame_id);
 
-  convert_ros_to_ign(ros_msg.orientation, (*ign_msg.mutable_orientation()));
+  if (!ignition::math::equal(ros_msg.orientation_covariance[0], -1.0))
+  {
+    // -1 in orientation covariance matrix means there are no orientation
+    // values, see
+    // http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/Imu.html
+    convert_ros_to_ign(ros_msg.orientation, (*ign_msg.mutable_orientation()));
+  }
+
   convert_ros_to_ign(ros_msg.angular_velocity,
                    (*ign_msg.mutable_angular_velocity()));
   convert_ros_to_ign(ros_msg.linear_acceleration,
@@ -981,7 +988,7 @@ convert_ign_to_ros(
   {
     // ign may not publish orientation values.
     // So set 1st element of orientation covariance matrix to -1 to indicate
-    // there are not orientation estimates, see ROS imu msg documentation:
+    // there are no orientation estimates, see ROS imu msg documentation:
     // http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/Imu.html
     ros_msg.orientation_covariance[0] = -1.0f;
   }
