@@ -8,7 +8,6 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <depend>libgflags-dev</depend>
-  <depend>roscpp</depend>
 
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
@@ -19,4 +18,6 @@
   <!-- Citadel (default) -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-gazebo3</depend>
+
+  <depend>roscpp</depend>
 </package>

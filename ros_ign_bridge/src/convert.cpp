@@ -79,6 +79,30 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const std_msgs::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ign_msg.set_r(ros_msg.r);
+  ign_msg.set_g(ros_msg.g);
+  ign_msg.set_b(ros_msg.b);
+  ign_msg.set_a(ros_msg.a);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::ColorRGBA & ros_msg)
+{
+  ros_msg.r = ign_msg.r();
+  ros_msg.g = ign_msg.g();
+  ros_msg.b = ign_msg.b();
+  ros_msg.a = ign_msg.a();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::Empty &,
   ignition::msgs::Empty &)
 {
@@ -321,6 +345,38 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & ign_msg)
+{
+  ign_msg.clear_pose();
+  for (auto const &t : ros_msg.poses)
+  {
+    auto p = ign_msg.add_pose();
+    convert_ros_to_ign(t, *p);
+  }
+
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  geometry_msgs::PoseArray & ros_msg)
+{
+  ros_msg.poses.clear();
+  for (auto const &p : ign_msg.pose())
+  {
+    geometry_msgs::Pose pose;
+    convert_ign_to_ros(p, pose);
+    ros_msg.poses.push_back(pose);
+  }
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
@@ -477,6 +533,52 @@ convert_ign_to_ros(
 //   for (auto i = 0; i < ign_msg.normalized_size(); ++i)
 //     ros_msg.normalized.push_back(ign_msg.normalized(i));
 // }
+
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  ign_msg.mutable_info()->mutable_map_load_time()->set_sec(
+      ros_msg.info.map_load_time.sec);
+  ign_msg.mutable_info()->mutable_map_load_time()->set_nsec(
+      ros_msg.info.map_load_time.nsec);
+
+  ign_msg.mutable_info()->set_resolution(
+      ros_msg.info.resolution);
+  ign_msg.mutable_info()->set_width(
+      ros_msg.info.width);
+  ign_msg.mutable_info()->set_height(
+      ros_msg.info.height);
+
+  convert_ros_to_ign(ros_msg.info.origin, 
+      (*ign_msg.mutable_info()->mutable_origin()));
+
+  ign_msg.set_data(&ros_msg.data[0], ros_msg.data.size());
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid & ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  ros_msg.info.map_load_time.sec = ign_msg.info().map_load_time().sec();
+  ros_msg.info.map_load_time.nsec = ign_msg.info().map_load_time().nsec();
+  ros_msg.info.resolution = ign_msg.info().resolution();
+  ros_msg.info.width = ign_msg.info().width();
+  ros_msg.info.height = ign_msg.info().height();
+
+  convert_ign_to_ros(ign_msg.info().origin(), ros_msg.info.origin);
+
+  ros_msg.data.resize(ign_msg.data().size());
+  memcpy(&ros_msg.data[0], ign_msg.data().c_str(), ign_msg.data().size());
+}
 
 template<>
 void
@@ -856,7 +958,14 @@ convert_ros_to_ign(
   // ToDo: Verify that this is the expected value (probably not).
   ign_msg.set_entity_name(ros_msg.header.frame_id);
 
-  convert_ros_to_ign(ros_msg.orientation, (*ign_msg.mutable_orientation()));
+  if (!ignition::math::equal(ros_msg.orientation_covariance[0], -1.0))
+  {
+    // -1 in orientation covariance matrix means there are no orientation
+    // values, see
+    // http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/Imu.html
+    convert_ros_to_ign(ros_msg.orientation, (*ign_msg.mutable_orientation()));
+  }
+
   convert_ros_to_ign(ros_msg.angular_velocity,
                    (*ign_msg.mutable_angular_velocity()));
   convert_ros_to_ign(ros_msg.linear_acceleration,
@@ -870,7 +979,20 @@ convert_ign_to_ros(
   sensor_msgs::Imu & ros_msg)
 {
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-  convert_ign_to_ros(ign_msg.orientation(), ros_msg.orientation);
+
+  if (ign_msg.has_orientation())
+  {
+    convert_ign_to_ros(ign_msg.orientation(), ros_msg.orientation);
+  }
+  else
+  {
+    // ign may not publish orientation values.
+    // So set 1st element of orientation covariance matrix to -1 to indicate
+    // there are no orientation estimates, see ROS imu msg documentation:
+    // http://docs.ros.org/en/melodic/api/sensor_msgs/html/msg/Imu.html
+    ros_msg.orientation_covariance[0] = -1.0f;
+  }
+
   convert_ign_to_ros(ign_msg.angular_velocity(), ros_msg.angular_velocity);
   convert_ign_to_ros(ign_msg.linear_acceleration(), ros_msg.linear_acceleration);
 
@@ -885,13 +1007,26 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
-  for (auto i = 0u; i < ros_msg.position.size(); ++i)
+  const auto nan = std::numeric_limits<double>::quiet_NaN();
+  for (auto i = 0u; i < ros_msg.name.size(); ++i)
   {
     auto newJoint = ign_msg.add_joint();
     newJoint->set_name(ros_msg.name[i]);
-    newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
-    newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
-    newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    
+    if (ros_msg.position.size() > i)
+      newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
+    else
+      newJoint->mutable_axis1()->set_position(nan);
+    
+    if (ros_msg.velocity.size() > i)
+      newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
+    else
+      newJoint->mutable_axis1()->set_velocity(nan);
+    
+    if (ros_msg.effort.size() > i)
+      newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    else
+      newJoint->mutable_axis1()->set_force(nan);
   }
 }
 
@@ -1208,6 +1343,260 @@ convert_ign_to_ros(
   ros_msg.power_supply_health = sensor_msgs::BatteryState::POWER_SUPPLY_HEALTH_UNKNOWN;
   ros_msg.power_supply_technology = sensor_msgs::BatteryState::POWER_SUPPLY_TECHNOLOGY_UNKNOWN;
   ros_msg.present = true;
+}
+
+template<>
+void
+convert_ros_to_ign(
+    const visualization_msgs::Marker & ros_msg,
+    ignition::msgs::Marker & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  // Note, in ROS's Marker message ADD and MODIFY both map to a value of "0", 
+  // so that case is not needed here.
+  switch(ros_msg.action)
+  {
+    case visualization_msgs::Marker::ADD:
+      ign_msg.set_action(ignition::msgs::Marker::ADD_MODIFY);
+      break;
+    case visualization_msgs::Marker::DELETE:
+      ign_msg.set_action(ignition::msgs::Marker::DELETE_MARKER);
+      break;
+    case visualization_msgs::Marker::DELETEALL:
+      ign_msg.set_action(ignition::msgs::Marker::DELETE_ALL);
+      break;
+    default:
+      ROS_ERROR_STREAM("Unknown visualization_msgs::Marker action [" <<
+          ros_msg.action << "]\n");
+      break;
+  }
+
+  ign_msg.set_ns(ros_msg.ns);
+  ign_msg.set_id(ros_msg.id);
+  // ign_msg.set_layer();  // No "layer" concept in ROS
+
+  // Type
+  switch(ros_msg.type)
+  {
+#ifdef IGNITION_DOME
+    case visualization_msgs::Marker::ARROW:
+      ign_msg.set_type(ignition::msgs::Marker::ARROW);
+      break;
+#endif
+    case visualization_msgs::Marker::CUBE:
+      ign_msg.set_type(ignition::msgs::Marker::BOX);
+      break;
+    case visualization_msgs::Marker::SPHERE:
+      ign_msg.set_type(ignition::msgs::Marker::SPHERE);
+      break;
+    case visualization_msgs::Marker::CYLINDER:
+      ign_msg.set_type(ignition::msgs::Marker::CYLINDER);
+      break;
+    case visualization_msgs::Marker::LINE_STRIP:
+      ign_msg.set_type(ignition::msgs::Marker::LINE_STRIP);
+      break;
+    case visualization_msgs::Marker::LINE_LIST:
+      ign_msg.set_type(ignition::msgs::Marker::LINE_LIST);
+      break;
+    case visualization_msgs::Marker::CUBE_LIST:
+      ROS_ERROR_STREAM("Unsupported visualization_msgs::Marker type" <<
+          "[CUBE_LIST]\n");
+      break;
+    case visualization_msgs::Marker::SPHERE_LIST:
+      ROS_ERROR_STREAM("Unsupported visualization_msgs::Marker type" <<
+          "[SPHERE_LIST]\n");
+      break;
+    case visualization_msgs::Marker::POINTS:
+      ign_msg.set_type(ignition::msgs::Marker::POINTS);
+      break;
+    case visualization_msgs::Marker::TEXT_VIEW_FACING:
+      ign_msg.set_type(ignition::msgs::Marker::TEXT);
+      break;
+    case visualization_msgs::Marker::MESH_RESOURCE:
+      ROS_ERROR_STREAM("Unsupported visualization_msgs::Marker type" <<
+          "[MESH_RESOURCE]\n");
+      break;
+    case visualization_msgs::Marker::TRIANGLE_LIST:
+      ign_msg.set_type(ignition::msgs::Marker::TRIANGLE_LIST);
+      break;
+    default:
+      ROS_ERROR_STREAM("Unknown visualization_msgs::Marker type [" <<
+          ros_msg.type << "]\n");
+      break;
+  }
+
+  // Lifetime
+  ign_msg.mutable_lifetime()->set_sec(ros_msg.lifetime.sec);
+  ign_msg.mutable_lifetime()->set_nsec(ros_msg.lifetime.nsec);
+
+  // Pose
+  convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
+
+  // Scale
+  convert_ros_to_ign(ros_msg.scale, *ign_msg.mutable_scale());
+
+  // Material
+  convert_ros_to_ign(ros_msg.color, *ign_msg.mutable_material()->mutable_ambient());
+  convert_ros_to_ign(ros_msg.color, *ign_msg.mutable_material()->mutable_diffuse());
+  convert_ros_to_ign(ros_msg.color, *ign_msg.mutable_material()->mutable_specular());
+
+  // Point
+  ign_msg.clear_point();
+  for (auto const &pt : ros_msg.points)
+  {
+    auto p = ign_msg.add_point();
+    convert_ros_to_ign(pt, *p);
+  }
+
+  ign_msg.set_text(ros_msg.text);
+
+  // ign_msg.set_parent();  // No "parent" concept in ROS
+  // ign_msg.set_visibility();  // No "visibility" concept in ROS
+}
+
+template<>
+void
+convert_ign_to_ros(
+    const ignition::msgs::Marker & ign_msg,
+    visualization_msgs::Marker & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  switch(ign_msg.action())
+  {
+    case ignition::msgs::Marker::ADD_MODIFY:
+      ros_msg.action = visualization_msgs::Marker::ADD;
+      break;
+    case ignition::msgs::Marker::DELETE_MARKER:
+      ros_msg.action = visualization_msgs::Marker::DELETE;
+      break;
+    case ignition::msgs::Marker::DELETE_ALL:
+      ros_msg.action = visualization_msgs::Marker::DELETEALL;
+      break;
+    default:
+      ROS_ERROR_STREAM("Unknown ignition.msgs.marker action [" <<
+          ign_msg.action() << "]\n");
+      break;
+  }
+
+  ros_msg.ns = ign_msg.ns();
+  ros_msg.id = ign_msg.id();
+
+  switch(ign_msg.type())
+  {
+#ifdef IGNITION_DOME
+    case ignition::msgs::Marker::ARROW:
+      ros_msg.type = visualization_msgs::Marker::TRIANGLE_LIST;
+      break;
+    case ignition::msgs::Marker::AXIS:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[AXIS]\n");
+      break;
+    case ignition::msgs::Marker::CONE:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[CONE]\n");
+      break;
+#endif
+    case ignition::msgs::Marker::NONE:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[NONE]\n");
+      break;
+    case ignition::msgs::Marker::BOX:
+      ros_msg.type = visualization_msgs::Marker::CUBE;
+      break;
+    case ignition::msgs::Marker::CYLINDER:
+      ros_msg.type = visualization_msgs::Marker::CYLINDER;
+      break;
+    case ignition::msgs::Marker::LINE_LIST:
+      ros_msg.type = visualization_msgs::Marker::LINE_LIST;
+      break;
+    case ignition::msgs::Marker::LINE_STRIP:
+      ros_msg.type = visualization_msgs::Marker::LINE_STRIP;
+      break;
+    case ignition::msgs::Marker::POINTS:
+      ros_msg.type = visualization_msgs::Marker::POINTS;
+      break;
+    case ignition::msgs::Marker::SPHERE:
+      ros_msg.type = visualization_msgs::Marker::SPHERE;
+      break;
+    case ignition::msgs::Marker::TEXT:
+      ros_msg.type = visualization_msgs::Marker::TEXT_VIEW_FACING;
+      break;
+    case ignition::msgs::Marker::TRIANGLE_FAN:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[TRIANGLE_FAN]\n");
+      break;
+    case ignition::msgs::Marker::TRIANGLE_LIST:
+      ros_msg.type = visualization_msgs::Marker::TRIANGLE_LIST;
+      break;
+    case ignition::msgs::Marker::TRIANGLE_STRIP:
+      ROS_ERROR_STREAM("Unsupported ignition.msgs.marker type " <<
+          "[TRIANGLE_STRIP]\n");
+      break;
+    default:
+      ROS_ERROR_STREAM("Unknown ignition.msgs.marker type " <<
+          "[" << ign_msg.type() << "]\n");
+      break;
+  }
+
+  // Lifetime
+  ros_msg.lifetime.sec = ign_msg.lifetime().sec();
+  ros_msg.lifetime.nsec = ign_msg.lifetime().nsec();
+
+  // Pose
+  convert_ign_to_ros(ign_msg.pose(), ros_msg.pose);
+
+  // Scale
+  convert_ign_to_ros(ign_msg.scale(), ros_msg.scale);
+
+  // Material
+  convert_ign_to_ros(ign_msg.material().ambient(), ros_msg.color);
+  ros_msg.colors.clear();
+
+  // Points
+  ros_msg.points.clear();
+  ros_msg.points.reserve(ign_msg.point_size());
+  for (auto const & pt: ign_msg.point())
+  {
+    geometry_msgs::Point p;
+    convert_ign_to_ros(pt, p);
+    ros_msg.points.push_back(p);
+  }
+
+  ros_msg.text = ign_msg.text();
+}
+
+template<>
+void
+convert_ros_to_ign(
+    const visualization_msgs::MarkerArray & ros_msg,
+    ignition::msgs::Marker_V & ign_msg)
+{
+  ign_msg.clear_header();
+  ign_msg.clear_marker();
+  for (const auto &marker : ros_msg.markers)
+  {
+    auto m = ign_msg.add_marker();
+    convert_ros_to_ign(marker, *m);
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+    const ignition::msgs::Marker_V & ign_msg,
+    visualization_msgs::MarkerArray & ros_msg)
+{
+  ros_msg.markers.clear();
+  ros_msg.markers.reserve(ign_msg.marker_size());
+
+  for (auto const &marker : ign_msg.marker())
+  {
+      visualization_msgs::Marker m;
+      convert_ign_to_ros(marker, m);
+      ros_msg.markers.push_back(m);
+  }
 }
 
 }  // namespace ros_ign_bridge
