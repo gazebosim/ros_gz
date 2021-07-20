@@ -2,6 +2,24 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Ignore local publications for ROS 2 subscriber (`#146 <https://github.com/osrf/ros_ign/issues/146>`_)
+  - Note: Does not work with all rmw implementations (e.g.: FastRTPS)
+* [ros2] Update documentation for installation instructions and bridge examples (`#142 <https://github.com/osrf/ros_ign/issues/142>`_)
+* [foxy] Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
+* [ros2] Add JointTrajectory message conversion (`#121 <https://github.com/osrf/ros_ign/issues/121>`_)
+  Conversion between
+  - ignition::msgs::JointTrajectory
+  - trajectory_msgs::msg::JointTrajectory
+* Add TFMessage / Pose_V and Float64 / Double conversions (`#117 <https://github.com/osrf/ros_ign/issues/117>`_)
+  Addresses issue `#116 <https://github.com/osrf/ros_ign/issues/116>`_
+* updated prereq & branch name (`#113 <https://github.com/osrf/ros_ign/issues/113>`_)
+* [ros2] Update releases (`#108 <https://github.com/osrf/ros_ign/issues/108>`_)
+* Updated README.md (`#104 <https://github.com/osrf/ros_ign/issues/104>`_)
+* Add support for Dome (`#103 <https://github.com/osrf/ros_ign/issues/103>`_)
+* Contributors: Alejandro Hernández Cordero, Andrej Orsula, Florent Audonnet, Jenn, Louise Poubel, Luca Della Vedova
+
 0.221.1 (2020-08-19)
 --------------------
 * Add pkg-config as a buildtool dependency (`#102 <https://github.com/osrf/ros_ign/issues/102>`_)

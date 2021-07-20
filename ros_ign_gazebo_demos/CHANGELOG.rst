@@ -2,6 +2,27 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Joint states tutorial (`#156 <https://github.com/osrf/ros_ign/issues/156>`_)
+  Adds an rrbot model to demos and shows the usage of joint_states plugin.
+* [ros2] Minor updates for demos (`#144 <https://github.com/osrf/ros_ign/issues/144>`_)
+  * Re-enable air pressure demo
+  - Resolves https://github.com/ignitionrobotics/ros_ign/issues/78
+  * Add RQt topic viewer to IMU demo
+  * Add image_topic argument for image_bridge demo
+  * Do not normalize depth image in RViz2
+* [foxy] Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
+* Add topic flag to create robot  (`#128 <https://github.com/osrf/ros_ign/issues/128>`_)
+  Now it is possible to run ros_ign_gazebo create specifying a topic as
+  source of the robot description
+  Add a launch file starting a ignition gazebo world and spawn a sphere in it.
+  Additionally a rviz2 interface is loaded to show that also Rviz can load
+  the robot description
+  The newly created demo introduce a dependency on the robot_state_publisher package
+* [ros2] Update releases (`#108 <https://github.com/osrf/ros_ign/issues/108>`_)
+* Contributors: Andrej Orsula, Louise Poubel, Valerio Magnago, Vatan Aksoy Tezer
+
 0.221.1 (2020-08-19)
 --------------------
 
