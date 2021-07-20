@@ -2,8 +2,8 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.1 (2021-07-20)
+--------------------
 * [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)
 * [noetic] Edifice support (`#139 <https://github.com/osrf/ros_ign/issues/139>`_)
 * Add dome + melodic to CI (`#126 <https://github.com/osrf/ros_ign/issues/126>`_)

@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.1 (2021-07-20)
+--------------------
 * Check imu orientation field (`#168 <https://github.com/osrf/ros_ign/issues/168>`_)
 * [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)
 * Fix catkin_testing warning (`#163 <https://github.com/osrf/ros_ign/issues/163>`_)
