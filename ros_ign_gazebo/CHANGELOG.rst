@@ -2,6 +2,14 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)
+* [noetic] Edifice support (`#139 <https://github.com/osrf/ros_ign/issues/139>`_)
+* Add dome + melodic to CI (`#126 <https://github.com/osrf/ros_ign/issues/126>`_)
+* [noetic] Update releases (`#106 <https://github.com/osrf/ros_ign/issues/106>`_)
+* Contributors: Alejandro Hernández Cordero, Jose Luis Rivero, Louise Poubel, Nate Koenig
+
 0.111.0 (2020-07-23)
 --------------------
 * Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)

@@ -2,6 +2,10 @@
 Changelog for package ros_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Contributors: Jose Luis Rivero, Nate Koenig
+
 0.111.0 (2020-07-23)
 --------------------
 

@@ -2,6 +2,14 @@
 Changelog for package ros_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)
+* [noetic] Edifice support (`#139 <https://github.com/osrf/ros_ign/issues/139>`_)
+* Add dome + melodic to CI (`#126 <https://github.com/osrf/ros_ign/issues/126>`_)
+* [noetic] Update releases (`#106 <https://github.com/osrf/ros_ign/issues/106>`_)
+* Contributors: Jose Luis Rivero, Louise Poubel, Nate Koenig
+
 0.111.0 (2020-07-23)
 --------------------
 * Install only what's necessary, rename builtin_interfaces (`#96 <https://github.com/osrf/ros_ign/issues/96>`_)

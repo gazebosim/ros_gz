@@ -2,6 +2,23 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Check imu orientation field (`#168 <https://github.com/osrf/ros_ign/issues/168>`_)
+* [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)
+* Fix catkin_testing warning (`#163 <https://github.com/osrf/ros_ign/issues/163>`_)
+* Add support for nav_msgs/OccupancyGrid (`#137 <https://github.com/osrf/ros_ign/issues/137>`_)
+* [noetic] Edifice support (`#139 <https://github.com/osrf/ros_ign/issues/139>`_)
+* Bridge int32 messages (`#138 <https://github.com/osrf/ros_ign/issues/138>`_)
+* Add visualization_msgs/Marker (`#136 <https://github.com/osrf/ros_ign/issues/136>`_)
+  * Add support for std_msgs/ColorRGBA
+  * Add support for visualization_msgs/Marker
+* Add support for Pose_V to PoseArray (`#134 <https://github.com/osrf/ros_ign/issues/134>`_)
+* Prevent segfault caused by missing values in sensor_msgs::JointState (`#135 <https://github.com/osrf/ros_ign/issues/135>`_)
+* Add dome + melodic to CI (`#126 <https://github.com/osrf/ros_ign/issues/126>`_)
+* [noetic] Update releases (`#106 <https://github.com/osrf/ros_ign/issues/106>`_)
+* Contributors: Alejandro Hernández Cordero, Ian Chen, Jose Luis Rivero, Louise Poubel, Martin Pecka, Michael Carroll, Nate Koenig, Tobias Fischer
+
 0.111.0 (2020-07-23)
 --------------------
 * Noetic support (`#93 <https://github.com/osrf/ros_ign/issues/93>`_)
