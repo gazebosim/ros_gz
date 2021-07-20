@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.2 (2021-07-20)
+--------------------
 * Joint states tutorial (`#156 <https://github.com/osrf/ros_ign/issues/156>`_)
   Adds an rrbot model to demos and shows the usage of joint_states plugin.
 * [ros2] Minor updates for demos (`#144 <https://github.com/osrf/ros_ign/issues/144>`_)

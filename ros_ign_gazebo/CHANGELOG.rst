@@ -2,8 +2,8 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.2 (2021-07-20)
+--------------------
 * [foxy] Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
 * Add topic flag to create robot  (`#128 <https://github.com/osrf/ros_ign/issues/128>`_)
   Now it is possible to run ros_ign_gazebo create specifying a topic as

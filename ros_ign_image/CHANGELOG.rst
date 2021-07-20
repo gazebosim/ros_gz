@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.221.2 (2021-07-20)
+--------------------
 * Fix Deprecation Warning (`#158 <https://github.com/osrf/ros_ign/issues/158>`_)
 * [foxy] Edifice support (`#140 <https://github.com/osrf/ros_ign/issues/140>`_)
 * [ros2] Update releases (`#108 <https://github.com/osrf/ros_ign/issues/108>`_)
