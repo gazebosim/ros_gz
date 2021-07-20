@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.233.2 (2021-07-20)
+--------------------
 * [ros2] Update version docs, add Galactic and Fortress (`#164 <https://github.com/osrf/ros_ign/issues/164>`_)
 * Fix Deprecation Warning (`#158 <https://github.com/osrf/ros_ign/issues/158>`_)
 * Contributors: David V. Lu!!, Louise Poubel
