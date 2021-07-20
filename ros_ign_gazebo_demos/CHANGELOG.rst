@@ -2,6 +2,14 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros2] Add exec depend on xacro for demos (`#170 <https://github.com/osrf/ros_ign/issues/170>`_)
+* [ros2] Update version docs, add Galactic and Fortress (`#164 <https://github.com/osrf/ros_ign/issues/164>`_)
+* Joint states tutorial (`#156 <https://github.com/osrf/ros_ign/issues/156>`_)
+  Adds an rrbot model to demos and shows the usage of joint_states plugin.
+* Contributors: Louise Poubel, Vatan Aksoy Tezer
+
 0.233.1 (2021-04-16)
 --------------------
 * Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)

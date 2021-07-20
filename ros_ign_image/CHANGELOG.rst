@@ -2,6 +2,12 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros2] Update version docs, add Galactic and Fortress (`#164 <https://github.com/osrf/ros_ign/issues/164>`_)
+* Fix Deprecation Warning (`#158 <https://github.com/osrf/ros_ign/issues/158>`_)
+* Contributors: David V. Lu!!, Louise Poubel
+
 0.233.1 (2021-04-16)
 --------------------
 * Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)
