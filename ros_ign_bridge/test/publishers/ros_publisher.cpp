@@ -16,6 +16,7 @@
 
 #include <ros/ros.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/ColorRGBA.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
 #include <std_msgs/Header.h>
@@ -25,11 +26,13 @@
 #include <geometry_msgs/Vector3.h>
 #include <rosgraph_msgs/Clock.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Transform.h>
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 // #include <mav_msgs/Actuators.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -41,6 +44,8 @@
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <tf2_msgs/TFMessage.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 #include "../test_utils.h"
 
 //////////////////////////////////////////////////
@@ -54,6 +59,11 @@ int main(int argc, char ** argv)
   ros::Publisher bool_pub = n.advertise<std_msgs::Bool>("bool", 1000);
   std_msgs::Bool bool_msg;
   ros_ign_bridge::testing::createTestMsg(bool_msg);
+
+  // std_msgs::ColorRGBA.
+  ros::Publisher color_pub = n.advertise<std_msgs::ColorRGBA>("color", 1000);
+  std_msgs::ColorRGBA color_msg;
+  ros_ign_bridge::testing::createTestMsg(color_msg);
 
   // std_msgs::Empty.
   ros::Publisher empty_pub = n.advertise<std_msgs::Empty>("empty", 1000);
@@ -114,6 +124,12 @@ int main(int argc, char ** argv)
   geometry_msgs::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
 
+  // geometry_msgs::PoseArray.
+  ros::Publisher pose_array_pub =
+    n.advertise<geometry_msgs::PoseArray>("pose_array", 1000);
+  geometry_msgs::PoseArray pose_array_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_array_msg);
+
   // geometry_msgs::PoseStamped.
   ros::Publisher pose_stamped_pub =
     n.advertise<geometry_msgs::PoseStamped>("pose_stamped", 1000);
@@ -149,6 +165,12 @@ int main(int argc, char ** argv)
 //    n.advertise<mav_msgs::Actuators>("actuators", 1000);
 //  mav_msgs::Actuators actuators_msg;
 //  ros_ign_bridge::testing::createTestMsg(actuators_msg);
+
+  // nav_msgs::OccupancyGrid.
+  ros::Publisher map_pub =
+    n.advertise<nav_msgs::OccupancyGrid>("map", 1000);
+  nav_msgs::OccupancyGrid map_msg;
+  ros_ign_bridge::testing::createTestMsg(map_msg);
 
   // nav_msgs::Odometry.
   ros::Publisher odometry_pub =
@@ -210,10 +232,23 @@ int main(int argc, char ** argv)
   sensor_msgs::BatteryState battery_state_msg;
   ros_ign_bridge::testing::createTestMsg(battery_state_msg);
 
+  // visualization_msgs::Marker.
+  ros::Publisher marker_pub =
+    n.advertise<visualization_msgs::Marker>("marker", 1000);
+  visualization_msgs::Marker marker_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_msg);
+
+  // visualization_msgs::MarkerArray.
+  ros::Publisher marker_array_pub =
+    n.advertise<visualization_msgs::MarkerArray>("marker_array", 1000);
+  visualization_msgs::MarkerArray marker_array_msg;
+  ros_ign_bridge::testing::createTestMsg(marker_array_msg);
+
   while (ros::ok())
   {
     // Publish all messages.
     bool_pub.publish(bool_msg);
+    color_pub.publish(color_msg);
     empty_pub.publish(empty_msg);
     int32_pub.publish(int32_msg);
     float_pub.publish(float_msg);
@@ -225,12 +260,14 @@ int main(int argc, char ** argv)
     clock_pub.publish(clock_msg);
     point_pub.publish(point_msg);
     pose_pub.publish(pose_msg);
+    pose_array_pub.publish(pose_array_msg);
     pose_stamped_pub.publish(pose_stamped_msg);
     transform_pub.publish(transform_msg);
     transform_stamped_pub.publish(transform_stamped_msg);
     tf2_message_pub.publish(tf2_msg);
     twist_pub.publish(twist_msg);
     // actuators_pub.publish(actuators_msg);
+    map_pub.publish(map_msg);
     odometry_pub.publish(odometry_msg);
     image_pub.publish(image_msg);
     camera_info_pub.publish(camera_info_msg);
@@ -241,6 +278,8 @@ int main(int argc, char ** argv)
     joint_states_pub.publish(joint_states_msg);
     pointcloud2_pub.publish(pointcloud2_msg);
     battery_state_pub.publish(battery_state_msg);
+    marker_pub.publish(marker_msg);
+    marker_array_pub.publish(marker_array_msg);
 
     ros::spinOnce();
     loop_rate.sleep();

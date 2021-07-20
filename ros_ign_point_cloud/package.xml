@@ -7,9 +7,6 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <depend>roscpp</depend>
-  <depend>sensor_msgs</depend>
-
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-rendering6</depend>
@@ -29,6 +26,9 @@
   <depend condition="$IGNITION_VERSION == ''">ignition-gazebo3</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-rendering3</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-sensors3</depend>
+
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
 
   <exec_depend>message_runtime</exec_depend>
 

@@ -17,7 +17,8 @@ find_package(catkin REQUIRED COMPONENTS
                rostest
                sensor_msgs
                std_msgs
-               tf2_msgs)
+               tf2_msgs
+               visualization_msgs)
 
 # Fortress
 if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")

@@ -19,6 +19,7 @@
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Pose.h>
+#include <geometry_msgs/PoseArray.h>
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3.h>
 #include <rosgraph_msgs/Clock.h>
@@ -26,6 +27,7 @@
 #include <geometry_msgs/TransformStamped.h>
 #include <geometry_msgs/Twist.h>
 // #include <mav_msgs/Actuators.h>
+#include <nav_msgs/OccupancyGrid.h>
 #include <nav_msgs/Odometry.h>
 #include <sensor_msgs/BatteryState.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -37,6 +39,7 @@
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Bool.h>
+#include <std_msgs/ColorRGBA.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/Float32.h>
 #include <std_msgs/Float64.h>
@@ -44,6 +47,8 @@
 #include <std_msgs/Int32.h>
 #include <std_msgs/String.h>
 #include <tf2_msgs/TFMessage.h>
+#include <visualization_msgs/Marker.h>
+#include <visualization_msgs/MarkerArray.h>
 
 // include Ignition messages
 #include <ignition/msgs.hh>
@@ -65,6 +70,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::Bool & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::ColorRGBA & ros_msg);
 
 template<>
 void
@@ -203,6 +220,18 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  geometry_msgs::PoseArray & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg);
 
@@ -274,6 +303,18 @@ convert_ign_to_ros(
 //   mav_msgs::Actuators & ros_msg);
 
 // nav_msgs
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::OccupancyGrid & ros_msg,
+  ignition::msgs::OccupancyGrid & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OccupancyGrid& ign_msg,
+  nav_msgs::OccupancyGrid & ros_msg);
+
 template<>
 void
 convert_ros_to_ign(
@@ -394,6 +435,30 @@ void
 convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::BatteryState & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const visualization_msgs::Marker & ros_msg,
+  ignition::msgs::Marker & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Marker & ign_msg,
+  visualization_msgs::Marker & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const visualization_msgs::MarkerArray & ros_msg,
+  ignition::msgs::Marker_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Marker_V & ign_msg,
+  visualization_msgs::MarkerArray & ros_msg);
 
 }  // namespace ros_ign_bridge
 

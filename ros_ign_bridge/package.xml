@@ -18,6 +18,7 @@
   <depend>std_msgs</depend>
   <depend>std_srvs</depend>
   <depend>tf2_msgs</depend>
+  <depend>visualization_msgs</depend>
 
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
