@@ -20,6 +20,7 @@ set(msg_files
   "msg/Contacts.msg"
   "msg/Entity.msg"
   "msg/EntityFactory.msg"
+  "msg/JointWrench.msg"
   "msg/WorldControl.msg"
   "msg/WorldReset.msg"
 )

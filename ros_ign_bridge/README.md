@@ -14,7 +14,9 @@ service calls. Its support is limited to only the following message types:
 | std_msgs/msg/Float64                 | ignition::msgs::Double               |
 | std_msgs/msg/Header                  | ignition::msgs::Header               |
 | std_msgs/msg/Int32                   | ignition::msgs::Int32                |
+| std_msgs/msg/UInt32                  | ignition::msgs::UInt32               |
 | std_msgs/msg/String                  | ignition::msgs::StringMsg            |
+| geometry_msgs/msg/Wrench             | ignition::msgs::Wrench               |
 | geometry_msgs/msg/Quaternion         | ignition::msgs::Quaternion           |
 | geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d             |
 | geometry_msgs/msg/Point              | ignition::msgs::Vector3d             |
@@ -25,6 +27,10 @@ service calls. Its support is limited to only the following message types:
 | geometry_msgs/msg/Twist              | ignition::msgs::Twist                |
 | mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)     |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
+| ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact              |
+| ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
+| ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity               |
+| ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |

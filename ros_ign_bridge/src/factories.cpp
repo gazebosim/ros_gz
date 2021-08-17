@@ -87,6 +87,16 @@ get_factory_impl(
       >
     >("std_msgs/msg/Int32", ign_type_name);
   }
+  if ((ros_type_name == "std_msgs/msg/UInt32" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.UInt32")
+  {
+    return std::make_shared<
+      Factory<
+        std_msgs::msg::UInt32,
+        ignition::msgs::UInt32
+      >
+    >("std_msgs/msg/Int32", ign_type_name);
+  }
   if ((ros_type_name == "std_msgs/msg/String" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.StringMsg")
   {
@@ -198,6 +208,61 @@ get_factory_impl(
         ignition::msgs::Twist
       >
     >("geometry_msgs/msg/Twist", ign_type_name);
+  }
+  if (
+    (ros_type_name == "geometry_msgs/msg/Wrench" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Wrench")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::msg::Wrench,
+        ignition::msgs::Wrench
+      >
+    >("geometry_msgs/msg/Wrench", ign_type_name);
+  }
+  if (
+    (ros_type_name == "ros_ign_interfaces/msg/JointWrench" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.JointWrench")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::JointWrench,
+        ignition::msgs::JointWrench
+      >
+    >("ros_ign_interfaces/msg/JointWrench", ign_type_name);
+  }
+  if (
+    (ros_type_name == "ros_ign_interfaces/msg/Entity" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Entity")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::Entity,
+        ignition::msgs::Entity
+      >
+    >("ros_ign_interfaces/msg/Entity", ign_type_name);
+  }
+  if (
+    (ros_type_name == "ros_ign_interfaces/msg/Contact" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Contact")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::Contact,
+        ignition::msgs::Contact
+      >
+    >("ros_ign_interfaces/msg/Contact", ign_type_name);
+  }
+  if (
+    (ros_type_name == "ros_ign_interfaces/msg/Contacts" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.Contacts")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::Contacts,
+        ignition::msgs::Contacts
+      >
+    >("ros_ign_interfaces/msg/Contacts", ign_type_name);
   }
   /**
   if ((ros_type_name == "mav_msgs/msg/Actuators" || ros_type_name.empty()) &&
@@ -460,6 +525,31 @@ Factory<
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
+
+template<>
+void
+Factory<
+  std_msgs::msg::UInt32,
+  ignition::msgs::UInt32
+>::convert_ros_to_ign(
+  const std_msgs::msg::UInt32 & ros_msg,
+  ignition::msgs::UInt32 & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  std_msgs::msg::UInt32,
+  ignition::msgs::UInt32
+>::convert_ign_to_ros(
+  const ignition::msgs::UInt32 & ign_msg,
+  std_msgs::msg::UInt32 & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
 template<>
 void
 Factory<
@@ -746,6 +836,127 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Twist & ign_msg,
   geometry_msgs::msg::Twist & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::msg::Wrench,
+  ignition::msgs::Wrench
+>::convert_ros_to_ign(
+  const geometry_msgs::msg::Wrench & ros_msg,
+  ignition::msgs::Wrench & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::msg::Wrench,
+  ignition::msgs::Wrench
+>::convert_ign_to_ros(
+  const ignition::msgs::Wrench & ign_msg,
+  geometry_msgs::msg::Wrench & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+// ros_ign_interfaces
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::JointWrench,
+  ignition::msgs::JointWrench
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::JointWrench & ros_msg,
+  ignition::msgs::JointWrench & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::JointWrench,
+  ignition::msgs::JointWrench
+>::convert_ign_to_ros(
+  const ignition::msgs::JointWrench & ign_msg,
+  ros_ign_interfaces::msg::JointWrench & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Entity,
+  ignition::msgs::Entity
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Entity & ros_msg,
+  ignition::msgs::Entity & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Entity,
+  ignition::msgs::Entity
+>::convert_ign_to_ros(
+  const ignition::msgs::Entity & ign_msg,
+  ros_ign_interfaces::msg::Entity & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Contact,
+  ignition::msgs::Contact
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Contact & ros_msg,
+  ignition::msgs::Contact & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Contact,
+  ignition::msgs::Contact
+>::convert_ign_to_ros(
+  const ignition::msgs::Contact & ign_msg,
+  ros_ign_interfaces::msg::Contact & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Contacts,
+  ignition::msgs::Contacts
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Contacts & ros_msg,
+  ignition::msgs::Contacts & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Contacts,
+  ignition::msgs::Contacts
+>::convert_ign_to_ros(
+  const ignition::msgs::Contacts & ign_msg,
+  ros_ign_interfaces::msg::Contacts & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
