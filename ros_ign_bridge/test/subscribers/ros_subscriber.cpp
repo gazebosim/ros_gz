@@ -133,6 +133,18 @@ TEST(ROSSubscriberTest, Double)
 }
 
 /////////////////////////////////////////////////
+TEST(ROSSubscriberTest, UInt32)
+{
+  MyTestClass<std_msgs::msg::UInt32> client("uint32");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Header)
 {
   MyTestClass<std_msgs::msg::Header> client("header");
@@ -268,6 +280,66 @@ TEST(ROSSubscriberTest, TF2Message)
 TEST(ROSSubscriberTest, Twist)
 {
   MyTestClass<geometry_msgs::msg::Twist> client("twist");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Wrench)
+{
+  MyTestClass<geometry_msgs::msg::Wrench> client("wrench");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, JointWrench)
+{
+  MyTestClass<ros_ign_interfaces::msg::JointWrench> client("joint_wrench");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Entity)
+{
+  MyTestClass<ros_ign_interfaces::msg::Entity> client("entity");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Contact)
+{
+  MyTestClass<ros_ign_interfaces::msg::Contact> client("contact");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Contacts)
+{
+  MyTestClass<ros_ign_interfaces::msg::Contacts> client("contacts");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

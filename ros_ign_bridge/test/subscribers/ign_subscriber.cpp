@@ -104,6 +104,18 @@ TEST(IgnSubscriberTest, Double)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, UInt32)
+{
+  MyTestClass<ignition::msgs::UInt32> client("uint32");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Header)
 {
   MyTestClass<ignition::msgs::Header> client("header");
@@ -239,6 +251,66 @@ TEST(IgnSubscriberTest, TF2Message)
 TEST(IgnSubscriberTest, Twist)
 {
   MyTestClass<ignition::msgs::Twist> client("twist");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Wrench)
+{
+  MyTestClass<ignition::msgs::Wrench> client("wrench");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, JointWrench)
+{
+  MyTestClass<ignition::msgs::JointWrench> client("joint_wrench");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Entity)
+{
+  MyTestClass<ignition::msgs::Entity> client("entity");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Contact)
+{
+  MyTestClass<ignition::msgs::Contact> client("contact");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Contacts)
+{
+  MyTestClass<ignition::msgs::Contacts> client("contacts");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVar(
