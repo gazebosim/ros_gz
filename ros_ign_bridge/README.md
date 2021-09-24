@@ -74,7 +74,7 @@ Now we start the Ignition Transport talker.
 
 ```
 # Shell D:
-ign topic pub -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
+ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS talker and Ignition Transport listener
@@ -112,8 +112,8 @@ rostopic pub /chatter std_msgs/String "data: 'Hi'" --once
 
 ## Example 2: Run the bridge and exchange images
 
-In this example, we're going to generate Ignition Transport images using Gazebo,
-that will be converted into ROS images, and visualized with `rqt_viewer`.
+In this example, we're going to generate Ignition Transport images using Gazebo
+classic, that will be converted into ROS images, and visualized with `rqt_viewer`.
 
 First we start a ROS `roscore`:
 

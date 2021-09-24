@@ -134,7 +134,7 @@ protected:
     convert_ros_to_ign(*ros_msg, ign_msg);
     ign_pub.Publish(ign_msg);
     ROS_INFO_ONCE("Passing message from ROS %s to Ignition %s (showing msg"\
-        " only once per type", ros_type_name.c_str(), ign_type_name.c_str());
+        " only once per type)", ros_type_name.c_str(), ign_type_name.c_str());
   }
 
   static
