@@ -31,7 +31,7 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Citadel")
-else()
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   find_package(ignition-gazebo4 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo4_VERSION_MAJOR})
 
@@ -42,6 +42,17 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Dome")
+else()
+  find_package(ignition-gazebo6 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
+
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 endif()
 
 ign_find_package(gflags
