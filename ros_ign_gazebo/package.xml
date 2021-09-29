@@ -14,7 +14,7 @@
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
   <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo4</depend>
 
   <depend>roscpp</depend>
 </package>
