@@ -15,6 +15,8 @@ elif [ "$IGNITION_VERSION" == "citadel" ]; then
   IGN_DEPS="libignition-msgs5-dev libignition-transport8-dev libignition-gazebo3-dev"
 elif [ "$IGNITION_VERSION" == "dome" ]; then
   IGN_DEPS="libignition-msgs6-dev libignition-transport9-dev libignition-gazebo4-dev"
+elif [ "$IGNITION_VERSION" == "fortress" ]; then
+  IGN_DEPS="libignition-msgs8-dev libignition-transport11-dev libignition-gazebo6-dev"
 else
   exit 1
 fi
@@ -35,16 +37,21 @@ rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO \
   --skip-keys=ignition-gazebo2 \
   --skip-keys=ignition-gazebo3 \
   --skip-keys=ignition-gazebo4 \
+  --skip-keys=ignition-gazebo6 \
   --skip-keys=ignition-msgs4 \
   --skip-keys=ignition-msgs5 \
   --skip-keys=ignition-msgs6 \
+  --skip-keys=ignition-msgs8 \
   --skip-keys=ignition-rendering2 \
   --skip-keys=ignition-rendering3 \
+  --skip-keys=ignition-rendering6 \
   --skip-keys=ignition-sensors2 \
   --skip-keys=ignition-sensors3 \
+  --skip-keys=ignition-sensors6 \
   --skip-keys=ignition-transport7 \
   --skip-keys=ignition-transport8 \
   --skip-keys=ignition-transport9 \
+  --skip-keys=ignition-transport11 \
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
