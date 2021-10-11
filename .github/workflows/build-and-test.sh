@@ -10,11 +10,13 @@ apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
 if [ "$IGNITION_VERSION" == "blueprint" ]; then
-  IGN_DEPS="libignition-msgs4-dev libignition-transport7-dev libignition-gazebo2-dev"
+  IGN_DEPS="libignition-gazebo2-dev"
 elif [ "$IGNITION_VERSION" == "citadel" ]; then
-  IGN_DEPS="libignition-msgs5-dev libignition-transport8-dev libignition-gazebo3-dev"
+  IGN_DEPS="libignition-gazebo3-dev"
 elif [ "$IGNITION_VERSION" == "dome" ]; then
-  IGN_DEPS="libignition-msgs6-dev libignition-transport9-dev libignition-gazebo4-dev"
+  IGN_DEPS="libignition-gazebo4-dev"
+elif [ "$IGNITION_VERSION" == "fortress" ]; then
+  IGN_DEPS="libignition-gazebo6-dev"
 else
   exit 1
 fi
@@ -31,20 +33,7 @@ apt-get install -qq -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO \
-  --skip-keys=ignition-gazebo2 \
-  --skip-keys=ignition-gazebo3 \
-  --skip-keys=ignition-gazebo4 \
-  --skip-keys=ignition-msgs4 \
-  --skip-keys=ignition-msgs5 \
-  --skip-keys=ignition-msgs6 \
-  --skip-keys=ignition-rendering2 \
-  --skip-keys=ignition-rendering3 \
-  --skip-keys=ignition-sensors2 \
-  --skip-keys=ignition-sensors3 \
-  --skip-keys=ignition-transport7 \
-  --skip-keys=ignition-transport8 \
-  --skip-keys=ignition-transport9 \
+rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash

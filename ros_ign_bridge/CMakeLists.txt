@@ -40,6 +40,15 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
 
   message(STATUS "Compiling against Ignition Citadel")
   add_definitions(-DIGNITION_CITADEL)
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
+  add_definitions(-DIGNITION_FORTRESS)
 else()
   find_package(ignition-transport9 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
