@@ -60,7 +60,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/foxy/setup.bash
+. /opt/ros/galactic/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -92,7 +92,7 @@ Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/foxy/setup.bash
+. /opt/ros/galactic/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -130,7 +130,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/foxy/setup.bash
+. /opt/ros/galactic/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -138,7 +138,7 @@ You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Ignition Msgs over Ignition Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS 2 Foxy and Ignition Edifice):
+(it was taken using ROS 2 Galactic and Ignition Fortress):
 
 ![Ignition Transport images and ROS rqt](images/bridge_image_exchange.png)
 
