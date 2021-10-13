@@ -55,6 +55,8 @@ def generate_launch_description():
                    '/model/vehicle_blue/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
                    '/model/vehicle_green/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
                    '/model/vehicle_green/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry'],
+        parameters=[{'qos_overrides./model/vehicle_blue.subscriber.reliability' : 'reliable',
+                     'qos_overrides./model/vehicle_green.subscriber.reliability' : 'reliable'}],
         output='screen'
     )
 

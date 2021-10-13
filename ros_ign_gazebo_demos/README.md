@@ -16,6 +16,16 @@ Publishes fluid pressure readings.
 
     ros2 launch ros_ign_gazebo_demos air_pressure.launch.py
 
+This demo also shows the use of custom QoS parameters. The sensor data is
+published as as "best-effort", so trying to subscribe to "reliable" data won't
+work. See the difference between:
+
+    ros2 topic echo /air_pressure --qos-reliability best_effort
+
+And
+
+    ros2 topic echo /air_pressure --qos-reliability reliable
+
 ![](images/air_pressure_demo.png)
 
 ## Camera
@@ -43,6 +53,16 @@ Send commands to a differential drive vehicle and listen to its odometry.
 Then unpause and send a command
 
     ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+
+This demo also shows the use of custom QoS parameters. The commands are
+subscribed to as "reliable", so trying to publish "best-effort" commands
+won't work. See the difference between:
+
+    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.0}}" --qos-reliability reliable
+
+And
+
+    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.0}}" --qos-reliability best_effort
 
 ![](images/diff_drive_demo.png)
 
