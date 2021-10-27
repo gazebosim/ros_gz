@@ -60,11 +60,23 @@ endif()
 
 catkin_package()
 
-include_directories(include ${catkin_INCLUDE_DIRS})
+include_directories(include src ${catkin_INCLUDE_DIRS})
 
 set(common_sources
-  src/convert.cpp
   src/factories.cpp
+  src/convert/frame_id.cpp
+  src/convert/geometry_msgs.cpp
+  src/convert/nav_msgs.cpp
+  src/convert/rosgraph_msgs.cpp
+  src/convert/sensor_msgs.cpp
+  src/convert/std_msgs.cpp
+  src/convert/visualization_msgs.cpp
+  src/factories/geometry_msgs.cpp
+  src/factories/nav_msgs.cpp
+  src/factories/rosgraph_msgs.cpp
+  src/factories/sensor_msgs.cpp
+  src/factories/std_msgs.cpp
+  src/factories/visualization_msgs.cpp
 )
 
 set(bridge_lib

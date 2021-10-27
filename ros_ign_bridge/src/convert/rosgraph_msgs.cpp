@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
-#define ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#include <algorithm>
+#include <exception>
+#include <ros/console.h>
 
-#include "factory.hpp"
-#include <memory>
-#include <string>
+#include "ros_ign_bridge/convert.hpp"
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(const std::string & ros_type_name,
-            const std::string & ign_type_name);
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::Clock & ros_msg)
+{
+  ros_msg.clock = ros::Time(ign_msg.sim().sec(), ign_msg.sim().nsec());
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const rosgraph_msgs::Clock & ros_msg,
+  ignition::msgs::Clock & ign_msg)
+{
+  ign_msg.mutable_sim()->set_sec(ros_msg.clock.sec);
+  ign_msg.mutable_sim()->set_nsec(ros_msg.clock.nsec);
+}
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_

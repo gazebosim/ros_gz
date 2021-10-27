@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,20 +12,25 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
-#define ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#ifndef ROS_IGN_BRIDGE__FACTORIES__VISUALIZATION_MSGS_HPP_
+#define ROS_IGN_BRIDGE__FACTORIES__VISUALIZATION_MSGS_HPP_
+
+// ROS messages
+
+// Ignition messages
+#include <ignition/msgs.hh>
 
 #include "factory.hpp"
+
 #include <memory>
 #include <string>
 
-namespace ros_ign_bridge
+namespace ros_ign_bridge 
 {
-
 std::shared_ptr<FactoryInterface>
-get_factory(const std::string & ros_type_name,
+get_factory_visualization_msgs(
+            const std::string & ros_type_name,
             const std::string & ign_type_name);
 
 }  // namespace ros_ign_bridge
-
-#endif  // ROS_IGN_BRIDGE__BUILTIN_INTERFACES_FACTORIES_HPP_
+#endif  // ROS_IGN_BRIDGE__FACTORIES__VISUALIZATION_MSGS_HPP_
