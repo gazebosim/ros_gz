@@ -67,26 +67,6 @@ set(common_sources
   src/factories.cpp
 )
 
-set(bridge_executables
-  parameter_bridge
-  static_bridge
-)
-
-foreach(bridge ${bridge_executables})
-  add_executable(${bridge}
-    src/${bridge}.cpp
-    ${common_sources}
-  )
-  target_link_libraries(${bridge}
-    ${catkin_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  install(TARGETS ${bridge}
-          DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-  )
-endforeach(bridge)
-
 set(bridge_lib
   ros_ign_bridge_lib
 )
@@ -99,6 +79,23 @@ target_link_libraries(${bridge_lib}
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
+
+set(bridge_executables
+  parameter_bridge
+  static_bridge
+)
+
+foreach(bridge ${bridge_executables})
+  add_executable(${bridge}
+    src/${bridge}.cpp
+  )
+  target_link_libraries(${bridge}
+    ${bridge_lib}
+  )
+  install(TARGETS ${bridge}
+          DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
+  )
+endforeach(bridge)
 
 catkin_package(INCLUDE_DIRS include
                LIBRARIES ${bridge_lib})
