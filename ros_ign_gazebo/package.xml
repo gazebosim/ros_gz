@@ -21,7 +21,7 @@
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <!-- Edifice (default) -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
   <!-- Dome -->
   <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
   <!-- Citadel -->

@@ -32,17 +32,8 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Dome")
-# Fortress
+# Edifice
 elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
-  find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
-
-  find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Fortress")
-# Default to Edifice
-else()
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
@@ -50,6 +41,15 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
+# Default to Fortress
+else()
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 endif()
 
 ign_find_package(gflags
