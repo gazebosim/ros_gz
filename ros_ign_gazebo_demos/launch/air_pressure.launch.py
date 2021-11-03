@@ -36,7 +36,8 @@ def generate_launch_description():
     bridge = Node(
         package='ros_ign_bridge',
         executable='parameter_bridge',
-        arguments=["/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure"],
+        arguments=['/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure'],
+        parameters=[{'qos_overrides./air_pressure.publisher.reliability' : 'best_effort'}],
         output='screen'
     )
 
