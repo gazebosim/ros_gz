@@ -53,6 +53,102 @@ std::string frame_id_ign_to_ros(const std::string & frame_id)
 template<>
 void
 convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Color & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ign_msg.set_r(ros_msg.r);
+  ign_msg.set_g(ros_msg.g);
+  ign_msg.set_b(ros_msg.b);
+  ign_msg.set_a(ros_msg.a);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  ros_ign_interfaces::msg::Color & ros_msg)
+{
+  ros_msg.r = ign_msg.r();
+  ros_msg.g = ign_msg.g();
+  ros_msg.b = ign_msg.b();
+  ros_msg.a = ign_msg.a();
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Light & ros_msg,
+  ignition::msgs::Light & ign_msg)
+{
+  ign_msg.set_name(ros_msg.name);
+  if (ros_msg.type == 0) {
+    ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_POINT);
+  } else if (ros_msg.type == 1) {
+    ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
+  } else if (ros_msg.type == 2) {
+    ign_msg.set_type(
+        ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
+  }
+
+  convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
+  convert_ros_to_ign(ros_msg.diffuse, *ign_msg.mutable_diffuse());
+  convert_ros_to_ign(ros_msg.specular, *ign_msg.mutable_specular());
+  ign_msg.set_attenuation_constant(ros_msg.attenuation_constant);
+  ign_msg.set_attenuation_linear(ros_msg.attenuation_linear);
+  ign_msg.set_attenuation_quadratic(ros_msg.attenuation_quadratic);
+  convert_ros_to_ign(ros_msg.direction, *ign_msg.mutable_direction());
+  ign_msg.set_range(ros_msg.range);
+  ign_msg.set_cast_shadows(ros_msg.cast_shadows);
+  ign_msg.set_spot_inner_angle(ros_msg.spot_inner_angle);
+  ign_msg.set_spot_outer_angle(ros_msg.spot_outer_angle);
+  ign_msg.set_spot_falloff(ros_msg.spot_falloff);
+
+  ign_msg.set_id(ros_msg.id);
+
+  ign_msg.set_parent_id(ros_msg.parent_id);
+
+  ign_msg.set_intensity(ros_msg.intensity);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Light & ign_msg,
+  ros_ign_interfaces::msg::Light & ros_msg)
+{
+  // ign_msg.set_name(ros_msg.name);
+  // if (ros_msg.type == 0) {
+  //   ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_POINT);
+  // } else if (ros_msg.type == 1) {
+  //   ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
+  // } else if (ros_msg.type == 2) {
+  //   ign_msg.set_type(
+  //       ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
+  // }
+
+  // convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
+  // convert_ros_to_ign(ros_msg.diffuse, *ign_msg.mutable_diffuse());
+  // convert_ros_to_ign(ros_msg.specular, *ign_msg.mutable_specular());
+  // ign_msg.set_attenuation_constant(ros_msg.attenuation_constant);
+  // ign_msg.set_attenuation_linear(ros_msg.attenuation_linear);
+  // ign_msg.set_attenuation_quadratic(ros_msg.attenuation_quadratic);
+  // convert_ros_to_ign(ros_msg.direction, *ign_msg.mutable_direction());
+  // ign_msg.set_range(ros_msg.range);
+  // ign_msg.set_cast_shadows(ros_msg.cast_shadows);
+  // ign_msg.set_spot_inner_angle(ros_msg.spot_inner_angle);
+  // ign_msg.set_spot_outer_angle(ros_msg.spot_outer_angle);
+  // ign_msg.set_spot_falloff(ros_msg.spot_falloff);
+
+  // ign_msg.set_id(ros_msg.id);
+
+  // ign_msg.set_parent_id(ros_msg.parent_id);
+
+  // ign_msg.set_intensity(ros_msg.intensity);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const std_msgs::msg::Bool & ros_msg,
   ignition::msgs::Boolean & ign_msg)
 {
