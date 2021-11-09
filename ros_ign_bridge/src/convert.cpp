@@ -116,34 +116,36 @@ convert_ign_to_ros(
   const ignition::msgs::Light & ign_msg,
   ros_ign_interfaces::msg::Light & ros_msg)
 {
-  // ign_msg.set_name(ros_msg.name);
-  // if (ros_msg.type == 0) {
-  //   ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_POINT);
-  // } else if (ros_msg.type == 1) {
-  //   ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
-  // } else if (ros_msg.type == 2) {
-  //   ign_msg.set_type(
-  //       ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
-  // }
+  ros_msg.name = ign_msg.name();
+  if (ign_msg.type() ==
+      ignition::msgs::Light_LightType::Light_LightType_POINT) {
+    ros_msg.type = 0;
+  } else if (ign_msg.type() ==
+      ignition::msgs::Light_LightType::Light_LightType_SPOT) {
+    ros_msg.type = 1;
+  } else if (ign_msg.type() ==
+      ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL) {
+    ros_msg.type = 2;
+  }
 
-  // convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
-  // convert_ros_to_ign(ros_msg.diffuse, *ign_msg.mutable_diffuse());
-  // convert_ros_to_ign(ros_msg.specular, *ign_msg.mutable_specular());
-  // ign_msg.set_attenuation_constant(ros_msg.attenuation_constant);
-  // ign_msg.set_attenuation_linear(ros_msg.attenuation_linear);
-  // ign_msg.set_attenuation_quadratic(ros_msg.attenuation_quadratic);
-  // convert_ros_to_ign(ros_msg.direction, *ign_msg.mutable_direction());
-  // ign_msg.set_range(ros_msg.range);
-  // ign_msg.set_cast_shadows(ros_msg.cast_shadows);
-  // ign_msg.set_spot_inner_angle(ros_msg.spot_inner_angle);
-  // ign_msg.set_spot_outer_angle(ros_msg.spot_outer_angle);
-  // ign_msg.set_spot_falloff(ros_msg.spot_falloff);
+  convert_ign_to_ros(ign_msg.pose(), ros_msg.pose);
+  convert_ign_to_ros(ign_msg.diffuse(), ros_msg.diffuse);
+  convert_ign_to_ros(ign_msg.specular(), ros_msg.specular);
+  ros_msg.attenuation_constant = ign_msg.attenuation_constant();
+  ros_msg.attenuation_linear = ign_msg.attenuation_linear();
+  ros_msg.attenuation_quadratic = ign_msg.attenuation_quadratic();
+  convert_ign_to_ros(ign_msg.direction(), ros_msg.direction);
+  ros_msg.range = ign_msg.range();
+  ros_msg.cast_shadows = ign_msg.cast_shadows();
+  ros_msg.spot_inner_angle = ign_msg.spot_inner_angle();
+  ros_msg.spot_outer_angle = ign_msg.spot_outer_angle();
+  ros_msg.spot_falloff = ign_msg.spot_falloff();
 
-  // ign_msg.set_id(ros_msg.id);
-
-  // ign_msg.set_parent_id(ros_msg.parent_id);
-
-  // ign_msg.set_intensity(ros_msg.intensity);
+  ros_msg.id = ign_msg.id();
+  
+  ros_msg.parent_id = ign_msg.parent_id();
+  
+  ros_msg.intensity = ign_msg.intensity();
 }
 
 template<>
