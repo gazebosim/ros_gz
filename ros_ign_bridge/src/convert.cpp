@@ -56,6 +56,8 @@ convert_ros_to_ign(
   const ros_ign_interfaces::msg::Color & ros_msg,
   ignition::msgs::Color & ign_msg)
 {
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
   ign_msg.set_r(ros_msg.r);
   ign_msg.set_g(ros_msg.g);
   ign_msg.set_b(ros_msg.b);
@@ -68,6 +70,8 @@ convert_ign_to_ros(
   const ignition::msgs::Color & ign_msg,
   ros_ign_interfaces::msg::Color & ros_msg)
 {
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
   ros_msg.r = ign_msg.r();
   ros_msg.g = ign_msg.g();
   ros_msg.b = ign_msg.b();
@@ -80,6 +84,8 @@ convert_ros_to_ign(
   const ros_ign_interfaces::msg::Light & ros_msg,
   ignition::msgs::Light & ign_msg)
 {
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
   ign_msg.set_name(ros_msg.name);
   if (ros_msg.type == 0) {
     ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_POINT);
@@ -116,6 +122,8 @@ convert_ign_to_ros(
   const ignition::msgs::Light & ign_msg,
   ros_ign_interfaces::msg::Light & ros_msg)
 {
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
   ros_msg.name = ign_msg.name();
   if (ign_msg.type() ==
       ignition::msgs::Light_LightType::Light_LightType_POINT) {

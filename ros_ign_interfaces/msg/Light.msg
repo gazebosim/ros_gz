@@ -1,3 +1,5 @@
+std_msgs/Header header
+
 string name
 
 # Light type: constant definition
