@@ -105,12 +105,9 @@ foreach(bridge ${bridge_executables})
   target_link_libraries(${bridge}
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
-    # ros_ign_interfaces libraries
-    -lros_ign_interfaces__rosidl_typesupport_cpp
-    -lros_ign_interfaces__rosidl_typesupport_fastrtps_cpp
-    -lros_ign_interfaces__rosidl_typesupport_introspection_cpp
   )
   ament_target_dependencies(${bridge}
+    "ros_ign_interfaces"
     "geometry_msgs"
     "nav_msgs"
     "rclcpp"
