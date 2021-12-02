@@ -15,6 +15,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
+find_package(ros_ign_interfaces REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
@@ -78,6 +79,7 @@ ament_target_dependencies(${bridge_lib}
   "nav_msgs"
   "rclcpp"
   "rosgraph_msgs"
+  "ros_ign_interfaces"
   "sensor_msgs"
   "std_msgs"
   "tf2_msgs"
@@ -100,18 +102,18 @@ ament_export_libraries(${bridge_lib})
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
     src/${bridge}.cpp
-    ${common_sources}
   )
   target_link_libraries(${bridge}
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
+    ${bridge_lib}
   )
   ament_target_dependencies(${bridge}
-    "ros_ign_interfaces"
     "geometry_msgs"
     "nav_msgs"
     "rclcpp"
     "rosgraph_msgs"
+    "ros_ign_interfaces"
     "sensor_msgs"
     "std_msgs"
     "tf2_msgs"
