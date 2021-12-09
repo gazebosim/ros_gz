@@ -67,6 +67,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Double double_msg;
   ros_ign_bridge::testing::createTestMsg(double_msg);
 
+  // ignition::msgs::Uint32.
+  auto uint32_pub = node.Advertise<ignition::msgs::UInt32>("uint32");
+  ignition::msgs::UInt32 uint32_msg;
+  ros_ign_bridge::testing::createTestMsg(uint32_msg);
+
   // ignition::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
@@ -176,6 +181,31 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
 
+  // ignition::msgs::Wrench.
+  auto wrench_pub = node.Advertise<ignition::msgs::Wrench>("wrench");
+  ignition::msgs::Wrench wrench_msg;
+  ros_ign_bridge::testing::createTestMsg(wrench_msg);
+
+  // ignition::msgs::JointWrench.
+  auto joint_wrench_pub = node.Advertise<ignition::msgs::JointWrench>("joint_wrench");
+  ignition::msgs::JointWrench joint_wrench_msg;
+  ros_ign_bridge::testing::createTestMsg(joint_wrench_msg);
+
+  // ignition::msgs::Entity.
+  auto entity_pub = node.Advertise<ignition::msgs::Entity>("entity");
+  ignition::msgs::Entity entity_msg;
+  ros_ign_bridge::testing::createTestMsg(entity_msg);
+
+  // ignition::msgs::Contact.
+  auto contact_pub = node.Advertise<ignition::msgs::Contact>("contact");
+  ignition::msgs::Contact contact_msg;
+  ros_ign_bridge::testing::createTestMsg(contact_msg);
+
+  // ignition::msgs::Contacts.
+  auto contacts_pub = node.Advertise<ignition::msgs::Contacts>("contacts");
+  ignition::msgs::Contacts contacts_msg;
+  ros_ign_bridge::testing::createTestMsg(contacts_msg);
+
   // ignition::msgs::PointCloudPacked.
   auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
     "pointcloud2");
@@ -198,6 +228,7 @@ int main(int /*argc*/, char **/*argv*/)
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);
     double_pub.Publish(double_msg);
+    uint32_pub.Publish(uint32_msg);
     header_pub.Publish(header_msg);
     string_pub.Publish(string_msg);
     quaternion_pub.Publish(quaternion_msg);
@@ -209,6 +240,11 @@ int main(int /*argc*/, char **/*argv*/)
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);
     tf2_message_pub.Publish(tf2_msg);
+    wrench_pub.Publish(wrench_msg);
+    joint_wrench_pub.Publish(joint_wrench_msg);
+    entity_pub.Publish(entity_msg);
+    contact_pub.Publish(contact_msg);
+    contacts_pub.Publish(contacts_msg);
     image_pub.Publish(image_msg);
     camera_info_pub.Publish(camera_info_msg);
     fluid_pressure_pub.Publish(fluid_pressure_msg);

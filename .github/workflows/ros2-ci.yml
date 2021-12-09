@@ -1,0 +1,31 @@
+name: ROS2 CI
+
+on: [push, pull_request]
+
+jobs:
+  ros_ign_ci:
+    name: ros_ign CI
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - docker-image: "ubuntu:20.04"
+            ignition-version: "edifice"
+            ros-distro: "galactic"
+          - docker-image: "ubuntu:20.04"
+            ignition-version: "edifice"
+            ros-distro: "rolling"
+          - docker-image: "ubuntu:20.04"
+            ignition-version: "fortress"
+            ros-distro: "rolling"
+    container:
+      image: ${{ matrix.docker-image }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build and Test
+        run: .github/workflows/build-and-test.sh
+        env:
+          DOCKER_IMAGE: ${{ matrix.docker-image }}
+          IGNITION_VERSION: ${{ matrix.ignition-version  }}
+          ROS_DISTRO: ${{ matrix.ros-distro }}

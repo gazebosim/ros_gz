@@ -68,6 +68,11 @@ int main(int argc, char ** argv)
   std_msgs::msg::Float64 double_msg;
   ros_ign_bridge::testing::createTestMsg(double_msg);
 
+  // std_msgs::UInt32.
+  auto uint32_pub = node->create_publisher<std_msgs::msg::UInt32>("uint32", 1000);
+  std_msgs::msg::UInt32 uint32_msg;
+  ros_ign_bridge::testing::createTestMsg(uint32_msg);
+
   // std_msgs::msg::Header.
   auto header_pub = node->create_publisher<std_msgs::msg::Header>("header", 1000);
   std_msgs::msg::Header header_msg;
@@ -137,6 +142,35 @@ int main(int argc, char ** argv)
   tf2_msgs::msg::TFMessage tf2_msg;
   ros_ign_bridge::testing::createTestMsg(tf2_msg);
 
+  // geometry_msgs::msg::Wrench.
+  auto wrench_pub =
+    node->create_publisher<geometry_msgs::msg::Wrench>("wrench", 1000);
+  geometry_msgs::msg::Wrench wrench_msg;
+  ros_ign_bridge::testing::createTestMsg(wrench_msg);
+
+  // ros_ign_interfaces::msg::JointWrench.
+  auto joint_wrench_pub =
+    node->create_publisher<ros_ign_interfaces::msg::JointWrench>("joint_wrench", 1000);
+  ros_ign_interfaces::msg::JointWrench joint_wrench_msg;
+  ros_ign_bridge::testing::createTestMsg(joint_wrench_msg);
+
+  // ros_ign_interfaces::msg::Entity.
+  auto entity_pub =
+    node->create_publisher<ros_ign_interfaces::msg::Entity>("entity", 1000);
+  ros_ign_interfaces::msg::Entity entity_msg;
+  ros_ign_bridge::testing::createTestMsg(entity_msg);
+
+  // ros_ign_interfaces::msg::Contact.
+  auto contact_pub =
+    node->create_publisher<ros_ign_interfaces::msg::Contact>("contact", 1000);
+  ros_ign_interfaces::msg::Contact contact_msg;
+  ros_ign_bridge::testing::createTestMsg(contact_msg);
+
+  // ros_ign_interfaces::msg::Contacts.
+  auto contacts_pub =
+    node->create_publisher<ros_ign_interfaces::msg::Contacts>("contacts", 1000);
+  ros_ign_interfaces::msg::Contacts contacts_msg;
+  ros_ign_bridge::testing::createTestMsg(contacts_msg);
 
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
@@ -216,6 +250,7 @@ int main(int argc, char ** argv)
     empty_pub->publish(empty_msg);
     float_pub->publish(float_msg);
     double_pub->publish(double_msg);
+    uint32_pub->publish(uint32_msg);
     header_pub->publish(header_msg);
     string_pub->publish(string_msg);
     quaternion_pub->publish(quaternion_msg);
@@ -228,6 +263,11 @@ int main(int argc, char ** argv)
     transform_stamped_pub->publish(transform_stamped_msg);
     tf2_message_pub->publish(tf2_msg);
     twist_pub->publish(twist_msg);
+    wrench_pub->publish(wrench_msg);
+    joint_wrench_pub->publish(joint_wrench_msg);
+    entity_pub->publish(entity_msg);
+    contact_pub->publish(contact_msg);
+    contacts_pub->publish(contacts_msg);
     // actuators_pub->publish(actuators_msg);
     odometry_pub->publish(odometry_msg);
     image_pub->publish(image_msg);

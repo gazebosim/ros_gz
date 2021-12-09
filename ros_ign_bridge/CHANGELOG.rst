@@ -2,6 +2,11 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.233.2 (2021-07-20)
+--------------------
+* [ros2] Update version docs, add Galactic and Fortress (`#164 <https://github.com/osrf/ros_ign/issues/164>`_)
+* Contributors: Louise Poubel
+
 0.233.1 (2021-04-16)
 --------------------
 * Default to Edifice for Rolling (`#150 <https://github.com/osrf/ros_ign/issues/150>`_)

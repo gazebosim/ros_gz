@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_ign_gazebo</name>
-  <version>0.233.1</version>
+  <version>0.233.2</version>
   <description>Tools for using Ignition Gazebo simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
@@ -17,6 +17,8 @@
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
 
+  <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <!-- Edifice (default) -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>

@@ -24,8 +24,13 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
+#include <geometry_msgs/msg/wrench.hpp>
 // #include <mav_msgs/msg/actuators.hpp>
 #include <nav_msgs/msg/odometry.hpp>
+#include <ros_ign_interfaces/msg/entity.hpp>
+#include <ros_ign_interfaces/msg/joint_wrench.hpp>
+#include <ros_ign_interfaces/msg/contact.hpp>
+#include <ros_ign_interfaces/msg/contacts.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -41,6 +46,7 @@
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/string.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
@@ -105,6 +111,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Empty & ign_msg,
   std_msgs::msg::Empty & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::msg::UInt32 & ros_msg,
+  ignition::msgs::UInt32 & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::UInt32 & ign_msg,
+  std_msgs::msg::UInt32 & ros_msg);
 
 template<>
 void
@@ -287,6 +305,66 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Twist & ign_msg,
   geometry_msgs::msg::Twist & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const geometry_msgs::msg::Wrench & ros_msg,
+  ignition::msgs::Wrench & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Wrench & ign_msg,
+  geometry_msgs::msg::Wrench & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::JointWrench & ros_msg,
+  ignition::msgs::JointWrench & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::JointWrench & ign_msg,
+  ros_ign_interfaces::msg::JointWrench & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Entity & ros_msg,
+  ignition::msgs::Entity & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Entity & ign_msg,
+  ros_ign_interfaces::msg::Entity & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Contact & ros_msg,
+  ignition::msgs::Contact & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Contact & ign_msg,
+  ros_ign_interfaces::msg::Contact & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Contacts & ros_msg,
+  ignition::msgs::Contacts & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Contacts & ign_msg,
+  ros_ign_interfaces::msg::Contacts & ros_msg);
 
 /**
 // mav_msgs

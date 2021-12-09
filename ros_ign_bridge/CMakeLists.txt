@@ -14,6 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(ros_ign_interfaces REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
 find_package(ros_ign_interfaces REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -39,6 +40,15 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
   set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Dome")
+# Fortress
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 # Default to Edifice
 else()
   find_package(ignition-transport10 REQUIRED)
@@ -78,6 +88,7 @@ ament_target_dependencies(${bridge_lib}
   "geometry_msgs"
   "nav_msgs"
   "rclcpp"
+  "ros_ign_interfaces"
   "rosgraph_msgs"
   "ros_ign_interfaces"
   "sensor_msgs"
@@ -112,6 +123,7 @@ foreach(bridge ${bridge_executables})
     "geometry_msgs"
     "nav_msgs"
     "rclcpp"
+    "ros_ign_interfaces"
     "rosgraph_msgs"
     "ros_ign_interfaces"
     "sensor_msgs"
@@ -137,6 +149,7 @@ if(BUILD_TESTING)
     geometry_msgs
     nav_msgs
     rclcpp
+    ros_ign_interfaces
     rosgraph_msgs
     sensor_msgs
     std_msgs
@@ -155,6 +168,7 @@ if(BUILD_TESTING)
     geometry_msgs
     nav_msgs
     rclcpp
+    ros_ign_interfaces
     rosgraph_msgs
     sensor_msgs
     std_msgs
@@ -171,6 +185,7 @@ if(BUILD_TESTING)
 
   add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
   ament_target_dependencies(test_ign_publisher
+    ros_ign_interfaces
     rclcpp
   )
   target_link_libraries(test_ign_publisher
@@ -182,6 +197,7 @@ if(BUILD_TESTING)
 
   add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
   ament_target_dependencies(test_ign_subscriber
+    ros_ign_interfaces
     rclcpp
   )
   target_link_libraries(test_ign_subscriber
@@ -207,5 +223,16 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 endif()
+
+ament_export_dependencies(geometry_msgs
+  nav_msgs
+  rclcpp
+  ros_ign_interfaces
+  rosgraph_msgs
+  sensor_msgs
+  std_msgs
+  tf2_msgs
+  trajectory_msgs
+)
 
 ament_package()

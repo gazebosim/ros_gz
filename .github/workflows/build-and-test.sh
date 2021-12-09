@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
 apt update -qq
-apt install -qq -y lsb-release wget curl
+apt install -qq -y lsb-release wget curl build-essential
 
 # Citadel gets Ignition with rosdep
 if [ "$IGNITION_VERSION" != "citadel" ]; then
@@ -23,6 +23,10 @@ if [ "$IGNITION_VERSION" != "citadel" ]; then
 
   if [ "$IGNITION_VERSION" == "edifice" ]; then
     IGN_DEPS="libignition-msgs7-dev libignition-transport10-dev libignition-gazebo5-dev"
+  fi
+
+  if [ "$IGNITION_VERSION" == "fortress" ]; then
+    IGN_DEPS="libignition-msgs8-dev libignition-transport11-dev libignition-gazebo6-dev"
   fi
 fi
 
@@ -41,7 +45,7 @@ rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
 mkdir -p $COLCON_WS_SRC
-ln -s /code $COLCON_WS_SRC
+cp -r $GITHUB_WORKSPACE $COLCON_WS_SRC
 cd $COLCON_WS
 colcon build --event-handlers console_direct+
 

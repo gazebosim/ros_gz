@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_ign_bridge</name>
-  <version>0.233.1</version>
+  <version>0.233.2</version>
   <description>Bridge communication between ROS and Ignition Transport</description>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
@@ -16,6 +16,7 @@
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>ros_ign_interfaces</depend>
   <depend>rosgraph_msgs</depend>
   <depend>ros_ign_interfaces</depend>
   <depend>sensor_msgs</depend>
@@ -23,6 +24,9 @@
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
 
+  <!-- Fortress -->
+  <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
   <!-- Edifice (default) -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>

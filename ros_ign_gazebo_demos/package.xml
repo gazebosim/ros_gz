@@ -1,12 +1,14 @@
 <package format="3">
   <name>ros_ign_gazebo_demos</name>
-  <version>0.233.1</version>
+  <version>0.233.2</version>
   <description>Demos using Ignition Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
+  <!-- Fortress -->
+  <exec_depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
   <!-- Edifice (default) -->
   <exec_depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
   <exec_depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</exec_depend>
@@ -26,6 +28,7 @@
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rqt_topic</exec_depend>
   <exec_depend>rviz2</exec_depend>
+  <exec_depend>xacro</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
