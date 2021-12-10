@@ -18,7 +18,6 @@
   <depend>rclcpp</depend>
   <depend>ros_ign_interfaces</depend>
   <depend>rosgraph_msgs</depend>
-  <depend>ros_ign_interfaces</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2_msgs</depend>

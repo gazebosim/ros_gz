@@ -10,8 +10,8 @@ uint8 DIRECTIONAL = 2
 uint8 type
 
 geometry_msgs/Pose pose
-ros_ign_interfaces/Color diffuse
-ros_ign_interfaces/Color specular
+std_msgs/ColorRGBA diffuse
+std_msgs/ColorRGBA specular
 float32 attenuation_constant
 float32 attenuation_linear
 float32 attenuation_quadratic

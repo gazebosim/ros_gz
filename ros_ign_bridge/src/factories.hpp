@@ -52,7 +52,6 @@
 // Ignition messages
 #include <ignition/msgs.hh>
 
-#include <ros_ign_interfaces/msg/color.hpp>
 #include <ros_ign_interfaces/msg/light.hpp>
 
 #include <memory>
@@ -73,24 +72,6 @@ get_factory(
 template<>
 void
 Factory<
-  ros_ign_interfaces::msg::Color,
-  ignition::msgs::Color
->::convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Color & ros_msg,
-  ignition::msgs::Color & ign_msg);
-
-template<>
-void
-Factory<
-  ros_ign_interfaces::msg::Color,
-  ignition::msgs::Color
->::convert_ign_to_ros(
-  const ignition::msgs::Color & ign_msg,
-  ros_ign_interfaces::msg::Color & ros_msg);
-
-template<>
-void
-Factory<
   ros_ign_interfaces::msg::Light,
   ignition::msgs::Light
 >::convert_ros_to_ign(
@@ -107,6 +88,24 @@ Factory<
   ros_ign_interfaces::msg::Light & ros_msg);
 
 // std_msgs
+template<>
+void
+Factory<
+  std_msgs::msg::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ros_to_ign(
+  const std_msgs::msg::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg);
+
+template<>
+void
+Factory<
+  std_msgs::msg::ColorRGBA,
+  ignition::msgs::Color
+>::convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::msg::ColorRGBA & ros_msg);
+
 template<>
 void
 Factory<

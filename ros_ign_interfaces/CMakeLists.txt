@@ -16,7 +16,6 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 set(msg_files
-  "msg/Color.msg"
   "msg/Contact.msg"
   "msg/Contacts.msg"
   "msg/Entity.msg"

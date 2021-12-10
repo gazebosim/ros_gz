@@ -53,34 +53,6 @@ std::string frame_id_ign_to_ros(const std::string & frame_id)
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Color & ros_msg,
-  ignition::msgs::Color & ign_msg)
-{
-  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
-
-  ign_msg.set_r(ros_msg.r);
-  ign_msg.set_g(ros_msg.g);
-  ign_msg.set_b(ros_msg.b);
-  ign_msg.set_a(ros_msg.a);
-}
-
-template<>
-void
-convert_ign_to_ros(
-  const ignition::msgs::Color & ign_msg,
-  ros_ign_interfaces::msg::Color & ros_msg)
-{
-  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-
-  ros_msg.r = ign_msg.r();
-  ros_msg.g = ign_msg.g();
-  ros_msg.b = ign_msg.b();
-  ros_msg.a = ign_msg.a();
-}
-
-template<>
-void
-convert_ros_to_ign(
   const ros_ign_interfaces::msg::Light & ros_msg,
   ignition::msgs::Light & ign_msg)
 {
@@ -154,6 +126,30 @@ convert_ign_to_ros(
   ros_msg.parent_id = ign_msg.parent_id();
   
   ros_msg.intensity = ign_msg.intensity();
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::msg::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg)
+{
+  ign_msg.set_r(ros_msg.r);
+  ign_msg.set_g(ros_msg.g);
+  ign_msg.set_b(ros_msg.b);
+  ign_msg.set_a(ros_msg.a);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::msg::ColorRGBA & ros_msg)
+{
+  ros_msg.r = ign_msg.r();
+  ros_msg.g = ign_msg.g();
+  ros_msg.b = ign_msg.b();
+  ros_msg.a = ign_msg.a();
 }
 
 template<>

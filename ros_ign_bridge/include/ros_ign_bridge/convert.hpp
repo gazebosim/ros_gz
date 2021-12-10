@@ -56,25 +56,12 @@
 
 #include <ros_ign_bridge/convert_decl.hpp>
 
-#include <ros_ign_interfaces/msg/color.hpp>
 #include <ros_ign_interfaces/msg/light.hpp>
 
 namespace ros_ign_bridge
 {
 
 // ros_ign_interfaces
-template<>
-void
-convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Color & ros_msg,
-  ignition::msgs::Color & ign_msg);
-
-template<>
-void
-convert_ign_to_ros(
-  const ignition::msgs::Color & ign_msg,
-  ros_ign_interfaces::msg::Color & ros_msg);
-
 template<>
 void
 convert_ros_to_ign(
@@ -88,6 +75,18 @@ convert_ign_to_ros(
   ros_ign_interfaces::msg::Light & ros_msg);
 
 // std_msgs
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::msg::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::msg::ColorRGBA & ros_msg);
+
 template<>
 void
 convert_ros_to_ign(

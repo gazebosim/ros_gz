@@ -16,7 +16,6 @@ find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(ros_ign_interfaces REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
-find_package(ros_ign_interfaces REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
@@ -90,7 +89,6 @@ ament_target_dependencies(${bridge_lib}
   "rclcpp"
   "ros_ign_interfaces"
   "rosgraph_msgs"
-  "ros_ign_interfaces"
   "sensor_msgs"
   "std_msgs"
   "tf2_msgs"
@@ -125,7 +123,6 @@ foreach(bridge ${bridge_executables})
     "rclcpp"
     "ros_ign_interfaces"
     "rosgraph_msgs"
-    "ros_ign_interfaces"
     "sensor_msgs"
     "std_msgs"
     "tf2_msgs"
