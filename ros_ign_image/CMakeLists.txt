@@ -13,7 +13,6 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(ros_ign_bridge REQUIRED)
-find_package(ros_ign_interfaces REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
