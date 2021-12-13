@@ -57,9 +57,9 @@ def generate_launch_description():
         executable='parameter_bridge',
         arguments=[
                 # Clock (IGN -> ROS2)
-                '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
+                '/clock@rosgraph_msgs/msg/Clock@ignition.msgs.Clock',
                 # Joint states (IGN -> ROS2)
-                '/world/empty/model/rrbot/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
+                '/world/empty/model/rrbot/joint_state@sensor_msgs/msg/JointState@ignition.msgs.Model',
                 ],
         remappings=[
             ('/world/empty/model/rrbot/joint_state', 'joint_states'),
