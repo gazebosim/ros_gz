@@ -449,12 +449,12 @@ void createTestMsg(tf2_msgs::msg::TFMessage & _msg)
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const tf2_msgs::msg::TFMessage & _msg)
+void compareTestMsg(const std::shared_ptr<tf2_msgs::msg::TFMessage> & _msg)
 {
   tf2_msgs::msg::TFMessage expected_msg;
   createTestMsg(expected_msg);
 
-  compareTestMsg(std::make_shared<geometry_msgs::msg::TransformStamped>(_msg.transforms[0]));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::TransformStamped>(_msg->transforms[0]));
 }
 
 /// \brief Create a message used for testing.
