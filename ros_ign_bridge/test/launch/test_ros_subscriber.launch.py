@@ -85,14 +85,14 @@ def generate_test_description():
     ]), locals()
 
 
-class IgnSubscriberTest(unittest.TestCase):
+class ROSSubscriberTest(unittest.TestCase):
 
     def test_termination(self, process_under_test, proc_info):
         proc_info.assertWaitForShutdown(process=process_under_test, timeout=200)
 
 
 @launch_testing.post_shutdown_test()
-class IgnSubscriberTestAfterShutdown(unittest.TestCase):
+class ROSSubscriberTestAfterShutdown(unittest.TestCase):
 
     def test_exit_code(self, process_under_test, proc_info):
         launch_testing.asserts.assertExitCodes(
