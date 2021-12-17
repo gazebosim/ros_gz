@@ -824,15 +824,18 @@ void createTestMsg(sensor_msgs::msg::Imu & _msg)
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
 {
+  sensor_msgs::msg::Imu expected_msg;
+  createTestMsg(expected_msg);
+
   compareTestMsg(_msg->header);
   compareTestMsg(_msg->orientation);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular_velocity));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
 
   for (auto i = 0; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->orientation_covariance[i]);
-    EXPECT_FLOAT_EQ(i + 1, _msg->angular_velocity_covariance[i]);
-    EXPECT_FLOAT_EQ(i + 1, _msg->linear_acceleration_covariance[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.orientation_covariance[i], _msg->orientation_covariance[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.angular_velocity_covariance[i], _msg->angular_velocity_covariance[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.linear_acceleration_covariance[i], _msg->linear_acceleration_covariance[i]);
   }
 }
 
@@ -905,8 +908,8 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.angle_min, _msg->angle_min);
   EXPECT_FLOAT_EQ(expected_msg.angle_max, _msg->angle_max);
   EXPECT_FLOAT_EQ(expected_msg.angle_increment, _msg->angle_increment);
-  EXPECT_FLOAT_EQ(0.00025000001, _msg->time_increment);
-  EXPECT_FLOAT_EQ(0, _msg->scan_time);
+  EXPECT_FLOAT_EQ(expected_msg.time_increment, _msg->time_increment);
+  EXPECT_FLOAT_EQ(expected_msg.scan_time, _msg->scan_time);
   EXPECT_FLOAT_EQ(expected_msg.range_min, _msg->range_min);
   EXPECT_FLOAT_EQ(expected_msg.range_max, _msg->range_max);
 
