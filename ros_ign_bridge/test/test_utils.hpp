@@ -813,30 +813,18 @@ void createTestMsg(sensor_msgs::msg::Imu & _msg)
 
   _msg.header = header_msg;
   _msg.orientation = quaternion_msg;
-  _msg.orientation_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
   _msg.angular_velocity = vector3_msg;
-  _msg.angular_velocity_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
   _msg.linear_acceleration = vector3_msg;
-  _msg.linear_acceleration_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 }
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
 {
-  sensor_msgs::msg::Imu expected_msg;
-  createTestMsg(expected_msg);
-
   compareTestMsg(_msg->header);
   compareTestMsg(_msg->orientation);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular_velocity));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
-
-  for (auto i = 0; i < 9; ++i) {
-    EXPECT_DOUBLE_EQ(expected_msg.orientation_covariance[i], _msg->orientation_covariance[i]);
-    EXPECT_DOUBLE_EQ(expected_msg.angular_velocity_covariance[i], _msg->angular_velocity_covariance[i]);
-    EXPECT_DOUBLE_EQ(expected_msg.linear_acceleration_covariance[i], _msg->linear_acceleration_covariance[i]);
-  }
 }
 
 /// \brief Create a message used for testing.
@@ -889,7 +877,6 @@ void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
   _msg.angle_min = -1.57;
   _msg.angle_max = 1.57;
   _msg.angle_increment = 3.14 / num_readings;
-  _msg.time_increment = (1 / laser_frequency) / (num_readings);
   _msg.scan_time = 0;
   _msg.range_min = 1;
   _msg.range_max = 2;
@@ -908,8 +895,7 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.angle_min, _msg->angle_min);
   EXPECT_FLOAT_EQ(expected_msg.angle_max, _msg->angle_max);
   EXPECT_FLOAT_EQ(expected_msg.angle_increment, _msg->angle_increment);
-  EXPECT_FLOAT_EQ(expected_msg.time_increment, _msg->time_increment);
-  EXPECT_FLOAT_EQ(expected_msg.scan_time, _msg->scan_time);
+  EXPECT_FLOAT_EQ(0, _msg->scan_time);
   EXPECT_FLOAT_EQ(expected_msg.range_min, _msg->range_min);
   EXPECT_FLOAT_EQ(expected_msg.range_max, _msg->range_max);
 
@@ -933,7 +919,6 @@ void createTestMsg(sensor_msgs::msg::MagneticField & _msg)
 
   _msg.header = header_msg;
   _msg.magnetic_field = vector3_msg;
-  _msg.magnetic_field_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 }
 
 /// \brief Compare a message with the populated for testing.
@@ -942,10 +927,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::MagneticField> & _ms
 {
   compareTestMsg(_msg->header);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->magnetic_field));
-
-  for (auto i = 0u; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->magnetic_field_covariance[i]);
-  }
 }
 
 /// \brief Create a message used for testing.
