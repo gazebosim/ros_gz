@@ -315,7 +315,7 @@ TEST(ROSSubscriberTest, Wrench)
 }
 
 /////////////////////////////////////////////////
-TEST(ROSSubscriberTest, JointWrench)
+TEST(ROSSubscriberTest, Light)
 {
   MyTestClass<ros_ign_interfaces::msg::Light> client("light");
 
