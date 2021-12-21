@@ -160,7 +160,7 @@ if(BUILD_TESTING)
   )
   target_include_directories(test_ros_publisher PUBLIC ${GTEST_INCLUDE_DIRS})
 
-  add_executable(test_ros_subscriber test/subscribers/ign_subscriber.cpp)
+  add_executable(test_ros_subscriber test/subscribers/ros_subscriber.cpp)
   ament_target_dependencies(test_ros_subscriber
     geometry_msgs
     nav_msgs

@@ -69,9 +69,9 @@ public:
   /// \brief Member function called each time a topic update is received.
 
 public:
-  void Cb(const typename ROS_T::SharedPtr _msg)
+  void Cb(const ROS_T & _msg)
   {
-    ros_ign_bridge::testing::compareTestMsg(_msg);
+    ros_ign_bridge::testing::compareTestMsg(std::make_shared<ROS_T>(_msg));
     this->callbackExecuted = true;
   }
 
@@ -137,11 +137,11 @@ TEST(ROSSubscriberTest, Float)
 /////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Double)
 {
-  MyTestClass<std_msgs::Float64> client("double");
+  MyTestClass<std_msgs::msg::Float64> client("double");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
-    client.callbackExecuted, 10ms, 200);
+    node, client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
@@ -285,7 +285,7 @@ TEST(ROSSubscriberTest, TF2Message)
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
-    client.callbackExecuted, 10ms, 200);
+    node, client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
 }
