@@ -92,6 +92,19 @@ target_link_libraries(${bridge_lib}
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
+set(bridge_lib
+  ros_ign_bridge_lib
+)
+
+add_library(${bridge_lib}
+  ${common_sources}
+)
+target_link_libraries(${bridge_lib}
+  ${catkin_LIBRARIES}
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)
+
 set(bridge_executables
   parameter_bridge
   static_bridge
