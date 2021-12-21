@@ -87,7 +87,7 @@ private:
 };
 
 /////////////////////////////////////////////////
-TEST(ROSSubscriberTest, Bool)
+TEST(ROSSubscriberTest, Color)
 {
   MyTestClass<std_msgs::msg::ColorRGBA> client("color");
 
@@ -315,7 +315,7 @@ TEST(ROSSubscriberTest, Wrench)
 }
 
 /////////////////////////////////////////////////
-TEST(ROSSubscriberTest, JointWrench)
+TEST(ROSSubscriberTest, Light)
 {
   MyTestClass<ros_ign_interfaces::msg::Light> client("light");
 
