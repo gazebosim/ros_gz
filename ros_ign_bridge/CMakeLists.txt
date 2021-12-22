@@ -59,7 +59,7 @@ else()
   message(STATUS "Compiling against Ignition Edifice")
 endif()
 
-set(PACKAGES 
+set(PACKAGES
   std_msgs
   geometry_msgs
   nav_msgs
@@ -77,6 +77,7 @@ add_library(bridge_utils
 target_include_directories(bridge_utils
   PRIVATE src
 )
+set_target_properties(bridge_utils PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 foreach(PKG ${PACKAGES})
   add_library(${PKG}_bridge
@@ -96,6 +97,9 @@ foreach(PKG ${PACKAGES})
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
+  set_target_properties(${PKG}_bridge
+    PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
 endforeach()
 
 set(bridge_executables
@@ -108,6 +112,7 @@ set(bridge_lib
 )
 
 add_library(${bridge_lib}
+  SHARED
   src/factories.cpp
 )
 
