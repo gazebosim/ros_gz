@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "factory.hpp"
-#include "trajectory_msgs.hpp"
+#include "factories/trajectory_msgs.hpp"
 
+#include <memory>
+#include <string>
+
+#include "factory.hpp"
 #include "ros_ign_bridge/convert/trajectory_msgs.hpp"
 
 namespace ros_ign_bridge

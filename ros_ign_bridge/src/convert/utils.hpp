@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
-#define ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
+#ifndef CONVERT__UTILS_HPP_
+#define CONVERT__UTILS_HPP_
 
 #include <string>
 
@@ -30,5 +30,4 @@ std::string frame_id_ign_to_ros(const std::string & frame_id);
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
-
+#endif  // CONVERT__UTILS_HPP_

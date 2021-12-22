@@ -52,4 +52,4 @@ convert_ign_to_ros(
 
 }  // namespace ros_ign_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
+#endif  // ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_

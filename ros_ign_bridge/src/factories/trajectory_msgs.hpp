@@ -15,10 +15,10 @@
 #ifndef FACTORIES__TRAJECTORY_MSGS_HPP_
 #define FACTORIES__TRAJECTORY_MSGS_HPP_
 
-#include "factory_interface.hpp"
-
 #include <memory>
 #include <string>
+
+#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
@@ -31,5 +31,3 @@ get_factory__trajectory_msgs(
 }  // namespace ros_ign_bridge
 
 #endif  // FACTORIES__TRAJECTORY_MSGS_HPP_
-
-

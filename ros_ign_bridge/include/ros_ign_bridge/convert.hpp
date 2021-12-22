@@ -25,4 +25,3 @@
 #include <ros_ign_bridge/convert/trajectory_msgs.hpp>
 
 #endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
-

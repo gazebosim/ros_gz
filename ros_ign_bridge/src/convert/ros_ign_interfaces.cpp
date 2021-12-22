@@ -15,6 +15,7 @@
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
 #include <limits>
+#include <memory>
 #include <string>
 
 namespace ros_ign_bridge

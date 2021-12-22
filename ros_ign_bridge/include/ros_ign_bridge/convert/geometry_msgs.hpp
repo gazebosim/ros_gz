@@ -148,4 +148,3 @@ convert_ign_to_ros(
 }  // namespace ros_ign_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
-

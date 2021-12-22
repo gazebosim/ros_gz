@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros_ign_bridge/convert/sensor_msgs.hpp"
+#include <limits>
+#include <memory>
+#include <string>
 
-#include "utils.hpp"
+#include "convert/utils.hpp"
+#include "ros_ign_bridge/convert/sensor_msgs.hpp"
 
 namespace ros_ign_bridge
 {

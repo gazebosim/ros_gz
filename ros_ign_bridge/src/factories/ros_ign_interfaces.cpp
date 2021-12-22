@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "factory.hpp"
-#include "ros_ign_interfaces.hpp"
+#include "factories/ros_ign_interfaces.hpp"
 
+#include <memory>
+#include <string>
+
+#include "factory.hpp"
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
 namespace ros_ign_bridge

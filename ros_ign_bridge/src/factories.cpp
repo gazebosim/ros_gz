@@ -21,8 +21,10 @@
 #include "factories/nav_msgs.hpp"
 #include "factories/ros_ign_interfaces.hpp"
 #include "factories/rosgraph_msgs.hpp"
+#include "factories/sensor_msgs.hpp"
 #include "factories/std_msgs.hpp"
 #include "factories/tf2_msgs.hpp"
+#include "factories/trajectory_msgs.hpp"
 
 namespace ros_ign_bridge
 {
@@ -34,22 +36,28 @@ get_factory_impl(
 {
   std::shared_ptr<FactoryInterface> impl;
   impl = get_factory__std_msgs(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
 
   impl = get_factory__geometry_msgs(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
 
   impl = get_factory__nav_msgs(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
 
   impl = get_factory__ros_ign_interfaces(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
 
   impl = get_factory__rosgraph_msgs(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
+
+  impl = get_factory__sensor_msgs(ros_type_name, ign_type_name);
+  if (impl) {return impl;}
 
   impl = get_factory__tf2_msgs(ros_type_name, ign_type_name);
-  if (impl) return impl;
+  if (impl) {return impl;}
+
+  impl = get_factory__trajectory_msgs(ros_type_name, ign_type_name);
+  if (impl) {return impl;}
 
   return nullptr;
 }

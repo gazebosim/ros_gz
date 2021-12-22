@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "convert/utils.hpp"
 #include "ros_ign_bridge/convert/nav_msgs.hpp"
-#include "utils.hpp"
 
 namespace ros_ign_bridge
 {

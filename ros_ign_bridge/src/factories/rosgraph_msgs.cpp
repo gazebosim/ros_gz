@@ -12,9 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "factory.hpp"
-#include "rosgraph_msgs.hpp"
+#include "factories/rosgraph_msgs.hpp"
 
+#include <memory>
+#include <string>
+
+#include "factory.hpp"
 #include "ros_ign_bridge/convert/rosgraph_msgs.hpp"
 
 namespace ros_ign_bridge

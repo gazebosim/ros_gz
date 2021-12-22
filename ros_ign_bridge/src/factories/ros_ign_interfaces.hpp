@@ -15,10 +15,10 @@
 #ifndef FACTORIES__ROS_IGN_INTERFACES_HPP_
 #define FACTORIES__ROS_IGN_INTERFACES_HPP_
 
-#include "factory_interface.hpp"
-
 #include <memory>
 #include <string>
+
+#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
@@ -31,5 +31,3 @@ get_factory__ros_ign_interfaces(
 }  // namespace ros_ign_bridge
 
 #endif  // FACTORIES__ROS_IGN_INTERFACES_HPP_
-
-
