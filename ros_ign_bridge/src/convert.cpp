@@ -65,7 +65,7 @@ convert_ros_to_ign(
     ign_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
   } else if (ros_msg.type == 2) {
     ign_msg.set_type(
-        ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
+      ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
   }
 
   convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
@@ -98,13 +98,12 @@ convert_ign_to_ros(
 
   ros_msg.name = ign_msg.name();
   if (ign_msg.type() ==
-      ignition::msgs::Light_LightType::Light_LightType_POINT) {
+    ignition::msgs::Light_LightType::Light_LightType_POINT)
+  {
     ros_msg.type = 0;
-  } else if (ign_msg.type() ==
-      ignition::msgs::Light_LightType::Light_LightType_SPOT) {
+  } else if (ign_msg.type() == ignition::msgs::Light_LightType::Light_LightType_SPOT) {
     ros_msg.type = 1;
-  } else if (ign_msg.type() ==
-      ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL) {
+  } else if (ign_msg.type() == ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL) {
     ros_msg.type = 2;
   }
 
@@ -122,9 +121,9 @@ convert_ign_to_ros(
   ros_msg.spot_falloff = ign_msg.spot_falloff();
 
   ros_msg.id = ign_msg.id();
-  
+
   ros_msg.parent_id = ign_msg.parent_id();
-  
+
   ros_msg.intensity = ign_msg.intensity();
 }
 

@@ -27,7 +27,7 @@ get_factory_impl(
   const std::string & ign_type_name)
 {
   // mapping from string to specialized template
-  if ((ros_type_name == "ros_ign_interfaces/msg/Light" || 
+  if ((ros_type_name == "ros_ign_interfaces/msg/Light" ||
     ros_type_name.empty()) && ign_type_name == "ignition.msgs.Light")
   {
     return std::make_shared<
@@ -37,7 +37,7 @@ get_factory_impl(
       >
     >("ros_ign_interfaces/msg/Light", ign_type_name);
   }
-  if ((ros_type_name == "std_msgs/msg/ColorRGBA" || 
+  if ((ros_type_name == "std_msgs/msg/ColorRGBA" ||
     ros_type_name.empty()) && ign_type_name == "ignition.msgs.Color")
   {
     return std::make_shared<
