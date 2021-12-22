@@ -59,26 +59,44 @@ else()
   message(STATUS "Compiling against Ignition Edifice")
 endif()
 
-set(common_sources
-  src/convert/geometry_msgs.cpp
-  src/convert/nav_msgs.cpp
-  src/convert/ros_ign_interfaces.cpp
-  src/convert/rosgraph_msgs.cpp
-  src/convert/sensor_msgs.cpp
-  src/convert/std_msgs.cpp
-  src/convert/tf2_msgs.cpp
-  src/convert/trajectory_msgs.cpp
-  src/convert/utils.cpp
-  src/factories.cpp
-  src/factories/geometry_msgs.cpp
-  src/factories/nav_msgs.cpp
-  src/factories/ros_ign_interfaces.cpp
-  src/factories/rosgraph_msgs.cpp
-  src/factories/sensor_msgs.cpp
-  src/factories/std_msgs.cpp
-  src/factories/tf2_msgs.cpp
-  src/factories/trajectory_msgs.cpp
+set(PACKAGES 
+  std_msgs
+  geometry_msgs
+  nav_msgs
+  tf2_msgs
+  ros_ign_interfaces
+  rosgraph_msgs
+  sensor_msgs
+  trajectory_msgs
 )
+
+add_library(bridge_utils
+  STATIC
+  src/convert/utils.cpp
+)
+target_include_directories(bridge_utils
+  PRIVATE src
+)
+
+foreach(PKG ${PACKAGES})
+  add_library(${PKG}_bridge
+    STATIC
+    src/convert/${PKG}.cpp
+    src/factories/${PKG}.cpp
+  )
+  target_include_directories(${PKG}_bridge
+    PUBLIC include
+    PRIVATE src
+  )
+  ament_target_dependencies(${PKG}_bridge
+    "${PKG}"
+  )
+  target_link_libraries(${PKG}_bridge
+    bridge_utils
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+endforeach()
 
 set(bridge_executables
   parameter_bridge
@@ -90,7 +108,7 @@ set(bridge_lib
 )
 
 add_library(${bridge_lib}
-  ${common_sources}
+  src/factories.cpp
 )
 
 target_include_directories(${bridge_lib}
@@ -98,21 +116,9 @@ target_include_directories(${bridge_lib}
   PRIVATE src
 )
 
-target_link_libraries(${bridge_lib}
-  ignition-msgs${IGN_MSGS_VER}::core
-  ignition-transport${IGN_TRANSPORT_VER}::core
-)
-ament_target_dependencies(${bridge_lib}
-  "geometry_msgs"
-  "nav_msgs"
-  "rclcpp"
-  "ros_ign_interfaces"
-  "rosgraph_msgs"
-  "sensor_msgs"
-  "std_msgs"
-  "tf2_msgs"
-  "trajectory_msgs"
-)
+foreach(PKG ${PACKAGES})
+  target_link_libraries(${bridge_lib} ${PKG}_bridge)
+endforeach()
 
 install(TARGETS ${bridge_lib}
         ARCHIVE DESTINATION lib
@@ -137,15 +143,8 @@ foreach(bridge ${bridge_executables})
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
-    "geometry_msgs"
-    "nav_msgs"
     "rclcpp"
-    "ros_ign_interfaces"
-    "rosgraph_msgs"
-    "sensor_msgs"
-    "std_msgs"
-    "tf2_msgs"
-    "trajectory_msgs"
+    ${PACKAGES}
   )
   install(TARGETS ${bridge}
     DESTINATION lib/${PROJECT_NAME}
@@ -240,15 +239,9 @@ if(BUILD_TESTING)
   )
 endif()
 
-ament_export_dependencies(geometry_msgs
-  nav_msgs
+ament_export_dependencies(
   rclcpp
-  ros_ign_interfaces
-  rosgraph_msgs
-  sensor_msgs
-  std_msgs
-  tf2_msgs
-  trajectory_msgs
+  ${PACKAGES}
 )
 
 ament_package()
