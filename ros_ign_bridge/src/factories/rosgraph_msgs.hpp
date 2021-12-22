@@ -12,17 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
-#define ROS_IGN_BRIDGE__CONVERT_HPP_
+#ifndef FACTORIES__ROSGRAPH_MSGS_HPP_
+#define FACTORIES__ROSGRAPH_MSGS_HPP_
 
-#include <ros_ign_bridge/convert/geometry_msgs.hpp>
-#include <ros_ign_bridge/convert/nav_msgs.hpp>
-#include <ros_ign_bridge/convert/ros_ign_interfaces.hpp>
-#include <ros_ign_bridge/convert/rosgraph_msgs.hpp>
-#include <ros_ign_bridge/convert/sensor_msgs.hpp>
-#include <ros_ign_bridge/convert/std_msgs.hpp>
-#include <ros_ign_bridge/convert/tf2_msgs.hpp>
-#include <ros_ign_bridge/convert/trajectory_msgs.hpp>
+#include "factory_interface.hpp"
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
+#include <memory>
+#include <string>
+
+namespace ros_ign_bridge
+{
+
+std::shared_ptr<FactoryInterface>
+get_factory__rosgraph_msgs(
+  const std::string & ros_type_name,
+  const std::string & ign_type_name);
+
+}  // namespace ros_ign_bridge
+
+#endif  // FACTORIES__ROSGRAPH_MSGS_HPP_
 

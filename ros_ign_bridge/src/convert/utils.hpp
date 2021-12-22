@@ -12,17 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
-#define ROS_IGN_BRIDGE__CONVERT_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
 
-#include <ros_ign_bridge/convert/geometry_msgs.hpp>
-#include <ros_ign_bridge/convert/nav_msgs.hpp>
-#include <ros_ign_bridge/convert/ros_ign_interfaces.hpp>
-#include <ros_ign_bridge/convert/rosgraph_msgs.hpp>
-#include <ros_ign_bridge/convert/sensor_msgs.hpp>
-#include <ros_ign_bridge/convert/std_msgs.hpp>
-#include <ros_ign_bridge/convert/tf2_msgs.hpp>
-#include <ros_ign_bridge/convert/trajectory_msgs.hpp>
+#include <string>
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
+namespace ros_ign_bridge
+{
+
+// This can be used to replace `::` with `/` to make frame_id compatible with TF
+std::string replace_delimiter(
+  const std::string & input,
+  const std::string & old_delim,
+  const std::string new_delim);
+
+std::string frame_id_ign_to_ros(const std::string & frame_id);
+
+}  // namespace ros_ign_bridge
+
+#endif  // ROS_IGN_BRIDGE__CONVERT__UTILS_HPP_
 
