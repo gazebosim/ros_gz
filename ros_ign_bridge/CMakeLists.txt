@@ -60,7 +60,6 @@ else()
 endif()
 
 set(common_sources
-  src/factories.cpp
   src/convert/geometry_msgs.cpp
   src/convert/nav_msgs.cpp
   src/convert/ros_ign_interfaces.cpp
@@ -70,6 +69,7 @@ set(common_sources
   src/convert/tf2_msgs.cpp
   src/convert/trajectory_msgs.cpp
   src/convert/utils.cpp
+  src/factories.cpp
   src/factories/geometry_msgs.cpp
   src/factories/nav_msgs.cpp
   src/factories/ros_ign_interfaces.cpp

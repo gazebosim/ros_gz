@@ -18,7 +18,7 @@
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
 // Ignition messages
-#include <ignition/msgs.hh>
+#include <ignition/msgs/joint_trajectory.pb.h>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

@@ -14,9 +14,6 @@
 
 #include <rclcpp/time.hpp>
 
-#include <memory>
-#include <string>
-
 #include "convert/utils.hpp"
 #include "ros_ign_bridge/convert/trajectory_msgs.hpp"
 

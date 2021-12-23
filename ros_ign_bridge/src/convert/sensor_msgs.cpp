@@ -13,8 +13,6 @@
 // limitations under the License.
 
 #include <limits>
-#include <memory>
-#include <string>
 
 #include "convert/utils.hpp"
 #include "ros_ign_bridge/convert/sensor_msgs.hpp"
