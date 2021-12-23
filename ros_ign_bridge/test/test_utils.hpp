@@ -868,7 +868,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::JointState> & _msg)
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
   const unsigned int num_readings = 100u;
-  const double laser_frequency = 40;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);

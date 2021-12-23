@@ -59,11 +59,25 @@ else()
   message(STATUS "Compiling against Ignition Edifice")
 endif()
 
-include_directories(include)
-
 set(common_sources
-  src/convert.cpp
+  src/convert/geometry_msgs.cpp
+  src/convert/nav_msgs.cpp
+  src/convert/ros_ign_interfaces.cpp
+  src/convert/rosgraph_msgs.cpp
+  src/convert/sensor_msgs.cpp
+  src/convert/std_msgs.cpp
+  src/convert/tf2_msgs.cpp
+  src/convert/trajectory_msgs.cpp
+  src/convert/utils.cpp
   src/factories.cpp
+  src/factories/geometry_msgs.cpp
+  src/factories/nav_msgs.cpp
+  src/factories/ros_ign_interfaces.cpp
+  src/factories/rosgraph_msgs.cpp
+  src/factories/sensor_msgs.cpp
+  src/factories/std_msgs.cpp
+  src/factories/tf2_msgs.cpp
+  src/factories/trajectory_msgs.cpp
 )
 
 set(bridge_executables
@@ -77,6 +91,11 @@ set(bridge_lib
 
 add_library(${bridge_lib}
   ${common_sources}
+)
+
+target_include_directories(${bridge_lib}
+  PUBLIC include
+  PRIVATE src
 )
 
 target_link_libraries(${bridge_lib}
@@ -111,9 +130,9 @@ ament_export_libraries(${bridge_lib})
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
     src/${bridge}.cpp
-    ${common_sources}
   )
   target_link_libraries(${bridge}
+    ${bridge_lib}
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
