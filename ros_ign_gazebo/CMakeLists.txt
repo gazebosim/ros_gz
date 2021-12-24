@@ -33,7 +33,7 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
 
   message(STATUS "Compiling against Ignition Dome")
 # Edifice
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
