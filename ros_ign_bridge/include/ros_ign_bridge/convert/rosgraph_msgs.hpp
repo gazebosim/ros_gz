@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 
-#include <memory>
-#include <string>
+#include <rosgraph_msgs/msg/clock.hpp>
 
-#include "factory_interface.hpp"
+// Ignition messages
+#include <ignition/msgs.hh>
+
+#include <ros_ign_bridge/convert_decl.hpp>
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::msg::Clock & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const rosgraph_msgs::msg::Clock & ros_msg,
+  ignition::msgs::Clock & ign_msg);
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES_HPP_
-
+#endif  // ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_

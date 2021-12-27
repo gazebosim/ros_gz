@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__NAV_MSGS_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__NAV_MSGS_HPP_
 
-#include <memory>
-#include <string>
+#include <nav_msgs/msg/odometry.hpp>
 
-#include "factory_interface.hpp"
+// Ignition messages
+#include <ignition/msgs/odometry.pb.h>
+
+#include <ros_ign_bridge/convert_decl.hpp>
 
 namespace ros_ign_bridge
 {
+// nav_msgs
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::msg::Odometry & ros_msg,
+  ignition::msgs::Odometry & ign_msg);
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::msg::Odometry & ros_msg);
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES_HPP_
-
+#endif  // ROS_IGN_BRIDGE__CONVERT__NAV_MSGS_HPP_

@@ -65,7 +65,6 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ${catkin_LIBRARIES}
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
 )

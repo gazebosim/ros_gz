@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#include <rclcpp/time.hpp>
 
-#include <memory>
-#include <string>
-
-#include "factory_interface.hpp"
+#include "convert/utils.hpp"
+#include "ros_ign_bridge/convert/rosgraph_msgs.hpp"
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::msg::Clock & ros_msg)
+{
+  ros_msg.clock = rclcpp::Time(ign_msg.sim().sec(), ign_msg.sim().nsec());
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const rosgraph_msgs::msg::Clock & ros_msg,
+  ignition::msgs::Clock & ign_msg)
+{
+  ign_msg.mutable_sim()->set_sec(ros_msg.clock.sec);
+  ign_msg.mutable_sim()->set_nsec(ros_msg.clock.nanosec);
+}
 
 }  // namespace ros_ign_bridge
-
-#endif  // FACTORIES_HPP_
-

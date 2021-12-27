@@ -12,23 +12,29 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
 
-#include <memory>
-#include <string>
+#include <tf2_msgs/msg/tf_message.hpp>
+#include <ignition/msgs/pose_v.pb.h>
 
-#include "factory_interface.hpp"
+#include <ros_ign_bridge/convert_decl.hpp>
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+template<>
+void
+convert_ros_to_ign(
+  const tf2_msgs::msg::TFMessage & ros_msg,
+  ignition::msgs::Pose_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Pose_V & ign_msg,
+  tf2_msgs::msg::TFMessage & ros_msg);
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES_HPP_
-
+#endif  // ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_

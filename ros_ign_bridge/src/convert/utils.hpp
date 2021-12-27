@@ -12,23 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#ifndef CONVERT__UTILS_HPP_
+#define CONVERT__UTILS_HPP_
 
-#include <memory>
 #include <string>
-
-#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+// This can be used to replace `::` with `/` to make frame_id compatible with TF
+std::string replace_delimiter(
+  const std::string & input,
+  const std::string & old_delim,
+  const std::string new_delim);
+
+std::string frame_id_ign_to_ros(const std::string & frame_id);
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES_HPP_
-
+#endif  // CONVERT__UTILS_HPP_
