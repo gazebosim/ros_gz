@@ -163,4 +163,3 @@ public:
 }  // namespace ros_ign_bridge
 
 #endif  // FACTORY_HPP_
-

@@ -593,4 +593,3 @@ convert_ign_to_ros(
 }
 
 }  // namespace ros_ign_bridge
-

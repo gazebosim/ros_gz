@@ -31,4 +31,3 @@ get_factory(
 }  // namespace ros_ign_bridge
 
 #endif  // FACTORIES_HPP_
-
