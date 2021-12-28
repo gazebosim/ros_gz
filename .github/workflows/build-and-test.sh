@@ -9,14 +9,10 @@ export DEBIAN_FRONTEND=noninteractive
 apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
-if [ "$IGNITION_VERSION" == "blueprint" ]; then
-  IGN_DEPS="libignition-gazebo2-dev"
-elif [ "$IGNITION_VERSION" == "citadel" ]; then
-  IGN_DEPS="libignition-gazebo3-dev"
-elif [ "$IGNITION_VERSION" == "dome" ]; then
-  IGN_DEPS="libignition-gazebo4-dev"
+if [ "$IGNITION_VERSION" == "citadel" ]; then
+  IGN_DEPS="ignition-citadel"
 elif [ "$IGNITION_VERSION" == "fortress" ]; then
-  IGN_DEPS="libignition-gazebo6-dev"
+  IGN_DEPS="ignition-fortress"
 else
   exit 1
 fi

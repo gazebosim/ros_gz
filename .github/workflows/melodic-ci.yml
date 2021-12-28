@@ -13,9 +13,6 @@ jobs:
             ignition-version: "citadel"
             ros-distro: "melodic"
           - docker-image: "ubuntu:18.04"
-            ignition-version: "dome"
-            ros-distro: "melodic"
-          - docker-image: "ubuntu:18.04"
             ignition-version: "fortress"
             ros-distro: "melodic"
     container:
