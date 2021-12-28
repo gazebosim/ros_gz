@@ -21,9 +21,6 @@
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-transport10</depend>
-  <!-- Dome -->
-  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
   <!-- Citadel -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
