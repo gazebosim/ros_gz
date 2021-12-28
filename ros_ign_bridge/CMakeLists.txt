@@ -146,7 +146,6 @@ foreach(bridge ${bridge_executables})
     ${bridge_lib}
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
-    ${bridge_lib}
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
