@@ -26,6 +26,7 @@
 #include "geometry_msgs/msg/vector3.hpp"
 #include "nav_msgs/msg/odometry.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "ros_ign_interfaces/msg/light.hpp"
 #include "rosgraph_msgs/msg/clock.hpp"
 #include "sensor_msgs/msg/battery_state.hpp"
 #include "sensor_msgs/msg/camera_info.hpp"
@@ -37,6 +38,7 @@
 #include "sensor_msgs/msg/magnetic_field.hpp"
 #include "sensor_msgs/msg/point_cloud2.hpp"
 #include "std_msgs/msg/bool.hpp"
+#include "std_msgs/msg/color_rgba.hpp"
 #include "std_msgs/msg/empty.hpp"
 #include "std_msgs/msg/float32.hpp"
 #include "std_msgs/msg/header.hpp"
@@ -83,6 +85,18 @@ public:
 private:
   typename rclcpp::Subscription<ROS_T>::SharedPtr sub;
 };
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Color)
+{
+  MyTestClass<std_msgs::msg::ColorRGBA> client("color");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
 
 /////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Bool)
@@ -292,6 +306,18 @@ TEST(ROSSubscriberTest, Twist)
 TEST(ROSSubscriberTest, Wrench)
 {
   MyTestClass<geometry_msgs::msg::Wrench> client("wrench");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    node, client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Light)
+{
+  MyTestClass<ros_ign_interfaces::msg::Light> client("light");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

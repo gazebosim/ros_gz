@@ -9,6 +9,7 @@ service calls. Its support is limited to only the following message types:
 | ROS type                             | Ignition Transport type              |
 |--------------------------------------|:------------------------------------:|
 | std_msgs/msg/Bool                    | ignition::msgs::Boolean              |
+| std_msgs/msg/ColorRGBA               | ignition::msgs::Color                |
 | std_msgs/msg/Empty                   | ignition::msgs::Empty                |
 | std_msgs/msg/Float32                 | ignition::msgs::Float                |
 | std_msgs/msg/Float64                 | ignition::msgs::Double               |
@@ -31,6 +32,7 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
 | ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity               |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
+| ros_ign_interfaces/msg/Light         | ignition::msgs::Light                |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |

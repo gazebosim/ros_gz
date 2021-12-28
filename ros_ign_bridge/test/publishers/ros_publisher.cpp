@@ -22,6 +22,7 @@
 // #include <mav_msgs/msg/actuators.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <ros_ign_interfaces/msg/light.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -33,6 +34,7 @@
 #include <sensor_msgs/msg/magnetic_field.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
@@ -49,6 +51,11 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("ros_string_publisher");
 
   rclcpp::Rate loop_rate(1);
+  // std_msgs::msg::Color.
+  auto color_pub = node->create_publisher<std_msgs::msg::ColorRGBA>("color", 1000);
+  std_msgs::msg::ColorRGBA color_msg;
+  ros_ign_bridge::testing::createTestMsg(color_msg);
+
   // std_msgs::msg::Bool.
   auto bool_pub = node->create_publisher<std_msgs::msg::Bool>("bool", 1000);
   std_msgs::msg::Bool bool_msg;
@@ -148,6 +155,12 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Wrench wrench_msg;
   ros_ign_bridge::testing::createTestMsg(wrench_msg);
 
+  // ros_ign_interfaces::msg::Light.
+  auto light_pub =
+    node->create_publisher<ros_ign_interfaces::msg::Light>("light", 1000);
+  ros_ign_interfaces::msg::Light light_msg;
+  ros_ign_bridge::testing::createTestMsg(light_msg);
+
   // ros_ign_interfaces::msg::JointWrench.
   auto joint_wrench_pub =
     node->create_publisher<ros_ign_interfaces::msg::JointWrench>("joint_wrench", 1000);
@@ -246,6 +259,7 @@ int main(int argc, char ** argv)
 
   while (rclcpp::ok()) {
     // Publish all messages.
+    color_pub->publish(color_msg);
     bool_pub->publish(bool_msg);
     empty_pub->publish(empty_msg);
     float_pub->publish(float_msg);
@@ -264,6 +278,7 @@ int main(int argc, char ** argv)
     tf2_message_pub->publish(tf2_msg);
     twist_pub->publish(twist_msg);
     wrench_pub->publish(wrench_msg);
+    light_pub->publish(light_msg);
     joint_wrench_pub->publish(joint_wrench_msg);
     entity_pub->publish(entity_msg);
     contact_pub->publish(contact_msg);

@@ -16,6 +16,7 @@
 #define ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_
 
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
@@ -26,6 +27,7 @@
 
 // Ignition messages
 #include <ignition/msgs/boolean.pb.h>
+#include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/float.pb.h>
 #include <ignition/msgs/double.pb.h>
@@ -50,6 +52,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::msg::Bool & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const std_msgs::msg::ColorRGBA & ros_msg,
+  ignition::msgs::Color & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Color & ign_msg,
+  std_msgs::msg::ColorRGBA & ros_msg);
 
 template<>
 void

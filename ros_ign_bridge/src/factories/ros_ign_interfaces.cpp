@@ -72,6 +72,16 @@ get_factory__ros_ign_interfaces(
       >
     >("ros_ign_interfaces/msg/Contacts", ign_type_name);
   }
+  if ((ros_type_name == "ros_ign_interfaces/msg/Light" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.Light")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::Light,
+        ignition::msgs::Light
+      >
+    >("ros_ign_interfaces/msg/Light", ign_type_name);
+  }
   return nullptr;
 }
 
@@ -171,5 +181,28 @@ Factory<
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Light,
+  ignition::msgs::Light
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Light & ros_msg,
+  ignition::msgs::Light & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::Light,
+  ignition::msgs::Light
+>::convert_ign_to_ros(
+  const ignition::msgs::Light & ign_msg,
+  ros_ign_interfaces::msg::Light & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
 
 }  // namespace ros_ign_bridge

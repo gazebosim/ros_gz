@@ -48,6 +48,16 @@ int main(int /*argc*/, char **/*argv*/)
   // Create a transport node and advertise a topic.
   ignition::transport::Node node;
 
+  // ignition::msgs::Color.
+  auto color_pub = node.Advertise<ignition::msgs::Color>("color");
+  ignition::msgs::Color color_msg;
+  ros_ign_bridge::testing::createTestMsg(color_msg);
+
+  // ignition::msgs::Light.
+  auto light_pub = node.Advertise<ignition::msgs::Light>("light");
+  ignition::msgs::Light light_msg;
+  ros_ign_bridge::testing::createTestMsg(light_msg);
+
   // ignition::msgs::Boolean.
   auto bool_pub = node.Advertise<ignition::msgs::Boolean>("bool");
   ignition::msgs::Boolean bool_msg;
@@ -224,6 +234,8 @@ int main(int /*argc*/, char **/*argv*/)
 
   // Publish messages at 1Hz.
   while (!g_terminatePub) {
+    color_pub.Publish(color_msg);
+    light_pub.Publish(light_msg);
     bool_pub.Publish(bool_msg);
     empty_pub.Publish(empty_msg);
     float_pub.Publish(float_msg);

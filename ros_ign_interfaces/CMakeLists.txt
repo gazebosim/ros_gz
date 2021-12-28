@@ -21,6 +21,7 @@ set(msg_files
   "msg/Entity.msg"
   "msg/EntityFactory.msg"
   "msg/JointWrench.msg"
+  "msg/Light.msg"
   "msg/WorldControl.msg"
   "msg/WorldReset.msg"
 )
@@ -35,7 +36,7 @@ set(srv_files
 rosidl_generate_interfaces(${PROJECT_NAME}
   ${msg_files}
   ${srv_files}
-  DEPENDENCIES builtin_interfaces std_msgs geometry_msgs 
+  DEPENDENCIES builtin_interfaces std_msgs geometry_msgs
   ADD_LINTER_TESTS
 )
 
