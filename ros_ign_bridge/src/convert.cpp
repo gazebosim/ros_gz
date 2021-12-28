@@ -554,7 +554,7 @@ convert_ros_to_ign(
   ign_msg.mutable_info()->set_height(
       ros_msg.info.height);
 
-  convert_ros_to_ign(ros_msg.info.origin, 
+  convert_ros_to_ign(ros_msg.info.origin,
       (*ign_msg.mutable_info()->mutable_origin()));
 
   ign_msg.set_data(&ros_msg.data[0], ros_msg.data.size());
@@ -1012,17 +1012,17 @@ convert_ros_to_ign(
   {
     auto newJoint = ign_msg.add_joint();
     newJoint->set_name(ros_msg.name[i]);
-    
+
     if (ros_msg.position.size() > i)
       newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
     else
       newJoint->mutable_axis1()->set_position(nan);
-    
+
     if (ros_msg.velocity.size() > i)
       newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
     else
       newJoint->mutable_axis1()->set_velocity(nan);
-    
+
     if (ros_msg.effort.size() > i)
       newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
     else
@@ -1353,7 +1353,7 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
-  // Note, in ROS's Marker message ADD and MODIFY both map to a value of "0", 
+  // Note, in ROS's Marker message ADD and MODIFY both map to a value of "0",
   // so that case is not needed here.
   switch(ros_msg.action)
   {
@@ -1379,7 +1379,7 @@ convert_ros_to_ign(
   // Type
   switch(ros_msg.type)
   {
-#ifdef IGNITION_DOME
+#ifndef IGNITION_CITADEL
     case visualization_msgs::Marker::ARROW:
       ign_msg.set_type(ignition::msgs::Marker::ARROW);
       break;
@@ -1485,7 +1485,7 @@ convert_ign_to_ros(
 
   switch(ign_msg.type())
   {
-#ifdef IGNITION_DOME
+#ifndef IGNITION_CITADEL
     case ignition::msgs::Marker::ARROW:
       ros_msg.type = visualization_msgs::Marker::TRIANGLE_LIST;
       break;
