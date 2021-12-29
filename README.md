@@ -9,7 +9,6 @@ Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only 
 Noetic | Fortress | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
 Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
-Galactic | Citadel | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | only from source
 Galactic | Edifice | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | https://packages.ros.org
 Galactic | Fortress | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | only from source
 Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
@@ -74,7 +73,7 @@ Be sure you've installed
 
 #### Ignition
 
-Install either [Citadel, Edifice or Fortress](https://ignitionrobotics.org/docs).
+Install either [Edifice or Fortress](https://ignitionrobotics.org/docs).
 
 Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
 like to compile against. For example:

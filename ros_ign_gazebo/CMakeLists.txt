@@ -14,17 +14,8 @@ find_package(ament_cmake REQUIRED)
 find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
 
-# Citadel
-if("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
-  find_package(ignition-transport8 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
-
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Citadel")
 # Fortress
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
