@@ -8,19 +8,8 @@ find_package(catkin
     roscpp
 )
 
-# Default to Dome, support Citadel and Blueprint
-if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
-  find_package(ignition-gazebo2 REQUIRED)
-  set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
-
-  find_package(ignition-transport7 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
-
-  find_package(ignition-msgs4 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Blueprint")
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
+# Citadel
+if("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
   find_package(ignition-gazebo3 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo3_VERSION_MAJOR})
 
@@ -31,7 +20,9 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Citadel")
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  add_definitions(-DIGNITION_CITADEL)
+# Fortress (default)
+else()
   find_package(ignition-gazebo6 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
 
@@ -42,17 +33,7 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Fortress")
-else()
-  find_package(ignition-gazebo4 REQUIRED)
-  set(IGN_GAZEBO_VER ${ignition-gazebo4_VERSION_MAJOR})
-
-  find_package(ignition-transport9 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
-
-  find_package(ignition-msgs6 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Dome")
+  add_definitions(-DIGNITION_FORTRESS)
 endif()
 
 ign_find_package(gflags

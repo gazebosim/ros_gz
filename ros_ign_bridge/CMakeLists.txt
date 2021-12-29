@@ -20,18 +20,8 @@ find_package(catkin REQUIRED COMPONENTS
                tf2_msgs
                visualization_msgs)
 
-# Default to Dome, support Citadel and Blueprint
-if ("$ENV{IGNITION_VERSION}" STREQUAL "blueprint")
-  find_package(ignition-transport7 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport7_VERSION_MAJOR})
-
-  find_package(ignition-msgs4 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs4_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Blueprint")
-  
-  add_definitions(-DIGNITION_BLUEPRINT)
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
+# Citadel
+if("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
   find_package(ignition-transport8 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
 
@@ -40,7 +30,8 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
 
   message(STATUS "Compiling against Ignition Citadel")
   add_definitions(-DIGNITION_CITADEL)
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+# Fortress (default)
+else()
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
@@ -49,15 +40,6 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
 
   message(STATUS "Compiling against Ignition Fortress")
   add_definitions(-DIGNITION_FORTRESS)
-else()
-  find_package(ignition-transport9 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
-
-  find_package(ignition-msgs6 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Dome")
-  add_definitions(-DIGNITION_DOME)
 endif()
 
 catkin_package()

@@ -7,12 +7,11 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- Default to Dome, support Citadel and  Blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
+  <!-- Citadel -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
+  <!-- Fortress (default) -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo4</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>

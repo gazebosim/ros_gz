@@ -19,17 +19,14 @@
   <depend>tf2_msgs</depend>
   <depend>visualization_msgs</depend>
 
-  <!-- Default to Dome, support Citadel and Blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-msgs4</depend>
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-transport7</depend>
+  <!-- Citadel -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-msgs6</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-transport9</depend>
+  <!-- Fortress (default) -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-msgs6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-transport9</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs8</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport11</depend>
 
   <build_depend>message_generation</build_depend>
   <exec_depend>message_runtime</exec_depend>

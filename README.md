@@ -3,14 +3,11 @@
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
-Melodic | Dome | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
 Melodic | Fortress | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
-Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Fortress (not released) | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
-Foxy | Dome | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
 Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
 Galactic | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
 Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
@@ -52,18 +49,7 @@ This branch supports ROS Melodic. See above for other ROS versions.
 
 ### Binaries
 
-At the moment, Melodic binaries are only available for Dome.
-They are hosted at https://packages.osrfoundation.org.
-
-1. Add https://packages.osrfoundation.org
-
-        sudo sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
-        wget https://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -
-        sudo apt-get update
-
-1. Install `ros_ign`
-
-        sudo apt install ros-melodic-ros-ign
+There are no binaries available for Melodic.
 
 ### From source
 
@@ -75,7 +61,7 @@ More ROS dependencies will be installed below.
 
 #### Ignition
 
-Install either [Citadel or Dome](https://ignitionrobotics.org/docs).
+Install either [Citadel or Fortress](https://ignitionrobotics.org/docs).
 
 Set the `IGNITION_VERSION` environment variable to the Ignition version you'd
 like to compile against. For example:

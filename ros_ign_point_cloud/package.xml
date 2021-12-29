@@ -7,22 +7,17 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
-  <!-- Default to citadel, support blueprint -->
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-gazebo2</depend>
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-rendering2</depend>
-  <depend condition="$IGNITION_VERSION == blueprint">ignition-sensors2</depend>
+  <!-- Citadel -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-rendering3</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-sensors3</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-rendering4</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-sensors4</depend>
+  <!-- Fortress (default) -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-rendering6</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-sensors6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo4</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-rendering4</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-sensors4</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-rendering6</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-sensors6</depend>
 
   <depend>roscpp</depend>
   <depend>sensor_msgs</depend>
