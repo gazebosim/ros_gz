@@ -47,6 +47,7 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Citadel")
+  add_definitions(-DIGNITION_CITADEL)
 endif()
 
 catkin_package()
