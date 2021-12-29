@@ -40,6 +40,7 @@ def generate_test_description():
         executable='parameter_bridge',
         arguments=[
           '/bool@std_msgs/msg/Bool@ignition.msgs.Boolean',
+          '/color@std_msgs/msg/ColorRGBA@ignition.msgs.Color',
           '/empty@std_msgs/msg/Empty@ignition.msgs.Empty',
           '/float@std_msgs/msg/Float32@ignition.msgs.Float',
           '/double@std_msgs/msg/Float64@ignition.msgs.Double',
@@ -61,6 +62,7 @@ def generate_test_description():
           '/entity@ros_ign_interfaces/msg/Entity@ignition.msgs.Entity',
           '/contact@ros_ign_interfaces/msg/Contact@ignition.msgs.Contact',
           '/contacts@ros_ign_interfaces/msg/Contacts@ignition.msgs.Contacts',
+          '/light@ros_ign_interfaces/msg/Light@ignition.msgs.Light',
           '/image@sensor_msgs/msg/Image@ignition.msgs.Image',
           '/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
           '/fluid_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure',
@@ -85,14 +87,14 @@ def generate_test_description():
     ]), locals()
 
 
-class IgnSubscriberTest(unittest.TestCase):
+class ROSSubscriberTest(unittest.TestCase):
 
     def test_termination(self, process_under_test, proc_info):
         proc_info.assertWaitForShutdown(process=process_under_test, timeout=200)
 
 
 @launch_testing.post_shutdown_test()
-class IgnSubscriberTestAfterShutdown(unittest.TestCase):
+class ROSSubscriberTestAfterShutdown(unittest.TestCase):
 
     def test_exit_code(self, process_under_test, proc_info):
         launch_testing.asserts.assertExitCodes(

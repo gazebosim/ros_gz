@@ -23,6 +23,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
@@ -42,6 +43,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <ros_ign_interfaces/msg/entity.hpp>
 #include <ros_ign_interfaces/msg/joint_wrench.hpp>
+#include <ros_ign_interfaces/msg/light.hpp>
 #include <ros_ign_interfaces/msg/contact.hpp>
 #include <ros_ign_interfaces/msg/contacts.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
@@ -116,6 +118,29 @@ void waitUntilBoolVarAndSpin(
 //////////////////////////////////////////////////
 /// ROS test utils
 //////////////////////////////////////////////////
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::ColorRGBA & _msg)
+{
+  _msg.r = 0.2;
+  _msg.g = 0.4;
+  _msg.b = 0.6;
+  _msg.a = 0.8;
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg)
+{
+  std_msgs::msg::ColorRGBA expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_FLOAT_EQ(expected_msg.r, _msg->r);
+  EXPECT_FLOAT_EQ(expected_msg.g, _msg->g);
+  EXPECT_FLOAT_EQ(expected_msg.b, _msg->b);
+  EXPECT_FLOAT_EQ(expected_msg.a, _msg->a);
+}
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -449,12 +474,12 @@ void createTestMsg(tf2_msgs::msg::TFMessage & _msg)
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const tf2_msgs::msg::TFMessage & _msg)
+void compareTestMsg(const std::shared_ptr<tf2_msgs::msg::TFMessage> & _msg)
 {
   tf2_msgs::msg::TFMessage expected_msg;
   createTestMsg(expected_msg);
 
-  compareTestMsg(std::make_shared<geometry_msgs::msg::TransformStamped>(_msg.transforms[0]));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::TransformStamped>(_msg->transforms[0]));
 }
 
 /// \brief Create a message used for testing.
@@ -500,6 +525,67 @@ void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg)
   _msg.body_2_id.data = 2;
   createTestMsg(_msg.body_1_wrench);
   createTestMsg(_msg.body_2_wrench);
+}
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::Light & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.name = "test_light";
+  _msg.type = 1;
+
+  createTestMsg(_msg.pose);
+  createTestMsg(_msg.diffuse);
+  createTestMsg(_msg.specular);
+  _msg.attenuation_constant = 0.2;
+  _msg.attenuation_linear = 0.4;
+  _msg.attenuation_quadratic = 0.6;
+  createTestMsg(_msg.direction);
+  _msg.range = 25.0;
+  _msg.cast_shadows = true;
+  _msg.spot_inner_angle = 0.3;
+  _msg.spot_outer_angle = 0.6;
+  _msg.spot_falloff = 10.0;
+
+  _msg.id = 24;
+
+  _msg.parent_id = 6;
+
+  _msg.intensity = 125.0;
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg)
+{
+  ros_ign_interfaces::msg::Light expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+  EXPECT_EQ(expected_msg.type, _msg->type);
+
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->diffuse));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->specular));
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_constant, _msg->attenuation_constant);
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_linear, _msg->attenuation_linear);
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_quadratic, _msg->attenuation_quadratic);
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->direction));
+  EXPECT_FLOAT_EQ(expected_msg.range, _msg->range);
+  EXPECT_EQ(expected_msg.cast_shadows, _msg->cast_shadows);
+  EXPECT_FLOAT_EQ(expected_msg.spot_inner_angle, _msg->spot_inner_angle);
+  EXPECT_FLOAT_EQ(expected_msg.spot_outer_angle, _msg->spot_outer_angle);
+  EXPECT_FLOAT_EQ(expected_msg.spot_falloff, _msg->spot_falloff);
+
+  EXPECT_EQ(expected_msg.id, _msg->id);
+
+  EXPECT_EQ(expected_msg.parent_id, _msg->parent_id);
+
+  EXPECT_FLOAT_EQ(expected_msg.intensity, _msg->intensity);
 }
 
 /// \brief Compare a message with the populated for testing.
@@ -813,11 +899,8 @@ void createTestMsg(sensor_msgs::msg::Imu & _msg)
 
   _msg.header = header_msg;
   _msg.orientation = quaternion_msg;
-  _msg.orientation_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
   _msg.angular_velocity = vector3_msg;
-  _msg.angular_velocity_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
   _msg.linear_acceleration = vector3_msg;
-  _msg.linear_acceleration_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 }
 
 /// \brief Compare a message with the populated for testing.
@@ -828,12 +911,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
   compareTestMsg(_msg->orientation);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular_velocity));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
-
-  for (auto i = 0; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->orientation_covariance[i]);
-    EXPECT_FLOAT_EQ(i + 1, _msg->angular_velocity_covariance[i]);
-    EXPECT_FLOAT_EQ(i + 1, _msg->linear_acceleration_covariance[i]);
-  }
 }
 
 /// \brief Create a message used for testing.
@@ -877,7 +954,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::JointState> & _msg)
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
   const unsigned int num_readings = 100u;
-  const double laser_frequency = 40;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
@@ -886,7 +962,6 @@ void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
   _msg.angle_min = -1.57;
   _msg.angle_max = 1.57;
   _msg.angle_increment = 3.14 / num_readings;
-  _msg.time_increment = (1 / laser_frequency) / (num_readings);
   _msg.scan_time = 0;
   _msg.range_min = 1;
   _msg.range_max = 2;
@@ -905,7 +980,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.angle_min, _msg->angle_min);
   EXPECT_FLOAT_EQ(expected_msg.angle_max, _msg->angle_max);
   EXPECT_FLOAT_EQ(expected_msg.angle_increment, _msg->angle_increment);
-  EXPECT_FLOAT_EQ(0.00025000001, _msg->time_increment);
   EXPECT_FLOAT_EQ(0, _msg->scan_time);
   EXPECT_FLOAT_EQ(expected_msg.range_min, _msg->range_min);
   EXPECT_FLOAT_EQ(expected_msg.range_max, _msg->range_max);
@@ -930,7 +1004,6 @@ void createTestMsg(sensor_msgs::msg::MagneticField & _msg)
 
   _msg.header = header_msg;
   _msg.magnetic_field = vector3_msg;
-  _msg.magnetic_field_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 }
 
 /// \brief Compare a message with the populated for testing.
@@ -939,10 +1012,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::MagneticField> & _ms
 {
   compareTestMsg(_msg->header);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->magnetic_field));
-
-  for (auto i = 0u; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->magnetic_field_covariance[i]);
-  }
 }
 
 /// \brief Create a message used for testing.
@@ -1128,6 +1197,29 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>
 //////////////////////////////////////////////////
 /// Ignition::msgs test utils
 //////////////////////////////////////////////////
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Color & _msg)
+{
+  _msg.set_r(0.2);
+  _msg.set_g(0.4);
+  _msg.set_b(0.6);
+  _msg.set_a(0.8);
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg)
+{
+  ignition::msgs::Color expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.r(), _msg->r());
+  EXPECT_EQ(expected_msg.g(), _msg->g());
+  EXPECT_EQ(expected_msg.b(), _msg->b());
+  EXPECT_EQ(expected_msg.a(), _msg->a());
+}
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -2157,6 +2249,79 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectory> & _ms
   for (int i = 0; i < _msg->points_size(); ++i) {
     compareTestMsg(std::make_shared<ignition::msgs::JointTrajectoryPoint>(_msg->points(i)));
   }
+}
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Light & _msg)
+{
+  ignition::msgs::Header header_msg;
+  ignition::msgs::Pose pose_msg;
+  ignition::msgs::Color diffuse_msg;
+  ignition::msgs::Color specular_msg;
+  ignition::msgs::Vector3d direction_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(pose_msg);
+  createTestMsg(diffuse_msg);
+  createTestMsg(specular_msg);
+  createTestMsg(direction_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_pose()->CopyFrom(pose_msg);
+  _msg.mutable_diffuse()->CopyFrom(diffuse_msg);
+  _msg.mutable_specular()->CopyFrom(specular_msg);
+  _msg.mutable_direction()->CopyFrom(direction_msg);
+
+  _msg.set_name("test_light");
+  _msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
+
+  _msg.set_attenuation_constant(0.2);
+  _msg.set_attenuation_linear(0.4);
+  _msg.set_attenuation_quadratic(0.6);
+  _msg.set_range(25.0);
+  _msg.set_cast_shadows(true);
+  _msg.set_spot_inner_angle(0.3);
+  _msg.set_spot_outer_angle(0.6);
+  _msg.set_spot_falloff(10.0);
+
+  _msg.set_id(24);
+
+  _msg.set_parent_id(6);
+
+  _msg.set_intensity(125.0);
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Light> & _msg)
+{
+  ignition::msgs::Light expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Pose>(_msg->pose()));
+  compareTestMsg(std::make_shared<ignition::msgs::Color>(_msg->diffuse()));
+  compareTestMsg(std::make_shared<ignition::msgs::Color>(_msg->specular()));
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->direction()));
+
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_constant(), _msg->attenuation_constant());
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_linear(), _msg->attenuation_linear());
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_quadratic(), _msg->attenuation_quadratic());
+  EXPECT_FLOAT_EQ(expected_msg.range(), _msg->range());
+  EXPECT_EQ(expected_msg.cast_shadows(), _msg->cast_shadows());
+  EXPECT_FLOAT_EQ(expected_msg.spot_inner_angle(), _msg->spot_inner_angle());
+  EXPECT_FLOAT_EQ(expected_msg.spot_outer_angle(), _msg->spot_outer_angle());
+  EXPECT_FLOAT_EQ(expected_msg.spot_falloff(), _msg->spot_falloff());
+
+  EXPECT_EQ(expected_msg.id(), _msg->id());
+
+  EXPECT_EQ(expected_msg.parent_id(), _msg->parent_id());
+
+  EXPECT_FLOAT_EQ(expected_msg.intensity(), _msg->intensity());
 }
 
 }  // namespace testing

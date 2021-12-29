@@ -12,16 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
-#define ROS_IGN_BRIDGE__CONVERT_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 
-#include <ros_ign_bridge/convert/geometry_msgs.hpp>
-#include <ros_ign_bridge/convert/nav_msgs.hpp>
-#include <ros_ign_bridge/convert/ros_ign_interfaces.hpp>
-#include <ros_ign_bridge/convert/rosgraph_msgs.hpp>
-#include <ros_ign_bridge/convert/sensor_msgs.hpp>
-#include <ros_ign_bridge/convert/std_msgs.hpp>
-#include <ros_ign_bridge/convert/tf2_msgs.hpp>
-#include <ros_ign_bridge/convert/trajectory_msgs.hpp>
+#include <rosgraph_msgs/msg/clock.hpp>
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_
+// Ignition messages
+#include <ignition/msgs.hh>
+
+#include <ros_ign_bridge/convert_decl.hpp>
+
+namespace ros_ign_bridge
+{
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Clock & ign_msg,
+  rosgraph_msgs::msg::Clock & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const rosgraph_msgs::msg::Clock & ros_msg,
+  ignition::msgs::Clock & ign_msg);
+
+}  // namespace ros_ign_bridge
+
+#endif  // ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_

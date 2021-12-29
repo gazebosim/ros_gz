@@ -46,8 +46,13 @@ public:
     const std::string & topic_name,
     size_t queue_size)
   {
+    // Allow QoS overriding
+    auto options = rclcpp::PublisherOptions();
+    options.qos_overriding_options =
+      rclcpp::QosOverridingOptions::with_default_policies();
     std::shared_ptr<rclcpp::Publisher<ROS_T>> publisher =
-      ros_node->create_publisher<ROS_T>(topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)));
+      ros_node->create_publisher<ROS_T>(
+      topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)), options);
     return publisher;
   }
 
@@ -72,9 +77,12 @@ public:
       std::placeholders::_1, ign_pub,
       ros_type_name_, ign_type_name_,
       ros_node);
-    // Ignore messages that are published from this bridge.
     auto options = rclcpp::SubscriptionOptions();
+    // Ignore messages that are published from this bridge.
     options.ignore_local_publications = true;
+    // Allow QoS overriding
+    options.qos_overriding_options =
+      rclcpp::QosOverridingOptions::with_default_policies();
     std::shared_ptr<rclcpp::Subscription<ROS_T>> subscription =
       ros_node->create_subscription<ROS_T>(
       topic_name, rclcpp::QoS(rclcpp::KeepLast(queue_size)), fn, options);

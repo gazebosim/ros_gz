@@ -3,13 +3,11 @@
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
 Melodic | Citadel | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
-Melodic | Dome | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | https://packages.osrfoundation.org
+Melodic | Fortress | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | only from source
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
-Noetic | Dome | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Fortress | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
-Foxy | Dome | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
 Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
 Galactic | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
 Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
