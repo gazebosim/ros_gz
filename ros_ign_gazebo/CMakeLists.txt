@@ -26,15 +26,6 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
-# Dome
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "dome")
-  find_package(ignition-transport9 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport9_VERSION_MAJOR})
-
-  find_package(ignition-msgs6 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs6_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Dome")
 # Default to Citadel
 else()
   find_package(ignition-transport8 REQUIRED)
