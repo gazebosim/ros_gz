@@ -15,10 +15,6 @@
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-rendering5</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-sensors5</depend>
-  <!-- Dome -->
-  <depend condition="$IGNITION_VERSION == dome">ignition-gazebo4</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-rendering4</depend>
-  <depend condition="$IGNITION_VERSION == dome">ignition-sensors4</depend>
   <!-- Citadel (default) -->
   <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
   <depend condition="$IGNITION_VERSION == citadel">ignition-rendering3</depend>
