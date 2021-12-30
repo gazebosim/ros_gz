@@ -2,6 +2,19 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Default to Fortress for Rolling (future Humble) (`#195 <https://github.com/osrf/ros_ign/issues/195>`_)
+* [ros2] 🏁 Dome EOL (`#199 <https://github.com/osrf/ros_ign/issues/199>`_)
+* New Light Message, also bridge Color (`#187 <https://github.com/osrf/ros_ign/issues/187>`_)
+* Statically link each translation unit (`#193 <https://github.com/osrf/ros_ign/issues/193>`_)
+* Break apart convert and factories translation unit (`#192 <https://github.com/osrf/ros_ign/issues/192>`_)
+* Fixed ROS subscriber test in ros_ign_bridge (`#189 <https://github.com/osrf/ros_ign/issues/189>`_)
+* Enable QoS overrides (`#181 <https://github.com/osrf/ros_ign/issues/181>`_)
+* Fixed ros ign bridge documentation (`#178 <https://github.com/osrf/ros_ign/issues/178>`_)
+* Expose Contacts through ROS bridge (`#175 <https://github.com/osrf/ros_ign/issues/175>`_)
+* Contributors: Alejandro Hernández Cordero, Guillaume Doisy, Louise Poubel, Michael Carroll, Vatan Aksoy Tezer, William Lew
+
 0.233.2 (2021-07-20)
 --------------------
 * [ros2] Update version docs, add Galactic and Fortress (`#164 <https://github.com/osrf/ros_ign/issues/164>`_)
