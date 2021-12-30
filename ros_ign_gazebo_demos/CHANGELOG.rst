@@ -2,6 +2,13 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Separate galactic branch from ros2 branch (`#201 <https://github.com/osrf/ros_ign/issues/201>`_)
+* [ros2] 🏁 Dome EOL (`#199 <https://github.com/osrf/ros_ign/issues/199>`_)
+* Enable QoS overrides (`#181 <https://github.com/osrf/ros_ign/issues/181>`_)
+* Contributors: Louise Poubel
+
 0.233.2 (2021-07-20)
 --------------------
 * [ros2] Add exec depend on xacro for demos (`#170 <https://github.com/osrf/ros_ign/issues/170>`_)
