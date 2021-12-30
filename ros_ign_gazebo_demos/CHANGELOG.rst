@@ -2,6 +2,11 @@
 Changelog for package ros_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [noetic] 🏁 Dome EOL (`#197 <https://github.com/osrf/ros_ign/issues/197>`_)
+* Contributors: Louise Poubel
+
 0.111.1 (2021-07-20)
 --------------------
 * [noetic] Update version docs, add Fortress (`#166 <https://github.com/osrf/ros_ign/issues/166>`_)

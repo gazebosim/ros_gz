@@ -2,6 +2,13 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [noetic] 🏁 Dome EOL (`#197 <https://github.com/osrf/ros_ign/issues/197>`_)
+* Don't double-build convert.cpp (`#184 <https://github.com/osrf/ros_ign/issues/184>`_)
+* 🥳 [Noetic] Tweaks to bridge tutorial (`#180 <https://github.com/osrf/ros_ign/issues/180>`_)
+* Contributors: Louise Poubel, Michael Carroll
+
 0.111.1 (2021-07-20)
 --------------------
 * Check imu orientation field (`#168 <https://github.com/osrf/ros_ign/issues/168>`_)
