@@ -31,9 +31,6 @@
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
-  <!-- Citadel -->
-  <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
-  <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>

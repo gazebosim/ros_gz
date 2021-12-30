@@ -9,7 +9,8 @@ Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only 
 Noetic | Fortress | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
 Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
-Galactic | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+Galactic | Edifice | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | https://packages.ros.org
+Galactic | Fortress | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | only from source
 Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
 Rolling | Fortress | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
 
@@ -45,11 +46,11 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Galactic and Rolling. See above for other ROS versions.
+This branch supports ROS Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Galactic and Rolling binaries are available for Edifice.
+Rolling binaries are available for Fortress.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org
@@ -60,16 +61,14 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_ign`
 
-        sudo apt install ros-<distro>-ros-ign
-
-    Where `<distro>` can be `galactic` or `rolling`.
+        sudo apt install ros-rolling-ros-ign
 
 ### From source
 
 #### ROS
 
 Be sure you've installed
-[ROS Galactic or Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Rolling](https://index.ros.org/doc/ros2/Installation/)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Ignition
@@ -102,10 +101,8 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro <distro>
+    rosdep install -r --from-paths src -i -y --rosdistro rolling
     ```
-
-    Where `<distro>` can be `galactic` or `rolling`.
 
     > If `rosdep` fails to install Ignition libraries and you have not installed them before, please follow [Ignition installation instructions](https://ignitionrobotics.org/docs/latest/install).
 

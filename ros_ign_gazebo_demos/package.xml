@@ -12,8 +12,6 @@
   <exec_depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</exec_depend>
   <!-- Edifice -->
   <exec_depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
-  <!-- Citadel -->
-  <exec_depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</exec_depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
