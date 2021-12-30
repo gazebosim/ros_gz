@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.111.2 (2021-12-30)
+--------------------
 * [noetic] 🏁 Dome EOL (`#197 <https://github.com/osrf/ros_ign/issues/197>`_)
 * Don't double-build convert.cpp (`#184 <https://github.com/osrf/ros_ign/issues/184>`_)
 * 🥳 [Noetic] Tweaks to bridge tutorial (`#180 <https://github.com/osrf/ros_ign/issues/180>`_)
