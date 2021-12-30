@@ -22,8 +22,6 @@
   <!-- Edifice (default) -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <depend condition="$IGNITION_VERSION == ''">ignition-gazebo5</depend>
-  <!-- Citadel -->
-  <depend condition="$IGNITION_VERSION == citadel">ignition-gazebo3</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
