@@ -23,17 +23,14 @@
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
 
-  <!-- Fortress -->
+  <!-- Fortress (default) -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
-  <!-- Edifice (default) -->
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs8</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport11</depend>
+  <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-msgs7</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-transport10</depend>
-  <!-- Citadel -->
-  <depend condition="$IGNITION_VERSION == citadel">ignition-msgs5</depend>
-  <depend condition="$IGNITION_VERSION == citadel">ignition-transport8</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>

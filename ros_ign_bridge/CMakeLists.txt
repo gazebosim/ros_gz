@@ -21,26 +21,8 @@ find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
-# Citadel
-if("$ENV{IGNITION_VERSION}" STREQUAL "citadel")
-  find_package(ignition-transport8 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport8_VERSION_MAJOR})
-
-  find_package(ignition-msgs5 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs5_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Citadel")
-# Fortress
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
-  find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
-
-  find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Fortress")
-# Default to Edifice
-else()
+# Edifice
+if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
@@ -48,6 +30,15 @@ else()
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
+# Default to Fortress
+else()
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 endif()
 
 set(PACKAGES
