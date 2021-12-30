@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.0 (2021-12-30)
+--------------------
 * Default to Fortress for Rolling (future Humble) (`#195 <https://github.com/osrf/ros_ign/issues/195>`_)
 * [ros2] 🏁 Dome EOL (`#199 <https://github.com/osrf/ros_ign/issues/199>`_)
 * New Light Message, also bridge Color (`#187 <https://github.com/osrf/ros_ign/issues/187>`_)

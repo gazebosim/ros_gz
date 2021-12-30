@@ -2,8 +2,8 @@
 Changelog for package ros_ign_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.0 (2021-12-30)
+--------------------
 * New Light Message, also bridge Color (`#187 <https://github.com/osrf/ros_ign/issues/187>`_)
 * Expose Contacts through ROS bridge (`#175 <https://github.com/osrf/ros_ign/issues/175>`_)
 * Contributors: Guillaume Doisy, Vatan Aksoy Tezer, William Lew
