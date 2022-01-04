@@ -37,6 +37,25 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Boolean> & _msg)
   EXPECT_EQ(expected_msg.data(), _msg->data());
 }
 
+void createTestMsg(ignition::msgs::Color & _msg)
+{
+  _msg.set_r(0.2);
+  _msg.set_g(0.4);
+  _msg.set_b(0.6);
+  _msg.set_a(0.8);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg)
+{
+  ignition::msgs::Color expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.r(), _msg->r());
+  EXPECT_EQ(expected_msg.g(), _msg->g());
+  EXPECT_EQ(expected_msg.b(), _msg->b());
+  EXPECT_EQ(expected_msg.a(), _msg->a());
+}
+
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Empty> &)
 {
 }
@@ -927,5 +946,75 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectory> & _ms
     compareTestMsg(std::make_shared<ignition::msgs::JointTrajectoryPoint>(_msg->points(i)));
   }
 }
+
+void createTestMsg(ignition::msgs::Light & _msg)
+{
+  ignition::msgs::Header header_msg;
+  ignition::msgs::Pose pose_msg;
+  ignition::msgs::Color diffuse_msg;
+  ignition::msgs::Color specular_msg;
+  ignition::msgs::Vector3d direction_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(pose_msg);
+  createTestMsg(diffuse_msg);
+  createTestMsg(specular_msg);
+  createTestMsg(direction_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_pose()->CopyFrom(pose_msg);
+  _msg.mutable_diffuse()->CopyFrom(diffuse_msg);
+  _msg.mutable_specular()->CopyFrom(specular_msg);
+  _msg.mutable_direction()->CopyFrom(direction_msg);
+
+  _msg.set_name("test_light");
+  _msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
+
+  _msg.set_attenuation_constant(0.2);
+  _msg.set_attenuation_linear(0.4);
+  _msg.set_attenuation_quadratic(0.6);
+  _msg.set_range(25.0);
+  _msg.set_cast_shadows(true);
+  _msg.set_spot_inner_angle(0.3);
+  _msg.set_spot_outer_angle(0.6);
+  _msg.set_spot_falloff(10.0);
+
+  _msg.set_id(24);
+
+  _msg.set_parent_id(6);
+
+  _msg.set_intensity(125.0);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Light> & _msg)
+{
+  ignition::msgs::Light expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Pose>(_msg->pose()));
+  compareTestMsg(std::make_shared<ignition::msgs::Color>(_msg->diffuse()));
+  compareTestMsg(std::make_shared<ignition::msgs::Color>(_msg->specular()));
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->direction()));
+
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_constant(), _msg->attenuation_constant());
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_linear(), _msg->attenuation_linear());
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_quadratic(), _msg->attenuation_quadratic());
+  EXPECT_FLOAT_EQ(expected_msg.range(), _msg->range());
+  EXPECT_EQ(expected_msg.cast_shadows(), _msg->cast_shadows());
+  EXPECT_FLOAT_EQ(expected_msg.spot_inner_angle(), _msg->spot_inner_angle());
+  EXPECT_FLOAT_EQ(expected_msg.spot_outer_angle(), _msg->spot_outer_angle());
+  EXPECT_FLOAT_EQ(expected_msg.spot_falloff(), _msg->spot_falloff());
+
+  EXPECT_EQ(expected_msg.id(), _msg->id());
+
+  EXPECT_EQ(expected_msg.parent_id(), _msg->parent_id());
+
+  EXPECT_FLOAT_EQ(expected_msg.intensity(), _msg->intensity());
+}
+
 }  // namespace testing
 }  // namespace ros_ign_bridge

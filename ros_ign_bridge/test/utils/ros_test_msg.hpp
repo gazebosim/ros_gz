@@ -16,6 +16,7 @@
 #define UTILS__ROS_TEST_MSG_HPP_
 
 #include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
@@ -36,6 +37,7 @@
 #include <ros_ign_interfaces/msg/joint_wrench.hpp>
 #include <ros_ign_interfaces/msg/contact.hpp>
 #include <ros_ign_interfaces/msg/contacts.hpp>
+#include <ros_ign_interfaces/msg/light.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -70,6 +72,14 @@ void createTestMsg(std_msgs::msg::Bool & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Bool> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::ColorRGBA & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg);
 
 /// \brief Compare a message with the populated for testing. Noop for Empty
 /// \param[in] _msg The message to compare.
@@ -246,6 +256,14 @@ void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::Light & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

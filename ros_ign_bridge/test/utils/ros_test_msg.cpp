@@ -37,6 +37,25 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::Bool> & _msg)
   EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
+void createTestMsg(std_msgs::msg::ColorRGBA & _msg)
+{
+  _msg.r = 0.2;
+  _msg.g = 0.4;
+  _msg.b = 0.6;
+  _msg.a = 0.8;
+}
+
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg)
+{
+  std_msgs::msg::ColorRGBA expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_FLOAT_EQ(expected_msg.r, _msg->r);
+  EXPECT_FLOAT_EQ(expected_msg.g, _msg->g);
+  EXPECT_FLOAT_EQ(expected_msg.b, _msg->b);
+  EXPECT_FLOAT_EQ(expected_msg.a, _msg->a);
+}
+
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Empty> &)
 {
 }
@@ -314,6 +333,63 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg)
 {
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->force));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->torque));
+}
+
+void createTestMsg(ros_ign_interfaces::msg::Light & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.name = "test_light";
+  _msg.type = 1;
+
+  createTestMsg(_msg.pose);
+  createTestMsg(_msg.diffuse);
+  createTestMsg(_msg.specular);
+  _msg.attenuation_constant = 0.2;
+  _msg.attenuation_linear = 0.4;
+  _msg.attenuation_quadratic = 0.6;
+  createTestMsg(_msg.direction);
+  _msg.range = 25.0;
+  _msg.cast_shadows = true;
+  _msg.spot_inner_angle = 0.3;
+  _msg.spot_outer_angle = 0.6;
+  _msg.spot_falloff = 10.0;
+
+  _msg.id = 24;
+
+  _msg.parent_id = 6;
+
+  _msg.intensity = 125.0;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg)
+{
+  ros_ign_interfaces::msg::Light expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+  EXPECT_EQ(expected_msg.type, _msg->type);
+
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->diffuse));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->specular));
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_constant, _msg->attenuation_constant);
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_linear, _msg->attenuation_linear);
+  EXPECT_FLOAT_EQ(expected_msg.attenuation_quadratic, _msg->attenuation_quadratic);
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->direction));
+  EXPECT_FLOAT_EQ(expected_msg.range, _msg->range);
+  EXPECT_EQ(expected_msg.cast_shadows, _msg->cast_shadows);
+  EXPECT_FLOAT_EQ(expected_msg.spot_inner_angle, _msg->spot_inner_angle);
+  EXPECT_FLOAT_EQ(expected_msg.spot_outer_angle, _msg->spot_outer_angle);
+  EXPECT_FLOAT_EQ(expected_msg.spot_falloff, _msg->spot_falloff);
+
+  EXPECT_EQ(expected_msg.id, _msg->id);
+
+  EXPECT_EQ(expected_msg.parent_id, _msg->parent_id);
+
+  EXPECT_FLOAT_EQ(expected_msg.intensity, _msg->intensity);
 }
 
 void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg)
@@ -618,7 +694,6 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::JointState> & _msg)
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
   const unsigned int num_readings = 100u;
-  const double laser_frequency = 40;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
