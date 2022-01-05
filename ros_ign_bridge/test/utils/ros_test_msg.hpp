@@ -129,7 +129,9 @@ void createTestMsg(std_msgs::msg::String & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::String> & _msg);
 
-/// rosgraph_msgs /// \brief Create a message used for testing.
+/// rosgraph_msgs
+
+/// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(rosgraph_msgs::msg::Clock & _msg);
 
@@ -362,6 +364,8 @@ void createTestMsg(sensor_msgs::msg::BatteryState & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::BatteryState> & _msg);
+
+/// trajectory_msgs
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

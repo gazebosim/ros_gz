@@ -15,7 +15,39 @@
 #ifndef UTILS__IGN_TEST_MSG_HPP_
 #define UTILS__IGN_TEST_MSG_HPP_
 
-#include <ignition/msgs.hh>
+#include <ignition/msgs/actuators.pb.h>
+#include <ignition/msgs/axis.pb.h>
+#include <ignition/msgs/battery_state.pb.h>
+#include <ignition/msgs/boolean.pb.h>
+#include <ignition/msgs/camera_info.pb.h>
+#include <ignition/msgs/clock.pb.h>
+#include <ignition/msgs/color.pb.h>
+#include <ignition/msgs/contact.pb.h>
+#include <ignition/msgs/contacts.pb.h>
+#include <ignition/msgs/double.pb.h>
+#include <ignition/msgs/empty.pb.h>
+#include <ignition/msgs/entity.pb.h>
+#include <ignition/msgs/float.pb.h>
+#include <ignition/msgs/fluid_pressure.pb.h>
+#include <ignition/msgs/header.pb.h>
+#include <ignition/msgs/image.pb.h>
+#include <ignition/msgs/imu.pb.h>
+#include <ignition/msgs/joint_trajectory.pb.h>
+#include <ignition/msgs/joint_wrench.pb.h>
+#include <ignition/msgs/laserscan.pb.h>
+#include <ignition/msgs/light.pb.h>
+#include <ignition/msgs/magnetometer.pb.h>
+#include <ignition/msgs/model.pb.h>
+#include <ignition/msgs/odometry.pb.h>
+#include <ignition/msgs/pointcloud_packed.pb.h>
+#include <ignition/msgs/pose.pb.h>
+#include <ignition/msgs/pose_v.pb.h>
+#include <ignition/msgs/quaternion.pb.h>
+#include <ignition/msgs/stringmsg.pb.h>
+#include <ignition/msgs/twist.pb.h>
+#include <ignition/msgs/uint32.pb.h>
+#include <ignition/msgs/vector3d.pb.h>
+#include <ignition/msgs/wrench.pb.h>
 
 #include <memory>
 
