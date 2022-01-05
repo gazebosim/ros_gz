@@ -19,7 +19,9 @@
 #include <chrono>
 #include <memory>
 #include <string>
-#include "../test_utils.hpp"
+
+#include "utils/test_utils.hpp"
+#include "utils/ign_test_msg.hpp"
 
 //////////////////////////////////////////////////
 /// \brief A class for testing Ignition Transport topic subscription.
