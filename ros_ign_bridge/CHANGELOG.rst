@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.1 (2022-01-04)
+--------------------
 * Improve modularity of ign/ros publisher tests (`#194 <https://github.com/osrf/ros_ign/issues/194>`_)
 * Contributors: Michael Carroll
 
