@@ -2,6 +2,11 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Improve modularity of ign/ros publisher tests (`#194 <https://github.com/osrf/ros_ign/issues/194>`_)
+* Contributors: Michael Carroll
+
 0.244.0 (2021-12-30)
 --------------------
 * Default to Fortress for Rolling (future Humble) (`#195 <https://github.com/osrf/ros_ign/issues/195>`_)
