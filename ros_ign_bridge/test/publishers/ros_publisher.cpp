@@ -12,37 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <geometry_msgs/msg/pose.hpp>
-#include <geometry_msgs/msg/pose_stamped.hpp>
-#include <geometry_msgs/msg/quaternion.hpp>
-#include <geometry_msgs/msg/transform.hpp>
-#include <geometry_msgs/msg/transform_stamped.hpp>
-#include <geometry_msgs/msg/twist.hpp>
-#include <geometry_msgs/msg/vector3.hpp>
-// #include <mav_msgs/msg/actuators.hpp>
-#include <nav_msgs/msg/odometry.hpp>
 #include <rclcpp/rclcpp.hpp>
-#include <ros_ign_interfaces/msg/light.hpp>
-#include <rosgraph_msgs/msg/clock.hpp>
-#include <sensor_msgs/msg/battery_state.hpp>
-#include <sensor_msgs/msg/camera_info.hpp>
-#include <sensor_msgs/msg/fluid_pressure.hpp>
-#include <sensor_msgs/msg/image.hpp>
-#include <sensor_msgs/msg/imu.hpp>
-#include <sensor_msgs/msg/joint_state.hpp>
-#include <sensor_msgs/msg/laser_scan.hpp>
-#include <sensor_msgs/msg/magnetic_field.hpp>
-#include <sensor_msgs/msg/point_cloud2.hpp>
-#include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/color_rgba.hpp>
-#include <std_msgs/msg/empty.hpp>
-#include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float64.hpp>
-#include <std_msgs/msg/header.hpp>
-#include <std_msgs/msg/string.hpp>
-#include <tf2_msgs/msg/tf_message.hpp>
-#include <trajectory_msgs/msg/joint_trajectory.hpp>
-#include "../test_utils.hpp"
+#include "utils/test_utils.hpp"
+#include "utils/ros_test_msg.hpp"
 
 //////////////////////////////////////////////////
 int main(int argc, char ** argv)
