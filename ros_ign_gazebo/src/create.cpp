@@ -27,6 +27,7 @@ DEFINE_string(world, "", "World name.");
 DEFINE_string(file, "", "Load XML from a file.");
 DEFINE_string(param, "", "Load XML from a ROS param.");
 DEFINE_string(string, "", "Load XML from a string.");
+DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
 DEFINE_string(name, "", "Name for spawned entity.");
 DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
 DEFINE_double(x, 0, "X component of initial position, in meters.");
