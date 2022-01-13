@@ -47,8 +47,8 @@ int main(int _argc, char ** _argv)
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
-    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
-                       [-string STRING] [-name NAME] [-x X] [-y Y] [-z Z]
+    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC] 
+                       [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
   gflags::ParseCommandLineFlags(&_argc, &_argv, true);
 
