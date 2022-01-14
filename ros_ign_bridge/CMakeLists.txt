@@ -78,6 +78,7 @@ foreach(PKG ${PACKAGES})
     bridge_utils
     ignition-msgs${IGN_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
+    rclcpp::rclcpp
   )
   set_target_properties(${PKG}_bridge
     PROPERTIES POSITION_INDEPENDENT_CODE ON)
