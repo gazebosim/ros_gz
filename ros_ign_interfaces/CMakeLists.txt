@@ -20,8 +20,12 @@ set(msg_files
   "msg/Contacts.msg"
   "msg/Entity.msg"
   "msg/EntityFactory.msg"
+  "msg/GuiCamera.msg"
   "msg/JointWrench.msg"
   "msg/Light.msg"
+  "msg/StringVec.msg"
+  "msg/TrackVisual.msg"
+  "msg/VideoRecord.msg"
   "msg/WorldControl.msg"
   "msg/WorldReset.msg"
 )
