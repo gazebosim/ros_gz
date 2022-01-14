@@ -1,4 +1,4 @@
-[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml)
+test[![Build Status](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/ignitionrobotics/ros_ign/actions/workflows/ros2-ci.yml)
 
 ROS version | Ignition version | Branch | Binaries hosted at
 -- | -- | -- | --
