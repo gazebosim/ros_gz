@@ -122,6 +122,16 @@ get_factory__ros_ign_interfaces(
       >
     >("ros_ign_interfaces/msg/VideoRecord", ign_type_name);
   }
+  if ((ros_type_name == "ros_ign_interfaces/msg/WorldControl" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.WorldControl")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::WorldControl,
+        ignition::msgs::WorldControl
+      >
+    >("ros_ign_interfaces/msg/WorldControl", ign_type_name);
+  }
   return nullptr;
 }
 
@@ -337,6 +347,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::VideoRecord & ign_msg,
   ros_ign_interfaces::msg::VideoRecord & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::WorldControl,
+  ignition::msgs::WorldControl
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::WorldControl & ros_msg,
+  ignition::msgs::WorldControl & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::WorldControl,
+  ignition::msgs::WorldControl
+>::convert_ign_to_ros(
+  const ignition::msgs::WorldControl & ign_msg,
+  ros_ign_interfaces::msg::WorldControl & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
