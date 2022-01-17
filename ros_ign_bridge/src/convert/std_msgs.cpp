@@ -12,9 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rclcpp/time.hpp>
-
 #include "convert/utils.hpp"
+#include "ros_ign_bridge/convert/builtin_interfaces.hpp"
 #include "ros_ign_bridge/convert/std_msgs.hpp"
 
 namespace ros_ign_bridge
@@ -138,8 +137,7 @@ convert_ros_to_ign(
   const std_msgs::msg::Header & ros_msg,
   ignition::msgs::Header & ign_msg)
 {
-  ign_msg.mutable_stamp()->set_sec(ros_msg.stamp.sec);
-  ign_msg.mutable_stamp()->set_nsec(ros_msg.stamp.nanosec);
+  convert_ros_to_ign(ros_msg.stamp, *ign_msg.mutable_stamp());
   auto newPair = ign_msg.add_data();
   newPair->set_key("frame_id");
   newPair->add_value(ros_msg.frame_id);
@@ -169,7 +167,7 @@ convert_ign_to_ros(
   const ignition::msgs::Header & ign_msg,
   std_msgs::msg::Header & ros_msg)
 {
-  ros_msg.stamp = rclcpp::Time(ign_msg.stamp().sec(), ign_msg.stamp().nsec());
+  convert_ign_to_ros(ign_msg.stamp(), ros_msg.stamp);
   for (auto i = 0; i < ign_msg.data_size(); ++i) {
     auto aPair = ign_msg.data(i);
     if (aPair.key() == "frame_id" && aPair.value_size() > 0) {
