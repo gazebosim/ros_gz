@@ -35,15 +35,17 @@ enum Direction
   FROM_IGN_TO_ROS = 1,
   // Only from ROS to IGN
   FROM_ROS_TO_IGN = 2,
+  // Unspecified, only used for services
+  DIR_UNSPECIFIED = 3,
 };
 
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cout << "Bridge a collection of ROS2 and Ignition Transport topics.\n\n" <<
-    "  parameter_bridge <topic@ROS2_type@Ign_type> .. " <<
-    " <topic@ROS2_type@Ign_type>\n\n" <<
-    "The first @ symbol delimits the topic name from the message types.\n" <<
+  std::cout << "Bridge a collection of ROS2 and Ignition Transport topics and services.\n\n" <<
+    "  parameter_bridge [<topic@ROS2_type@Ign_type> ..] " <<
+    " [<service@ROS2_srv_type[@Ign_req_type@Ign_rep_type]> ..]\n\n" <<
+    "Topics: The first @ symbol delimits the topic name from the message types.\n" <<
     "Following the first @ symbol is the ROS message type.\n" <<
     "The ROS message type is followed by an @, [, or ] symbol where\n" <<
     "    @  == a bidirectional bridge, \n" <<
@@ -51,6 +53,13 @@ void usage()
     "    ]  == a bridge from ROS to Ignition.\n" <<
     "Following the direction symbol is the Ignition Transport message " <<
     "type.\n\n" <<
+    "Services: The first @ symbol delimits the service name from the types.\n" <<
+    "Following the first @ symbol is the ROS service type.\n" <<
+    "Optionally, you can include the ignition request and reply type\n" <<
+    "separated by the @ symbol.\n" <<
+    "It is only supported to expose ignition servces as ros services, i.e.\n"
+    "the ros service will forward request to the ignition service and then forward\n"
+    "the reply back to the ros client.\n\n"
     "A bidirectional bridge example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String@ignition.msgs" <<
     ".StringMsg\n\n" <<
@@ -59,7 +68,12 @@ void usage()
     ".StringMsg\n\n" <<
     "A bridge from ROS to Ignition example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String]ignition.msgs" <<
-    ".StringMsg" << std::endl;
+    ".StringMsg\n" <<
+    "A service bridge:\n" <<
+    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld\n" <<
+    "Or equivalently:\n" <<
+    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld@"
+    "ignition.msgs.WorldControl@ignition.msgs.Boolean\n" << std::endl;
 }
 
 //////////////////////////////////////////////////
@@ -67,6 +81,7 @@ int main(int argc, char * argv[])
 {
   if (argc < 2) {
     usage();
+    fprintf(stderr, "\n\nWHAT???????????????? 1\n");
     return -1;
   }
   // skip the process name in argument procesing
@@ -80,17 +95,20 @@ int main(int argc, char * argv[])
   // Ignition node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
-  std::list<ros_ign_bridge::BridgeHandles> bidirectional_handles;
-  std::list<ros_ign_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
-  std::list<ros_ign_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
+  std::vector<ros_ign_bridge::BridgeHandles> bidirectional_handles;
+  std::vector<ros_ign_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
+  std::vector<ros_ign_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
+  std::vector<ros_ign_bridge::BridgeIgnServicesToRosHandles> service_bridge_handles;
 
   // Filter arguments (i.e. remove ros args) then parse all the remaining ones
   const std::string delim = "@";
   const size_t queue_size = 10;
+  // TODO(ivanpauno): Improve the parsing code later, it's hard to read ...
   for (auto & arg : filteredArgs) {
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
+      fprintf(stderr, "\n\nWHAT???????????????? 2 %s\n", arg.c_str());
       return -1;
     }
     std::string topic_name = arg.substr(0, delimPos);
@@ -106,9 +124,12 @@ int main(int argc, char * argv[])
       delimPos = arg.find("[");
       if (delimPos == std::string::npos || delimPos == 0) {
         delimPos = arg.find("]");
-        if (delimPos == std::string::npos || delimPos == 0) {
+        if (delimPos == 0) {
           usage();
+          fprintf(stderr, "\n\nWHAT???????????????? 3\n");
           return -1;
+        } else if (delimPos == std::string::npos) {
+          direction = DIR_UNSPECIFIED;
         } else {
           direction = FROM_ROS_TO_IGN;
         }
@@ -118,6 +139,39 @@ int main(int argc, char * argv[])
     }
     std::string ros_type_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
+    if (ros_type_name.find("/srv/") != std::string::npos) {
+      std::string ign_req_type_name;
+      std::string ign_rep_type_name;
+      if (direction != DIR_UNSPECIFIED && direction != BIDIRECTIONAL) {
+        usage();
+        fprintf(stderr, "\n\nWHAT???????????????? 4\n");
+        return -1;
+      }
+      if (direction == BIDIRECTIONAL) {
+        delimPos = arg.find("@");
+        if (delimPos == std::string::npos || delimPos == 0) {
+          usage();
+          fprintf(stderr, "\n\nWHAT???????????????? 5\n");
+          return -1;
+        }
+        ign_req_type_name = arg.substr(0, delimPos);
+        arg.erase(0, delimPos + delim.size());
+        ign_rep_type_name = std::move(arg);
+      }
+      try {
+        service_bridge_handles.push_back(
+          ros_ign_bridge::create_service_bridge(
+            ros_node,
+            ign_node,
+            ros_type_name,
+            ign_req_type_name,
+            ign_rep_type_name,
+            topic_name));
+      } catch (std::runtime_error & e) {
+        std::cerr << e.what() << std::endl;
+      }
+      continue;
+    }
 
     delimPos = arg.find(delim);
     if (delimPos != std::string::npos || arg.empty()) {
