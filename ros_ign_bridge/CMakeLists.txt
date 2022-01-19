@@ -100,6 +100,7 @@ add_library(${bridge_lib}
   SHARED
   src/factories.cpp
   src/factory_interface.cpp
+  src/service_factories/ros_ign_interfaces.cpp
 )
 
 target_include_directories(${bridge_lib}

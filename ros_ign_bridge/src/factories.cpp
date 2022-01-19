@@ -80,4 +80,13 @@ get_factory(
   throw std::runtime_error("No template specialization for the pair");
 }
 
+std::shared_ptr<ServiceFactoryInterface>
+get_service_factory(
+  const std::string & ros_type_name,
+  const std::string & ign_req_type_name,
+  const std::string & ign_rep_type_name)
+{
+  throw std::runtime_error("No template specialization for the pair");
+}
+
 }  // namespace ros_ign_bridge

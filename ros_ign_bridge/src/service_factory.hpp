@@ -1,0 +1,96 @@
+// Copyright 2022 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+#ifndef SERVICE_FACTORY_HPP_
+#define SERVICE_FACTORY_HPP_
+
+#include <ignition/transport/Node.hh>
+
+#include <rclcpp/rclcpp.hpp>
+
+#include <functional>
+#include <memory>
+#include <string>
+
+#include "ros_ign_bridge/convert_decl.hpp"
+
+#include "service_factory_interface.hpp"
+
+namespace ros_ign_bridge
+{
+
+template<typename RosResT>
+bool
+send_response_on_error(RosResT &ros_response);
+
+template<typename RosServiceT, typename IgnRequestT, typename IgnReplyT>
+class ServiceFactory : public ServiceFactoryInterface
+{
+public:
+  ServiceFactory(
+    const std::string & ros_type_name, const std::string & ign_req_type_name,
+    const std::string & ign_rep_type_name)
+  : ros_type_name_(ros_type_name),
+    ign_req_type_name_(ign_req_type_name),
+    ign_rep_type_name_(ign_rep_type_name)
+  {}
+
+  rclcpp::ServiceBase::SharedPtr
+  create_ros_service(
+    rclcpp::Node::SharedPtr ros_node,
+    std::shared_ptr<ignition::transport::Node> ign_node,
+    const std::string & service_name) override
+  {
+    return ros_node->create_service<RosServiceT>(
+      service_name,
+      [ign_node=std::move(ign_node), service_name](
+        std::shared_ptr<rclcpp::Service<RosServiceT>> srv_handle,
+        std::shared_ptr<rmw_request_id_t> reqid,
+        std::shared_ptr<typename RosServiceT::Request> ros_req)
+      {
+        std::function<void(const IgnReplyT &, bool)> callback;
+        callback = [
+            srv_handle=std::move(srv_handle),
+            reqid
+          ](
+            const IgnReplyT & reply,
+            const bool result)
+          {
+            typename RosServiceT::Response ros_res;
+            if (!result) {
+              if (send_response_on_error(ros_res)) {
+                srv_handle->send_response(*reqid, ros_res);
+              }
+            }
+            convert_ign_to_ros(reply, ros_res);
+            srv_handle->send_response(*reqid, ros_res);
+          };
+        IgnRequestT ign_req;
+        convert_ros_to_ign(*ros_req, ign_req);
+        ign_node->Request(
+          service_name,
+          ign_req,
+          callback);
+      });
+  }
+
+private:
+  std::string ros_type_name_;
+  std::string ign_req_type_name_;
+  std::string ign_rep_type_name_;
+};
+
+}  // namespace ros_ign_bridge
+
+#endif  // SERVICE_FACTORY_HPP_

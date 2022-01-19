@@ -44,6 +44,12 @@ struct BridgeHandles
   BridgeIgnToRosHandles bridgeIgnToRos;
 };
 
+struct BridgeIgnServicesToRosHandles
+{
+  std::shared_ptr<ignition::transport::Node> ign_node;
+  rclcpp::ServiceBase::SharedPtr ros_service;
+};
+
 BridgeRosToIgnHandles
 create_bridge_from_ros_to_ign(
   rclcpp::Node::SharedPtr ros_node,
@@ -105,6 +111,23 @@ create_bidirectional_bridge(
   handles.bridgeIgnToRos = create_bridge_from_ign_to_ros(
     ign_node, ros_node,
     ign_type_name, topic_name, queue_size, ros_type_name, topic_name, queue_size);
+  return handles;
+}
+
+BridgeIgnServicesToRosHandles
+create_service_bridge(
+  rclcpp::Node::SharedPtr ros_node,
+  std::shared_ptr<ignition::transport::Node> ign_node,
+  const std::string & ros_type_name,
+  const std::string & ign_req_type_name,
+  const std::string & ign_rep_type_name,
+  const std::string & service_name)
+{
+  BridgeIgnServicesToRosHandles handles;
+  auto factory = get_service_factory(ros_type_name, ign_req_type_name, ign_rep_type_name);
+  auto ros_srv = factory->create_ros_service(ros_node, ign_node, service_name);
+  handles.ros_service = ros_srv;
+  handles.ign_node = ign_node;
   return handles;
 }
 
