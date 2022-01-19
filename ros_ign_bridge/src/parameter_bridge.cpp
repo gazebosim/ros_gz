@@ -63,34 +63,16 @@ void usage()
 }
 
 //////////////////////////////////////////////////
-std::vector<std::string> filter_args(int argc, char * argv[])
-{
-  const std::string rosArgsBeginDelim = "--ros-args";
-  const std::string rosArgsEndDelim = "--";
-  // Skip first argument (executable path)
-  std::vector<std::string> args(argv + 1, argv + argc);
-  auto rosArgsPos = std::find(args.begin(), args.end(), rosArgsBeginDelim);
-  auto rosArgsEndPos = std::find(rosArgsPos, args.end(), rosArgsEndDelim);
-  // If -- was found, delete it as well
-  if (rosArgsEndPos != args.end()) {
-    ++rosArgsEndPos;
-  }
-  // Delete args between --ros-args and -- (or --ros-args to end if not found)
-  if (rosArgsPos != args.end()) {
-    args.erase(rosArgsPos, rosArgsEndPos);
-  }
-  return args;
-}
-
-//////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
   if (argc < 2) {
     usage();
     return -1;
   }
-
-  rclcpp::init(argc, argv);
+  // skip the process name in argument procesing
+  ++argv;
+  --argc;
+  auto filteredArgs = rclcpp::init_and_remove_ros_arguments(argc, argv);
 
   // ROS 2 node
   auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
@@ -105,7 +87,6 @@ int main(int argc, char * argv[])
   // Filter arguments (i.e. remove ros args) then parse all the remaining ones
   const std::string delim = "@";
   const size_t queue_size = 10;
-  auto filteredArgs = filter_args(argc, argv);
   for (auto & arg : filteredArgs) {
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
