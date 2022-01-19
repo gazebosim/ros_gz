@@ -23,7 +23,7 @@
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
+std::shared_ptr<ServiceFactoryInterface>
 get_service_factory__ros_ign_interfaces(
   const std::string & ros_type_name,
   const std::string & ign_req_type_name,

@@ -27,6 +27,8 @@
 #include "factories/tf2_msgs.hpp"
 #include "factories/trajectory_msgs.hpp"
 
+#include "service_factories/ros_ign_interfaces.hpp"
+
 namespace ros_ign_bridge
 {
 
@@ -86,7 +88,17 @@ get_service_factory(
   const std::string & ign_req_type_name,
   const std::string & ign_rep_type_name)
 {
-  throw std::runtime_error("No template specialization for the pair");
+  std::shared_ptr<ServiceFactoryInterface> impl;
+
+  impl = get_service_factory__ros_ign_interfaces(
+    ros_type_name, ign_req_type_name, ign_rep_type_name);
+  if (impl) {return impl;}
+
+  std::ostringstream oss{"No template specialization for the specified service type {"};
+  oss << ros_type_name << "}, ign request type {" << ign_req_type_name
+      << "}, ign request type {" << ign_req_type_name << "}, ign reply type name {"
+      << ign_rep_type_name << "}";
+  throw std::runtime_error(oss.str());
 }
 
 }  // namespace ros_ign_bridge
