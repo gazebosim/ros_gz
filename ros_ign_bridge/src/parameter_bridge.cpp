@@ -81,7 +81,6 @@ int main(int argc, char * argv[])
 {
   if (argc < 2) {
     usage();
-    fprintf(stderr, "\n\nWHAT???????????????? 1\n");
     return -1;
   }
   // skip the process name in argument procesing
@@ -108,7 +107,6 @@ int main(int argc, char * argv[])
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
-      fprintf(stderr, "\n\nWHAT???????????????? 2 %s\n", arg.c_str());
       return -1;
     }
     std::string topic_name = arg.substr(0, delimPos);
@@ -126,7 +124,6 @@ int main(int argc, char * argv[])
         delimPos = arg.find("]");
         if (delimPos == 0) {
           usage();
-          fprintf(stderr, "\n\nWHAT???????????????? 3\n");
           return -1;
         } else if (delimPos == std::string::npos) {
           direction = DIR_UNSPECIFIED;
@@ -144,14 +141,12 @@ int main(int argc, char * argv[])
       std::string ign_rep_type_name;
       if (direction != DIR_UNSPECIFIED && direction != BIDIRECTIONAL) {
         usage();
-        fprintf(stderr, "\n\nWHAT???????????????? 4\n");
         return -1;
       }
       if (direction == BIDIRECTIONAL) {
         delimPos = arg.find("@");
         if (delimPos == std::string::npos || delimPos == 0) {
           usage();
-          fprintf(stderr, "\n\nWHAT???????????????? 5\n");
           return -1;
         }
         ign_req_type_name = arg.substr(0, delimPos);
