@@ -31,6 +31,9 @@ class FactoryInterface
 {
 public:
   virtual
+  ~FactoryInterface() = 0;
+
+  virtual
   rclcpp::PublisherBase::SharedPtr
   create_ros_publisher(
     rclcpp::Node::SharedPtr ros_node,
