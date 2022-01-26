@@ -44,7 +44,7 @@ void signal_handler(int _signal)
 //////////////////////////////////////////////////
 bool control_world(
   const ignition::msgs::WorldControl &,
-  ignition::msgs::Boolean &_res)
+  ignition::msgs::Boolean & _res)
 {
   _res.set_data(true);
   return true;
@@ -62,7 +62,8 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::transport::Node node;
 
   // ignition::msgs::Color.
-  node.Advertise("/ign_ros/test/serviceclient/service",
+  node.Advertise(
+    "/ign_ros/test/serviceclient/service",
     &control_world);
 
   // Requests are handled in another thread.

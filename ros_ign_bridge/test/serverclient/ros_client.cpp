@@ -28,7 +28,8 @@ TEST(ROSClientTest, WorldControl)
 {
   rclcpp::init(0, NULL);
   auto node = std::make_shared<rclcpp::Node>("test_ros_client_to_ign_service");
-  auto client = node->create_client<ros_ign_interfaces::srv::ControlWorld>("/ign_ros/test/serviceclient/service");
+  auto client = node->create_client<ros_ign_interfaces::srv::ControlWorld>(
+    "/ign_ros/test/serviceclient/service");
   std::this_thread::sleep_for(1s);
   client->wait_for_service();
   auto msg = std::make_shared<ros_ign_interfaces::srv::ControlWorld::Request>();

@@ -32,7 +32,7 @@ namespace ros_ign_bridge
 
 template<typename RosResT>
 bool
-send_response_on_error(RosResT &ros_response);
+send_response_on_error(RosResT & ros_response);
 
 template<typename RosServiceT, typename IgnRequestT, typename IgnReplyT>
 class ServiceFactory : public ServiceFactoryInterface
@@ -54,28 +54,28 @@ public:
   {
     return ros_node->create_service<RosServiceT>(
       service_name,
-      [ign_node=std::move(ign_node), service_name](
+      [ign_node = std::move(ign_node), service_name](
         std::shared_ptr<rclcpp::Service<RosServiceT>> srv_handle,
         std::shared_ptr<rmw_request_id_t> reqid,
         std::shared_ptr<typename RosServiceT::Request> ros_req)
       {
         std::function<void(const IgnReplyT &, bool)> callback;
         callback = [
-            srv_handle=std::move(srv_handle),
-            reqid
-          ](
-            const IgnReplyT & reply,
-            const bool result)
-          {
-            typename RosServiceT::Response ros_res;
-            if (!result) {
-              if (send_response_on_error(ros_res)) {
-                srv_handle->send_response(*reqid, ros_res);
-              }
+          srv_handle = std::move(srv_handle),
+          reqid
+        ](
+          const IgnReplyT & reply,
+          const bool result)
+        {
+          typename RosServiceT::Response ros_res;
+          if (!result) {
+            if (send_response_on_error(ros_res)) {
+              srv_handle->send_response(*reqid, ros_res);
             }
-            convert_ign_to_ros(reply, ros_res);
-            srv_handle->send_response(*reqid, ros_res);
-          };
+          }
+          convert_ign_to_ros(reply, ros_res);
+          srv_handle->send_response(*reqid, ros_res);
+        };
         IgnRequestT ign_req;
         convert_ros_to_ign(*ros_req, ign_req);
         ign_node->Request(
