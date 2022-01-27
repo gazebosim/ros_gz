@@ -176,7 +176,16 @@ if(BUILD_TESTING)
   add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
   target_link_libraries(test_ros_publisher test_utils)
 
-  add_executable(test_ros_subscriber test/subscribers/ros_subscriber.cpp)
+  add_executable(test_ros_subscriber
+        test/subscribers/ros_subscriber/ros_subscriber.cpp
+        test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
+        test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/std_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/trajectory_msgs_subscriber.cpp)
+
   target_link_libraries(test_ros_subscriber test_utils)
 
   add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
