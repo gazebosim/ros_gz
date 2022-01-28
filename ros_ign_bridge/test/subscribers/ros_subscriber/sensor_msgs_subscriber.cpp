@@ -16,10 +16,7 @@
 #include <gtest/gtest.h>
 
 #include <chrono>
-#include <memory>
-#include <string>
 
-#include <rclcpp/rclcpp.hpp>
 #include "ros_subscriber.hpp"
 
 using ros_subscriber::MyTestClass;
