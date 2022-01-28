@@ -15,11 +15,11 @@
 #ifndef UTILS__TEST_UTILS_HPP_
 #define UTILS__TEST_UTILS_HPP_
 
-#include <rclcpp/rclcpp.hpp>
-
 #include <chrono>
 #include <memory>
 #include <thread>
+
+#include <rclcpp/rclcpp.hpp>
 
 namespace ros_ign_bridge
 {

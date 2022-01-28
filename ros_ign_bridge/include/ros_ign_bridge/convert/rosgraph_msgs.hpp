@@ -15,10 +15,11 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 
-#include <rosgraph_msgs/msg/clock.hpp>
-
 // Ignition messages
 #include <ignition/msgs.hh>
+
+// ROS 2 messages
+#include <rosgraph_msgs/msg/clock.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

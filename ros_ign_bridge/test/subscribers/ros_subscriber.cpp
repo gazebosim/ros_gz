@@ -14,11 +14,11 @@
 
 #include <gtest/gtest.h>
 
-#include <rclcpp/rclcpp.hpp>
-
 #include <chrono>
 #include <memory>
 #include <string>
+
+#include <rclcpp/rclcpp.hpp>
 
 #include "utils/test_utils.hpp"
 #include "utils/ros_test_msg.hpp"

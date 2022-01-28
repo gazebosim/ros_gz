@@ -15,16 +15,6 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 
-#include <sensor_msgs/msg/battery_state.hpp>
-#include <sensor_msgs/msg/camera_info.hpp>
-#include <sensor_msgs/msg/fluid_pressure.hpp>
-#include <sensor_msgs/msg/image.hpp>
-#include <sensor_msgs/msg/imu.hpp>
-#include <sensor_msgs/msg/joint_state.hpp>
-#include <sensor_msgs/msg/laser_scan.hpp>
-#include <sensor_msgs/msg/magnetic_field.hpp>
-#include <sensor_msgs/msg/point_cloud2.hpp>
-
 // Ignition messages
 #include <ignition/msgs/battery_state.pb.h>
 #include <ignition/msgs/camera_info.pb.h>
@@ -35,6 +25,17 @@
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
+
+// ROS 2 messages
+#include <sensor_msgs/msg/battery_state.hpp>
+#include <sensor_msgs/msg/camera_info.hpp>
+#include <sensor_msgs/msg/fluid_pressure.hpp>
+#include <sensor_msgs/msg/image.hpp>
+#include <sensor_msgs/msg/imu.hpp>
+#include <sensor_msgs/msg/joint_state.hpp>
+#include <sensor_msgs/msg/laser_scan.hpp>
+#include <sensor_msgs/msg/magnetic_field.hpp>
+#include <sensor_msgs/msg/point_cloud2.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

@@ -12,9 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// include ROS 2
-#include <rclcpp/rclcpp.hpp>
-
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
@@ -23,6 +20,9 @@
 #include <memory>
 #include <string>
 #include <vector>
+
+// include ROS 2
+#include <rclcpp/rclcpp.hpp>
 
 #include "bridge.hpp"
 

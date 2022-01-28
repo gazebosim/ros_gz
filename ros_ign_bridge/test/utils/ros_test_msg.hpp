@@ -15,6 +15,8 @@
 #ifndef UTILS__ROS_TEST_MSG_HPP_
 #define UTILS__ROS_TEST_MSG_HPP_
 
+#include <memory>
+
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
@@ -51,8 +53,6 @@
 #include <sensor_msgs/msg/point_field.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
-
-#include <memory>
 
 namespace ros_ign_bridge
 {

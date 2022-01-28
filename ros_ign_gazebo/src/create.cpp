@@ -17,11 +17,13 @@
 #include <ignition/msgs/entity_factory.pb.h>
 #include <ignition/msgs/Utility.hh>
 #include <ignition/transport/Node.hh>
-#include <rclcpp/rclcpp.hpp>
-#include <std_msgs/msg/string.hpp>
 
 #include <sstream>
 #include <string>
+
+#include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/string.hpp>
+
 
 DEFINE_string(world, "", "World name.");
 DEFINE_string(file, "", "Load XML from a file.");
