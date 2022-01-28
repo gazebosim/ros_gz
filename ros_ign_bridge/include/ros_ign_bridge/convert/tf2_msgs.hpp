@@ -15,8 +15,11 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
 
-#include <tf2_msgs/msg/tf_message.hpp>
+// Ignition messages
 #include <ignition/msgs/pose_v.pb.h>
+
+// ROS 2 messages
+#include <tf2_msgs/msg/tf_message.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

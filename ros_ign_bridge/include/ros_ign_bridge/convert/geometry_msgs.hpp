@@ -15,14 +15,6 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
 
-#include <geometry_msgs/msg/point.hpp>
-#include <geometry_msgs/msg/pose.hpp>
-#include <geometry_msgs/msg/pose_stamped.hpp>
-#include <geometry_msgs/msg/quaternion.hpp>
-#include <geometry_msgs/msg/transform_stamped.hpp>
-#include <geometry_msgs/msg/twist.hpp>
-#include <geometry_msgs/msg/wrench.hpp>
-
 // Ignition messages
 #include <ignition/msgs/quaternion.pb.h>
 #include <ignition/msgs/vector3d.pb.h>
@@ -30,6 +22,15 @@
 #include <ignition/msgs/pose_v.pb.h>
 #include <ignition/msgs/twist.pb.h>
 #include <ignition/msgs/wrench.pb.h>
+
+// ROS 2 messages
+#include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
+#include <geometry_msgs/msg/transform_stamped.hpp>
+#include <geometry_msgs/msg/twist.hpp>
+#include <geometry_msgs/msg/wrench.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

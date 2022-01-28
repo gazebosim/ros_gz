@@ -97,6 +97,7 @@ set(bridge_lib
 add_library(${bridge_lib}
   SHARED
   src/factories.cpp
+  src/factory_interface.cpp
 )
 
 target_include_directories(${bridge_lib}

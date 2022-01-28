@@ -15,16 +15,6 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_
 
-#include <std_msgs/msg/bool.hpp>
-#include <std_msgs/msg/color_rgba.hpp>
-#include <std_msgs/msg/empty.hpp>
-#include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float64.hpp>
-#include <std_msgs/msg/header.hpp>
-#include <std_msgs/msg/int32.hpp>
-#include <std_msgs/msg/u_int32.hpp>
-#include <std_msgs/msg/string.hpp>
-
 // Ignition messages
 #include <ignition/msgs/boolean.pb.h>
 #include <ignition/msgs/color.pb.h>
@@ -35,6 +25,17 @@
 #include <ignition/msgs/int32.pb.h>
 #include <ignition/msgs/uint32.pb.h>
 #include <ignition/msgs/stringmsg.pb.h>
+
+// ROS 2 messages
+#include <std_msgs/msg/bool.hpp>
+#include <std_msgs/msg/color_rgba.hpp>
+#include <std_msgs/msg/empty.hpp>
+#include <std_msgs/msg/float32.hpp>
+#include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/header.hpp>
+#include <std_msgs/msg/int32.hpp>
+#include <std_msgs/msg/u_int32.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 

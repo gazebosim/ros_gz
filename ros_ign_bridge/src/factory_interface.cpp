@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,32 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
-#define ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
-
-// Ignition messages
-#include <ignition/msgs.hh>
-
-// ROS 2 messages
-#include <rosgraph_msgs/msg/clock.hpp>
-
-#include <ros_ign_bridge/convert_decl.hpp>
+#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
 
-template<>
-void
-convert_ign_to_ros(
-  const ignition::msgs::Clock & ign_msg,
-  rosgraph_msgs::msg::Clock & ros_msg);
-
-template<>
-void
-convert_ros_to_ign(
-  const rosgraph_msgs::msg::Clock & ros_msg,
-  ignition::msgs::Clock & ign_msg);
+FactoryInterface::~FactoryInterface()
+{
+}
 
 }  // namespace ros_ign_bridge
-
-#endif  // ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_

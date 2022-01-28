@@ -17,13 +17,13 @@
 
 #include <ignition/transport/Node.hh>
 
-// include ROS 2
-#include <rclcpp/rclcpp.hpp>
-#include <rclcpp/subscription_options.hpp>
-
 #include <functional>
 #include <memory>
 #include <string>
+
+// include ROS 2
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/subscription_options.hpp>
 
 #include "factory_interface.hpp"
 

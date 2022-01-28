@@ -15,14 +15,14 @@
 #ifndef  FACTORY_INTERFACE_HPP_
 #define  FACTORY_INTERFACE_HPP_
 
-// include ROS 2
-#include <rclcpp/rclcpp.hpp>
-
 // include Ignition Transport
 #include <ignition/transport/Node.hh>
 
 #include <memory>
 #include <string>
+
+// include ROS 2
+#include <rclcpp/rclcpp.hpp>
 
 namespace ros_ign_bridge
 {
@@ -30,6 +30,9 @@ namespace ros_ign_bridge
 class FactoryInterface
 {
 public:
+  virtual
+  ~FactoryInterface() = 0;
+
   virtual
   rclcpp::PublisherBase::SharedPtr
   create_ros_publisher(
