@@ -1111,7 +1111,6 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::TrackVisual> & _msg)
   EXPECT_EQ(expected_msg.static_(), _msg->static_());
   EXPECT_EQ(expected_msg.use_model_frame(), _msg->use_model_frame());
   EXPECT_EQ(expected_msg.inherit_yaw(), _msg->inherit_yaw());
-
 }
 
 void createTestMsg(ignition::msgs::VideoRecord & _msg)
