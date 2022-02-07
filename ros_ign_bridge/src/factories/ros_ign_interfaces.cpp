@@ -72,6 +72,16 @@ get_factory__ros_ign_interfaces(
       >
     >("ros_ign_interfaces/msg/Contacts", ign_type_name);
   }
+  if ((ros_type_name == "ros_ign_interfaces/msg/GuiCamera" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.GUICamera")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::GuiCamera,
+        ignition::msgs::GUICamera
+      >
+    >("ros_ign_interfaces/msg/GuiCamera", ign_type_name);
+  }
   if ((ros_type_name == "ros_ign_interfaces/msg/Light" ||
     ros_type_name.empty()) && ign_type_name == "ignition.msgs.Light")
   {
@@ -81,6 +91,36 @@ get_factory__ros_ign_interfaces(
         ignition::msgs::Light
       >
     >("ros_ign_interfaces/msg/Light", ign_type_name);
+  }
+  if ((ros_type_name == "ros_ign_interfaces/msg/StringVec" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.StringMsg_V")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::StringVec,
+        ignition::msgs::StringMsg_V
+      >
+    >("ros_ign_interfaces/msg/StringVec", ign_type_name);
+  }
+  if ((ros_type_name == "ros_ign_interfaces/msg/TrackVisual" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.TrackVisual")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::TrackVisual,
+        ignition::msgs::TrackVisual
+      >
+    >("ros_ign_interfaces/msg/TrackVisual", ign_type_name);
+  }
+  if ((ros_type_name == "ros_ign_interfaces/msg/VideoRecord" ||
+    ros_type_name.empty()) && ign_type_name == "ignition.msgs.VideoRecord")
+  {
+    return std::make_shared<
+      Factory<
+        ros_ign_interfaces::msg::VideoRecord,
+        ignition::msgs::VideoRecord
+      >
+    >("ros_ign_interfaces/msg/VideoRecord", ign_type_name);
   }
   return nullptr;
 }
@@ -184,6 +224,30 @@ Factory<
 template<>
 void
 Factory<
+  ros_ign_interfaces::msg::GuiCamera,
+  ignition::msgs::GUICamera
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::GuiCamera & ros_msg,
+  ignition::msgs::GUICamera & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::GuiCamera,
+  ignition::msgs::GUICamera
+>::convert_ign_to_ros(
+  const ignition::msgs::GUICamera & ign_msg,
+  ros_ign_interfaces::msg::GuiCamera & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
   ros_ign_interfaces::msg::Light,
   ignition::msgs::Light
 >::convert_ros_to_ign(
@@ -205,4 +269,75 @@ Factory<
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::StringVec,
+  ignition::msgs::StringMsg_V
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::StringVec & ros_msg,
+  ignition::msgs::StringMsg_V & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::StringVec,
+  ignition::msgs::StringMsg_V
+>::convert_ign_to_ros(
+  const ignition::msgs::StringMsg_V & ign_msg,
+  ros_ign_interfaces::msg::StringVec & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::TrackVisual,
+  ignition::msgs::TrackVisual
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::TrackVisual & ros_msg,
+  ignition::msgs::TrackVisual & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::TrackVisual,
+  ignition::msgs::TrackVisual
+>::convert_ign_to_ros(
+  const ignition::msgs::TrackVisual & ign_msg,
+  ros_ign_interfaces::msg::TrackVisual & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::VideoRecord,
+  ignition::msgs::VideoRecord
+>::convert_ros_to_ign(
+  const ros_ign_interfaces::msg::VideoRecord & ros_msg,
+  ignition::msgs::VideoRecord & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  ros_ign_interfaces::msg::VideoRecord,
+  ignition::msgs::VideoRecord
+>::convert_ign_to_ros(
+  const ignition::msgs::VideoRecord & ign_msg,
+  ros_ign_interfaces::msg::VideoRecord & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
 }  // namespace ros_ign_bridge
