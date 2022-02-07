@@ -32,8 +32,12 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
 | ros_ign_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
 | ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity               |
+| ros_ign_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera            |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
 | ros_ign_interfaces/msg/Light         | ignition::msgs::Light                |
+| ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V          |
+| ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual          |
+| ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord          |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |

@@ -238,6 +238,34 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const ros_ign_interfaces::msg::GuiCamera & ros_msg,
+  ignition::msgs::GUICamera & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, *ign_msg.mutable_header());
+  ign_msg.set_name(ros_msg.name);
+  ign_msg.set_view_controller(ros_msg.view_controller);
+  convert_ros_to_ign(ros_msg.pose, *ign_msg.mutable_pose());
+  convert_ros_to_ign(ros_msg.track, *ign_msg.mutable_track());
+  ign_msg.set_projection_type(ros_msg.projection_type);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::GUICamera & ign_msg,
+  ros_ign_interfaces::msg::GuiCamera & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  ros_msg.name = ign_msg.name();
+  ros_msg.view_controller = ign_msg.view_controller();
+  convert_ign_to_ros(ign_msg.pose(), ros_msg.pose);
+  convert_ign_to_ros(ign_msg.track(), ros_msg.track);
+  ros_msg.projection_type = ign_msg.projection_type();
+}
+
+template<>
+void
+convert_ros_to_ign(
   const ros_ign_interfaces::msg::Light & ros_msg,
   ignition::msgs::Light & ign_msg)
 {
@@ -310,6 +338,93 @@ convert_ign_to_ros(
   ros_msg.parent_id = ign_msg.parent_id();
 
   ros_msg.intensity = ign_msg.intensity();
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::StringVec & ros_msg,
+  ignition::msgs::StringMsg_V & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, *ign_msg.mutable_header());
+  for (const auto & elem : ros_msg.data) {
+    auto * new_elem = ign_msg.add_data();
+    *new_elem = elem;
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::StringMsg_V & ign_msg,
+  ros_ign_interfaces::msg::StringVec & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  for (const auto & elem : ign_msg.data()) {
+    ros_msg.data.emplace_back(elem);
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::TrackVisual & ros_msg,
+  ignition::msgs::TrackVisual & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, *ign_msg.mutable_header());
+  ign_msg.set_name(ros_msg.name);
+  ign_msg.set_id(ros_msg.id);
+  ign_msg.set_inherit_orientation(ros_msg.inherit_orientation);
+  ign_msg.set_min_dist(ros_msg.min_dist);
+  ign_msg.set_max_dist(ros_msg.max_dist);
+  ign_msg.set_static_(ros_msg.is_static);
+  ign_msg.set_use_model_frame(ros_msg.use_model_frame);
+  convert_ros_to_ign(ros_msg.xyz, *ign_msg.mutable_xyz());
+  ign_msg.set_inherit_yaw(ros_msg.inherit_yaw);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::TrackVisual & ign_msg,
+  ros_ign_interfaces::msg::TrackVisual & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  ros_msg.name = ign_msg.name();
+  ros_msg.id = ign_msg.id();
+  ros_msg.inherit_orientation = ign_msg.inherit_orientation();
+  ros_msg.min_dist = ign_msg.min_dist();
+  ros_msg.max_dist = ign_msg.max_dist();
+  ros_msg.is_static = ign_msg.static_();
+  ros_msg.use_model_frame = ign_msg.use_model_frame();
+  convert_ign_to_ros(ign_msg.xyz(), ros_msg.xyz);
+  ros_msg.inherit_yaw = ign_msg.inherit_yaw();
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::VideoRecord & ros_msg,
+  ignition::msgs::VideoRecord & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, *ign_msg.mutable_header());
+  ign_msg.set_start(ros_msg.start);
+  ign_msg.set_stop(ros_msg.stop);
+  ign_msg.set_format(ros_msg.format);
+  ign_msg.set_save_filename(ros_msg.save_filename);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::VideoRecord & ign_msg,
+  ros_ign_interfaces::msg::VideoRecord & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  ros_msg.start = ign_msg.start();
+  ros_msg.stop = ign_msg.stop();
+  ros_msg.format = ign_msg.format();
+  ros_msg.save_filename = ign_msg.save_filename();
 }
 
 }  // namespace ros_ign_bridge

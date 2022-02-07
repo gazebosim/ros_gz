@@ -88,7 +88,6 @@ TEST(ROSSubscriberTest, Contacts)
 TEST(ROSSubscriberTest, Dataframe)
 {
   MyTestClass<ros_ign_interfaces::msg::Dataframe> client("dataframe");
-
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
@@ -96,3 +95,51 @@ TEST(ROSSubscriberTest, Dataframe)
   EXPECT_TRUE(client.callbackExecuted);
 }
 #endif  // HAVE_DATAFRAME
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, GuiCamera)
+{
+  MyTestClass<ros_ign_interfaces::msg::GuiCamera> client("gui_camera");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, StringVec)
+{
+  MyTestClass<ros_ign_interfaces::msg::StringVec> client("stringmsg_v");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, TrackVisual)
+{
+  MyTestClass<ros_ign_interfaces::msg::TrackVisual> client("track_visual");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, VideoRecord)
+{
+  MyTestClass<ros_ign_interfaces::msg::VideoRecord> client("video_record");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}

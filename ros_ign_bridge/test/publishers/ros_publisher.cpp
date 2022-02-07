@@ -168,6 +168,30 @@ int main(int argc, char ** argv)
   ros_ign_bridge::testing::createTestMsg(dataframe_msg);
 #endif  // HAVE_DATAFRAME
 
+  // ros_ign_interfaces::msg::GuiCamera.
+  auto gui_camera_pub =
+    node->create_publisher<ros_ign_interfaces::msg::GuiCamera>("gui_camera", 1000);
+  ros_ign_interfaces::msg::GuiCamera gui_camera_msg;
+  ros_ign_bridge::testing::createTestMsg(gui_camera_msg);
+
+  // ros_ign_interfaces::msg::StringVec.
+  auto stringmsg_v_pub =
+    node->create_publisher<ros_ign_interfaces::msg::StringVec>("stringmsg_v", 1000);
+  ros_ign_interfaces::msg::StringVec stringmsg_v_msg;
+  ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
+
+  // ros_ign_interfaces::msg::TrackVisual.
+  auto track_visual_pub =
+    node->create_publisher<ros_ign_interfaces::msg::TrackVisual>("track_visual", 1000);
+  ros_ign_interfaces::msg::TrackVisual track_visual_msg;
+  ros_ign_bridge::testing::createTestMsg(track_visual_msg);
+
+  // ros_ign_interfaces::msg::VideoRecord.
+  auto video_record_pub =
+    node->create_publisher<ros_ign_interfaces::msg::VideoRecord>("video_record", 1000);
+  ros_ign_interfaces::msg::VideoRecord video_record_msg;
+  ros_ign_bridge::testing::createTestMsg(video_record_msg);
+
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
   //   node->create_publisher<mav_msgs::msg::Actuators>("actuators", 1000);
@@ -281,6 +305,10 @@ int main(int argc, char ** argv)
     pointcloud2_pub->publish(pointcloud2_msg);
     battery_state_pub->publish(battery_state_msg);
     joint_trajectory_pub->publish(joint_trajectory_msg);
+    gui_camera_pub->publish(gui_camera_msg);
+    stringmsg_v_pub->publish(stringmsg_v_msg);
+    track_visual_pub->publish(track_visual_msg);
+    video_record_pub->publish(video_record_msg);
 
     rclcpp::spin_some(node);
     loop_rate.sleep();
