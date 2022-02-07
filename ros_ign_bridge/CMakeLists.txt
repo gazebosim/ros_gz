@@ -146,68 +146,51 @@ if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
 
+  add_library(test_utils
+    test/utils/ign_test_msg.cpp
+    test/utils/ros_test_msg.cpp
+  )
+
+  target_include_directories(test_utils
+    PUBLIC test ${GTEST_INCLUDE_DIRS}
+  )
+  target_link_libraries(test_utils
+    ${GTEST_LIBRARIES}
+    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+  )
+  ament_target_dependencies(test_utils
+    geometry_msgs
+    nav_msgs
+    rclcpp
+    ros_ign_interfaces
+    rosgraph_msgs
+    sensor_msgs
+    std_msgs
+    tf2_msgs
+    trajectory_msgs
+  )
+
   add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
-  ament_target_dependencies(test_ros_publisher
-    geometry_msgs
-    nav_msgs
-    rclcpp
-    ros_ign_interfaces
-    rosgraph_msgs
-    sensor_msgs
-    std_msgs
-    tf2_msgs
-    trajectory_msgs
-  )
-  target_link_libraries(test_ros_publisher
-    ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  target_include_directories(test_ros_publisher PUBLIC ${GTEST_INCLUDE_DIRS})
+  target_link_libraries(test_ros_publisher test_utils)
 
-  add_executable(test_ros_subscriber test/subscribers/ros_subscriber.cpp)
-  ament_target_dependencies(test_ros_subscriber
-    geometry_msgs
-    nav_msgs
-    rclcpp
-    ros_ign_interfaces
-    rosgraph_msgs
-    sensor_msgs
-    std_msgs
-    tf2_msgs
-    trajectory_msgs
-  )
+  add_executable(test_ros_subscriber
+        test/subscribers/ros_subscriber/ros_subscriber.cpp
+        test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
+        test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/std_msgs_subscriber.cpp
+        test/subscribers/ros_subscriber/trajectory_msgs_subscriber.cpp)
 
-  target_link_libraries(test_ros_subscriber
-    ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  target_include_directories(test_ros_subscriber PUBLIC ${GTEST_INCLUDE_DIRS})
+  target_link_libraries(test_ros_subscriber test_utils)
 
   add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
-  ament_target_dependencies(test_ign_publisher
-    ros_ign_interfaces
-    rclcpp
-  )
-  target_link_libraries(test_ign_publisher
-    ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  target_include_directories(test_ign_publisher PUBLIC ${GTEST_INCLUDE_DIRS})
+  target_link_libraries(test_ign_publisher test_utils)
 
   add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
-  ament_target_dependencies(test_ign_subscriber
-    ros_ign_interfaces
-    rclcpp
-  )
-  target_link_libraries(test_ign_subscriber
-    ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  target_include_directories(test_ign_subscriber PUBLIC ${GTEST_INCLUDE_DIRS})
+  target_link_libraries(test_ign_subscriber test_utils)
 
   install(TARGETS
     test_ros_publisher

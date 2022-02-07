@@ -22,7 +22,8 @@
 #include <string>
 #include <thread>
 
-#include "../test_utils.hpp"
+#include "utils/test_utils.hpp"
+#include "utils/ign_test_msg.hpp"
 
 /// \brief Flag used to break the publisher loop and terminate the program.
 static std::atomic<bool> g_terminatePub(false);
