@@ -15,10 +15,11 @@
 #ifndef SUBSCRIBERS__ROS_SUBSCRIBER__ROS_SUBSCRIBER_HPP_
 #define SUBSCRIBERS__ROS_SUBSCRIBER__ROS_SUBSCRIBER_HPP_
 
+#include <rclcpp/rclcpp.hpp>
+
 #include <memory>
 #include <string>
 
-#include <rclcpp/rclcpp.hpp>
 #include "utils/test_utils.hpp"
 #include "utils/ros_test_msg.hpp"
 
