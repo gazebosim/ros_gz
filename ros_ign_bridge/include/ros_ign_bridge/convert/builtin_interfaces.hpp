@@ -15,9 +15,9 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 
-#include <builtin_interfaces/msg/time.hpp>
-
 #include <ignition/msgs/time.pb.h>
+
+#include <builtin_interfaces/msg/time.hpp>
 
 #include "ros_ign_bridge/convert_decl.hpp"
 
