@@ -23,6 +23,20 @@ namespace ros_ign_bridge
 {
 namespace testing
 {
+void createTestMsg(builtin_interfaces::msg::Time & _msg)
+{
+  _msg.sec = 12;
+  _msg.nanosec = 150;
+}
+
+void compareTestMsg(const std::shared_ptr<builtin_interfaces::msg::Time> & _msg)
+{
+  builtin_interfaces::msg::Time expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.sec, _msg->sec);
+  EXPECT_EQ(expected_msg.nanosec, _msg->nanosec);
+}
 
 void createTestMsg(std_msgs::msg::Bool & _msg)
 {

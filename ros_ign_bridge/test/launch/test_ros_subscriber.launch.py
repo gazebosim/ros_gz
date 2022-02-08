@@ -39,6 +39,7 @@ def generate_test_description():
         package='ros_ign_bridge',
         executable='parameter_bridge',
         arguments=[
+          '/time@builtin_interfaces/msg/Time@ignition.msgs.Time',
           '/bool@std_msgs/msg/Bool@ignition.msgs.Boolean',
           '/color@std_msgs/msg/ColorRGBA@ignition.msgs.Color',
           '/empty@std_msgs/msg/Empty@ignition.msgs.Empty',

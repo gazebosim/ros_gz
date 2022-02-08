@@ -243,6 +243,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::StringMsg_V stringmsg_v_msg;
   ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
 
+  // ignition::msgs::Time.
+  auto time_pub = node.Advertise<ignition::msgs::Time>("time");
+  ignition::msgs::Time time_msg;
+  ros_ign_bridge::testing::createTestMsg(time_msg);
+
   // ignition::msgs::TrackVisual.
   auto track_visual_pub = node.Advertise<ignition::msgs::TrackVisual>("track_visual");
   ignition::msgs::TrackVisual track_visual_msg;
@@ -293,6 +298,7 @@ int main(int /*argc*/, char **/*argv*/)
     joint_trajectory_pub.Publish(joint_trajectory_msg);
     gui_camera_pub.Publish(gui_camera_msg);
     stringmsg_v_pub.Publish(stringmsg_v_msg);
+    time_pub.Publish(time_msg);
     track_visual_pub.Publish(track_visual_msg);
     video_record_pub.Publish(video_record_msg);
 

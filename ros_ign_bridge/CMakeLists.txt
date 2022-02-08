@@ -183,6 +183,7 @@ if(BUILD_TESTING)
 
   add_executable(test_ros_subscriber
         test/subscribers/ros_subscriber/ros_subscriber.cpp
+        test/subscribers/ros_subscriber/builtin_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
