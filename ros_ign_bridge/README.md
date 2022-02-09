@@ -38,7 +38,7 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V          |
 | ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual          |
 | ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord          |
-| ros_ign_interfaces/msg/WorldControl  | ignition::msgs::WorldContro          |
+| ros_ign_interfaces/msg/WorldControl  | ignition::msgs::WorldControl         |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |
