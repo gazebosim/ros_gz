@@ -86,8 +86,6 @@ foreach(PKG ${PACKAGES})
     PROPERTIES POSITION_INDEPENDENT_CODE ON)
 
 endforeach()
-target_link_libraries(ros_ign_interfaces_bridge builtin_interfaces_bridge)
-target_link_libraries(std_msgs_bridge builtin_interfaces_bridge)
 
 set(bridge_executables
   parameter_bridge
