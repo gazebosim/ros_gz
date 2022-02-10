@@ -11,6 +11,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -42,13 +43,14 @@ else()
 endif()
 
 set(PACKAGES
-  std_msgs
+  builtin_interfaces
   geometry_msgs
   nav_msgs
-  tf2_msgs
   ros_ign_interfaces
   rosgraph_msgs
   sensor_msgs
+  std_msgs
+  tf2_msgs
   trajectory_msgs
 )
 
@@ -162,6 +164,7 @@ if(BUILD_TESTING)
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
+    builtin_interfaces
     geometry_msgs
     nav_msgs
     rclcpp
@@ -178,6 +181,7 @@ if(BUILD_TESTING)
 
   add_executable(test_ros_subscriber
         test/subscribers/ros_subscriber/ros_subscriber.cpp
+        test/subscribers/ros_subscriber/builtin_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp

@@ -1074,6 +1074,21 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::StringMsg_V> & _msg)
   EXPECT_EQ(expected_msg.data(0), _msg->data(0));
 }
 
+void createTestMsg(ignition::msgs::Time & _msg)
+{
+  _msg.set_sec(12);
+  _msg.set_nsec(150);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Time> & _msg)
+{
+  ignition::msgs::Time expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.sec(), _msg->sec());
+  EXPECT_EQ(expected_msg.nsec(), _msg->nsec());
+}
+
 void createTestMsg(ignition::msgs::TrackVisual & _msg)
 {
   ignition::msgs::Header header_msg;

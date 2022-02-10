@@ -25,6 +25,7 @@
 #include <ignition/msgs/stringmsg_v.pb.h>
 #include <ignition/msgs/track_visual.pb.h>
 #include <ignition/msgs/video_record.pb.h>
+#include <ignition/msgs/world_control.pb.h>
 
 // ROS 2 messages
 #include <ros_ign_interfaces/msg/entity.hpp>
@@ -36,6 +37,7 @@
 #include <ros_ign_interfaces/msg/string_vec.hpp>
 #include <ros_ign_interfaces/msg/track_visual.hpp>
 #include <ros_ign_interfaces/msg/video_record.hpp>
+#include <ros_ign_interfaces/msg/world_control.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
 
@@ -149,6 +151,30 @@ void
 convert_ign_to_ros(
   const ignition::msgs::VideoRecord & ign_msg,
   ros_ign_interfaces::msg::VideoRecord & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::WorldControl & ros_msg,
+  ignition::msgs::WorldControl & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::WorldControl & ign_msg,
+  ros_ign_interfaces::msg::WorldControl & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::WorldReset & ros_msg,
+  ignition::msgs::WorldReset & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::WorldReset & ign_msg,
+  ros_ign_interfaces::msg::WorldReset & ros_msg);
 }  // namespace ros_ign_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_

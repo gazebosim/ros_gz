@@ -17,6 +17,7 @@
 
 #include <memory>
 
+#include <builtin_interfaces/msg/time.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
@@ -66,6 +67,16 @@ namespace testing
 //////////////////////////////////////////////////
 /// ROS test utils
 //////////////////////////////////////////////////
+
+/// builtin_interfaces
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(builtin_interfaces::msg::Time & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<builtin_interfaces::msg::Time> & _msg);
 
 /// std_msgs
 

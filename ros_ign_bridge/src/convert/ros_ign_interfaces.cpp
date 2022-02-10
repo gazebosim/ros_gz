@@ -391,4 +391,53 @@ convert_ign_to_ros(
   ros_msg.save_filename = ign_msg.save_filename();
 }
 
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::WorldControl & ros_msg,
+  ignition::msgs::WorldControl & ign_msg)
+{
+  ign_msg.set_pause(ros_msg.pause);
+  ign_msg.set_step(ros_msg.step);
+  ign_msg.set_multi_step(ros_msg.multi_step);
+  convert_ros_to_ign(ros_msg.reset, *ign_msg.mutable_reset());
+  ign_msg.set_seed(ros_msg.seed);
+  convert_ros_to_ign(ros_msg.run_to_sim_time, *ign_msg.mutable_run_to_sim_time());
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::WorldControl & ign_msg,
+  ros_ign_interfaces::msg::WorldControl & ros_msg)
+{
+  ros_msg.pause = ign_msg.pause();
+  ros_msg.step = ign_msg.step();
+  ros_msg.multi_step = ign_msg.multi_step();
+  convert_ign_to_ros(ign_msg.reset(), ros_msg.reset);
+  ros_msg.seed = ign_msg.seed();
+  convert_ign_to_ros(ign_msg.run_to_sim_time(), ros_msg.run_to_sim_time);
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::WorldReset & ros_msg,
+  ignition::msgs::WorldReset & ign_msg)
+{
+  ign_msg.set_all(ros_msg.all);
+  ign_msg.set_time_only(ros_msg.time_only);
+  ign_msg.set_model_only(ros_msg.model_only);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::WorldReset & ign_msg,
+  ros_ign_interfaces::msg::WorldReset & ros_msg)
+{
+  ros_msg.all = ign_msg.all();
+  ros_msg.time_only = ign_msg.time_only();
+  ros_msg.model_only = ign_msg.model_only();
+}
 }  // namespace ros_ign_bridge

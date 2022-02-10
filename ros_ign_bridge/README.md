@@ -8,6 +8,7 @@ service calls. Its support is limited to only the following message types:
 
 | ROS type                             | Ignition Transport type              |
 |--------------------------------------|:------------------------------------:|
+| builtin_interfaces/msg/Time          | ignition::msgs::Time                 |
 | std_msgs/msg/Bool                    | ignition::msgs::Boolean              |
 | std_msgs/msg/ColorRGBA               | ignition::msgs::Color                |
 | std_msgs/msg/Empty                   | ignition::msgs::Empty                |
@@ -37,6 +38,7 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V          |
 | ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual          |
 | ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord          |
+| ros_ign_interfaces/msg/WorldControl  | ignition::msgs::WorldControl         |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState         |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo           |

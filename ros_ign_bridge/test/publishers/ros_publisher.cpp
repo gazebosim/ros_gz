@@ -23,6 +23,11 @@ int main(int argc, char ** argv)
   auto node = rclcpp::Node::make_shared("ros_string_publisher");
 
   rclcpp::Rate loop_rate(1);
+  // builtin_interfaces::msg::Time.
+  auto time_pub = node->create_publisher<builtin_interfaces::msg::Time>("time", 1000);
+  builtin_interfaces::msg::Time time_msg;
+  ros_ign_bridge::testing::createTestMsg(time_msg);
+
   // std_msgs::msg::Color.
   auto color_pub = node->create_publisher<std_msgs::msg::ColorRGBA>("color", 1000);
   std_msgs::msg::ColorRGBA color_msg;
@@ -255,6 +260,7 @@ int main(int argc, char ** argv)
 
   while (rclcpp::ok()) {
     // Publish all messages.
+    time_pub->publish(time_msg);
     color_pub->publish(color_msg);
     bool_pub->publish(bool_msg);
     empty_pub->publish(empty_msg);

@@ -490,6 +490,18 @@ TEST(IgnSubscriberTest, StringMsg_V)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Time)
+{
+  MyTestClass<ignition::msgs::Time> client("time");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, TrackVisual)
 {
   MyTestClass<ignition::msgs::TrackVisual> client("track_visual");

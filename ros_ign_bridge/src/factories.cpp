@@ -17,6 +17,7 @@
 
 #include "factories.hpp"
 
+#include "factories/builtin_interfaces.hpp"
 #include "factories/geometry_msgs.hpp"
 #include "factories/nav_msgs.hpp"
 #include "factories/ros_ign_interfaces.hpp"
@@ -35,6 +36,9 @@ get_factory_impl(
   const std::string & ign_type_name)
 {
   std::shared_ptr<FactoryInterface> impl;
+  impl = get_factory__builtin_interfaces(ros_type_name, ign_type_name);
+  if (impl) {return impl;}
+
   impl = get_factory__std_msgs(ros_type_name, ign_type_name);
   if (impl) {return impl;}
 
