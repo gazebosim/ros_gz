@@ -27,7 +27,7 @@
 #include "utils/test_utils.hpp"
 #include "utils/ign_test_msg.hpp"
 
-/// \brief Flag used to break the publisher loop and terminate the program.
+/// \brief Flag used to break the waiting loop and terminate the program.
 static std::atomic_flag g_terminateSrv(false);
 
 //////////////////////////////////////////////////
@@ -61,9 +61,9 @@ int main(int /*argc*/, char **/*argv*/)
   // Create a transport node and advertise a topic.
   ignition::transport::Node node;
 
-  // ignition::msgs::Color.
+  // ignition::msgs::WorldControl.
   node.Advertise(
-    "/ign_ros/test/serviceclient/service",
+    "/ign_ros/test/serviceclient/world_control",
     &control_world);
 
   // Requests are handled in another thread.

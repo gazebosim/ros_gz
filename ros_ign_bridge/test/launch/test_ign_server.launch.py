@@ -23,7 +23,7 @@ import launch_testing
 
 def generate_test_description():
 
-    publisher = Node(
+    server = Node(
         package='ros_ign_bridge',
         executable='test_ign_server',
         output='screen'
@@ -39,13 +39,13 @@ def generate_test_description():
         package='ros_ign_bridge',
         executable='parameter_bridge',
         arguments=[
-          '/ign_ros/test/serviceclient/service@ros_ign_interfaces/srv/ControlWorld',
+          '/ign_ros/test/serviceclient/world_control@ros_ign_interfaces/srv/ControlWorld',
         ],
         output='screen'
     )
     return LaunchDescription([
         bridge,
-        publisher,
+        server,
         process_under_test,
         launch_testing.util.KeepAliveProc(),
         launch_testing.actions.ReadyToTest(),
