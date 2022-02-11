@@ -57,7 +57,7 @@ void usage()
     "Following the first @ symbol is the ROS service type.\n" <<
     "Optionally, you can include the ignition request and reply type\n" <<
     "separated by the @ symbol.\n" <<
-    "It is only supported to expose ignition servces as ros services, i.e.\n"
+    "It is only supported to expose Ignition servces as ROS services, i.e.\n"
     "the ros service will forward request to the ignition service and then forward\n"
     "the reply back to the ros client.\n\n"
     "A bidirectional bridge example:\n" <<
