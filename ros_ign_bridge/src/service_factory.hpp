@@ -17,11 +17,12 @@
 
 #include <ignition/transport/Node.hh>
 
-#include <rclcpp/rclcpp.hpp>
-
 #include <functional>
 #include <memory>
 #include <string>
+#include <utility>
+
+#include <rclcpp/rclcpp.hpp>
 
 #include "ros_ign_bridge/convert_decl.hpp"
 

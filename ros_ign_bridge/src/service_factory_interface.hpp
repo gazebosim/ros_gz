@@ -15,13 +15,13 @@
 #ifndef  SERVICE_FACTORY_INTERFACE_HPP_
 #define  SERVICE_FACTORY_INTERFACE_HPP_
 
-#include <rclcpp/service.hpp>
-#include <rclcpp/node.hpp>
-
 #include <ignition/transport/Node.hh>
 
 #include <memory>
 #include <string>
+
+#include <rclcpp/service.hpp>
+#include <rclcpp/node.hpp>
 
 namespace ros_ign_bridge
 {

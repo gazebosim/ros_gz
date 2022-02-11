@@ -37,6 +37,7 @@ endif()
 ign_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
+find_package(std_msgs REQUIRED)
 
 add_executable(create src/create.cpp)
 ament_target_dependencies(create
@@ -48,6 +49,7 @@ target_link_libraries(create
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
+ament_target_dependencies(create std_msgs)
 
 install(DIRECTORY
   launch
