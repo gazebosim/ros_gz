@@ -55,11 +55,11 @@ void usage()
     "type.\n\n" <<
     "Services: The first @ symbol delimits the service name from the types.\n" <<
     "Following the first @ symbol is the ROS service type.\n" <<
-    "Optionally, you can include the ignition request and reply type\n" <<
+    "Optionally, you can include the ignition request and response type\n" <<
     "separated by the @ symbol.\n" <<
     "It is only supported to expose Ignition servces as ROS services, i.e.\n"
-    "the ros service will forward request to the ignition service and then forward\n"
-    "the reply back to the ros client.\n\n"
+    "the ROS service will forward request to the ignition service and then forward\n"
+    "the response back to the ROS client.\n\n"
     "A bidirectional bridge example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String@ignition.msgs" <<
     ".StringMsg\n\n" <<

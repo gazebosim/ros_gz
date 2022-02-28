@@ -21,7 +21,6 @@
 #include <chrono>
 #include <csignal>
 #include <iostream>
-#include <string>
 #include <thread>
 
 #include "utils/test_utils.hpp"

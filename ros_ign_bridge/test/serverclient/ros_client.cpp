@@ -31,7 +31,7 @@ TEST(ROSClientTest, WorldControl)
   auto client = node->create_client<ros_ign_interfaces::srv::ControlWorld>(
     "/ign_ros/test/serviceclient/world_control");
   std::this_thread::sleep_for(1s);
-  client->wait_for_service();
+  ASSERT_EQ(client->wait_for_service(5s));
   auto msg = std::make_shared<ros_ign_interfaces::srv::ControlWorld::Request>();
   auto future = client->async_send_request(msg);
   rclcpp::executors::SingleThreadedExecutor ex;
