@@ -76,7 +76,7 @@ get_factory__geometry_msgs(
         geometry_msgs::msg::PoseWithCovariance,
         ignition::msgs::PoseWithCovariance
       >
-    >("geometry_msgs/msg/Pose", ign_type_name);
+    >("geometry_msgs/msg/PoseWithCovariance", ign_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/PoseStamped" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Pose")

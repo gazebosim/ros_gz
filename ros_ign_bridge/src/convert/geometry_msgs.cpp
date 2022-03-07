@@ -112,10 +112,8 @@ convert_ros_to_ign(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
   ignition::msgs::PoseWithCovariance & ign_msg)
 {
-  std::cout << "dbg 1" << std::endl;
   convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());  
   convert_ros_to_ign(ros_msg.pose.orientation, *ign_msg.mutable_pose()->mutable_orientation());
-  std::cout << "dbg 2" << std::endl;
 }
 
 template<>
