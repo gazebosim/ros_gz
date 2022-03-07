@@ -220,6 +220,26 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::msg::TwistWithCovariance & ros_msg,
+  ignition::msgs::TwistWithCovariance & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.twist.linear, (*ign_msg.mutable_twist()->mutable_linear()));
+  convert_ros_to_ign(ros_msg.twist.angular, (*ign_msg.mutable_twist()->mutable_angular()));
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::TwistWithCovariance & ign_msg,
+  geometry_msgs::msg::TwistWithCovariance & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.twist().linear(), ros_msg.twist.linear);
+  convert_ign_to_ros(ign_msg.twist().angular(), ros_msg.twist.angular);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::msg::Wrench & ros_msg,
   ignition::msgs::Wrench & ign_msg)
 {
