@@ -170,6 +170,7 @@ int main(int argc, char * argv[])
           break;
       }
     } catch (std::runtime_error & _e) {
+      std::cout << _e.what() << std::endl;
       std::cerr << "Failed to create a bridge for topic [" << topic_name << "] " <<
         "with ROS2 type [" << ros_type_name << "] and " <<
         "Ignition Transport type [" << ign_type_name << "]" << std::endl;

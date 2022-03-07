@@ -109,6 +109,28 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::msg::PoseWithCovariance & ros_msg,
+  ignition::msgs::PoseWithCovariance & ign_msg)
+{
+  std::cout << "dbg 1" << std::endl;
+  convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());  
+  convert_ros_to_ign(ros_msg.pose.orientation, *ign_msg.mutable_pose()->mutable_orientation());
+  std::cout << "dbg 2" << std::endl;
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::PoseWithCovariance & ign_msg,
+  geometry_msgs::msg::PoseWithCovariance & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.pose().position(), ros_msg.pose.position);
+  convert_ign_to_ros(ign_msg.pose().orientation(), ros_msg.pose.orientation);
+}
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::msg::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {

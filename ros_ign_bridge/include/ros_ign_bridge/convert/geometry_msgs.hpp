@@ -19,6 +19,7 @@
 #include <ignition/msgs/quaternion.pb.h>
 #include <ignition/msgs/vector3d.pb.h>
 #include <ignition/msgs/pose.pb.h>
+#include <ignition/msgs/pose_with_covariance.pb.h>
 #include <ignition/msgs/pose_v.pb.h>
 #include <ignition/msgs/twist.pb.h>
 #include <ignition/msgs/wrench.pb.h>
@@ -26,6 +27,7 @@
 // ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/pose_with_covariance.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
@@ -85,6 +87,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Pose & ign_msg,
   geometry_msgs::msg::Pose & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const geometry_msgs::msg::PoseWithCovariance & ros_msg,
+  ignition::msgs::PoseWithCovariance & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::PoseWithCovariance & ign_msg,
+  geometry_msgs::msg::PoseWithCovariance & ros_msg);
 
 template<>
 void
