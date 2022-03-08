@@ -38,6 +38,16 @@ get_factory__nav_msgs(
       >
     >("nav_msgs/msg/Odometry", ign_type_name);
   }
+  if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.OdometryWithCovariance")
+  {
+    return std::make_shared<
+      Factory<
+        nav_msgs::msg::Odometry,
+        ignition::msgs::OdometryWithCovariance
+      >
+    >("nav_msgs/msg/Odometry", ign_type_name);
+  }
   return nullptr;
 }
 
@@ -60,6 +70,30 @@ Factory<
   ignition::msgs::Odometry
 >::convert_ign_to_ros(
   const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::msg::Odometry & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  nav_msgs::msg::Odometry,
+  ignition::msgs::OdometryWithCovariance
+>::convert_ros_to_ign(
+  const nav_msgs::msg::Odometry & ros_msg,
+  ignition::msgs::OdometryWithCovariance & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  nav_msgs::msg::Odometry,
+  ignition::msgs::OdometryWithCovariance
+>::convert_ign_to_ros(
+  const ignition::msgs::OdometryWithCovariance & ign_msg,
   nav_msgs::msg::Odometry & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
