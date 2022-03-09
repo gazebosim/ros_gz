@@ -119,6 +119,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
 
+  // ignition::msgs::PoseWithCovariance.
+  auto pose_cov_pub = node.Advertise<ignition::msgs::PoseWithCovariance>("pose_with_covariance");
+  ignition::msgs::PoseWithCovariance pose_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+
   // ignition::msgs::PoseStamped.
   auto pose_stamped_pub = node.Advertise<ignition::msgs::Pose>("pose_stamped");
   ignition::msgs::Pose pose_stamped_msg;
@@ -274,6 +279,7 @@ int main(int /*argc*/, char **/*argv*/)
     clock_pub.Publish(clock_msg);
     point_pub.Publish(point_msg);
     pose_pub.Publish(pose_msg);
+    pose_cov_pub.Publish(pose_cov_msg);
     pose_stamped_pub.Publish(pose_stamped_msg);
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);

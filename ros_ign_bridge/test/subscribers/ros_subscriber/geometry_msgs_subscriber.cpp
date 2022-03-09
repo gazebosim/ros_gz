@@ -70,6 +70,18 @@ TEST(ROSSubscriberTest, Pose)
 }
 
 /////////////////////////////////////////////////
+TEST(ROSSubscriberTest, PoseWithCovariance)
+{
+  MyTestClass<geometry_msgs::msg::PoseWithCovariance> client("pose_with_covariance");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROSSubscriberTest, PoseStamped)
 {
   MyTestClass<geometry_msgs::msg::PoseStamped> client("pose_stamped");

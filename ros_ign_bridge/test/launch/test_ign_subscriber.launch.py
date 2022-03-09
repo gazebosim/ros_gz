@@ -53,6 +53,7 @@ def generate_test_description():
           '/clock@rosgraph_msgs/msg/Clock@ignition.msgs.Clock',
           '/point@geometry_msgs/msg/Point@ignition.msgs.Vector3d',
           '/pose@geometry_msgs/msg/Pose@ignition.msgs.Pose',
+          '/pose_with_covariance@geometry_msgs/msg/PoseWithCovariance@ignition.msgs.PoseWithCovariance',
           '/pose_stamped@geometry_msgs/msg/PoseStamped@ignition.msgs.Pose',
           '/transform@geometry_msgs/msg/Transform@ignition.msgs.Pose',
           '/tf2_message@tf2_msgs/msg/TFMessage@ignition.msgs.Pose_V',

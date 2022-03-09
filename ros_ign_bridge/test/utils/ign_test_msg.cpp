@@ -235,6 +235,18 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Quaternion>(_msg->orientation()));
 }
 
+void createTestMsg(ignition::msgs::PoseWithCovariance & _msg)
+{
+  createTestMsg(*_msg.mutable_pose()->mutable_position());
+  createTestMsg(*_msg.mutable_pose()->mutable_orientation());
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::PoseWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->pose().position()));
+  compareTestMsg(std::make_shared<ignition::msgs::Quaternion>(_msg->pose().orientation()));
+}
+
 void createTestMsg(ignition::msgs::Pose_V & _msg)
 {
   createTestMsg(*(_msg.mutable_header()));

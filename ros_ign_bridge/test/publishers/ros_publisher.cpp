@@ -97,6 +97,13 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
 
+  // geometry_msgs::msg::PoseWithCovariance.
+  auto pose_cov_pub =
+    node->create_publisher<geometry_msgs::msg::PoseWithCovariance>(
+      "pose_with_covariance", 1000);
+  geometry_msgs::msg::PoseWithCovariance pose_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+
   // geometry_msgs::msg::PoseStamped.
   auto pose_stamped_pub =
     node->create_publisher<geometry_msgs::msg::PoseStamped>("pose_stamped", 1000);
@@ -274,6 +281,7 @@ int main(int argc, char ** argv)
     clock_pub->publish(clock_msg);
     point_pub->publish(point_msg);
     pose_pub->publish(pose_msg);
+    pose_cov_pub->publish(pose_cov_msg);
     pose_stamped_pub->publish(pose_stamped_msg);
     transform_pub->publish(transform_msg);
     transform_stamped_pub->publish(transform_stamped_msg);

@@ -202,6 +202,18 @@ TEST(IgnSubscriberTest, Pose)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, PoseWithCovariance)
+{
+  MyTestClass<ignition::msgs::PoseWithCovariance> client("pose_with_covariance");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, PoseStamped)
 {
   MyTestClass<ignition::msgs::Pose> client("pose_stamped");

@@ -264,6 +264,24 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Pose> & _msg)
   compareTestMsg(_msg->orientation);
 }
 
+void compareTestMsg(const geometry_msgs::msg::PoseWithCovariance & _msg)
+{
+  compareTestMsg(_msg.pose.position);
+  compareTestMsg(_msg.pose.orientation);
+}
+
+void createTestMsg(geometry_msgs::msg::PoseWithCovariance & _msg)
+{
+  createTestMsg(_msg.pose.position);
+  createTestMsg(_msg.pose.orientation);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovariance> & _msg)
+{
+  compareTestMsg(_msg->pose.position);
+  compareTestMsg(_msg->pose.orientation);
+}
+
 void createTestMsg(geometry_msgs::msg::PoseStamped & _msg)
 {
   createTestMsg(_msg.header);
