@@ -249,7 +249,7 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.twist().linear(), ros_msg.twist.linear);
   convert_ign_to_ros(ign_msg.twist().angular(), ros_msg.twist.angular);
   int data_size = ign_msg.covariance().data_size();
-  if (data_size == 36){
+  if (data_size == 36) {
     for (int i = 0 ; i < data_size ; i++) {
       auto data = ign_msg.covariance().data()[i];
       ros_msg.covariance[i] = data;
