@@ -212,6 +212,12 @@ int main(int argc, char ** argv)
   nav_msgs::msg::Odometry odometry_msg;
   ros_ign_bridge::testing::createTestMsg(odometry_msg);
 
+  // nav_msgs::msg::Odometry.
+  auto odometry_cov_pub =
+    node->create_publisher<nav_msgs::msg::Odometry>("odometry_with_covariance", 1000);
+  nav_msgs::msg::Odometry odometry_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(odometry_cov_msg);
+
   // sensor_msgs::msg::Image.
   auto image_pub =
     node->create_publisher<sensor_msgs::msg::Image>("image", 1000);
@@ -303,6 +309,7 @@ int main(int argc, char ** argv)
     contacts_pub->publish(contacts_msg);
     // actuators_pub->publish(actuators_msg);
     odometry_pub->publish(odometry_msg);
+    odometry_cov_pub->publish(odometry_cov_msg);
     image_pub->publish(image_msg);
     camera_info_pub->publish(camera_info_msg);
     fluid_pressure_pub->publish(fluid_pressure_msg);

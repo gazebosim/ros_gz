@@ -78,6 +78,7 @@ def generate_test_description():
           '/magnetic@sensor_msgs/msg/MagneticField@ignition.msgs.Magnetometer',
           # '/actuators@mav_msgs/msg/Actuators@ignition.msgs.Actuators',
           '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
+          '/odometry_with_covariance@nav_msgs/msg/Odometry@ignition.msgs.OdometryWithCovariance',
           '/pointcloud2@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
           '/joint_states@sensor_msgs/msg/JointState@ignition.msgs.Model',
           '/battery_state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',

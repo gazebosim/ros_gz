@@ -442,6 +442,18 @@ TEST(IgnSubscriberTest, Odometry)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, OdometryWithCovariance)
+{
+  MyTestClass<ignition::msgs::OdometryWithCovariance> client("odometry_with_covariance");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, JointStates)
 {
   MyTestClass<ignition::msgs::Model> client("joint_states");
