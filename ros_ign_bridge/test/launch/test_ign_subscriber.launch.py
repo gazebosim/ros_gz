@@ -59,6 +59,7 @@ def generate_test_description():
           '/tf2_message@tf2_msgs/msg/TFMessage@ignition.msgs.Pose_V',
           '/transform_stamped@geometry_msgs/msg/TransformStamped@ignition.msgs.Pose',
           '/twist@geometry_msgs/msg/Twist@ignition.msgs.Twist',
+          '/twist_with_covariance@geometry_msgs/msg/TwistWithCovariance@ignition.msgs.TwistWithCovariance',
           '/wrench@geometry_msgs/msg/Wrench@ignition.msgs.Wrench',
           '/joint_wrench@ros_ign_interfaces/msg/JointWrench@ignition.msgs.JointWrench',
           '/entity@ros_ign_interfaces/msg/Entity@ignition.msgs.Entity',

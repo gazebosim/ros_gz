@@ -197,6 +197,12 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
 
+  // ignition::msgs::TwistWithCovariance.
+  auto twist_cov_pub = node.Advertise<ignition::msgs::TwistWithCovariance>(
+    "twist_with_covariance");
+  ignition::msgs::TwistWithCovariance twist_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
+
   // ignition::msgs::Wrench.
   auto wrench_pub = node.Advertise<ignition::msgs::Wrench>("wrench");
   ignition::msgs::Wrench wrench_msg;
@@ -299,6 +305,7 @@ int main(int /*argc*/, char **/*argv*/)
     odometry_pub.Publish(odometry_msg);
     joint_states_pub.Publish(joint_states_msg);
     twist_pub.Publish(twist_msg);
+    twist_cov_pub.Publish(twist_cov_msg);
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
     joint_trajectory_pub.Publish(joint_trajectory_msg);

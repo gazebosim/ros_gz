@@ -283,6 +283,24 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Twist> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->angular()));
 }
 
+void createTestMsg(ignition::msgs::TwistWithCovariance & _msg)
+{
+  ignition::msgs::Vector3d linear_msg;
+  ignition::msgs::Vector3d angular_msg;
+
+  createTestMsg(linear_msg);
+  createTestMsg(angular_msg);
+
+  _msg.mutable_twist()->mutable_linear()->CopyFrom(linear_msg);
+  _msg.mutable_twist()->mutable_angular()->CopyFrom(angular_msg);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::TwistWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().linear()));
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().angular()));
+}
+
 void createTestMsg(ignition::msgs::Wrench & _msg)
 {
   ignition::msgs::Header header_msg;

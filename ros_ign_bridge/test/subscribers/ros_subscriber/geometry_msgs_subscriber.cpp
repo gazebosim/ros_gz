@@ -142,6 +142,18 @@ TEST(ROSSubscriberTest, Twist)
 }
 
 /////////////////////////////////////////////////
+TEST(ROSSubscriberTest, TwistWithCovariance)
+{
+  MyTestClass<geometry_msgs::msg::TwistWithCovariance> client("twist_with_covariance");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(ROSSubscriberTest, Wrench)
 {
   MyTestClass<geometry_msgs::msg::Wrench> client("wrench");

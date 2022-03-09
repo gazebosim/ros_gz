@@ -128,6 +128,13 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
 
+  // geometry_msgs::msg::TwistWithCovariance.
+  auto twist_cov_pub =
+    node->create_publisher<geometry_msgs::msg::TwistWithCovariance>(
+      "twist_with_covariance", 1000);
+  geometry_msgs::msg::TwistWithCovariance twist_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
+
   auto tf2_message_pub =
     node->create_publisher<tf2_msgs::msg::TFMessage>("tf2_message", 1000);
   tf2_msgs::msg::TFMessage tf2_msg;
@@ -287,6 +294,7 @@ int main(int argc, char ** argv)
     transform_stamped_pub->publish(transform_stamped_msg);
     tf2_message_pub->publish(tf2_msg);
     twist_pub->publish(twist_msg);
+    twist_cov_pub->publish(twist_cov_msg);
     wrench_pub->publish(wrench_msg);
     light_pub->publish(light_msg);
     joint_wrench_pub->publish(joint_wrench_msg);
