@@ -248,6 +248,9 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::PoseWithCovariance> & 
 {
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->pose().position()));
   compareTestMsg(std::make_shared<ignition::msgs::Quaternion>(_msg->pose().orientation()));
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance().data(i), i);
+  }
 }
 
 void createTestMsg(ignition::msgs::Pose_V & _msg)
@@ -305,6 +308,9 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::TwistWithCovariance> &
 {
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().linear()));
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().angular()));
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance().data()[i], i);
+  }
 }
 
 void createTestMsg(ignition::msgs::Wrench & _msg)
