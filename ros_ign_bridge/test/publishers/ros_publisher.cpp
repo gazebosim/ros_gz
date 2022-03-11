@@ -42,6 +42,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/NavSatFix.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <tf2_msgs/TFMessage.h>
 #include <visualization_msgs/Marker.h>
@@ -220,6 +221,12 @@ int main(int argc, char ** argv)
   sensor_msgs::MagneticField magnetic_msg;
   ros_ign_bridge::testing::createTestMsg(magnetic_msg);
 
+  // sensor_msgs::NavSatFix.
+  ros::Publisher navsat_pub =
+    n.advertise<sensor_msgs::NavSatFix>("navsat", 1000);
+  sensor_msgs::NavSatFix navsat_msg;
+  ros_ign_bridge::testing::createTestMsg(navsat_msg);
+
   // sensor_msgs::PointCloud2.
   ros::Publisher pointcloud2_pub =
     n.advertise<sensor_msgs::PointCloud2>("pointcloud2", 1000);
@@ -275,6 +282,7 @@ int main(int argc, char ** argv)
     imu_pub.publish(imu_msg);
     laserscan_pub.publish(laserscan_msg);
     magnetic_pub.publish(magnetic_msg);
+    navsat_pub.publish(navsat_msg);
     joint_states_pub.publish(joint_states_msg);
     pointcloud2_pub.publish(pointcloud2_msg);
     battery_state_pub.publish(battery_state_msg);

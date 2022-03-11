@@ -347,6 +347,17 @@ get_factory_impl(
     >("sensor_msgs/Magnetometer", ign_type_name);
   }
   if (
+    (ros_type_name == "sensor_msgs/NavSatFix" || ros_type_name == "") &&
+     ign_type_name == "ignition.msgs.NavSat")
+  {
+    return std::make_shared<
+      Factory<
+        sensor_msgs::NavSatFix,
+        ignition::msgs::NavSat
+      >
+    >("sensor_msgs/NavSatFix", ign_type_name);
+  }
+  if (
     (ros_type_name == "sensor_msgs/PointCloud2" || ros_type_name == "") &&
      ign_type_name == "ignition.msgs.PointCloudPacked")
   {
@@ -1105,6 +1116,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Magnetometer & ign_msg,
   sensor_msgs::MagneticField & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::NavSatFix,
+  ignition::msgs::NavSat
+>::convert_ros_to_ign(
+  const sensor_msgs::NavSatFix & ros_msg,
+  ignition::msgs::NavSat & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  sensor_msgs::NavSatFix,
+  ignition::msgs::NavSat
+>::convert_ign_to_ros(
+  const ignition::msgs::NavSat & ign_msg,
+  sensor_msgs::NavSatFix & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

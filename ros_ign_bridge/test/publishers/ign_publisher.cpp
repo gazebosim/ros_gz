@@ -171,6 +171,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Magnetometer magnetometer_msg;
   ros_ign_bridge::testing::createTestMsg(magnetometer_msg);
 
+  // ignition::msgs::NavSat.
+  auto navsat_pub = node.Advertise<ignition::msgs::NavSat>("navsat");
+  ignition::msgs::NavSat navsat_msg;
+  ros_ign_bridge::testing::createTestMsg(navsat_msg);
+
   // ignition::msgs::Actuators.
   auto actuators_pub = node.Advertise<ignition::msgs::Actuators>("actuators");
   ignition::msgs::Actuators actuators_msg;
@@ -242,6 +247,7 @@ int main(int /*argc*/, char **/*argv*/)
     imu_pub.Publish(imu_msg);
     laserscan_pub.Publish(laserscan_msg);
     magnetic_pub.Publish(magnetometer_msg);
+    navsat_pub.Publish(navsat_msg);
     actuators_pub.Publish(actuators_msg);
     map_pub.Publish(map_msg);
     odometry_pub.Publish(odometry_msg);

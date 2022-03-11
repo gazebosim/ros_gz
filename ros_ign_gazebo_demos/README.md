@@ -92,6 +92,14 @@ Publishes magnetic field readings.
 
 ![](images/magnetometer_demo.png)
 
+## GNSS
+
+Publishes satellite navigation readings.
+
+    roslaunch ros_ign_gazebo_demos navsat.launch
+
+![](images/navsat_demo.png)
+
 ## RGBD camera
 
 RGBD camera data can be obtained as:
