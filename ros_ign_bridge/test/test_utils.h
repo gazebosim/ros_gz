@@ -845,7 +845,7 @@ namespace testing
     _msg.latitude                  = 0.00;
     _msg.longitude                 = 0.00;
     _msg.altitude                  = 0.00;
-    _msg.position_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    _msg.position_covariance       = {1, 2, 3, 4, 5, 6, 7, 8, 9};
     _msg.position_covariance_type  =
       sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
   }
@@ -859,9 +859,9 @@ namespace testing
 
     compareTestMsg(_msg.header);
     EXPECT_EQ(expected_msg.status, _msg.status);
-    EXPECT_FLOAT_EQ(expected_msg.latitude,           _msg.latitude);
-    EXPECT_FLOAT_EQ(expected_msg.longitude,          _msg.longitude);
-    EXPECT_FLOAT_EQ(expected_msg.altitude,           _msg.altitude);
+    EXPECT_FLOAT_EQ(expected_msg.latitude, _msg.latitude);
+    EXPECT_FLOAT_EQ(expected_msg.longitude, _msg.longitude);
+    EXPECT_FLOAT_EQ(expected_msg.altitude, _msg.altitude);
     EXPECT_EQ(expected_msg.position_covariance_type,
       _msg.position_covariance_type);
 
