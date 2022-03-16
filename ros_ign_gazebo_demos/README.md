@@ -94,7 +94,7 @@ Publishes magnetic field readings.
 
 ## GNSS
 
-Publishes satellite navigation readings.
+Publishes satellite navigation readings, only available in Ignition releases from Fortress on.
 
     roslaunch ros_ign_gazebo_demos navsat.launch
 
