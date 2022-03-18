@@ -87,6 +87,7 @@ endforeach()
 set(bridge_executables
   parameter_bridge
   static_bridge
+  lazy_static_bridge
 )
 
 set(bridge_lib
@@ -95,6 +96,9 @@ set(bridge_lib
 
 add_library(${bridge_lib}
   SHARED
+  src/bridge.cpp
+  src/bridge_ros_to_ign.cpp
+  src/bridge_ign_to_ros.cpp
   src/factories.cpp
 )
 
