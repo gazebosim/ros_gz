@@ -30,9 +30,14 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('ign_args', default_value='',
                               description='Arguments to be passed to Ignition Gazebo'),
+        # The default version for Foxy in Citadel (3)
+        DeclareLaunchArgument('ign_version', default_value='3',
+                              description='Ignition version'),
         ExecuteProcess(
             cmd=['ign gazebo',
                  LaunchConfiguration('ign_args'),
+                 '--force-version',
+                 LaunchConfiguration('ign_version'),
                  ],
             output='screen',
             additional_env=env,
