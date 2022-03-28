@@ -153,7 +153,7 @@ int main(int argc, char * argv[])
             ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
             ros_ign_bridge::Bridge::kDefaultPublisherQueue,
             lazy_subscription
-            ));
+        ));
       }
       if (ros_to_ign) {
         RCLCPP_INFO(
@@ -169,7 +169,7 @@ int main(int argc, char * argv[])
             ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
             ros_ign_bridge::Bridge::kDefaultPublisherQueue,
             lazy_subscription
-            ));
+        ));
       }
     } catch (std::runtime_error & _e) {
       RCLCPP_WARN(
