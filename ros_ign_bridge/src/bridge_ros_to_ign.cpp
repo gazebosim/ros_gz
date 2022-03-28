@@ -45,10 +45,6 @@ bool BridgeRosToIgn::HasPublisher() const
 void BridgeRosToIgn::StartPublisher()
 {
   // Start Ignition publisher
-  RCLCPP_INFO(
-    this->ros_node_->get_logger(),
-    "Created IGN Publisher: %s",
-    this->ign_topic_name_.c_str());
   this->ign_publisher_ = this->factory_->create_ign_publisher(
     this->ign_node_,
     this->ign_topic_name_,
@@ -64,10 +60,6 @@ bool BridgeRosToIgn::HasSubscriber() const
 void BridgeRosToIgn::StartSubscriber()
 {
   // Start ROS subscriber
-  RCLCPP_INFO(
-    this->ros_node_->get_logger(),
-    "Created ROS Subscriber: %s",
-    this->ros_topic_name_.c_str());
   this->ros_subscriber_ = this->factory_->create_ros_subscriber(
     this->ros_node_,
     this->ros_topic_name_,

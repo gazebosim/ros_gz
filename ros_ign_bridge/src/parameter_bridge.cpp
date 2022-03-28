@@ -85,6 +85,11 @@ int main(int argc, char * argv[])
   // ROS 2 node
   auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
 
+  ros_node->declare_parameter<bool>("lazy", false);
+
+  bool lazy_subscription;
+  ros_node->get_parameter("lazy", lazy_subscription);
+
   // Ignition node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
@@ -137,24 +142,34 @@ int main(int argc, char * argv[])
       if (ign_to_ros) {
         RCLCPP_INFO(
           ros_node->get_logger(),
-          "Creating IGN->ROS Bridge: [%s] (%s -> %s)",
-          topic_name.c_str(), ign_type_name.c_str(), ros_type_name.c_str());
+          "Creating IGN->ROS Bridge: [%s] (%s -> %s) (Lazy %d): ",
+          topic_name.c_str(), ign_type_name.c_str(), ros_type_name.c_str(),
+          lazy_subscription);
         handles.push_back(
           std::make_unique<ros_ign_bridge::BridgeIgnToRos>(
             ros_node, ign_node,
             ros_type_name, topic_name,
-            ign_type_name, topic_name));
+            ign_type_name, topic_name,
+            ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
+            ros_ign_bridge::Bridge::kDefaultPublisherQueue,
+            lazy_subscription
+            ));
       }
       if (ros_to_ign) {
         RCLCPP_INFO(
           ros_node->get_logger(),
-          "Creating ROS->IGN Bridge: [%s] (%s -> %s)",
-          topic_name.c_str(), ros_type_name.c_str(), ign_type_name.c_str());
+          "Creating ROS->IGN Bridge: [%s] (%s -> %s) (Lazy %d): ",
+          topic_name.c_str(), ros_type_name.c_str(), ign_type_name.c_str(),
+          lazy_subscription);
         handles.push_back(
           std::make_unique<ros_ign_bridge::BridgeRosToIgn>(
             ros_node, ign_node,
             ros_type_name, topic_name,
-            ign_type_name, topic_name));
+            ign_type_name, topic_name,
+            ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
+            ros_ign_bridge::Bridge::kDefaultPublisherQueue,
+            lazy_subscription
+            ));
       }
     } catch (std::runtime_error & _e) {
       RCLCPP_WARN(
