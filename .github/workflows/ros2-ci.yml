@@ -14,7 +14,7 @@ jobs:
             ros-distro: "rolling"
           - docker-image: "ubuntu:20.04"
             ignition-version: "fortress"
-            ros-distro: "rolling"
+            ros-distro: "galactic"
     container:
       image: ${{ matrix.docker-image }}
     steps:

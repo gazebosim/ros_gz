@@ -30,9 +30,14 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('ign_args', default_value='',
                               description='Arguments to be passed to Ignition Gazebo'),
+        # Ignition Gazebo's major version
+        DeclareLaunchArgument('ign_version', default_value='@IGN_GAZEBO_VER@',
+                              description='Ignition Gazebo\'s major version'),
         ExecuteProcess(
             cmd=['ign gazebo',
                  LaunchConfiguration('ign_args'),
+                 '--force-version',
+                 LaunchConfiguration('ign_version'),
                  ],
             output='screen',
             additional_env=env,

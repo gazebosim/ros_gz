@@ -18,4 +18,3 @@ This package currently contains some Ignition-specific ROS message and service d
 * [DeleteEntity](srv/DeleteEntity.srv): Delete Entity in Ignition Gazebo
 * [SetEntityPose](srv/SetEntityPose.srv): Set pose of Entity in Ignition Gazebo
 * [SpawnEntity](srv/SpawnEntity.srv): Spawn a Entity in Ignition Gazebo
-
