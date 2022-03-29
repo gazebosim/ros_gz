@@ -22,11 +22,17 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   find_package(ignition-msgs8 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
+  find_package(ignition-gazebo6 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
+
   message(STATUS "Compiling against Ignition Fortress")
 # Default to Edifice
 else()
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+
+  find_package(ignition-gazebo5 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
@@ -49,8 +55,18 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
-install(DIRECTORY
-  launch
+configure_file(
+  launch/ign_gazebo.launch.py.in
+  launch/ign_gazebo.launch.py.configured
+  @ONLY
+)
+file(GENERATE
+  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
+  INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py.configured"
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
   DESTINATION share/${PROJECT_NAME}
 )
 

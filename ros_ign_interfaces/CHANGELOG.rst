@@ -21,4 +21,3 @@ Changelog for package ros_ign_interfaces
   * modify comments
   * update code and doc style
 * Contributors: gezp
-
