@@ -67,7 +67,7 @@ file(GENERATE
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
-  DESTINATION share/${PROJECT_NAME}
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 install(TARGETS
