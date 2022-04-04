@@ -15,13 +15,12 @@
 #ifndef BRIDGE_HPP_
 #define BRIDGE_HPP_
 
-// include Ignition Transport
 #include <ignition/transport/Node.hh>
 
 #include <memory>
 #include <string>
 
-#include "factories.hpp"
+#include "get_factory.hpp"
 
 namespace ros_ign_bridge
 {
