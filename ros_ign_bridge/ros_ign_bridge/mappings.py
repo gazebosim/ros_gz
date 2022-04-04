@@ -13,7 +13,6 @@
 # limitations under the License.
 
 from collections import namedtuple
-from dataclasses import dataclass
 
 Mapping = namedtuple('Mapping', ('ros_type', 'ign_type'))
 
@@ -86,54 +85,3 @@ MAPPINGS = {
         Mapping('JointTrajectory', 'JointTrajectory'),
     ],
 }
-
-
-@dataclass
-class MessageMapping:
-    # Class to represent mapping between ROS2 and Ignition types
-    ros2_package_name: str
-    ros2_message_name: str
-    ign_message_name: str
-
-    def ros2_string(self):
-        # Return ROS2 string version of a message (eg std_msgs/msg/Bool)
-        return f'{self.ros2_package_name}/msg/{self.ros2_message_name}'
-
-    def ros2_type(self):
-        # Return ROS2 type of a message (eg std_msgs::msg::Bool)
-        return f'{self.ros2_package_name}::msg::{self.ros2_message_name}'
-
-    def ign_string(self):
-        # Return IGN string version of a message (eg ignition.msgs.Bool)
-        return f'ignition.msgs.{self.ign_message_name}'
-
-    def ign_type(self):
-        # Return IGN type of a message (eg ignition::msgs::Bool)
-        return f'ignition::msgs::{self.ign_message_name}'
-
-
-def mappings():
-    # Generate MessageMapping object for all known mappings
-    data = []
-    for (ros2_package_name, mappings) in MAPPINGS.items():
-        for mapping in sorted(mappings):
-            data.append(MessageMapping(
-                ros2_package_name=ros2_package_name,
-                ros2_message_name=mapping.ros_type,
-                ign_message_name=mapping.ign_type
-            ))
-    return data
-
-
-if __name__ == '__main__':
-    # Print the markdown table used in the README.md
-    rows = []
-    rows.append(f'| {"ROS type":32}| {"Ignition Transport Type":32}|')
-    rows.append(f'|{"-":-<33}|:{"-":-<31}:|')
-
-    for mapping in mappings():
-        rows.append('| {:32}| {:32}|'.format(
-            mapping.ros2_package_name + '/' + mapping.ros2_message_name,
-            mapping.ign_string()))
-
-    print('\n'.join(rows))

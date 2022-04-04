@@ -14,14 +14,54 @@
 
 import os
 
-import ros_ign_bridge.mappings
+from dataclasses import dataclass
+
+from ros_ign_bridge.mappings import MAPPINGS
 
 from rosidl_cmake import expand_template
 
 
+@dataclass
+class MessageMapping:
+    # Class to represent mapping between ROS2 and Ignition types
+    ros2_package_name: str
+    ros2_message_name: str
+    ign_message_name: str
+
+    def ros2_string(self):
+        # Return ROS2 string version of a message (eg std_msgs/msg/Bool)
+        return f'{self.ros2_package_name}/msg/{self.ros2_message_name}'
+
+    def ros2_type(self):
+        # Return ROS2 type of a message (eg std_msgs::msg::Bool)
+        return f'{self.ros2_package_name}::msg::{self.ros2_message_name}'
+
+    def ign_string(self):
+        # Return IGN string version of a message (eg ignition.msgs.Bool)
+        return f'ignition.msgs.{self.ign_message_name}'
+
+    def ign_type(self):
+        # Return IGN type of a message (eg ignition::msgs::Bool)
+        return f'ignition::msgs::{self.ign_message_name}'
+
+
+def mappings():
+    # Generate MessageMapping object for all known mappings
+    data = []
+    for (ros2_package_name, mappings) in MAPPINGS.items():
+        for mapping in sorted(mappings):
+            data.append(MessageMapping(
+                ros2_package_name=ros2_package_name,
+                ros2_message_name=mapping.ros_type,
+                ign_message_name=mapping.ign_type
+            ))
+    return data
+
+
 def generate_cpp(output_path, template_dir):
+    # Generate cpp/hpp files for ros-ign package/message mappings
     data = {}
-    data['mappings'] = ros_ign_bridge.mappings.mappings()
+    data['mappings'] = mappings()
 
     template_file = os.path.join(template_dir, 'get_mappings.cpp.em')
     output_file = os.path.join(output_path, 'get_mappings.cpp')

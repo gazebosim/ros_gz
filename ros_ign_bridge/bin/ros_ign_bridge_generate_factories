@@ -4,7 +4,7 @@ import argparse
 import os
 import sys
 
-# add ros1_bridge to the Python path
+# add ros_ign_bridge to the Python path
 ros_ign_bridge_root = os.path.join(os.path.dirname(__file__), '..')
 sys.path.insert(0, os.path.abspath(ros_ign_bridge_root))
 
