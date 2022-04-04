@@ -1,0 +1,39 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+import sys
+
+# add ros_ign_bridge to the Python path
+ros_ign_bridge_root = os.path.join(os.path.dirname(__file__), '..')
+sys.path.insert(0, os.path.abspath(ros_ign_bridge_root))
+
+from ros_ign_bridge import generate_test_cpp
+
+
+def main(argv=sys.argv[1:]):
+    parser = argparse.ArgumentParser(
+        description='Generate C++ template specializations.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument(
+        '--output-path',
+        required=True,
+        help='The basepath of the generated C++ files')
+    parser.add_argument(
+        '--template-dir',
+        required=True,
+        help='The location of the template files')
+    args = parser.parse_args(argv)
+
+    try:
+        return generate_test_cpp(
+            args.output_path,
+            args.template_dir,
+        )
+    except RuntimeError as e:
+        print(str(e), file=sys.stderr)
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -21,10 +21,11 @@
 
 using ros_subscriber::MyTestClass;
 
+@[for m in mappings]@
 /////////////////////////////////////////////////
-TEST(ROSSubscriberTest, JointTrajectory)
+TEST(ROSSubscriberTest, @(m.unique()))
 {
-  MyTestClass<trajectory_msgs::msg::JointTrajectory> client("joint_trajectory");
+  MyTestClass<@(m.ros2_type())> client("@(m.unique())");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
@@ -32,3 +33,5 @@ TEST(ROSSubscriberTest, JointTrajectory)
 
   EXPECT_TRUE(client.callbackExecuted);
 }
+
+@[end for]@

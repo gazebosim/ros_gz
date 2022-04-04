@@ -44,6 +44,9 @@ class MessageMapping:
         # Return IGN type of a message (eg ignition::msgs::Bool)
         return f'ignition::msgs::{self.ign_message_name}'
 
+    def unique(self):
+        return f'{self.ign_message_name.lower()}_{self.ros2_message_name.lower()}'
+
 
 def mappings(gz_msgs_ver):
     # Generate MessageMapping object for all known mappings
@@ -101,4 +104,41 @@ def generate_cpp(output_path, template_dir, gz_msgs_ver):
         template_file = os.path.join(template_dir, 'pkg_factories.cpp.em')
         output_file = os.path.join(
             output_path, 'factories/%s.cpp' % ros2_package_name)
+        expand_template(template_file, data_pkg, output_file)
+
+
+def generate_test_cpp(output_path, template_dir):
+    # Generate cpp/hpp files for ros-ign package/message mappings
+    data = {}
+    data['mappings'] = mappings()
+
+    template_file = os.path.join(template_dir, 'ign_publisher.cpp.em')
+    output_file = os.path.join(output_path, 'ign_publisher.cpp')
+    data_for_template = {'mappings': data['mappings']}
+    expand_template(template_file, data_for_template, output_file)
+
+    template_file = os.path.join(template_dir, 'ros_publisher.cpp.em')
+    output_file = os.path.join(output_path, 'ros_publisher.cpp')
+    data_for_template = {'mappings': data['mappings']}
+    expand_template(template_file, data_for_template, output_file)
+
+    template_file = os.path.join(template_dir, 'ign_subscriber.cpp.em')
+    output_file = os.path.join(output_path, 'ign_subscriber.cpp')
+    data_for_template = {'mappings': data['mappings']}
+    expand_template(template_file, data_for_template, output_file)
+
+    unique_package_names = {
+            mapping.ros2_package_name for mapping in data['mappings']}
+    for ros2_package_name in unique_package_names:
+        data_pkg = {
+                'ros2_package_name': ros2_package_name,
+                'mappings': [
+                    m for m in data['mappings']
+                    if m.ros2_package_name == ros2_package_name
+                ]
+        }
+
+        template_file = os.path.join(template_dir, 'ros_pkg_subscriber.cpp.em')
+        output_file = os.path.join(
+            output_path, '%s_subscriber.cpp' % ros2_package_name)
         expand_template(template_file, data_pkg, output_file)
