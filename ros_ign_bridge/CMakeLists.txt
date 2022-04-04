@@ -55,6 +55,7 @@ set(PACKAGES
 add_library(bridge_utils
   STATIC
   src/convert/utils.cpp
+  src/factory_interface.cpp
 )
 target_include_directories(bridge_utils
   PRIVATE src
