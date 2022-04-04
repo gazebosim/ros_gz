@@ -55,7 +55,6 @@ set(PACKAGES
 add_library(bridge_utils
   STATIC
   src/convert/utils.cpp
-  src/factory_interface.cpp
 )
 target_include_directories(bridge_utils
   PRIVATE src
@@ -97,6 +96,7 @@ set(bridge_lib
 add_library(${bridge_lib}
   SHARED
   src/factories.cpp
+  src/factory_interface.cpp
 )
 
 target_include_directories(${bridge_lib}
