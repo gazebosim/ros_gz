@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES__ROSGRAPH_MSGS_HPP_
-#define FACTORIES__ROSGRAPH_MSGS_HPP_
+#ifndef GET_FACTORY_HPP_
+#define GET_FACTORY_HPP_
 
 #include <memory>
 #include <string>
@@ -24,10 +24,10 @@ namespace ros_ign_bridge
 {
 
 std::shared_ptr<FactoryInterface>
-get_factory__rosgraph_msgs(
+get_factory(
   const std::string & ros_type_name,
   const std::string & ign_type_name);
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES__ROSGRAPH_MSGS_HPP_
+#endif  // GET_FACTORY_HPP_

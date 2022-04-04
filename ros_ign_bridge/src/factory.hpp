@@ -21,11 +21,10 @@
 #include <memory>
 #include <string>
 
-// include ROS 2
+#include "factory_interface.hpp"
+
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription_options.hpp>
-
-#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {

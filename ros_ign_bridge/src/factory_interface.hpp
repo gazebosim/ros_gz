@@ -12,17 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef  FACTORY_INTERFACE_HPP_
-#define  FACTORY_INTERFACE_HPP_
+#ifndef FACTORY_INTERFACE_HPP_
+#define FACTORY_INTERFACE_HPP_
 
-// include Ignition Transport
 #include <ignition/transport/Node.hh>
 
 #include <memory>
 #include <string>
 
-// include ROS 2
 #include <rclcpp/rclcpp.hpp>
+
 
 namespace ros_ign_bridge
 {
