@@ -206,7 +206,7 @@ endif()
 
 ament_export_dependencies(
   rclcpp
-  ${PACKAGES}
+  ${BRIDGE_MESSAGE_TYPES}
 )
 
 ament_package()
