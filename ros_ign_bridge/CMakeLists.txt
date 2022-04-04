@@ -121,8 +121,8 @@ ament_export_libraries(${bridge_lib})
 set(bridge_executables
   parameter_bridge
   static_bridge
+  bridge_types
 )
-
 
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
