@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef GET_MAPPINGS_HPP_ 
-#define GET_MAPPINGS_HPP_ 
+#ifndef GET_MAPPINGS_HPP_
+#define GET_MAPPINGS_HPP_
 
 #include <map>
 #include <string>
@@ -32,4 +32,4 @@ get_all_message_mappings_ros_to_ign();
 
 }  // namespace ros_ign_bridge
 
-#endif  // GET_MAPPINGS_HPP_ 
+#endif  // GET_MAPPINGS_HPP_

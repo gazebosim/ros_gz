@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "get_mappings.hpp"
-
 #include <algorithm>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <vector>
+
+#include "get_mappings.hpp"
+
 
 bool find_command_option(const std::vector<std::string> & args, const std::string & option)
 {
@@ -52,44 +53,35 @@ int main(int argc, char * argv[])
     return 0;
   }
 
-  if (get_flag_option(args, "--get-ros-to-ign"))
-  {
-    if (args.size() < 3)
-    {
+  if (get_flag_option(args, "--get-ros-to-ign")) {
+    if (args.size() < 3) {
       printf("--get-ros-to-ign requires an argument\n");
       return 1;
     }
 
     std::string ign_type_name;
     auto found = ros_ign_bridge::get_ros_to_ign_mapping(args[2], ign_type_name);
-    if (found)
-    {
+    if (found) {
       printf("%s\n", ign_type_name.c_str());
       return 0;
     } else {
       return 1;
     }
-  }
-  else if (get_flag_option(args, "--get-ign-to-ros"))
-  {
-    if (args.size() < 3)
-    {
+  } else if (get_flag_option(args, "--get-ign-to-ros")) {
+    if (args.size() < 3) {
       printf("--get-ign-to-ros requires an argument\n");
       return 1;
     }
 
     std::string ros_type_name;
     auto found = ros_ign_bridge::get_ign_to_ros_mapping(args[2], ros_type_name);
-    if (found)
-    {
+    if (found) {
       printf("%s\n", ros_type_name.c_str());
       return 0;
     } else {
       return 1;
     }
-  }
-  else if (get_flag_option(args, "--print-ign"))
-  {
+  } else if (get_flag_option(args, "--print-ign")) {
     auto mappings = ros_ign_bridge::get_all_message_mappings_ros_to_ign();
     if (mappings.size() > 0) {
       for (auto & pair : mappings) {
@@ -98,9 +90,7 @@ int main(int argc, char * argv[])
     } else {
       printf("No message type conversion pairs supported.\n");
     }
-  }
-  else if (get_flag_option(args, "--print-ros"))
-  {
+  } else if (get_flag_option(args, "--print-ros")) {
     auto mappings = ros_ign_bridge::get_all_message_mappings_ros_to_ign();
     if (mappings.size() > 0) {
       for (auto & pair : mappings) {
@@ -109,8 +99,7 @@ int main(int argc, char * argv[])
     } else {
       printf("No message type conversion pairs supported.\n");
     }
-  }
-  else if (get_flag_option(args, "--print-pairs")) {
+  } else if (get_flag_option(args, "--print-pairs")) {
     auto mappings = ros_ign_bridge::get_all_message_mappings_ros_to_ign();
     if (mappings.size() > 0) {
       printf("Supported ROS <=> Ignition  message type conversion pairs:\n");
