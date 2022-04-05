@@ -68,14 +68,16 @@ void Bridge::Spin()
   }
 
   if (this->HasSubscriber() && this->NumSubscriptions() == 0) {
-    RCLCPP_INFO(
+    RCLCPP_DEBUG(
       this->ros_node_->get_logger(),
-      "Lazy Mode Enabled and no subscriptions found, stopping");
+      "Bridge [%s] - No subscriptions found, stopping bridge",
+      ros_topic_name_.c_str());
     this->StopSubscriber();
   } else if (!this->HasSubscriber() && this->NumSubscriptions() > 0) {
-    RCLCPP_INFO(
+    RCLCPP_DEBUG(
       this->ros_node_->get_logger(),
-      "Lazy Mode Enabled and subscriptions found, starting");
+      "Bridge [%s] - Subscriptions found, starting bridge",
+      ros_topic_name_.c_str());
     this->StartSubscriber();
   }
 }

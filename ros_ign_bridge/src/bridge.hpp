@@ -47,7 +47,7 @@ public:
   /// \param[in] ign_topic Name of the IGN topic to use
   /// \param[in] subscriber_queue_size Depth of the subscriber queue
   /// \param[in] publisher_queue_size Depth of the publisher queue
-  /// \param[in] is_lazy True for "lazy" subscriptions.
+  /// \param[in] is_lazy True for "lazy" subscriptions. (Default: false)
   Bridge(
     rclcpp::Node::SharedPtr ros_node,
     std::shared_ptr<ignition::transport::Node> ign_node,
@@ -106,18 +106,34 @@ protected:
   virtual void StopSubscriber() = 0;
 
 protected:
+  /// \brief The ROS node used to create publishers/subscriptions
   rclcpp::Node::SharedPtr ros_node_;
+
+  /// \brief The Ignition node used to create publishers/subscriptions
   std::shared_ptr<ignition::transport::Node> ign_node_;
 
+  /// \brief The ROS message type (eg std_msgs/msg/String)
   std::string ros_type_name_;
+
+  /// \brief The ROS topic name to bridge
   std::string ros_topic_name_;
+
+  /// \brief The IGN message type (eg ignition.msgs.String)
   std::string ign_type_name_;
+
+  /// \brief The IGN topic name to bridge
   std::string ign_topic_name_;
 
+  /// \brief Depth of the subscriber queue
   size_t subscriber_queue_size_;
+
+  /// \brief Depth of the publisher queue
   size_t publisher_queue_size_;
+
+  /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy_;
 
+  /// \brief Typed factory used to create publishers/subscribers
   std::shared_ptr<FactoryInterface> factory_;
 };
 
