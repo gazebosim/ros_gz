@@ -181,13 +181,15 @@ if(BUILD_TESTING)
   )
 
   set(generated_path "${CMAKE_BINARY_DIR}/generated/test")
-  set(generated_files 
+
+  set(generated_files
     "${generated_path}/ign_publisher.cpp"
     "${generated_path}/ign_subscriber.cpp"
     "${generated_path}/ros_publisher.cpp"
-   )
+  )
+
   set(ros_subscriber_files
-   "test/subscribers/ros_subscriber.cpp"
+    "test/subscribers/ros_subscriber.cpp"
   )
 
   foreach(package_name ${BRIDGE_MESSAGE_TYPES})
@@ -208,7 +210,7 @@ if(BUILD_TESTING)
     OUTPUT ${generated_files}
     COMMAND Python3::Interpreter
     ARGS bin/ros_ign_bridge_generate_tests
-      --output-path "${generated_path}" --template-dir test/resource/ 
+      --output-path "${generated_path}" --template-dir test/resource/
     DEPENDS ${target_dependencies}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Generating test helpers")
@@ -224,7 +226,7 @@ if(BUILD_TESTING)
 
   add_executable(test_ros_subscriber ${ros_subscriber_files})
   target_link_libraries(test_ros_subscriber test_utils)
-  target_include_directories(test_ros_subscriber 
+  target_include_directories(test_ros_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
   install(TARGETS
