@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2022 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// include ROS 2
 #include <rclcpp/rclcpp.hpp>
 
 // include Ignition Transport
@@ -45,17 +46,32 @@ int main(int argc, char * argv[])
     std::make_unique<ros_ign_bridge::BridgeRosToIgn>(
       ros_node, ign_node,
       ros_type_name, topic_name,
-      ign_type_name, topic_name));
+      ign_type_name, topic_name,
+      ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
+      ros_ign_bridge::Bridge::kDefaultPublisherQueue,
+      true));
 
   handles.push_back(
     std::make_unique<ros_ign_bridge::BridgeIgnToRos>(
       ros_node, ign_node,
       ros_type_name, topic_name,
-      ign_type_name, topic_name));
+      ign_type_name, topic_name,
+      ros_ign_bridge::Bridge::kDefaultSubscriberQueue,
+      ros_ign_bridge::Bridge::kDefaultPublisherQueue,
+      true));
+
 
   for (auto & bridge : handles) {
     bridge->Start();
   }
+
+  auto timer = ros_node->create_wall_timer(
+    std::chrono::milliseconds(1000),
+    [&handles]() {
+      for (auto & bridge : handles) {
+        bridge->Spin();
+      }
+    });
 
   rclcpp::spin(ros_node);
 
