@@ -100,6 +100,7 @@ add_library(${bridge_lib}
   src/bridge_ros_to_ign.cpp
   src/bridge_ign_to_ros.cpp
   src/factories.cpp
+  src/factory_interface.cpp
 )
 
 target_include_directories(${bridge_lib}
