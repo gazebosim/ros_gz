@@ -12,11 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef BRIDGE_HPP_
-#define BRIDGE_HPP_
+#ifndef BRIDGE_HANDLE_HPP_
+#define BRIDGE_HANDLE_HPP_
+
+#include <rclcpp/node.hpp>
+#include <ros_ign_bridge/bridge_config.hpp>
 
 #include <ignition/transport/Node.hh>
-#include <rclcpp/node.hpp>
 
 #include <memory>
 #include <string>
@@ -27,15 +29,9 @@ namespace ros_ign_bridge
 {
 
 /// \brief Core functionality and data for both bridge directions
-class Bridge
+class BridgeHandle
 {
 public:
-  /// \brief Default subscriber queue length
-  static constexpr size_t kDefaultSubscriberQueue = 10;
-
-  /// \brief Default publisher queue length
-  static constexpr size_t kDefaultPublisherQueue = 10;
-
   /// \brief Constructor
   /// Note, does not actually start the bridge, must be done with Start()
   ///
@@ -48,19 +44,13 @@ public:
   /// \param[in] subscriber_queue_size Depth of the subscriber queue
   /// \param[in] publisher_queue_size Depth of the publisher queue
   /// \param[in] is_lazy True for "lazy" subscriptions. (Default: false)
-  Bridge(
+  BridgeHandle(
     rclcpp::Node::SharedPtr ros_node,
     std::shared_ptr<ignition::transport::Node> ign_node,
-    const std::string & ros_type_name,
-    const std::string & ros_topic_name,
-    const std::string & ign_type_name,
-    const std::string & ign_topic_name,
-    size_t subscriber_queue_size = kDefaultSubscriberQueue,
-    size_t publisher_queue_size = kDefaultPublisherQueue,
-    bool is_lazy = false);
+    const BridgeConfig & config);
 
   /// \brief Destructor
-  virtual ~Bridge() = 0;
+  virtual ~BridgeHandle() = 0;
 
   /// \brief Initiate the bridge
   ///
@@ -112,33 +102,13 @@ protected:
   /// \brief The Ignition node used to create publishers/subscriptions
   std::shared_ptr<ignition::transport::Node> ign_node_;
 
-  /// \brief The ROS message type (eg std_msgs/msg/String)
-  std::string ros_type_name_;
-
-  /// \brief The ROS topic name to bridge
-  std::string ros_topic_name_;
-
-  /// \brief The IGN message type (eg ignition.msgs.String)
-  std::string ign_type_name_;
-
-  /// \brief The IGN topic name to bridge
-  std::string ign_topic_name_;
-
-  /// \brief Depth of the subscriber queue
-  size_t subscriber_queue_size_;
-
-  /// \brief Depth of the publisher queue
-  size_t publisher_queue_size_;
-
-  /// \brief Flag to change the "laziness" of the bridge
-  bool is_lazy_;
+  /// \brief The configuration parameters of this bridge
+  BridgeConfig config_;
 
   /// \brief Typed factory used to create publishers/subscribers
   std::shared_ptr<FactoryInterface> factory_;
 };
 
-using BridgePtr = std::unique_ptr<Bridge>;
-
 }  // namespace ros_ign_bridge
 
-#endif  // BRIDGE_HPP_
+#endif  // BRIDGE_HANDLE_HPP_

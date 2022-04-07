@@ -12,16 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "bridge_ros_to_ign.hpp"
+#include "bridge_handle_ros_to_ign.hpp"
 
 #include <ignition/transport/TopicUtils.hh>
 
 namespace ros_ign_bridge
 {
 
-BridgeRosToIgn::~BridgeRosToIgn() = default;
+BridgeHandleRosToIgn::~BridgeHandleRosToIgn() = default;
 
-size_t BridgeRosToIgn::NumSubscriptions() const
+size_t BridgeHandleRosToIgn::NumSubscriptions() const
 {
   // Return number of ignition subscriptions
   // Ignition publishers can only detect presence of connections, and not
@@ -36,38 +36,38 @@ size_t BridgeRosToIgn::NumSubscriptions() const
   return 0;
 }
 
-bool BridgeRosToIgn::HasPublisher() const
+bool BridgeHandleRosToIgn::HasPublisher() const
 {
   // Return Ignition publisher status
   return this->ign_publisher_.Valid();
 }
 
-void BridgeRosToIgn::StartPublisher()
+void BridgeHandleRosToIgn::StartPublisher()
 {
   // Start Ignition publisher
   this->ign_publisher_ = this->factory_->create_ign_publisher(
     this->ign_node_,
-    this->ign_topic_name_,
-    this->publisher_queue_size_);
+    this->config_.ign_topic_name,
+    this->config_.publisher_queue_size);
 }
 
-bool BridgeRosToIgn::HasSubscriber() const
+bool BridgeHandleRosToIgn::HasSubscriber() const
 {
   // Return ROS subscriber status
   return this->ros_subscriber_ != nullptr;
 }
 
-void BridgeRosToIgn::StartSubscriber()
+void BridgeHandleRosToIgn::StartSubscriber()
 {
   // Start ROS subscriber
   this->ros_subscriber_ = this->factory_->create_ros_subscriber(
     this->ros_node_,
-    this->ros_topic_name_,
-    this->subscriber_queue_size_,
+    this->config_.ros_topic_name,
+    this->config_.subscriber_queue_size,
     this->ign_publisher_);
 }
 
-void BridgeRosToIgn::StopSubscriber()
+void BridgeHandleRosToIgn::StopSubscriber()
 {
   // Stop ROS subscriber
   this->ros_subscriber_.reset();

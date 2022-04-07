@@ -13,51 +13,36 @@
 // limitations under the License.
 
 #include <rclcpp/rclcpp.hpp>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
 
-// include Ignition Transport
-#include <ignition/transport/Node.hh>
-
-#include <list>
 #include <memory>
 #include <string>
 
-#include "bridge_ign_to_ros.hpp"
-#include "bridge_ros_to_ign.hpp"
+using RosIgnBridge = ros_ign_bridge::RosIgnBridge;
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
   // ROS node
   rclcpp::init(argc, argv);
-  auto ros_node = std::make_shared<rclcpp::Node>("test_node");
+  auto bridge_node = std::make_shared<RosIgnBridge>(rclcpp::NodeOptions());
 
-  // Ignition node
-  auto ign_node = std::make_shared<ignition::transport::Node>();
+  // Set lazy subscriber on a global basis
+  bridge_node->declare_parameter<bool>("lazy", false);
+  bool lazy_subscription;
+  bridge_node->get_parameter("lazy", lazy_subscription);
 
   // bridge one example topic
-  std::string topic_name = "chatter";
-  std::string ros_type_name = "std_msgs/msg/String";
-  std::string ign_type_name = "ignition.msgs.StringMsg";
+  ros_ign_bridge::BridgeConfig config;
+  config.ros_topic_name = "chatter";
+  config.ign_topic_name = "chatter";
+  config.ros_type_name = "std_msgs/msg/String";
+  config.ign_type_name = "ignition.msgs.StringMsg";
+  config.is_lazy = lazy_subscription;
 
-  std::list<ros_ign_bridge::BridgePtr> handles;
+  bridge_node->add_bridge(config);
 
-  handles.push_back(
-    std::make_unique<ros_ign_bridge::BridgeRosToIgn>(
-      ros_node, ign_node,
-      ros_type_name, topic_name,
-      ign_type_name, topic_name));
-
-  handles.push_back(
-    std::make_unique<ros_ign_bridge::BridgeIgnToRos>(
-      ros_node, ign_node,
-      ros_type_name, topic_name,
-      ign_type_name, topic_name));
-
-  for (auto & bridge : handles) {
-    bridge->Start();
-  }
-
-  rclcpp::spin(ros_node);
+  rclcpp::spin(bridge_node);
 
   // Wait for ign node shutdown
   ignition::transport::waitForShutdown();

@@ -11,9 +11,12 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
+
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
-find_package(rclcpp REQUIRED)
 find_package(ros_ign_interfaces REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
@@ -52,54 +55,31 @@ set(PACKAGES
   trajectory_msgs
 )
 
-add_library(bridge_utils
-  STATIC
+set(bridge_lib ros_ign_bridge_lib)
+
+set(${bridge_lib}_SRCS
   src/convert/utils.cpp
-)
-target_include_directories(bridge_utils
-  PRIVATE src
-)
-set_target_properties(bridge_utils PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  src/bridge_config.cpp
+  src/bridge_handle.cpp
+  src/bridge_handle_ros_to_ign.cpp
+  src/bridge_handle_ign_to_ros.cpp
+  src/factories.cpp
+  src/ros_ign_bridge.cpp)
+
 
 foreach(PKG ${PACKAGES})
-  add_library(${PKG}_bridge
-    STATIC
-    src/convert/${PKG}.cpp
-    src/factories/${PKG}.cpp
-  )
-  target_include_directories(${PKG}_bridge
-    PUBLIC include
-    PRIVATE src
-  )
-  ament_target_dependencies(${PKG}_bridge
-    "${PKG}"
-  )
-  target_link_libraries(${PKG}_bridge
-    bridge_utils
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  set_target_properties(${PKG}_bridge
-    PROPERTIES POSITION_INDEPENDENT_CODE ON)
+  list(APPEND ${bridge_lib}_SRCS src/convert/${PKG}.cpp)
+  list(APPEND ${bridge_lib}_SRCS src/factories/${PKG}.cpp)
 
 endforeach()
 
-set(bridge_executables
-  parameter_bridge
-  static_bridge
-  lazy_static_bridge
-)
+add_library(${bridge_lib} SHARED ${${bridge_lib}_SRCS})
 
-set(bridge_lib
-  ros_ign_bridge_lib
-)
-
-add_library(${bridge_lib}
-  SHARED
-  src/bridge.cpp
-  src/bridge_ros_to_ign.cpp
-  src/bridge_ign_to_ros.cpp
-  src/factories.cpp
+ament_target_dependencies(${bridge_lib}
+  rclcpp
+  rclcpp_components
+  yaml_cpp_vendor
+  ${PACKAGES}
 )
 
 target_include_directories(${bridge_lib}
@@ -107,9 +87,15 @@ target_include_directories(${bridge_lib}
   PRIVATE src
 )
 
-foreach(PKG ${PACKAGES})
-  target_link_libraries(${bridge_lib} ${PKG}_bridge)
-endforeach()
+target_link_libraries(${bridge_lib}
+  ignition-msgs${IGN_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)
+
+rclcpp_components_register_node(
+  ${bridge_lib}
+  PLUGIN ros_ign_bridge::RosIgnBridge
+  EXECUTABLE bridge_node)
 
 install(TARGETS ${bridge_lib}
         ARCHIVE DESTINATION lib
@@ -124,18 +110,15 @@ install(
 ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
 
+
+set(bridge_executables static_bridge parameter_bridge)
+
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
     src/${bridge}.cpp
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  ament_target_dependencies(${bridge}
-    "rclcpp"
-    ${PACKAGES}
   )
   install(TARGETS ${bridge}
     DESTINATION lib/${PROJECT_NAME}
@@ -211,6 +194,13 @@ if(BUILD_TESTING)
   add_launch_test(test/launch/test_ign_subscriber.launch.py
     TIMEOUT 200
   )
+
+  ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
+  ament_target_dependencies(${PROJECT_NAME}_bridge_config rclcpp)
+  target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
+
 endif()
 
 ament_export_dependencies(
