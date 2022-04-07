@@ -30,6 +30,8 @@ namespace ros_ign_bridge
 class FactoryInterface
 {
 public:
+  virtual ~FactoryInterface() = 0;
+
   virtual
   rclcpp::PublisherBase::SharedPtr
   create_ros_publisher(

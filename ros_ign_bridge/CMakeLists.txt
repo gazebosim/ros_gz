@@ -64,6 +64,7 @@ set(${bridge_lib}_SRCS
   src/bridge_handle_ros_to_ign.cpp
   src/bridge_handle_ign_to_ros.cpp
   src/factories.cpp
+  src/factory_interface.cpp
   src/ros_ign_bridge.cpp)
 
 
@@ -109,7 +110,6 @@ install(
 
 ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
-
 
 set(bridge_executables static_bridge parameter_bridge)
 
