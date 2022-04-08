@@ -30,6 +30,7 @@ service calls. Its support is limited to only the following message types:
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
 | ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact              |
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
+| ros_ign_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
 | ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity               |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
 | ros_ign_interfaces/msg/Light         | ignition::msgs::Light                |

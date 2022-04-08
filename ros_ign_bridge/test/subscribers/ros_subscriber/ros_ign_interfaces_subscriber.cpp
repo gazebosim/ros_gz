@@ -80,3 +80,15 @@ TEST(ROSSubscriberTest, Contacts)
 
   EXPECT_TRUE(client.callbackExecuted);
 }
+
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, Dataframe)
+{
+  MyTestClass<ros_ign_interfaces::msg::Dataframe> client("dataframe");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}

@@ -24,6 +24,7 @@
 #include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/contact.pb.h>
 #include <ignition/msgs/contacts.pb.h>
+#include <ignition/msgs/dataframe.pb.h>
 #include <ignition/msgs/double.pb.h>
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/entity.pb.h>
@@ -202,6 +203,14 @@ void createTestMsg(ignition::msgs::Contacts & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Dataframe & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

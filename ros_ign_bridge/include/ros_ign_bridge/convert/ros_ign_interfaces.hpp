@@ -19,6 +19,7 @@
 #include <ros_ign_interfaces/msg/joint_wrench.hpp>
 #include <ros_ign_interfaces/msg/contact.hpp>
 #include <ros_ign_interfaces/msg/contacts.hpp>
+#include <ros_ign_interfaces/msg/dataframe.hpp>
 #include <ros_ign_interfaces/msg/light.hpp>
 
 // Ignition messages
@@ -26,6 +27,7 @@
 #include <ignition/msgs/joint_wrench.pb.h>
 #include <ignition/msgs/contact.pb.h>
 #include <ignition/msgs/contacts.pb.h>
+#include <ignition/msgs/dataframe.pb.h>
 #include <ignition/msgs/light.pb.h>
 
 #include <ros_ign_bridge/convert_decl.hpp>
@@ -80,6 +82,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Contacts & ign_msg,
   ros_ign_interfaces::msg::Contacts & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Dataframe & ros_msg,
+  ignition::msgs::Dataframe & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Dataframe & ign_msg,
+  ros_ign_interfaces::msg::Dataframe & ros_msg);
 
 template<>
 void

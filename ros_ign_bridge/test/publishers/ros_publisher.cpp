@@ -157,6 +157,12 @@ int main(int argc, char ** argv)
   ros_ign_interfaces::msg::Contacts contacts_msg;
   ros_ign_bridge::testing::createTestMsg(contacts_msg);
 
+  // ros_ign_interfaces::msg::"Dataframe.
+  auto dataframe_pub =
+    node->create_publisher<ros_ign_interfaces::msg::Dataframe>("dataframe", 1000);
+  ros_ign_interfaces::msg::Dataframe dataframe_msg;
+  ros_ign_bridge::testing::createTestMsg(dataframe_msg);
+
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
   //   node->create_publisher<mav_msgs::msg::Actuators>("actuators", 1000);
@@ -255,6 +261,7 @@ int main(int argc, char ** argv)
     entity_pub->publish(entity_msg);
     contact_pub->publish(contact_msg);
     contacts_pub->publish(contacts_msg);
+    dataframe_pub->publish(dataframe_msg);
     // actuators_pub->publish(actuators_msg);
     odometry_pub->publish(odometry_msg);
     image_pub->publish(image_msg);
