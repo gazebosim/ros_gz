@@ -110,7 +110,7 @@ In this example, we're going to generate Ignition Transport images using
 Ignition Gazebo, that will be converted into ROS images, and visualized with
 `rqt_image_viewer`.
 
-First we start Ignition Gazebo.
+First we start Ignition Gazebo (don't forget to hit play, or Ignition Gazebo won't generate any images).
 
 ```
 # Shell A:
