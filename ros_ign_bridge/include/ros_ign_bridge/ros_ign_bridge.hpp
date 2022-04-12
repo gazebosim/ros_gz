@@ -26,4 +26,3 @@
 #endif
 
 #endif  // ROS_IGN_BRIDGE__ROS_IGN_BRIDGE_HPP_
-
