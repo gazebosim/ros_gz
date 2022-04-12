@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 import os
 
-from ros_ign_bridge.mappings import MAPPINGS
+from ros_ign_bridge.mappings import MAPPINGS, MAPPINGS_8_4_0
 
 from rosidl_cmake import expand_template
 
@@ -45,7 +45,7 @@ class MessageMapping:
         return f'ignition::msgs::{self.ign_message_name}'
 
 
-def mappings():
+def mappings(gz_msgs_ver):
     # Generate MessageMapping object for all known mappings
     data = []
     for (ros2_package_name, mappings) in MAPPINGS.items():
@@ -55,13 +55,22 @@ def mappings():
                 ros2_message_name=mapping.ros_type,
                 ign_message_name=mapping.ign_type
             ))
-    return data
+
+    if gz_msgs_ver >= (8, 4, 0):
+        for (ros2_package_name, mappings) in MAPPINGS_8_4_0.items():
+            for mapping in sorted(mappings):
+                data.append(MessageMapping(
+                    ros2_package_name=ros2_package_name,
+                    ros2_message_name=mapping.ros_type,
+                    ign_message_name=mapping.ign_type
+                ))
+    return sorted(data, key=lambda mm: mm.ros2_string())
 
 
-def generate_cpp(output_path, template_dir):
+def generate_cpp(output_path, template_dir, gz_msgs_ver):
     # Generate cpp/hpp files for ros-ign package/message mappings
     data = {}
-    data['mappings'] = mappings()
+    data['mappings'] = mappings(gz_msgs_ver)
 
     template_file = os.path.join(template_dir, 'get_mappings.cpp.em')
     output_file = os.path.join(output_path, 'get_mappings.cpp')

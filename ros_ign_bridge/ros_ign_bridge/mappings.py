@@ -39,11 +39,15 @@ MAPPINGS = {
         Mapping('Odometry', 'Odometry'),
     ],
     'ros_ign_interfaces': [
-        Mapping('JointWrench', 'JointWrench'),
-        Mapping('Entity', 'Entity'),
         Mapping('Contact', 'Contact'),
         Mapping('Contacts', 'Contacts'),
+        Mapping('Entity', 'Entity'),
+        Mapping('GuiCamera', 'GUICamera'),
+        Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
+        Mapping('StringVec', 'StringMsg_V'),
+        Mapping('TrackVisual', 'TrackVisual'),
+        Mapping('VideoRecord', 'VideoRecord'),
     ],
     'rosgraph_msgs': [
         Mapping('Clock', 'Clock'),
@@ -75,5 +79,11 @@ MAPPINGS = {
     ],
     'trajectory_msgs': [
         Mapping('JointTrajectory', 'JointTrajectory'),
+    ],
+}
+
+MAPPINGS_8_4_0 = {
+    'ros_ign_interfaces': [
+        Mapping('Dataframe', 'Dataframe'),
     ],
 }

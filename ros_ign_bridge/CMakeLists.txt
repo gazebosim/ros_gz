@@ -19,7 +19,11 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  set(GZ_MSGS_VERSION_MAJOR ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VERSION_MINOR ${ignition-msgs8_VERSION_MINOR})
+  set(GZ_MSGS_VERSION_PATCH ${ignition-msgs8_VERSION_PATCH})
 
   message(STATUS "Compiling against Ignition Fortress")
 # Default to Edifice
@@ -28,10 +32,16 @@ else()
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+
+  set(GZ_MSGS_VERSION_MAJOR ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VERSION_MINOR ${ignition-msgs7_VERSION_MINOR})
+  set(GZ_MSGS_VERSION_PATCH ${ignition-msgs7_VERSION_PATCH})
 
   message(STATUS "Compiling against Ignition Edifice")
 endif()
+
+set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_MSGS_VERSION_PATCH})
 
 set(BRIDGE_MESSAGE_TYPES
   geometry_msgs
@@ -75,6 +85,7 @@ add_custom_command(
   COMMAND Python3::Interpreter
   ARGS bin/ros_ign_bridge_generate_factories
     --output-path "${generated_path}" --template-dir resource
+    --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
   DEPENDS ${target_dependencies}
   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
   COMMENT "Generating factories for interface types")
@@ -94,7 +105,7 @@ add_library(${bridge_lib}
 )
 
 target_link_libraries(${bridge_lib}
-    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
@@ -161,7 +172,7 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
