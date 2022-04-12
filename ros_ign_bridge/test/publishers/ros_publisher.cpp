@@ -13,8 +13,11 @@
 // limitations under the License.
 
 #include <rclcpp/rclcpp.hpp>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 #include "utils/test_utils.hpp"
 #include "utils/ros_test_msg.hpp"
+
 
 //////////////////////////////////////////////////
 int main(int argc, char ** argv)
@@ -157,11 +160,13 @@ int main(int argc, char ** argv)
   ros_ign_interfaces::msg::Contacts contacts_msg;
   ros_ign_bridge::testing::createTestMsg(contacts_msg);
 
-  // ros_ign_interfaces::msg::"Dataframe.
+#if HAVE_DATAFRAME
+  // ros_ign_interfaces::msg::Dataframe.
   auto dataframe_pub =
     node->create_publisher<ros_ign_interfaces::msg::Dataframe>("dataframe", 1000);
   ros_ign_interfaces::msg::Dataframe dataframe_msg;
   ros_ign_bridge::testing::createTestMsg(dataframe_msg);
+#endif  // HAVE_DATAFRAME
 
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
@@ -261,7 +266,9 @@ int main(int argc, char ** argv)
     entity_pub->publish(entity_msg);
     contact_pub->publish(contact_msg);
     contacts_pub->publish(contacts_msg);
+#if HAVE_DATAFRAME
     dataframe_pub->publish(dataframe_msg);
+#endif  // HAVE_DATAFRAME
     // actuators_pub->publish(actuators_msg);
     odometry_pub->publish(odometry_msg);
     image_pub->publish(image_msg);

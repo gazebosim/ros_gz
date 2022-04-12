@@ -14,6 +14,8 @@
 
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 namespace ros_ign_bridge
 {
 
@@ -199,6 +201,7 @@ convert_ign_to_ros(
   }
 }
 
+#if HAVE_DATAFRAME
 template<>
 void
 convert_ros_to_ign(
@@ -230,6 +233,7 @@ convert_ign_to_ros(
     ign_msg.data().begin() + ign_msg.data().size(),
     ros_msg.data.begin());
 }
+#endif  // HAVE_DATAFRAME
 
 template<>
 void

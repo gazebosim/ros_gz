@@ -13,12 +13,14 @@
 // limitations under the License.
 
 #include "factories/ros_ign_interfaces.hpp"
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+#include <ros_ign_bridge/convert/ros_ign_interfaces.hpp>
 
 #include <memory>
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
+
 
 namespace ros_ign_bridge
 {
@@ -72,6 +74,7 @@ get_factory__ros_ign_interfaces(
       >
     >("ros_ign_interfaces/msg/Contacts", ign_type_name);
   }
+#if HAVE_DATAFRAME
   if (
     (ros_type_name == "ros_ign_interfaces/msg/Dataframe" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Dataframe")
@@ -83,6 +86,7 @@ get_factory__ros_ign_interfaces(
       >
     >("ros_ign_interfaces/msg/Dataframe", ign_type_name);
   }
+#endif  // HAVE_DATAFRAME
   if ((ros_type_name == "ros_ign_interfaces/msg/Light" ||
     ros_type_name.empty()) && ign_type_name == "ignition.msgs.Light")
   {
@@ -192,6 +196,7 @@ Factory<
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
+#if HAVE_DATAFRAME
 template<>
 void
 Factory<
@@ -215,6 +220,7 @@ Factory<
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
+#endif  // HAVE_DATAFRAME
 
 template<>
 void

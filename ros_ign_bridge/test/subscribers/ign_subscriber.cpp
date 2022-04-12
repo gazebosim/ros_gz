@@ -15,6 +15,7 @@
 
 #include <gtest/gtest.h>
 #include <ignition/transport.hh>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
 
 #include <chrono>
 #include <memory>
@@ -321,6 +322,7 @@ TEST(IgnSubscriberTest, Contacts)
   EXPECT_TRUE(client.callbackExecuted);
 }
 
+#if HAVE_DATAFRAME
 /////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Dataframe)
 {
@@ -332,6 +334,7 @@ TEST(IgnSubscriberTest, Dataframe)
 
   EXPECT_TRUE(client.callbackExecuted);
 }
+#endif  // HAVE_DATAFRAME
 
 /////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Image)

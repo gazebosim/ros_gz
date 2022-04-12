@@ -496,6 +496,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _
   }
 }
 
+#if HAVE_DATAFRAME
 void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg)
 {
   createTestMsg(_msg.header);
@@ -519,6 +520,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & 
     EXPECT_EQ(expected_msg.data[ii], _msg->data[ii]);
   }
 }
+#endif  // HAVE_DATAFRAME
 
 void createTestMsg(nav_msgs::msg::Odometry & _msg)
 {

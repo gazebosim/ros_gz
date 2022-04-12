@@ -431,6 +431,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg)
   }
 }
 
+#if HAVE_DATAFRAME
 void createTestMsg(ignition::msgs::Dataframe & _msg)
 {
   ignition::msgs::Header header_msg;
@@ -452,6 +453,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
   EXPECT_EQ(expected_msg.dst_address(), _msg->dst_address());
   EXPECT_EQ(expected_msg.data(), _msg->data());
 }
+#endif  // HAVE_DATAFRAME
 
 void createTestMsg(ignition::msgs::Image & _msg)
 {

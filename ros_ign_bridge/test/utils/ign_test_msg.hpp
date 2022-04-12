@@ -15,6 +15,8 @@
 #ifndef UTILS__IGN_TEST_MSG_HPP_
 #define UTILS__IGN_TEST_MSG_HPP_
 
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 #include <ignition/msgs/actuators.pb.h>
 #include <ignition/msgs/axis.pb.h>
 #include <ignition/msgs/battery_state.pb.h>
@@ -24,7 +26,9 @@
 #include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/contact.pb.h>
 #include <ignition/msgs/contacts.pb.h>
+#if HAVE_DATAFRAME
 #include <ignition/msgs/dataframe.pb.h>
+#endif  // HAVE_DATAFRAME
 #include <ignition/msgs/double.pb.h>
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/entity.pb.h>
@@ -204,6 +208,7 @@ void createTestMsg(ignition::msgs::Contacts & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg);
 
+#if HAVE_DATAFRAME
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Dataframe & _msg);
@@ -211,6 +216,7 @@ void createTestMsg(ignition::msgs::Dataframe & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg);
+#endif  // HAVE_DATAFRAME
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
