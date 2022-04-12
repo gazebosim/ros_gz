@@ -431,6 +431,30 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg)
   }
 }
 
+#if HAVE_DATAFRAME
+void createTestMsg(ignition::msgs::Dataframe & _msg)
+{
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  _msg.set_src_address("localhost:8080");
+  _msg.set_dst_address("localhost:8081");
+  _msg.set_data(std::string(150, '1'));
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
+{
+  ignition::msgs::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  EXPECT_EQ(expected_msg.src_address(), _msg->src_address());
+  EXPECT_EQ(expected_msg.dst_address(), _msg->dst_address());
+  EXPECT_EQ(expected_msg.data(), _msg->data());
+}
+#endif  // HAVE_DATAFRAME
+
 void createTestMsg(ignition::msgs::Image & _msg)
 {
   ignition::msgs::Header header_msg;
@@ -1014,6 +1038,130 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Light> & _msg)
   EXPECT_EQ(expected_msg.parent_id(), _msg->parent_id());
 
   EXPECT_FLOAT_EQ(expected_msg.intensity(), _msg->intensity());
+}
+
+void createTestMsg(ignition::msgs::GUICamera & _msg)
+{
+  ignition::msgs::Header header_msg;
+  ignition::msgs::TrackVisual track_visual_msg;
+  ignition::msgs::Pose pose_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(track_visual_msg);
+  createTestMsg(pose_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_track()->CopyFrom(track_visual_msg);
+  _msg.mutable_pose()->CopyFrom(pose_msg);
+
+  _msg.set_name("test_gui_camera");
+  _msg.set_view_controller("test_gui_camera_view_controller");
+  _msg.set_projection_type("test_gui_camera_projection_type");
+}
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::GUICamera> & _msg)
+{
+  ignition::msgs::GUICamera expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Pose>(_msg->pose()));
+  compareTestMsg(std::make_shared<ignition::msgs::TrackVisual>(_msg->track()));
+
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+  EXPECT_EQ(expected_msg.view_controller(), _msg->view_controller());
+  EXPECT_EQ(expected_msg.projection_type(), _msg->projection_type());
+}
+
+void createTestMsg(ignition::msgs::StringMsg_V & _msg)
+{
+  ignition::msgs::Header header_msg;
+
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  auto * data = _msg.add_data();
+  *data = "test_string_msg_v_data";
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::StringMsg_V> & _msg)
+{
+  ignition::msgs::StringMsg_V expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  ASSERT_EQ(expected_msg.data_size(), _msg->data_size());
+  EXPECT_EQ(expected_msg.data(0), _msg->data(0));
+}
+
+void createTestMsg(ignition::msgs::TrackVisual & _msg)
+{
+  ignition::msgs::Header header_msg;
+  ignition::msgs::Vector3d xyz_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(xyz_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_xyz()->CopyFrom(xyz_msg);
+
+  _msg.set_name("test_track_visual");
+  _msg.set_id(15);
+  _msg.set_inherit_orientation(true);
+  _msg.set_min_dist(1.1);
+  _msg.set_max_dist(1.5);
+  _msg.set_static_(true);
+  _msg.set_use_model_frame(true);
+  _msg.set_inherit_yaw(true);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::TrackVisual> & _msg)
+{
+  ignition::msgs::TrackVisual expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->xyz()));
+
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+  EXPECT_EQ(expected_msg.id(), _msg->id());
+  EXPECT_EQ(expected_msg.inherit_orientation(), _msg->inherit_orientation());
+  EXPECT_EQ(expected_msg.min_dist(), _msg->min_dist());
+  EXPECT_EQ(expected_msg.max_dist(), _msg->max_dist());
+  EXPECT_EQ(expected_msg.static_(), _msg->static_());
+  EXPECT_EQ(expected_msg.use_model_frame(), _msg->use_model_frame());
+  EXPECT_EQ(expected_msg.inherit_yaw(), _msg->inherit_yaw());
+}
+
+void createTestMsg(ignition::msgs::VideoRecord & _msg)
+{
+  ignition::msgs::Header header_msg;
+
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  _msg.set_start(true);
+  _msg.set_stop(true);
+  _msg.set_format("test_video_record_format");
+  _msg.set_save_filename("test_video_record_save_filename");
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg)
+{
+  ignition::msgs::VideoRecord expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  EXPECT_EQ(expected_msg.start(), _msg->start());
+  EXPECT_EQ(expected_msg.stop(), _msg->stop());
+  EXPECT_EQ(expected_msg.format(), _msg->format());
+  EXPECT_EQ(expected_msg.save_filename(), _msg->save_filename());
 }
 
 }  // namespace testing

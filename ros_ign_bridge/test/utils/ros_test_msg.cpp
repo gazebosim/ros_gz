@@ -392,6 +392,104 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg
   EXPECT_FLOAT_EQ(expected_msg.intensity, _msg->intensity);
 }
 
+void createTestMsg(ros_ign_interfaces::msg::GuiCamera & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.track);
+  createTestMsg(_msg.pose);
+
+  _msg.name = "test_gui_camera";
+  _msg.view_controller = "test_gui_camera_view_controller";
+  _msg.projection_type = "test_gui_camera_projection_type";
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::GuiCamera> & _msg)
+{
+  ros_ign_interfaces::msg::GuiCamera expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  compareTestMsg(std::make_shared<ros_ign_interfaces::msg::TrackVisual>(_msg->track));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+  EXPECT_EQ(expected_msg.view_controller, _msg->view_controller);
+  EXPECT_EQ(expected_msg.projection_type, _msg->projection_type);
+}
+
+void createTestMsg(ros_ign_interfaces::msg::StringVec & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.data.emplace_back("test_string_msg_v_data");
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::StringVec> & _msg)
+{
+  ros_ign_interfaces::msg::StringVec expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.data, _msg->data);
+}
+
+void createTestMsg(ros_ign_interfaces::msg::TrackVisual & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.xyz);
+
+  _msg.name = "test_track_visual";
+  _msg.id = 15;
+  _msg.inherit_orientation = true;
+  _msg.min_dist = 1.1;
+  _msg.max_dist = 1.5;
+  _msg.is_static = true;
+  _msg.use_model_frame = true;
+  _msg.inherit_yaw = true;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::TrackVisual> & _msg)
+{
+  ros_ign_interfaces::msg::TrackVisual expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->xyz));
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+  EXPECT_EQ(expected_msg.id, _msg->id);
+  EXPECT_EQ(expected_msg.inherit_orientation, _msg->inherit_orientation);
+  EXPECT_EQ(expected_msg.min_dist, _msg->min_dist);
+  EXPECT_EQ(expected_msg.max_dist, _msg->max_dist);
+  EXPECT_EQ(expected_msg.is_static, _msg->is_static);
+  EXPECT_EQ(expected_msg.use_model_frame, _msg->use_model_frame);
+  EXPECT_EQ(expected_msg.inherit_yaw, _msg->inherit_yaw);
+}
+
+void createTestMsg(ros_ign_interfaces::msg::VideoRecord & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.start = true;
+  _msg.stop = true;
+  _msg.format = "test_video_record_format";
+  _msg.save_filename = "test_video_record_save_filename";
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::VideoRecord> & _msg)
+{
+  ros_ign_interfaces::msg::VideoRecord expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.start, _msg->start);
+  EXPECT_EQ(expected_msg.stop, _msg->stop);
+  EXPECT_EQ(expected_msg.format, _msg->format);
+  EXPECT_EQ(expected_msg.save_filename, _msg->save_filename);
+}
+
 void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg)
 {
   createTestMsg(_msg.header);
@@ -495,6 +593,32 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _
     compareTestMsg(std::make_shared<ros_ign_interfaces::msg::Contact>(_msg->contacts.at(i)));
   }
 }
+
+#if HAVE_DATAFRAME
+void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.src_address = "localhost:8080";
+  _msg.dst_address = "localhost:8081";
+  _msg.data.resize(150, '1');
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & _msg)
+{
+  ros_ign_interfaces::msg::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.src_address, _msg->src_address);
+  EXPECT_EQ(expected_msg.dst_address, _msg->dst_address);
+
+  ASSERT_EQ(expected_msg.data.size(), _msg->data.size());
+  for (size_t ii = 0; ii < _msg->data.size(); ++ii) {
+    EXPECT_EQ(expected_msg.data[ii], _msg->data[ii]);
+  }
+}
+#endif  // HAVE_DATAFRAME
 
 void createTestMsg(nav_msgs::msg::Odometry & _msg)
 {

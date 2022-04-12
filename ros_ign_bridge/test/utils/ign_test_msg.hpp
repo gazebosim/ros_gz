@@ -15,6 +15,8 @@
 #ifndef UTILS__IGN_TEST_MSG_HPP_
 #define UTILS__IGN_TEST_MSG_HPP_
 
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 #include <ignition/msgs/actuators.pb.h>
 #include <ignition/msgs/axis.pb.h>
 #include <ignition/msgs/battery_state.pb.h>
@@ -24,11 +26,15 @@
 #include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/contact.pb.h>
 #include <ignition/msgs/contacts.pb.h>
+#if HAVE_DATAFRAME
+#include <ignition/msgs/dataframe.pb.h>
+#endif  // HAVE_DATAFRAME
 #include <ignition/msgs/double.pb.h>
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/entity.pb.h>
 #include <ignition/msgs/float.pb.h>
 #include <ignition/msgs/fluid_pressure.pb.h>
+#include <ignition/msgs/gui_camera.pb.h>
 #include <ignition/msgs/header.pb.h>
 #include <ignition/msgs/image.pb.h>
 #include <ignition/msgs/imu.pb.h>
@@ -44,9 +50,12 @@
 #include <ignition/msgs/pose_v.pb.h>
 #include <ignition/msgs/quaternion.pb.h>
 #include <ignition/msgs/stringmsg.pb.h>
+#include <ignition/msgs/stringmsg_v.pb.h>
+#include <ignition/msgs/track_visual.pb.h>
 #include <ignition/msgs/twist.pb.h>
 #include <ignition/msgs/uint32.pb.h>
 #include <ignition/msgs/vector3d.pb.h>
+#include <ignition/msgs/video_record.pb.h>
 #include <ignition/msgs/wrench.pb.h>
 
 #include <memory>
@@ -203,6 +212,16 @@ void createTestMsg(ignition::msgs::Contacts & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg);
 
+#if HAVE_DATAFRAME
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Dataframe & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg);
+#endif  // HAVE_DATAFRAME
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Image & _msg);
@@ -322,6 +341,38 @@ void createTestMsg(ignition::msgs::Light & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Light> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::GUICamera & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::GUICamera> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::StringMsg_V & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::StringMsg_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::TrackVisual & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::TrackVisual> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::VideoRecord & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg);
 
 }  // namespace testing
 }  // namespace ros_ign_bridge

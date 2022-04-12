@@ -15,6 +15,7 @@
 
 #include <gtest/gtest.h>
 #include <ignition/transport.hh>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
 
 #include <chrono>
 #include <memory>
@@ -321,6 +322,20 @@ TEST(IgnSubscriberTest, Contacts)
   EXPECT_TRUE(client.callbackExecuted);
 }
 
+#if HAVE_DATAFRAME
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, Dataframe)
+{
+  MyTestClass<ignition::msgs::Dataframe> client("dataframe");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+#endif  // HAVE_DATAFRAME
+
 /////////////////////////////////////////////////
 TEST(IgnSubscriberTest, Image)
 {
@@ -454,9 +469,57 @@ TEST(IgnSubscriberTest, BatteryState)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, GuiCamera)
+{
+  MyTestClass<ignition::msgs::GUICamera> client("gui_camera");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, JointTrajectory)
 {
   MyTestClass<ignition::msgs::JointTrajectory> client("joint_trajectory");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, StringMsg_V)
+{
+  MyTestClass<ignition::msgs::StringMsg_V> client("stringmsg_v");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, TrackVisual)
+{
+  MyTestClass<ignition::msgs::TrackVisual> client("track_visual");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, VideoRecord)
+{
+  MyTestClass<ignition::msgs::VideoRecord> client("video_record");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVar(

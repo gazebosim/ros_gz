@@ -18,10 +18,15 @@ find_package(rosidl_default_generators REQUIRED)
 set(msg_files
   "msg/Contact.msg"
   "msg/Contacts.msg"
+  "msg/Dataframe.msg"
   "msg/Entity.msg"
   "msg/EntityFactory.msg"
+  "msg/GuiCamera.msg"
   "msg/JointWrench.msg"
   "msg/Light.msg"
+  "msg/StringVec.msg"
+  "msg/TrackVisual.msg"
+  "msg/VideoRecord.msg"
   "msg/WorldControl.msg"
   "msg/WorldReset.msg"
 )

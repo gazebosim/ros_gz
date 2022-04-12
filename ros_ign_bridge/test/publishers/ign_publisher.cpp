@@ -14,6 +14,7 @@
 
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
 
 #include <atomic>
 #include <chrono>
@@ -217,6 +218,13 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Contacts contacts_msg;
   ros_ign_bridge::testing::createTestMsg(contacts_msg);
 
+#if HAVE_DATAFRAME
+  // ignition::msgs::Dataframe.
+  auto dataframe_pub = node.Advertise<ignition::msgs::Dataframe>("dataframe");
+  ignition::msgs::Dataframe dataframe_msg;
+  ros_ign_bridge::testing::createTestMsg(dataframe_msg);
+#endif  // HAVE_DATAFRAME
+
   // ignition::msgs::PointCloudPacked.
   auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
     "pointcloud2");
@@ -232,6 +240,26 @@ int main(int /*argc*/, char **/*argv*/)
   auto joint_trajectory_pub = node.Advertise<ignition::msgs::JointTrajectory>("joint_trajectory");
   ignition::msgs::JointTrajectory joint_trajectory_msg;
   ros_ign_bridge::testing::createTestMsg(joint_trajectory_msg);
+
+  // ignition::msgs::GUICamera.
+  auto gui_camera_pub = node.Advertise<ignition::msgs::GUICamera>("gui_camera");
+  ignition::msgs::GUICamera gui_camera_msg;
+  ros_ign_bridge::testing::createTestMsg(gui_camera_msg);
+
+  // ignition::msgs::StringMsg_V.
+  auto stringmsg_v_pub = node.Advertise<ignition::msgs::StringMsg_V>("stringmsg_v");
+  ignition::msgs::StringMsg_V stringmsg_v_msg;
+  ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
+
+  // ignition::msgs::TrackVisual.
+  auto track_visual_pub = node.Advertise<ignition::msgs::TrackVisual>("track_visual");
+  ignition::msgs::TrackVisual track_visual_msg;
+  ros_ign_bridge::testing::createTestMsg(track_visual_msg);
+
+  // ignition::msgs::VideoRecord.
+  auto video_record_pub = node.Advertise<ignition::msgs::VideoRecord>("video_record");
+  ignition::msgs::VideoRecord video_record_msg;
+  ros_ign_bridge::testing::createTestMsg(video_record_msg);
 
   // Publish messages at 1Hz.
   while (!g_terminatePub) {
@@ -258,6 +286,9 @@ int main(int /*argc*/, char **/*argv*/)
     entity_pub.Publish(entity_msg);
     contact_pub.Publish(contact_msg);
     contacts_pub.Publish(contacts_msg);
+#if HAVE_DATAFRAME
+    dataframe_pub.Publish(dataframe_msg);
+#endif  // HAVE_DATAFRAME
     image_pub.Publish(image_msg);
     camera_info_pub.Publish(camera_info_msg);
     fluid_pressure_pub.Publish(fluid_pressure_msg);
@@ -271,6 +302,10 @@ int main(int /*argc*/, char **/*argv*/)
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
     joint_trajectory_pub.Publish(joint_trajectory_msg);
+    gui_camera_pub.Publish(gui_camera_msg);
+    stringmsg_v_pub.Publish(stringmsg_v_msg);
+    track_visual_pub.Publish(track_visual_msg);
+    video_record_pub.Publish(video_record_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
