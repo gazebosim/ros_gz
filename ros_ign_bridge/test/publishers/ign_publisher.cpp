@@ -241,6 +241,26 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::JointTrajectory joint_trajectory_msg;
   ros_ign_bridge::testing::createTestMsg(joint_trajectory_msg);
 
+  // ignition::msgs::GUICamera.
+  auto gui_camera_pub = node.Advertise<ignition::msgs::GUICamera>("gui_camera");
+  ignition::msgs::GUICamera gui_camera_msg;
+  ros_ign_bridge::testing::createTestMsg(gui_camera_msg);
+
+  // ignition::msgs::StringMsg_V.
+  auto stringmsg_v_pub = node.Advertise<ignition::msgs::StringMsg_V>("stringmsg_v");
+  ignition::msgs::StringMsg_V stringmsg_v_msg;
+  ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
+
+  // ignition::msgs::TrackVisual.
+  auto track_visual_pub = node.Advertise<ignition::msgs::TrackVisual>("track_visual");
+  ignition::msgs::TrackVisual track_visual_msg;
+  ros_ign_bridge::testing::createTestMsg(track_visual_msg);
+
+  // ignition::msgs::VideoRecord.
+  auto video_record_pub = node.Advertise<ignition::msgs::VideoRecord>("video_record");
+  ignition::msgs::VideoRecord video_record_msg;
+  ros_ign_bridge::testing::createTestMsg(video_record_msg);
+
   // Publish messages at 1Hz.
   while (!g_terminatePub) {
     color_pub.Publish(color_msg);
@@ -282,6 +302,10 @@ int main(int /*argc*/, char **/*argv*/)
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
     joint_trajectory_pub.Publish(joint_trajectory_msg);
+    gui_camera_pub.Publish(gui_camera_msg);
+    stringmsg_v_pub.Publish(stringmsg_v_msg);
+    track_visual_pub.Publish(track_visual_msg);
+    video_record_pub.Publish(video_record_msg);
 
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
   }
