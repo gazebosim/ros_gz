@@ -431,6 +431,30 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg)
   }
 }
 
+#if HAVE_DATAFRAME
+void createTestMsg(ignition::msgs::Dataframe & _msg)
+{
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  _msg.set_src_address("localhost:8080");
+  _msg.set_dst_address("localhost:8081");
+  _msg.set_data(std::string(150, '1'));
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
+{
+  ignition::msgs::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  EXPECT_EQ(expected_msg.src_address(), _msg->src_address());
+  EXPECT_EQ(expected_msg.dst_address(), _msg->dst_address());
+  EXPECT_EQ(expected_msg.data(), _msg->data());
+}
+#endif  // HAVE_DATAFRAME
+
 void createTestMsg(ignition::msgs::Image & _msg)
 {
   ignition::msgs::Header header_msg;

@@ -15,6 +15,8 @@
 #ifndef UTILS__ROS_TEST_MSG_HPP_
 #define UTILS__ROS_TEST_MSG_HPP_
 
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
@@ -37,6 +39,9 @@
 #include <ros_ign_interfaces/msg/joint_wrench.hpp>
 #include <ros_ign_interfaces/msg/contact.hpp>
 #include <ros_ign_interfaces/msg/contacts.hpp>
+#if HAVE_DATAFRAME
+#include <ros_ign_interfaces/msg/dataframe.hpp>
+#endif  // HAVE_DATAFRAME
 #include <ros_ign_interfaces/msg/light.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
@@ -290,6 +295,16 @@ void createTestMsg(ros_ign_interfaces::msg::Contacts & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _msg);
+
+#if HAVE_DATAFRAME
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & _msg);
+#endif  // HAVE_DATAFRAME
 
 /// sensor_msgs
 

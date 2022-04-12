@@ -157,7 +157,7 @@ if(BUILD_TESTING)
   )
 
   target_include_directories(test_utils
-    PUBLIC test ${GTEST_INCLUDE_DIRS}
+    PUBLIC test ${GTEST_INCLUDE_DIRS} include
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}

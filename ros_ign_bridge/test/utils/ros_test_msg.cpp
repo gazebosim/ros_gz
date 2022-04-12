@@ -496,6 +496,32 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _
   }
 }
 
+#if HAVE_DATAFRAME
+void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.src_address = "localhost:8080";
+  _msg.dst_address = "localhost:8081";
+  _msg.data.resize(150, '1');
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & _msg)
+{
+  ros_ign_interfaces::msg::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.src_address, _msg->src_address);
+  EXPECT_EQ(expected_msg.dst_address, _msg->dst_address);
+
+  ASSERT_EQ(expected_msg.data.size(), _msg->data.size());
+  for (size_t ii = 0; ii < _msg->data.size(); ++ii) {
+    EXPECT_EQ(expected_msg.data[ii], _msg->data[ii]);
+  }
+}
+#endif  // HAVE_DATAFRAME
+
 void createTestMsg(nav_msgs::msg::Odometry & _msg)
 {
   createTestMsg(_msg.header);
