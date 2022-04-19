@@ -37,13 +37,7 @@ public:
   ///
   /// \param[in] ros_node ROS node to create publishers/subscribers on
   /// \param[in] ign_node IGN node to create publishers/subscribers on
-  /// \param[in] ros_type_name Name of the ROS message type to use
-  /// \param[in] ros_topic Name of the ROS topic to use
-  /// \param[in] ign_type_name Name of the IGN message type to use
-  /// \param[in] ign_topic Name of the IGN topic to use
-  /// \param[in] subscriber_queue_size Depth of the subscriber queue
-  /// \param[in] publisher_queue_size Depth of the publisher queue
-  /// \param[in] is_lazy True for "lazy" subscriptions. (Default: false)
+  /// \param[in] config Configuration parameters for this handle
   BridgeHandle(
     rclcpp::Node::SharedPtr ros_node,
     std::shared_ptr<ignition::transport::Node> ign_node,

@@ -181,3 +181,57 @@ And on terminal E, publish a ROS 2 message:
 `ros2 topic pub /chatter std_msgs/msg/String 'data: "Hello"' -1`
 
 You should see the Ignition listener echoing the message.
+
+## Example 4: Configuring the Bridge via YAML
+
+When configuring many topics, it is easier to use a file-based configuration in a markup
+language. In this case, the ros_ign bridge supports using a YAML file to configure the
+various parameters.
+
+The configuration file must be a YAML array of maps.
+An example configuration for 5 bridges is below, showing the various ways that a 
+bridge may be specified:
+```
+ # Set just topic name, applies to both
+- topic_name: "chatter" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just ROS topic name, applies to both
+- ros_topic_name: "chatter_ros" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just IGN topic name, applies to both
+- ign_topic_name: "chatter_ign" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set each topic name explicitly
+- ros_topic_name: "chatter_both_ros"
+  ign_topic_name: "chatter_both_ign" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Full set of configurations
+- ros_topic_name: "ros_chatter"
+  ign_topic_name: "ign_chatter"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+  subscriber_queue: 5
+  publisher_queue: 6
+  lazy: true
+```
+
+To run the bridge node with the above configuration:
+```
+ros2 run ros_ign_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_ign/ros_ign_bridge/test/config/full.yaml 
+```
+
+## API 
+
+ROS 2 Parameters:
+
+ * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
+ * `config_file` - YAML file to be loaded as the bridge configuration
+
