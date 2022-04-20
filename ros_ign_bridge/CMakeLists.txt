@@ -11,15 +11,7 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_ign_interfaces REQUIRED)
-find_package(rosgraph_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(tf2_msgs REQUIRED)
-find_package(trajectory_msgs REQUIRED)
 
 # Fortress
 if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
@@ -27,7 +19,11 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  set(GZ_MSGS_VERSION_MAJOR ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VERSION_MINOR ${ignition-msgs8_VERSION_MINOR})
+  set(GZ_MSGS_VERSION_PATCH ${ignition-msgs8_VERSION_PATCH})
 
   message(STATUS "Compiling against Ignition Fortress")
 # Default to Edifice
@@ -36,59 +32,63 @@ else()
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+
+  set(GZ_MSGS_VERSION_MAJOR ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VERSION_MINOR ${ignition-msgs7_VERSION_MINOR})
+  set(GZ_MSGS_VERSION_PATCH ${ignition-msgs7_VERSION_PATCH})
 
   message(STATUS "Compiling against Ignition Edifice")
 endif()
 
-set(PACKAGES
-  std_msgs
+set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_MSGS_VERSION_PATCH})
+
+set(BRIDGE_MESSAGE_TYPES
   geometry_msgs
   nav_msgs
-  tf2_msgs
   ros_ign_interfaces
   rosgraph_msgs
   sensor_msgs
+  std_msgs
+  tf2_msgs
   trajectory_msgs
 )
 
-add_library(bridge_utils
-  STATIC
-  src/convert/utils.cpp
-)
-target_include_directories(bridge_utils
-  PRIVATE src
-)
-set_target_properties(bridge_utils PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set(generated_path "${CMAKE_BINARY_DIR}/generated")
+set(generated_files "${generated_path}/get_factory.cpp")
+list(APPEND generated_files "${generated_path}/get_mappings.cpp")
+set(convert_files "src/convert/utils.cpp")
 
-foreach(PKG ${PACKAGES})
-  add_library(${PKG}_bridge
-    STATIC
-    src/convert/${PKG}.cpp
-    src/factories/${PKG}.cpp
-  )
-  target_include_directories(${PKG}_bridge
-    PUBLIC include
-    PRIVATE src
-  )
-  ament_target_dependencies(${PKG}_bridge
-    "${PKG}"
-  )
-  target_link_libraries(${PKG}_bridge
-    bridge_utils
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-  )
-  set_target_properties(${PKG}_bridge
-    PROPERTIES POSITION_INDEPENDENT_CODE ON)
+foreach(package_name ${BRIDGE_MESSAGE_TYPES})
+  find_package(${package_name} QUIET REQUIRED)
+  message(STATUS "Found ${package_name}: ${${package_name}_VERSION} (${${package_name}_DIR})")
 
+  list(APPEND generated_files "${generated_path}/factories/${package_name}.cpp")
+  list(APPEND generated_files "${generated_path}/factories/${package_name}.hpp")
+
+  list(APPEND convert_files "src/convert/${package_name}.cpp")
 endforeach()
 
-set(bridge_executables
-  parameter_bridge
-  static_bridge
-  lazy_static_bridge
-)
+set(target_dependencies
+  "bin/ros_ign_bridge_generate_factories"
+  "resource/get_factory.cpp.em"
+  "resource/get_mappings.cpp.em"
+  "resource/pkg_factories.cpp.em"
+  "resource/pkg_factories.hpp.em"
+  "ros_ign_bridge/__init__.py"
+  "ros_ign_bridge/mappings.py")
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+add_custom_command(
+  OUTPUT ${generated_files}
+  COMMAND Python3::Interpreter
+  ARGS bin/ros_ign_bridge_generate_factories
+    --output-path "${generated_path}" --template-dir resource
+    --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
+  DEPENDS ${target_dependencies}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "Generating factories for interface types")
 
 set(bridge_lib
   ros_ign_bridge_lib
@@ -99,18 +99,25 @@ add_library(${bridge_lib}
   src/bridge.cpp
   src/bridge_ros_to_ign.cpp
   src/bridge_ign_to_ros.cpp
-  src/factories.cpp
   src/factory_interface.cpp
+  ${convert_files}
+  ${generated_files}
+)
+
+target_link_libraries(${bridge_lib}
+    ignition-msgs${GZ_MSGS_VER}::core
+    ignition-transport${IGN_TRANSPORT_VER}::core
+)
+
+ament_target_dependencies(${bridge_lib}
+  rclcpp
+  ${BRIDGE_MESSAGE_TYPES}
 )
 
 target_include_directories(${bridge_lib}
   PUBLIC include
-  PRIVATE src
+  PRIVATE src ${generated_path}
 )
-
-foreach(PKG ${PACKAGES})
-  target_link_libraries(${bridge_lib} ${PKG}_bridge)
-endforeach()
 
 install(TARGETS ${bridge_lib}
         ARCHIVE DESTINATION lib
@@ -125,18 +132,22 @@ install(
 ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
 
+set(bridge_executables
+  parameter_bridge
+  static_bridge
+  bridge_types
+)
+
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
     src/${bridge}.cpp
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
-    ${PACKAGES}
+    ${BRIDGE_MESSAGE_TYPES}
   )
   install(TARGETS ${bridge}
     DESTINATION lib/${PROJECT_NAME}
@@ -161,19 +172,12 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
     ignition-transport${IGN_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
-    geometry_msgs
-    nav_msgs
     rclcpp
-    ros_ign_interfaces
-    rosgraph_msgs
-    sensor_msgs
-    std_msgs
-    tf2_msgs
-    trajectory_msgs
+    ${BRIDGE_MESSAGE_TYPES}
   )
 
   add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
@@ -216,7 +220,7 @@ endif()
 
 ament_export_dependencies(
   rclcpp
-  ${PACKAGES}
+  ${BRIDGE_MESSAGE_TYPES}
 )
 
 ament_package()
