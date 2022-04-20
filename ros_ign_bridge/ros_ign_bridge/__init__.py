@@ -107,10 +107,10 @@ def generate_cpp(output_path, template_dir, gz_msgs_ver):
         expand_template(template_file, data_pkg, output_file)
 
 
-def generate_test_cpp(output_path, template_dir):
+def generate_test_cpp(output_path, template_dir, gz_msgs_ver):
     # Generate cpp/hpp files for ros-ign package/message mappings
     data = {}
-    data['mappings'] = mappings()
+    data['mappings'] = mappings(gz_msgs_ver)
 
     template_file = os.path.join(template_dir, 'ign_publisher.cpp.em')
     output_file = os.path.join(output_path, 'ign_publisher.cpp')

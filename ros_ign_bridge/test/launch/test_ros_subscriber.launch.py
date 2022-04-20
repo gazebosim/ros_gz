@@ -17,6 +17,8 @@ import sys
 import unittest
 
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 
@@ -27,6 +29,23 @@ ros_ign_bridge_root = os.path.join(os.path.dirname(__file__), '..', '..')
 sys.path.insert(0, os.path.abspath(ros_ign_bridge_root))
 
 from ros_ign_bridge import mappings  # noqa: E402
+
+
+def bridge_setup(context, *args, **kwargs):
+    gz_msgs_ver = LaunchConfiguration('gz_msgs_ver').perform(context)
+    gz_msgs_ver = tuple(map(int, gz_msgs_ver.split('.')))
+
+    # Bridge
+    bridge = Node(
+        package='ros_ign_bridge',
+        executable='parameter_bridge',
+        arguments=[
+          f'/{m.unique()}@{m.ros2_string()}[{m.ign_string()}'
+          for m in mappings(gz_msgs_ver)
+        ],
+        output='screen'
+    )
+    return [bridge]
 
 
 def generate_test_description():
@@ -42,19 +61,15 @@ def generate_test_description():
         output='screen'
     )
 
-    # Bridge
-    bridge = Node(
-        package='ros_ign_bridge',
-        executable='parameter_bridge',
-        arguments=[
-          f'/{m.unique()}@{m.ros2_string()}[{m.ign_string()}' for m in mappings()
-        ],
-        output='screen'
-    )
     return LaunchDescription([
-        bridge,
+        DeclareLaunchArgument(
+            'gz_msgs_ver',
+            default_value=['0.0.0'],
+            description='Gazebo messages version to test against'
+        ),
         publisher,
         process_under_test,
+        OpaqueFunction(function=bridge_setup),
         launch_testing.util.KeepAliveProc(),
         launch_testing.actions.ReadyToTest(),
     ]), locals()

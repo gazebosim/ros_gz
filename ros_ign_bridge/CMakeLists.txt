@@ -211,6 +211,7 @@ if(BUILD_TESTING)
     COMMAND Python3::Interpreter
     ARGS bin/ros_ign_bridge_generate_tests
       --output-path "${generated_path}" --template-dir test/resource/
+      --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
     DEPENDS ${target_dependencies}
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     COMMENT "Generating test helpers")
@@ -239,10 +240,12 @@ if(BUILD_TESTING)
 
   add_launch_test(test/launch/test_ros_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 
   add_launch_test(test/launch/test_ign_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 endif()
 

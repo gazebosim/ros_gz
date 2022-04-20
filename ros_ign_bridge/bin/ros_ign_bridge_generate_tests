@@ -23,12 +23,20 @@ def main(argv=sys.argv[1:]):
         '--template-dir',
         required=True,
         help='The location of the template files')
+    parser.add_argument(
+        '--gz-msgs-ver',
+        required=False,
+        default="0.0.0",
+        help='Gazebo messages version')
+
     args = parser.parse_args(argv)
+    msgs_ver = tuple(map(int, args.gz_msgs_ver.split('.')))
 
     try:
         return generate_test_cpp(
             args.output_path,
             args.template_dir,
+            msgs_ver
         )
     except RuntimeError as e:
         print(str(e), file=sys.stderr)
