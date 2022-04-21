@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2022 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,33 +28,26 @@
 template<typename IGN_T>
 class MyTestClass
 {
-  /// \brief Class constructor.
-  /// \param[in] _topic Topic to subscribe.
+/// \brief Class constructor.
+/// \param[in] _topic Topic to subscribe.
+public: explicit MyTestClass(const std::string & _topic)
+{
+  EXPECT_TRUE(this->node.Subscribe(_topic, &MyTestClass::Cb, this));
+}
 
-public:
-  explicit MyTestClass(const std::string & _topic)
-  {
-    EXPECT_TRUE(this->node.Subscribe(_topic, &MyTestClass::Cb, this));
-  }
+/// \brief Member function called each time a topic update is received.
+/// \param[in] _msg Ignition message to be validated
+public: void Cb(const IGN_T & _msg)
+{
+  ros_ign_bridge::testing::compareTestMsg(std::make_shared<IGN_T>(_msg));
+  this->callbackExecuted = true;
+}
 
-  /// \brief Member function called each time a topic update is received.
+/// \brief Member variables that flag when the actions are executed.
+public: bool callbackExecuted = false;
 
-public:
-  void Cb(const IGN_T & _msg)
-  {
-    ros_ign_bridge::testing::compareTestMsg(std::make_shared<IGN_T>(_msg));
-    this->callbackExecuted = true;
-  }
-
-  /// \brief Member variables that flag when the actions are executed.
-
-public:
-  bool callbackExecuted = false;
-
-  /// \brief Transport node;
-
-private:
-  ignition::transport::Node node;
+/// \brief Transport node;
+private: ignition::transport::Node node;
 };
 
 @[for m in mappings]@

@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2022 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,6 +11,8 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
+// This file is generated from test/resource/ign_publisher.cpp.em
 
 #include <ignition/msgs.hh>
 #include <ignition/transport.hh>
@@ -32,6 +34,7 @@ static std::atomic<bool> g_terminatePub(false);
 /// \brief Function callback executed when a SIGINT or SIGTERM signals are
 /// captured. This is used to break the infinite loop that publishes messages
 /// and exit the program smoothly.
+/// \param[in] _signal signal number (interrupt or terminate)
 void signal_handler(int _signal)
 {
   if (_signal == SIGINT || _signal == SIGTERM) {
