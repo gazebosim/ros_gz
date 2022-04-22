@@ -1144,6 +1144,41 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const sensor_msgs::NavSatFix & ros_msg,
+  ignition::msgs::NavSat & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+  ign_msg.set_latitude_deg(ros_msg.latitude);
+  ign_msg.set_longitude_deg(ros_msg.longitude);
+  ign_msg.set_altitude(ros_msg.altitude);
+  ign_msg.set_frame_id(ros_msg.header.frame_id);
+
+  // Not supported in sensor_msgs::NavSatFix.
+  ign_msg.set_velocity_east(0.0);
+  ign_msg.set_velocity_north(0.0);
+  ign_msg.set_velocity_up(0.0);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::NavSat & ign_msg,
+  sensor_msgs::NavSatFix & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  ros_msg.header.frame_id = frame_id_ign_to_ros(ign_msg.frame_id());
+  ros_msg.latitude = ign_msg.latitude_deg();
+  ros_msg.longitude = ign_msg.longitude_deg();
+  ros_msg.altitude = ign_msg.altitude();
+
+  // position_covariance is not supported in Ignition::Msgs::NavSat.
+  ros_msg.position_covariance_type = sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+  ros_msg.status.status = sensor_msgs::NavSatStatus::STATUS_FIX;
+}
+
+template<>
+void
+convert_ros_to_ign(
   const sensor_msgs::PointCloud2 & ros_msg,
   ignition::msgs::PointCloudPacked &ign_msg)
 {

@@ -28,6 +28,7 @@
               /imu@sensor_msgs/Imu@ignition.msgs.IMU
               /laserscan@sensor_msgs/LaserScan@ignition.msgs.LaserScan
               /magnetic@sensor_msgs/MagneticField@ignition.msgs.Magnetometer
+              /navsat@sensor_msgs/NavSatFix@ignition.msgs.NavSat
               /actuators@mav_msgs/Actuators@ignition.msgs.Actuators
               /map@nav_msgs/OccupancyGrid@ignition.msgs.OccupancyGrid
               /odometry@nav_msgs/Odometry@ignition.msgs.Odometry

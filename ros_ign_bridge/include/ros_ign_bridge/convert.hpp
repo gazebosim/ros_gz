@@ -37,6 +37,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/NavSatFix.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <std_msgs/Bool.h>
 #include <std_msgs/ColorRGBA.h>
@@ -411,6 +412,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Magnetometer & ign_msg,
   sensor_msgs::MagneticField & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const sensor_msgs::NavSatFix & ros_msg,
+  ignition::msgs::NavSat & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::NavSat & ign_msg,
+  sensor_msgs::NavSatFix & ros_msg);
 
 template<>
 void

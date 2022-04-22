@@ -48,6 +48,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/NavSatFix.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <sensor_msgs/PointField.h>
 #include <tf2_msgs/TFMessage.h>
@@ -830,6 +831,42 @@ namespace testing
 
     for (auto i = 0u; i < 9; ++i)
       EXPECT_FLOAT_EQ(0, _msg.magnetic_field_covariance[i]);
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(sensor_msgs::NavSatFix &_msg)
+  {
+    std_msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.header                    = header_msg;
+    _msg.status.status             = sensor_msgs::NavSatStatus::STATUS_FIX;
+    _msg.latitude                  = 0.00;
+    _msg.longitude                 = 0.00;
+    _msg.altitude                  = 0.00;
+    _msg.position_covariance       = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+    _msg.position_covariance_type  =
+      sensor_msgs::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const sensor_msgs::NavSatFix &_msg)
+  {
+    sensor_msgs::NavSatFix expected_msg;
+    createTestMsg(expected_msg);
+
+    compareTestMsg(_msg.header);
+    EXPECT_EQ(expected_msg.status, _msg.status);
+    EXPECT_FLOAT_EQ(expected_msg.latitude, _msg.latitude);
+    EXPECT_FLOAT_EQ(expected_msg.longitude, _msg.longitude);
+    EXPECT_FLOAT_EQ(expected_msg.altitude, _msg.altitude);
+    EXPECT_EQ(expected_msg.position_covariance_type,
+      _msg.position_covariance_type);
+
+    for (auto i = 0u; i < 9; ++i)
+      EXPECT_FLOAT_EQ(0, _msg.position_covariance[i]);
   }
 
   /// \brief Create a message used for testing.
@@ -1631,6 +1668,39 @@ namespace testing
   {
     compareTestMsg(_msg.header());
     compareTestMsg(_msg.field_tesla());
+  }
+
+  /// \brief Create a message used for testing.
+  /// \param[out] _msg The message populated.
+  void createTestMsg(ignition::msgs::NavSat &_msg)
+  {
+    ignition::msgs::Header header_msg;
+    createTestMsg(header_msg);
+
+    _msg.mutable_header()->CopyFrom(header_msg);
+    _msg.set_frame_id("frame_id_value");
+    _msg.set_latitude_deg(0.00);
+    _msg.set_longitude_deg(0.00);
+    _msg.set_altitude(0.00);
+    _msg.set_velocity_east(0.00);
+    _msg.set_velocity_north(0.00);
+    _msg.set_velocity_up(0.00);
+  }
+
+  /// \brief Compare a message with the populated for testing.
+  /// \param[in] _msg The message to compare.
+  void compareTestMsg(const ignition::msgs::NavSat &_msg)
+  {
+    ignition::msgs::NavSat expected_msg;
+    createTestMsg(expected_msg);
+    
+    compareTestMsg(_msg.header());
+    EXPECT_FLOAT_EQ(expected_msg.latitude_deg(),  _msg.latitude_deg());
+    EXPECT_FLOAT_EQ(expected_msg.longitude_deg(),  _msg.longitude_deg());
+    EXPECT_FLOAT_EQ(expected_msg.altitude(),  _msg.altitude());
+    EXPECT_FLOAT_EQ(expected_msg.velocity_east(),  _msg.velocity_east());
+    EXPECT_FLOAT_EQ(expected_msg.velocity_north(),  _msg.velocity_north());
+    EXPECT_FLOAT_EQ(expected_msg.velocity_up(),  _msg.velocity_up());
   }
 
   /// \brief Create a message used for testing.

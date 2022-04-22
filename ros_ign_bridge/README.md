@@ -37,6 +37,7 @@ service calls. Its support is limited to only the following message types:
 | sensor_msgs/JointState         | ignition::msgs::Model            |
 | sensor_msgs/LaserScan          | ignition::msgs::LaserScan        |
 | sensor_msgs/MagneticField      | ignition::msgs::Magnetometer     |
+| sensor_msgs/NavSatFix          | ignition::msgs::NavSat           |
 | sensor_msgs/PointCloud2        | ignition::msgs::PointCloudPacked |
 | tf_msgs/TFMessage              | ignition::msgs::Pose_V           |
 | visualization_msgs/Marker      | ignition::msgs::Marker           |
