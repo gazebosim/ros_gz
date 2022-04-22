@@ -22,6 +22,7 @@
 #include <rclcpp/rclcpp.hpp>
 
 #include "bridge.hpp"
+#include "service_factory.hpp"
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])

@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2022 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,29 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES_HPP_
-#define FACTORIES_HPP_
+#ifndef  SERVICE_FACTORY_INTERFACE_HPP_
+#define  SERVICE_FACTORY_INTERFACE_HPP_
+
+#include <ignition/transport/Node.hh>
 
 #include <memory>
 #include <string>
 
-#include "factory_interface.hpp"
-#include "service_factory_interface.hpp"
+#include <rclcpp/service.hpp>
+#include <rclcpp/node.hpp>
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
-
-std::shared_ptr<ServiceFactoryInterface>
-get_service_factory(
-  const std::string & ros_type_name,
-  const std::string & ign_req_type_name,
-  const std::string & ign_rep_type_name);
+class ServiceFactoryInterface
+{
+public:
+  virtual
+  rclcpp::ServiceBase::SharedPtr
+  create_ros_service(
+    rclcpp::Node::SharedPtr ros_node,
+    std::shared_ptr<ignition::transport::Node> ign_node,
+    const std::string & service_name) = 0;
+};
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES_HPP_
+#endif  // SERVICE_FACTORY_INTERFACE_HPP_
