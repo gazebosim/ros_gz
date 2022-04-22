@@ -76,7 +76,7 @@ Now we start the Ignition Transport talker.
 
 ```
 # Shell C:
-ign topic pub -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
+ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS 2 talker and Ignition Transport listener
@@ -110,7 +110,7 @@ In this example, we're going to generate Ignition Transport images using
 Ignition Gazebo, that will be converted into ROS images, and visualized with
 `rqt_image_viewer`.
 
-First we start Ignition Gazebo.
+First we start Ignition Gazebo (don't forget to hit play, or Ignition Gazebo won't generate any images).
 
 ```
 # Shell A:
@@ -172,7 +172,7 @@ On terminal B, we start a ROS 2 listener:
 
 And terminal C, publish an Ignition message:
 
-`ign topic pub -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'`
+`ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
