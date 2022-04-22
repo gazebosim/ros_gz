@@ -41,6 +41,14 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 Using the regular bridge:
 
     ros2 launch ros_ign_gazebo_demos camera.launch.py
+    
+To use a camera that only publishes information when triggered:
+
+    ros2 launch ros_ign_gazebo_demos triggered_camera.launch.py
+    
+Trigger the camera:
+
+    ros2 topic pub /camera/trigger std_msgs/msg/Bool "{data: true}" --once
 
 ![](images/camera_demo.png)
 
