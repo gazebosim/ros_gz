@@ -37,7 +37,8 @@ def generate_launch_description():
                 '/model/double_pendulum_with_base0/pose@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'
             ],
             remappings=[
-                ('/model/double_pendulum_with_base0/pose','/tf')
+                ('/model/double_pendulum_with_base0/pose','/tf'),
+                ('/world/default/model/double_pendulum_with_base0/joint_state','/joint_states')
             ]
         ),
         # Launch rviz
