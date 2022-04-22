@@ -22,7 +22,7 @@ apt-get install -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
