@@ -100,6 +100,7 @@ add_library(${bridge_lib}
   SHARED
   src/factories.cpp
   src/factory_interface.cpp
+  src/service_factories/ros_ign_interfaces.cpp
 )
 
 target_include_directories(${bridge_lib}
@@ -198,10 +199,18 @@ if(BUILD_TESTING)
   add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
   target_link_libraries(test_ign_subscriber test_utils)
 
+  add_executable(test_ign_server test/serverclient/ign_server.cpp)
+  target_link_libraries(test_ign_server test_utils)
+
+  add_executable(test_ros_client test/serverclient/ros_client.cpp)
+  target_link_libraries(test_ros_client test_utils)
+
   install(TARGETS
+    test_ros_client
     test_ros_publisher
     test_ros_subscriber
     test_ign_publisher
+    test_ign_server
     test_ign_subscriber
     DESTINATION lib/${PROJECT_NAME}
   )
@@ -211,6 +220,10 @@ if(BUILD_TESTING)
   )
 
   add_launch_test(test/launch/test_ign_subscriber.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_ign_server.launch.py
     TIMEOUT 200
   )
 endif()
