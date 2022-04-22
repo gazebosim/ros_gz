@@ -23,6 +23,9 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-msgs7 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
+  find_package(ignition-gazebo5 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
+
   message(STATUS "Compiling against Ignition Edifice")
 # Default to Fortress
 else()
@@ -31,6 +34,9 @@ else()
 
   find_package(ignition-msgs8 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  find_package(ignition-gazebo6 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Fortress")
 endif()
@@ -53,9 +59,19 @@ target_link_libraries(create
 )
 ament_target_dependencies(create std_msgs)
 
-install(DIRECTORY
-  launch
-  DESTINATION share/${PROJECT_NAME}
+configure_file(
+  launch/ign_gazebo.launch.py.in
+  launch/ign_gazebo.launch.py.configured
+  @ONLY
+)
+file(GENERATE
+  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
+  INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py.configured"
+)
+
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
+  DESTINATION share/${PROJECT_NAME}/launch
 )
 
 install(TARGETS
