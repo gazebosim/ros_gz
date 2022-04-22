@@ -13,6 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(std_msgs REQUIRED)
 
 # Edifice
 if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
@@ -42,6 +43,7 @@ add_executable(create src/create.cpp)
 ament_target_dependencies(create
   rclcpp
   ignition-math6
+  std_msgs
 )
 target_link_libraries(create
   gflags
