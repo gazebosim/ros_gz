@@ -13,7 +13,7 @@ apt install -qq -y lsb-release wget curl build-essential
 # Citadel, Edifice and Fortress get Ignition with rosdep for Focal
 
 # Dependencies.
-echo "deb http://packages.ros.org/ros2/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-latest.list
+echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-testing.list
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
 apt-get install -y $IGN_DEPS \
@@ -22,7 +22,7 @@ apt-get install -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
