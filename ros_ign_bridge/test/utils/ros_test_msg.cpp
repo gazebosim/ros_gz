@@ -277,7 +277,7 @@ void createTestMsg(geometry_msgs::msg::PoseWithCovariance & _msg)
 {
   createTestMsg(_msg.pose.position);
   createTestMsg(_msg.pose.orientation);
-  for (int i = 0 ; i < 36; i++){
+  for (int i = 0; i < 36; i++) {
     _msg.covariance[i] = i;
   }
 }
@@ -368,7 +368,7 @@ void createTestMsg(geometry_msgs::msg::TwistWithCovariance & _msg)
 {
   createTestMsg(_msg.twist.linear);
   createTestMsg(_msg.twist.angular);
-  for (int i = 0 ; i < 36; i++){
+  for (int i = 0; i < 36; i++) {
     _msg.covariance[i] = i;
   }
 }

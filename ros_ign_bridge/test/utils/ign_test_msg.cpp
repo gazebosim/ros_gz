@@ -299,7 +299,7 @@ void createTestMsg(ignition::msgs::TwistWithCovariance & _msg)
 
   _msg.mutable_twist()->mutable_linear()->CopyFrom(linear_msg);
   _msg.mutable_twist()->mutable_angular()->CopyFrom(angular_msg);
-  for (int i = 0 ; i < 36 ; i++) {
+  for (int i = 0; i < 36; i++) {
     _msg.mutable_covariance()->add_data(i);
   }
 }
@@ -834,10 +834,14 @@ void createTestMsg(ignition::msgs::OdometryWithCovariance & _msg)
 void compareTestMsg(const std::shared_ptr<ignition::msgs::OdometryWithCovariance> & _msg)
 {
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
-  compareTestMsg(std::make_shared<ignition::msgs::PoseWithCovariance>(_msg->
-    pose_with_covariance()));
-  compareTestMsg(std::make_shared<ignition::msgs::TwistWithCovariance>(_msg->
-    twist_with_covariance()));
+  compareTestMsg(
+    std::make_shared<ignition::msgs::PoseWithCovariance>(
+      _msg->
+      pose_with_covariance()));
+  compareTestMsg(
+    std::make_shared<ignition::msgs::TwistWithCovariance>(
+      _msg->
+      twist_with_covariance()));
 }
 
 void createTestMsg(ignition::msgs::PointCloudPacked & _msg)

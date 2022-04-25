@@ -100,7 +100,7 @@ int main(int argc, char ** argv)
   // geometry_msgs::msg::PoseWithCovariance.
   auto pose_cov_pub =
     node->create_publisher<geometry_msgs::msg::PoseWithCovariance>(
-      "pose_with_covariance", 1000);
+    "pose_with_covariance", 1000);
   geometry_msgs::msg::PoseWithCovariance pose_cov_msg;
   ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
 
@@ -131,7 +131,7 @@ int main(int argc, char ** argv)
   // geometry_msgs::msg::TwistWithCovariance.
   auto twist_cov_pub =
     node->create_publisher<geometry_msgs::msg::TwistWithCovariance>(
-      "twist_with_covariance", 1000);
+    "twist_with_covariance", 1000);
   geometry_msgs::msg::TwistWithCovariance twist_cov_msg;
   ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
 
