@@ -112,7 +112,7 @@ convert_ros_to_ign(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
   ignition::msgs::PoseWithCovariance & ign_msg)
 {
-  convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());  
+  convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());
   convert_ros_to_ign(ros_msg.pose.orientation, *ign_msg.mutable_pose()->mutable_orientation());
   for (const auto & elem : ros_msg.covariance) {
     ign_msg.mutable_covariance()->add_data(elem);

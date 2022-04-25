@@ -834,8 +834,10 @@ void createTestMsg(ignition::msgs::OdometryWithCovariance & _msg)
 void compareTestMsg(const std::shared_ptr<ignition::msgs::OdometryWithCovariance> & _msg)
 {
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
-  compareTestMsg(std::make_shared<ignition::msgs::PoseWithCovariance>(_msg->pose_with_covariance()));
-  compareTestMsg(std::make_shared<ignition::msgs::TwistWithCovariance>(_msg->twist_with_covariance()));
+  compareTestMsg(std::make_shared<ignition::msgs::PoseWithCovariance>(_msg->
+    pose_with_covariance()));
+  compareTestMsg(std::make_shared<ignition::msgs::TwistWithCovariance>(_msg->
+    twist_with_covariance()));
 }
 
 void createTestMsg(ignition::msgs::PointCloudPacked & _msg)
