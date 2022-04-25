@@ -2,6 +2,20 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Support bridging services (`#211 <https://github.com/osrf/ros_ign/issues/211>`_)
+* Added reminder to hit play to receive images. (`#237 <https://github.com/osrf/ros_ign/issues/237>`_)
+* Updated `ign topic` commnds on README (`#221 <https://github.com/osrf/ros_ign/issues/221>`_)
+* Add conversions for ros_ign_interfaces/WorldControl and builtin_interfaces/Time (`#216 <https://github.com/osrf/ros_ign/issues/216>`_)
+* [ros_ign_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/osrf/ros_ign/issues/214>`_)
+* Break apart ros_subscriber test translation unit (`#212 <https://github.com/osrf/ros_ign/issues/212>`_)
+* Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/osrf/ros_ign/issues/213>`_)
+* Add missing dependency on rclcpp (`#209 <https://github.com/osrf/ros_ign/issues/209>`_)
+* Separate galactic branch from ros2 branch (`#201 <https://github.com/osrf/ros_ign/issues/201>`_)
+* 🏁 Dome EOL (`#198 <https://github.com/osrf/ros_ign/issues/198>`_)
+* Contributors: Aditya Pande, Ivan Santiago Paunovic, Joep Tool, Louise Poubel, Michael Carroll
+
 0.244.1 (2022-01-04)
 --------------------
 * Improve modularity of ign/ros publisher tests (`#194 <https://github.com/osrf/ros_ign/issues/194>`_)

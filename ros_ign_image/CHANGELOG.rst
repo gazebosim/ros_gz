@@ -2,6 +2,14 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/osrf/ros_ign/issues/213>`_)
+* Separate galactic branch from ros2 branch (`#201 <https://github.com/osrf/ros_ign/issues/201>`_)
+* 🏁 Dome EOL (`#198 <https://github.com/osrf/ros_ign/issues/198>`_)
+* Fix Deprecation Warning (`#158 <https://github.com/osrf/ros_ign/issues/158>`_)
+* Contributors: David V. Lu!!, Louise Poubel, Michael Carroll
+
 0.244.1 (2022-01-04)
 --------------------
 

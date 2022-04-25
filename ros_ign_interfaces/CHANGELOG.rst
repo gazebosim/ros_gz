@@ -2,6 +2,23 @@
 Changelog for package ros_ign_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros_ign_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/osrf/ros_ign/issues/214>`_)
+  * [ros_ign_interfaces] Add more interface definitions.
+  * Add converion functions for the added messages
+  * Update the factory factory function with the new messages
+  * Add new messages to docs
+  * Add test cases for the new messages conversions
+* Update maintainer for ros_ign_interfaces (`#204 <https://github.com/osrf/ros_ign/issues/204>`_)
+* [ros2]  new package ros_ign_interfaces, provide some  Ignition-specific ROS messages. (`#152 <https://github.com/osrf/ros_ign/issues/152>`_)
+  * add new package ros_ign_interfaces,provide some Ignition-specific ros .msg and .srv files
+  * modify to match ign-msgs
+  * add author info
+  * modify comments
+  * update code and doc style
+* Contributors: Alejandro Hernández Cordero, Ivan Santiago Paunovic, Louise Poubel, Michael Carroll, ahcorde, gezp
+
 0.244.1 (2022-01-04)
 --------------------
 
