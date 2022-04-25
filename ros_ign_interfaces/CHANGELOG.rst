@@ -2,8 +2,8 @@
 Changelog for package ros_ign_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.2 (2022-04-25)
+--------------------
 * [ros_ign_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/osrf/ros_ign/issues/214>`_)
   * [ros_ign_interfaces] Add more interface definitions.
   * Add converion functions for the added messages

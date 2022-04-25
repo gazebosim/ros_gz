@@ -2,8 +2,8 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.2 (2022-04-25)
+--------------------
 * Support bridging services (`#211 <https://github.com/osrf/ros_ign/issues/211>`_)
 * Add std_msgs as dependency of ros_ign_gazebo (`#242 <https://github.com/osrf/ros_ign/issues/242>`_)
 * Fixed ros_ign_gazebo launch file install directory (`#229 <https://github.com/osrf/ros_ign/issues/229>`_) (`#230 <https://github.com/osrf/ros_ign/issues/230>`_)

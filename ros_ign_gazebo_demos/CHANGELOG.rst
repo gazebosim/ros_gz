@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.2 (2022-04-25)
+--------------------
 * Camera trigger demo (`#223 <https://github.com/osrf/ros_ign/issues/223>`_)
 * Separate galactic branch from ros2 branch (`#201 <https://github.com/osrf/ros_ign/issues/201>`_)
 * 🏁 Dome EOL (`#198 <https://github.com/osrf/ros_ign/issues/198>`_)

@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.2 (2022-04-25)
+--------------------
 * Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/osrf/ros_ign/issues/213>`_)
 * Separate galactic branch from ros2 branch (`#201 <https://github.com/osrf/ros_ign/issues/201>`_)
 * 🏁 Dome EOL (`#198 <https://github.com/osrf/ros_ign/issues/198>`_)

@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.2 (2022-04-25)
+--------------------
 * Support bridging services (`#211 <https://github.com/osrf/ros_ign/issues/211>`_)
 * Added reminder to hit play to receive images. (`#237 <https://github.com/osrf/ros_ign/issues/237>`_)
 * Updated `ign topic` commnds on README (`#221 <https://github.com/osrf/ros_ign/issues/221>`_)
