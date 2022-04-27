@@ -54,14 +54,14 @@ def generate_test_description():
           '/point@geometry_msgs/msg/Point@ignition.msgs.Vector3d',
           '/pose@geometry_msgs/msg/Pose@ignition.msgs.Pose',
           '/pose_with_covariance@geometry_msgs/msg/PoseWithCovariance@'
-                  'ignition.msgs.PoseWithCovariance',
+          'ignition.msgs.PoseWithCovariance',
           '/pose_stamped@geometry_msgs/msg/PoseStamped@ignition.msgs.Pose',
           '/transform@geometry_msgs/msg/Transform@ignition.msgs.Pose',
           '/tf2_message@tf2_msgs/msg/TFMessage@ignition.msgs.Pose_V',
           '/transform_stamped@geometry_msgs/msg/TransformStamped@ignition.msgs.Pose',
           '/twist@geometry_msgs/msg/Twist@ignition.msgs.Twist',
           '/twist_with_covariance@geometry_msgs/msg/TwistWithCovariance@'
-                  'ignition.msgs.TwistWithCovariance',
+          'ignition.msgs.TwistWithCovariance',
           '/wrench@geometry_msgs/msg/Wrench@ignition.msgs.Wrench',
           '/joint_wrench@ros_ign_interfaces/msg/JointWrench@ignition.msgs.JointWrench',
           '/entity@ros_ign_interfaces/msg/Entity@ignition.msgs.Entity',
@@ -81,7 +81,7 @@ def generate_test_description():
           # '/actuators@mav_msgs/msg/Actuators@ignition.msgs.Actuators',
           '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
           '/odometry_with_covariance@nav_msgs/msg/Odometry@'
-                  'ignition.msgs.OdometryWithCovariance',
+          'ignition.msgs.OdometryWithCovariance',
           '/pointcloud2@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
           '/joint_states@sensor_msgs/msg/JointState@ignition.msgs.Model',
           '/battery_state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',
