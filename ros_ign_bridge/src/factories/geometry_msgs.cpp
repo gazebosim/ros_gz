@@ -68,6 +68,16 @@ get_factory__geometry_msgs(
       >
     >("geometry_msgs/msg/Pose", ign_type_name);
   }
+  if ((ros_type_name == "geometry_msgs/msg/PoseWithCovariance" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.PoseWithCovariance")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::msg::PoseWithCovariance,
+        ignition::msgs::PoseWithCovariance
+      >
+    >("geometry_msgs/msg/PoseWithCovariance", ign_type_name);
+  }
   if ((ros_type_name == "geometry_msgs/msg/PoseStamped" || ros_type_name.empty()) &&
     ign_type_name == "ignition.msgs.Pose")
   {
@@ -108,6 +118,17 @@ get_factory__geometry_msgs(
         ignition::msgs::Twist
       >
     >("geometry_msgs/msg/Twist", ign_type_name);
+  }
+  if (
+    (ros_type_name == "geometry_msgs/msg/TwistWithCovariance" || ros_type_name.empty()) &&
+    ign_type_name == "ignition.msgs.TwistWithCovariance")
+  {
+    return std::make_shared<
+      Factory<
+        geometry_msgs::msg::TwistWithCovariance,
+        ignition::msgs::TwistWithCovariance
+      >
+    >("geometry_msgs/msg/TwistWithCovariance", ign_type_name);
   }
   if (
     (ros_type_name == "geometry_msgs/msg/Wrench" || ros_type_name.empty()) &&
@@ -222,6 +243,30 @@ Factory<
 template<>
 void
 Factory<
+  geometry_msgs::msg::PoseWithCovariance,
+  ignition::msgs::PoseWithCovariance
+>::convert_ros_to_ign(
+  const geometry_msgs::msg::PoseWithCovariance & ros_msg,
+  ignition::msgs::PoseWithCovariance & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::msg::PoseWithCovariance,
+  ignition::msgs::PoseWithCovariance
+>::convert_ign_to_ros(
+  const ignition::msgs::PoseWithCovariance & ign_msg,
+  geometry_msgs::msg::PoseWithCovariance & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
   geometry_msgs::msg::PoseStamped,
   ignition::msgs::Pose
 >::convert_ros_to_ign(
@@ -311,6 +356,30 @@ Factory<
 >::convert_ign_to_ros(
   const ignition::msgs::Twist & ign_msg,
   geometry_msgs::msg::Twist & ros_msg)
+{
+  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::msg::TwistWithCovariance,
+  ignition::msgs::TwistWithCovariance
+>::convert_ros_to_ign(
+  const geometry_msgs::msg::TwistWithCovariance & ros_msg,
+  ignition::msgs::TwistWithCovariance & ign_msg)
+{
+  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+}
+
+template<>
+void
+Factory<
+  geometry_msgs::msg::TwistWithCovariance,
+  ignition::msgs::TwistWithCovariance
+>::convert_ign_to_ros(
+  const ignition::msgs::TwistWithCovariance & ign_msg,
+  geometry_msgs::msg::TwistWithCovariance & ros_msg)
 {
   ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }

@@ -264,6 +264,33 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Pose> & _msg)
   compareTestMsg(_msg->orientation);
 }
 
+void compareTestMsg(const geometry_msgs::msg::PoseWithCovariance & _msg)
+{
+  compareTestMsg(_msg.pose.position);
+  compareTestMsg(_msg.pose.orientation);
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg.covariance[i], i);
+  }
+}
+
+void createTestMsg(geometry_msgs::msg::PoseWithCovariance & _msg)
+{
+  createTestMsg(_msg.pose.position);
+  createTestMsg(_msg.pose.orientation);
+  for (int i = 0; i < 36; i++) {
+    _msg.covariance[i] = i;
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovariance> & _msg)
+{
+  compareTestMsg(_msg->pose.position);
+  compareTestMsg(_msg->pose.orientation);
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance[i], i);
+  }
+}
+
 void createTestMsg(geometry_msgs::msg::PoseStamped & _msg)
 {
   createTestMsg(_msg.header);
@@ -335,6 +362,24 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Twist> & _msg)
 {
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular));
+}
+
+void createTestMsg(geometry_msgs::msg::TwistWithCovariance & _msg)
+{
+  createTestMsg(_msg.twist.linear);
+  createTestMsg(_msg.twist.angular);
+  for (int i = 0; i < 36; i++) {
+    _msg.covariance[i] = i;
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->twist.linear));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->twist.angular));
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance[i], i);
+  }
 }
 
 void createTestMsg(geometry_msgs::msg::Wrench & _msg)
@@ -613,6 +658,10 @@ void createTestMsg(nav_msgs::msg::Odometry & _msg)
   createTestMsg(_msg.header);
   createTestMsg(_msg.pose.pose);
   createTestMsg(_msg.twist.twist);
+  for (int i = 0; i < 36; i++) {
+    _msg.pose.covariance[i] = i;
+    _msg.twist.covariance[i] = i;
+  }
 }
 
 void compareTestMsg(const std::shared_ptr<nav_msgs::msg::Odometry> & _msg)

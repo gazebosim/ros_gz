@@ -202,6 +202,18 @@ TEST(IgnSubscriberTest, Pose)
 }
 
 /////////////////////////////////////////////////
+TEST(IgnSubscriberTest, PoseWithCovariance)
+{
+  MyTestClass<ignition::msgs::PoseWithCovariance> client("pose_with_covariance");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
 TEST(IgnSubscriberTest, PoseStamped)
 {
   MyTestClass<ignition::msgs::Pose> client("pose_stamped");
@@ -253,6 +265,18 @@ TEST(IgnSubscriberTest, TF2Message)
 TEST(IgnSubscriberTest, Twist)
 {
   MyTestClass<ignition::msgs::Twist> client("twist");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, TwistWithCovariance)
+{
+  MyTestClass<ignition::msgs::TwistWithCovariance> client("twist_with_covariance");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVar(
@@ -409,6 +433,18 @@ TEST(IgnSubscriberTest, Magnetometer)
 TEST(IgnSubscriberTest, Odometry)
 {
   MyTestClass<ignition::msgs::Odometry> client("odometry");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVar(
+    client.callbackExecuted, 100ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(IgnSubscriberTest, OdometryWithCovariance)
+{
+  MyTestClass<ignition::msgs::OdometryWithCovariance> client("odometry_with_covariance");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVar(

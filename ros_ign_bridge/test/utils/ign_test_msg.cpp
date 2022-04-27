@@ -235,6 +235,24 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Quaternion>(_msg->orientation()));
 }
 
+void createTestMsg(ignition::msgs::PoseWithCovariance & _msg)
+{
+  createTestMsg(*_msg.mutable_pose()->mutable_position());
+  createTestMsg(*_msg.mutable_pose()->mutable_orientation());
+  for (int i = 0; i < 36; i++) {
+    _msg.mutable_covariance()->add_data(i);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::PoseWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->pose().position()));
+  compareTestMsg(std::make_shared<ignition::msgs::Quaternion>(_msg->pose().orientation()));
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance().data(i), i);
+  }
+}
+
 void createTestMsg(ignition::msgs::Pose_V & _msg)
 {
   createTestMsg(*(_msg.mutable_header()));
@@ -269,6 +287,30 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Twist> & _msg)
 {
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->linear()));
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->angular()));
+}
+
+void createTestMsg(ignition::msgs::TwistWithCovariance & _msg)
+{
+  ignition::msgs::Vector3d linear_msg;
+  ignition::msgs::Vector3d angular_msg;
+
+  createTestMsg(linear_msg);
+  createTestMsg(angular_msg);
+
+  _msg.mutable_twist()->mutable_linear()->CopyFrom(linear_msg);
+  _msg.mutable_twist()->mutable_angular()->CopyFrom(angular_msg);
+  for (int i = 0; i < 36; i++) {
+    _msg.mutable_covariance()->add_data(i);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::TwistWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().linear()));
+  compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->twist().angular()));
+  for (int i = 0; i < 36; i++) {
+    EXPECT_EQ(_msg->covariance().data()[i], i);
+  }
 }
 
 void createTestMsg(ignition::msgs::Wrench & _msg)
@@ -772,6 +814,34 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Odometry> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
   compareTestMsg(std::make_shared<ignition::msgs::Pose>(_msg->pose()));
   compareTestMsg(std::make_shared<ignition::msgs::Twist>(_msg->twist()));
+}
+
+void createTestMsg(ignition::msgs::OdometryWithCovariance & _msg)
+{
+  ignition::msgs::Header header_msg;
+  ignition::msgs::PoseWithCovariance pose_cov_msg;
+  ignition::msgs::TwistWithCovariance twist_cov_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(pose_cov_msg);
+  createTestMsg(twist_cov_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_pose_with_covariance()->CopyFrom(pose_cov_msg);
+  _msg.mutable_twist_with_covariance()->CopyFrom(twist_cov_msg);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::OdometryWithCovariance> & _msg)
+{
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(
+    std::make_shared<ignition::msgs::PoseWithCovariance>(
+      _msg->
+      pose_with_covariance()));
+  compareTestMsg(
+    std::make_shared<ignition::msgs::TwistWithCovariance>(
+      _msg->
+      twist_with_covariance()));
 }
 
 void createTestMsg(ignition::msgs::PointCloudPacked & _msg)

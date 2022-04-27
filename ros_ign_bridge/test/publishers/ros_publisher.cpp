@@ -97,6 +97,13 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
 
+  // geometry_msgs::msg::PoseWithCovariance.
+  auto pose_cov_pub =
+    node->create_publisher<geometry_msgs::msg::PoseWithCovariance>(
+    "pose_with_covariance", 1000);
+  geometry_msgs::msg::PoseWithCovariance pose_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+
   // geometry_msgs::msg::PoseStamped.
   auto pose_stamped_pub =
     node->create_publisher<geometry_msgs::msg::PoseStamped>("pose_stamped", 1000);
@@ -120,6 +127,13 @@ int main(int argc, char ** argv)
     node->create_publisher<geometry_msgs::msg::Twist>("twist", 1000);
   geometry_msgs::msg::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
+
+  // geometry_msgs::msg::TwistWithCovariance.
+  auto twist_cov_pub =
+    node->create_publisher<geometry_msgs::msg::TwistWithCovariance>(
+    "twist_with_covariance", 1000);
+  geometry_msgs::msg::TwistWithCovariance twist_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
 
   auto tf2_message_pub =
     node->create_publisher<tf2_msgs::msg::TFMessage>("tf2_message", 1000);
@@ -198,6 +212,12 @@ int main(int argc, char ** argv)
   nav_msgs::msg::Odometry odometry_msg;
   ros_ign_bridge::testing::createTestMsg(odometry_msg);
 
+  // nav_msgs::msg::Odometry.
+  auto odometry_cov_pub =
+    node->create_publisher<nav_msgs::msg::Odometry>("odometry_with_covariance", 1000);
+  nav_msgs::msg::Odometry odometry_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(odometry_cov_msg);
+
   // sensor_msgs::msg::Image.
   auto image_pub =
     node->create_publisher<sensor_msgs::msg::Image>("image", 1000);
@@ -274,11 +294,13 @@ int main(int argc, char ** argv)
     clock_pub->publish(clock_msg);
     point_pub->publish(point_msg);
     pose_pub->publish(pose_msg);
+    pose_cov_pub->publish(pose_cov_msg);
     pose_stamped_pub->publish(pose_stamped_msg);
     transform_pub->publish(transform_msg);
     transform_stamped_pub->publish(transform_stamped_msg);
     tf2_message_pub->publish(tf2_msg);
     twist_pub->publish(twist_msg);
+    twist_cov_pub->publish(twist_cov_msg);
     wrench_pub->publish(wrench_msg);
     light_pub->publish(light_msg);
     joint_wrench_pub->publish(joint_wrench_msg);
@@ -287,6 +309,7 @@ int main(int argc, char ** argv)
     contacts_pub->publish(contacts_msg);
     // actuators_pub->publish(actuators_msg);
     odometry_pub->publish(odometry_msg);
+    odometry_cov_pub->publish(odometry_cov_msg);
     image_pub->publish(image_msg);
     camera_info_pub->publish(camera_info_msg);
     fluid_pressure_pub->publish(fluid_pressure_msg);

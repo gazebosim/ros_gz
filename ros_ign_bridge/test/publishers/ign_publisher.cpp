@@ -119,6 +119,11 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Pose pose_msg;
   ros_ign_bridge::testing::createTestMsg(pose_msg);
 
+  // ignition::msgs::PoseWithCovariance.
+  auto pose_cov_pub = node.Advertise<ignition::msgs::PoseWithCovariance>("pose_with_covariance");
+  ignition::msgs::PoseWithCovariance pose_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+
   // ignition::msgs::PoseStamped.
   auto pose_stamped_pub = node.Advertise<ignition::msgs::Pose>("pose_stamped");
   ignition::msgs::Pose pose_stamped_msg;
@@ -182,6 +187,12 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::Odometry odometry_msg;
   ros_ign_bridge::testing::createTestMsg(odometry_msg);
 
+  // ignition::msgs::OdometryWithCovariance.
+  auto odometry_cov_pub = node.Advertise<ignition::msgs::OdometryWithCovariance>(
+    "odometry_with_covariance");
+  ignition::msgs::OdometryWithCovariance odometry_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(odometry_cov_msg);
+
   // ignition::msgs::Model.
   auto joint_states_pub = node.Advertise<ignition::msgs::Model>("joint_states");
   ignition::msgs::Model joint_states_msg;
@@ -191,6 +202,12 @@ int main(int /*argc*/, char **/*argv*/)
   auto twist_pub = node.Advertise<ignition::msgs::Twist>("twist");
   ignition::msgs::Twist twist_msg;
   ros_ign_bridge::testing::createTestMsg(twist_msg);
+
+  // ignition::msgs::TwistWithCovariance.
+  auto twist_cov_pub = node.Advertise<ignition::msgs::TwistWithCovariance>(
+    "twist_with_covariance");
+  ignition::msgs::TwistWithCovariance twist_cov_msg;
+  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
 
   // ignition::msgs::Wrench.
   auto wrench_pub = node.Advertise<ignition::msgs::Wrench>("wrench");
@@ -274,6 +291,7 @@ int main(int /*argc*/, char **/*argv*/)
     clock_pub.Publish(clock_msg);
     point_pub.Publish(point_msg);
     pose_pub.Publish(pose_msg);
+    pose_cov_pub.Publish(pose_cov_msg);
     pose_stamped_pub.Publish(pose_stamped_msg);
     transform_pub.Publish(transform_msg);
     transform_stamped_pub.Publish(transform_stamped_msg);
@@ -291,8 +309,10 @@ int main(int /*argc*/, char **/*argv*/)
     magnetic_pub.Publish(magnetometer_msg);
     actuators_pub.Publish(actuators_msg);
     odometry_pub.Publish(odometry_msg);
+    odometry_cov_pub.Publish(odometry_cov_msg);
     joint_states_pub.Publish(joint_states_msg);
     twist_pub.Publish(twist_msg);
+    twist_cov_pub.Publish(twist_cov_msg);
     pointcloudpacked_pub.Publish(pointcloudpacked_msg);
     battery_state_pub.Publish(battery_state_msg);
     joint_trajectory_pub.Publish(joint_trajectory_msg);

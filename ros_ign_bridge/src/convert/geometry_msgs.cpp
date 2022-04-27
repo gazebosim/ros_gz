@@ -109,6 +109,36 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const geometry_msgs::msg::PoseWithCovariance & ros_msg,
+  ignition::msgs::PoseWithCovariance & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());
+  convert_ros_to_ign(ros_msg.pose.orientation, *ign_msg.mutable_pose()->mutable_orientation());
+  for (const auto & elem : ros_msg.covariance) {
+    ign_msg.mutable_covariance()->add_data(elem);
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::PoseWithCovariance & ign_msg,
+  geometry_msgs::msg::PoseWithCovariance & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.pose().position(), ros_msg.pose.position);
+  convert_ign_to_ros(ign_msg.pose().orientation(), ros_msg.pose.orientation);
+  int data_size = ign_msg.covariance().data_size();
+  if (data_size == 36) {
+    for (int i = 0; i < data_size; i++) {
+      auto data = ign_msg.covariance().data()[i];
+      ros_msg.covariance[i] = data;
+    }
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
   const geometry_msgs::msg::PoseStamped & ros_msg,
   ignition::msgs::Pose & ign_msg)
 {
@@ -195,6 +225,36 @@ convert_ign_to_ros(
 {
   convert_ign_to_ros(ign_msg.linear(), ros_msg.linear);
   convert_ign_to_ros(ign_msg.angular(), ros_msg.angular);
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const geometry_msgs::msg::TwistWithCovariance & ros_msg,
+  ignition::msgs::TwistWithCovariance & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.twist.linear, (*ign_msg.mutable_twist()->mutable_linear()));
+  convert_ros_to_ign(ros_msg.twist.angular, (*ign_msg.mutable_twist()->mutable_angular()));
+  for (const auto & elem : ros_msg.covariance) {
+    ign_msg.mutable_covariance()->add_data(elem);
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::TwistWithCovariance & ign_msg,
+  geometry_msgs::msg::TwistWithCovariance & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.twist().linear(), ros_msg.twist.linear);
+  convert_ign_to_ros(ign_msg.twist().angular(), ros_msg.twist.angular);
+  int data_size = ign_msg.covariance().data_size();
+  if (data_size == 36) {
+    for (int i = 0; i < data_size; i++) {
+      auto data = ign_msg.covariance().data()[i];
+      ros_msg.covariance[i] = data;
+    }
+  }
 }
 
 template<>

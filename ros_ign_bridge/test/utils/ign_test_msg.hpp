@@ -40,14 +40,17 @@
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
 #include <ignition/msgs/odometry.pb.h>
+#include <ignition/msgs/odometry_with_covariance.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
 #include <ignition/msgs/pose.pb.h>
+#include <ignition/msgs/pose_with_covariance.pb.h>
 #include <ignition/msgs/pose_v.pb.h>
 #include <ignition/msgs/quaternion.pb.h>
 #include <ignition/msgs/stringmsg.pb.h>
 #include <ignition/msgs/stringmsg_v.pb.h>
 #include <ignition/msgs/track_visual.pb.h>
 #include <ignition/msgs/twist.pb.h>
+#include <ignition/msgs/twist_with_covariance.pb.h>
 #include <ignition/msgs/uint32.pb.h>
 #include <ignition/msgs/vector3d.pb.h>
 #include <ignition/msgs/video_record.pb.h>
@@ -153,6 +156,14 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::PoseWithCovariance & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::PoseWithCovariance> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Pose_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
@@ -166,6 +177,14 @@ void createTestMsg(ignition::msgs::Twist & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Twist> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::TwistWithCovariance & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::TwistWithCovariance> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -286,6 +305,14 @@ void createTestMsg(ignition::msgs::Odometry & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Odometry> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::OdometryWithCovariance & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::OdometryWithCovariance> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

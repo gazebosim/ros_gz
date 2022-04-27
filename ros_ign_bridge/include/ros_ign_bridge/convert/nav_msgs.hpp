@@ -17,6 +17,7 @@
 
 // Ignition messages
 #include <ignition/msgs/odometry.pb.h>
+#include <ignition/msgs/odometry_with_covariance.pb.h>
 
 // ROS 2 messages
 #include <nav_msgs/msg/odometry.hpp>
@@ -36,6 +37,18 @@ template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::Odometry & ign_msg,
+  nav_msgs::msg::Odometry & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::msg::Odometry & ros_msg,
+  ignition::msgs::OdometryWithCovariance & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OdometryWithCovariance & ign_msg,
   nav_msgs::msg::Odometry & ros_msg);
 
 }  // namespace ros_ign_bridge

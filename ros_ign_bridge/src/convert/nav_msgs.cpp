@@ -44,9 +44,43 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.twist(), ros_msg.twist.twist);
 
   for (auto i = 0; i < ign_msg.header().data_size(); ++i) {
-    auto aPair = ign_msg.header().data(i);
-    if (aPair.key() == "child_frame_id" && aPair.value_size() > 0) {
-      ros_msg.child_frame_id = frame_id_ign_to_ros(aPair.value(0));
+    auto a_pair = ign_msg.header().data(i);
+    if (a_pair.key() == "child_frame_id" && a_pair.value_size() > 0) {
+      ros_msg.child_frame_id = frame_id_ign_to_ros(a_pair.value(0));
+      break;
+    }
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const nav_msgs::msg::Odometry & ros_msg,
+  ignition::msgs::OdometryWithCovariance & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+  convert_ros_to_ign(ros_msg.pose, (*ign_msg.mutable_pose_with_covariance()));
+  convert_ros_to_ign(ros_msg.twist, (*ign_msg.mutable_twist_with_covariance()));
+
+  auto childFrame = ign_msg.mutable_header()->add_data();
+  childFrame->set_key("child_frame_id");
+  childFrame->add_value(ros_msg.child_frame_id);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::OdometryWithCovariance & ign_msg,
+  nav_msgs::msg::Odometry & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+  convert_ign_to_ros(ign_msg.pose_with_covariance(), ros_msg.pose);
+  convert_ign_to_ros(ign_msg.twist_with_covariance(), ros_msg.twist);
+
+  for (auto i = 0; i < ign_msg.header().data_size(); ++i) {
+    auto a_pair = ign_msg.header().data(i);
+    if (a_pair.key() == "child_frame_id" && a_pair.value_size() > 0) {
+      ros_msg.child_frame_id = frame_id_ign_to_ros(a_pair.value(0));
       break;
     }
   }
