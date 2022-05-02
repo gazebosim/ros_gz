@@ -22,6 +22,7 @@
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
@@ -90,6 +91,10 @@ void createTestMsg(std_msgs::msg::ColorRGBA & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg);
 
+/// \brief Create a message used for testing. Noop for Empty
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::Empty & _msg);
+
 /// \brief Compare a message with the populated for testing. Noop for Empty
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Empty> &);
@@ -109,6 +114,14 @@ void createTestMsg(std_msgs::msg::Float64 & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float64> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::Int32 & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::Int32> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

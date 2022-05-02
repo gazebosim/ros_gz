@@ -180,26 +180,55 @@ if(BUILD_TESTING)
     ${BRIDGE_MESSAGE_TYPES}
   )
 
-  add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
-  target_link_libraries(test_ros_publisher test_utils)
+  set(generated_path "${CMAKE_BINARY_DIR}/generated/test")
 
-  add_executable(test_ros_subscriber
-        test/subscribers/ros_subscriber/ros_subscriber.cpp
-        test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
-        test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/std_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/trajectory_msgs_subscriber.cpp)
+  set(generated_files
+    "${generated_path}/ign_publisher.cpp"
+    "${generated_path}/ign_subscriber.cpp"
+    "${generated_path}/ros_publisher.cpp"
+  )
 
-  target_link_libraries(test_ros_subscriber test_utils)
+  set(ros_subscriber_files
+    "test/subscribers/ros_subscriber.cpp"
+  )
 
-  add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
+  foreach(package_name ${BRIDGE_MESSAGE_TYPES})
+    list(APPEND generated_files "${generated_path}/${package_name}_subscriber.cpp")
+    list(APPEND ros_subscriber_files "${generated_path}/${package_name}_subscriber.cpp")
+  endforeach()
+
+  set(target_dependencies
+    "bin/ros_ign_bridge_generate_factories"
+    "test/resource/ign_publisher.cpp.em"
+    "test/resource/ign_subscriber.cpp.em"
+    "test/resource/ros_publisher.cpp.em"
+    "test/resource/ros_pkg_subscriber.cpp.em"
+    "ros_ign_bridge/__init__.py"
+    "ros_ign_bridge/mappings.py")
+
+  add_custom_command(
+    OUTPUT ${generated_files}
+    COMMAND Python3::Interpreter
+    ARGS bin/ros_ign_bridge_generate_tests
+      --output-path "${generated_path}" --template-dir test/resource/
+      --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
+    DEPENDS ${target_dependencies}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Generating test helpers")
+
+  add_executable(test_ign_publisher ${generated_path}/ign_publisher.cpp)
   target_link_libraries(test_ign_publisher test_utils)
 
-  add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
+  add_executable(test_ros_publisher ${generated_path}/ros_publisher.cpp)
+  target_link_libraries(test_ros_publisher test_utils)
+
+  add_executable(test_ign_subscriber ${generated_path}/ign_subscriber.cpp)
   target_link_libraries(test_ign_subscriber test_utils)
+
+  add_executable(test_ros_subscriber ${ros_subscriber_files})
+  target_link_libraries(test_ros_subscriber test_utils)
+  target_include_directories(test_ros_subscriber
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
   install(TARGETS
     test_ros_publisher
@@ -211,10 +240,12 @@ if(BUILD_TESTING)
 
   add_launch_test(test/launch/test_ros_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 
   add_launch_test(test/launch/test_ign_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 endif()
 

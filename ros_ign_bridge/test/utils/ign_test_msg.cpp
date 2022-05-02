@@ -56,6 +56,10 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg)
   EXPECT_EQ(expected_msg.a(), _msg->a());
 }
 
+void createTestMsg(ignition::msgs::Empty &)
+{
+}
+
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Empty> &)
 {
 }
@@ -81,6 +85,19 @@ void createTestMsg(ignition::msgs::Double & _msg)
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Double> & _msg)
 {
   ignition::msgs::Double expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());
+}
+
+void createTestMsg(ignition::msgs::Int32 & _msg)
+{
+  _msg.set_data(-10);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Int32> & _msg)
+{
+  ignition::msgs::Int32 expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());

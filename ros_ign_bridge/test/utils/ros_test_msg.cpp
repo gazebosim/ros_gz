@@ -56,6 +56,10 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.a, _msg->a);
 }
 
+void createTestMsg(std_msgs::msg::Empty &)
+{
+}
+
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Empty> &)
 {
 }
@@ -86,6 +90,18 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float64> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
 }
 
+void createTestMsg(std_msgs::msg::Int32 & _msg)
+{
+  _msg.data = -10;
+}
+
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::Int32> & _msg)
+{
+  std_msgs::msg::Int32 expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.data, _msg->data);
+}
 
 void createTestMsg(std_msgs::msg::UInt32 & _msg)
 {
@@ -97,7 +113,7 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::UInt32> & _msg)
   std_msgs::msg::UInt32 expected_msg;
   createTestMsg(expected_msg);
 
-  EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
+  EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
 void createTestMsg(std_msgs::msg::Header & _msg)
