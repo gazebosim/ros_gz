@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2021 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,23 +11,27 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
 
-#ifndef FACTORIES__TF2_MSGS_HPP_
-#define FACTORIES__TF2_MSGS_HPP_
+#include <gtest/gtest.h>
 
-#include <memory>
-#include <string>
+#include <chrono>
 
-#include "factory_interface.hpp"
+#include "ros_subscriber.hpp"
 
-namespace ros_ign_bridge
+using ros_subscriber::MyTestClass;
+
+@[for m in mappings]@
+/////////////////////////////////////////////////
+TEST(ROSSubscriberTest, @(m.unique()))
 {
+  MyTestClass<@(m.ros2_type())> client("@(m.unique())");
 
-std::shared_ptr<FactoryInterface>
-get_factory__tf2_msgs(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
-}  // namespace ros_ign_bridge
+  EXPECT_TRUE(client.callbackExecuted);
+}
 
-#endif  // FACTORIES__TF2_MSGS_HPP_
+@[end for]@

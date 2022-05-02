@@ -1,4 +1,4 @@
-// Copyright 2021 Open Source Robotics Foundation, Inc.
+// Copyright 2018 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -11,24 +11,23 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-//
 
-#include <gtest/gtest.h>
+#ifndef GET_FACTORY_HPP_
+#define GET_FACTORY_HPP_
 
-#include <chrono>
+#include <memory>
+#include <string>
 
-#include "ros_subscriber.hpp"
+#include "factory_interface.hpp"
 
-using ros_subscriber::MyTestClass;
-
-/////////////////////////////////////////////////
-TEST(ROSSubscriberTest, JointTrajectory)
+namespace ros_ign_bridge
 {
-  MyTestClass<trajectory_msgs::msg::JointTrajectory> client("joint_trajectory");
 
-  using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
-    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+std::shared_ptr<FactoryInterface>
+get_factory(
+  const std::string & ros_type_name,
+  const std::string & ign_type_name);
 
-  EXPECT_TRUE(client.callbackExecuted);
-}
+}  // namespace ros_ign_bridge
+
+#endif  // GET_FACTORY_HPP_

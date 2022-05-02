@@ -15,6 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__ROS_IGN_BRIDGE_HPP_
 #define ROS_IGN_BRIDGE__ROS_IGN_BRIDGE_HPP_
 
+#include <ignition/msgs/config.hh>
 #include <ignition/transport/Node.hh>
 #include <rclcpp/node.hpp>
 
@@ -23,6 +24,14 @@
 #include <vector>
 
 #include "ros_ign_bridge/bridge_config.hpp"
+
+// Dataframe is available from versions 8.4.0 (fortress) forward
+// This can be removed when the minimum supported version passes 8.4.0
+#if (IGNITION_MSGS_MAJOR_VERSION >= 8 && \
+  IGNITION_MSGS_MINOR_VERSION >= 4 && \
+  IGNITION_MSGS_PATCH_VERSION >= 0)
+#define HAVE_DATAFRAME true
+#endif
 
 namespace ros_ign_bridge
 {
@@ -56,4 +65,5 @@ protected:
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
 };
 }  // namespace ros_ign_bridge
+
 #endif  // ROS_IGN_BRIDGE__ROS_IGN_BRIDGE_HPP_

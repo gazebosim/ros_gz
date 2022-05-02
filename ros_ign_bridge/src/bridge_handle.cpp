@@ -17,7 +17,7 @@
 #include <memory>
 #include <string>
 
-#include "factories.hpp"
+#include "get_factory.hpp"
 
 namespace ros_ign_bridge
 {

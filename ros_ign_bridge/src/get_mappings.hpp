@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2022 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES__ROSGRAPH_MSGS_HPP_
-#define FACTORIES__ROSGRAPH_MSGS_HPP_
+#ifndef GET_MAPPINGS_HPP_
+#define GET_MAPPINGS_HPP_
 
-#include <memory>
+#include <map>
 #include <string>
-
-#include "factory_interface.hpp"
 
 namespace ros_ign_bridge
 {
 
-std::shared_ptr<FactoryInterface>
-get_factory__rosgraph_msgs(
-  const std::string & ros_type_name,
-  const std::string & ign_type_name);
+bool
+get_ign_to_ros_mapping(const std::string & ign_type_name, std::string & ros_type_name);
+
+bool
+get_ros_to_ign_mapping(const std::string & ros_type_name, std::string & ign_type_name);
+
+std::multimap<std::string, std::string>
+get_all_message_mappings_ros_to_ign();
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES__ROSGRAPH_MSGS_HPP_
+#endif  // GET_MAPPINGS_HPP_

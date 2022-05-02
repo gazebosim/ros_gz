@@ -15,11 +15,14 @@
 #ifndef UTILS__ROS_TEST_MSG_HPP_
 #define UTILS__ROS_TEST_MSG_HPP_
 
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
+
 #include <std_msgs/msg/bool.hpp>
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
 #include <std_msgs/msg/float64.hpp>
+#include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
@@ -34,10 +37,17 @@
 #include <geometry_msgs/msg/wrench.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <ros_ign_interfaces/msg/entity.hpp>
+#include <ros_ign_interfaces/msg/gui_camera.hpp>
 #include <ros_ign_interfaces/msg/joint_wrench.hpp>
 #include <ros_ign_interfaces/msg/contact.hpp>
 #include <ros_ign_interfaces/msg/contacts.hpp>
+#if HAVE_DATAFRAME
+#include <ros_ign_interfaces/msg/dataframe.hpp>
+#endif  // HAVE_DATAFRAME
 #include <ros_ign_interfaces/msg/light.hpp>
+#include <ros_ign_interfaces/msg/string_vec.hpp>
+#include <ros_ign_interfaces/msg/track_visual.hpp>
+#include <ros_ign_interfaces/msg/video_record.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -81,6 +91,10 @@ void createTestMsg(std_msgs::msg::ColorRGBA & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg);
 
+/// \brief Create a message used for testing. Noop for Empty
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::Empty & _msg);
+
 /// \brief Compare a message with the populated for testing. Noop for Empty
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Empty> &);
@@ -100,6 +114,14 @@ void createTestMsg(std_msgs::msg::Float64 & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float64> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(std_msgs::msg::Int32 & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::Int32> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -290,6 +312,48 @@ void createTestMsg(ros_ign_interfaces::msg::Contacts & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _msg);
+
+#if HAVE_DATAFRAME
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & _msg);
+#endif  // HAVE_DATAFRAME
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::GuiCamera & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::GuiCamera> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::StringVec & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::StringVec> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::TrackVisual & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::TrackVisual> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_ign_interfaces::msg::VideoRecord & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::VideoRecord> & _msg);
 
 /// sensor_msgs
 

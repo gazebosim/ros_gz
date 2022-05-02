@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SUBSCRIBERS__ROS_SUBSCRIBER__ROS_SUBSCRIBER_HPP_
-#define SUBSCRIBERS__ROS_SUBSCRIBER__ROS_SUBSCRIBER_HPP_
+#ifndef SUBSCRIBERS__ROS_SUBSCRIBER_HPP_
+#define SUBSCRIBERS__ROS_SUBSCRIBER_HPP_
 
 #include <rclcpp/rclcpp.hpp>
 
@@ -67,4 +67,4 @@ private:
 
 }  // namespace ros_subscriber
 
-#endif  // SUBSCRIBERS__ROS_SUBSCRIBER__ROS_SUBSCRIBER_HPP_
+#endif  // SUBSCRIBERS__ROS_SUBSCRIBER_HPP_
