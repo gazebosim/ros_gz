@@ -31,7 +31,6 @@ RosIgnBridge::RosIgnBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter<int>("subscription_heartbeat", 1000);
   this->declare_parameter<std::string>("config_file", "");
 
-
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
   heartbeat_timer_ = this->create_wall_timer(
@@ -116,7 +115,6 @@ void RosIgnBridge::add_bridge(const BridgeConfig & config)
       config.ign_type_name.c_str());
   }
 }
-
 }  // namespace ros_ign_bridge
 
 #include "rclcpp_components/register_node_macro.hpp"

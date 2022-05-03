@@ -190,13 +190,13 @@ You should see the Ignition listener echoing the message.
 ## Example 4: Configuring the Bridge via YAML
 
 When configuring many topics, it is easier to use a file-based configuration in a markup
-language. In this case, the ros_ign bridge supports using a YAML file to configure the
+language. In this case, the `ros_ign` bridge supports using a YAML file to configure the
 various parameters.
 
 The configuration file must be a YAML array of maps.
 An example configuration for 5 bridges is below, showing the various ways that a 
 bridge may be specified:
-```
+```yaml
  # Set just topic name, applies to both
 - topic_name: "chatter" 
   ros_type_name: "std_msgs/msg/String"
@@ -229,7 +229,7 @@ bridge may be specified:
 ```
 
 To run the bridge node with the above configuration:
-```
+```bash
 ros2 run ros_ign_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_ign/ros_ign_bridge/test/config/full.yaml 
 ```
 

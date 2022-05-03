@@ -78,7 +78,6 @@ std::vector<BridgeConfig> readFromYamlString(const std::string & data);
 /// \return Vector of bridge configurations
 std::vector<BridgeConfig> readFromYamlFile(const std::string & filename);
 
-
 }  // namespace ros_ign_bridge
 
 #endif  // ROS_IGN_BRIDGE__BRIDGE_CONFIG_HPP_

@@ -168,5 +168,4 @@ std::vector<BridgeConfig> readFromYamlString(const std::string & data)
   std::stringstream ss(data);
   return readFromYaml(ss);
 }
-
 }  // namespace ros_ign_bridge
