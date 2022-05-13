@@ -615,6 +615,7 @@ void createTestMsg(ros_ign_interfaces::msg::Dataframe & _msg)
 {
   createTestMsg(_msg.header);
 
+  _msg.rssi = -10.3;
   _msg.src_address = "localhost:8080";
   _msg.dst_address = "localhost:8081";
   _msg.data.resize(150, '1');
@@ -628,6 +629,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Dataframe> & 
   compareTestMsg(_msg->header);
   EXPECT_EQ(expected_msg.src_address, _msg->src_address);
   EXPECT_EQ(expected_msg.dst_address, _msg->dst_address);
+  EXPECT_EQ(expected_msg.rssi, _msg->rssi);
 
   ASSERT_EQ(expected_msg.data.size(), _msg->data.size());
   for (size_t ii = 0; ii < _msg->data.size(); ++ii) {

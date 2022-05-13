@@ -455,6 +455,10 @@ void createTestMsg(ignition::msgs::Dataframe & _msg)
   createTestMsg(header_msg);
   _msg.mutable_header()->CopyFrom(header_msg);
 
+  auto *rssiPtr = _msg.mutable_header()->add_data();
+  rssiPtr->set_key("rssi");
+  rssiPtr->add_value("-10.3");
+
   _msg.set_src_address("localhost:8080");
   _msg.set_dst_address("localhost:8081");
   _msg.set_data(std::string(150, '1'));
@@ -466,6 +470,19 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
   createTestMsg(expected_msg);
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
 
+  ASSERT_GT(_msg->header().data_size(), 0);
+  bool rssiFound = false;
+  for (auto i = 0; i < _msg->header().data_size(); ++i)
+  {
+    if (_msg->header().data(i).key() == "rssi" &&
+        _msg->header().data(i).value_size() > 0)
+    {
+      EXPECT_EQ(0u, _msg->header().data(i).value(0).find("-10.3"));
+      rssiFound = true;
+    }
+  }
+
+  EXPECT_TRUE(rssiFound);
   EXPECT_EQ(expected_msg.src_address(), _msg->src_address());
   EXPECT_EQ(expected_msg.dst_address(), _msg->dst_address());
   EXPECT_EQ(expected_msg.data(), _msg->data());
