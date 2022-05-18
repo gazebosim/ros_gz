@@ -66,10 +66,12 @@ def generate_launch_description():
 
     return LaunchDescription([
         ign_gazebo,
-        DeclareLaunchArgument('rqt', default_value='true',
-                        description='Open RQt.'),
-        DeclareLaunchArgument('rviz', default_value='true',
-                              description='Open RViz.'),
+        DeclareLaunchArgument(
+            'rqt', default_value='true', description='Open RQt.'
+        ),
+        DeclareLaunchArgument(
+            'rviz', default_value='true', description='Open RViz.'
+        ),
         bridge,
         rqt
         # rviz

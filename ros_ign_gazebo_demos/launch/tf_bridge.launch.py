@@ -20,25 +20,34 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
 
+
 def generate_launch_description():
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     return LaunchDescription([
         # Launch gazebo
         ExecuteProcess(
-            cmd=['ign','gazebo', '-r', os.path.join(pkg_ros_ign_gazebo_demos,
-                    'models', 'double_pendulum_model.sdf')]
+            cmd=[
+                'ign', 'gazebo', '-r',
+                os.path.join(
+                    pkg_ros_ign_gazebo_demos,
+                    'models',
+                    'double_pendulum_model.sdf'
+                )
+            ]
         ),
         # Launch a bridge to forward tf and joint states to ros2
         Node(
             package='ros_ign_bridge',
             executable='parameter_bridge',
             arguments=[
-                '/world/default/model/double_pendulum_with_base0/joint_state@sensor_msgs/msg/JointState[ignition.msgs.Model',
-                '/model/double_pendulum_with_base0/pose@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'
+                '/world/default/model/double_pendulum_with_base0/joint_state@'
+                'sensor_msgs/msg/JointState[ignition.msgs.Model',
+                '/model/double_pendulum_with_base0/pose@'
+                'tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'
             ],
             remappings=[
-                ('/model/double_pendulum_with_base0/pose','/tf'),
-                ('/world/default/model/double_pendulum_with_base0/joint_state','/joint_states')
+                ('/model/double_pendulum_with_base0/pose', '/tf'),
+                ('/world/default/model/double_pendulum_with_base0/joint_state', '/joint_states')
             ]
         ),
         # Launch rviz

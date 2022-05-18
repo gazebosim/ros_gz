@@ -32,10 +32,11 @@ def generate_launch_description():
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-            # launch_arguments={
-            #    'ign_args': '-r depth_camera.sdf'
-            # }.items(),
+            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')
+        ),
+        # launch_arguments={
+        #    'ign_args': '-r depth_camera.sdf'
+        # }.items(),
     )
 
     # RQt
