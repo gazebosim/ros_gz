@@ -1,11 +1,11 @@
-# ROS + Ignition Gazebo
+# ROS + Gazebo Sim
 
-This package contains things that make it convenient to integrate ROS with Ignition, such as:
+This package contains things that make it convenient to integrate ROS with Gazebo, such as:
 
  - Launch files
  - ROS-enabled executables
 
-### Run Ignition Gazebo
+### Run Gazebo Sim
 
 There's a convenient launch file, try for example:
 
@@ -17,10 +17,10 @@ ros2 launch ros_ign_gazebo ign_gazebo.launch.py ign_args:="shapes.sdf"
 
 The `create` executable can be used to spawn SDF or URDF entities from:
 
- - A file on disk or from Ignition Fuel
+ - A file on disk or from Gazebo Fuel
  - A ROS parameter
 
-For example, start Ignition Gazebo:
+For example, start Gazebo Sim:
 
 ```
 ros2 launch ros_ign_gazebo ign_gazebo.launch.py

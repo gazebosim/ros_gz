@@ -1,12 +1,11 @@
-# Bridge communication between ROS and Ignition Transport
+# Bridge communication between ROS and Gazebo
 
 This package provides a network bridge which enables the exchange of messages
-between ROS and Ignition Transport.
+between ROS and Gazebo Transport.
 
-The bridge is currently implemented in C++. At this point there's no support for
-service calls. Its support is limited to only the following message types:
+The following message types can be bridged for topics:
 
-| ROS type                             | Ignition Transport type                |
+| ROS type                             | Gazebo type                            |
 |--------------------------------------|:--------------------------------------:|
 | builtin_interfaces/msg/Time          | ignition::msgs::Time                   |
 | std_msgs/msg/Bool                    | ignition::msgs::Boolean                |
@@ -55,9 +54,15 @@ service calls. Its support is limited to only the following message types:
 | tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory        |
 
+And the following for services:
+
+| ROS type                             | Gazebo request             | Gazebo response       |
+|--------------------------------------|:--------------------------:| --------------------- |
+| ros_ign_interfaces/srv/ControlWorld  | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+
 Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
 
-## Example 1a: Ignition Transport talker and ROS 2 listener
+## Example 1a: Gazebo Transport talker and ROS 2 listener
 
 Start the parameter bridge which will watch the specified topics.
 
@@ -75,14 +80,14 @@ Now we start the ROS listener.
 ros2 topic echo /chatter
 ```
 
-Now we start the Ignition Transport talker.
+Now we start the Gazebo Transport talker.
 
 ```
 # Shell C:
 ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
 ```
 
-## Example 1b: ROS 2 talker and Ignition Transport listener
+## Example 1b: ROS 2 talker and Gazebo Transport listener
 
 Start the parameter bridge which will watch the specified topics.
 
@@ -92,7 +97,7 @@ Start the parameter bridge which will watch the specified topics.
 ros2 run ros_ign_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
 ```
 
-Now we start the Ignition Transport listener.
+Now we start the Gazebo Transport listener.
 
 ```
 # Shell B:
@@ -109,11 +114,11 @@ ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 
 ## Example 2: Run the bridge and exchange images
 
-In this example, we're going to generate Ignition Transport images using
-Ignition Gazebo, that will be converted into ROS images, and visualized with
+In this example, we're going to generate Gazebo Transport images using
+Gazebo Sim, that will be converted into ROS images, and visualized with
 `rqt_image_viewer`.
 
-First we start Ignition Gazebo (don't forget to hit play, or Ignition Gazebo won't generate any images).
+First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generate any images).
 
 ```
 # Shell A:
@@ -146,12 +151,12 @@ ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
 You should see the current images in `rqt_image_view` which are coming from
-Gazebo (published as Ignition Msgs over Ignition Transport).
+Gazebo (published as Gazebo Msgs over Gazebo Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS 2 Galactic and Ignition Fortress):
+(it was taken using ROS 2 Galactic and Gazebo Fortress):
 
-![Ignition Transport images and ROS rqt](images/bridge_image_exchange.png)
+![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
 ## Example 3: Static bridge
 
@@ -163,7 +168,7 @@ The example's code can be found under `ros_ign_bridge/src/static_bridge.cpp`.
 In the code, it's possible to see how the bridge is hardcoded to bridge string
 messages published on the `/chatter` topic.
 
-Let's give it a try, starting with Ignition -> ROS 2.
+Let's give it a try, starting with Gazebo -> ROS 2.
 
 On terminal A, start the bridge:
 
@@ -173,13 +178,13 @@ On terminal B, we start a ROS 2 listener:
 
 `ros2 topic echo /chatter std_msgs/msg/String`
 
-And terminal C, publish an Ignition message:
+And terminal C, publish an Gazebo message:
 
 `ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
-Now let's try the other way around, ROS 2 -> Ignition.
+Now let's try the other way around, ROS 2 -> Gazebo.
 
 On terminal D, start an Igntion listener:
 
@@ -189,4 +194,4 @@ And on terminal E, publish a ROS 2 message:
 
 `ros2 topic pub /chatter std_msgs/msg/String 'data: "Hello"' -1`
 
-You should see the Ignition listener echoing the message.
+You should see the Gazebo listener echoing the message.

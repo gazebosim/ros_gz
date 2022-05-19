@@ -1,8 +1,8 @@
-# ROS + Ignition Gazebo demos
+# ROS + Gazebo Sim demos
 
-This package contains demos showing how to use Ignition Gazebo with ROS.
+This package contains demos showing how to use Gazebo Sim with ROS.
 
-## Run Ignition Gazebo
+## Run Gazebo Sim
 
 There's a convenient launch file, try for example:
 
@@ -41,11 +41,11 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 Using the regular bridge:
 
     ros2 launch ros_ign_gazebo_demos camera.launch.py
-    
+
 To use a camera that only publishes information when triggered:
 
     ros2 launch ros_ign_gazebo_demos triggered_camera.launch.py
-    
+
 Trigger the camera:
 
     ros2 topic pub /camera/trigger std_msgs/msg/Bool "{data: true}" --once
@@ -87,7 +87,7 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 
 *TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
-Using Ignition Gazebo plugin:
+Using Gazebo Sim plugin:
 
     ros2 launch ros_ign_gazebo_demos depth_camera.launch.py
 
@@ -106,7 +106,7 @@ Using the bridge:
 
 *TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
-Using Ignition Gazebo plugin:
+Using Gazebo Sim plugin:
 
     ros2 launch ros_ign_gazebo_demos gpu_lidar.launch.py
 
@@ -150,7 +150,7 @@ Using the regular bridge:
 
 *TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
 
-Using Ignition Gazebo plugin:
+Using Gazebo Sim plugin:
 
     ros2 launch ros_ign_gazebo_demos rgbd_camera.launch.py
 
@@ -190,7 +190,7 @@ To try the demo launch:
 
 ## Bridging joint state and pose publishers
 
-The launch file demonstrates bridging ignition poses to TFMessage to visualize the pose
+The launch file demonstrates bridging Gazebo poses to TFMessage to visualize the pose
 and transforms of a robot in rviz.
 
 To try the demo launch:
