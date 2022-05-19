@@ -195,3 +195,21 @@ And on terminal E, publish a ROS 2 message:
 `ros2 topic pub /chatter std_msgs/msg/String 'data: "Hello"' -1`
 
 You should see the Gazebo listener echoing the message.
+
+## Example 4: Service bridge
+
+It's possible to make ROS service requests into Gazebo. Let's try unpausing the simulation.
+
+On terminal A, start the service bridge:
+
+`ros2 run ros_ign_bridge parameter_bridge /world/shapes/control@ros_ign_interfaces/srv/ControlWorld`
+
+On terminal B, start Gazebo, it will be paused by default:
+
+`ign gazebo shapes.sdf`
+
+On terminal C, make a ROS request to unpause simulation:
+
+```
+ros2 service call /world/<world_name>/control ros_ign_interfaces/srv/ControlWorld "world_control: pause: false"
+```
