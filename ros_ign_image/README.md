@@ -1,7 +1,7 @@
-# Image utilities for using ROS and Ignition Transport
+# Image utilities for using ROS and Gazebo Transport
 
-This package provides a unidirectional bridge for images from Ignition to ROS.
-The bridge subscribes to Ignition image messages (`ignition::msgs::Image`)
+This package provides a unidirectional bridge for images from Gazebo to ROS.
+The bridge subscribes to Gazebo image messages (`ignition::msgs::Image`)
 and republishes them to ROS using [image_transport](http://wiki.ros.org/image_transport).
 
 For compressed images, install
