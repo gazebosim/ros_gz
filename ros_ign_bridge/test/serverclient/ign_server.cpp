@@ -15,13 +15,13 @@
 #include <ignition/msgs/boolean.pb.h>
 #include <ignition/msgs/world_control.pb.h>
 
-#include <ignition/transport.hh>
-
 #include <atomic>
 #include <chrono>
 #include <csignal>
 #include <iostream>
 #include <thread>
+
+#include <ignition/transport.hh>
 
 #include "utils/test_utils.hpp"
 #include "utils/ign_test_msg.hpp"
