@@ -236,11 +236,11 @@ convert_ign_to_ros(
       try {
         ros_msg.rssi = std::stod(header.data(i).value(0));
       } catch (const std::invalid_argument &) {
-        std::cerr << "RSSI value is invalid ("
-                  << header.data(i).value(0) << ")" << std::endl;
+        std::cerr << "RSSI value is invalid (" <<
+          header.data(i).value(0) << ")" << std::endl;
       } catch (const std::out_of_range &) {
-        std::cerr << "RSSI value is out of range ("
-                  << header.data(i).value(0) << ")" << std::endl;
+        std::cerr << "RSSI value is out of range (" <<
+          header.data(i).value(0) << ")" << std::endl;
       }
     }
   }
