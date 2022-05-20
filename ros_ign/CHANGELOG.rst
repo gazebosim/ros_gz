@@ -2,8 +2,8 @@
 Changelog for package ros_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.3 (2022-05-19)
+--------------------
 * [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
 * Contributors: Louise Poubel
 

@@ -2,8 +2,8 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.3 (2022-05-19)
+--------------------
 * Feature: set QoS options to override durability (`#250 <https://github.com/osrf/ros_ign/issues/250>`_)
   Co-authored-by: Louise Poubel <louise@openrobotics.org>
 * [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
