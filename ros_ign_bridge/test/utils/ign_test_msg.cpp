@@ -455,7 +455,7 @@ void createTestMsg(ignition::msgs::Dataframe & _msg)
   createTestMsg(header_msg);
   _msg.mutable_header()->CopyFrom(header_msg);
 
-  auto *rssiPtr = _msg.mutable_header()->add_data();
+  auto * rssiPtr = _msg.mutable_header()->add_data();
   rssiPtr->set_key("rssi");
   rssiPtr->add_value("-10.3");
 
@@ -472,8 +472,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
 
   ASSERT_GT(_msg->header().data_size(), 0);
   bool rssiFound = false;
-  for (auto i = 0; i < _msg->header().data_size(); ++i)
-  {
+  for (auto i = 0; i < _msg->header().data_size(); ++i) {
     if (_msg->header().data(i).key() == "rssi" &&
         _msg->header().data(i).value_size() > 0)
     {
