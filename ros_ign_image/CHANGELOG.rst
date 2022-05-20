@@ -2,6 +2,13 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
+* Fix linter tests (`#251 <https://github.com/osrf/ros_ign/issues/251>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: Daisuke Nishimatsu, Louise Poubel
+
 0.244.2 (2022-04-25)
 --------------------
 * Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/osrf/ros_ign/issues/213>`_)

@@ -2,6 +2,17 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Feature: set QoS options to override durability (`#250 <https://github.com/osrf/ros_ign/issues/250>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
+* Fix linter tests (`#251 <https://github.com/osrf/ros_ign/issues/251>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Adds pose and twist with covariance messages bridging (`#222 <https://github.com/osrf/ros_ign/issues/222>`_)
+  * Added pose, twist and odometry with covariance messages bridging
+* Contributors: Aditya Pande, Daisuke Nishimatsu, Louise Poubel
+
 0.244.2 (2022-04-25)
 --------------------
 * Support bridging services (`#211 <https://github.com/osrf/ros_ign/issues/211>`_)

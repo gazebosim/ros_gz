@@ -2,6 +2,13 @@
 Changelog for package ros_ign_gazebo
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
+* Fix linter tests (`#251 <https://github.com/osrf/ros_ign/issues/251>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: Daisuke Nishimatsu, Louise Poubel
+
 0.244.2 (2022-04-25)
 --------------------
 * Support bridging services (`#211 <https://github.com/osrf/ros_ign/issues/211>`_)

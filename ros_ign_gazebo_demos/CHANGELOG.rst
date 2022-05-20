@@ -2,6 +2,16 @@
 Changelog for package ros1_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
+* Fix linter tests (`#251 <https://github.com/osrf/ros_ign/issues/251>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Joint state publisher and tf bridging demo (`#244 <https://github.com/osrf/ros_ign/issues/244>`_)
+  * Added joint state publisher and tf bridge demo
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: Aditya Pande, Daisuke Nishimatsu, Louise Poubel
+
 0.244.2 (2022-04-25)
 --------------------
 * Camera trigger demo (`#223 <https://github.com/osrf/ros_ign/issues/223>`_)
