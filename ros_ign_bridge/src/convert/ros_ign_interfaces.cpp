@@ -230,7 +230,7 @@ convert_ign_to_ros(
   ros_msg.src_address = ign_msg.src_address();
   ros_msg.dst_address = ign_msg.dst_address();
 
-  const auto &header = ign_msg.header();
+  const auto & header = ign_msg.header();
   for (auto i = 0; i < header.data_size(); ++i) {
     if (header.data(i).key() == "rssi" && header.data(i).value_size() > 0) {
       try {
