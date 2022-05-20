@@ -474,7 +474,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
   bool rssiFound = false;
   for (auto i = 0; i < _msg->header().data_size(); ++i) {
     if (_msg->header().data(i).key() == "rssi" &&
-        _msg->header().data(i).value_size() > 0)
+      _msg->header().data(i).value_size() > 0)
     {
       EXPECT_EQ(0u, _msg->header().data(i).value(0).find("-10.3"));
       rssiFound = true;
