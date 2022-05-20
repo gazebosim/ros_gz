@@ -15,11 +15,11 @@
 #ifndef  FACTORY_INTERFACE_HPP_
 #define  FACTORY_INTERFACE_HPP_
 
-// include Ignition Transport
-#include <ignition/transport/Node.hh>
-
 #include <memory>
 #include <string>
+
+// include Ignition Transport
+#include <ignition/transport/Node.hh>
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>

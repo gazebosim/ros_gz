@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// include Ignition Transport
-#include <ignition/transport/Node.hh>
-
 #include <memory>
 #include <string>
+
+// include Ignition Transport
+#include <ignition/transport/Node.hh>
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>

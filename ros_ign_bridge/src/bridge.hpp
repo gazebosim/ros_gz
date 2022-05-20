@@ -15,11 +15,10 @@
 #ifndef BRIDGE_HPP_
 #define BRIDGE_HPP_
 
-// include Ignition Transport
-#include <ignition/transport/Node.hh>
-
 #include <memory>
 #include <string>
+
+#include <ignition/transport/Node.hh>
 
 #include "factories.hpp"
 
