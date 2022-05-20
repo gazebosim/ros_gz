@@ -31,9 +31,9 @@ def generate_launch_description():
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-        #launch_arguments={
-        #    'ign_args': '-r rgbd_camera.sdf'
-        #}.items(),
+        # launch_arguments={
+        #     'ign_args': '-r rgbd_camera.sdf'
+        # }.items(),
     )
 
     # FIXME: need rviz configuration migration

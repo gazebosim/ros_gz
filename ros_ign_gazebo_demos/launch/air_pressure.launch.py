@@ -18,8 +18,8 @@ import os
 
 from ament_index_python.packages import get_package_share_directory
 
-from launch.actions import DeclareLaunchArgument
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -37,7 +37,7 @@ def generate_launch_description():
         package='ros_ign_bridge',
         executable='parameter_bridge',
         arguments=['/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure'],
-        parameters=[{'qos_overrides./air_pressure.publisher.reliability' : 'best_effort'}],
+        parameters=[{'qos_overrides./air_pressure.publisher.reliability': 'best_effort'}],
         output='screen'
     )
 

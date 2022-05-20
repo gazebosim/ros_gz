@@ -14,11 +14,12 @@
 
 
 #include <gtest/gtest.h>
-#include <ignition/transport.hh>
 
 #include <chrono>
 #include <memory>
 #include <string>
+
+#include <ignition/transport/Node.hh>
 
 #include "utils/test_utils.hpp"
 #include "utils/ign_test_msg.hpp"

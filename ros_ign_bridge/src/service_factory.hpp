@@ -15,12 +15,12 @@
 #ifndef SERVICE_FACTORY_HPP_
 #define SERVICE_FACTORY_HPP_
 
-#include <ignition/transport/Node.hh>
-
 #include <functional>
 #include <memory>
 #include <string>
 #include <utility>
+
+#include <ignition/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
 

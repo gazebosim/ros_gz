@@ -15,10 +15,10 @@
 #ifndef  SERVICE_FACTORY_INTERFACE_HPP_
 #define  SERVICE_FACTORY_INTERFACE_HPP_
 
-#include <ignition/transport/Node.hh>
-
 #include <memory>
 #include <string>
+
+#include <ignition/transport/Node.hh>
 
 #include <rclcpp/service.hpp>
 #include <rclcpp/node.hpp>

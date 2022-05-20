@@ -13,13 +13,14 @@
 // limitations under the License.
 
 #include <gflags/gflags.h>
-#include <ignition/math/Pose3.hh>
 #include <ignition/msgs/entity_factory.pb.h>
-#include <ignition/msgs/Utility.hh>
-#include <ignition/transport/Node.hh>
 
 #include <sstream>
 #include <string>
+
+#include <ignition/math/Pose3.hh>
+#include <ignition/msgs/Utility.hh>
+#include <ignition/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
 #include <std_msgs/msg/string.hpp>
@@ -49,7 +50,7 @@ int main(int _argc, char ** _argv)
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
-    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC] 
+    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
                        [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
   gflags::ParseCommandLineFlags(&_argc, &_argv, true);

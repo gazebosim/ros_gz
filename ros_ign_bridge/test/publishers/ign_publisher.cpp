@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
-
 #include <atomic>
 #include <chrono>
 #include <csignal>
 #include <iostream>
 #include <string>
 #include <thread>
+
+#include <ignition/msgs.hh>
+#include <ignition/transport/Node.hh>
 
 #include "utils/test_utils.hpp"
 #include "utils/ign_test_msg.hpp"
