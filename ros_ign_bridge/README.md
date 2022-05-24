@@ -211,5 +211,5 @@ On terminal B, start Gazebo, it will be paused by default:
 On terminal C, make a ROS request to unpause simulation:
 
 ```
-ros2 service call /world/<world_name>/control ros_ign_interfaces/srv/ControlWorld "world_control: pause: false"
+ros2 service call /world/<world_name>/control ros_ign_interfaces/srv/ControlWorld "{world_control: {pause: false}}"
 ```
