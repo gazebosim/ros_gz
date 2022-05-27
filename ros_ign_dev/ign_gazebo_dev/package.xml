@@ -10,10 +10,16 @@
 
   <author>Harsh Mahesheka</author>
 
+  <build_depend>ros_environment</build_depend>
   <buildtool_depend>ament_cmake</buildtool_depend>
   <depend condition="$ROS_DISTRO == foxy">ignition-gazebo3</depend>
   <depend condition="$ROS_DISTRO == galactic">ignition-gazebo5</depend>
   <depend condition="$ROS_DISTRO == humble">ignition-gazebo6</depend>
+
+  <!-- If no known ROS DISTRO is found,it will fall back to default a version -->
+
+  <depend condition="$ROS_DISTRO !=humble and $ROS_DISTRO !=galactic and $ROS_DISTRO!=foxy" >ignition-gazebo6</depend>
+
 
 
 
