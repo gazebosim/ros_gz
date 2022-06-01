@@ -15,6 +15,9 @@ jobs:
           - docker-image: "ubuntu:22.04"
             ignition-version: "fortress"
             ros-distro: "rolling"
+          - docker-image: "ubuntu:22.04"
+            ignition-version: "garden"
+            ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}
     steps:

@@ -11,7 +11,7 @@ Foxy | Citadel | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | https:/
 Foxy | Edifice | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | only from source
 Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | https://packages.ros.org
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
-Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
+Humble | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
