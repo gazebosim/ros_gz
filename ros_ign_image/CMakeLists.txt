@@ -25,6 +25,15 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
+# Fortress
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+  find_package(ignition-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+
+  find_package(ignition-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)

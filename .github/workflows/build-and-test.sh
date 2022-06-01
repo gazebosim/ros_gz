@@ -10,7 +10,16 @@ export ROS_PYTHON_VERSION=3
 apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
-# Citadel, Edifice and Fortress get Ignition with rosdep for Focal
+# Garden only has nightlies for now
+if [ "$IGNITION_VERSION" == "garden" ]; then
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list
+  wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+
+  IGN_DEPS="libignition-gazebo7-dev"
+fi
+
+# Fortress comes through rosdep for Focal and Jammy
 
 # Dependencies.
 echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-testing.list
@@ -22,7 +31,7 @@ apt-get install -y $IGN_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
