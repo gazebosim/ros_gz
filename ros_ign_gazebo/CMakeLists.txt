@@ -29,23 +29,8 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
-# Fortress
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
-  find_package(ignition-math6 REQUIRED)
-  set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
-
-  find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
-
-  find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
-
-  find_package(ignition-gazebo6 REQUIRED)
-  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Ignition Fortress")
-# Default to Garden
-else()
+# Garden
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
   find_package(ignition-math7 REQUIRED)
   set(IGN_MATH_VER ${ignition-math7_VERSION_MAJOR})
 
@@ -59,6 +44,21 @@ else()
   set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Garden")
+# Default to Fortress
+else()
+  find_package(ignition-math6 REQUIRED)
+  set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
+
+  find_package(ignition-transport11 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+
+  find_package(ignition-msgs8 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  find_package(ignition-gazebo6 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Fortress")
 endif()
 
 ign_find_package(gflags
