@@ -11,12 +11,14 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # Edifice
 if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+  find_package(ignition-math6 REQUIRED)
+  set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
+
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
@@ -27,8 +29,11 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
-# Default to Fortress
-else()
+# Fortress
+elseif("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+  find_package(ignition-math6 REQUIRED)
+  set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
+
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
@@ -39,6 +44,21 @@ else()
   set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Fortress")
+# Default to Garden
+else()
+  find_package(ignition-math7 REQUIRED)
+  set(IGN_MATH_VER ${ignition-math7_VERSION_MAJOR})
+
+  find_package(ignition-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+
+  find_package(ignition-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+
+  find_package(ignition-gazebo7 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Gazebo Garden")
 endif()
 
 ign_find_package(gflags
@@ -49,11 +69,11 @@ find_package(std_msgs REQUIRED)
 add_executable(create src/create.cpp)
 ament_target_dependencies(create
   rclcpp
-  ignition-math6
   std_msgs
 )
 target_link_libraries(create
   gflags
+  ignition-math${IGN_MATH_VER}::core
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
 )

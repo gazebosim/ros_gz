@@ -15,14 +15,19 @@
 
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
-  <depend>ignition-math6</depend>
   <depend>std_msgs</depend>
 
-  <!-- Fortress (default) -->
+  <!-- Garden (default) -->
+  <depend condition="$IGNITION_VERSION == garden">ignition-gazebo7</depend>
+  <depend condition="$IGNITION_VERSION == garden">ignition-math7</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo7</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-math7</depend>
+  <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
+  <depend condition="$IGNITION_VERSION == fortress">ignition-math6</depend>
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$IGNITION_VERSION == edifice">ignition-math6</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

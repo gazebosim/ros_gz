@@ -51,12 +51,15 @@ versions:
     * Dashing: 0
     * Eloquent: 1
     * Foxy: 2
+    * Galactic: 3
+    * Humble: 4
 * 3rd digit:
     * Blueprint: 0
     * Citadel: 1
     * Dome: 2
     * Edifice: 3
     * Fortress: 4
+    * Garden: 5
 
 ROS | Ignition | Version
 -- | -- | --

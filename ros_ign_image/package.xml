@@ -13,11 +13,14 @@
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 
-  <!-- Fortress (default) -->
+  <!-- Garden (default) -->
+  <depend condition="$IGNITION_VERSION == garden">ignition-msgs9</depend>
+  <depend condition="$IGNITION_VERSION == garden">ignition-transport12</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-msgs9</depend>
+  <depend condition="$IGNITION_VERSION == ''">ignition-transport12</depend>
+  <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
   <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-msgs8</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-transport11</depend>
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
