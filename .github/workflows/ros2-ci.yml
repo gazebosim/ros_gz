@@ -7,6 +7,7 @@ jobs:
     name: ros_ign CI
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         include:
           - docker-image: "ubuntu:22.04"
