@@ -15,7 +15,7 @@
  *
  */
 
-#include "ros_ign_utils/optical_frame_publisher.hpp"
+#include "ros_ign_gazebo/optical_frame_publisher.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/transform_broadcaster.h>
@@ -29,25 +29,32 @@
 #include <sensor_msgs/msg/camera_info.hpp>
 
 #include <rclcpp/rclcpp.hpp>
-
+#include <rclcpp_components/register_node_macro.hpp>
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
 
-namespace ros_ign_utils
+namespace ros_ign_gazebo
 {
 struct OpticalFramePublisher::Impl
 {
+  /// \brief Check for downstream subscriptions and enable upstream
+  /// subscriptions based on that
   void CheckSubscribers();
 
+  /// \brief Start upstream subscription for images
   void ImageConnect();
 
+  /// \brief Start upstream subscription for camera info
   void CameraInfoConnect();
 
+  /// \brief Image callback
   void UpdateImageFrame(const sensor_msgs::msg::Image & msg);
 
+  /// \brief Camera info callback
   void UpdateCameraInfoFrame(const sensor_msgs::msg::CameraInfo & msg);
 
+  /// \brief Publish new TF between frame and optical_frame
   void PublishTF(const std::string & frame, const std::string & child_frame);
 
   /// \brief Interface for creating publications/subscriptions
@@ -165,7 +172,6 @@ void OpticalFramePublisher::Impl::PublishTF(
   tfBroadcasterStatic->sendTransform(tfStamped);
 }
 
-
 OpticalFramePublisher::OpticalFramePublisher(const rclcpp::NodeOptions & options)
 : Node("optical_frame_publisher", options),
   dataPtr(std::make_unique < Impl > ())
@@ -189,4 +195,6 @@ OpticalFramePublisher::OpticalFramePublisher(const rclcpp::NodeOptions & options
     100ms,
     std::bind(&OpticalFramePublisher::Impl::CheckSubscribers, dataPtr.get()));
 }
-}  // namespace ros_ign_utils
+}  // namespace ros_ign_gazebo
+
+RCLCPP_COMPONENTS_REGISTER_NODE(ros_ign_gazebo::OpticalFramePublisher)

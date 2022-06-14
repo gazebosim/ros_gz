@@ -15,8 +15,13 @@
 
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
   <depend>ignition-math6</depend>
+  <depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
 
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>

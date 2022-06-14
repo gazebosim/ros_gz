@@ -15,23 +15,29 @@
  *
  */
 
-#ifndef ROS_IGN_UTILS__OPTICAL_FRAME_PUBLISHER_HPP_
-#define ROS_IGN_UTILS__OPTICAL_FRAME_PUBLISHER_HPP_
+#ifndef ROS_IGN_GAZEBO__OPTICAL_FRAME_PUBLISHER_HPP_
+#define ROS_IGN_GAZEBO__OPTICAL_FRAME_PUBLISHER_HPP_
 
 #include <memory>
 
 #include <rclcpp/rclcpp.hpp>
 
-namespace ros_ign_utils
+namespace ros_ign_gazebo
 {
 
+/// \brief ROS Node to transform image coordinate conventions to match
+/// ROS REP 103 (https://www.ros.org/reps/rep-0103.html)
 class OpticalFramePublisher : public rclcpp::Node
 {
 public:
+  /// \brief Constructor
   explicit OpticalFramePublisher(const rclcpp::NodeOptions & options);
 
 private:
+  /// \brief Forward declaration of private implementation
   struct Impl;
+
+  /// \brief Pointer to implementation
   std::unique_ptr<Impl> dataPtr;
 };
 
