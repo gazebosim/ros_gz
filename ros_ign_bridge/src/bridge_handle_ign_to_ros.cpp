@@ -14,14 +14,14 @@
 //
 #include <memory>
 
-#include "bridge_ign_to_ros.hpp"
+#include "bridge_handle_ign_to_ros.hpp"
 
 namespace ros_ign_bridge
 {
 
-BridgeIgnToRos::~BridgeIgnToRos() = default;
+BridgeHandleIgnToRos::~BridgeHandleIgnToRos() = default;
 
-size_t BridgeIgnToRos::NumSubscriptions() const
+size_t BridgeHandleIgnToRos::NumSubscriptions() const
 {
   // Return number of ROS subscriptions
   size_t valid_subscriptions = 0;
@@ -30,7 +30,7 @@ size_t BridgeIgnToRos::NumSubscriptions() const
     // Use info_by_topic rather than get_subscription_count
     // to filter out potential bidirectional bridge
     auto topic_info = this->ros_node_->get_subscriptions_info_by_topic(
-      this->ros_topic_name_);
+      this->config_.ros_topic_name);
 
     for (auto & topic : topic_info) {
       if (topic.node_name() == this->ros_node_->get_name()) {
@@ -43,46 +43,46 @@ size_t BridgeIgnToRos::NumSubscriptions() const
   return valid_subscriptions;
 }
 
-bool BridgeIgnToRos::HasPublisher() const
+bool BridgeHandleIgnToRos::HasPublisher() const
 {
   return this->ros_publisher_ != nullptr;
 }
 
-void BridgeIgnToRos::StartPublisher()
+void BridgeHandleIgnToRos::StartPublisher()
 {
   // Start ROS publisher
   this->ros_publisher_ = this->factory_->create_ros_publisher(
     this->ros_node_,
-    this->ros_topic_name_,
-    this->publisher_queue_size_);
+    this->config_.ros_topic_name,
+    this->config_.publisher_queue_size);
 }
 
-bool BridgeIgnToRos::HasSubscriber() const
+bool BridgeHandleIgnToRos::HasSubscriber() const
 {
   // Return Ignition subscriber status
   return this->ign_subscriber_ != nullptr;
 }
 
-void BridgeIgnToRos::StartSubscriber()
+void BridgeHandleIgnToRos::StartSubscriber()
 {
   // Start Ignition subscriber
   this->factory_->create_ign_subscriber(
     this->ign_node_,
-    this->ign_topic_name_,
-    this->subscriber_queue_size_,
+    this->config_.ign_topic_name,
+    this->config_.subscriber_queue_size,
     this->ros_publisher_);
 
   this->ign_subscriber_ = this->ign_node_;
 }
 
-void BridgeIgnToRos::StopSubscriber()
+void BridgeHandleIgnToRos::StopSubscriber()
 {
   // Stop Ignition subscriber
   if (!this->ign_subscriber_) {
     return;
   }
 
-  this->ign_subscriber_->Unsubscribe(this->ign_topic_name_);
+  this->ign_subscriber_->Unsubscribe(this->config_.ign_topic_name);
   this->ign_subscriber_.reset();
 }
 

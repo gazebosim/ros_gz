@@ -16,12 +16,14 @@
   <depend>geometry_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
   <depend>ros_ign_interfaces</depend>
   <depend>rosgraph_msgs</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
+  <depend>yaml_cpp_vendor</depend>
 
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>

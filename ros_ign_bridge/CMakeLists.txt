@@ -12,6 +12,8 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 # Fortress
 if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
@@ -65,7 +67,6 @@ foreach(package_name ${BRIDGE_MESSAGE_TYPES})
 
   list(APPEND generated_files "${generated_path}/factories/${package_name}.cpp")
   list(APPEND generated_files "${generated_path}/factories/${package_name}.hpp")
-
   list(APPEND convert_files "src/convert/${package_name}.cpp")
 endforeach()
 
@@ -96,21 +97,22 @@ set(bridge_lib
 
 add_library(${bridge_lib}
   SHARED
-  src/bridge.cpp
-  src/bridge_ros_to_ign.cpp
-  src/bridge_ign_to_ros.cpp
+  src/bridge_config.cpp
+  src/bridge_handle.cpp
+  src/bridge_handle_ros_to_ign.cpp
+  src/bridge_handle_ign_to_ros.cpp
   src/factory_interface.cpp
+  src/ros_ign_bridge.cpp
   ${convert_files}
   ${generated_files}
 )
 
-target_link_libraries(${bridge_lib}
-    ignition-msgs${GZ_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
-)
+message(STATUS ${GZ_MSGS_VER})
 
 ament_target_dependencies(${bridge_lib}
   rclcpp
+  rclcpp_components
+  yaml_cpp_vendor
   ${BRIDGE_MESSAGE_TYPES}
 )
 
@@ -118,6 +120,16 @@ target_include_directories(${bridge_lib}
   PUBLIC include
   PRIVATE src ${generated_path}
 )
+
+target_link_libraries(${bridge_lib}
+  ignition-msgs${GZ_MSGS_VER}::core
+  ignition-transport${IGN_TRANSPORT_VER}::core
+)
+
+rclcpp_components_register_node(
+  ${bridge_lib}
+  PLUGIN ros_ign_bridge::RosIgnBridge
+  EXECUTABLE bridge_node)
 
 install(TARGETS ${bridge_lib}
         ARCHIVE DESTINATION lib
@@ -247,6 +259,13 @@ if(BUILD_TESTING)
     TIMEOUT 200
     ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
+
+  ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
+  ament_target_dependencies(${PROJECT_NAME}_bridge_config rclcpp)
+  target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
+
 endif()
 
 ament_export_dependencies(
