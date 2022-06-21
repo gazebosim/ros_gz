@@ -451,7 +451,13 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::ParamVec> & _
   compareTestMsg(_msg->header);
 
   EXPECT_EQ(expected_msg.params.size(), _msg->params.size());
-  EXPECT_EQ(expected_msg.params[0].name, _msg->params[0].name);
+
+  // Handle the case that the source was a Param_V message
+  if (_msg->params[0].name.find("param_0") != std::string::npos) {
+    EXPECT_EQ("param_0/" + expected_msg.params[0].name, _msg->params[0].name);
+  } else {
+    EXPECT_EQ(expected_msg.params[0].name, _msg->params[0].name);
+  }
   EXPECT_EQ(expected_msg.params[0].value.type, _msg->params[0].value.type);
   EXPECT_EQ(expected_msg.params[0].value.string_value, _msg->params[0].value.string_value);
 }

@@ -250,6 +250,21 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Param> & _msg)
   EXPECT_EQ(expected_msg.params().size(), _msg->params().size());
 }
 
+void createTestMsg(ignition::msgs::Param_V & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  auto param = _msg.mutable_param()->Add();
+  createTestMsg(*param);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param_V> & _msg)
+{
+  ignition::msgs::Param_V expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Param>(_msg->param().Get(0)));
+}
+
 void createTestMsg(ignition::msgs::Pose & _msg)
 {
   createTestMsg(*_msg.mutable_header());

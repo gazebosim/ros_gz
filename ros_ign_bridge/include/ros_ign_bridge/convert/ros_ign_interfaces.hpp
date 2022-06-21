@@ -165,6 +165,18 @@ convert_ign_to_ros(
 template<>
 void
 convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param_V & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
   const ros_ign_interfaces::msg::TrackVisual & ros_msg,
   ignition::msgs::TrackVisual & ign_msg);
 

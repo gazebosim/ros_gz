@@ -88,22 +88,22 @@ TEST_F(RosToIgnTest, FlatParameters)
 
   ASSERT_EQ(5u, ign_msg.params().size());
 
-  ASSERT_TRUE(ign_msg.params().contains(kParamNotSetName));
+  ASSERT_NE(ign_msg.params().end(), ign_msg.params().find(kParamNotSetName));
   EXPECT_EQ(Any_ValueType::Any_ValueType_NONE, ign_msg.params().at(kParamNotSetName).type());
 
-  ASSERT_TRUE(ign_msg.params().contains(kParamBoolName));
+  ASSERT_NE(ign_msg.params().end(), ign_msg.params().find(kParamBoolName));
   EXPECT_EQ(Any_ValueType::Any_ValueType_BOOLEAN, ign_msg.params().at(kParamBoolName).type());
   EXPECT_EQ(kParamBoolValue, ign_msg.params().at(kParamBoolName).bool_value());
 
-  ASSERT_TRUE(ign_msg.params().contains(kParamIntName));
+  ASSERT_NE(ign_msg.params().end(), ign_msg.params().find(kParamIntName));
   EXPECT_EQ(Any_ValueType::Any_ValueType_INT32, ign_msg.params().at(kParamIntName).type());
   EXPECT_EQ(kParamIntValue, ign_msg.params().at(kParamIntName).int_value());
 
-  ASSERT_TRUE(ign_msg.params().contains(kParamDoubleName));
+  ASSERT_NE(ign_msg.params().end(), ign_msg.params().find(kParamDoubleName));
   EXPECT_EQ(Any_ValueType::Any_ValueType_DOUBLE, ign_msg.params().at(kParamDoubleName).type());
   EXPECT_EQ(kParamDoubleValue, ign_msg.params().at(kParamDoubleName).double_value());
 
-  ASSERT_TRUE(ign_msg.params().contains(kParamStringName));
+  ASSERT_NE(ign_msg.params().end(), ign_msg.params().find(kParamStringName));
   EXPECT_EQ(Any_ValueType::Any_ValueType_STRING, ign_msg.params().at(kParamStringName).type());
   EXPECT_EQ(kParamStringValue, ign_msg.params().at(kParamStringName).string_value());
 }
