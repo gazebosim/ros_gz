@@ -61,6 +61,7 @@
 #include <sensor_msgs/msg/point_field.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
+#include <rcl_interfaces/msg/parameter_value.hpp>
 
 #include <memory>
 
@@ -446,6 +447,14 @@ void createTestMsg(trajectory_msgs::msg::JointTrajectory & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(rcl_interfaces::msg::ParameterValue & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<rcl_interfaces::msg::ParameterValue> & _msg);
 
 }  // namespace testing
 }  // namespace ros_ign_bridge

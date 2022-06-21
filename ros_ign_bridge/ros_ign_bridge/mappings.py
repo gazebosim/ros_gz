@@ -38,6 +38,9 @@ MAPPINGS = {
     'nav_msgs': [
         Mapping('Odometry', 'Odometry'),
     ],
+    'rcl_interfaces': [
+        Mapping('ParameterValue', 'Any'),
+    ],
     'ros_ign_interfaces': [
         Mapping('Contact', 'Contact'),
         Mapping('Contacts', 'Contacts'),
