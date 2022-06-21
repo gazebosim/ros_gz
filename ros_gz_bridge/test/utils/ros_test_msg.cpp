@@ -19,7 +19,7 @@
 #include <memory>
 #include <string>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -394,7 +394,7 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg)
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->torque));
 }
 
-void createTestMsg(ros_ign_interfaces::msg::Light & _msg)
+void createTestMsg(ros_gz_interfaces::msg::Light & _msg)
 {
   createTestMsg(_msg.header);
 
@@ -421,9 +421,9 @@ void createTestMsg(ros_ign_interfaces::msg::Light & _msg)
   _msg.intensity = 125.0;
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Light> & _msg)
 {
-  ros_ign_interfaces::msg::Light expected_msg;
+  ros_gz_interfaces::msg::Light expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
@@ -451,7 +451,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Light> & _msg
   EXPECT_FLOAT_EQ(expected_msg.intensity, _msg->intensity);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::GuiCamera & _msg)
+void createTestMsg(ros_gz_interfaces::msg::GuiCamera & _msg)
 {
   createTestMsg(_msg.header);
   createTestMsg(_msg.track);
@@ -462,13 +462,13 @@ void createTestMsg(ros_ign_interfaces::msg::GuiCamera & _msg)
   _msg.projection_type = "test_gui_camera_projection_type";
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::GuiCamera> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::GuiCamera> & _msg)
 {
-  ros_ign_interfaces::msg::GuiCamera expected_msg;
+  ros_gz_interfaces::msg::GuiCamera expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
-  compareTestMsg(std::make_shared<ros_ign_interfaces::msg::TrackVisual>(_msg->track));
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::TrackVisual>(_msg->track));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
 
   EXPECT_EQ(expected_msg.name, _msg->name);
@@ -476,16 +476,16 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::GuiCamera> & 
   EXPECT_EQ(expected_msg.projection_type, _msg->projection_type);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::StringVec & _msg)
+void createTestMsg(ros_gz_interfaces::msg::StringVec & _msg)
 {
   createTestMsg(_msg.header);
 
   _msg.data.emplace_back("test_string_msg_v_data");
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::StringVec> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::StringVec> & _msg)
 {
-  ros_ign_interfaces::msg::StringVec expected_msg;
+  ros_gz_interfaces::msg::StringVec expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
@@ -493,7 +493,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::StringVec> & 
   EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::TrackVisual & _msg)
+void createTestMsg(ros_gz_interfaces::msg::TrackVisual & _msg)
 {
   createTestMsg(_msg.header);
   createTestMsg(_msg.xyz);
@@ -508,9 +508,9 @@ void createTestMsg(ros_ign_interfaces::msg::TrackVisual & _msg)
   _msg.inherit_yaw = true;
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::TrackVisual> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::TrackVisual> & _msg)
 {
-  ros_ign_interfaces::msg::TrackVisual expected_msg;
+  ros_gz_interfaces::msg::TrackVisual expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
@@ -526,7 +526,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::TrackVisual> 
   EXPECT_EQ(expected_msg.inherit_yaw, _msg->inherit_yaw);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::VideoRecord & _msg)
+void createTestMsg(ros_gz_interfaces::msg::VideoRecord & _msg)
 {
   createTestMsg(_msg.header);
 
@@ -536,9 +536,9 @@ void createTestMsg(ros_ign_interfaces::msg::VideoRecord & _msg)
   _msg.save_filename = "test_video_record_save_filename";
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::VideoRecord> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::VideoRecord> & _msg)
 {
-  ros_ign_interfaces::msg::VideoRecord expected_msg;
+  ros_gz_interfaces::msg::VideoRecord expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
@@ -549,7 +549,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::VideoRecord> 
   EXPECT_EQ(expected_msg.save_filename, _msg->save_filename);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg)
+void createTestMsg(ros_gz_interfaces::msg::JointWrench & _msg)
 {
   createTestMsg(_msg.header);
   _msg.body_1_name.data = "body1";
@@ -560,9 +560,9 @@ void createTestMsg(ros_ign_interfaces::msg::JointWrench & _msg)
   createTestMsg(_msg.body_2_wrench);
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::JointWrench> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::JointWrench> & _msg)
 {
-  ros_ign_interfaces::msg::JointWrench expected_msg;
+  ros_gz_interfaces::msg::JointWrench expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_EQ(expected_msg.body_1_name, _msg->body_1_name);
@@ -575,16 +575,16 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::JointWrench> 
   compareTestMsg(std::make_shared<geometry_msgs::msg::Wrench>(_msg->body_2_wrench));
 }
 
-void createTestMsg(ros_ign_interfaces::msg::Entity & _msg)
+void createTestMsg(ros_gz_interfaces::msg::Entity & _msg)
 {
   _msg.id = 1;
   _msg.name = "entity";
-  _msg.type = ros_ign_interfaces::msg::Entity::VISUAL;
+  _msg.type = ros_gz_interfaces::msg::Entity::VISUAL;
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Entity> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Entity> & _msg)
 {
-  ros_ign_interfaces::msg::Entity expected_msg;
+  ros_gz_interfaces::msg::Entity expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_EQ(expected_msg.id, _msg->id);
@@ -592,7 +592,7 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Entity> & _ms
   EXPECT_EQ(expected_msg.type, _msg->type);
 }
 
-void createTestMsg(ros_ign_interfaces::msg::Contact & _msg)
+void createTestMsg(ros_gz_interfaces::msg::Contact & _msg)
 {
   createTestMsg(_msg.collision1);
   createTestMsg(_msg.collision2);
@@ -600,7 +600,7 @@ void createTestMsg(ros_ign_interfaces::msg::Contact & _msg)
   geometry_msgs::msg::Vector3 vector_msg;
   createTestMsg(vector_msg);
 
-  ros_ign_interfaces::msg::JointWrench joint_wrench_msg;
+  ros_gz_interfaces::msg::JointWrench joint_wrench_msg;
   createTestMsg(joint_wrench_msg);
 
   for (int i = 0; i < 10; i++) {
@@ -611,12 +611,12 @@ void createTestMsg(ros_ign_interfaces::msg::Contact & _msg)
   }
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contact> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Contact> & _msg)
 {
-  ros_ign_interfaces::msg::Contact expected_msg;
+  ros_gz_interfaces::msg::Contact expected_msg;
   createTestMsg(expected_msg);
-  compareTestMsg(std::make_shared<ros_ign_interfaces::msg::Entity>(_msg->collision1));
-  compareTestMsg(std::make_shared<ros_ign_interfaces::msg::Entity>(_msg->collision2));
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::Entity>(_msg->collision1));
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::Entity>(_msg->collision2));
   EXPECT_EQ(expected_msg.depths.size(), _msg->depths.size());
   EXPECT_EQ(expected_msg.positions.size(), _msg->positions.size());
   EXPECT_EQ(expected_msg.normals.size(), _msg->normals.size());
@@ -625,15 +625,15 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contact> & _m
     EXPECT_EQ(expected_msg.depths.at(i), _msg->depths.at(i));
     compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->positions.at(i)));
     compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->normals.at(i)));
-    compareTestMsg(std::make_shared<ros_ign_interfaces::msg::JointWrench>(_msg->wrenches.at(i)));
+    compareTestMsg(std::make_shared<ros_gz_interfaces::msg::JointWrench>(_msg->wrenches.at(i)));
   }
 }
 
-void createTestMsg(ros_ign_interfaces::msg::Contacts & _msg)
+void createTestMsg(ros_gz_interfaces::msg::Contacts & _msg)
 {
   createTestMsg(_msg.header);
 
-  ros_ign_interfaces::msg::Contact contact_msg;
+  ros_gz_interfaces::msg::Contact contact_msg;
   createTestMsg(contact_msg);
 
   for (int i = 0; i < 10; i++) {
@@ -641,15 +641,15 @@ void createTestMsg(ros_ign_interfaces::msg::Contacts & _msg)
   }
 }
 
-void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::Contacts> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Contacts> & _msg)
 {
-  ros_ign_interfaces::msg::Contacts expected_msg;
+  ros_gz_interfaces::msg::Contacts expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(_msg->header);
   EXPECT_EQ(expected_msg.contacts.size(), _msg->contacts.size());
   for (size_t i = 0; i < _msg->contacts.size(); i++) {
-    compareTestMsg(std::make_shared<ros_ign_interfaces::msg::Contact>(_msg->contacts.at(i)));
+    compareTestMsg(std::make_shared<ros_gz_interfaces::msg::Contact>(_msg->contacts.at(i)));
   }
 }
 
@@ -1074,4 +1074,4 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>
 }
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef ROS_IGN_IMAGE__TEST_UTILS_H_
-#define ROS_IGN_IMAGE__TEST_UTILS_H_
+#ifndef ROS_GZ_IMAGE__TEST_UTILS_H_
+#define ROS_GZ_IMAGE__TEST_UTILS_H_
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -27,7 +27,7 @@
 #include <thread>
 #include <ignition/msgs.hh>
 
-namespace ros_ign_image
+namespace ros_gz_image
 {
 namespace testing
 {
@@ -137,7 +137,7 @@ namespace testing
   }
 
   //////////////////////////////////////////////////
-  /// Ignition::msgs test utils
+  /// Gazebo::msgs test utils
   //////////////////////////////////////////////////
 
   /// \brief Create a message used for testing.
@@ -213,4 +213,4 @@ namespace testing
 }
 }
 
-#endif  // ROS_IGN_BRIDGE__TEST_UTILS_H_
+#endif  // ROS_GZ_BRIDGE__TEST_UTILS_H_

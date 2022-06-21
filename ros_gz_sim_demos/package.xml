@@ -1,25 +1,25 @@
 <package format="3">
-  <name>ros_ign_gazebo_demos</name>
+  <name>ros_gz_sim_demos</name>
   <version>0.244.3</version>
-  <description>Demos using Ignition Gazebo simulation with ROS.</description>
+  <description>Demos using Gazebo Sim simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <!-- Fortress (default) -->
-  <exec_depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
-  <exec_depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</exec_depend>
+  <exec_depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
+  <exec_depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-gazebo6</exec_depend>
   <!-- Edifice -->
-  <exec_depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
+  <exec_depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
-  <exec_depend>ros_ign_bridge</exec_depend>
-  <exec_depend>ros_ign_gazebo</exec_depend>
-  <exec_depend>ros_ign_image</exec_depend>
-  <!-- See https://github.com/osrf/ros_ign/issues/40 -->
-  <!--exec_depend>ros_ign_point_cloud</exec_depend-->
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_sim</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
+  <!-- See https://github.com/gazebosim/ros_gz/issues/40 -->
+  <!--exec_depend>ros_gz_point_cloud</exec_depend-->
   <exec_depend>rqt_image_view</exec_depend>
   <exec_depend>rqt_plot</exec_depend>
   <exec_depend>rqt_topic</exec_depend>

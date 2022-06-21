@@ -12,14 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ign_test_msg.hpp"
+#include "gz_test_msg.hpp"
 
 #include <gtest/gtest.h>
 
 #include <memory>
 #include <string>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -1226,4 +1226,4 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg)
 }
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros_ign_bridge)
+project(ros_gz_bridge)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
@@ -15,31 +15,37 @@ find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_ign_interfaces REQUIRED)
+find_package(ros_gz_interfaces REQUIRED)
 find_package(rosgraph_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
+# TODO(CH3): Deprecated. Remove on tock.
+if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
+  message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
+  set(ENV{GZ_VERSION} ENV{IGNITION_VERSION})
+endif()
+
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
   find_package(gz-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX gz)
 
@@ -47,10 +53,10 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
@@ -61,7 +67,7 @@ set(PACKAGES
   builtin_interfaces
   geometry_msgs
   nav_msgs
-  ros_ign_interfaces
+  ros_gz_interfaces
   rosgraph_msgs
   sensor_msgs
   std_msgs
@@ -93,8 +99,8 @@ foreach(PKG ${PACKAGES})
   )
   target_link_libraries(${PKG}_bridge
     bridge_utils
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
     rclcpp::rclcpp
   )
   set_target_properties(${PKG}_bridge
@@ -108,14 +114,14 @@ set(bridge_executables
 )
 
 set(bridge_lib
-  ros_ign_bridge_lib
+  ros_gz_bridge_lib
 )
 
 add_library(${bridge_lib}
   SHARED
   src/factories.cpp
   src/factory_interface.cpp
-  src/service_factories/ros_ign_interfaces.cpp
+  src/service_factories/ros_gz_interfaces.cpp
 )
 
 target_include_directories(${bridge_lib}
@@ -146,8 +152,8 @@ foreach(bridge ${bridge_executables})
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
@@ -167,7 +173,7 @@ if(BUILD_TESTING)
   ament_find_gtest()
 
   add_library(test_utils
-    test/utils/ign_test_msg.cpp
+    test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
 
@@ -176,15 +182,15 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
     builtin_interfaces
     geometry_msgs
     nav_msgs
     rclcpp
-    ros_ign_interfaces
+    ros_gz_interfaces
     rosgraph_msgs
     sensor_msgs
     std_msgs
@@ -200,7 +206,7 @@ if(BUILD_TESTING)
         test/subscribers/ros_subscriber/builtin_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
+        test/subscribers/ros_subscriber/ros_gz_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/std_msgs_subscriber.cpp
@@ -208,14 +214,14 @@ if(BUILD_TESTING)
 
   target_link_libraries(test_ros_subscriber test_utils)
 
-  add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
-  target_link_libraries(test_ign_publisher test_utils)
+  add_executable(test_gz_publisher test/publishers/gz_publisher.cpp)
+  target_link_libraries(test_gz_publisher test_utils)
 
-  add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
-  target_link_libraries(test_ign_subscriber test_utils)
+  add_executable(test_gz_subscriber test/subscribers/gz_subscriber.cpp)
+  target_link_libraries(test_gz_subscriber test_utils)
 
-  add_executable(test_ign_server test/serverclient/ign_server.cpp)
-  target_link_libraries(test_ign_server test_utils)
+  add_executable(test_gz_server test/serverclient/gz_server.cpp)
+  target_link_libraries(test_gz_server test_utils)
 
   add_executable(test_ros_client test/serverclient/ros_client.cpp)
   target_link_libraries(test_ros_client test_utils)
@@ -224,9 +230,9 @@ if(BUILD_TESTING)
     test_ros_client
     test_ros_publisher
     test_ros_subscriber
-    test_ign_publisher
-    test_ign_server
-    test_ign_subscriber
+    test_gz_publisher
+    test_gz_server
+    test_gz_subscriber
     DESTINATION lib/${PROJECT_NAME}
   )
 
@@ -234,11 +240,11 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 
-  add_launch_test(test/launch/test_ign_subscriber.launch.py
+  add_launch_test(test/launch/test_gz_subscriber.launch.py
     TIMEOUT 200
   )
 
-  add_launch_test(test/launch/test_ign_server.launch.py
+  add_launch_test(test/launch/test_gz_server.launch.py
     TIMEOUT 200
   )
 endif()

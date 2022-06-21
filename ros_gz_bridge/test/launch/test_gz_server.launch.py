@@ -24,22 +24,22 @@ import launch_testing
 def generate_test_description():
 
     server = Node(
-        package='ros_ign_bridge',
-        executable='test_ign_server',
+        package='ros_gz_bridge',
+        executable='test_gz_server',
         output='screen'
     )
     process_under_test = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='test_ros_client',
         output='screen'
     )
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-          '/ign_ros/test/serviceclient/world_control@ros_ign_interfaces/srv/ControlWorld',
+          '/gz_ros/test/serviceclient/world_control@ros_gz_interfaces/srv/ControlWorld',
         ],
         output='screen'
     )

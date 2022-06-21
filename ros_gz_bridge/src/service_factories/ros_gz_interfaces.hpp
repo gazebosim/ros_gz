@@ -12,23 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef SERVICE_FACTORIES__ROS_IGN_INTERFACES_HPP_
-#define SERVICE_FACTORIES__ROS_IGN_INTERFACES_HPP_
+#ifndef SERVICE_FACTORIES__ROS_GZ_INTERFACES_HPP_
+#define SERVICE_FACTORIES__ROS_GZ_INTERFACES_HPP_
 
 #include <memory>
 #include <string>
 
 #include "service_factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<ServiceFactoryInterface>
-get_service_factory__ros_ign_interfaces(
+get_service_factory__ros_gz_interfaces(
   const std::string & ros_type_name,
-  const std::string & ign_req_type_name,
-  const std::string & ign_rep_type_name);
+  const std::string & gz_req_type_name,
+  const std::string & gz_rep_type_name);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
-#endif  // SERVICE_FACTORIES__ROS_IGN_INTERFACES_HPP_
+#endif  // SERVICE_FACTORIES__ROS_GZ_INTERFACES_HPP_

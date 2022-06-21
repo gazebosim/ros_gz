@@ -24,7 +24,7 @@
 #include <ignition/transport.hh>
 
 #include "utils/test_utils.hpp"
-#include "utils/ign_test_msg.hpp"
+#include "utils/gz_test_msg.hpp"
 
 /// \brief Flag used to break the waiting loop and terminate the program.
 static std::atomic_flag g_terminateSrv(false);
@@ -62,7 +62,7 @@ int main(int /*argc*/, char **/*argv*/)
 
   // ignition::msgs::WorldControl.
   node.Advertise(
-    "/ign_ros/test/serviceclient/world_control",
+    "/gz_ros/test/serviceclient/world_control",
     &control_world);
 
   // Requests are handled in another thread.

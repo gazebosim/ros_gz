@@ -1,7 +1,7 @@
 <package format="3">
-  <name>ros_ign_image</name>
+  <name>ros_gz_image</name>
   <version>0.244.3</version>
-  <description>Image utilities for Ignition simulation with ROS.</description>
+  <description>Image utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
@@ -9,21 +9,21 @@
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>image_transport</depend>
-  <depend>ros_ign_bridge</depend>
+  <depend>ros_gz_bridge</depend>
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 
   <!-- Garden -->
-  <depend condition="$IGNITION_VERSION == garden">gz-msgs9</depend>
-  <depend condition="$IGNITION_VERSION == garden">gz-transport12</depend>
+  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-msgs9</depend>
+  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-transport12</depend>
   <!-- Fortress (default) -->
-  <depend condition="$IGNITION_VERSION == fortress">ignition-msgs8</depend>
-  <depend condition="$IGNITION_VERSION == fortress">ignition-transport11</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-msgs8</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-transport11</depend>
+  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-msgs8</depend>
+  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-transport11</depend>
+  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-msgs8</depend>
+  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-transport11</depend>
   <!-- Edifice -->
-  <depend condition="$IGNITION_VERSION == edifice">ignition-msgs7</depend>
-  <depend condition="$IGNITION_VERSION == edifice">ignition-transport10</depend>
+  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-msgs7</depend>
+  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-transport10</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

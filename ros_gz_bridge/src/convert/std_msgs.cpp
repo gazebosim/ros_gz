@@ -13,57 +13,57 @@
 // limitations under the License.
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/builtin_interfaces.hpp"
-#include "ros_ign_bridge/convert/std_msgs.hpp"
+#include "ros_gz_bridge/convert/builtin_interfaces.hpp"
+#include "ros_gz_bridge/convert/std_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Bool & ros_msg,
-  ignition::msgs::Boolean & ign_msg)
+  ignition::msgs::Boolean & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Boolean & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Boolean & gz_msg,
   std_msgs::msg::Bool & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::ColorRGBA & ros_msg,
-  ignition::msgs::Color & ign_msg)
+  ignition::msgs::Color & gz_msg)
 {
-  ign_msg.set_r(ros_msg.r);
-  ign_msg.set_g(ros_msg.g);
-  ign_msg.set_b(ros_msg.b);
-  ign_msg.set_a(ros_msg.a);
+  gz_msg.set_r(ros_msg.r);
+  gz_msg.set_g(ros_msg.g);
+  gz_msg.set_b(ros_msg.b);
+  gz_msg.set_a(ros_msg.a);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Color & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Color & gz_msg,
   std_msgs::msg::ColorRGBA & ros_msg)
 {
-  ros_msg.r = ign_msg.r();
-  ros_msg.g = ign_msg.g();
-  ros_msg.b = ign_msg.b();
-  ros_msg.a = ign_msg.a();
+  ros_msg.r = gz_msg.r();
+  ros_msg.g = gz_msg.g();
+  ros_msg.b = gz_msg.b();
+  ros_msg.a = gz_msg.a();
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Empty &,
   ignition::msgs::Empty &)
 {
@@ -71,7 +71,7 @@ convert_ros_to_ign(
 
 template<>
 void
-convert_ign_to_ros(
+convert_gz_to_ros(
   const ignition::msgs::Empty &,
   std_msgs::msg::Empty &)
 {
@@ -79,119 +79,119 @@ convert_ign_to_ros(
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::UInt32 & ros_msg,
-  ignition::msgs::UInt32 & ign_msg)
+  ignition::msgs::UInt32 & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::UInt32 & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::UInt32 & gz_msg,
   std_msgs::msg::UInt32 & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Float32 & ros_msg,
-  ignition::msgs::Float & ign_msg)
+  ignition::msgs::Float & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Float & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Float & gz_msg,
   std_msgs::msg::Float32 & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Float64 & ros_msg,
-  ignition::msgs::Double & ign_msg)
+  ignition::msgs::Double & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Double & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Double & gz_msg,
   std_msgs::msg::Float64 & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Header & ros_msg,
-  ignition::msgs::Header & ign_msg)
+  ignition::msgs::Header & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.stamp, *ign_msg.mutable_stamp());
-  auto newPair = ign_msg.add_data();
+  convert_ros_to_gz(ros_msg.stamp, *gz_msg.mutable_stamp());
+  auto newPair = gz_msg.add_data();
   newPair->set_key("frame_id");
   newPair->add_value(ros_msg.frame_id);
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::Int32 & ros_msg,
-  ignition::msgs::Int32 & ign_msg)
+  ignition::msgs::Int32 & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Int32 & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Int32 & gz_msg,
   std_msgs::msg::Int32 & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Header & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Header & gz_msg,
   std_msgs::msg::Header & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.stamp(), ros_msg.stamp);
-  for (auto i = 0; i < ign_msg.data_size(); ++i) {
-    auto aPair = ign_msg.data(i);
+  convert_gz_to_ros(gz_msg.stamp(), ros_msg.stamp);
+  for (auto i = 0; i < gz_msg.data_size(); ++i) {
+    auto aPair = gz_msg.data(i);
     if (aPair.key() == "frame_id" && aPair.value_size() > 0) {
-      ros_msg.frame_id = frame_id_ign_to_ros(aPair.value(0));
+      ros_msg.frame_id = frame_id_gz_to_ros(aPair.value(0));
     }
   }
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const std_msgs::msg::String & ros_msg,
-  ignition::msgs::StringMsg & ign_msg)
+  ignition::msgs::StringMsg & gz_msg)
 {
-  ign_msg.set_data(ros_msg.data);
+  gz_msg.set_data(ros_msg.data);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::StringMsg & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::StringMsg & gz_msg,
   std_msgs::msg::String & ros_msg)
 {
-  ros_msg.data = ign_msg.data();
+  ros_msg.data = gz_msg.data();
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

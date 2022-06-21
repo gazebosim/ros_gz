@@ -6,7 +6,7 @@ This package contains demos showing how to use Gazebo Sim with ROS.
 
 There's a convenient launch file, try for example:
 
-    ros2 launch ros_ign_gazebo ign_gazebo.launch.py ign_args:="shapes.sdf"
+    ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="shapes.sdf"
 
 ![](images/shapes_demo.png)
 
@@ -14,7 +14,7 @@ There's a convenient launch file, try for example:
 
 Publishes fluid pressure readings.
 
-    ros2 launch ros_ign_gazebo_demos air_pressure.launch.py
+    ros2 launch ros_gz_sim_demos air_pressure.launch.py
 
 This demo also shows the use of custom QoS parameters. The sensor data is
 published as as "best-effort", so trying to subscribe to "reliable" data won't
@@ -32,19 +32,19 @@ And
 
 Publishes RGB camera image and info.
 
-Images can be exposed to ROS through `ros_ign_bridge` or `ros_ign_image`.
+Images can be exposed to ROS through `ros_gz_bridge` or `ros_gz_image`.
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py
+    ros2 launch ros_gz_sim_demos image_bridge.launch.py
 
 Using the regular bridge:
 
-    ros2 launch ros_ign_gazebo_demos camera.launch.py
+    ros2 launch ros_gz_sim_demos camera.launch.py
 
 To use a camera that only publishes information when triggered:
 
-    ros2 launch ros_ign_gazebo_demos triggered_camera.launch.py
+    ros2 launch ros_gz_sim_demos triggered_camera.launch.py
 
 Trigger the camera:
 
@@ -56,7 +56,7 @@ Trigger the camera:
 
 Send commands to a differential drive vehicle and listen to its odometry.
 
-    ros2 launch ros_ign_gazebo_demos diff_drive.launch.py
+    ros2 launch ros_gz_sim_demos diff_drive.launch.py
 
 Then unpause and send a command
 
@@ -78,18 +78,18 @@ And
 
 Depth camera data can be obtained as:
 
-* `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sensor_msgs/msg/PointCloud2`, through `ros_ign_point_cloud`
+* `sensor_msgs/msg/Image`, through `ros_gz_bridge` or `ros_gz_image`
+* `sensor_msgs/msg/PointCloud2`, through `ros_gz_point_cloud`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/depth_camera
+    ros2 launch ros_gz_sim_demos image_bridge.launch.py image_topic:=/depth_camera
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
-    ros2 launch ros_ign_gazebo_demos depth_camera.launch.py
+    ros2 launch ros_gz_sim_demos depth_camera.launch.py
 
 ![](images/depth_camera_demo.png)
 
@@ -97,18 +97,18 @@ Using Gazebo Sim plugin:
 
 GPU lidar data can be obtained as:
 
-* `sensor_msgs/msg/LaserScan`, through the `ros_ign_bridge`
-* `sensor_msgs/msg/PointCloud2`, through the `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/LaserScan`, through the `ros_gz_bridge`
+* `sensor_msgs/msg/PointCloud2`, through the `ros_gz_bridge` or `ros_gz_point_cloud`
 
 Using the bridge:
 
-    ros2 launch ros_ign_gazebo_demos gpu_lidar_bridge.launch.py
+    ros2 launch ros_gz_sim_demos gpu_lidar_bridge.launch.py
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
-    ros2 launch ros_ign_gazebo_demos gpu_lidar.launch.py
+    ros2 launch ros_gz_sim_demos gpu_lidar.launch.py
 
 ![](images/gpu_lidar_demo.png)
 
@@ -116,7 +116,7 @@ Using Gazebo Sim plugin:
 
 Publishes IMU readings.
 
-    ros2 launch ros_ign_gazebo_demos imu.launch.py
+    ros2 launch ros_gz_sim_demos imu.launch.py
 
 ![](images/imu_demo.png)
 
@@ -126,7 +126,7 @@ Publishes IMU readings.
 
 Publishes magnetic field readings.
 
-    ros2 launch ros_ign_gazebo_demos magnetometer.launch.py
+    ros2 launch ros_gz_sim_demos magnetometer.launch.py
 
 ![](images/magnetometer_demo.png)
 
@@ -134,25 +134,25 @@ Publishes magnetic field readings.
 
 RGBD camera data can be obtained as:
 
-* `sensor_msgs/msg/Image`, through `ros_ign_bridge` or `ros_ign_image`
-* `sensor_msgs/msg/PointCloud2`, through `ros_ign_bridge` or `ros_ign_point_cloud`
+* `sensor_msgs/msg/Image`, through `ros_gz_bridge` or `ros_gz_image`
+* `sensor_msgs/msg/PointCloud2`, through `ros_gz_bridge` or `ros_gz_point_cloud`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
     # RGB image
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/rgbd_camera/image
+    ros2 launch ros_gz_sim_demos image_bridge.launch.py image_topic:=/rgbd_camera/image
     # Depth image
-    ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/rgbd_camera/depth_image
+    ros2 launch ros_gz_sim_demos image_bridge.launch.py image_topic:=/rgbd_camera/depth_image
 
 Using the regular bridge:
 
-    ros2 launch ros_ign_gazebo_demos rgbd_camera_bridge.launch.py
+    ros2 launch ros_gz_sim_demos rgbd_camera_bridge.launch.py
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
-    ros2 launch ros_ign_gazebo_demos rgbd_camera.launch.py
+    ros2 launch ros_gz_sim_demos rgbd_camera.launch.py
 
 ![](images/rgbd_camera_demo.png)
 
@@ -160,7 +160,7 @@ Using Gazebo Sim plugin:
 
 Get the current state of a battery.
 
-    ros2 launch ros_ign_gazebo_demos battery.launch.py
+    ros2 launch ros_gz_sim_demos battery.launch.py
 
 Then send a command so the vehicle moves and drains the battery
 
@@ -174,7 +174,7 @@ Leverage the robot description publisher to spawn a new urdf model in gazebo and
 show it in rviz2.
 To try the demo launch:
 
-    ros2 launch ros_ign_gazebo_demos robot_description_publisher.launch.py
+    ros2 launch ros_gz_sim_demos robot_description_publisher.launch.py
 
 ![](images/robot_state_publisher_demo.png)
 
@@ -184,7 +184,7 @@ Publishes joint states of the robot.
 
 To try the demo launch:
 
-    ros2 launch ros_ign_gazebo_demos joint_states.launch.py
+    ros2 launch ros_gz_sim_demos joint_states.launch.py
 
 ![](images/joint_states.png)
 
@@ -195,6 +195,6 @@ and transforms of a robot in rviz.
 
 To try the demo launch:
 
-    ros2 launch ros_ign_gazebo_demos tf_bridge.launch.py
+    ros2 launch ros_gz_sim_demos tf_bridge.launch.py
 
 ![](images/tf_bridge.gif)

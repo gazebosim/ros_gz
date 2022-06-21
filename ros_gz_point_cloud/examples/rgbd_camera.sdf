@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-  Example publishing point cloud messages to ROS from Ignition.
+  Example publishing point cloud messages to ROS from Gazebo.
   There are 2 RGBD cameras: one with custom plugin parameters and another one with default parameters.
 
   Try it out:
@@ -9,9 +9,10 @@
 
           roscore
 
-  2. Make sure Ignition Gazebo can find the point cloud plugin by adding your lib install directory
+  2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
      to the path, for example:
 
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
           export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
 
   3. Load the example world, unpaused:
@@ -30,22 +31,22 @@
 
 -->
 <sdf version="1.6">
-  <world name="ros_ign">
+  <world name="ros_gz">
     <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
     </physics>
     <plugin
-      filename="libignition-gazebo-physics-system.so"
+      filename="ignition-gazebo-physics-system"
       name="ignition::gazebo::systems::Physics">
     </plugin>
     <plugin
-      filename="libignition-gazebo-sensors-system.so"
+      filename="ignition-gazebo-sensors-system"
       name="ignition::gazebo::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin
-      filename="libignition-gazebo-scene-broadcaster-system.so"
+      filename="ignition-gazebo-scene-broadcaster-system"
       name="ignition::gazebo::systems::SceneBroadcaster">
     </plugin>
 
@@ -86,8 +87,8 @@
         <play_pause>true</play_pause>
         <step>true</step>
         <start_paused>true</start_paused>
-        <service>/world/ros_ign/control</service>
-        <stats_topic>/world/ros_ign/stats</stats_topic>
+        <service>/world/ros_gz/control</service>
+        <stats_topic>/world/ros_gz/stats</stats_topic>
 
       </plugin>
 
@@ -112,7 +113,7 @@
         <real_time>true</real_time>
         <real_time_factor>true</real_time_factor>
         <iterations>true</iterations>
-        <topic>/world/ros_ign/stats</topic>
+        <topic>/world/ros_gz/stats</topic>
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
@@ -330,8 +331,8 @@
           <visualize>true</visualize>
           <topic>custom_params</topic>
           <plugin
-            filename="libRosIgnPointCloud.so"
-            name="ros_ign_point_cloud::PointCloud">
+            filename="RosGzPointCloud"
+            name="ros_gz_point_cloud::PointCloud">
             <namespace>custom_params</namespace>
             <topic>pc2</topic>
             <frame_id>map</frame_id>
@@ -375,8 +376,8 @@
           <visualize>true</visualize>
           <topic>rgbd_camera</topic>
           <plugin
-            filename="libRosIgnPointCloud.so"
-            name="ros_ign_point_cloud::PointCloud">
+            filename="RosGzPointCloud"
+            name="ros_gz_point_cloud::PointCloud">
           </plugin>
         </sensor>
       </link>

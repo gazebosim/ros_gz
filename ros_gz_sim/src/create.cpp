@@ -40,13 +40,13 @@ DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
 DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
 DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
-// ROS interface for spawning entities into Ignition.
+// ROS interface for spawning entities into Gazebo.
 // Suggested for use with roslaunch and loading entities from ROS param.
-// If these are not needed, just use the `ign service` command line instead.
+// If these are not needed, just use the `gz service` command line instead.
 int main(int _argc, char ** _argv)
 {
   rclcpp::init(_argc, _argv);
-  auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
+  auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
@@ -58,7 +58,7 @@ int main(int _argc, char ** _argv)
   // World
   std::string world_name = FLAGS_world;
   if (world_name.empty()) {
-    // If caller doesn't provide a world name, get list of worlds from ign-gazebo server
+    // If caller doesn't provide a world name, get list of worlds from gz-sim server
     ignition::transport::Node node;
 
     bool executed{false};

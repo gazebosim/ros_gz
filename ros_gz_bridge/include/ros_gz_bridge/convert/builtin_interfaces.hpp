@@ -12,30 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
-#define ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#define ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 
 #include <ignition/msgs/time.pb.h>
 
 #include <builtin_interfaces/msg/time.hpp>
 
-#include "ros_ign_bridge/convert_decl.hpp"
+#include "ros_gz_bridge/convert_decl.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const builtin_interfaces::msg::Time & ros_msg,
-  ignition::msgs::Time & ign_msg);
+  ignition::msgs::Time & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Time & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#endif  // ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_

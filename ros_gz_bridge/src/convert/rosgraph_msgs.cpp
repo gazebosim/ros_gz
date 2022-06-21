@@ -15,28 +15,28 @@
 #include <rclcpp/time.hpp>
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/rosgraph_msgs.hpp"
+#include "ros_gz_bridge/convert/rosgraph_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Clock & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Clock & gz_msg,
   rosgraph_msgs::msg::Clock & ros_msg)
 {
-  ros_msg.clock = rclcpp::Time(ign_msg.sim().sec(), ign_msg.sim().nsec());
+  ros_msg.clock = rclcpp::Time(gz_msg.sim().sec(), gz_msg.sim().nsec());
 }
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const rosgraph_msgs::msg::Clock & ros_msg,
-  ignition::msgs::Clock & ign_msg)
+  ignition::msgs::Clock & gz_msg)
 {
-  ign_msg.mutable_sim()->set_sec(ros_msg.clock.sec);
-  ign_msg.mutable_sim()->set_nsec(ros_msg.clock.nanosec);
+  gz_msg.mutable_sim()->set_sec(ros_msg.clock.sec);
+  gz_msg.mutable_sim()->set_nsec(ros_msg.clock.nanosec);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
