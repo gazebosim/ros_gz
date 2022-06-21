@@ -389,7 +389,7 @@ convert_ros_to_ign(
 {
   convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
 
-  for (auto param: ros_msg.params) {
+  for (auto param : ros_msg.params) {
     ignition::msgs::Any anyValue;
     convert_ros_to_ign(param.value, anyValue);
     auto new_param = ign_msg.mutable_params();
@@ -405,7 +405,7 @@ convert_ign_to_ros(
 {
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
 
-  for (auto it: ign_msg.params()) {
+  for (auto it : ign_msg.params()) {
     rcl_interfaces::msg::Parameter p;
     p.name = it.first;
     convert_ign_to_ros(it.second, p.value);
