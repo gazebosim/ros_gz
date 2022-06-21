@@ -16,8 +16,8 @@ Changelog for package ros_ign_interfaces
   * Add new messages to docs
   * Add test cases for the new messages conversions
 * Update maintainer for ros_ign_interfaces (`#204 <https://github.com/osrf/ros_ign/issues/204>`_)
-* [ros2]  new package ros_ign_interfaces, provide some  Ignition-specific ROS messages. (`#152 <https://github.com/osrf/ros_ign/issues/152>`_)
-  * add new package ros_ign_interfaces,provide some Ignition-specific ros .msg and .srv files
+* [ros2]  new package ros_ign_interfaces, provide some  Gazebo-specific ROS messages. (`#152 <https://github.com/osrf/ros_ign/issues/152>`_)
+  * add new package ros_ign_interfaces,provide some Gazebo-specific ros .msg and .srv files
   * modify to match ign-msgs
   * add author info
   * modify comments
@@ -35,8 +35,8 @@ Changelog for package ros_ign_interfaces
 
 0.233.2 (2021-07-20)
 --------------------
-* [ros2]  new package ros_ign_interfaces, provide some  Ignition-specific ROS messages. (`#152 <https://github.com/osrf/ros_ign/issues/152>`_)
-  * add new package ros_ign_interfaces,provide some Ignition-specific ros .msg and .srv files
+* [ros2]  new package ros_ign_interfaces, provide some  Gazebo-specific ROS messages. (`#152 <https://github.com/osrf/ros_ign/issues/152>`_)
+  * add new package ros_ign_interfaces,provide some Gazebo-specific ros .msg and .srv files
   * modify to match ign-msgs
   * add author info
   * modify comments

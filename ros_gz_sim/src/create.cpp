@@ -40,7 +40,7 @@ DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
 DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
 DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
-// ROS interface for spawning entities into Ignition.
+// ROS interface for spawning entities into Gazebo.
 // Suggested for use with roslaunch and loading entities from ROS param.
 // If these are not needed, just use the `ign service` command line instead.
 int main(int _argc, char ** _argv)

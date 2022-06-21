@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs/boolean.pb.h>
 #include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/empty.pb.h>

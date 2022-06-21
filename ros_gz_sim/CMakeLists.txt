@@ -15,7 +15,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-math6 REQUIRED)
   set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
 
@@ -28,9 +28,9 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-gazebo5 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Edifice")
+  message(STATUS "Compiling against Gazebo Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(ignition-math7 REQUIRED)
   set(IGN_MATH_VER ${ignition-math7_VERSION_MAJOR})
 
@@ -58,7 +58,7 @@ else()
   find_package(ignition-gazebo6 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Fortress")
+  message(STATUS "Compiling against Gazebo Fortress")
 endif()
 
 ign_find_package(gflags

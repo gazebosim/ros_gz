@@ -131,7 +131,7 @@ protected:
     ign_pub.Publish(ign_msg);
     RCLCPP_INFO_ONCE(
       ros_node->get_logger(),
-      "Passing message from ROS %s to Ignition %s (showing msg only once per type)",
+      "Passing message from ROS %s to Gazebo %s (showing msg only once per type)",
       ros_type_name.c_str(), ign_type_name.c_str());
   }
 

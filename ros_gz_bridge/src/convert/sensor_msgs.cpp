@@ -287,7 +287,7 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.angular_velocity(), ros_msg.angular_velocity);
   convert_ign_to_ros(ign_msg.linear_acceleration(), ros_msg.linear_acceleration);
 
-  // Covariances not supported in Ignition::msgs::IMU
+  // Covariances not supported in Gazebo::msgs::IMU
 }
 
 template<>
@@ -413,7 +413,7 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
   convert_ign_to_ros(ign_msg.field_tesla(), ros_msg.magnetic_field);
 
-  // magnetic_field_covariance is not supported in Ignition::Msgs::Magnetometer.
+  // magnetic_field_covariance is not supported in Gazebo::Msgs::Magnetometer.
 }
 
 template<>

@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch Ignition Gazebo with command line arguments."""
+"""Launch Gazebo Sim with command line arguments."""
 
 import os
 

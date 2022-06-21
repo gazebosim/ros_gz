@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs/battery_state.pb.h>
 #include <ignition/msgs/camera_info.pb.h>
 #include <ignition/msgs/fluid_pressure.pb.h>

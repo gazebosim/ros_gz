@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch Ignition Gazebo with command line arguments."""
+"""Launch Gazebo Sim with command line arguments."""
 
 from os import environ
 
@@ -29,10 +29,10 @@ def generate_launch_description():
 
     return LaunchDescription([
         DeclareLaunchArgument('ign_args', default_value='',
-                              description='Arguments to be passed to Ignition Gazebo'),
-        # Ignition Gazebo's major version
+                              description='Arguments to be passed to Gazebo Sim'),
+        # Gazebo Sim's major version
         DeclareLaunchArgument('ign_version', default_value='@IGN_GAZEBO_VER@',
-                              description='Ignition Gazebo\'s major version'),
+                              description='Gazebo Sim\'s major version'),
         ExecuteProcess(
             cmd=['ign gazebo',
                  LaunchConfiguration('ign_args'),

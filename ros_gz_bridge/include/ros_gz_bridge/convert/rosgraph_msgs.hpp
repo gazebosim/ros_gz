@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs.hh>
 
 // ROS 2 messages

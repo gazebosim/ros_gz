@@ -3,7 +3,7 @@
 <package format="3">
   <name>ros_ign_gazebo</name>
   <version>0.244.3</version>
-  <description>Tools for using Ignition Gazebo simulation with ROS.</description>
+  <description>Tools for using Gazebo Sim simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
   <license>Apache 2.0</license>
@@ -18,16 +18,16 @@
   <depend>std_msgs</depend>
 
   <!-- Garden -->
-  <depend condition="$IGNITION_VERSION == garden">ignition-gazebo7</depend>
-  <depend condition="$IGNITION_VERSION == garden">ignition-math7</depend>
+  <depend condition="$GZ_VERSION == garden">ignition-gazebo7</depend>
+  <depend condition="$GZ_VERSION == garden">ignition-math7</depend>
   <!-- Fortress (default) -->
-  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == fortress">ignition-math6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == fortress">ignition-gazebo6</depend>
+  <depend condition="$GZ_VERSION == fortress">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == ''">ignition-gazebo6</depend>
+  <depend condition="$GZ_VERSION == ''">ignition-math6</depend>
   <!-- Edifice -->
-  <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
-  <depend condition="$IGNITION_VERSION == edifice">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$GZ_VERSION == edifice">ignition-math6</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

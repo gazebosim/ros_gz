@@ -31,7 +31,7 @@ public:
   /// \brief Constructor
   /// \param[in] _topic Image base topic
   /// \param[in] _it_node Pointer to image transport node
-  /// \param[in] _ign_node Pointer to Ignition node
+  /// \param[in] _ign_node Pointer to Gazebo node
   Handler(
     const std::string & _topic,
     std::shared_ptr<image_transport::ImageTransport> _it_node,
@@ -43,8 +43,8 @@ public:
   }
 
 private:
-  /// \brief Callback when Ignition image is received
-  /// \param[in] _ign_msg Ignition message
+  /// \brief Callback when Gazebo image is received
+  /// \param[in] _ign_msg Gazebo message
   void OnImage(const ignition::msgs::Image & _ign_msg)
   {
     sensor_msgs::msg::Image ros_msg;
@@ -59,7 +59,7 @@ private:
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cerr << "Bridge a collection of Ignition Transport image topics to ROS " <<
+  std::cerr << "Bridge a collection of Gazebo Transport image topics to ROS " <<
     "using image_transport.\n\n" <<
     "  image_bridge <topic> <topic> ..\n\n" <<
     "E.g.: image_bridge /camera/front/image_raw" << std::endl;
@@ -79,7 +79,7 @@ int main(int argc, char * argv[])
   auto node_ = rclcpp::Node::make_shared("ros_ign_image");
   auto it_node = std::make_shared<image_transport::ImageTransport>(node_);
 
-  // Ignition node
+  // Gazebo node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
   std::vector<std::shared_ptr<Handler>> handlers;

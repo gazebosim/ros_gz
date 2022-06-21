@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-// include Ignition Transport
+// include Gazebo Transport
 #include <ignition/transport/Node.hh>
 
 // include ROS 2
@@ -42,31 +42,31 @@ enum Direction
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cout << "Bridge a collection of ROS2 and Ignition Transport topics and services.\n\n" <<
+  std::cout << "Bridge a collection of ROS2 and Gazebo Transport topics and services.\n\n" <<
     "  parameter_bridge [<topic@ROS2_type@Ign_type> ..] " <<
     " [<service@ROS2_srv_type[@Ign_req_type@Ign_rep_type]> ..]\n\n" <<
     "Topics: The first @ symbol delimits the topic name from the message types.\n" <<
     "Following the first @ symbol is the ROS message type.\n" <<
     "The ROS message type is followed by an @, [, or ] symbol where\n" <<
     "    @  == a bidirectional bridge, \n" <<
-    "    [  == a bridge from Ignition to ROS,\n" <<
-    "    ]  == a bridge from ROS to Ignition.\n" <<
-    "Following the direction symbol is the Ignition Transport message " <<
+    "    [  == a bridge from Gazebo to ROS,\n" <<
+    "    ]  == a bridge from ROS to Gazebo.\n" <<
+    "Following the direction symbol is the Gazebo Transport message " <<
     "type.\n\n" <<
     "Services: The first @ symbol delimits the service name from the types.\n" <<
     "Following the first @ symbol is the ROS service type.\n" <<
-    "Optionally, you can include the Ignition request and response type\n" <<
+    "Optionally, you can include the Gazebo request and response type\n" <<
     "separated by the @ symbol.\n" <<
-    "It is only supported to expose Ignition servces as ROS services, i.e.\n"
-    "the ROS service will forward request to the Ignition service and then forward\n"
+    "It is only supported to expose Gazebo servces as ROS services, i.e.\n"
+    "the ROS service will forward request to the Gazebo service and then forward\n"
     "the response back to the ROS client.\n\n"
     "A bidirectional bridge example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String@ignition.msgs" <<
     ".StringMsg\n\n" <<
-    "A bridge from Ignition to ROS example:\n" <<
+    "A bridge from Gazebo to ROS example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String[ignition.msgs" <<
     ".StringMsg\n\n" <<
-    "A bridge from ROS to Ignition example:\n" <<
+    "A bridge from ROS to Gazebo example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String]ignition.msgs" <<
     ".StringMsg\n" <<
     "A service bridge:\n" <<
@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
   // ROS 2 node
   auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
 
-  // Ignition node
+  // Gazebo node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
   std::vector<ros_ign_bridge::BridgeHandles> bidirectional_handles;
@@ -202,7 +202,7 @@ int main(int argc, char * argv[])
     } catch (std::runtime_error & _e) {
       std::cerr << "Failed to create a bridge for topic [" << topic_name << "] " <<
         "with ROS2 type [" << ros_type_name << "] and " <<
-        "Ignition Transport type [" << ign_type_name << "]" << std::endl;
+        "Gazebo Transport type [" << ign_type_name << "]" << std::endl;
     }
   }
 

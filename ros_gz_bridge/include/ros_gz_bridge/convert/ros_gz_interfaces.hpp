@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs/entity.pb.h>
 #include <ignition/msgs/joint_wrench.pb.h>
 #include <ignition/msgs/contact.pb.h>

@@ -5,7 +5,7 @@
        https://github.com/ros2/ros2/issues/408 -->
   <name>ros_ign</name>
   <version>0.244.3</version>
-  <description>Meta-package containing interfaces for using ROS 2 with <a href="https://ignitionrobotics.org">Ignition</a> simulation.</description>
+  <description>Meta-package containing interfaces for using ROS 2 with <a href="https://ignitionrobotics.org">Gazebo</a> simulation.</description>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
   <license>Apache 2.0</license>
 

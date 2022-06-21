@@ -44,7 +44,7 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    # Ignition gazebo
+    # Gazebo Sim
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')

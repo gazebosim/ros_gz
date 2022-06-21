@@ -56,7 +56,7 @@ def generate_launch_description():
             parameters=[params],
             arguments=[])
 
-    # Ignition gazebo
+    # Gazebo Sim
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-  Example publishing point cloud messages to ROS from Ignition.
+  Example publishing point cloud messages to ROS from Gazebo.
   There are 2 RGBD cameras: one with custom plugin parameters and another one with default parameters.
 
   Try it out:
@@ -9,7 +9,7 @@
 
           roscore
 
-  2. Make sure Ignition Gazebo can find the point cloud plugin by adding your lib install directory
+  2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
      to the path, for example:
 
           export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=<ws>/install/lib/

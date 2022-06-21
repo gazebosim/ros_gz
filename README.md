@@ -77,10 +77,10 @@ Be sure you've installed
 
 Install either [Edifice, Fortress, or Garden](https://gazebosim.org/docs).
 
-Set the `IGNITION_VERSION` environment variable to the Gazebo version you'd
+Set the `GZ_VERSION` environment variable to the Gazebo version you'd
 like to compile against. For example:
 
-    export IGNITION_VERSION=edifice
+    export GZ_VERSION=edifice
 
 > You only need to set this variable when compiling, not when running.
 

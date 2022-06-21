@@ -23,16 +23,16 @@ find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Edifice")
+  message(STATUS "Compiling against Gazebo Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(ignition-transport12 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
 
@@ -48,7 +48,7 @@ else()
   find_package(ignition-msgs8 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Ignition Fortress")
+  message(STATUS "Compiling against Gazebo Fortress")
 endif()
 
 set(PACKAGES
