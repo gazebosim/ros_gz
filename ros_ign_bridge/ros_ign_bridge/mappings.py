@@ -38,6 +38,9 @@ MAPPINGS = {
     'nav_msgs': [
         Mapping('Odometry', 'Odometry'),
     ],
+    'rcl_interfaces': [
+        Mapping('ParameterValue', 'Any'),
+    ],
     'ros_ign_interfaces': [
         Mapping('Contact', 'Contact'),
         Mapping('Contacts', 'Contacts'),
@@ -73,9 +76,6 @@ MAPPINGS = {
         Mapping('Int32', 'Int32'),
         Mapping('UInt32', 'UInt32'),
         Mapping('String', 'StringMsg'),
-    ],
-    'rcl_interfaces': [
-        Mapping('ParameterValue', 'Any'),
     ],
     'tf2_msgs': [
         Mapping('TFMessage', 'Pose_V'),

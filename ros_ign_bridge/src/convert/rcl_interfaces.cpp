@@ -140,8 +140,8 @@ convert_ign_to_ros(
   }
 
   if (!unsupported_type.empty()) {
-    std::cerr << "Converting unsupported gz::msgs::Any ["
-              << unsupported_type << "] failed\n";
+    std::cerr << "Converting unsupported gz::msgs::Any [" <<
+      unsupported_type << "] failed\n";
   }
 }
 }  // namespace ros_ign_bridge
