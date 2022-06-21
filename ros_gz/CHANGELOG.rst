@@ -4,7 +4,7 @@ Changelog for package ros_ign
 
 0.244.3 (2022-05-19)
 --------------------
-* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/osrf/ros_ign/issues/252>`_)
+* [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/gazebosim/ros_gz/issues/252>`_)
 * Contributors: Louise Poubel
 
 0.244.2 (2022-04-25)
@@ -29,10 +29,10 @@ Changelog for package ros_ign
 
 0.221.0 (2020-07-23)
 --------------------
-* Added ros_ign_gazebo to ros_ign package.xml (`#81 <https://github.com/osrf/ros_ign/issues/81>`_)
-* Update Dashing docs (`#62 <https://github.com/osrf/ros_ign/issues/62>`_)
-* Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/osrf/ros_ign/issues/58>`_)
-* Enable ROS2 CI for Dashing branch (`#43 <https://github.com/osrf/ros_ign/issues/43>`_)
+* Added ros_ign_gazebo to ros_ign package.xml (`#81 <https://github.com/gazebosim/ros_gz/issues/81>`_)
+* Update Dashing docs (`#62 <https://github.com/gazebosim/ros_gz/issues/62>`_)
+* Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/gazebosim/ros_gz/issues/58>`_)
+* Enable ROS2 CI for Dashing branch (`#43 <https://github.com/gazebosim/ros_gz/issues/43>`_)
 * Rename packages and fix compilation + tests
 * Move files ros1 -> ros
 * Contributors: Alejandro Hernández Cordero, Jose Luis Rivero, Louise Poubel, chapulina

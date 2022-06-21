@@ -85,7 +85,7 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 
     ros2 launch ros_ign_gazebo_demos image_bridge.launch.py image_topic:=/depth_camera
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
@@ -104,7 +104,7 @@ Using the bridge:
 
     ros2 launch ros_ign_gazebo_demos gpu_lidar_bridge.launch.py
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
@@ -148,7 +148,7 @@ Using the regular bridge:
 
     ros2 launch ros_ign_gazebo_demos rgbd_camera_bridge.launch.py
 
-*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/osrf/ros_ign/issues/40).
+*TODO*: Blocked by `ros_ign_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
 Using Gazebo Sim plugin:
 
