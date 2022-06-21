@@ -16,6 +16,8 @@
 
 #include <ros_ign_bridge/convert/rcl_interfaces.hpp>
 
+#include <limits>
+
 // A more specific set of tests for the rcl_interfaces/msg/ParamValue to
 // ignition::msgs::Any to verify behaviors that couldn't easily be captured
 // by the generic test framework

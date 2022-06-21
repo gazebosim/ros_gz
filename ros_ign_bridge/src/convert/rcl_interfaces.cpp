@@ -14,6 +14,9 @@
 
 #include "ros_ign_bridge/convert/rcl_interfaces.hpp"
 
+#include <limits>
+#include <string>
+
 namespace ros_ign_bridge
 {
 
@@ -81,8 +84,8 @@ convert_ros_to_ign(
   }
 
   if (!unsupported_type.empty()) {
-    std::cerr << "Converting unsupported ParameterValue ["
-              << unsupported_type << "] failed\n";
+    std::cerr << "Converting unsupported ParameterValue [" <<
+      unsupported_type << "] failed\n";
   }
 }
 
