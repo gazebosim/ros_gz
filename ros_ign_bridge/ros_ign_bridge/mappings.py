@@ -74,6 +74,9 @@ MAPPINGS = {
         Mapping('UInt32', 'UInt32'),
         Mapping('String', 'StringMsg'),
     ],
+    'rcl_interfaces': [
+        Mapping('ParameterValue', 'Any'),
+    ],
     'tf2_msgs': [
         Mapping('TFMessage', 'Pose_V'),
     ],

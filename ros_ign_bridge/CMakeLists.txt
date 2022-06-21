@@ -48,6 +48,7 @@ set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_
 set(BRIDGE_MESSAGE_TYPES
   geometry_msgs
   nav_msgs
+  rcl_interfaces
   ros_ign_interfaces
   rosgraph_msgs
   sensor_msgs
@@ -173,6 +174,21 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
+
+  ament_add_gtest(test_rcl_interfaces
+    ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces.cpp
+    ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces_TEST.cpp
+  )
+  target_link_libraries(test_rcl_interfaces
+    ignition-msgs${GZ_MSGS_VER}::core
+    ${rcl_interfaces_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_rcl_interfaces
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
 
   add_library(test_utils
     test/utils/ign_test_msg.cpp

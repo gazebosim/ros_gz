@@ -18,6 +18,7 @@
 #include <ros_ign_bridge/ros_ign_bridge.hpp>
 
 #include <ignition/msgs/actuators.pb.h>
+#include <ignition/msgs/any.pb.h>
 #include <ignition/msgs/axis.pb.h>
 #include <ignition/msgs/battery_state.pb.h>
 #include <ignition/msgs/boolean.pb.h>
@@ -65,6 +66,14 @@ namespace ros_ign_bridge
 {
 namespace testing
 {
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Any & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Any> & _msg);
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Boolean & _msg);

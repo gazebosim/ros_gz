@@ -1054,5 +1054,19 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>
   }
 }
 
+void createTestMsg(rcl_interfaces::msg::ParameterValue & _msg)
+{
+  _msg.type = rcl_interfaces::msg::ParameterType::PARAMETER_STRING;
+  _msg.string_value = "foobar";
+}
+
+void compareTestMsg(const std::shared_ptr<rcl_interfaces::msg::ParameterValue> & _msg)
+{
+  rcl_interfaces::msg::ParameterValue expected_msg;
+  createTestMsg(expected_msg);
+  EXPECT_EQ(expected_msg.type, _msg->type);
+  EXPECT_EQ(expected_msg.string_value, _msg->string_value);
+}
+
 }  // namespace testing
 }  // namespace ros_ign_bridge

@@ -24,6 +24,21 @@ namespace ros_ign_bridge
 namespace testing
 {
 
+void createTestMsg(ignition::msgs::Any & _msg)
+{
+  _msg.set_type(ignition::msgs::Any_ValueType::Any_ValueType_STRING);
+  _msg.set_string_value("foobar");
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Any> & _msg)
+{
+  ignition::msgs::Any expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+  EXPECT_EQ(expected_msg.string_value(), _msg->string_value());
+}
+
 void createTestMsg(ignition::msgs::Boolean & _msg)
 {
   _msg.set_data(true);
