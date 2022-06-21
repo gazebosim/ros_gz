@@ -48,6 +48,7 @@ MAPPINGS = {
         Mapping('GuiCamera', 'GUICamera'),
         Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
+        Mapping('ParamVec', 'Param'),
         Mapping('StringVec', 'StringMsg_V'),
         Mapping('TrackVisual', 'TrackVisual'),
         Mapping('VideoRecord', 'VideoRecord'),

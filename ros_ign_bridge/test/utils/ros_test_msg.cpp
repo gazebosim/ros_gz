@@ -433,6 +433,29 @@ void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::GuiCamera> & 
   EXPECT_EQ(expected_msg.projection_type, _msg->projection_type);
 }
 
+void createTestMsg(ros_ign_interfaces::msg::ParamVec & _msg)
+{
+  createTestMsg(_msg.header);
+
+  rcl_interfaces::msg::Parameter p;
+  p.name = "parameter_name_foo";
+  p.value.type = rcl_interfaces::msg::ParameterType::PARAMETER_STRING;
+  p.value.string_value = "parameter_value_foo";
+  _msg.params.push_back(p);
+}
+
+void compareTestMsg(const std::shared_ptr<ros_ign_interfaces::msg::ParamVec> & _msg)
+{
+  ros_ign_interfaces::msg::ParamVec expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.params.size(), _msg->params.size());
+  EXPECT_EQ(expected_msg.params[0].name, _msg->params[0].name);
+  EXPECT_EQ(expected_msg.params[0].value.type, _msg->params[0].value.type);
+  EXPECT_EQ(expected_msg.params[0].value.string_value, _msg->params[0].value.string_value);
+}
+
 void createTestMsg(ros_ign_interfaces::msg::StringVec & _msg)
 {
   createTestMsg(_msg.header);

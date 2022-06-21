@@ -28,6 +28,7 @@ service calls. Its support is limited to only the following message types:
 | geometry_msgs/msg/Twist              | ignition::msgs::Twist                |
 | mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)     |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
+| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                  |
 | ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact              |
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
 | ros_ign_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
@@ -35,6 +36,7 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera            |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
 | ros_ign_interfaces/msg/Light         | ignition::msgs::Light                |
+| ros_ign_interfaces/msg/ParamVec      | ignition::msgs::Param                |
 | ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V          |
 | ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual          |
 | ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord          |

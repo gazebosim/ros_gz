@@ -14,8 +14,6 @@
 
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
-#include <ros_ign_bridge/ros_ign_bridge.hpp>
-
 namespace ros_ign_bridge
 {
 
@@ -380,6 +378,50 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
   for (const auto & elem : ign_msg.data()) {
     ros_msg.data.emplace_back(elem);
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  for (auto param: ros_msg.params) {
+    ignition::msgs::Any anyValue;
+    convert_ros_to_ign(param.value, anyValue);
+    auto new_param = ign_msg.mutable_params();
+    (*new_param)[param.name] = anyValue;
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  for (auto it: ign_msg.params()) {
+    rcl_interfaces::msg::Parameter p;
+    p.name = it.first;
+    convert_ign_to_ros(it.second, p.value);
+    ros_msg.params.push_back(p);
+  }
+
+  for (int childIdx = 0; childIdx < ign_msg.children().size(); ++childIdx) {
+    auto child = ign_msg.children().at(childIdx);
+    ros_ign_interfaces::msg::ParamVec child_vec;
+    convert_ign_to_ros(child, child_vec);
+
+    for (size_t jj = 0; jj < child_vec.params.size(); ++jj) {
+      auto ros_param = child_vec.params[jj];
+      ros_param.name = "child_" + std::to_string(childIdx) + "/" + ros_param.name;
+      ros_msg.params.push_back(ros_param);
+    }
   }
 }
 

@@ -190,6 +190,21 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/include
   )
 
+  ament_add_gtest(test_ros_ign_interfaces
+    ${PROJECT_SOURCE_DIR}/src/convert/ros_ign_interfaces.cpp
+    ${PROJECT_SOURCE_DIR}/src/convert/ros_ign_interfaces_TEST.cpp
+  )
+  target_link_libraries(test_ros_ign_interfaces
+    ${bridge_lib}
+    ${ros_ign_interfaces_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_ros_ign_interfaces
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
   add_library(test_utils
     test/utils/ign_test_msg.cpp
     test/utils/ros_test_msg.cpp
