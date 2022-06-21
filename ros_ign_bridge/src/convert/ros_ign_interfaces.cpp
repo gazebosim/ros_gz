@@ -413,7 +413,7 @@ convert_ign_to_ros(
   }
 
   for (int childIdx = 0; childIdx < ign_msg.children().size(); ++childIdx) {
-    auto child = ign_msg.children().at(childIdx);
+    auto child = ign_msg.children().Get(childIdx);
     ros_ign_interfaces::msg::ParamVec child_vec;
     convert_ign_to_ros(child, child_vec);
 
