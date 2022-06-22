@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros_ign_image)
+project(ros_gz_image)
 
 # Default to C++17
 if(NOT CMAKE_CXX_STANDARD)
@@ -12,7 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(image_transport REQUIRED)
-find_package(ros_ign_bridge REQUIRED)
+find_package(ros_gz_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 

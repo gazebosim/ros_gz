@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(ros_ign_gazebo_demos)
+project(ros_gz_sim_demos)
 
 find_package(ament_cmake REQUIRED)
 
