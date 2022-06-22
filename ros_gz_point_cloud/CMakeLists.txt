@@ -15,13 +15,13 @@ find_package(catkin REQUIRED COMPONENTS
   sensor_msgs)
 
 find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
-set(IGN_GAZEBO_VER ${ignition-gazebo2_VERSION_MAJOR})
+set(GZ_SIM_VER ${ignition-gazebo2_VERSION_MAJOR})
 
 find_package(ignition-rendering2 QUIET REQUIRED)
-set(IGN_RENDERING_VER ${ignition-rendering2_VERSION_MAJOR})
+set(GZ_RENDERING_VER ${ignition-rendering2_VERSION_MAJOR})
 
 find_package(ignition-sensors2 QUIET REQUIRED)
-set(IGN_SENSORS_VER ${ignition-sensors2_VERSION_MAJOR})
+set(GZ_SENSORS_VER ${ignition-sensors2_VERSION_MAJOR})
 
 catkin_package()
 
@@ -35,9 +35,9 @@ add_library(${plugin_name} SHARED
   src/point_cloud.cc
 )
 target_link_libraries(${plugin_name}
-  ignition-gazebo${IGN_GAZEBO_VER}::core
-  ignition-rendering${IGN_RENDERING_VER}::core
-  ignition-sensors${IGN_SENSORS_VER}::core
+  ignition-gazebo${GZ_SIM_VER}::core
+  ignition-rendering${GZ_RENDERING_VER}::core
+  ignition-sensors${GZ_SENSORS_VER}::core
   ${catkin_LIBRARIES}
 )
 install(TARGETS ${plugin_name}

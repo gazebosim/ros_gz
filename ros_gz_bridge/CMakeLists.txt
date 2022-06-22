@@ -25,28 +25,28 @@ find_package(trajectory_msgs REQUIRED)
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Edifice")
 # Garden
 elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(ignition-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
 
   find_package(ignition-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Fortress")
 endif()
@@ -87,8 +87,8 @@ foreach(PKG ${PACKAGES})
   )
   target_link_libraries(${PKG}_bridge
     bridge_utils
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
+    ignition-transport${GZ_TRANSPORT_VER}::core
     rclcpp::rclcpp
   )
   set_target_properties(${PKG}_bridge
@@ -140,8 +140,8 @@ foreach(bridge ${bridge_executables})
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
+    ignition-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
@@ -170,8 +170,8 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ignition-msgs${IGN_MSGS_VER}::core
-    ignition-transport${IGN_TRANSPORT_VER}::core
+    ignition-msgs${GZ_MSGS_VER}::core
+    ignition-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
     builtin_interfaces

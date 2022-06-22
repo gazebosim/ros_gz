@@ -26,7 +26,7 @@
 
 //////////////////////////////////////////////////
 /// \brief A class for testing Gazebo Transport topic subscription.
-template<typename IGN_T>
+template<typename GZ_T>
 class MyTestClass
 {
   /// \brief Class constructor.
@@ -41,9 +41,9 @@ public:
   /// \brief Member function called each time a topic update is received.
 
 public:
-  void Cb(const IGN_T & _msg)
+  void Cb(const GZ_T & _msg)
   {
-    ros_gz_bridge::testing::compareTestMsg(std::make_shared<IGN_T>(_msg));
+    ros_gz_bridge::testing::compareTestMsg(std::make_shared<GZ_T>(_msg));
     this->callbackExecuted = true;
   }
 

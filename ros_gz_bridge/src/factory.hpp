@@ -30,7 +30,7 @@
 namespace ros_gz_bridge
 {
 
-template<typename ROS_T, typename IGN_T>
+template<typename ROS_T, typename GZ_T>
 class Factory : public FactoryInterface
 {
 public:
@@ -69,7 +69,7 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/)
   {
-    return ign_node->Advertise<IGN_T>(topic_name);
+    return ign_node->Advertise<GZ_T>(topic_name);
   }
 
   rclcpp::SubscriptionBase::SharedPtr
@@ -80,7 +80,7 @@ public:
     ignition::transport::Node::Publisher & ign_pub)
   {
     std::function<void(std::shared_ptr<const ROS_T>)> fn = std::bind(
-      &Factory<ROS_T, IGN_T>::ros_callback,
+      &Factory<ROS_T, GZ_T>::ros_callback,
       std::placeholders::_1, ign_pub,
       ros_type_name_, ign_type_name_,
       ros_node);
@@ -103,9 +103,9 @@ public:
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub)
   {
-    std::function<void(const IGN_T &,
+    std::function<void(const GZ_T &,
       const ignition::transport::MessageInfo &)> subCb =
-      [this, ros_pub](const IGN_T & _msg,
+      [this, ros_pub](const GZ_T & _msg,
         const ignition::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
@@ -126,7 +126,7 @@ protected:
     const std::string & ign_type_name,
     rclcpp::Node::SharedPtr ros_node)
   {
-    IGN_T ign_msg;
+    GZ_T ign_msg;
     convert_ros_to_ign(*ros_msg, ign_msg);
     ign_pub.Publish(ign_msg);
     RCLCPP_INFO_ONCE(
@@ -137,7 +137,7 @@ protected:
 
   static
   void ign_callback(
-    const IGN_T & ign_msg,
+    const GZ_T & ign_msg,
     rclcpp::PublisherBase::SharedPtr ros_pub)
   {
     ROS_T ros_msg;
@@ -156,11 +156,11 @@ public:
   void
   convert_ros_to_ign(
     const ROS_T & ros_msg,
-    IGN_T & ign_msg);
+    GZ_T & ign_msg);
   static
   void
   convert_ign_to_ros(
-    const IGN_T & ign_msg,
+    const GZ_T & ign_msg,
     ROS_T & ros_msg);
 
   std::string ros_type_name_;
