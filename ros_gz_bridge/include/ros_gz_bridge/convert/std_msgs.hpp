@@ -46,108 +46,108 @@ template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Bool & ros_msg,
-  ignition::msgs::Boolean & ign_msg);
+  ignition::msgs::Boolean & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Boolean & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Boolean & gz_msg,
   std_msgs::msg::Bool & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::ColorRGBA & ros_msg,
-  ignition::msgs::Color & ign_msg);
+  ignition::msgs::Color & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Color & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Color & gz_msg,
   std_msgs::msg::ColorRGBA & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Empty & ros_msg,
-  ignition::msgs::Empty & ign_msg);
+  ignition::msgs::Empty & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Empty & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Empty & gz_msg,
   std_msgs::msg::Empty & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::UInt32 & ros_msg,
-  ignition::msgs::UInt32 & ign_msg);
+  ignition::msgs::UInt32 & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::UInt32 & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::UInt32 & gz_msg,
   std_msgs::msg::UInt32 & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Float32 & ros_msg,
-  ignition::msgs::Float & ign_msg);
+  ignition::msgs::Float & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Float & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Float & gz_msg,
   std_msgs::msg::Float32 & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Float64 & ros_msg,
-  ignition::msgs::Double & ign_msg);
+  ignition::msgs::Double & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Double & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Double & gz_msg,
   std_msgs::msg::Float64 & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Header & ros_msg,
-  ignition::msgs::Header & ign_msg);
+  ignition::msgs::Header & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Header & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Header & gz_msg,
   std_msgs::msg::Header & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::Int32 & ros_msg,
-  ignition::msgs::Int32 & ign_msg);
+  ignition::msgs::Int32 & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Int32 & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Int32 & gz_msg,
   std_msgs::msg::Int32 & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
   const std_msgs::msg::String & ros_msg,
-  ignition::msgs::StringMsg & ign_msg);
+  ignition::msgs::StringMsg & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::StringMsg & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::StringMsg & gz_msg,
   std_msgs::msg::String & ros_msg);
 
 }  // namespace ros_gz_bridge

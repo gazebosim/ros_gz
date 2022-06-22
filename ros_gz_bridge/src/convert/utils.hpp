@@ -26,7 +26,7 @@ std::string replace_delimiter(
   const std::string & old_delim,
   const std::string new_delim);
 
-std::string frame_id_ign_to_ros(const std::string & frame_id);
+std::string frame_id_gz_to_ros(const std::string & frame_id);
 
 }  // namespace ros_gz_bridge
 

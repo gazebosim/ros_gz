@@ -31,24 +31,24 @@ public:
   /// \brief Constructor
   /// \param[in] _topic Image base topic
   /// \param[in] _it_node Pointer to image transport node
-  /// \param[in] _ign_node Pointer to Gazebo node
+  /// \param[in] _gz_node Pointer to Gazebo node
   Handler(
     const std::string & _topic,
     std::shared_ptr<image_transport::ImageTransport> _it_node,
-    std::shared_ptr<ignition::transport::Node> _ign_node)
+    std::shared_ptr<ignition::transport::Node> _gz_node)
   {
     this->ros_pub = _it_node->advertise(_topic, 1);
 
-    _ign_node->Subscribe(_topic, &Handler::OnImage, this);
+    _gz_node->Subscribe(_topic, &Handler::OnImage, this);
   }
 
 private:
   /// \brief Callback when Gazebo image is received
-  /// \param[in] _ign_msg Gazebo message
-  void OnImage(const ignition::msgs::Image & _ign_msg)
+  /// \param[in] _gz_msg Gazebo message
+  void OnImage(const ignition::msgs::Image & _gz_msg)
   {
     sensor_msgs::msg::Image ros_msg;
-    ros_gz_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
+    ros_gz_bridge::convert_gz_to_ros(_gz_msg, ros_msg);
     this->ros_pub.publish(ros_msg);
   }
 
@@ -80,7 +80,7 @@ int main(int argc, char * argv[])
   auto it_node = std::make_shared<image_transport::ImageTransport>(node_);
 
   // Gazebo node
-  auto ign_node = std::make_shared<ignition::transport::Node>();
+  auto gz_node = std::make_shared<ignition::transport::Node>();
 
   std::vector<std::shared_ptr<Handler>> handlers;
 
@@ -88,7 +88,7 @@ int main(int argc, char * argv[])
 
   // Create publishers and subscribers
   for (auto topic : args) {
-    handlers.push_back(std::make_shared<Handler>(topic, it_node, ign_node));
+    handlers.push_back(std::make_shared<Handler>(topic, it_node, gz_node));
   }
 
   // Spin ROS and Gz until shutdown

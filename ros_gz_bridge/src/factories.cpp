@@ -35,34 +35,34 @@ namespace ros_gz_bridge
 std::shared_ptr<FactoryInterface>
 get_factory_impl(
   const std::string & ros_type_name,
-  const std::string & ign_type_name)
+  const std::string & gz_type_name)
 {
   std::shared_ptr<FactoryInterface> impl;
-  impl = get_factory__builtin_interfaces(ros_type_name, ign_type_name);
+  impl = get_factory__builtin_interfaces(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__std_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__std_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__geometry_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__geometry_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__nav_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__nav_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__ros_gz_interfaces(ros_type_name, ign_type_name);
+  impl = get_factory__ros_gz_interfaces(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__rosgraph_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__rosgraph_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__sensor_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__sensor_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__tf2_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__tf2_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__trajectory_msgs(ros_type_name, ign_type_name);
+  impl = get_factory__trajectory_msgs(ros_type_name, gz_type_name);
   if (impl) {return impl;}
 
   return nullptr;
@@ -71,10 +71,10 @@ get_factory_impl(
 std::shared_ptr<FactoryInterface>
 get_factory(
   const std::string & ros_type_name,
-  const std::string & ign_type_name)
+  const std::string & gz_type_name)
 {
   std::shared_ptr<FactoryInterface> factory;
-  factory = get_factory_impl(ros_type_name, ign_type_name);
+  factory = get_factory_impl(ros_type_name, gz_type_name);
   if (factory) {
     return factory;
   }
@@ -85,19 +85,19 @@ get_factory(
 std::shared_ptr<ServiceFactoryInterface>
 get_service_factory(
   const std::string & ros_type_name,
-  const std::string & ign_req_type_name,
-  const std::string & ign_rep_type_name)
+  const std::string & gz_req_type_name,
+  const std::string & gz_rep_type_name)
 {
   std::shared_ptr<ServiceFactoryInterface> impl;
 
   impl = get_service_factory__ros_gz_interfaces(
-    ros_type_name, ign_req_type_name, ign_rep_type_name);
+    ros_type_name, gz_req_type_name, gz_rep_type_name);
   if (impl) {return impl;}
 
   std::ostringstream oss{"No template specialization for the specified service type {"};
-  oss << ros_type_name << "}, gz request type {" << ign_req_type_name
-      << "}, gz request type {" << ign_req_type_name << "}, gz reply type name {"
-      << ign_rep_type_name << "}";
+  oss << ros_type_name << "}, gz request type {" << gz_req_type_name
+      << "}, gz request type {" << gz_req_type_name << "}, gz reply type name {"
+      << gz_rep_type_name << "}";
   throw std::runtime_error(oss.str());
 }
 

@@ -92,11 +92,11 @@ int main(int argc, char * argv[])
   auto ros_node = std::make_shared<rclcpp::Node>("ros_gz_bridge");
 
   // Gazebo node
-  auto ign_node = std::make_shared<ignition::transport::Node>();
+  auto gz_node = std::make_shared<ignition::transport::Node>();
 
   std::vector<ros_gz_bridge::BridgeHandles> bidirectional_handles;
-  std::vector<ros_gz_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
-  std::vector<ros_gz_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
+  std::vector<ros_gz_bridge::BridgeIgnToRosHandles> gz_to_ros_handles;
+  std::vector<ros_gz_bridge::BridgeRosToIgnHandles> ros_to_gz_handles;
   std::vector<ros_gz_bridge::BridgeIgnServicesToRosHandles> service_bridge_handles;
 
   // Filter arguments (i.e. remove ros args) then parse all the remaining ones
@@ -137,8 +137,8 @@ int main(int argc, char * argv[])
     std::string ros_type_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
     if (ros_type_name.find("/srv/") != std::string::npos) {
-      std::string ign_req_type_name;
-      std::string ign_rep_type_name;
+      std::string gz_req_type_name;
+      std::string gz_rep_type_name;
       if (direction != DIR_UNSPECIFIED && direction != BIDIRECTIONAL) {
         usage();
         return -1;
@@ -149,18 +149,18 @@ int main(int argc, char * argv[])
           usage();
           return -1;
         }
-        ign_req_type_name = arg.substr(0, delimPos);
+        gz_req_type_name = arg.substr(0, delimPos);
         arg.erase(0, delimPos + delim.size());
-        ign_rep_type_name = std::move(arg);
+        gz_rep_type_name = std::move(arg);
       }
       try {
         service_bridge_handles.push_back(
           ros_gz_bridge::create_service_bridge(
             ros_node,
-            ign_node,
+            gz_node,
             ros_type_name,
-            ign_req_type_name,
-            ign_rep_type_name,
+            gz_req_type_name,
+            gz_rep_type_name,
             topic_name));
       } catch (std::runtime_error & e) {
         std::cerr << e.what() << std::endl;
@@ -173,36 +173,36 @@ int main(int argc, char * argv[])
       usage();
       return -1;
     }
-    std::string ign_type_name = arg;
+    std::string gz_type_name = arg;
     try {
       switch (direction) {
         default:
         case BIDIRECTIONAL:
           bidirectional_handles.push_back(
             ros_gz_bridge::create_bidirectional_bridge(
-              ros_node, ign_node,
-              ros_type_name, ign_type_name,
+              ros_node, gz_node,
+              ros_type_name, gz_type_name,
               topic_name, queue_size));
           break;
         case FROM_GZ_TO_ROS:
-          ign_to_ros_handles.push_back(
-            ros_gz_bridge::create_bridge_from_ign_to_ros(
-              ign_node, ros_node,
-              ign_type_name, topic_name, queue_size,
+          gz_to_ros_handles.push_back(
+            ros_gz_bridge::create_bridge_from_gz_to_ros(
+              gz_node, ros_node,
+              gz_type_name, topic_name, queue_size,
               ros_type_name, topic_name, queue_size));
           break;
         case FROM_ROS_TO_IGN:
-          ros_to_ign_handles.push_back(
+          ros_to_gz_handles.push_back(
             ros_gz_bridge::create_bridge_from_ros_to_ign(
-              ros_node, ign_node,
+              ros_node, gz_node,
               ros_type_name, topic_name, queue_size,
-              ign_type_name, topic_name, queue_size));
+              gz_type_name, topic_name, queue_size));
           break;
       }
     } catch (std::runtime_error & _e) {
       std::cerr << "Failed to create a bridge for topic [" << topic_name << "] " <<
         "with ROS2 type [" << ros_type_name << "] and " <<
-        "Gazebo Transport type [" << ign_type_name << "]" << std::endl;
+        "Gazebo Transport type [" << gz_type_name << "]" << std::endl;
     }
   }
 

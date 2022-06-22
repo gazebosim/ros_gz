@@ -42,8 +42,8 @@ public:
 
   virtual
   ignition::transport::Node::Publisher
-  create_ign_publisher(
-    std::shared_ptr<ignition::transport::Node> ign_node,
+  create_gz_publisher(
+    std::shared_ptr<ignition::transport::Node> gz_node,
     const std::string & topic_name,
     size_t queue_size) = 0;
 
@@ -53,11 +53,11 @@ public:
     rclcpp::Node::SharedPtr ros_node,
     const std::string & topic_name,
     size_t queue_size,
-    ignition::transport::Node::Publisher & ign_pub) = 0;
+    ignition::transport::Node::Publisher & gz_pub) = 0;
 
   virtual
   void
-  create_ign_subscriber(
+  create_gz_subscriber(
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
     size_t queue_size,

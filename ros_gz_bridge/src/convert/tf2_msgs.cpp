@@ -22,31 +22,31 @@ template<>
 void
 convert_ros_to_ign(
   const tf2_msgs::msg::TFMessage & ros_msg,
-  ignition::msgs::Pose_V & ign_msg)
+  ignition::msgs::Pose_V & gz_msg)
 {
-  ign_msg.clear_pose();
+  gz_msg.clear_pose();
   for (auto const & t : ros_msg.transforms) {
-    auto p = ign_msg.add_pose();
+    auto p = gz_msg.add_pose();
     convert_ros_to_ign(t, *p);
   }
 
   if (!ros_msg.transforms.empty()) {
     convert_ros_to_ign(
       ros_msg.transforms[0].header,
-      (*ign_msg.mutable_header()));
+      (*gz_msg.mutable_header()));
   }
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose_V & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose_V & gz_msg,
   tf2_msgs::msg::TFMessage & ros_msg)
 {
   ros_msg.transforms.clear();
-  for (auto const & p : ign_msg.pose()) {
+  for (auto const & p : gz_msg.pose()) {
     geometry_msgs::msg::TransformStamped tf;
-    convert_ign_to_ros(p, tf);
+    convert_gz_to_ros(p, tf);
     ros_msg.transforms.push_back(tf);
   }
 }

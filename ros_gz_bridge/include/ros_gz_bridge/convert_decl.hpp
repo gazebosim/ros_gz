@@ -22,12 +22,12 @@ template<typename ROS_T, typename GZ_T>
 void
 convert_ros_to_ign(
   const ROS_T & ros_msg,
-  GZ_T & ign_msg);
+  GZ_T & gz_msg);
 
 template<typename ROS_T, typename GZ_T>
 void
-convert_ign_to_ros(
-  const GZ_T & ign_msg,
+convert_gz_to_ros(
+  const GZ_T & gz_msg,
   ROS_T & ros_msg);
 
 }  // namespace ros_gz_bridge

@@ -32,16 +32,16 @@ int main(int argc, char * argv[])
   auto ros_node = std::make_shared<rclcpp::Node>("test_node");
 
   // Gazebo node
-  auto ign_node = std::make_shared<ignition::transport::Node>();
+  auto gz_node = std::make_shared<ignition::transport::Node>();
 
   // bridge one example topic
   std::string topic_name = "chatter";
   std::string ros_type_name = "std_msgs/msg/String";
-  std::string ign_type_name = "ignition.msgs.StringMsg";
+  std::string gz_type_name = "ignition.msgs.StringMsg";
   size_t queue_size = 10;
 
   auto handles = ros_gz_bridge::create_bidirectional_bridge(
-    ros_node, ign_node, ros_type_name, ign_type_name, topic_name, queue_size);
+    ros_node, gz_node, ros_type_name, gz_type_name, topic_name, queue_size);
 
   rclcpp::spin(ros_node);
 

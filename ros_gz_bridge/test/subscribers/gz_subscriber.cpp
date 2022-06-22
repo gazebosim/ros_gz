@@ -22,7 +22,7 @@
 #include <ignition/transport/Node.hh>
 
 #include "utils/test_utils.hpp"
-#include "utils/ign_test_msg.hpp"
+#include "utils/gz_test_msg.hpp"
 
 //////////////////////////////////////////////////
 /// \brief A class for testing Gazebo Transport topic subscription.

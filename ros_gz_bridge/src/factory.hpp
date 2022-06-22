@@ -35,9 +35,9 @@ class Factory : public FactoryInterface
 {
 public:
   Factory(
-    const std::string & ros_type_name, const std::string & ign_type_name)
+    const std::string & ros_type_name, const std::string & gz_type_name)
   : ros_type_name_(ros_type_name),
-    ign_type_name_(ign_type_name)
+    gz_type_name_(gz_type_name)
   {}
 
   rclcpp::PublisherBase::SharedPtr
@@ -64,12 +64,12 @@ public:
   }
 
   ignition::transport::Node::Publisher
-  create_ign_publisher(
-    std::shared_ptr<ignition::transport::Node> ign_node,
+  create_gz_publisher(
+    std::shared_ptr<ignition::transport::Node> gz_node,
     const std::string & topic_name,
     size_t /*queue_size*/)
   {
-    return ign_node->Advertise<GZ_T>(topic_name);
+    return gz_node->Advertise<GZ_T>(topic_name);
   }
 
   rclcpp::SubscriptionBase::SharedPtr
@@ -77,12 +77,12 @@ public:
     rclcpp::Node::SharedPtr ros_node,
     const std::string & topic_name,
     size_t queue_size,
-    ignition::transport::Node::Publisher & ign_pub)
+    ignition::transport::Node::Publisher & gz_pub)
   {
     std::function<void(std::shared_ptr<const ROS_T>)> fn = std::bind(
       &Factory<ROS_T, GZ_T>::ros_callback,
-      std::placeholders::_1, ign_pub,
-      ros_type_name_, ign_type_name_,
+      std::placeholders::_1, gz_pub,
+      ros_type_name_, gz_type_name_,
       ros_node);
     auto options = rclcpp::SubscriptionOptions();
     // Ignore messages that are published from this bridge.
@@ -97,7 +97,7 @@ public:
   }
 
   void
-  create_ign_subscriber(
+  create_gz_subscriber(
     std::shared_ptr<ignition::transport::Node> node,
     const std::string & topic_name,
     size_t /*queue_size*/,
@@ -110,7 +110,7 @@ public:
       {
         // Ignore messages that are published from this bridge.
         if (!_info.IntraProcess()) {
-          this->ign_callback(_msg, ros_pub);
+          this->gz_callback(_msg, ros_pub);
         }
       };
 
@@ -121,27 +121,27 @@ protected:
   static
   void ros_callback(
     std::shared_ptr<const ROS_T> ros_msg,
-    ignition::transport::Node::Publisher & ign_pub,
+    ignition::transport::Node::Publisher & gz_pub,
     const std::string & ros_type_name,
-    const std::string & ign_type_name,
+    const std::string & gz_type_name,
     rclcpp::Node::SharedPtr ros_node)
   {
-    GZ_T ign_msg;
-    convert_ros_to_ign(*ros_msg, ign_msg);
-    ign_pub.Publish(ign_msg);
+    GZ_T gz_msg;
+    convert_ros_to_ign(*ros_msg, gz_msg);
+    gz_pub.Publish(gz_msg);
     RCLCPP_INFO_ONCE(
       ros_node->get_logger(),
       "Passing message from ROS %s to Gazebo %s (showing msg only once per type)",
-      ros_type_name.c_str(), ign_type_name.c_str());
+      ros_type_name.c_str(), gz_type_name.c_str());
   }
 
   static
-  void ign_callback(
-    const GZ_T & ign_msg,
+  void gz_callback(
+    const GZ_T & gz_msg,
     rclcpp::PublisherBase::SharedPtr ros_pub)
   {
     ROS_T ros_msg;
-    convert_ign_to_ros(ign_msg, ros_msg);
+    convert_gz_to_ros(gz_msg, ros_msg);
     std::shared_ptr<rclcpp::Publisher<ROS_T>> pub =
       std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub != nullptr) {
@@ -156,15 +156,15 @@ public:
   void
   convert_ros_to_ign(
     const ROS_T & ros_msg,
-    GZ_T & ign_msg);
+    GZ_T & gz_msg);
   static
   void
-  convert_ign_to_ros(
-    const GZ_T & ign_msg,
+  convert_gz_to_ros(
+    const GZ_T & gz_msg,
     ROS_T & ros_msg);
 
   std::string ros_type_name_;
-  std::string ign_type_name_;
+  std::string gz_type_name_;
 };
 
 }  // namespace ros_gz_bridge

@@ -22,115 +22,115 @@ template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Quaternion & ros_msg,
-  ignition::msgs::Quaternion & ign_msg)
+  ignition::msgs::Quaternion & gz_msg)
 {
-  ign_msg.set_x(ros_msg.x);
-  ign_msg.set_y(ros_msg.y);
-  ign_msg.set_z(ros_msg.z);
-  ign_msg.set_w(ros_msg.w);
+  gz_msg.set_x(ros_msg.x);
+  gz_msg.set_y(ros_msg.y);
+  gz_msg.set_z(ros_msg.z);
+  gz_msg.set_w(ros_msg.w);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Quaternion & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Quaternion & gz_msg,
   geometry_msgs::msg::Quaternion & ros_msg)
 {
-  ros_msg.x = ign_msg.x();
-  ros_msg.y = ign_msg.y();
-  ros_msg.z = ign_msg.z();
-  ros_msg.w = ign_msg.w();
+  ros_msg.x = gz_msg.x();
+  ros_msg.y = gz_msg.y();
+  ros_msg.z = gz_msg.z();
+  ros_msg.w = gz_msg.w();
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Vector3 & ros_msg,
-  ignition::msgs::Vector3d & ign_msg)
+  ignition::msgs::Vector3d & gz_msg)
 {
-  ign_msg.set_x(ros_msg.x);
-  ign_msg.set_y(ros_msg.y);
-  ign_msg.set_z(ros_msg.z);
+  gz_msg.set_x(ros_msg.x);
+  gz_msg.set_y(ros_msg.y);
+  gz_msg.set_z(ros_msg.z);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Vector3d & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Vector3 & ros_msg)
 {
-  ros_msg.x = ign_msg.x();
-  ros_msg.y = ign_msg.y();
-  ros_msg.z = ign_msg.z();
+  ros_msg.x = gz_msg.x();
+  ros_msg.y = gz_msg.y();
+  ros_msg.z = gz_msg.z();
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Point & ros_msg,
-  ignition::msgs::Vector3d & ign_msg)
+  ignition::msgs::Vector3d & gz_msg)
 {
-  ign_msg.set_x(ros_msg.x);
-  ign_msg.set_y(ros_msg.y);
-  ign_msg.set_z(ros_msg.z);
+  gz_msg.set_x(ros_msg.x);
+  gz_msg.set_y(ros_msg.y);
+  gz_msg.set_z(ros_msg.z);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Vector3d & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Point & ros_msg)
 {
-  ros_msg.x = ign_msg.x();
-  ros_msg.y = ign_msg.y();
-  ros_msg.z = ign_msg.z();
+  ros_msg.x = gz_msg.x();
+  ros_msg.y = gz_msg.y();
+  ros_msg.z = gz_msg.z();
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Pose & ros_msg,
-  ignition::msgs::Pose & ign_msg)
+  ignition::msgs::Pose & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.position, *ign_msg.mutable_position());
-  convert_ros_to_ign(ros_msg.orientation, *ign_msg.mutable_orientation());
+  convert_ros_to_ign(ros_msg.position, *gz_msg.mutable_position());
+  convert_ros_to_ign(ros_msg.orientation, *gz_msg.mutable_orientation());
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.position(), ros_msg.position);
-  convert_ign_to_ros(ign_msg.orientation(), ros_msg.orientation);
+  convert_gz_to_ros(gz_msg.position(), ros_msg.position);
+  convert_gz_to_ros(gz_msg.orientation(), ros_msg.orientation);
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
-  ignition::msgs::PoseWithCovariance & ign_msg)
+  ignition::msgs::PoseWithCovariance & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.pose.position, *ign_msg.mutable_pose()->mutable_position());
-  convert_ros_to_ign(ros_msg.pose.orientation, *ign_msg.mutable_pose()->mutable_orientation());
+  convert_ros_to_ign(ros_msg.pose.position, *gz_msg.mutable_pose()->mutable_position());
+  convert_ros_to_ign(ros_msg.pose.orientation, *gz_msg.mutable_pose()->mutable_orientation());
   for (const auto & elem : ros_msg.covariance) {
-    ign_msg.mutable_covariance()->add_data(elem);
+    gz_msg.mutable_covariance()->add_data(elem);
   }
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::PoseWithCovariance & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.pose().position(), ros_msg.pose.position);
-  convert_ign_to_ros(ign_msg.pose().orientation(), ros_msg.pose.orientation);
-  int data_size = ign_msg.covariance().data_size();
+  convert_gz_to_ros(gz_msg.pose().position(), ros_msg.pose.position);
+  convert_gz_to_ros(gz_msg.pose().orientation(), ros_msg.pose.orientation);
+  int data_size = gz_msg.covariance().data_size();
   if (data_size == 36) {
     for (int i = 0; i < data_size; i++) {
-      auto data = ign_msg.covariance().data()[i];
+      auto data = gz_msg.covariance().data()[i];
       ros_msg.covariance[i] = data;
     }
   }
@@ -140,68 +140,68 @@ template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::PoseStamped & ros_msg,
-  ignition::msgs::Pose & ign_msg)
+  ignition::msgs::Pose & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
-  convert_ros_to_ign(ros_msg.pose, ign_msg);
+  convert_ros_to_ign(ros_msg.header, (*gz_msg.mutable_header()));
+  convert_ros_to_ign(ros_msg.pose, gz_msg);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::PoseStamped & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-  convert_ign_to_ros(ign_msg, ros_msg.pose);
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  convert_gz_to_ros(gz_msg, ros_msg.pose);
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Transform & ros_msg,
-  ignition::msgs::Pose & ign_msg)
+  ignition::msgs::Pose & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.translation, *ign_msg.mutable_position());
-  convert_ros_to_ign(ros_msg.rotation, *ign_msg.mutable_orientation());
+  convert_ros_to_ign(ros_msg.translation, *gz_msg.mutable_position());
+  convert_ros_to_ign(ros_msg.rotation, *gz_msg.mutable_orientation());
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::Transform & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.position(), ros_msg.translation);
-  convert_ign_to_ros(ign_msg.orientation(), ros_msg.rotation);
+  convert_gz_to_ros(gz_msg.position(), ros_msg.translation);
+  convert_gz_to_ros(gz_msg.orientation(), ros_msg.rotation);
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::TransformStamped & ros_msg,
-  ignition::msgs::Pose & ign_msg)
+  ignition::msgs::Pose & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
-  convert_ros_to_ign(ros_msg.transform, ign_msg);
+  convert_ros_to_ign(ros_msg.header, (*gz_msg.mutable_header()));
+  convert_ros_to_ign(ros_msg.transform, gz_msg);
 
-  auto newPair = ign_msg.mutable_header()->add_data();
+  auto newPair = gz_msg.mutable_header()->add_data();
   newPair->set_key("child_frame_id");
   newPair->add_value(ros_msg.child_frame_id);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::TransformStamped & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
-  convert_ign_to_ros(ign_msg, ros_msg.transform);
-  for (auto i = 0; i < ign_msg.header().data_size(); ++i) {
-    auto aPair = ign_msg.header().data(i);
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  convert_gz_to_ros(gz_msg, ros_msg.transform);
+  for (auto i = 0; i < gz_msg.header().data_size(); ++i) {
+    auto aPair = gz_msg.header().data(i);
     if (aPair.key() == "child_frame_id" && aPair.value_size() > 0) {
-      ros_msg.child_frame_id = frame_id_ign_to_ros(aPair.value(0));
+      ros_msg.child_frame_id = frame_id_gz_to_ros(aPair.value(0));
       break;
     }
   }
@@ -211,47 +211,47 @@ template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Twist & ros_msg,
-  ignition::msgs::Twist & ign_msg)
+  ignition::msgs::Twist & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.linear, (*ign_msg.mutable_linear()));
-  convert_ros_to_ign(ros_msg.angular, (*ign_msg.mutable_angular()));
+  convert_ros_to_ign(ros_msg.linear, (*gz_msg.mutable_linear()));
+  convert_ros_to_ign(ros_msg.angular, (*gz_msg.mutable_angular()));
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Twist & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.linear(), ros_msg.linear);
-  convert_ign_to_ros(ign_msg.angular(), ros_msg.angular);
+  convert_gz_to_ros(gz_msg.linear(), ros_msg.linear);
+  convert_gz_to_ros(gz_msg.angular(), ros_msg.angular);
 }
 
 template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
-  ignition::msgs::TwistWithCovariance & ign_msg)
+  ignition::msgs::TwistWithCovariance & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.twist.linear, (*ign_msg.mutable_twist()->mutable_linear()));
-  convert_ros_to_ign(ros_msg.twist.angular, (*ign_msg.mutable_twist()->mutable_angular()));
+  convert_ros_to_ign(ros_msg.twist.linear, (*gz_msg.mutable_twist()->mutable_linear()));
+  convert_ros_to_ign(ros_msg.twist.angular, (*gz_msg.mutable_twist()->mutable_angular()));
   for (const auto & elem : ros_msg.covariance) {
-    ign_msg.mutable_covariance()->add_data(elem);
+    gz_msg.mutable_covariance()->add_data(elem);
   }
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::TwistWithCovariance & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.twist().linear(), ros_msg.twist.linear);
-  convert_ign_to_ros(ign_msg.twist().angular(), ros_msg.twist.angular);
-  int data_size = ign_msg.covariance().data_size();
+  convert_gz_to_ros(gz_msg.twist().linear(), ros_msg.twist.linear);
+  convert_gz_to_ros(gz_msg.twist().angular(), ros_msg.twist.angular);
+  int data_size = gz_msg.covariance().data_size();
   if (data_size == 36) {
     for (int i = 0; i < data_size; i++) {
-      auto data = ign_msg.covariance().data()[i];
+      auto data = gz_msg.covariance().data()[i];
       ros_msg.covariance[i] = data;
     }
   }
@@ -261,20 +261,20 @@ template<>
 void
 convert_ros_to_ign(
   const geometry_msgs::msg::Wrench & ros_msg,
-  ignition::msgs::Wrench & ign_msg)
+  ignition::msgs::Wrench & gz_msg)
 {
-  convert_ros_to_ign(ros_msg.force, (*ign_msg.mutable_force()));
-  convert_ros_to_ign(ros_msg.torque, (*ign_msg.mutable_torque()));
+  convert_ros_to_ign(ros_msg.force, (*gz_msg.mutable_force()));
+  convert_ros_to_ign(ros_msg.torque, (*gz_msg.mutable_torque()));
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Wrench & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg)
 {
-  convert_ign_to_ros(ign_msg.force(), ros_msg.force);
-  convert_ign_to_ros(ign_msg.torque(), ros_msg.torque);
+  convert_gz_to_ros(gz_msg.force(), ros_msg.force);
+  convert_gz_to_ros(gz_msg.torque(), ros_msg.torque);
 }
 
 }  // namespace ros_gz_bridge

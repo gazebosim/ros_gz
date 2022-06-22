@@ -28,12 +28,12 @@ template<>
 void
 convert_ros_to_ign(
   const builtin_interfaces::msg::Time & ros_msg,
-  ignition::msgs::Time & ign_msg);
+  ignition::msgs::Time & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Time & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg);
 
 }  // namespace ros_gz_bridge
