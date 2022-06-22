@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
     handlers.push_back(std::make_shared<Handler>(topic, it_node, ign_node));
   }
 
-  // Spin ROS and Ign until shutdown
+  // Spin ROS and Gz until shutdown
   rclcpp::spin(node_);
 
   ignition::transport::waitForShutdown();

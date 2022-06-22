@@ -58,7 +58,7 @@ int main(int _argc, char ** _argv)
   // World
   std::string world_name = FLAGS_world;
   if (world_name.empty()) {
-    // If caller doesn't provide a world name, get list of worlds from ign-gazebo server
+    // If caller doesn't provide a world name, get list of worlds from gz-sim server
     ignition::transport::Node node;
 
     bool executed{false};

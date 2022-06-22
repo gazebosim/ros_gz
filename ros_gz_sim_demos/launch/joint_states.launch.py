@@ -70,7 +70,7 @@ def generate_launch_description():
         output='screen',
     )
 
-    # Ign - ROS Bridge
+    # Gz - ROS Bridge
     bridge = Node(
         package='ros_ign_bridge',
         executable='parameter_bridge',

@@ -18,7 +18,7 @@ Changelog for package ros_ign_interfaces
 * Update maintainer for ros_ign_interfaces (`#204 <https://github.com/gazebosim/ros_gz/issues/204>`_)
 * [ros2]  new package ros_ign_interfaces, provide some  Gazebo-specific ROS messages. (`#152 <https://github.com/gazebosim/ros_gz/issues/152>`_)
   * add new package ros_ign_interfaces,provide some Gazebo-specific ros .msg and .srv files
-  * modify to match ign-msgs
+  * modify to match gz-msgs
   * add author info
   * modify comments
   * update code and doc style
@@ -37,7 +37,7 @@ Changelog for package ros_ign_interfaces
 --------------------
 * [ros2]  new package ros_ign_interfaces, provide some  Gazebo-specific ROS messages. (`#152 <https://github.com/gazebosim/ros_gz/issues/152>`_)
   * add new package ros_ign_interfaces,provide some Gazebo-specific ros .msg and .srv files
-  * modify to match ign-msgs
+  * modify to match gz-msgs
   * add author info
   * modify comments
   * update code and doc style

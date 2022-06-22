@@ -53,7 +53,7 @@ Changelog for package ros_ign_gazebo
   - Now it is instead extended by LD_LIBRARY_PATH
   - This allows use of ign_gazebo.launch.py with custom gazebo plugins
 * Changed for loading xml from ROS param(`#119 <https://github.com/gazebosim/ros_gz/issues/119>`_) (`#120 <https://github.com/gazebosim/ros_gz/issues/120>`_)
-* ros_ign_gazebo exec depend on ign-gazebo (`#110 <https://github.com/gazebosim/ros_gz/issues/110>`_)
+* ros_ign_gazebo exec depend on gz-sim (`#110 <https://github.com/gazebosim/ros_gz/issues/110>`_)
 * Update releases (`#108 <https://github.com/gazebosim/ros_gz/issues/108>`_)
 * Add support for Dome (`#103 <https://github.com/gazebosim/ros_gz/issues/103>`_)
 * Contributors: Andrej Orsula, Louise Poubel, Luca Della Vedova, Valerio Magnago, chama1176
