@@ -78,7 +78,7 @@ if(BUILD_TESTING)
   # find_package(rostest REQUIRED)
   #
   # set(test_publishers
-  #   ign_publisher
+  #   gz_publisher
   # )
   #
   # set(test_subscribers

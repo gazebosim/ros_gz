@@ -30,11 +30,11 @@ def generate_launch_description():
 
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    ign_gazebo = IncludeLaunchDescription(
+    gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={
-            'ign_args': '-r sensors_demo.sdf'
+            'gz_args': '-r sensors_demo.sdf'
         }.items(),
     )
 
@@ -55,7 +55,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        ign_gazebo,
+        gz_sim,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         DeclareLaunchArgument('image_topic', default_value='/camera',

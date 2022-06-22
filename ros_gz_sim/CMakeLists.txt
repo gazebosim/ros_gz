@@ -80,17 +80,17 @@ target_link_libraries(create
 ament_target_dependencies(create std_msgs)
 
 configure_file(
-  launch/ign_gazebo.launch.py.in
-  launch/ign_gazebo.launch.py.configured
+  launch/gz_sim.launch.py.in
+  launch/gz_sim.launch.py.configured
   @ONLY
 )
 file(GENERATE
-  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
-  INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py.configured"
+  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py"
+  INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py.configured"
 )
 
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
+  "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py"
   DESTINATION share/${PROJECT_NAME}/launch
 )
 

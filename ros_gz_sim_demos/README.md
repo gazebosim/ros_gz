@@ -6,7 +6,7 @@ This package contains demos showing how to use Gazebo Sim with ROS.
 
 There's a convenient launch file, try for example:
 
-    ros2 launch ros_gz_sim ign_gazebo.launch.py ign_args:="shapes.sdf"
+    ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="shapes.sdf"
 
 ![](images/shapes_demo.png)
 

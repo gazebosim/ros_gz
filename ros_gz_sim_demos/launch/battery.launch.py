@@ -40,11 +40,11 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
-    ign_gazebo = IncludeLaunchDescription(
+    gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={
-            'ign_args': '-r -z 1000000 linear_battery_demo.sdf'
+            'gz_args': '-r -z 1000000 linear_battery_demo.sdf'
         }.items(),
     )
 
@@ -61,7 +61,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        ign_gazebo,
+        gz_sim,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         bridge,

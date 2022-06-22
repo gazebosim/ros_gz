@@ -51,7 +51,7 @@ Changelog for package ros_gz_sim
 * Fix overwriting of plugin path in launch script (`#122 <https://github.com/gazebosim/ros_gz/issues/122>`_)
   - IGN_GAZEBO_SYSTEM_PLUGIN_PATH was overwritten by LD_LIBRARY_PATH
   - Now it is instead extended by LD_LIBRARY_PATH
-  - This allows use of ign_gazebo.launch.py with custom gazebo plugins
+  - This allows use of gz_sim.launch.py with custom gazebo plugins
 * Changed for loading xml from ROS param(`#119 <https://github.com/gazebosim/ros_gz/issues/119>`_) (`#120 <https://github.com/gazebosim/ros_gz/issues/120>`_)
 * ros_gz_sim exec depend on gz-sim (`#110 <https://github.com/gazebosim/ros_gz/issues/110>`_)
 * Update releases (`#108 <https://github.com/gazebosim/ros_gz/issues/108>`_)

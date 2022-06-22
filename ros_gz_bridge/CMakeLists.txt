@@ -161,7 +161,7 @@ if(BUILD_TESTING)
   ament_find_gtest()
 
   add_library(test_utils
-    test/utils/ign_test_msg.cpp
+    test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
 
@@ -202,14 +202,14 @@ if(BUILD_TESTING)
 
   target_link_libraries(test_ros_subscriber test_utils)
 
-  add_executable(test_ign_publisher test/publishers/ign_publisher.cpp)
-  target_link_libraries(test_ign_publisher test_utils)
+  add_executable(test_gz_publisher test/publishers/gz_publisher.cpp)
+  target_link_libraries(test_gz_publisher test_utils)
 
-  add_executable(test_ign_subscriber test/subscribers/ign_subscriber.cpp)
-  target_link_libraries(test_ign_subscriber test_utils)
+  add_executable(test_gz_subscriber test/subscribers/gz_subscriber.cpp)
+  target_link_libraries(test_gz_subscriber test_utils)
 
-  add_executable(test_ign_server test/serverclient/ign_server.cpp)
-  target_link_libraries(test_ign_server test_utils)
+  add_executable(test_gz_server test/serverclient/gz_server.cpp)
+  target_link_libraries(test_gz_server test_utils)
 
   add_executable(test_ros_client test/serverclient/ros_client.cpp)
   target_link_libraries(test_ros_client test_utils)
@@ -218,9 +218,9 @@ if(BUILD_TESTING)
     test_ros_client
     test_ros_publisher
     test_ros_subscriber
-    test_ign_publisher
-    test_ign_server
-    test_ign_subscriber
+    test_gz_publisher
+    test_gz_server
+    test_gz_subscriber
     DESTINATION lib/${PROJECT_NAME}
   )
 
@@ -228,11 +228,11 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 
-  add_launch_test(test/launch/test_ign_subscriber.launch.py
+  add_launch_test(test/launch/test_gz_subscriber.launch.py
     TIMEOUT 200
   )
 
-  add_launch_test(test/launch/test_ign_server.launch.py
+  add_launch_test(test/launch/test_gz_server.launch.py
     TIMEOUT 200
   )
 endif()

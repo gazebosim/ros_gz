@@ -10,7 +10,7 @@ This package contains things that make it convenient to integrate ROS with Gazeb
 There's a convenient launch file, try for example:
 
 ```bash
-ros2 launch ros_gz_sim ign_gazebo.launch.py ign_args:="shapes.sdf"
+ros2 launch ros_gz_sim gz_sim.launch.py gz_args:="shapes.sdf"
 ```
 
 ### Spawn entities
@@ -23,7 +23,7 @@ The `create` executable can be used to spawn SDF or URDF entities from:
 For example, start Gazebo Sim:
 
 ```
-ros2 launch ros_gz_sim ign_gazebo.launch.py
+ros2 launch ros_gz_sim gz_sim.launch.py
 ```
 
 then spawn a model:

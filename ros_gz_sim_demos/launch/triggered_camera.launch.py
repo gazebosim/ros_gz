@@ -31,10 +31,10 @@ def generate_launch_description():
     pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    ign_gazebo = IncludeLaunchDescription(
+    gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
-        launch_arguments={'ign_args': '-r triggered_camera_sensor.sdf'}.items(),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': '-r triggered_camera_sensor.sdf'}.items(),
     )
 
     # RViz
@@ -58,7 +58,7 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
-        ign_gazebo,
+        gz_sim,
         bridge,
         rviz
     ])

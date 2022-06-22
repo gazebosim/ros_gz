@@ -47,9 +47,9 @@ def generate_launch_description():
     # Gazebo Sim
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'ign_args': '-r empty.sdf'}.items(),
+        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
     )
 
     # RViz
