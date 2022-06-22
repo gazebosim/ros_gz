@@ -31,12 +31,26 @@ def generate_launch_description():
         DeclareLaunchArgument('gz_args', default_value='',
                               description='Arguments to be passed to Gazebo Sim'),
         # Gazebo Sim's major version
-        DeclareLaunchArgument('ign_version', default_value='@GZ_SIM_VER@',
+        DeclareLaunchArgument('gz_version', default_value='@GZ_SIM_VER@',
                               description='Gazebo Sim\'s major version'),
+
+        # TODO(CH3): Deprecated. Remove on tock.
+        DeclareLaunchArgument(
+            'ign_args', default_value='',
+            description='Deprecated: Arguments to be passed to Gazebo Sim'
+        ),
+        # Gazebo Sim's major version
+        DeclareLaunchArgument(
+          'ign_version', default_value='@GZ_SIM_VER@',
+          description='Deprecated: Gazebo Sim\'s major version'
+        ),
+
         ExecuteProcess(
             cmd=['ign gazebo',
                  LaunchConfiguration('gz_args'),
+                 LaunchConfiguration('ign_args'),
                  '--force-version',
+                 LaunchConfiguration('gz_version'),
                  LaunchConfiguration('ign_version'),
                  ],
             output='screen',
