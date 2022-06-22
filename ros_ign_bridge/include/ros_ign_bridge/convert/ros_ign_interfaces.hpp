@@ -15,6 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_
 
+// Required for HAVE_DATAFRAME definition
 #include <ros_ign_bridge/ros_ign_bridge.hpp>
 
 // Ignition messages
@@ -24,6 +25,7 @@
 #include <ignition/msgs/contacts.pb.h>
 #include <ignition/msgs/gui_camera.pb.h>
 #include <ignition/msgs/light.pb.h>
+#include <ignition/msgs/param.pb.h>
 #include <ignition/msgs/stringmsg_v.pb.h>
 #include <ignition/msgs/track_visual.pb.h>
 #include <ignition/msgs/video_record.pb.h>
@@ -35,6 +37,7 @@
 #include <ros_ign_interfaces/msg/contacts.hpp>
 #include <ros_ign_interfaces/msg/gui_camera.hpp>
 #include <ros_ign_interfaces/msg/light.hpp>
+#include <ros_ign_interfaces/msg/param_vec.hpp>
 #include <ros_ign_interfaces/msg/string_vec.hpp>
 #include <ros_ign_interfaces/msg/track_visual.hpp>
 #include <ros_ign_interfaces/msg/video_record.hpp>
@@ -146,6 +149,30 @@ void
 convert_ign_to_ros(
   const ignition::msgs::StringMsg_V & ign_msg,
   ros_ign_interfaces::msg::StringVec & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param_V & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param_V & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg);
 
 template<>
 void

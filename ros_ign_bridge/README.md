@@ -28,6 +28,7 @@ service calls. Its support is limited to only the following message types:
 | geometry_msgs/msg/Twist              | ignition::msgs::Twist                |
 | mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)     |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry             |
+| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                  |
 | ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact              |
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts             |
 | ros_ign_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
@@ -35,6 +36,8 @@ service calls. Its support is limited to only the following message types:
 | ros_ign_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera            |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench          |
 | ros_ign_interfaces/msg/Light         | ignition::msgs::Light                |
+| ros_ign_interfaces/msg/ParamVec      | ignition::msgs::Param                |
+| ros_ign_interfaces/msg/ParamVec      | ignition::msgs::Param_V              |
 | ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V          |
 | ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual          |
 | ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord          |
@@ -194,27 +197,27 @@ language. In this case, the `ros_ign` bridge supports using a YAML file to confi
 various parameters.
 
 The configuration file must be a YAML array of maps.
-An example configuration for 5 bridges is below, showing the various ways that a 
+An example configuration for 5 bridges is below, showing the various ways that a
 bridge may be specified:
 ```yaml
  # Set just topic name, applies to both
-- topic_name: "chatter" 
+- topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"
   ign_type_name: "ignition.msgs.StringMsg"
 
 # Set just ROS topic name, applies to both
-- ros_topic_name: "chatter_ros" 
+- ros_topic_name: "chatter_ros"
   ros_type_name: "std_msgs/msg/String"
   ign_type_name: "ignition.msgs.StringMsg"
 
 # Set just IGN topic name, applies to both
-- ign_topic_name: "chatter_ign" 
+- ign_topic_name: "chatter_ign"
   ros_type_name: "std_msgs/msg/String"
   ign_type_name: "ignition.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  ign_topic_name: "chatter_both_ign" 
+  ign_topic_name: "chatter_both_ign"
   ros_type_name: "std_msgs/msg/String"
   ign_type_name: "ignition.msgs.StringMsg"
 
@@ -230,10 +233,10 @@ bridge may be specified:
 
 To run the bridge node with the above configuration:
 ```bash
-ros2 run ros_ign_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_ign/ros_ign_bridge/test/config/full.yaml 
+ros2 run ros_ign_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_ign/ros_ign_bridge/test/config/full.yaml
 ```
 
-## API 
+## API
 
 ROS 2 Parameters:
 

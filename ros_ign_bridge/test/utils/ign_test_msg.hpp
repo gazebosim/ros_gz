@@ -47,6 +47,7 @@
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
 #include <ignition/msgs/odometry.pb.h>
+#include <ignition/msgs/param.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
 #include <ignition/msgs/pose.pb.h>
 #include <ignition/msgs/pose_v.pb.h>
@@ -169,6 +170,22 @@ void createTestMsg(ignition::msgs::Vector3d & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Vector3d> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Param_V & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Param & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
