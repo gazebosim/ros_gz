@@ -36,16 +36,16 @@
       <real_time_factor>1.0</real_time_factor>
     </physics>
     <plugin
-      filename="libignition-gazebo-physics-system.so"
+      filename="ignition-gazebo-physics-system"
       name="ignition::gazebo::systems::Physics">
     </plugin>
     <plugin
-      filename="libignition-gazebo-sensors-system.so"
+      filename="ignition-gazebo-sensors-system"
       name="ignition::gazebo::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin
-      filename="libignition-gazebo-scene-broadcaster-system.so"
+      filename="ignition-gazebo-scene-broadcaster-system"
       name="ignition::gazebo::systems::SceneBroadcaster">
     </plugin>
 
@@ -330,7 +330,7 @@
           <visualize>true</visualize>
           <topic>custom_params</topic>
           <plugin
-            filename="libRosIgnPointCloud.so"
+            filename="RosGzPointCloud"
             name="ros_gz_point_cloud::PointCloud">
             <namespace>custom_params</namespace>
             <topic>pc2</topic>
@@ -375,7 +375,7 @@
           <visualize>true</visualize>
           <topic>rgbd_camera</topic>
           <plugin
-            filename="libRosIgnPointCloud.so"
+            filename="RosGzPointCloud"
             name="ros_gz_point_cloud::PointCloud">
           </plugin>
         </sensor>
