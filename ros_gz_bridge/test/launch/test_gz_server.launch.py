@@ -25,7 +25,7 @@ def generate_test_description():
 
     server = Node(
         package='ros_gz_bridge',
-        executable='test_ign_server',
+        executable='test_gz_server',
         output='screen'
     )
     process_under_test = Node(
@@ -39,7 +39,7 @@ def generate_test_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
-          '/ign_ros/test/serviceclient/world_control@ros_gz_interfaces/srv/ControlWorld',
+          '/gz_ros/test/serviceclient/world_control@ros_gz_interfaces/srv/ControlWorld',
         ],
         output='screen'
     )

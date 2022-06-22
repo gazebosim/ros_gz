@@ -32,7 +32,7 @@ enum Direction
   // Both directions.
   BIDIRECTIONAL = 0,
   // Only from IGN to ROS
-  FROM_IGN_TO_ROS = 1,
+  FROM_GZ_TO_ROS = 1,
   // Only from ROS to IGN
   FROM_ROS_TO_IGN = 2,
   // Unspecified, only used for services
@@ -131,7 +131,7 @@ int main(int argc, char * argv[])
           direction = FROM_ROS_TO_IGN;
         }
       } else {
-        direction = FROM_IGN_TO_ROS;
+        direction = FROM_GZ_TO_ROS;
       }
     }
     std::string ros_type_name = arg.substr(0, delimPos);
@@ -184,7 +184,7 @@ int main(int argc, char * argv[])
               ros_type_name, ign_type_name,
               topic_name, queue_size));
           break;
-        case FROM_IGN_TO_ROS:
+        case FROM_GZ_TO_ROS:
           ign_to_ros_handles.push_back(
             ros_gz_bridge::create_bridge_from_ign_to_ros(
               ign_node, ros_node,
@@ -209,7 +209,7 @@ int main(int argc, char * argv[])
   // ROS 2 spinner
   rclcpp::spin(ros_node);
 
-  // Wait for ign node shutdown
+  // Wait for gz node shutdown
   ignition::transport::waitForShutdown();
 
   return 0;

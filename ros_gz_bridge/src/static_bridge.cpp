@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 
   rclcpp::spin(ros_node);
 
-  // Wait for ign node shutdown
+  // Wait for gz node shutdown
   ignition::transport::waitForShutdown();
 
   return 0;

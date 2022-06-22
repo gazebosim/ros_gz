@@ -25,7 +25,7 @@ def generate_test_description():
 
     publisher = Node(
         package='ros_gz_bridge',
-        executable='test_ign_publisher',
+        executable='test_gz_publisher',
         output='screen'
     )
     process_under_test = Node(

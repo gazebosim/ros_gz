@@ -95,8 +95,8 @@ get_service_factory(
   if (impl) {return impl;}
 
   std::ostringstream oss{"No template specialization for the specified service type {"};
-  oss << ros_type_name << "}, ign request type {" << ign_req_type_name
-      << "}, ign request type {" << ign_req_type_name << "}, ign reply type name {"
+  oss << ros_type_name << "}, gz request type {" << ign_req_type_name
+      << "}, gz request type {" << ign_req_type_name << "}, gz reply type name {"
       << ign_rep_type_name << "}";
   throw std::runtime_error(oss.str());
 }

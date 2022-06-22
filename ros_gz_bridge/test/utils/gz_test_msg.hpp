@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef UTILS__IGN_TEST_MSG_HPP_
-#define UTILS__IGN_TEST_MSG_HPP_
+#ifndef UTILS__GZ_TEST_MSG_HPP_
+#define UTILS__GZ_TEST_MSG_HPP_
 
 #include <ignition/msgs/actuators.pb.h>
 #include <ignition/msgs/axis.pb.h>
@@ -397,4 +397,4 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg);
 }  // namespace testing
 }  // namespace ros_gz_bridge
 
-#endif  // UTILS__IGN_TEST_MSG_HPP_
+#endif  // UTILS__GZ_TEST_MSG_HPP_

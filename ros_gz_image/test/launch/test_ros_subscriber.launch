@@ -7,6 +7,6 @@
   />
 
   <!-- Launch the Gazebo Transport publisher -->
-  <node name="ign_publisher" pkg="ros_gz_image" type="ign_publisher_image" />
+  <node name="gz_publisher" pkg="ros_gz_image" type="gz_publisher_image" />
 
 </launch>
