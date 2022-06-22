@@ -15,9 +15,9 @@
 #include <rclcpp/time.hpp>
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/rosgraph_msgs.hpp"
+#include "ros_gz_bridge/convert/rosgraph_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -39,4 +39,4 @@ convert_ros_to_ign(
   ign_msg.mutable_sim()->set_nsec(ros_msg.clock.nanosec);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

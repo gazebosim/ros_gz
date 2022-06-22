@@ -22,7 +22,7 @@
 
 #include "factories.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 struct BridgeRosToIgnHandles
@@ -130,6 +130,6 @@ create_service_bridge(
   return handles;
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // BRIDGE_HPP_

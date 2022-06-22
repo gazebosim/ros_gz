@@ -1,5 +1,5 @@
 <package format="3">
-  <name>ros_ign_image</name>
+  <name>ros_gz_image</name>
   <version>0.244.3</version>
   <description>Image utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
@@ -9,7 +9,7 @@
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>image_transport</depend>
-  <depend>ros_ign_bridge</depend>
+  <depend>ros_gz_bridge</depend>
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 

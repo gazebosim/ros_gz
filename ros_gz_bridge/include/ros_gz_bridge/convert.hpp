@@ -15,13 +15,13 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
 #define ROS_IGN_BRIDGE__CONVERT_HPP_
 
-#include <ros_ign_bridge/convert/geometry_msgs.hpp>
-#include <ros_ign_bridge/convert/nav_msgs.hpp>
-#include <ros_ign_bridge/convert/ros_ign_interfaces.hpp>
-#include <ros_ign_bridge/convert/rosgraph_msgs.hpp>
-#include <ros_ign_bridge/convert/sensor_msgs.hpp>
-#include <ros_ign_bridge/convert/std_msgs.hpp>
-#include <ros_ign_bridge/convert/tf2_msgs.hpp>
-#include <ros_ign_bridge/convert/trajectory_msgs.hpp>
+#include <ros_gz_bridge/convert/geometry_msgs.hpp>
+#include <ros_gz_bridge/convert/nav_msgs.hpp>
+#include <ros_gz_bridge/convert/ros_gz_interfaces.hpp>
+#include <ros_gz_bridge/convert/rosgraph_msgs.hpp>
+#include <ros_gz_bridge/convert/sensor_msgs.hpp>
+#include <ros_gz_bridge/convert/std_msgs.hpp>
+#include <ros_gz_bridge/convert/tf2_msgs.hpp>
+#include <ros_gz_bridge/convert/trajectory_msgs.hpp>
 
 #endif  // ROS_IGN_BRIDGE__CONVERT_HPP_

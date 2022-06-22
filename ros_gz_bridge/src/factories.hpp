@@ -21,7 +21,7 @@
 #include "factory_interface.hpp"
 #include "service_factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -35,6 +35,6 @@ get_service_factory(
   const std::string & ign_req_type_name,
   const std::string & ign_rep_type_name);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // FACTORIES_HPP_

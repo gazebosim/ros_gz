@@ -30,11 +30,11 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure'],
         parameters=[{'qos_overrides./air_pressure.publisher.reliability': 'best_effort'}],
@@ -43,7 +43,7 @@ def generate_launch_description():
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
         launch_arguments={'ign_args': '-r sensors.sdf'}.items(),
     )
 

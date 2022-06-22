@@ -23,7 +23,7 @@
 #include <rclcpp/service.hpp>
 #include <rclcpp/node.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 class ServiceFactoryInterface
@@ -37,6 +37,6 @@ public:
     const std::string & service_name) = 0;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // SERVICE_FACTORY_INTERFACE_HPP_

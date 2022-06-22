@@ -48,7 +48,7 @@ public:
 public:
   void Cb(const ROS_T & _msg)
   {
-    ros_ign_bridge::testing::compareTestMsg(std::make_shared<ROS_T>(_msg));
+    ros_gz_bridge::testing::compareTestMsg(std::make_shared<ROS_T>(_msg));
     this->callbackExecuted = true;
   }
 

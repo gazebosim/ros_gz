@@ -55,7 +55,7 @@ set(PACKAGES
   builtin_interfaces
   geometry_msgs
   nav_msgs
-  ros_ign_interfaces
+  ros_gz_interfaces
   rosgraph_msgs
   sensor_msgs
   std_msgs
@@ -102,14 +102,14 @@ set(bridge_executables
 )
 
 set(bridge_lib
-  ros_ign_bridge_lib
+  ros_gz_bridge_lib
 )
 
 add_library(${bridge_lib}
   SHARED
   src/factories.cpp
   src/factory_interface.cpp
-  src/service_factories/ros_ign_interfaces.cpp
+  src/service_factories/ros_gz_interfaces.cpp
 )
 
 target_include_directories(${bridge_lib}
@@ -178,7 +178,7 @@ if(BUILD_TESTING)
     geometry_msgs
     nav_msgs
     rclcpp
-    ros_ign_interfaces
+    ros_gz_interfaces
     rosgraph_msgs
     sensor_msgs
     std_msgs
@@ -194,7 +194,7 @@ if(BUILD_TESTING)
         test/subscribers/ros_subscriber/builtin_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/ros_ign_interfaces_subscriber.cpp
+        test/subscribers/ros_subscriber/ros_gz_interfaces_subscriber.cpp
         test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
         test/subscribers/ros_subscriber/std_msgs_subscriber.cpp

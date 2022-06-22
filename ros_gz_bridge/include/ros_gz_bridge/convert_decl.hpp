@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
 #define ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<typename ROS_T, typename IGN_T>
@@ -30,6 +30,6 @@ convert_ign_to_ros(
   const IGN_T & ign_msg,
   ROS_T & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT_DECL_HPP_

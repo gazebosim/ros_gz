@@ -47,7 +47,7 @@ int main(int /*argc*/, char **/*argv*/)
   // ignition::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
   ignition::msgs::Image image_msg;
-  ros_ign_image::testing::createTestMsg(image_msg);
+  ros_gz_image::testing::createTestMsg(image_msg);
 
   // Publish messages at 1Hz.
   while (!g_terminatePub)

@@ -21,9 +21,9 @@
 // ROS 2 messages
 #include <rosgraph_msgs/msg/clock.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -38,6 +38,6 @@ convert_ros_to_ign(
   const rosgraph_msgs::msg::Clock & ros_msg,
   ignition::msgs::Clock & ign_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_

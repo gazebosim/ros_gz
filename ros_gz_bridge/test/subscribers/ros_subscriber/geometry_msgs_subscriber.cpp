@@ -27,7 +27,7 @@ TEST(ROSSubscriberTest, Quaternion)
   MyTestClass<geometry_msgs::msg::Quaternion> client("quaternion");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -39,7 +39,7 @@ TEST(ROSSubscriberTest, Vector3)
   MyTestClass<geometry_msgs::msg::Vector3> client("vector3");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -51,7 +51,7 @@ TEST(ROSSubscriberTest, Point)
   MyTestClass<geometry_msgs::msg::Point> client("point");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -63,7 +63,7 @@ TEST(ROSSubscriberTest, Pose)
   MyTestClass<geometry_msgs::msg::Pose> client("pose");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -75,7 +75,7 @@ TEST(ROSSubscriberTest, PoseWithCovariance)
   MyTestClass<geometry_msgs::msg::PoseWithCovariance> client("pose_with_covariance");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -87,7 +87,7 @@ TEST(ROSSubscriberTest, PoseStamped)
   MyTestClass<geometry_msgs::msg::PoseStamped> client("pose_stamped");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -99,7 +99,7 @@ TEST(ROSSubscriberTest, Transform)
   MyTestClass<geometry_msgs::msg::Transform> client("transform");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -111,7 +111,7 @@ TEST(ROSSubscriberTest, TransformStamped)
   MyTestClass<geometry_msgs::msg::TransformStamped> client("transform_stamped");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -123,7 +123,7 @@ TEST(ROSSubscriberTest, TF2Message)
   MyTestClass<tf2_msgs::msg::TFMessage> client("tf2_message");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -135,7 +135,7 @@ TEST(ROSSubscriberTest, Twist)
   MyTestClass<geometry_msgs::msg::Twist> client("twist");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -147,7 +147,7 @@ TEST(ROSSubscriberTest, TwistWithCovariance)
   MyTestClass<geometry_msgs::msg::TwistWithCovariance> client("twist_with_covariance");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -159,7 +159,7 @@ TEST(ROSSubscriberTest, Wrench)
   MyTestClass<geometry_msgs::msg::Wrench> client("wrench");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);

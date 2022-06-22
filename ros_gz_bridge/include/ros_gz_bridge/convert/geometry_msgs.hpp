@@ -36,9 +36,9 @@
 #include <geometry_msgs/msg/twist_with_covariance.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 // geometry_msgs
@@ -174,6 +174,6 @@ convert_ign_to_ros(
   const ignition::msgs::Wrench & ign_msg,
   geometry_msgs::msg::Wrench & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_

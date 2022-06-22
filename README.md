@@ -25,24 +25,24 @@ Rolling | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tre
 This repository holds packages that provide integration between
 [ROS](http://www.ros.org/) and [Gazebo](https://gazebosim.org):
 
-* [ros_ign](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign):
+* [ros_gz](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz):
   Metapackage which provides all the other packages.
-* [ros_ign_image](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign_image):
+* [ros_gz_image](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_image):
   Unidirectional transport bridge for images from
   [Gazebo Transport](https://gazebosim.org/libs/transport)
   to ROS using
   [image_transport](http://wiki.ros.org/image_transport).
-* [ros_ign_bridge](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign_bridge):
+* [ros_gz_bridge](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_bridge):
   Bidirectional transport bridge between
   [Gazebo Transport](https://gazebosim.org/libs/transport)
   and ROS.
-* [ros_ign_gazebo](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign_gazebo):
+* [ros_gz_sim](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_sim):
   Convenient launch files and executables for using
   [Gazebo Sim](https://gazebosim.org/libs/gazebo)
   with ROS.
-* [ros_ign_gazebo_demos](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign_gazebo_demos):
+* [ros_gz_sim_demos](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_sim_demos):
   Demos using the ROS-Gazebo integration.
-* [ros_ign_point_cloud](https://github.com/gazebosim/ros_gz/tree/ros2/ros_ign_point_cloud):
+* [ros_gz_point_cloud](https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz_point_cloud):
   Plugins for publishing point clouds to ROS from
   [Gazebo Sim](https://gazebosim.org/libs/gazebo) simulations.
 
@@ -61,7 +61,7 @@ They are hosted at https://packages.ros.org.
         curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
         sudo apt-get update
 
-1. Install `ros_ign`
+1. Install `ros_gz`
 
         sudo apt install ros-rolling-ros-ign
 
@@ -84,7 +84,7 @@ like to compile against. For example:
 
 > You only need to set this variable when compiling, not when running.
 
-#### Compile ros_ign
+#### Compile ros_gz
 
 The following steps are for Linux and OSX.
 

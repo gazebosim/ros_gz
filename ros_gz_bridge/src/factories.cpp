@@ -20,16 +20,16 @@
 #include "factories/builtin_interfaces.hpp"
 #include "factories/geometry_msgs.hpp"
 #include "factories/nav_msgs.hpp"
-#include "factories/ros_ign_interfaces.hpp"
+#include "factories/ros_gz_interfaces.hpp"
 #include "factories/rosgraph_msgs.hpp"
 #include "factories/sensor_msgs.hpp"
 #include "factories/std_msgs.hpp"
 #include "factories/tf2_msgs.hpp"
 #include "factories/trajectory_msgs.hpp"
 
-#include "service_factories/ros_ign_interfaces.hpp"
+#include "service_factories/ros_gz_interfaces.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -50,7 +50,7 @@ get_factory_impl(
   impl = get_factory__nav_msgs(ros_type_name, ign_type_name);
   if (impl) {return impl;}
 
-  impl = get_factory__ros_ign_interfaces(ros_type_name, ign_type_name);
+  impl = get_factory__ros_gz_interfaces(ros_type_name, ign_type_name);
   if (impl) {return impl;}
 
   impl = get_factory__rosgraph_msgs(ros_type_name, ign_type_name);
@@ -90,7 +90,7 @@ get_service_factory(
 {
   std::shared_ptr<ServiceFactoryInterface> impl;
 
-  impl = get_service_factory__ros_ign_interfaces(
+  impl = get_service_factory__ros_gz_interfaces(
     ros_type_name, ign_req_type_name, ign_rep_type_name);
   if (impl) {return impl;}
 
@@ -101,4 +101,4 @@ get_service_factory(
   throw std::runtime_error(oss.str());
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

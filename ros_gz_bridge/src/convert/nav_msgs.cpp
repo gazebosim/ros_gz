@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/nav_msgs.hpp"
+#include "ros_gz_bridge/convert/nav_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -86,4 +86,4 @@ convert_ign_to_ros(
   }
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

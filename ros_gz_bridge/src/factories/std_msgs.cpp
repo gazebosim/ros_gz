@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/std_msgs.hpp"
+#include "ros_gz_bridge/convert/std_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -131,7 +131,7 @@ Factory<
   const std_msgs::msg::Bool & ros_msg,
   ignition::msgs::Boolean & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -143,7 +143,7 @@ Factory<
   const ignition::msgs::Boolean & ign_msg,
   std_msgs::msg::Bool & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -155,7 +155,7 @@ Factory<
   const std_msgs::msg::ColorRGBA & ros_msg,
   ignition::msgs::Color & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -167,7 +167,7 @@ Factory<
   const ignition::msgs::Color & ign_msg,
   std_msgs::msg::ColorRGBA & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -179,7 +179,7 @@ Factory<
   const std_msgs::msg::Empty & ros_msg,
   ignition::msgs::Empty & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -191,7 +191,7 @@ Factory<
   const ignition::msgs::Empty & ign_msg,
   std_msgs::msg::Empty & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -203,7 +203,7 @@ Factory<
   const std_msgs::msg::Float32 & ros_msg,
   ignition::msgs::Float & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -215,7 +215,7 @@ Factory<
   const ignition::msgs::Float & ign_msg,
   std_msgs::msg::Float32 & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -227,7 +227,7 @@ Factory<
   const std_msgs::msg::Float64 & ros_msg,
   ignition::msgs::Double & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -239,7 +239,7 @@ Factory<
   const ignition::msgs::Double & ign_msg,
   std_msgs::msg::Float64 & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -251,7 +251,7 @@ Factory<
   const std_msgs::msg::Int32 & ros_msg,
   ignition::msgs::Int32 & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -263,7 +263,7 @@ Factory<
   const ignition::msgs::Int32 & ign_msg,
   std_msgs::msg::Int32 & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -275,7 +275,7 @@ Factory<
   const std_msgs::msg::UInt32 & ros_msg,
   ignition::msgs::UInt32 & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -287,7 +287,7 @@ Factory<
   const ignition::msgs::UInt32 & ign_msg,
   std_msgs::msg::UInt32 & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -299,7 +299,7 @@ Factory<
   const std_msgs::msg::Header & ros_msg,
   ignition::msgs::Header & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -311,7 +311,7 @@ Factory<
   const ignition::msgs::Header & ign_msg,
   std_msgs::msg::Header & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -323,7 +323,7 @@ Factory<
   const std_msgs::msg::String & ros_msg,
   ignition::msgs::StringMsg & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -335,7 +335,7 @@ Factory<
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::msg::String & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

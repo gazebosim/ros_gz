@@ -14,11 +14,11 @@
 
 #include "factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 FactoryInterface::~FactoryInterface()
 {
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

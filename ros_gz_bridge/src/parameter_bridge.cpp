@@ -70,9 +70,9 @@ void usage()
     "    parameter_bridge /chatter@std_msgs/String]ignition.msgs" <<
     ".StringMsg\n" <<
     "A service bridge:\n" <<
-    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld\n" <<
+    "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld\n" <<
     "Or equivalently:\n" <<
-    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld@"
+    "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld@"
     "ignition.msgs.WorldControl@ignition.msgs.Boolean\n" << std::endl;
 }
 
@@ -89,15 +89,15 @@ int main(int argc, char * argv[])
   auto filteredArgs = rclcpp::init_and_remove_ros_arguments(argc, argv);
 
   // ROS 2 node
-  auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
+  auto ros_node = std::make_shared<rclcpp::Node>("ros_gz_bridge");
 
   // Gazebo node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
-  std::vector<ros_ign_bridge::BridgeHandles> bidirectional_handles;
-  std::vector<ros_ign_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
-  std::vector<ros_ign_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
-  std::vector<ros_ign_bridge::BridgeIgnServicesToRosHandles> service_bridge_handles;
+  std::vector<ros_gz_bridge::BridgeHandles> bidirectional_handles;
+  std::vector<ros_gz_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
+  std::vector<ros_gz_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
+  std::vector<ros_gz_bridge::BridgeIgnServicesToRosHandles> service_bridge_handles;
 
   // Filter arguments (i.e. remove ros args) then parse all the remaining ones
   const std::string delim = "@";
@@ -155,7 +155,7 @@ int main(int argc, char * argv[])
       }
       try {
         service_bridge_handles.push_back(
-          ros_ign_bridge::create_service_bridge(
+          ros_gz_bridge::create_service_bridge(
             ros_node,
             ign_node,
             ros_type_name,
@@ -179,21 +179,21 @@ int main(int argc, char * argv[])
         default:
         case BIDIRECTIONAL:
           bidirectional_handles.push_back(
-            ros_ign_bridge::create_bidirectional_bridge(
+            ros_gz_bridge::create_bidirectional_bridge(
               ros_node, ign_node,
               ros_type_name, ign_type_name,
               topic_name, queue_size));
           break;
         case FROM_IGN_TO_ROS:
           ign_to_ros_handles.push_back(
-            ros_ign_bridge::create_bridge_from_ign_to_ros(
+            ros_gz_bridge::create_bridge_from_ign_to_ros(
               ign_node, ros_node,
               ign_type_name, topic_name, queue_size,
               ros_type_name, topic_name, queue_size));
           break;
         case FROM_ROS_TO_IGN:
           ros_to_ign_handles.push_back(
-            ros_ign_bridge::create_bridge_from_ros_to_ign(
+            ros_gz_bridge::create_bridge_from_ros_to_ign(
               ros_node, ign_node,
               ros_type_name, topic_name, queue_size,
               ign_type_name, topic_name, queue_size));

@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/builtin_interfaces.hpp"
+#include "ros_gz_bridge/convert/builtin_interfaces.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -51,7 +51,7 @@ Factory<
   const builtin_interfaces::msg::Time & ros_msg,
   ignition::msgs::Time & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -63,6 +63,6 @@ Factory<
   const ignition::msgs::Time & ign_msg,
   builtin_interfaces::msg::Time & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

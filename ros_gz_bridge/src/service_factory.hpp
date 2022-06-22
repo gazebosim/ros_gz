@@ -24,11 +24,11 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include "ros_ign_bridge/convert_decl.hpp"
+#include "ros_gz_bridge/convert_decl.hpp"
 
 #include "service_factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<typename RosResT>
@@ -92,6 +92,6 @@ private:
   std::string ign_rep_type_name_;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // SERVICE_FACTORY_HPP_

@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/trajectory_msgs.hpp"
+#include "ros_gz_bridge/convert/trajectory_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -50,7 +50,7 @@ Factory<
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
   ignition::msgs::JointTrajectoryPoint & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -62,7 +62,7 @@ Factory<
   const ignition::msgs::JointTrajectoryPoint & ign_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -74,7 +74,7 @@ Factory<
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
   ignition::msgs::JointTrajectory & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -86,8 +86,8 @@ Factory<
   const ignition::msgs::JointTrajectory & ign_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros_ign_bridge
+Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.244.3 (2022-05-19)
@@ -18,8 +18,8 @@ Changelog for package ros_ign_bridge
 * Support bridging services (`#211 <https://github.com/gazebosim/ros_gz/issues/211>`_)
 * Added reminder to hit play to receive images. (`#237 <https://github.com/gazebosim/ros_gz/issues/237>`_)
 * Updated `ign topic` commnds on README (`#221 <https://github.com/gazebosim/ros_gz/issues/221>`_)
-* Add conversions for ros_ign_interfaces/WorldControl and builtin_interfaces/Time (`#216 <https://github.com/gazebosim/ros_gz/issues/216>`_)
-* [ros_ign_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/gazebosim/ros_gz/issues/214>`_)
+* Add conversions for ros_gz_interfaces/WorldControl and builtin_interfaces/Time (`#216 <https://github.com/gazebosim/ros_gz/issues/216>`_)
+* [ros_gz_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/gazebosim/ros_gz/issues/214>`_)
 * Break apart ros_subscriber test translation unit (`#212 <https://github.com/gazebosim/ros_gz/issues/212>`_)
 * Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/gazebosim/ros_gz/issues/213>`_)
 * Add missing dependency on rclcpp (`#209 <https://github.com/gazebosim/ros_gz/issues/209>`_)
@@ -39,7 +39,7 @@ Changelog for package ros_ign_bridge
 * New Light Message, also bridge Color (`#187 <https://github.com/gazebosim/ros_gz/issues/187>`_)
 * Statically link each translation unit (`#193 <https://github.com/gazebosim/ros_gz/issues/193>`_)
 * Break apart convert and factories translation unit (`#192 <https://github.com/gazebosim/ros_gz/issues/192>`_)
-* Fixed ROS subscriber test in ros_ign_bridge (`#189 <https://github.com/gazebosim/ros_gz/issues/189>`_)
+* Fixed ROS subscriber test in ros_gz_bridge (`#189 <https://github.com/gazebosim/ros_gz/issues/189>`_)
 * Enable QoS overrides (`#181 <https://github.com/gazebosim/ros_gz/issues/181>`_)
 * Fixed ros ign bridge documentation (`#178 <https://github.com/gazebosim/ros_gz/issues/178>`_)
 * Expose Contacts through ROS bridge (`#175 <https://github.com/gazebosim/ros_gz/issues/175>`_)
@@ -72,7 +72,7 @@ Changelog for package ros_ign_bridge
 0.221.1 (2020-08-19)
 --------------------
 * Add pkg-config as a buildtool dependency (`#102 <https://github.com/gazebosim/ros_gz/issues/102>`_)
-* Port ros_ign_bridge tests to ROS 2 (`#98 <https://github.com/gazebosim/ros_gz/issues/98>`_)
+* Port ros_gz_bridge tests to ROS 2 (`#98 <https://github.com/gazebosim/ros_gz/issues/98>`_)
 * Rename test_utils.hpp (`#98 <https://github.com/gazebosim/ros_gz/issues/98>`_)
 * Contributors: Louise Poubel, ahcorde
 
@@ -88,11 +88,11 @@ Changelog for package ros_ign_bridge
 * Update Dashing docs (`#62 <https://github.com/gazebosim/ros_gz/issues/62>`_)
 * Update dependencies to Citadel (`#57 <https://github.com/gazebosim/ros_gz/issues/57>`_)
 * [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/gazebosim/ros_gz/issues/58>`_)
-  Port ros_ign_image to ROS2
-  Port ros_ign_gazebo_demos to ROS2
+  Port ros_gz_image to ROS2
+  Port ros_gz_sim_demos to ROS2
 * Add support for std_msgs/Empty (`#53 <https://github.com/gazebosim/ros_gz/issues/53>`_)
 * Add support for std_msgs/Bool (`#50 <https://github.com/gazebosim/ros_gz/issues/50>`_)
-* [ros2] Port ros_ign_bridge to ROS2 (`#45 <https://github.com/gazebosim/ros_gz/issues/45>`_)
+* [ros2] Port ros_gz_bridge to ROS2 (`#45 <https://github.com/gazebosim/ros_gz/issues/45>`_)
 * Enable ROS2 CI for Dashing branch (`#43 <https://github.com/gazebosim/ros_gz/issues/43>`_)
 * Make all API and comments ROS-version agnostic
 * Rename packages and fix compilation + tests

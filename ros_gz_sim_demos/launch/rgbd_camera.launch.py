@@ -26,11 +26,11 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
         # launch_arguments={
         #     'ign_args': '-r rgbd_camera.sdf'
         # }.items(),
@@ -40,20 +40,20 @@ def generate_launch_description():
     # rviz = Node(
     #    package='rviz2',
     #    executable='rviz2',
-    #    arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'rgbd_camera.rviz')],
+    #    arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'rgbd_camera.rviz')],
     #    condition=IfCondition(LaunchConfiguration('rviz'))
     # )
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image',
                    '/rgbd_camera/depth_image@sensor_msgs/msg/Image@ignition.msgs.Image'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (depth_camera.sdf) inside ros_ign_point_cloud/
+    # FIXME: need a SDF file (depth_camera.sdf) inside ros_gz_point_cloud/
     return LaunchDescription([
         ign_gazebo,
         DeclareLaunchArgument('rviz', default_value='true',

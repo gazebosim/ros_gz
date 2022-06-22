@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/rosgraph_msgs.hpp"
+#include "ros_gz_bridge/convert/rosgraph_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -50,7 +50,7 @@ Factory<
   const rosgraph_msgs::msg::Clock & ros_msg,
   ignition::msgs::Clock & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -62,7 +62,7 @@ Factory<
   const ignition::msgs::Clock & ign_msg,
   rosgraph_msgs::msg::Clock & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

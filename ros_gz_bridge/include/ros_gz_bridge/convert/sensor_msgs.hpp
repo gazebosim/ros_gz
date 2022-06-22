@@ -37,9 +37,9 @@
 #include <sensor_msgs/msg/magnetic_field.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 // sensor_msgs
@@ -151,6 +151,6 @@ convert_ign_to_ros(
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::msg::BatteryState & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_

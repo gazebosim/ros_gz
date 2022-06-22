@@ -24,7 +24,7 @@
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 class FactoryInterface
@@ -64,6 +64,6 @@ public:
     rclcpp::PublisherBase::SharedPtr ros_pub) = 0;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // FACTORY_INTERFACE_HPP_

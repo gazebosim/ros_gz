@@ -19,7 +19,7 @@
 #include <memory>
 #include <string>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -1226,4 +1226,4 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg)
 }
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

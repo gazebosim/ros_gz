@@ -28,12 +28,12 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
         launch_arguments={
             'ign_args': '-r gpu_lidar_sensor.sdf'
         }.items(),
@@ -43,13 +43,13 @@ def generate_launch_description():
     rviz = Node(
        package='rviz2',
        executable='rviz2',
-       arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
+       arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
        condition=IfCondition(LaunchConfiguration('rviz'))
     )
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['lidar@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
                    '/lidar/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked'],

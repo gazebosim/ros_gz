@@ -57,26 +57,26 @@ def generate_launch_description():
             arguments=[])
 
     # Gazebo Sim
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
         launch_arguments={'ign_args': '-r empty.sdf'}.items(),
     )
 
     # RViz
-    pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
     rviz = Node(
         package='rviz2',
         executable='rviz2',
         arguments=[
             '-d',
-            os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'robot_description_publisher.rviz')
+            os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'robot_description_publisher.rviz')
         ]
     )
 
     # Spawn
-    spawn = Node(package='ros_ign_gazebo', executable='create',
+    spawn = Node(package='ros_gz_sim', executable='create',
                  arguments=[
                     '-name', 'my_custom_model',
                     '-x', '1.2',

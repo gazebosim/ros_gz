@@ -26,17 +26,17 @@ int main(int argc, char ** argv)
   // builtin_interfaces::msg::Time.
   auto time_pub = node->create_publisher<builtin_interfaces::msg::Time>("time", 1000);
   builtin_interfaces::msg::Time time_msg;
-  ros_ign_bridge::testing::createTestMsg(time_msg);
+  ros_gz_bridge::testing::createTestMsg(time_msg);
 
   // std_msgs::msg::Color.
   auto color_pub = node->create_publisher<std_msgs::msg::ColorRGBA>("color", 1000);
   std_msgs::msg::ColorRGBA color_msg;
-  ros_ign_bridge::testing::createTestMsg(color_msg);
+  ros_gz_bridge::testing::createTestMsg(color_msg);
 
   // std_msgs::msg::Bool.
   auto bool_pub = node->create_publisher<std_msgs::msg::Bool>("bool", 1000);
   std_msgs::msg::Bool bool_msg;
-  ros_ign_bridge::testing::createTestMsg(bool_msg);
+  ros_gz_bridge::testing::createTestMsg(bool_msg);
 
   // std_msgs::msg::Empty.
   auto empty_pub = node->create_publisher<std_msgs::msg::Empty>("empty", 1000);
@@ -45,238 +45,238 @@ int main(int argc, char ** argv)
   // std_msgs::msg::Float32.
   auto float_pub = node->create_publisher<std_msgs::msg::Float32>("float", 1000);
   std_msgs::msg::Float32 float_msg;
-  ros_ign_bridge::testing::createTestMsg(float_msg);
+  ros_gz_bridge::testing::createTestMsg(float_msg);
 
   // std_msgs::Float64.
   auto double_pub = node->create_publisher<std_msgs::msg::Float64>("double", 1000);
   std_msgs::msg::Float64 double_msg;
-  ros_ign_bridge::testing::createTestMsg(double_msg);
+  ros_gz_bridge::testing::createTestMsg(double_msg);
 
   // std_msgs::UInt32.
   auto uint32_pub = node->create_publisher<std_msgs::msg::UInt32>("uint32", 1000);
   std_msgs::msg::UInt32 uint32_msg;
-  ros_ign_bridge::testing::createTestMsg(uint32_msg);
+  ros_gz_bridge::testing::createTestMsg(uint32_msg);
 
   // std_msgs::msg::Header.
   auto header_pub = node->create_publisher<std_msgs::msg::Header>("header", 1000);
   std_msgs::msg::Header header_msg;
-  ros_ign_bridge::testing::createTestMsg(header_msg);
+  ros_gz_bridge::testing::createTestMsg(header_msg);
 
   // std_msgs::msg::String.
   auto string_pub = node->create_publisher<std_msgs::msg::String>("string", 1000);
   std_msgs::msg::String string_msg;
-  ros_ign_bridge::testing::createTestMsg(string_msg);
+  ros_gz_bridge::testing::createTestMsg(string_msg);
 
   // geometry_msgs::msg::Quaternion.
   auto quaternion_pub =
     node->create_publisher<geometry_msgs::msg::Quaternion>("quaternion", 1000);
   geometry_msgs::msg::Quaternion quaternion_msg;
-  ros_ign_bridge::testing::createTestMsg(quaternion_msg);
+  ros_gz_bridge::testing::createTestMsg(quaternion_msg);
 
   // geometry_msgs::msg::Vector3.
   auto vector3_pub =
     node->create_publisher<geometry_msgs::msg::Vector3>("vector3", 1000);
   geometry_msgs::msg::Vector3 vector3_msg;
-  ros_ign_bridge::testing::createTestMsg(vector3_msg);
+  ros_gz_bridge::testing::createTestMsg(vector3_msg);
 
   // sensor_msgs::msg::Clock.
   auto clock_pub =
     node->create_publisher<rosgraph_msgs::msg::Clock>("clock", 1000);
   rosgraph_msgs::msg::Clock clock_msg;
-  ros_ign_bridge::testing::createTestMsg(clock_msg);
+  ros_gz_bridge::testing::createTestMsg(clock_msg);
 
   // geometry_msgs::msg::Point.
   auto point_pub =
     node->create_publisher<geometry_msgs::msg::Point>("point", 1000);
   geometry_msgs::msg::Point point_msg;
-  ros_ign_bridge::testing::createTestMsg(point_msg);
+  ros_gz_bridge::testing::createTestMsg(point_msg);
 
   // geometry_msgs::msg::Pose.
   auto pose_pub =
     node->create_publisher<geometry_msgs::msg::Pose>("pose", 1000);
   geometry_msgs::msg::Pose pose_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_msg);
 
   // geometry_msgs::msg::PoseWithCovariance.
   auto pose_cov_pub =
     node->create_publisher<geometry_msgs::msg::PoseWithCovariance>(
     "pose_with_covariance", 1000);
   geometry_msgs::msg::PoseWithCovariance pose_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_cov_msg);
 
   // geometry_msgs::msg::PoseStamped.
   auto pose_stamped_pub =
     node->create_publisher<geometry_msgs::msg::PoseStamped>("pose_stamped", 1000);
   geometry_msgs::msg::PoseStamped pose_stamped_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_stamped_msg);
 
   // geometry_msgs::msg::Transform.
   auto transform_pub =
     node->create_publisher<geometry_msgs::msg::Transform>("transform", 1000);
   geometry_msgs::msg::Transform transform_msg;
-  ros_ign_bridge::testing::createTestMsg(transform_msg);
+  ros_gz_bridge::testing::createTestMsg(transform_msg);
 
   // geometry_msgs::msg::TransformStamped.
   auto transform_stamped_pub =
     node->create_publisher<geometry_msgs::msg::TransformStamped>("transform_stamped", 1000);
   geometry_msgs::msg::TransformStamped transform_stamped_msg;
-  ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+  ros_gz_bridge::testing::createTestMsg(transform_stamped_msg);
 
   // geometry_msgs::msg::Twist.
   auto twist_pub =
     node->create_publisher<geometry_msgs::msg::Twist>("twist", 1000);
   geometry_msgs::msg::Twist twist_msg;
-  ros_ign_bridge::testing::createTestMsg(twist_msg);
+  ros_gz_bridge::testing::createTestMsg(twist_msg);
 
   // geometry_msgs::msg::TwistWithCovariance.
   auto twist_cov_pub =
     node->create_publisher<geometry_msgs::msg::TwistWithCovariance>(
     "twist_with_covariance", 1000);
   geometry_msgs::msg::TwistWithCovariance twist_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(twist_cov_msg);
 
   auto tf2_message_pub =
     node->create_publisher<tf2_msgs::msg::TFMessage>("tf2_message", 1000);
   tf2_msgs::msg::TFMessage tf2_msg;
-  ros_ign_bridge::testing::createTestMsg(tf2_msg);
+  ros_gz_bridge::testing::createTestMsg(tf2_msg);
 
   // geometry_msgs::msg::Wrench.
   auto wrench_pub =
     node->create_publisher<geometry_msgs::msg::Wrench>("wrench", 1000);
   geometry_msgs::msg::Wrench wrench_msg;
-  ros_ign_bridge::testing::createTestMsg(wrench_msg);
+  ros_gz_bridge::testing::createTestMsg(wrench_msg);
 
-  // ros_ign_interfaces::msg::Light.
+  // ros_gz_interfaces::msg::Light.
   auto light_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Light>("light", 1000);
-  ros_ign_interfaces::msg::Light light_msg;
-  ros_ign_bridge::testing::createTestMsg(light_msg);
+    node->create_publisher<ros_gz_interfaces::msg::Light>("light", 1000);
+  ros_gz_interfaces::msg::Light light_msg;
+  ros_gz_bridge::testing::createTestMsg(light_msg);
 
-  // ros_ign_interfaces::msg::JointWrench.
+  // ros_gz_interfaces::msg::JointWrench.
   auto joint_wrench_pub =
-    node->create_publisher<ros_ign_interfaces::msg::JointWrench>("joint_wrench", 1000);
-  ros_ign_interfaces::msg::JointWrench joint_wrench_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_wrench_msg);
+    node->create_publisher<ros_gz_interfaces::msg::JointWrench>("joint_wrench", 1000);
+  ros_gz_interfaces::msg::JointWrench joint_wrench_msg;
+  ros_gz_bridge::testing::createTestMsg(joint_wrench_msg);
 
-  // ros_ign_interfaces::msg::Entity.
+  // ros_gz_interfaces::msg::Entity.
   auto entity_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Entity>("entity", 1000);
-  ros_ign_interfaces::msg::Entity entity_msg;
-  ros_ign_bridge::testing::createTestMsg(entity_msg);
+    node->create_publisher<ros_gz_interfaces::msg::Entity>("entity", 1000);
+  ros_gz_interfaces::msg::Entity entity_msg;
+  ros_gz_bridge::testing::createTestMsg(entity_msg);
 
-  // ros_ign_interfaces::msg::Contact.
+  // ros_gz_interfaces::msg::Contact.
   auto contact_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Contact>("contact", 1000);
-  ros_ign_interfaces::msg::Contact contact_msg;
-  ros_ign_bridge::testing::createTestMsg(contact_msg);
+    node->create_publisher<ros_gz_interfaces::msg::Contact>("contact", 1000);
+  ros_gz_interfaces::msg::Contact contact_msg;
+  ros_gz_bridge::testing::createTestMsg(contact_msg);
 
-  // ros_ign_interfaces::msg::Contacts.
+  // ros_gz_interfaces::msg::Contacts.
   auto contacts_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Contacts>("contacts", 1000);
-  ros_ign_interfaces::msg::Contacts contacts_msg;
-  ros_ign_bridge::testing::createTestMsg(contacts_msg);
+    node->create_publisher<ros_gz_interfaces::msg::Contacts>("contacts", 1000);
+  ros_gz_interfaces::msg::Contacts contacts_msg;
+  ros_gz_bridge::testing::createTestMsg(contacts_msg);
 
-  // ros_ign_interfaces::msg::GuiCamera.
+  // ros_gz_interfaces::msg::GuiCamera.
   auto gui_camera_pub =
-    node->create_publisher<ros_ign_interfaces::msg::GuiCamera>("gui_camera", 1000);
-  ros_ign_interfaces::msg::GuiCamera gui_camera_msg;
-  ros_ign_bridge::testing::createTestMsg(gui_camera_msg);
+    node->create_publisher<ros_gz_interfaces::msg::GuiCamera>("gui_camera", 1000);
+  ros_gz_interfaces::msg::GuiCamera gui_camera_msg;
+  ros_gz_bridge::testing::createTestMsg(gui_camera_msg);
 
-  // ros_ign_interfaces::msg::StringVec.
+  // ros_gz_interfaces::msg::StringVec.
   auto stringmsg_v_pub =
-    node->create_publisher<ros_ign_interfaces::msg::StringVec>("stringmsg_v", 1000);
-  ros_ign_interfaces::msg::StringVec stringmsg_v_msg;
-  ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
+    node->create_publisher<ros_gz_interfaces::msg::StringVec>("stringmsg_v", 1000);
+  ros_gz_interfaces::msg::StringVec stringmsg_v_msg;
+  ros_gz_bridge::testing::createTestMsg(stringmsg_v_msg);
 
-  // ros_ign_interfaces::msg::TrackVisual.
+  // ros_gz_interfaces::msg::TrackVisual.
   auto track_visual_pub =
-    node->create_publisher<ros_ign_interfaces::msg::TrackVisual>("track_visual", 1000);
-  ros_ign_interfaces::msg::TrackVisual track_visual_msg;
-  ros_ign_bridge::testing::createTestMsg(track_visual_msg);
+    node->create_publisher<ros_gz_interfaces::msg::TrackVisual>("track_visual", 1000);
+  ros_gz_interfaces::msg::TrackVisual track_visual_msg;
+  ros_gz_bridge::testing::createTestMsg(track_visual_msg);
 
-  // ros_ign_interfaces::msg::VideoRecord.
+  // ros_gz_interfaces::msg::VideoRecord.
   auto video_record_pub =
-    node->create_publisher<ros_ign_interfaces::msg::VideoRecord>("video_record", 1000);
-  ros_ign_interfaces::msg::VideoRecord video_record_msg;
-  ros_ign_bridge::testing::createTestMsg(video_record_msg);
+    node->create_publisher<ros_gz_interfaces::msg::VideoRecord>("video_record", 1000);
+  ros_gz_interfaces::msg::VideoRecord video_record_msg;
+  ros_gz_bridge::testing::createTestMsg(video_record_msg);
 
   // // mav_msgs::msg::Actuators.
   // auto actuators_pub =
   //   node->create_publisher<mav_msgs::msg::Actuators>("actuators", 1000);
   // mav_msgs::msg::Actuators actuators_msg;
-  // ros_ign_bridge::testing::createTestMsg(actuators_msg);
+  // ros_gz_bridge::testing::createTestMsg(actuators_msg);
 
   // nav_msgs::msg::Odometry.
   auto odometry_pub =
     node->create_publisher<nav_msgs::msg::Odometry>("odometry", 1000);
   nav_msgs::msg::Odometry odometry_msg;
-  ros_ign_bridge::testing::createTestMsg(odometry_msg);
+  ros_gz_bridge::testing::createTestMsg(odometry_msg);
 
   // nav_msgs::msg::Odometry.
   auto odometry_cov_pub =
     node->create_publisher<nav_msgs::msg::Odometry>("odometry_with_covariance", 1000);
   nav_msgs::msg::Odometry odometry_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(odometry_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(odometry_cov_msg);
 
   // sensor_msgs::msg::Image.
   auto image_pub =
     node->create_publisher<sensor_msgs::msg::Image>("image", 1000);
   sensor_msgs::msg::Image image_msg;
-  ros_ign_bridge::testing::createTestMsg(image_msg);
+  ros_gz_bridge::testing::createTestMsg(image_msg);
 
   // sensor_msgs::msg::CameraInfo.
   auto camera_info_pub =
     node->create_publisher<sensor_msgs::msg::CameraInfo>("camera_info", 1000);
   sensor_msgs::msg::CameraInfo camera_info_msg;
-  ros_ign_bridge::testing::createTestMsg(camera_info_msg);
+  ros_gz_bridge::testing::createTestMsg(camera_info_msg);
 
   // sensor_msgs::msg::FluidPressure.
   auto fluid_pressure_pub =
     node->create_publisher<sensor_msgs::msg::FluidPressure>("fluid_pressure", 1000);
   sensor_msgs::msg::FluidPressure fluid_pressure_msg;
-  ros_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+  ros_gz_bridge::testing::createTestMsg(fluid_pressure_msg);
 
   // sensor_msgs::msg::Imu.
   auto imu_pub =
     node->create_publisher<sensor_msgs::msg::Imu>("imu", 1000);
   sensor_msgs::msg::Imu imu_msg;
-  ros_ign_bridge::testing::createTestMsg(imu_msg);
+  ros_gz_bridge::testing::createTestMsg(imu_msg);
 
   // sensor_msgs::msg::JointState.
   auto joint_states_pub =
     node->create_publisher<sensor_msgs::msg::JointState>("joint_states", 1000);
   sensor_msgs::msg::JointState joint_states_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_states_msg);
+  ros_gz_bridge::testing::createTestMsg(joint_states_msg);
 
   // sensor_msgs::msg::LaserScan.
   auto laserscan_pub =
     node->create_publisher<sensor_msgs::msg::LaserScan>("laserscan", 1000);
   sensor_msgs::msg::LaserScan laserscan_msg;
-  ros_ign_bridge::testing::createTestMsg(laserscan_msg);
+  ros_gz_bridge::testing::createTestMsg(laserscan_msg);
 
   // sensor_msgs::msg::MagneticField.
   auto magnetic_pub =
     node->create_publisher<sensor_msgs::msg::MagneticField>("magnetic", 1000);
   sensor_msgs::msg::MagneticField magnetic_msg;
-  ros_ign_bridge::testing::createTestMsg(magnetic_msg);
+  ros_gz_bridge::testing::createTestMsg(magnetic_msg);
 
   // sensor_msgs::msg::PointCloud2.
   auto pointcloud2_pub =
     node->create_publisher<sensor_msgs::msg::PointCloud2>("pointcloud2", 1000);
   sensor_msgs::msg::PointCloud2 pointcloud2_msg;
-  ros_ign_bridge::testing::createTestMsg(pointcloud2_msg);
+  ros_gz_bridge::testing::createTestMsg(pointcloud2_msg);
 
   // sensor_msgs::msg::BatteryState.
   auto battery_state_pub =
     node->create_publisher<sensor_msgs::msg::BatteryState>("battery_state", 1000);
   sensor_msgs::msg::BatteryState battery_state_msg;
-  ros_ign_bridge::testing::createTestMsg(battery_state_msg);
+  ros_gz_bridge::testing::createTestMsg(battery_state_msg);
 
   // trajectory_msgs::msg::JointTrajectory.
   auto joint_trajectory_pub =
     node->create_publisher<trajectory_msgs::msg::JointTrajectory>("joint_trajectory", 1000);
   trajectory_msgs::msg::JointTrajectory joint_trajectory_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_trajectory_msg);
+  ros_gz_bridge::testing::createTestMsg(joint_trajectory_msg);
 
   while (rclcpp::ok()) {
     // Publish all messages.

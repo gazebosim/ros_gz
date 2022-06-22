@@ -15,9 +15,9 @@
 #include <rclcpp/time.hpp>
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/trajectory_msgs.hpp"
+#include "ros_gz_bridge/convert/trajectory_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -105,4 +105,4 @@ convert_ign_to_ros(
   }
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

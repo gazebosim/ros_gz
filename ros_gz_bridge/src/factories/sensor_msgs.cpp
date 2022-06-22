@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/sensor_msgs.hpp"
+#include "ros_gz_bridge/convert/sensor_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -130,7 +130,7 @@ Factory<
   const sensor_msgs::msg::FluidPressure & ros_msg,
   ignition::msgs::FluidPressure & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -142,7 +142,7 @@ Factory<
   const ignition::msgs::FluidPressure & ign_msg,
   sensor_msgs::msg::FluidPressure & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -154,7 +154,7 @@ Factory<
   const sensor_msgs::msg::Image & ros_msg,
   ignition::msgs::Image & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -166,7 +166,7 @@ Factory<
   const ignition::msgs::Image & ign_msg,
   sensor_msgs::msg::Image & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -178,7 +178,7 @@ Factory<
   const sensor_msgs::msg::CameraInfo & ros_msg,
   ignition::msgs::CameraInfo & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -190,7 +190,7 @@ Factory<
   const ignition::msgs::CameraInfo & ign_msg,
   sensor_msgs::msg::CameraInfo & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -202,7 +202,7 @@ Factory<
   const sensor_msgs::msg::Imu & ros_msg,
   ignition::msgs::IMU & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -214,7 +214,7 @@ Factory<
   const ignition::msgs::IMU & ign_msg,
   sensor_msgs::msg::Imu & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -226,7 +226,7 @@ Factory<
   const sensor_msgs::msg::JointState & ros_msg,
   ignition::msgs::Model & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -238,7 +238,7 @@ Factory<
   const ignition::msgs::Model & ign_msg,
   sensor_msgs::msg::JointState & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -250,7 +250,7 @@ Factory<
   const sensor_msgs::msg::LaserScan & ros_msg,
   ignition::msgs::LaserScan & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -262,7 +262,7 @@ Factory<
   const ignition::msgs::LaserScan & ign_msg,
   sensor_msgs::msg::LaserScan & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -274,7 +274,7 @@ Factory<
   const sensor_msgs::msg::MagneticField & ros_msg,
   ignition::msgs::Magnetometer & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -286,7 +286,7 @@ Factory<
   const ignition::msgs::Magnetometer & ign_msg,
   sensor_msgs::msg::MagneticField & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -298,7 +298,7 @@ Factory<
   const sensor_msgs::msg::PointCloud2 & ros_msg,
   ignition::msgs::PointCloudPacked & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -310,7 +310,7 @@ Factory<
   const ignition::msgs::PointCloudPacked & ign_msg,
   sensor_msgs::msg::PointCloud2 & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
 template<>
@@ -322,7 +322,7 @@ Factory<
   const sensor_msgs::msg::BatteryState & ros_msg,
   ignition::msgs::BatteryState & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -334,7 +334,7 @@ Factory<
   const ignition::msgs::BatteryState & ign_msg,
   sensor_msgs::msg::BatteryState & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

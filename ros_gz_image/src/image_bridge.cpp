@@ -21,7 +21,7 @@
 #include <ignition/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
-#include <ros_ign_bridge/convert.hpp>
+#include <ros_gz_bridge/convert.hpp>
 
 //////////////////////////////////////////////////
 /// \brief Bridges one topic
@@ -48,7 +48,7 @@ private:
   void OnImage(const ignition::msgs::Image & _ign_msg)
   {
     sensor_msgs::msg::Image ros_msg;
-    ros_ign_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
+    ros_gz_bridge::convert_ign_to_ros(_ign_msg, ros_msg);
     this->ros_pub.publish(ros_msg);
   }
 
@@ -76,7 +76,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
 
   // ROS node
-  auto node_ = rclcpp::Node::make_shared("ros_ign_image");
+  auto node_ = rclcpp::Node::make_shared("ros_gz_image");
   auto it_node = std::make_shared<image_transport::ImageTransport>(node_);
 
   // Gazebo node

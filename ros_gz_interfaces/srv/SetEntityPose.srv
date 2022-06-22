@@ -1,4 +1,4 @@
-ros_ign_interfaces/Entity entity    # Gazebo Sim entity.
+ros_gz_interfaces/Entity entity    # Gazebo Sim entity.
 geometry_msgs/Pose pose             # Pose of entity.
 ---
 bool success                        # Return true if set successfully.

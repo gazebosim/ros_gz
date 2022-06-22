@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros_ign_gazebo
+Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.244.3 (2022-05-19)
@@ -12,8 +12,8 @@ Changelog for package ros_ign_gazebo
 0.244.2 (2022-04-25)
 --------------------
 * Support bridging services (`#211 <https://github.com/gazebosim/ros_gz/issues/211>`_)
-* Add std_msgs as dependency of ros_ign_gazebo (`#242 <https://github.com/gazebosim/ros_gz/issues/242>`_)
-* Fixed ros_ign_gazebo launch file install directory (`#229 <https://github.com/gazebosim/ros_gz/issues/229>`_) (`#230 <https://github.com/gazebosim/ros_gz/issues/230>`_)
+* Add std_msgs as dependency of ros_gz_sim (`#242 <https://github.com/gazebosim/ros_gz/issues/242>`_)
+* Fixed ros_gz_sim launch file install directory (`#229 <https://github.com/gazebosim/ros_gz/issues/229>`_) (`#230 <https://github.com/gazebosim/ros_gz/issues/230>`_)
 * Added ign_version launch argument to set ignition gazebo version (`#226 <https://github.com/gazebosim/ros_gz/issues/226>`_)
 * Bring ros2 branch up-to-date with Rolling (`#213 <https://github.com/gazebosim/ros_gz/issues/213>`_)
 * create.cpp usage message fixed for ros2 branch (`#207 <https://github.com/gazebosim/ros_gz/issues/207>`_)
@@ -41,7 +41,7 @@ Changelog for package ros_ign_gazebo
 * Edifice support (`#140 <https://github.com/gazebosim/ros_gz/issues/140>`_)
   Co-authored-by: Alejandro Hernández <ahcorde@gmail.com>
 * Add topic flag to create robot  (`#128 <https://github.com/gazebosim/ros_gz/issues/128>`_)
-  Now it is possible to run ros_ign_gazebo create specifying a topic as
+  Now it is possible to run ros_gz_sim create specifying a topic as
   source of the robot description
   Add a launch file starting a ignition gazebo world and spawn a sphere in it.
   Additionally a rviz2 interface is loaded to show that also Rviz can load
@@ -53,7 +53,7 @@ Changelog for package ros_ign_gazebo
   - Now it is instead extended by LD_LIBRARY_PATH
   - This allows use of ign_gazebo.launch.py with custom gazebo plugins
 * Changed for loading xml from ROS param(`#119 <https://github.com/gazebosim/ros_gz/issues/119>`_) (`#120 <https://github.com/gazebosim/ros_gz/issues/120>`_)
-* ros_ign_gazebo exec depend on gz-sim (`#110 <https://github.com/gazebosim/ros_gz/issues/110>`_)
+* ros_gz_sim exec depend on gz-sim (`#110 <https://github.com/gazebosim/ros_gz/issues/110>`_)
 * Update releases (`#108 <https://github.com/gazebosim/ros_gz/issues/108>`_)
 * Add support for Dome (`#103 <https://github.com/gazebosim/ros_gz/issues/103>`_)
 * Contributors: Andrej Orsula, Louise Poubel, Luca Della Vedova, Valerio Magnago, chama1176
@@ -67,7 +67,7 @@ Changelog for package ros_ign_gazebo
 --------------------
 * [ros2] Fixed CI - Added Foxy (`#89 <https://github.com/gazebosim/ros_gz/issues/89>`_)
   Co-authored-by: Louise Poubel <louise@openrobotics.org>
-* Added ros_ign_gazebo for ros2 (`#80 <https://github.com/gazebosim/ros_gz/issues/80>`_)
+* Added ros_gz_sim for ros2 (`#80 <https://github.com/gazebosim/ros_gz/issues/80>`_)
   Co-authored-by: Louise Poubel <louise@openrobotics.org>
 * Update Dashing docs (`#62 <https://github.com/gazebosim/ros_gz/issues/62>`_)
 * Contributors: Alejandro Hernández Cordero, Louise Poubel, chapulina

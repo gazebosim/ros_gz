@@ -13,9 +13,9 @@
 // limitations under the License.
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/geometry_msgs.hpp"
+#include "ros_gz_bridge/convert/geometry_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -277,4 +277,4 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.torque(), ros_msg.torque);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -22,9 +22,9 @@
 // ROS 2 messages
 #include <nav_msgs/msg/odometry.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 // nav_msgs
 template<>
@@ -51,6 +51,6 @@ convert_ign_to_ros(
   const ignition::msgs::OdometryWithCovariance & ign_msg,
   nav_msgs::msg::Odometry & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__NAV_MSGS_HPP_

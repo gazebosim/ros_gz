@@ -26,7 +26,7 @@
 
 -->
 <sdf version="1.6">
-  <world name="ros_ign">
+  <world name="ros_gz">
     <physics name="1ms" type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1.0</real_time_factor>
@@ -82,8 +82,8 @@
         <play_pause>true</play_pause>
         <step>true</step>
         <start_paused>true</start_paused>
-        <service>/world/ros_ign/control</service>
-        <stats_topic>/world/ros_ign/stats</stats_topic>
+        <service>/world/ros_gz/control</service>
+        <stats_topic>/world/ros_gz/stats</stats_topic>
 
       </plugin>
 
@@ -108,7 +108,7 @@
         <real_time>true</real_time>
         <real_time_factor>true</real_time_factor>
         <iterations>true</iterations>
-        <topic>/world/ros_ign/stats</topic>
+        <topic>/world/ros_gz/stats</topic>
       </plugin>
     </gui>
 
@@ -279,7 +279,7 @@
           <visualize>true</visualize>
           <plugin
             filename="libRosIgnPointCloud.so"
-            name="ros_ign_point_cloud::PointCloud">
+            name="ros_gz_point_cloud::PointCloud">
             <namespace>custom_params</namespace>
             <topic>pc2</topic>
             <frame_id>custom_params/link</frame_id>

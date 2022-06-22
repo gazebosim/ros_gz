@@ -27,7 +27,7 @@
 
 #include "factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<typename ROS_T, typename IGN_T>
@@ -167,6 +167,6 @@ public:
   std::string ign_type_name_;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // FACTORY_HPP_

@@ -21,9 +21,9 @@
 // ROS 2 messages
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -51,6 +51,6 @@ convert_ign_to_ros(
   trajectory_msgs::msg::JointTrajectory & ros_msg);
 
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_

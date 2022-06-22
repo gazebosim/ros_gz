@@ -18,9 +18,9 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/tf2_msgs.hpp"
+#include "ros_gz_bridge/convert/tf2_msgs.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
@@ -51,7 +51,7 @@ Factory<
   const tf2_msgs::msg::TFMessage & ros_msg,
   ignition::msgs::Pose_V & ign_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_ign(ros_msg, ign_msg);
 }
 
 template<>
@@ -63,7 +63,7 @@ Factory<
   const ignition::msgs::Pose_V & ign_msg,
   tf2_msgs::msg::TFMessage & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_ign_to_ros(ign_msg, ros_msg);
 }
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -18,7 +18,7 @@
 #include <memory>
 #include <ignition/gazebo/System.hh>
 
-namespace ros_ign_point_cloud
+namespace ros_gz_point_cloud
 {
   // Forward declarations.
   class PointCloudPrivate;

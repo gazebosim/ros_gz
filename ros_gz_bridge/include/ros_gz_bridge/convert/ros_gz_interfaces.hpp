@@ -28,153 +28,153 @@
 #include <ignition/msgs/world_control.pb.h>
 
 // ROS 2 messages
-#include <ros_ign_interfaces/msg/entity.hpp>
-#include <ros_ign_interfaces/msg/joint_wrench.hpp>
-#include <ros_ign_interfaces/msg/contact.hpp>
-#include <ros_ign_interfaces/msg/contacts.hpp>
-#include <ros_ign_interfaces/msg/gui_camera.hpp>
-#include <ros_ign_interfaces/msg/light.hpp>
-#include <ros_ign_interfaces/msg/string_vec.hpp>
-#include <ros_ign_interfaces/msg/track_visual.hpp>
-#include <ros_ign_interfaces/msg/video_record.hpp>
-#include <ros_ign_interfaces/msg/world_control.hpp>
+#include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/msg/joint_wrench.hpp>
+#include <ros_gz_interfaces/msg/contact.hpp>
+#include <ros_gz_interfaces/msg/contacts.hpp>
+#include <ros_gz_interfaces/msg/gui_camera.hpp>
+#include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/string_vec.hpp>
+#include <ros_gz_interfaces/msg/track_visual.hpp>
+#include <ros_gz_interfaces/msg/video_record.hpp>
+#include <ros_gz_interfaces/msg/world_control.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::JointWrench & ros_msg,
+  const ros_gz_interfaces::msg::JointWrench & ros_msg,
   ignition::msgs::JointWrench & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::JointWrench & ign_msg,
-  ros_ign_interfaces::msg::JointWrench & ros_msg);
+  ros_gz_interfaces::msg::JointWrench & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Entity & ros_msg,
+  const ros_gz_interfaces::msg::Entity & ros_msg,
   ignition::msgs::Entity & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::Entity & ign_msg,
-  ros_ign_interfaces::msg::Entity & ros_msg);
+  ros_gz_interfaces::msg::Entity & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Contact & ros_msg,
+  const ros_gz_interfaces::msg::Contact & ros_msg,
   ignition::msgs::Contact & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::Contact & ign_msg,
-  ros_ign_interfaces::msg::Contact & ros_msg);
+  ros_gz_interfaces::msg::Contact & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Contacts & ros_msg,
+  const ros_gz_interfaces::msg::Contacts & ros_msg,
   ignition::msgs::Contacts & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::Contacts & ign_msg,
-  ros_ign_interfaces::msg::Contacts & ros_msg);
+  ros_gz_interfaces::msg::Contacts & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::GuiCamera & ros_msg,
+  const ros_gz_interfaces::msg::GuiCamera & ros_msg,
   ignition::msgs::GUICamera & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::GUICamera & ign_msg,
-  ros_ign_interfaces::msg::GuiCamera & ros_msg);
+  ros_gz_interfaces::msg::GuiCamera & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::Light & ros_msg,
+  const ros_gz_interfaces::msg::Light & ros_msg,
   ignition::msgs::Light & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::Light & ign_msg,
-  ros_ign_interfaces::msg::Light & ros_msg);
+  ros_gz_interfaces::msg::Light & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::StringVec & ros_msg,
+  const ros_gz_interfaces::msg::StringVec & ros_msg,
   ignition::msgs::StringMsg_V & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::StringMsg_V & ign_msg,
-  ros_ign_interfaces::msg::StringVec & ros_msg);
+  ros_gz_interfaces::msg::StringVec & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::TrackVisual & ros_msg,
+  const ros_gz_interfaces::msg::TrackVisual & ros_msg,
   ignition::msgs::TrackVisual & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::TrackVisual & ign_msg,
-  ros_ign_interfaces::msg::TrackVisual & ros_msg);
+  ros_gz_interfaces::msg::TrackVisual & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::VideoRecord & ros_msg,
+  const ros_gz_interfaces::msg::VideoRecord & ros_msg,
   ignition::msgs::VideoRecord & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::VideoRecord & ign_msg,
-  ros_ign_interfaces::msg::VideoRecord & ros_msg);
+  ros_gz_interfaces::msg::VideoRecord & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::WorldControl & ros_msg,
+  const ros_gz_interfaces::msg::WorldControl & ros_msg,
   ignition::msgs::WorldControl & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::WorldControl & ign_msg,
-  ros_ign_interfaces::msg::WorldControl & ros_msg);
+  ros_gz_interfaces::msg::WorldControl & ros_msg);
 
 template<>
 void
 convert_ros_to_ign(
-  const ros_ign_interfaces::msg::WorldReset & ros_msg,
+  const ros_gz_interfaces::msg::WorldReset & ros_msg,
   ignition::msgs::WorldReset & ign_msg);
 
 template<>
 void
 convert_ign_to_ros(
   const ignition::msgs::WorldReset & ign_msg,
-  ros_ign_interfaces::msg::WorldReset & ros_msg);
-}  // namespace ros_ign_bridge
+  ros_gz_interfaces::msg::WorldReset & ros_msg);
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__ROS_IGN_INTERFACES_HPP_

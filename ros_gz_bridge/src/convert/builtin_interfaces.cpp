@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ros_ign_bridge/convert/builtin_interfaces.hpp"
+#include "ros_gz_bridge/convert/builtin_interfaces.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 template<>
 void
@@ -35,4 +35,4 @@ convert_ign_to_ros(
   ros_msg.sec = ign_msg.sec();
   ros_msg.nanosec = ign_msg.nsec();
 }
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

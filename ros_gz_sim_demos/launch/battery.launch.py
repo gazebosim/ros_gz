@@ -28,7 +28,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # RQt
     rqt = Node(
@@ -42,7 +42,7 @@ def generate_launch_description():
 
     ign_gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'ign_gazebo.launch.py')),
         launch_arguments={
             'ign_args': '-r -z 1000000 linear_battery_demo.sdf'
         }.items(),
@@ -50,7 +50,7 @@ def generate_launch_description():
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             '/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',

@@ -1,4 +1,4 @@
-# Release a new version of ros_ign
+# Release a new version of ros_gz
 
 Different branches of this repository support different combinations of
 ROS 1, ROS 2 and Gazebo. Refer to the [README](README.md) to see what
@@ -35,7 +35,7 @@ repository.
 
 ## Versioning
 
-All `ros_ign` packages are under fast development and haven't reached version
+All `ros_gz` packages are under fast development and haven't reached version
 1.0 yet. The team will make an effort to keep changes backwards compatible
 within a ROS distribution, but API / ABI / behaviour may be broken if necessary.
 
@@ -98,7 +98,7 @@ Foxy | Edifice | 0.223.X
 
 1. Bloom it into a custom repository
     ```
-    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_ign
+    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_gz
     ```
 
     Will fail fedora: ignore and continue:
@@ -110,5 +110,5 @@ Foxy | Edifice | 0.223.X
 1. Use [release-tools](https://bitbucket.org/osrf/release-tools)'s script to launch jenkins jobs:
     ```
     cd release-tools/bloom
-    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/gazebosim/ros_gz-release <ros_distro> <token> --gz-version <version_name>
+    ./ros_gz_bridge-release.py.bash 0.8.0 https://github.com/gazebosim/ros_gz-release <ros_distro> <token> --gz-version <version_name>
     ```

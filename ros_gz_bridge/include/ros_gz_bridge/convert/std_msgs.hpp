@@ -37,9 +37,9 @@
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/string.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -150,6 +150,6 @@ convert_ign_to_ros(
   const ignition::msgs::StringMsg & ign_msg,
   std_msgs::msg::String & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__STD_MSGS_HPP_

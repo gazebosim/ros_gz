@@ -46,7 +46,7 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 int main(int _argc, char ** _argv)
 {
   rclcpp::init(_argc, _argv);
-  auto ros2_node = rclcpp::Node::make_shared("ros_ign_gazebo");
+  auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(

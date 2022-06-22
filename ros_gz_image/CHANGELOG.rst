@@ -52,8 +52,8 @@ Changelog for package ros1_ign_image
 * Add CI for Eloquent (`#86 <https://github.com/gazebosim/ros_gz/issues/86>`_)
 * Avoid the use of --ros-args arguments outside ros (`#84 <https://github.com/gazebosim/ros_gz/issues/84>`_)
 * [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/gazebosim/ros_gz/issues/58>`_)
-  Port ros_ign_image to ROS2
-  Port ros_ign_gazebo_demos to ROS2
+  Port ros_gz_image to ROS2
+  Port ros_gz_sim_demos to ROS2
 * Enable ROS2 CI for Dashing branch (`#43 <https://github.com/gazebosim/ros_gz/issues/43>`_)
 * Make all API and comments ROS-version agnostic
 * Rename packages and fix compilation + tests

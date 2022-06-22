@@ -1,5 +1,5 @@
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Changelog for package ros_ign
+Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 0.244.3 (2022-05-19)
@@ -29,7 +29,7 @@ Changelog for package ros_ign
 
 0.221.0 (2020-07-23)
 --------------------
-* Added ros_ign_gazebo to ros_ign package.xml (`#81 <https://github.com/gazebosim/ros_gz/issues/81>`_)
+* Added ros_gz_sim to ros_gz package.xml (`#81 <https://github.com/gazebosim/ros_gz/issues/81>`_)
 * Update Dashing docs (`#62 <https://github.com/gazebosim/ros_gz/issues/62>`_)
 * Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/gazebosim/ros_gz/issues/58>`_)
 * Enable ROS2 CI for Dashing branch (`#43 <https://github.com/gazebosim/ros_gz/issues/43>`_)
@@ -49,8 +49,8 @@ Changelog for package ros_ign
 0.6.1 (2019-08-04)
 ------------------
 * Merge pull request `#35 <https://github.com/osrf/ros1_ign_bridge/issues/35>`_ from osrf/image_meta
-  Add ros_ign_image to metapackage
-* Add ros_ign_image to metapackage
+  Add ros_gz_image to metapackage
+* Add ros_gz_image to metapackage
   Signed-off-by: chapulina <louise@openrobotics.org>
   typo
   Signed-off-by: chapulina <louise@openrobotics.org>

@@ -62,7 +62,7 @@ target_link_libraries(${executable}
 
 ament_target_dependencies(${executable}
   "image_transport"
-  "ros_ign_bridge"
+  "ros_gz_bridge"
   "rclcpp"
   "sensor_msgs"
 )

@@ -40,7 +40,7 @@ int main(int argc, char * argv[])
   std::string ign_type_name = "ignition.msgs.StringMsg";
   size_t queue_size = 10;
 
-  auto handles = ros_ign_bridge::create_bidirectional_bridge(
+  auto handles = ros_gz_bridge::create_bidirectional_bridge(
     ros_node, ign_node, ros_type_name, ign_type_name, topic_name, queue_size);
 
   rclcpp::spin(ros_node);

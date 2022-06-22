@@ -50,7 +50,7 @@ Changelog for package ros1_ign_gazebo_demos
   * Do not normalize depth image in RViz2
 * Edifice support (`#140 <https://github.com/gazebosim/ros_gz/issues/140>`_)
 * Add topic flag to create robot  (`#128 <https://github.com/gazebosim/ros_gz/issues/128>`_)
-  Now it is possible to run ros_ign_gazebo create specifying a topic as
+  Now it is possible to run ros_gz_sim create specifying a topic as
   source of the robot description
   Add a launch file starting a ignition gazebo world and spawn a sphere in it.
   Additionally a rviz2 interface is loaded to show that also Rviz can load
@@ -64,13 +64,13 @@ Changelog for package ros1_ign_gazebo_demos
 
 0.221.0 (2020-07-23)
 --------------------
-* Updated launch file to use ros_ign_gazebo (`#82 <https://github.com/gazebosim/ros_gz/issues/82>`_)
+* Updated launch file to use ros_gz_sim (`#82 <https://github.com/gazebosim/ros_gz/issues/82>`_)
   Co-authored-by: Louise Poubel <louise@openrobotics.org>
-* Use new ros_ign_gazebo package on ROS 2 demos (`#85 <https://github.com/gazebosim/ros_gz/issues/85>`_)
+* Use new ros_gz_sim package on ROS 2 demos (`#85 <https://github.com/gazebosim/ros_gz/issues/85>`_)
   Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
 * [WIP] Port ign_ros_gazebo_demos to ROS2 (`#58 <https://github.com/gazebosim/ros_gz/issues/58>`_)
-  Port ros_ign_image to ROS2
-  Port ros_ign_gazebo_demos to ROS2
+  Port ros_gz_image to ROS2
+  Port ros_gz_sim_demos to ROS2
 * Enable ROS2 CI for Dashing branch (`#43 <https://github.com/gazebosim/ros_gz/issues/43>`_)
 * Make all API and comments ROS-version agnostic
 * Rename packages and fix compilation + tests

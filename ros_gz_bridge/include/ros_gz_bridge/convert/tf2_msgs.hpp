@@ -21,9 +21,9 @@
 // ROS 2 messages
 #include <tf2_msgs/msg/tf_message.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
@@ -38,6 +38,6 @@ convert_ign_to_ros(
   const ignition::msgs::Pose_V & ign_msg,
   tf2_msgs::msg::TFMessage & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
