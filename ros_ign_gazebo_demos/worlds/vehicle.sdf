@@ -1,0 +1,54 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="demo">
+    <physics name="1ms" type="ignored">
+      <real_time_factor>0</real_time_factor>
+      <max_step_size>0.001</max_step_size>
+    </physics>
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="vehicle">
+      <self_collide>true</self_collide>
+      <pose>0 0 0 0 0 0</pose>
+      <include merge="true">
+        <uri>package://ros_ign_gazebo_demos/models/vehicle</uri>
+      </include>
+
+    <plugin
+        filename="ignition-gazebo-joint-state-publisher-system"
+        name="ignition::gazebo::systems::JointStatePublisher">
+      </plugin>
+
+      <plugin
+        filename="ignition-gazebo-pose-publisher-system"
+        name="ignition::gazebo::systems::PosePublisher">
+        <publish_link_pose>true</publish_link_pose>
+        <use_pose_vector_msg>true</use_pose_vector_msg>
+        <static_publisher>true</static_publisher>
+        <static_update_frequency>1</static_update_frequency>
+      </plugin>
+
+      <plugin
+        filename="ignition-gazebo-odometry-publisher-system"
+        name="ignition::gazebo::systems::OdometryPublisher">
+        <dimensions>3</dimensions>
+        <odom_frame>vehicle/odom</odom_frame>
+        <robot_base_frame>vehicle</robot_base_frame>
+      </plugin>
+
+    </model>
+  </world>
+</sdf>

@@ -27,4 +27,18 @@ install(
   DESTINATION share/${PROJECT_NAME}/models
 )
 
+install(
+  DIRECTORY
+    worlds/
+  DESTINATION share/${PROJECT_NAME}/worlds
+)
+
+install(
+  DIRECTORY
+    ${CMAKE_CURRENT_SOURCE_DIR}/models/vehicle
+  DESTINATION share/${PROJECT_NAME}/models/
+)
+
+ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.dsv.in")
+
 ament_package()
