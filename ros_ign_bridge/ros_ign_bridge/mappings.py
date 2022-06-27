@@ -58,15 +58,16 @@ MAPPINGS = {
         Mapping('Clock', 'Clock'),
     ],
     'sensor_msgs': [
+        Mapping('BatteryState', 'BatteryState'),
+        Mapping('CameraInfo', 'CameraInfo'),
         Mapping('FluidPressure', 'FluidPressure'),
         Mapping('Image', 'Image'),
-        Mapping('CameraInfo', 'CameraInfo'),
         Mapping('Imu', 'IMU'),
         Mapping('JointState', 'Model'),
         Mapping('LaserScan', 'LaserScan'),
         Mapping('MagneticField', 'Magnetometer'),
+        Mapping('NavSatFix', 'NavSat'),
         Mapping('PointCloud2', 'PointCloudPacked'),
-        Mapping('BatteryState', 'BatteryState'),
     ],
     'std_msgs': [
         Mapping('Bool', 'Boolean'),

@@ -46,6 +46,7 @@
 #include <ignition/msgs/light.pb.h>
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
+#include <ignition/msgs/navsat.pb.h>
 #include <ignition/msgs/odometry.pb.h>
 #include <ignition/msgs/param.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
@@ -324,6 +325,14 @@ void createTestMsg(ignition::msgs::Magnetometer & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Magnetometer> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::NavSat & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::NavSat> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
