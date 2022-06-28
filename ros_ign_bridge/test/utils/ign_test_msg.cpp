@@ -831,6 +831,35 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Magnetometer> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->field_tesla()));
 }
 
+void createTestMsg(ignition::msgs::NavSat & _msg)
+{
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.set_frame_id("frame_id_value");
+  _msg.set_latitude_deg(0.00);
+  _msg.set_longitude_deg(0.00);
+  _msg.set_altitude(0.00);
+  _msg.set_velocity_east(0.00);
+  _msg.set_velocity_north(0.00);
+  _msg.set_velocity_up(0.00);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::NavSat> & _msg)
+{
+  ignition::msgs::NavSat expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  EXPECT_FLOAT_EQ(expected_msg.latitude_deg(), _msg->latitude_deg());
+  EXPECT_FLOAT_EQ(expected_msg.longitude_deg(), _msg->longitude_deg());
+  EXPECT_FLOAT_EQ(expected_msg.altitude(), _msg->altitude());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_east(), _msg->velocity_east());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_north(), _msg->velocity_north());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_up(), _msg->velocity_up());
+}
+
 void createTestMsg(ignition::msgs::Actuators & _msg)
 {
   ignition::msgs::Header header_msg;
