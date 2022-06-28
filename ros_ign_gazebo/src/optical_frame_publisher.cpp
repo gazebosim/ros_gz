@@ -18,7 +18,6 @@
 #include "ros_ign_gazebo/optical_frame_publisher.hpp"
 
 #include <tf2/LinearMath/Quaternion.h>
-#include <tf2_ros/transform_broadcaster.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 
 #include <memory>
@@ -49,12 +48,16 @@ struct OpticalFramePublisher::Impl
   void CameraInfoConnect();
 
   /// \brief Image callback
+  /// \param[in] msg incoming image from from upstream
   void UpdateImageFrame(const sensor_msgs::msg::Image & msg);
 
   /// \brief Camera info callback
+  /// \param[in] msg incoming camera information from upstream
   void UpdateCameraInfoFrame(const sensor_msgs::msg::CameraInfo & msg);
 
   /// \brief Publish new TF between frame and optical_frame
+  /// \param[in] frame parent frame (camera frame)
+  /// \param[in] child_frame child frame (camera optical frame)
   void PublishTF(const std::string & frame, const std::string & child_frame);
 
   /// \brief Interface for creating publications/subscriptions
@@ -64,7 +67,7 @@ struct OpticalFramePublisher::Impl
   rclcpp::TimerBase::SharedPtr timer;
 
   /// \brief Static transform broadcaster that broadcasts the optical frame id
-  std::unique_ptr<tf2_ros::StaticTransformBroadcaster> tfBroadcasterStatic;
+  std::unique_ptr<tf2_ros::StaticTransformBroadcaster> tf_broadcaster_static;
 
   /// \brief Publisher for the image optical frame topic
   rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr image_pub;
@@ -99,8 +102,8 @@ void OpticalFramePublisher::Impl::CheckSubscribers()
 void OpticalFramePublisher::Impl::ImageConnect()
 {
   // Skip connecting if publisher is already created (non-nullptr)
-  if (image_pub) {
     return;
+  if (image_sub) {
   }
 
   image_sub = rclcpp::create_subscription < sensor_msgs::msg::Image > (
@@ -112,7 +115,7 @@ void OpticalFramePublisher::Impl::ImageConnect()
 void OpticalFramePublisher::Impl::CameraInfoConnect()
 {
   // Skip connecting if publisher is already created (non-nullptr)
-  if (info_pub) {
+  if (info_sub) {
     return;
   }
 
@@ -169,7 +172,7 @@ void OpticalFramePublisher::Impl::PublishTF(
   tfStamped.transform.rotation.y = q.y();
   tfStamped.transform.rotation.z = q.z();
   tfStamped.transform.rotation.w = q.w();
-  tfBroadcasterStatic->sendTransform(tfStamped);
+  tf_broadcaster_static->sendTransform(tfStamped);
 }
 
 OpticalFramePublisher::OpticalFramePublisher(const rclcpp::NodeOptions & options)
@@ -178,7 +181,7 @@ OpticalFramePublisher::OpticalFramePublisher(const rclcpp::NodeOptions & options
 {
   dataPtr->node_topics = this->get_node_topics_interface();
 
-  dataPtr->tfBroadcasterStatic =
+  dataPtr->tf_broadcaster_static =
     std::make_unique < tf2_ros::StaticTransformBroadcaster > (*this);
 
   dataPtr->publish_camera_info = this->declare_parameter("publish_camera_info", true);

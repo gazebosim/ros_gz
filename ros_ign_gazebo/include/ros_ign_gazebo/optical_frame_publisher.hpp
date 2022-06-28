@@ -30,6 +30,7 @@ namespace ros_ign_gazebo
 class OpticalFramePublisher : public rclcpp::Node
 {
 public:
+    /// \param[in] options additional controls for creating the ROS node
   /// \brief Constructor
   explicit OpticalFramePublisher(const rclcpp::NodeOptions & options);
 
