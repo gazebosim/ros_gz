@@ -200,6 +200,7 @@ various parameters.
 The configuration file must be a YAML array of maps.
 An example configuration for 5 bridges is below, showing the various ways that a
 bridge may be specified:
+
 ```yaml
  # Set just topic name, applies to both
 - topic_name: "chatter"
@@ -227,9 +228,12 @@ bridge may be specified:
   ign_topic_name: "ign_chatter"
   ros_type_name: "std_msgs/msg/String"
   ign_type_name: "ignition.msgs.StringMsg"
-  subscriber_queue: 5
-  publisher_queue: 6
-  lazy: true
+  subscriber_queue: 5       # Default 10
+  publisher_queue: 6        # Default 10
+  lazy: true                # Default "false"
+  direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
+                            # "IGN_TO_ROS" - Bridge Ignition topic to ROS
+                            # "ROS_TO_IGN" - Bridge ROS topic to Ignition
 ```
 
 To run the bridge node with the above configuration:
