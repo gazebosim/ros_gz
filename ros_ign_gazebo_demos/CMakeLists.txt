@@ -29,14 +29,14 @@ install(
 
 install(
   DIRECTORY
-    worlds/
-  DESTINATION share/${PROJECT_NAME}/worlds
+    ${CMAKE_CURRENT_SOURCE_DIR}/models/vehicle
+  DESTINATION share/${PROJECT_NAME}/models/
 )
 
 install(
   DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/models/vehicle
-  DESTINATION share/${PROJECT_NAME}/models/
+    worlds/
+  DESTINATION share/${PROJECT_NAME}/worlds
 )
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.dsv.in")
