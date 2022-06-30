@@ -19,14 +19,15 @@
 
 #include "ros_subscriber.hpp"
 
+static std::shared_ptr<rclcpp::Node> kTestNode;
+
 /////////////////////////////////////////////////
-std::shared_ptr<rclcpp::Node> ros_subscriber::TestNode()
+rclcpp::Node * ros_subscriber::TestNode()
 {
-  static std::shared_ptr<rclcpp::Node> kTestNode;
   if (kTestNode == nullptr) {
     kTestNode = rclcpp::Node::make_shared("ros_subscriber");
   }
-  return kTestNode;
+  return kTestNode.get();
 }
 
 /////////////////////////////////////////////////
@@ -34,5 +35,8 @@ int main(int argc, char ** argv)
 {
   ::testing::InitGoogleTest(&argc, argv);
   rclcpp::init(argc, argv);
-  return RUN_ALL_TESTS();
+
+  auto ret = RUN_ALL_TESTS();
+  kTestNode.reset();
+  return ret;
 }

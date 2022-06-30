@@ -21,12 +21,12 @@ int main(int argc, char ** argv)
 {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("ros_string_publisher");
-  rclcpp::Rate loop_rate(1);
+  rclcpp::Rate loop_rate(100);
 
 @[for m in mappings]@
   // @(m.ros2_string()).
-  auto @(m.unique())_pub = 
-    node->create_publisher<@(m.ros2_type())>("@(m.unique())", 1000);
+  auto @(m.unique())_pub =
+    node->create_publisher<@(m.ros2_type())>("@(m.unique())", 1);
   @(m.ros2_type()) @(m.unique())_msg;
   ros_ign_bridge::testing::createTestMsg(@(m.unique())_msg);
 

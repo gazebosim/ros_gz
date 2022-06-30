@@ -54,19 +54,19 @@ int main(int /*argc*/, char **/*argv*/)
 
 @[for m in mappings]@
   // @(m.ign_string()).
-  auto @(m.unique())_pub = 
+  auto @(m.unique())_pub =
     node.Advertise<@(m.ign_type())>("@(m.unique())");
   @(m.ign_type()) @(m.unique())_msg;
   ros_ign_bridge::testing::createTestMsg(@(m.unique())_msg);
 
 @[end for]@
 
-  // Publish messages at 1Hz.
+  // Publish messages at 100 Hz.
   while (!g_terminatePub) {
 @[for m in mappings]@
     @(m.unique())_pub.Publish(@(m.unique())_msg);
 @[end for]@
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
   return 0;

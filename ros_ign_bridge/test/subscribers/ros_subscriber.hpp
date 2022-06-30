@@ -27,7 +27,7 @@ namespace ros_subscriber
 {
 /////////////////////////////////////////////////
 /// \brief Retrieve a common node used for testing
-std::shared_ptr<rclcpp::Node> TestNode();
+rclcpp::Node * TestNode();
 
 /////////////////////////////////////////////////
 /// \brief A class for testing ROS topic subscription.
