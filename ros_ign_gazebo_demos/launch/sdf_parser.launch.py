@@ -27,7 +27,7 @@ def generate_launch_description():
 
     pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
     pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
-    
+
     sdf_file = os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'vehicle', 'model.sdf')
 
     with open(sdf_file, 'r') as infp:
@@ -44,10 +44,11 @@ def generate_launch_description():
         ),
         launch_arguments={
             'ign_args': PathJoinSubstitution([
-            pkg_ros_ign_gazebo_demos,
-            'worlds',
-            'vehicle.sdf'
-        ])}.items(),
+                pkg_ros_ign_gazebo_demos,
+                'worlds',
+                'vehicle.sdf'
+            ]
+        )}.items(),
     )
 
     # Bridge to forward tf and joint states to ros2

@@ -26,7 +26,7 @@
             <specular>0.0 0.0 1.0 1</specular>
           </material>
         </visual>
-        <collision name='collision'>
+        <collision name='collision_chassis'>
           <geometry>
             <box>
               <size>2.01142 1 0.568726</size>
@@ -60,7 +60,7 @@
             <specular>0.2 0.2 0.2 1</specular>
           </material>
         </visual>
-        <collision name='collision'>
+        <collision name='collision_left_wheel'>
           <geometry>
             <sphere>
               <radius>0.3</radius>
@@ -94,7 +94,7 @@
             <specular>0.2 0.2 0.2 1</specular>
           </material>
         </visual>
-        <collision name='collision'>
+        <collision name='collision_right_wheel'>
           <geometry>
             <sphere>
               <radius>0.3</radius>
@@ -128,7 +128,7 @@
             <specular>0.2 0.2 0.2 1</specular>
           </material>
         </visual>
-        <collision name='collision'>
+        <collision name='collision_caster'>
           <geometry>
             <sphere>
               <radius>0.2</radius>
