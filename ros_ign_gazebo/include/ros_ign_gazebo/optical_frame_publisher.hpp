@@ -18,9 +18,9 @@
 #ifndef ROS_IGN_GAZEBO__OPTICAL_FRAME_PUBLISHER_HPP_
 #define ROS_IGN_GAZEBO__OPTICAL_FRAME_PUBLISHER_HPP_
 
-#include <memory>
-
 #include <rclcpp/rclcpp.hpp>
+
+#include <memory>
 
 namespace ros_ign_gazebo
 {
@@ -30,7 +30,7 @@ namespace ros_ign_gazebo
 class OpticalFramePublisher : public rclcpp::Node
 {
 public:
-    /// \param[in] options additional controls for creating the ROS node
+  /// \param[in] options additional controls for creating the ROS node
   /// \brief Constructor
   explicit OpticalFramePublisher(const rclcpp::NodeOptions & options);
 
@@ -42,6 +42,6 @@ private:
   std::unique_ptr<Impl> dataPtr;
 };
 
-}  // namespace ros_ign_utils
+}  // namespace ros_ign_gazebo
 
-#endif  //  ROS_IGN_UTILS__OPTICAL_FRAME_PUBLISHER_HPP_
+#endif  // ROS_IGN_GAZEBO__OPTICAL_FRAME_PUBLISHER_HPP_

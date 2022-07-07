@@ -67,6 +67,7 @@ target_link_libraries(
   ${PROJECT_NAME}
   ${geometry_msgs_TARGETS}
   rclcpp::rclcpp
+  rclcpp_components::component
   ${sensor_msgs_TARGETS}
   tf2::tf2
   tf2_ros::tf2_ros

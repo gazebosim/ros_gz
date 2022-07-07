@@ -20,15 +20,16 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 
-#include <memory>
-#include <string>
-
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <sensor_msgs/msg/image.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
 
 #include <rclcpp/rclcpp.hpp>
+
 #include <rclcpp_components/register_node_macro.hpp>
+#include <memory>
+#include <string>
+
 
 using std::placeholders::_1;
 using namespace std::chrono_literals;
@@ -102,11 +103,11 @@ void OpticalFramePublisher::Impl::CheckSubscribers()
 void OpticalFramePublisher::Impl::ImageConnect()
 {
   // Skip connecting if publisher is already created (non-nullptr)
-    return;
   if (image_sub) {
+    return;
   }
 
-  image_sub = rclcpp::create_subscription < sensor_msgs::msg::Image > (
+  image_sub = rclcpp::create_subscription<sensor_msgs::msg::Image>(
     node_topics,
     "input/image", 10,
     std::bind(&OpticalFramePublisher::Impl::UpdateImageFrame, this, _1));
@@ -119,7 +120,7 @@ void OpticalFramePublisher::Impl::CameraInfoConnect()
     return;
   }
 
-  info_sub = rclcpp::create_subscription < sensor_msgs::msg::CameraInfo > (
+  info_sub = rclcpp::create_subscription<sensor_msgs::msg::CameraInfo>(
     node_topics,
     "input/camera_info", 10,
     std::bind(&OpticalFramePublisher::Impl::UpdateCameraInfoFrame, this, _1));
@@ -177,20 +178,20 @@ void OpticalFramePublisher::Impl::PublishTF(
 
 OpticalFramePublisher::OpticalFramePublisher(const rclcpp::NodeOptions & options)
 : Node("optical_frame_publisher", options),
-  dataPtr(std::make_unique < Impl > ())
+  dataPtr(std::make_unique<Impl>())
 {
   dataPtr->node_topics = this->get_node_topics_interface();
 
   dataPtr->tf_broadcaster_static =
-    std::make_unique < tf2_ros::StaticTransformBroadcaster > (*this);
+    std::make_unique<tf2_ros::StaticTransformBroadcaster>(*this);
 
   dataPtr->publish_camera_info = this->declare_parameter("publish_camera_info", true);
 
-  dataPtr->image_pub = this->create_publisher < sensor_msgs::msg::Image > (
+  dataPtr->image_pub = this->create_publisher<sensor_msgs::msg::Image>(
     "output/image", 10);
 
   if (dataPtr->publish_camera_info) {
-    dataPtr->info_pub = this->create_publisher < sensor_msgs::msg::CameraInfo > (
+    dataPtr->info_pub = this->create_publisher<sensor_msgs::msg::CameraInfo>(
       "output/camera_info", 10);
   }
 
