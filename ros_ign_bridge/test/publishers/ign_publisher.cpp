@@ -275,7 +275,7 @@ int main(int /*argc*/, char **/*argv*/)
   ignition::msgs::VideoRecord video_record_msg;
   ros_ign_bridge::testing::createTestMsg(video_record_msg);
 
-  // Publish messages at 1Hz.
+  // Publish messages at 100Hz.
   while (!g_terminatePub) {
     color_pub.Publish(color_msg);
     light_pub.Publish(light_msg);
@@ -322,7 +322,7 @@ int main(int /*argc*/, char **/*argv*/)
     track_visual_pub.Publish(track_visual_msg);
     video_record_pub.Publish(video_record_msg);
 
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    std::this_thread::sleep_for(std::chrono::milliseconds(10));
   }
 
   return 0;
