@@ -59,16 +59,16 @@ void waitUntilBoolVar(
 ///   waitUntilBoolVar(myVar, 1ms, 10);
 template<class Rep, class Period>
 void waitUntilBoolVarAndSpin(
-  std::shared_ptr<rclcpp::Node> node,
+  rclcpp::Node * node,
   bool & _boolVar,
   const std::chrono::duration<Rep, Period> & _sleepEach,
   const int _retries)
 {
   int i = 0;
-  while (!_boolVar && i < _retries) {
+  while (!_boolVar && i < _retries && rclcpp::ok()) {
     ++i;
     std::this_thread::sleep_for(_sleepEach);
-    rclcpp::spin_some(node);
+    rclcpp::spin_some(node->get_node_base_interface());
   }
 }
 
