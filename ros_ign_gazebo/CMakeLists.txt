@@ -28,20 +28,24 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-gazebo5 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo5_VERSION_MAJOR})
 
+  set(GZ_TARGET_PREFIX ignition)
+
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
 elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
-  find_package(ignition-math7 REQUIRED)
-  set(IGN_MATH_VER ${ignition-math7_VERSION_MAJOR})
+  find_package(gz-math7 REQUIRED)
+  set(IGN_MATH_VER ${gz-math7_VERSION_MAJOR})
 
-  find_package(ignition-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+  find_package(gz-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
-  find_package(ignition-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+  find_package(gz-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
-  find_package(ignition-gazebo7 REQUIRED)
-  set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
+  find_package(gz-sim7 REQUIRED)
+  set(IGN_GAZEBO_VER ${gz-sim7_VERSION_MAJOR})
+
+  set(GZ_TARGET_PREFIX gz)
 
   message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
@@ -58,6 +62,8 @@ else()
   find_package(ignition-gazebo6 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo6_VERSION_MAJOR})
 
+  set(GZ_TARGET_PREFIX ignition)
+
   message(STATUS "Compiling against Ignition Fortress")
 endif()
 
@@ -73,9 +79,9 @@ ament_target_dependencies(create
 )
 target_link_libraries(create
   gflags
-  ignition-math${IGN_MATH_VER}::core
-  ignition-msgs${IGN_MSGS_VER}::core
-  ignition-transport${IGN_TRANSPORT_VER}::core
+  ${GZ_TARGET_PREFIX}-math${IGN_MATH_VER}::core
+  ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
+  ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
 )
 ament_target_dependencies(create std_msgs)
 
