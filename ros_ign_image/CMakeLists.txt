@@ -24,14 +24,18 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
   find_package(ignition-msgs7 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
+  set(GZ_TARGET_PREFIX ignition)
+
   message(STATUS "Compiling against Ignition Edifice")
 # Fortress
 elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
-  find_package(ignition-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+  find_package(gz-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
-  find_package(ignition-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+  find_package(gz-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+
+  set(GZ_TARGET_PREFIX gz)
 
   message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
@@ -41,6 +45,8 @@ else()
 
   find_package(ignition-msgs8 REQUIRED)
   set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+
+  set(GZ_TARGET_PREFIX ignition)
 
   message(STATUS "Compiling against Ignition Fortress")
 endif()
@@ -56,8 +62,8 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ignition-msgs${IGN_MSGS_VER}::core
-  ignition-transport${IGN_TRANSPORT_VER}::core
+  ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
+  ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
 )
 
 ament_target_dependencies(${executable}
@@ -91,8 +97,8 @@ if(BUILD_TESTING)
   #   )
   #   target_link_libraries(${test_publisher}_image
   #     ${catkin_LIBRARIES}
-  #     ignition-msgs${IGN_MSGS_VER}::core
-  #     ignition-transport${IGN_TRANSPORT_VER}::core
+  #     ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
+  #     ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
   #     gtest
   #     gtest_main
   #   )
@@ -104,8 +110,8 @@ if(BUILD_TESTING)
   #     test/subscribers/${test_subscriber}.cpp)
   #   target_link_libraries(test_${test_subscriber}_image
   #     ${catkin_LIBRARIES}
-  #     ignition-msgs${IGN_MSGS_VER}::core
-  #     ignition-transport${IGN_TRANSPORT_VER}::core
+  #     ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
+  #     ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
   #   )
   # endforeach(test_subscriber)
 endif()
