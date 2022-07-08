@@ -16,7 +16,7 @@ if [ "$IGNITION_VERSION" == "garden" ]; then
   echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list
   wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
-  IGN_DEPS="libignition-gazebo7-dev"
+  IGN_DEPS="libgz-sim7-dev"
 fi
 
 # Fortress comes through rosdep for Focal and Jammy
