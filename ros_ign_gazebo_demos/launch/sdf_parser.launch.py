@@ -42,13 +42,11 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py'),
         ),
-        launch_arguments={
-            'ign_args': PathJoinSubstitution([
-                pkg_ros_ign_gazebo_demos,
-                'worlds',
-                'vehicle.sdf'
-            ]
-        )}.items(),
+        launch_arguments={'ign_args': PathJoinSubstitution([
+            pkg_ros_ign_gazebo_demos,
+            'worlds',
+            'vehicle.sdf'
+        ])}.items(),
     )
 
     # Bridge to forward tf and joint states to ros2
