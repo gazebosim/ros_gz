@@ -84,6 +84,9 @@ int main(int argc, char * argv[])
 
   std::vector<std::shared_ptr<Handler>> handlers;
 
+  // skip the process name in argument procesing
+  ++argv;
+  --argc;
   auto args = rclcpp::remove_ros_arguments(argc, argv);
 
   // Create publishers and subscribers
