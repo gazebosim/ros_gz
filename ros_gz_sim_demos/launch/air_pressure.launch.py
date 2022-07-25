@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch Ignition Gazebo with command line arguments."""
+"""Launch Gazebo Sim with command line arguments."""
 
 import os
 
@@ -30,21 +30,21 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=['/air_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure'],
         parameters=[{'qos_overrides./air_pressure.publisher.reliability': 'best_effort'}],
         output='screen'
     )
 
-    ign_gazebo = IncludeLaunchDescription(
+    gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
-        launch_arguments={'ign_args': '-r sensors.sdf'}.items(),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
+        launch_arguments={'gz_args': '-r sensors.sdf'}.items(),
     )
 
     # RQt
@@ -55,7 +55,7 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
     return LaunchDescription([
-        ign_gazebo,
+        gz_sim,
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         bridge,

@@ -1,5 +1,5 @@
 <package format="3">
-  <name>ros_ign_point_cloud</name>
+  <name>ros_gz_point_cloud</name>
   <version>0.7.0</version>
   <description>Point cloud utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>

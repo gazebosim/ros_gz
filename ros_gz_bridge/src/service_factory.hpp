@@ -24,7 +24,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include "ros_ign_bridge/convert_decl.hpp"
+#include "ros_gz_bridge/convert_decl.hpp"
 
 #include "service_factory_interface.hpp"
 

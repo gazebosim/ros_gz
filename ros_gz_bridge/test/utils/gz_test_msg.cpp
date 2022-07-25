@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "ign_test_msg.hpp"
+#include "gz_test_msg.hpp"
 
 #include <gtest/gtest.h>
 

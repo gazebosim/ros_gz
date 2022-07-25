@@ -1,2 +1,2 @@
 std_msgs/Header header                  # Time stamp
-ros_ign_interfaces/Contact[] contacts   # List of contacts
+ros_gz_interfaces/Contact[] contacts   # List of contacts

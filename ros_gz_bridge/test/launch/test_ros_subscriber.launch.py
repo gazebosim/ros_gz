@@ -24,19 +24,19 @@ import launch_testing
 def generate_test_description():
 
     publisher = Node(
-        package='ros_ign_bridge',
-        executable='test_ign_publisher',
+        package='ros_gz_bridge',
+        executable='test_gz_publisher',
         output='screen'
     )
     process_under_test = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='test_ros_subscriber',
         output='screen'
     )
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
           '/time@builtin_interfaces/msg/Time@ignition.msgs.Time',
@@ -63,15 +63,15 @@ def generate_test_description():
           '/twist_with_covariance@geometry_msgs/msg/TwistWithCovariance@'
           'ignition.msgs.TwistWithCovariance',
           '/wrench@geometry_msgs/msg/Wrench@ignition.msgs.Wrench',
-          '/joint_wrench@ros_ign_interfaces/msg/JointWrench@ignition.msgs.JointWrench',
-          '/entity@ros_ign_interfaces/msg/Entity@ignition.msgs.Entity',
-          '/contact@ros_ign_interfaces/msg/Contact@ignition.msgs.Contact',
-          '/contacts@ros_ign_interfaces/msg/Contacts@ignition.msgs.Contacts',
-          '/light@ros_ign_interfaces/msg/Light@ignition.msgs.Light',
-          '/gui_camera@ros_ign_interfaces/msg/GuiCamera@ignition.msgs.GUICamera',
-          '/stringmsg_v@ros_ign_interfaces/msg/StringVec@ignition.msgs.StringMsg_V',
-          '/track_visual@ros_ign_interfaces/msg/TrackVisual@ignition.msgs.TrackVisual',
-          '/video_record@ros_ign_interfaces/msg/VideoRecord@ignition.msgs.VideoRecord',
+          '/joint_wrench@ros_gz_interfaces/msg/JointWrench@ignition.msgs.JointWrench',
+          '/entity@ros_gz_interfaces/msg/Entity@ignition.msgs.Entity',
+          '/contact@ros_gz_interfaces/msg/Contact@ignition.msgs.Contact',
+          '/contacts@ros_gz_interfaces/msg/Contacts@ignition.msgs.Contacts',
+          '/light@ros_gz_interfaces/msg/Light@ignition.msgs.Light',
+          '/gui_camera@ros_gz_interfaces/msg/GuiCamera@ignition.msgs.GUICamera',
+          '/stringmsg_v@ros_gz_interfaces/msg/StringVec@ignition.msgs.StringMsg_V',
+          '/track_visual@ros_gz_interfaces/msg/TrackVisual@ignition.msgs.TrackVisual',
+          '/video_record@ros_gz_interfaces/msg/VideoRecord@ignition.msgs.VideoRecord',
           '/image@sensor_msgs/msg/Image@ignition.msgs.Image',
           '/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
           '/fluid_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure',

@@ -22,7 +22,7 @@
 #include <ignition/transport/Node.hh>
 
 #include "utils/test_utils.hpp"
-#include "utils/ign_test_msg.hpp"
+#include "utils/gz_test_msg.hpp"
 
 //////////////////////////////////////////////////
 /// \brief A class for testing Gazebo Transport topic subscription.
@@ -59,7 +59,7 @@ private:
 };
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Boolean)
+TEST(GzSubscriberTest, Boolean)
 {
   MyTestClass<ignition::msgs::Boolean> client("bool");
 
@@ -71,7 +71,7 @@ TEST(IgnSubscriberTest, Boolean)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Empty)
+TEST(GzSubscriberTest, Empty)
 {
   MyTestClass<ignition::msgs::Empty> client("empty");
 
@@ -83,7 +83,7 @@ TEST(IgnSubscriberTest, Empty)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Float)
+TEST(GzSubscriberTest, Float)
 {
   MyTestClass<ignition::msgs::Float> client("float");
 
@@ -95,7 +95,7 @@ TEST(IgnSubscriberTest, Float)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Double)
+TEST(GzSubscriberTest, Double)
 {
   MyTestClass<ignition::msgs::Double> client("double");
 
@@ -107,7 +107,7 @@ TEST(IgnSubscriberTest, Double)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, UInt32)
+TEST(GzSubscriberTest, UInt32)
 {
   MyTestClass<ignition::msgs::UInt32> client("uint32");
 
@@ -119,7 +119,7 @@ TEST(IgnSubscriberTest, UInt32)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Header)
+TEST(GzSubscriberTest, Header)
 {
   MyTestClass<ignition::msgs::Header> client("header");
 
@@ -131,7 +131,7 @@ TEST(IgnSubscriberTest, Header)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, String)
+TEST(GzSubscriberTest, String)
 {
   MyTestClass<ignition::msgs::StringMsg> client("string");
 
@@ -143,7 +143,7 @@ TEST(IgnSubscriberTest, String)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Quaternion)
+TEST(GzSubscriberTest, Quaternion)
 {
   MyTestClass<ignition::msgs::Quaternion> client("quaternion");
 
@@ -155,7 +155,7 @@ TEST(IgnSubscriberTest, Quaternion)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Vector3)
+TEST(GzSubscriberTest, Vector3)
 {
   MyTestClass<ignition::msgs::Vector3d> client("vector3");
 
@@ -167,7 +167,7 @@ TEST(IgnSubscriberTest, Vector3)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Clock)
+TEST(GzSubscriberTest, Clock)
 {
   MyTestClass<ignition::msgs::Clock> client("clock");
 
@@ -179,7 +179,7 @@ TEST(IgnSubscriberTest, Clock)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Point)
+TEST(GzSubscriberTest, Point)
 {
   MyTestClass<ignition::msgs::Vector3d> client("point");
 
@@ -191,7 +191,7 @@ TEST(IgnSubscriberTest, Point)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Pose)
+TEST(GzSubscriberTest, Pose)
 {
   MyTestClass<ignition::msgs::Pose> client("pose");
 
@@ -203,7 +203,7 @@ TEST(IgnSubscriberTest, Pose)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, PoseWithCovariance)
+TEST(GzSubscriberTest, PoseWithCovariance)
 {
   MyTestClass<ignition::msgs::PoseWithCovariance> client("pose_with_covariance");
 
@@ -215,7 +215,7 @@ TEST(IgnSubscriberTest, PoseWithCovariance)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, PoseStamped)
+TEST(GzSubscriberTest, PoseStamped)
 {
   MyTestClass<ignition::msgs::Pose> client("pose_stamped");
 
@@ -227,7 +227,7 @@ TEST(IgnSubscriberTest, PoseStamped)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Transform)
+TEST(GzSubscriberTest, Transform)
 {
   MyTestClass<ignition::msgs::Pose> client("transform");
 
@@ -239,7 +239,7 @@ TEST(IgnSubscriberTest, Transform)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, TransformStamped)
+TEST(GzSubscriberTest, TransformStamped)
 {
   MyTestClass<ignition::msgs::Pose> client("transform_stamped");
 
@@ -251,7 +251,7 @@ TEST(IgnSubscriberTest, TransformStamped)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, TF2Message)
+TEST(GzSubscriberTest, TF2Message)
 {
   MyTestClass<ignition::msgs::Pose_V> client("tf2_message");
 
@@ -263,7 +263,7 @@ TEST(IgnSubscriberTest, TF2Message)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Twist)
+TEST(GzSubscriberTest, Twist)
 {
   MyTestClass<ignition::msgs::Twist> client("twist");
 
@@ -275,7 +275,7 @@ TEST(IgnSubscriberTest, Twist)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, TwistWithCovariance)
+TEST(GzSubscriberTest, TwistWithCovariance)
 {
   MyTestClass<ignition::msgs::TwistWithCovariance> client("twist_with_covariance");
 
@@ -287,7 +287,7 @@ TEST(IgnSubscriberTest, TwistWithCovariance)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Wrench)
+TEST(GzSubscriberTest, Wrench)
 {
   MyTestClass<ignition::msgs::Wrench> client("wrench");
 
@@ -299,7 +299,7 @@ TEST(IgnSubscriberTest, Wrench)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, JointWrench)
+TEST(GzSubscriberTest, JointWrench)
 {
   MyTestClass<ignition::msgs::JointWrench> client("joint_wrench");
 
@@ -311,7 +311,7 @@ TEST(IgnSubscriberTest, JointWrench)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Entity)
+TEST(GzSubscriberTest, Entity)
 {
   MyTestClass<ignition::msgs::Entity> client("entity");
 
@@ -323,7 +323,7 @@ TEST(IgnSubscriberTest, Entity)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Contact)
+TEST(GzSubscriberTest, Contact)
 {
   MyTestClass<ignition::msgs::Contact> client("contact");
 
@@ -335,7 +335,7 @@ TEST(IgnSubscriberTest, Contact)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Contacts)
+TEST(GzSubscriberTest, Contacts)
 {
   MyTestClass<ignition::msgs::Contacts> client("contacts");
 
@@ -347,7 +347,7 @@ TEST(IgnSubscriberTest, Contacts)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Image)
+TEST(GzSubscriberTest, Image)
 {
   MyTestClass<ignition::msgs::Image> client("image");
 
@@ -359,7 +359,7 @@ TEST(IgnSubscriberTest, Image)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, CameraInfo)
+TEST(GzSubscriberTest, CameraInfo)
 {
   MyTestClass<ignition::msgs::CameraInfo> client("camera_info");
 
@@ -371,7 +371,7 @@ TEST(IgnSubscriberTest, CameraInfo)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, FluidPressure)
+TEST(GzSubscriberTest, FluidPressure)
 {
   MyTestClass<ignition::msgs::FluidPressure> client("fluid_pressure");
 
@@ -383,7 +383,7 @@ TEST(IgnSubscriberTest, FluidPressure)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Imu)
+TEST(GzSubscriberTest, Imu)
 {
   MyTestClass<ignition::msgs::IMU> client("imu");
 
@@ -395,7 +395,7 @@ TEST(IgnSubscriberTest, Imu)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, LaserScan)
+TEST(GzSubscriberTest, LaserScan)
 {
   MyTestClass<ignition::msgs::LaserScan> client("laserscan");
 
@@ -407,7 +407,7 @@ TEST(IgnSubscriberTest, LaserScan)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Magnetometer)
+TEST(GzSubscriberTest, Magnetometer)
 {
   MyTestClass<ignition::msgs::Magnetometer> client("magnetic");
 
@@ -419,7 +419,7 @@ TEST(IgnSubscriberTest, Magnetometer)
 }
 
 // /////////////////////////////////////////////////
-// TEST(IgnSubscriberTest, Actuators)
+// TEST(GzSubscriberTest, Actuators)
 // {
 //   MyTestClass<ignition::msgs::Actuators> client("actuators");
 //
@@ -431,7 +431,7 @@ TEST(IgnSubscriberTest, Magnetometer)
 // }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Odometry)
+TEST(GzSubscriberTest, Odometry)
 {
   MyTestClass<ignition::msgs::Odometry> client("odometry");
 
@@ -443,7 +443,7 @@ TEST(IgnSubscriberTest, Odometry)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, OdometryWithCovariance)
+TEST(GzSubscriberTest, OdometryWithCovariance)
 {
   MyTestClass<ignition::msgs::OdometryWithCovariance> client("odometry_with_covariance");
 
@@ -455,7 +455,7 @@ TEST(IgnSubscriberTest, OdometryWithCovariance)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, JointStates)
+TEST(GzSubscriberTest, JointStates)
 {
   MyTestClass<ignition::msgs::Model> client("joint_states");
 
@@ -467,7 +467,7 @@ TEST(IgnSubscriberTest, JointStates)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, PointCloudPacked)
+TEST(GzSubscriberTest, PointCloudPacked)
 {
   MyTestClass<ignition::msgs::PointCloudPacked> client("pointcloud2");
 
@@ -479,7 +479,7 @@ TEST(IgnSubscriberTest, PointCloudPacked)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, BatteryState)
+TEST(GzSubscriberTest, BatteryState)
 {
   MyTestClass<ignition::msgs::BatteryState> client("battery_state");
 
@@ -491,7 +491,7 @@ TEST(IgnSubscriberTest, BatteryState)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, GuiCamera)
+TEST(GzSubscriberTest, GuiCamera)
 {
   MyTestClass<ignition::msgs::GUICamera> client("gui_camera");
 
@@ -503,7 +503,7 @@ TEST(IgnSubscriberTest, GuiCamera)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, JointTrajectory)
+TEST(GzSubscriberTest, JointTrajectory)
 {
   MyTestClass<ignition::msgs::JointTrajectory> client("joint_trajectory");
 
@@ -515,7 +515,7 @@ TEST(IgnSubscriberTest, JointTrajectory)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, StringMsg_V)
+TEST(GzSubscriberTest, StringMsg_V)
 {
   MyTestClass<ignition::msgs::StringMsg_V> client("stringmsg_v");
 
@@ -527,7 +527,7 @@ TEST(IgnSubscriberTest, StringMsg_V)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, Time)
+TEST(GzSubscriberTest, Time)
 {
   MyTestClass<ignition::msgs::Time> client("time");
 
@@ -539,7 +539,7 @@ TEST(IgnSubscriberTest, Time)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, TrackVisual)
+TEST(GzSubscriberTest, TrackVisual)
 {
   MyTestClass<ignition::msgs::TrackVisual> client("track_visual");
 
@@ -551,7 +551,7 @@ TEST(IgnSubscriberTest, TrackVisual)
 }
 
 /////////////////////////////////////////////////
-TEST(IgnSubscriberTest, VideoRecord)
+TEST(GzSubscriberTest, VideoRecord)
 {
   MyTestClass<ignition::msgs::VideoRecord> client("video_record");
 

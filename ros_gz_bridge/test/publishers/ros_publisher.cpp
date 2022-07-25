@@ -146,58 +146,58 @@ int main(int argc, char ** argv)
   geometry_msgs::msg::Wrench wrench_msg;
   ros_gz_bridge::testing::createTestMsg(wrench_msg);
 
-  // ros_ign_interfaces::msg::Light.
+  // ros_gz_interfaces::msg::Light.
   auto light_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Light>("light", 1);
-  ros_ign_interfaces::msg::Light light_msg;
+    node->create_publisher<ros_gz_interfaces::msg::Light>("light", 1);
+  ros_gz_interfaces::msg::Light light_msg;
   ros_gz_bridge::testing::createTestMsg(light_msg);
 
-  // ros_ign_interfaces::msg::JointWrench.
+  // ros_gz_interfaces::msg::JointWrench.
   auto joint_wrench_pub =
-    node->create_publisher<ros_ign_interfaces::msg::JointWrench>("joint_wrench", 1);
-  ros_ign_interfaces::msg::JointWrench joint_wrench_msg;
+    node->create_publisher<ros_gz_interfaces::msg::JointWrench>("joint_wrench", 1);
+  ros_gz_interfaces::msg::JointWrench joint_wrench_msg;
   ros_gz_bridge::testing::createTestMsg(joint_wrench_msg);
 
-  // ros_ign_interfaces::msg::Entity.
+  // ros_gz_interfaces::msg::Entity.
   auto entity_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Entity>("entity", 1);
-  ros_ign_interfaces::msg::Entity entity_msg;
+    node->create_publisher<ros_gz_interfaces::msg::Entity>("entity", 1);
+  ros_gz_interfaces::msg::Entity entity_msg;
   ros_gz_bridge::testing::createTestMsg(entity_msg);
 
-  // ros_ign_interfaces::msg::Contact.
+  // ros_gz_interfaces::msg::Contact.
   auto contact_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Contact>("contact", 1);
-  ros_ign_interfaces::msg::Contact contact_msg;
+    node->create_publisher<ros_gz_interfaces::msg::Contact>("contact", 1);
+  ros_gz_interfaces::msg::Contact contact_msg;
   ros_gz_bridge::testing::createTestMsg(contact_msg);
 
-  // ros_ign_interfaces::msg::Contacts.
+  // ros_gz_interfaces::msg::Contacts.
   auto contacts_pub =
-    node->create_publisher<ros_ign_interfaces::msg::Contacts>("contacts", 1);
-  ros_ign_interfaces::msg::Contacts contacts_msg;
+    node->create_publisher<ros_gz_interfaces::msg::Contacts>("contacts", 1);
+  ros_gz_interfaces::msg::Contacts contacts_msg;
   ros_gz_bridge::testing::createTestMsg(contacts_msg);
 
-  // ros_ign_interfaces::msg::GuiCamera.
+  // ros_gz_interfaces::msg::GuiCamera.
   auto gui_camera_pub =
-    node->create_publisher<ros_ign_interfaces::msg::GuiCamera>("gui_camera", 1);
-  ros_ign_interfaces::msg::GuiCamera gui_camera_msg;
+    node->create_publisher<ros_gz_interfaces::msg::GuiCamera>("gui_camera", 1);
+  ros_gz_interfaces::msg::GuiCamera gui_camera_msg;
   ros_gz_bridge::testing::createTestMsg(gui_camera_msg);
 
-  // ros_ign_interfaces::msg::StringVec.
+  // ros_gz_interfaces::msg::StringVec.
   auto stringmsg_v_pub =
-    node->create_publisher<ros_ign_interfaces::msg::StringVec>("stringmsg_v", 1);
-  ros_ign_interfaces::msg::StringVec stringmsg_v_msg;
+    node->create_publisher<ros_gz_interfaces::msg::StringVec>("stringmsg_v", 1);
+  ros_gz_interfaces::msg::StringVec stringmsg_v_msg;
   ros_gz_bridge::testing::createTestMsg(stringmsg_v_msg);
 
-  // ros_ign_interfaces::msg::TrackVisual.
+  // ros_gz_interfaces::msg::TrackVisual.
   auto track_visual_pub =
-    node->create_publisher<ros_ign_interfaces::msg::TrackVisual>("track_visual", 1);
-  ros_ign_interfaces::msg::TrackVisual track_visual_msg;
+    node->create_publisher<ros_gz_interfaces::msg::TrackVisual>("track_visual", 1);
+  ros_gz_interfaces::msg::TrackVisual track_visual_msg;
   ros_gz_bridge::testing::createTestMsg(track_visual_msg);
 
-  // ros_ign_interfaces::msg::VideoRecord.
+  // ros_gz_interfaces::msg::VideoRecord.
   auto video_record_pub =
-    node->create_publisher<ros_ign_interfaces::msg::VideoRecord>("video_record", 1);
-  ros_ign_interfaces::msg::VideoRecord video_record_msg;
+    node->create_publisher<ros_gz_interfaces::msg::VideoRecord>("video_record", 1);
+  ros_gz_interfaces::msg::VideoRecord video_record_msg;
   ros_gz_bridge::testing::createTestMsg(video_record_msg);
 
   // // mav_msgs::msg::Actuators.

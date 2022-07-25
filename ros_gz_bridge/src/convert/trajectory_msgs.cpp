@@ -15,7 +15,7 @@
 #include <rclcpp/time.hpp>
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/trajectory_msgs.hpp"
+#include "ros_gz_bridge/convert/trajectory_msgs.hpp"
 
 namespace ros_gz_bridge
 {

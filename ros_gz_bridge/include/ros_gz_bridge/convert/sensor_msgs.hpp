@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
-#define ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
+#define ROS_GZ_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 
 // Gazebo Msgs
 #include <ignition/msgs/battery_state.pb.h>
@@ -37,7 +37,7 @@
 #include <sensor_msgs/msg/magnetic_field.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
 namespace ros_gz_bridge
 {
@@ -153,4 +153,4 @@ convert_gz_to_ros(
 
 }  // namespace ros_gz_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
+#endif  // ROS_GZ_BRIDGE__CONVERT__SENSOR_MSGS_HPP_

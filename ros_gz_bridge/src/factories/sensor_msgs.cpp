@@ -18,7 +18,7 @@
 #include <string>
 
 #include "factory.hpp"
-#include "ros_ign_bridge/convert/sensor_msgs.hpp"
+#include "ros_gz_bridge/convert/sensor_msgs.hpp"
 
 namespace ros_gz_bridge
 {

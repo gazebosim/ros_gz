@@ -13,8 +13,8 @@
 // limitations under the License.
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/builtin_interfaces.hpp"
-#include "ros_ign_bridge/convert/std_msgs.hpp"
+#include "ros_gz_bridge/convert/builtin_interfaces.hpp"
+#include "ros_gz_bridge/convert/std_msgs.hpp"
 
 namespace ros_gz_bridge
 {
