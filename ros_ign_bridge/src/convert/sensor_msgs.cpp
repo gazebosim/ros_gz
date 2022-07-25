@@ -366,7 +366,7 @@ convert_ign_to_ros(
   ros_msg.angle_max = ign_msg.angle_max();
   ros_msg.angle_increment = ign_msg.angle_step();
 
-  // Not supported in ignition::msgs::LaserScan.
+  // Not supported in gz::msgs::LaserScan.
   ros_msg.time_increment = 0.0;
   ros_msg.scan_time = 0.0;
 
@@ -413,7 +413,7 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
   convert_ign_to_ros(ign_msg.field_tesla(), ros_msg.magnetic_field);
 
-  // magnetic_field_covariance is not supported in ignition::Msgs::Magnetometer.
+  // magnetic_field_covariance is not supported in gz::msgs::Magnetometer.
 }
 
 template<>

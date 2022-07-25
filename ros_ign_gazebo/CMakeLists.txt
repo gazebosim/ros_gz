@@ -17,7 +17,7 @@ find_package(std_msgs REQUIRED)
 # TODO(CH3): Deprecated. Remove on tock.
 if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
   message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
-  set(ENV{GZ_VERSION} ENV{IGNITION_VERSION})
+  set(ENV{GZ_VERSION} $ENV{IGNITION_VERSION})
 endif()
 
 # Edifice
