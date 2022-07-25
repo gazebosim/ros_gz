@@ -18,7 +18,7 @@
 #include <memory>
 #include <string>
 
-// include Ignition Transport
+// include Gazebo Transport
 #include <ignition/transport/Node.hh>
 
 // include ROS 2

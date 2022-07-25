@@ -137,7 +137,7 @@ namespace testing
   }
 
   //////////////////////////////////////////////////
-  /// Ignition::msgs test utils
+  /// Gazebo::msgs test utils
   //////////////////////////////////////////////////
 
   /// \brief Create a message used for testing.

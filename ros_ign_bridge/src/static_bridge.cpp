@@ -15,7 +15,7 @@
 #include <memory>
 #include <string>
 
-// include Ignition Transport
+// include Gazebo Transport
 #include <ignition/transport/Node.hh>
 
 // include ROS 2
@@ -31,7 +31,7 @@ int main(int argc, char * argv[])
   rclcpp::init(argc, argv);
   auto ros_node = std::make_shared<rclcpp::Node>("test_node");
 
-  // Ignition node
+  // Gazebo node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
   // bridge one example topic
@@ -45,7 +45,7 @@ int main(int argc, char * argv[])
 
   rclcpp::spin(ros_node);
 
-  // Wait for ign node shutdown
+  // Wait for gz node shutdown
   ignition::transport::waitForShutdown();
 
   return 0;

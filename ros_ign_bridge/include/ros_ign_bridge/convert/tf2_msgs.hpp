@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs/pose_v.pb.h>
 
 // ROS 2 messages

@@ -3,7 +3,7 @@
 <package format="3">
   <name>ros_ign_gazebo</name>
   <version>0.244.3</version>
-  <description>Tools for using Ignition Gazebo simulation with ROS.</description>
+  <description>Tools for using Gazebo Sim simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
   <license>Apache 2.0</license>

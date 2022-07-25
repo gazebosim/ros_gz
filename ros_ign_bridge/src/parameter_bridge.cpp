@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-// include Ignition Transport
+// include Gazebo Transport
 #include <ignition/transport/Node.hh>
 
 // include ROS 2
@@ -31,9 +31,9 @@ enum Direction
 {
   // Both directions.
   BIDIRECTIONAL = 0,
-  // Only from IGN to ROS
+  // Only from GZ to ROS
   FROM_IGN_TO_ROS = 1,
-  // Only from ROS to IGN
+  // Only from ROS to GZ
   FROM_ROS_TO_IGN = 2,
   // Unspecified, only used for services
   DIR_UNSPECIFIED = 3,
@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
   // ROS 2 node
   auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
 
-  // Ignition node
+  // Gazebo node
   auto ign_node = std::make_shared<ignition::transport::Node>();
 
   std::vector<ros_ign_bridge::BridgeHandles> bidirectional_handles;

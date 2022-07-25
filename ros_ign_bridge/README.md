@@ -31,16 +31,16 @@ The following message types can be bridged for topics:
 | mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)       |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
-| ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact                |
-| ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts               |
-| ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity                 |
-| ros_ign_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera              |
-| ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench            |
-| ros_ign_interfaces/msg/Light         | ignition::msgs::Light                  |
-| ros_ign_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V            |
-| ros_ign_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual            |
-| ros_ign_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord            |
-| ros_ign_interfaces/msg/WorldControl  | ignition::msgs::WorldControl           |
+| ros_gz_interfaces/msg/Contact       | ignition::msgs::Contact                |
+| ros_gz_interfaces/msg/Contacts      | ignition::msgs::Contacts               |
+| ros_gz_interfaces/msg/Entity        | ignition::msgs::Entity                 |
+| ros_gz_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera              |
+| ros_gz_interfaces/msg/JointWrench   | ignition::msgs::JointWrench            |
+| ros_gz_interfaces/msg/Light         | ignition::msgs::Light                  |
+| ros_gz_interfaces/msg/StringVec     | ignition::msgs::StringMsg_V            |
+| ros_gz_interfaces/msg/TrackVisual   | ignition::msgs::TrackVisual            |
+| ros_gz_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord            |
+| ros_gz_interfaces/msg/WorldControl  | ignition::msgs::WorldControl           |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                  |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState           |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo             |
@@ -58,9 +58,9 @@ And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
-| ros_ign_interfaces/srv/ControlWorld  | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+| ros_gz_interfaces/srv/ControlWorld  | ignition.msgs.WorldControl | ignition.msgs.Boolean |
 
-Run `ros2 run ros_ign_bridge parameter_bridge -h` for instructions.
+Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
 
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
@@ -69,7 +69,7 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_ign_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
 ```
 
 Now we start the ROS listener.
@@ -94,7 +94,7 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_ign_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
 ```
 
 Now we start the Gazebo Transport listener.
@@ -139,7 +139,7 @@ Then we start the parameter bridge with the previous topic.
 ```
 # Shell B:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_ign_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image
 ```
 
 Now we start the ROS GUI:
@@ -164,7 +164,7 @@ In this example, we're going to run an executable that starts a bidirectional
 bridge for a specific topic and message type. We'll use the `static_bridge`
 executable that is installed with the bridge.
 
-The example's code can be found under `ros_ign_bridge/src/static_bridge.cpp`.
+The example's code can be found under `ros_gz_bridge/src/static_bridge.cpp`.
 In the code, it's possible to see how the bridge is hardcoded to bridge string
 messages published on the `/chatter` topic.
 
@@ -172,7 +172,7 @@ Let's give it a try, starting with Gazebo -> ROS 2.
 
 On terminal A, start the bridge:
 
-`ros2 run ros_ign_bridge static_bridge`
+`ros2 run ros_gz_bridge static_bridge`
 
 On terminal B, we start a ROS 2 listener:
 
@@ -202,7 +202,7 @@ It's possible to make ROS service requests into Gazebo. Let's try unpausing the 
 
 On terminal A, start the service bridge:
 
-`ros2 run ros_ign_bridge parameter_bridge /world/shapes/control@ros_ign_interfaces/srv/ControlWorld`
+`ros2 run ros_gz_bridge parameter_bridge /world/shapes/control@ros_gz_interfaces/srv/ControlWorld`
 
 On terminal B, start Gazebo, it will be paused by default:
 
@@ -211,5 +211,5 @@ On terminal B, start Gazebo, it will be paused by default:
 On terminal C, make a ROS request to unpause simulation:
 
 ```
-ros2 service call /world/<world_name>/control ros_ign_interfaces/srv/ControlWorld "{world_control: {pause: false}}"
+ros2 service call /world/<world_name>/control ros_gz_interfaces/srv/ControlWorld "{world_control: {pause: false}}"
 ```

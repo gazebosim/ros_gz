@@ -25,7 +25,7 @@
 #include "utils/ign_test_msg.hpp"
 
 //////////////////////////////////////////////////
-/// \brief A class for testing Ignition Transport topic subscription.
+/// \brief A class for testing Gazebo Transport topic subscription.
 template<typename IGN_T>
 class MyTestClass
 {

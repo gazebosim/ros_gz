@@ -1,7 +1,7 @@
 <package format="3">
   <name>ros_ign_gazebo_demos</name>
   <version>0.244.3</version>
-  <description>Demos using Ignition Gazebo simulation with ROS.</description>
+  <description>Demos using Gazebo Sim simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
 
