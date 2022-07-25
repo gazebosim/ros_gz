@@ -20,24 +20,24 @@
 #include "factory.hpp"
 #include "ros_ign_bridge/convert/builtin_interfaces.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
 get_factory__builtin_interfaces(
   const std::string & ros_type_name,
-  const std::string & ign_type_name)
+  const std::string & gz_type_name)
 {
   if (
     (ros_type_name == "builtin_interfaces/msg/Time" || ros_type_name.empty()) &&
-    ign_type_name == "ignition.msgs.Time")
+    gz_type_name == "ignition.msgs.Time")
   {
     return std::make_shared<
       Factory<
         builtin_interfaces::msg::Time,
         ignition::msgs::Time
       >
-    >("builtin_interfaces/msg/Time", ign_type_name);
+    >("builtin_interfaces/msg/Time", gz_type_name);
   }
   return nullptr;
 }
@@ -47,11 +47,11 @@ void
 Factory<
   builtin_interfaces::msg::Time,
   ignition::msgs::Time
->::convert_ros_to_ign(
+>::convert_ros_to_gz(
   const builtin_interfaces::msg::Time & ros_msg,
-  ignition::msgs::Time & ign_msg)
+  ignition::msgs::Time & gz_msg)
 {
-  ros_ign_bridge::convert_ros_to_ign(ros_msg, ign_msg);
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
 }
 
 template<>
@@ -59,10 +59,10 @@ void
 Factory<
   builtin_interfaces::msg::Time,
   ignition::msgs::Time
->::convert_ign_to_ros(
-  const ignition::msgs::Time & ign_msg,
+>::convert_gz_to_ros(
+  const ignition::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg)
 {
-  ros_ign_bridge::convert_ign_to_ros(ign_msg, ros_msg);
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
 }
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

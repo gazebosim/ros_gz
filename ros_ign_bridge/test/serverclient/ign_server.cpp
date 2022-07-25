@@ -62,7 +62,7 @@ int main(int /*argc*/, char **/*argv*/)
 
   // gz::msgs::WorldControl.
   node.Advertise(
-    "/ign_ros/test/serviceclient/world_control",
+    "/gz_ros/test/serviceclient/world_control",
     &control_world);
 
   // Requests are handled in another thread.

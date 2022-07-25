@@ -14,25 +14,25 @@
 
 #include "ros_ign_bridge/convert/builtin_interfaces.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const builtin_interfaces::msg::Time & ros_msg,
-  ignition::msgs::Time & ign_msg)
+  ignition::msgs::Time & gz_msg)
 {
-  ign_msg.set_sec(ros_msg.sec);
-  ign_msg.set_nsec(ros_msg.nanosec);
+  gz_msg.set_sec(ros_msg.sec);
+  gz_msg.set_nsec(ros_msg.nanosec);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Time & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg)
 {
-  ros_msg.sec = ign_msg.sec();
-  ros_msg.nanosec = ign_msg.nsec();
+  ros_msg.sec = gz_msg.sec();
+  ros_msg.nanosec = gz_msg.nsec();
 }
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

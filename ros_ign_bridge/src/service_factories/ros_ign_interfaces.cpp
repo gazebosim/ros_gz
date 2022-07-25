@@ -23,19 +23,19 @@
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<ServiceFactoryInterface>
 get_service_factory__ros_ign_interfaces(
   const std::string & ros_type_name,
-  const std::string & ign_req_type_name,
-  const std::string & ign_rep_type_name)
+  const std::string & gz_req_type_name,
+  const std::string & gz_rep_type_name)
 {
   if (
     ros_type_name == "ros_ign_interfaces/srv/ControlWorld" &&
-    (ign_req_type_name.empty() || ign_req_type_name == "ignition.msgs.WorldControl") &&
-    (ign_rep_type_name.empty() || ign_rep_type_name == "ignition.msgs.Boolean"))
+    (gz_req_type_name.empty() || gz_req_type_name == "ignition.msgs.WorldControl") &&
+    (gz_rep_type_name.empty() || gz_rep_type_name == "ignition.msgs.Boolean"))
   {
     return std::make_shared<
       ServiceFactory<
@@ -49,20 +49,20 @@ get_service_factory__ros_ign_interfaces(
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const ros_ign_interfaces::srv::ControlWorld::Request & ros_req,
-  ignition::msgs::WorldControl & ign_req)
+  ignition::msgs::WorldControl & gz_req)
 {
-  convert_ros_to_ign(ros_req.world_control, ign_req);
+  convert_ros_to_gz(ros_req.world_control, gz_req);
 }
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Boolean & ign_rep,
+convert_gz_to_ros(
+  const ignition::msgs::Boolean & gz_rep,
   ros_ign_interfaces::srv::ControlWorld::Response & ros_res)
 {
-  ros_res.success = ign_rep.data();
+  ros_res.success = gz_rep.data();
 }
 
 template<>
@@ -74,4 +74,4 @@ send_response_on_error(ros_ign_interfaces::srv::ControlWorld::Response & ros_res
   ros_res.success = false;
   return true;
 }
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge

@@ -28,7 +28,7 @@
 
 #include "service_factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<typename RosResT>
@@ -40,22 +40,22 @@ class ServiceFactory : public ServiceFactoryInterface
 {
 public:
   ServiceFactory(
-    const std::string & ros_type_name, const std::string & ign_req_type_name,
-    const std::string & ign_rep_type_name)
+    const std::string & ros_type_name, const std::string & gz_req_type_name,
+    const std::string & gz_rep_type_name)
   : ros_type_name_(ros_type_name),
-    ign_req_type_name_(ign_req_type_name),
-    ign_rep_type_name_(ign_rep_type_name)
+    gz_req_type_name_(gz_req_type_name),
+    gz_rep_type_name_(gz_rep_type_name)
   {}
 
   rclcpp::ServiceBase::SharedPtr
   create_ros_service(
     rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<ignition::transport::Node> ign_node,
+    std::shared_ptr<ignition::transport::Node> gz_node,
     const std::string & service_name) override
   {
     return ros_node->create_service<RosServiceT>(
       service_name,
-      [ign_node = std::move(ign_node), service_name](
+      [gz_node = std::move(gz_node), service_name](
         std::shared_ptr<rclcpp::Service<RosServiceT>> srv_handle,
         std::shared_ptr<rmw_request_id_t> reqid,
         std::shared_ptr<typename RosServiceT::Request> ros_req)
@@ -74,24 +74,24 @@ public:
               srv_handle->send_response(*reqid, ros_res);
             }
           }
-          convert_ign_to_ros(reply, ros_res);
+          convert_gz_to_ros(reply, ros_res);
           srv_handle->send_response(*reqid, ros_res);
         };
-        IgnRequestT ign_req;
-        convert_ros_to_ign(*ros_req, ign_req);
-        ign_node->Request(
+        IgnRequestT gz_req;
+        convert_ros_to_gz(*ros_req, gz_req);
+        gz_node->Request(
           service_name,
-          ign_req,
+          gz_req,
           callback);
       });
   }
 
 private:
   std::string ros_type_name_;
-  std::string ign_req_type_name_;
-  std::string ign_rep_type_name_;
+  std::string gz_req_type_name_;
+  std::string gz_rep_type_name_;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // SERVICE_FACTORY_HPP_

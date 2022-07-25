@@ -58,7 +58,7 @@
 
 #include <memory>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -395,6 +395,6 @@ void createTestMsg(ignition::msgs::VideoRecord & _msg);
 void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg);
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // UTILS__GZ_TEST_MSG_HPP_
