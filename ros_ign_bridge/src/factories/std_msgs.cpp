@@ -30,7 +30,8 @@ get_factory__std_msgs(
 {
   // mapping from string to specialized template
   if ((ros_type_name == "std_msgs/msg/Bool" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Boolean" || gz_type_name == "ignition.msgs.Boolean"))
+      && (gz_type_name == "gz.msgs.Boolean"
+          || gz_type_name == "ignition.msgs.Boolean"))
   {
     return std::make_shared<
       Factory<
@@ -40,7 +41,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Bool", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/ColorRGBA" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Color" || gz_type_name == "ignition.msgs.Color"))
+      && (gz_type_name == "gz.msgs.Color"
+          || gz_type_name == "ignition.msgs.Color"))
   {
     return std::make_shared<
       Factory<
@@ -50,7 +52,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/ColorRGBA", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/Empty" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Empty" || gz_type_name == "ignition.msgs.Empty"))
+      && (gz_type_name == "gz.msgs.Empty"
+          || gz_type_name == "ignition.msgs.Empty"))
   {
     return std::make_shared<
       Factory<
@@ -60,7 +63,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Empty", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/Float32" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Float" || gz_type_name == "ignition.msgs.Float"))
+      && (gz_type_name == "gz.msgs.Float"
+          || gz_type_name == "ignition.msgs.Float"))
   {
     return std::make_shared<
       Factory<
@@ -70,7 +74,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Float32", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/Float64" || ros_type_name == "")
-      && (gz_type_name == "gz.msgs.Double" || gz_type_name == "ignition.msgs.Double"))
+      && (gz_type_name == "gz.msgs.Double"
+          || gz_type_name == "ignition.msgs.Double"))
   {
     return std::make_shared<
       Factory<
@@ -80,7 +85,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Float64", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/Header" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Header" || gz_type_name == "ignition.msgs.Header"))
+      && (gz_type_name == "gz.msgs.Header"
+          || gz_type_name == "ignition.msgs.Header"))
   {
     return std::make_shared<
       Factory<
@@ -90,7 +96,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Header", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/Int32" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Int32" || gz_type_name == "ignition.msgs.Int32"))
+      && (gz_type_name == "gz.msgs.Int32"
+          || gz_type_name == "ignition.msgs.Int32"))
   {
     return std::make_shared<
       Factory<
@@ -100,7 +107,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Int32", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/UInt32" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.UInt32" || gz_type_name == "ignition.msgs.UInt32"))
+      && (gz_type_name == "gz.msgs.UInt32"
+          || gz_type_name == "ignition.msgs.UInt32"))
   {
     return std::make_shared<
       Factory<
@@ -110,7 +118,8 @@ get_factory__std_msgs(
     >("std_msgs/msg/Int32", gz_type_name);
   }
   if ((ros_type_name == "std_msgs/msg/String" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.StringMsg" || gz_type_name == "ignition.msgs.StringMsg"))
+      && (gz_type_name == "gz.msgs.StringMsg"
+          || gz_type_name == "ignition.msgs.StringMsg"))
   {
     return std::make_shared<
       Factory<

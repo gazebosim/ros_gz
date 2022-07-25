@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_BRIDGE__CONVERT_HPP_
-#define ROS_GZ_BRIDGE__CONVERT_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT_HPP_
+#define ROS_IGN_BRIDGE__CONVERT_HPP_
 
 #include <ros_ign_bridge/convert/geometry_msgs.hpp>
 #include <ros_ign_bridge/convert/nav_msgs.hpp>
@@ -24,4 +24,4 @@
 #include <ros_ign_bridge/convert/tf2_msgs.hpp>
 #include <ros_ign_bridge/convert/trajectory_msgs.hpp>
 
-#endif  // ROS_GZ_BRIDGE__CONVERT_HPP_
+#endif  // ROS_IGN_BRIDGE__CONVERT_HPP_

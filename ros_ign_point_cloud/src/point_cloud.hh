@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_POINTCLOUD__POINTCLOUD_HPP_
-#define ROS_GZ_POINTCLOUD__POINTCLOUD_HPP_
+#ifndef ROS_IGN_POINTCLOUD__POINTCLOUD_HPP_
+#define ROS_IGN_POINTCLOUD__POINTCLOUD_HPP_
 
 #include <memory>
 #include <ignition/gazebo/System.hh>

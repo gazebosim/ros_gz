@@ -28,8 +28,10 @@ get_factory__tf2_msgs(
   const std::string & ros_type_name,
   const std::string & gz_type_name)
 {
-  if ((ros_type_name == "tf2_msgs/msg/TFMessage" || ros_type_name == "")
-      && (gz_type_name == "gz.msgs.Pose_V" || gz_type_name == "ignition.msgs.Pose_V"))
+  if ((ros_type_name == "tf2_msgs/msg/TFMessage"
+       || ros_type_name == "")
+      && (gz_type_name == "gz.msgs.Pose_V"
+          || gz_type_name == "ignition.msgs.Pose_V"))
   {
     return std::make_shared<
       Factory<

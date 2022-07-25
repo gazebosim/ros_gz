@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
-#define ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#ifndef ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#define ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 
 #include <ignition/msgs/time.pb.h>
 
@@ -38,4 +38,4 @@ convert_gz_to_ros(
 
 }  // namespace ros_gz_bridge
 
-#endif  // ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
+#endif  // ROS_IGN_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_

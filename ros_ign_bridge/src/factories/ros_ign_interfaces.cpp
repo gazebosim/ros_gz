@@ -29,7 +29,8 @@ get_factory__ros_ign_interfaces(
   const std::string & gz_type_name)
 {
   if ((ros_type_name == "ros_ign_interfaces/msg/JointWrench" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.JointWrench" || gz_type_name == "ignition.msgs.JointWrench"))
+      && (gz_type_name == "gz.msgs.JointWrench"
+          || gz_type_name == "ignition.msgs.JointWrench"))
   {
     return std::make_shared<
       Factory<
@@ -39,7 +40,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/JointWrench", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/Entity" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Entity" || gz_type_name == "ignition.msgs.Entity"))
+      && (gz_type_name == "gz.msgs.Entity"
+          || gz_type_name == "ignition.msgs.Entity"))
   {
     return std::make_shared<
       Factory<
@@ -49,7 +51,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/Entity", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/Contact" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Contact" || gz_type_name == "ignition.msgs.Contact"))
+      && (gz_type_name == "gz.msgs.Contact"
+          || gz_type_name == "ignition.msgs.Contact"))
   {
     return std::make_shared<
       Factory<
@@ -59,7 +62,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/Contact", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/Contacts" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Contacts" || gz_type_name == "ignition.msgs.Contacts"))
+      && (gz_type_name == "gz.msgs.Contacts"
+          || gz_type_name == "ignition.msgs.Contacts"))
   {
     return std::make_shared<
       Factory<
@@ -69,7 +73,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/Contacts", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/GuiCamera" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.GUICamera" || gz_type_name == "ignition.msgs.GUICamera"))
+      && (gz_type_name == "gz.msgs.GUICamera"
+          || gz_type_name == "ignition.msgs.GUICamera"))
   {
     return std::make_shared<
       Factory<
@@ -79,7 +84,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/GuiCamera", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/Light" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Light" || gz_type_name == "ignition.msgs.Light"))
+      && (gz_type_name == "gz.msgs.Light"
+          || gz_type_name == "ignition.msgs.Light"))
   {
     return std::make_shared<
       Factory<
@@ -89,7 +95,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/Light", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/StringVec" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.StringMsg_V" || gz_type_name == "ignition.msgs.StringMsg_V"))
+      && (gz_type_name == "gz.msgs.StringMsg_V"
+          || gz_type_name == "ignition.msgs.StringMsg_V"))
   {
     return std::make_shared<
       Factory<
@@ -99,7 +106,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/StringVec", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/TrackVisual" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.TrackVisual" || gz_type_name == "ignition.msgs.TrackVisual"))
+      && (gz_type_name == "gz.msgs.TrackVisual"
+          || gz_type_name == "ignition.msgs.TrackVisual"))
   {
     return std::make_shared<
       Factory<
@@ -109,7 +117,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/TrackVisual", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/VideoRecord" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.VideoRecord" || gz_type_name == "ignition.msgs.VideoRecord"))
+      && (gz_type_name == "gz.msgs.VideoRecord"
+          || gz_type_name == "ignition.msgs.VideoRecord"))
   {
     return std::make_shared<
       Factory<
@@ -119,7 +128,8 @@ get_factory__ros_ign_interfaces(
     >("ros_ign_interfaces/msg/VideoRecord", gz_type_name);
   }
   if ((ros_type_name == "ros_ign_interfaces/msg/WorldControl" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.WorldControl" || gz_type_name == "ignition.msgs.WorldControl"))
+      && (gz_type_name == "gz.msgs.WorldControl"
+          || gz_type_name == "ignition.msgs.WorldControl"))
   {
     return std::make_shared<
       Factory<

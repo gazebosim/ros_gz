@@ -29,7 +29,8 @@ get_factory__sensor_msgs(
   const std::string & gz_type_name)
 {
   if ((ros_type_name == "sensor_msgs/msg/FluidPressure" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.FluidPressure" || gz_type_name == "ignition.msgs.FluidPressure"))
+      && (gz_type_name == "gz.msgs.FluidPressure"
+          || gz_type_name == "ignition.msgs.FluidPressure"))
   {
     return std::make_shared<
       Factory<
@@ -39,7 +40,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/FluidPressure", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/Image" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Image" || gz_type_name == "ignition.msgs.Image"))
+      && (gz_type_name == "gz.msgs.Image"
+          || gz_type_name == "ignition.msgs.Image"))
   {
     return std::make_shared<
       Factory<
@@ -49,7 +51,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/Image", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/CameraInfo" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.CameraInfo" || gz_type_name == "ignition.msgs.CameraInfo"))
+      && (gz_type_name == "gz.msgs.CameraInfo"
+          || gz_type_name == "ignition.msgs.CameraInfo"))
   {
     return std::make_shared<
       Factory<
@@ -59,7 +62,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/CameraInfo", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/Imu" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.IMU" || gz_type_name == "ignition.msgs.IMU"))
+      && (gz_type_name == "gz.msgs.IMU"
+          || gz_type_name == "ignition.msgs.IMU"))
   {
     return std::make_shared<
       Factory<
@@ -69,7 +73,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/Imu", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/JointState" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Model" || gz_type_name == "ignition.msgs.Model"))
+      && (gz_type_name == "gz.msgs.Model"
+          || gz_type_name == "ignition.msgs.Model"))
   {
     return std::make_shared<
       Factory<
@@ -79,7 +84,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/JointState", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/LaserScan" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.LaserScan" || gz_type_name == "ignition.msgs.LaserScan"))
+      && (gz_type_name == "gz.msgs.LaserScan"
+          || gz_type_name == "ignition.msgs.LaserScan"))
   {
     return std::make_shared<
       Factory<
@@ -89,7 +95,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/LaserScan", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/MagneticField" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Magnetometer" || gz_type_name == "ignition.msgs.Magnetometer"))
+      && (gz_type_name == "gz.msgs.Magnetometer"
+          || gz_type_name == "ignition.msgs.Magnetometer"))
   {
     return std::make_shared<
       Factory<
@@ -99,7 +106,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/Magnetometer", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/PointCloud2" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.PointCloudPacked" || gz_type_name == "ignition.msgs.PointCloudPacked"))
+      && (gz_type_name == "gz.msgs.PointCloudPacked"
+          || gz_type_name == "ignition.msgs.PointCloudPacked"))
   {
     return std::make_shared<
       Factory<
@@ -109,7 +117,8 @@ get_factory__sensor_msgs(
     >("sensor_msgs/msg/PointCloud2", gz_type_name);
   }
   if ((ros_type_name == "sensor_msgs/msg/BatteryState" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.BatteryState" || gz_type_name == "ignition.msgs.BatteryState"))
+      && (gz_type_name == "gz.msgs.BatteryState"
+          || gz_type_name == "ignition.msgs.BatteryState"))
   {
     return std::make_shared<
       Factory<

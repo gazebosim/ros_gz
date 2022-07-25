@@ -28,8 +28,10 @@ get_factory__trajectory_msgs(
   const std::string & ros_type_name,
   const std::string & gz_type_name)
 {
-  if ((ros_type_name == "trajectory_msgs/msg/JointTrajectory" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.JointTrajectory" || gz_type_name == "ignition.msgs.JointTrajectory"))
+  if ((ros_type_name == "trajectory_msgs/msg/JointTrajectory"
+       || ros_type_name.empty())
+      && (gz_type_name == "gz.msgs.JointTrajectory"
+          || gz_type_name == "ignition.msgs.JointTrajectory"))
   {
     return std::make_shared<
       Factory<
