@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef FACTORIES__ROS_IGN_INTERFACES_HPP_
-#define FACTORIES__ROS_IGN_INTERFACES_HPP_
+#ifndef FACTORIES__ROS_GZ_INTERFACES_HPP_
+#define FACTORIES__ROS_GZ_INTERFACES_HPP_
 
 #include <memory>
 #include <string>
@@ -30,4 +30,4 @@ get_factory__ros_ign_interfaces(
 
 }  // namespace ros_ign_bridge
 
-#endif  // FACTORIES__ROS_IGN_INTERFACES_HPP_
+#endif  // FACTORIES__ROS_GZ_INTERFACES_HPP_
