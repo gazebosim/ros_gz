@@ -16,13 +16,20 @@ find_package(ros_ign_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
+
+# TODO(CH3): Deprecated. Remove on tock.
+if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
+  message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
+  set(ENV{GZ_VERSION} ENV{IGNITION_VERSION})
+endif()
+
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
@@ -30,10 +37,10 @@ if("$ENV{GZ_VERSION}" STREQUAL "edifice")
 # Fortress
 elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
   find_package(gz-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX gz)
 
@@ -41,10 +48,10 @@ elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
@@ -62,8 +69,8 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-  ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
 )
 
 ament_target_dependencies(${executable}
@@ -97,8 +104,8 @@ if(BUILD_TESTING)
   #   )
   #   target_link_libraries(${test_publisher}_image
   #     ${catkin_LIBRARIES}
-  #     ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-  #     ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+  #     ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+  #     ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   #     gtest
   #     gtest_main
   #   )
@@ -110,8 +117,8 @@ if(BUILD_TESTING)
   #     test/subscribers/${test_subscriber}.cpp)
   #   target_link_libraries(test_${test_subscriber}_image
   #     ${catkin_LIBRARIES}
-  #     ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-  #     ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+  #     ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+  #     ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   #   )
   # endforeach(test_subscriber)
 endif()

@@ -8,17 +8,17 @@
   <buildtool_depend>ament_cmake</buildtool_depend>
 
   <!-- Fortress (default) -->
-  <exec_depend condition="$GZ_VERSION == fortress">ignition-gazebo6</exec_depend>
-  <exec_depend condition="$GZ_VERSION == ''">ignition-gazebo6</exec_depend>
+  <exec_depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
+  <exec_depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-gazebo6</exec_depend>
   <!-- Edifice -->
-  <exec_depend condition="$GZ_VERSION == edifice">ignition-gazebo5</exec_depend>
+  <exec_depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros_ign_bridge</exec_depend>
   <exec_depend>ros_ign_gazebo</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
-  <!-- See https://github.com/osrf/ros_ign/issues/40 -->
+  <!-- See https://github.com/gazebosim/ros_gz/issues/40 -->
   <!--exec_depend>ros_ign_point_cloud</exec_depend-->
   <exec_depend>rqt_image_view</exec_depend>
   <exec_depend>rqt_plot</exec_depend>
