@@ -23,7 +23,7 @@ find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
@@ -34,7 +34,7 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
 
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-transport12 REQUIRED)
   set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 

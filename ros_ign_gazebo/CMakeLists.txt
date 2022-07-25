@@ -15,7 +15,7 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-math6 REQUIRED)
   set(IGN_MATH_VER ${ignition-math6_VERSION_MAJOR})
 
@@ -32,7 +32,7 @@ if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
 
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-math7 REQUIRED)
   set(IGN_MATH_VER ${gz-math7_VERSION_MAJOR})
 

@@ -18,16 +18,16 @@
   <depend>std_msgs</depend>
 
   <!-- Garden -->
-  <depend condition="$IGNITION_VERSION == garden">gz-sim7</depend>
-  <depend condition="$IGNITION_VERSION == garden">gz-math7</depend>
+  <depend condition="$GZ_VERSION == garden">gz-sim7</depend>
+  <depend condition="$GZ_VERSION == garden">gz-math7</depend>
   <!-- Fortress (default) -->
-  <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == fortress">ignition-math6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-gazebo6</depend>
-  <depend condition="$IGNITION_VERSION == ''">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == fortress">ignition-gazebo6</depend>
+  <depend condition="$GZ_VERSION == fortress">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == ''">ignition-gazebo6</depend>
+  <depend condition="$GZ_VERSION == ''">ignition-math6</depend>
   <!-- Edifice -->
-  <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
-  <depend condition="$IGNITION_VERSION == edifice">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == edifice">ignition-gazebo5</depend>
+  <depend condition="$GZ_VERSION == edifice">ignition-math6</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
