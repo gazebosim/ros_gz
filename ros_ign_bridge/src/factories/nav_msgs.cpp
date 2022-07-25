@@ -28,8 +28,8 @@ get_factory__nav_msgs(
   const std::string & ros_type_name,
   const std::string & gz_type_name)
 {
-  if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Odometry")
+  if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty())
+      && (gz_type_name == "gz.msgs.Odometry" || gz_type_name == "ignition.msgs.Odometry"))
   {
     return std::make_shared<
       Factory<
@@ -38,8 +38,8 @@ get_factory__nav_msgs(
       >
     >("nav_msgs/msg/Odometry", gz_type_name);
   }
-  if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.OdometryWithCovariance")
+  if ((ros_type_name == "nav_msgs/msg/Odometry" || ros_type_name.empty())
+      && (gz_type_name == "gz.msgs.OdometryWithCovariance" || gz_type_name == "ignition.msgs.OdometryWithCovariance"))
   {
     return std::make_shared<
       Factory<

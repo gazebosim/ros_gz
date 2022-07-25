@@ -30,7 +30,7 @@ get_factory__builtin_interfaces(
 {
   if (
     (ros_type_name == "builtin_interfaces/msg/Time" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Time")
+    (gz_type_name == "gz.msgs.Time" || gz_type_name == "ignition.msgs.Time"))
   {
     return std::make_shared<
       Factory<

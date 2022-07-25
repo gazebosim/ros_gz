@@ -29,7 +29,7 @@ get_factory__geometry_msgs(
   const std::string & gz_type_name)
 {
   if ((ros_type_name == "geometry_msgs/msg/Quaternion" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Quaternion")
+    (gz_type_name == "gz.msgs.Quaternion" || gz_type_name == "ignition.msgs.Quaternion"))
   {
     return std::make_shared<
       Factory<
@@ -39,7 +39,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/Quaternion", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/Vector3" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Vector3d")
+    (gz_type_name == "gz.msgs.Vector3d" || gz_type_name == "ignition.msgs.Vector3d"))
   {
     return std::make_shared<
       Factory<
@@ -49,7 +49,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/Vector3", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/Point" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Vector3d")
+    (gz_type_name == "gz.msgs.Vector3d" || gz_type_name == "ignition.msgs.Vector3d"))
   {
     return std::make_shared<
       Factory<
@@ -59,7 +59,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/Point", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/Pose" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Pose")
+    (gz_type_name == "gz.msgs.Pose" || gz_type_name == "ignition.msgs.Pose"))
   {
     return std::make_shared<
       Factory<
@@ -69,7 +69,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/Pose", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/PoseWithCovariance" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.PoseWithCovariance")
+    (gz_type_name == "gz.msgs.PoseWithCovariance" || gz_type_name == "ignition.msgs.PoseWithCovariance"))
   {
     return std::make_shared<
       Factory<
@@ -79,7 +79,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/PoseWithCovariance", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/PoseStamped" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Pose")
+    (gz_type_name == "gz.msgs.Pose" || gz_type_name == "ignition.msgs.Pose"))
   {
     return std::make_shared<
       Factory<
@@ -89,7 +89,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/PoseStamped", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/Transform" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Pose")
+    (gz_type_name == "gz.msgs.Pose" || gz_type_name == "ignition.msgs.Pose"))
   {
     return std::make_shared<
       Factory<
@@ -99,7 +99,7 @@ get_factory__geometry_msgs(
     >("geometry_msgs/msg/Transform", gz_type_name);
   }
   if ((ros_type_name == "geometry_msgs/msg/TransformStamped" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Pose")
+    (gz_type_name == "gz.msgs.Pose" || gz_type_name == "ignition.msgs.Pose"))
   {
     return std::make_shared<
       Factory<
@@ -110,7 +110,7 @@ get_factory__geometry_msgs(
   }
   if (
     (ros_type_name == "geometry_msgs/msg/Twist" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Twist")
+    (gz_type_name == "gz.msgs.Twist" || gz_type_name == "ignition.msgs.Twist"))
   {
     return std::make_shared<
       Factory<
@@ -121,7 +121,7 @@ get_factory__geometry_msgs(
   }
   if (
     (ros_type_name == "geometry_msgs/msg/TwistWithCovariance" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.TwistWithCovariance")
+    (gz_type_name == "gz.msgs.TwistWithCovariance" || gz_type_name == "ignition.msgs.TwistWithCovariance"))
   {
     return std::make_shared<
       Factory<
@@ -132,7 +132,7 @@ get_factory__geometry_msgs(
   }
   if (
     (ros_type_name == "geometry_msgs/msg/Wrench" || ros_type_name.empty()) &&
-    gz_type_name == "ignition.msgs.Wrench")
+    (gz_type_name == "gz.msgs.Wrench" || gz_type_name == "ignition.msgs.Wrench"))
   {
     return std::make_shared<
       Factory<
