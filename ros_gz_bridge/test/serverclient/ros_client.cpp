@@ -19,7 +19,7 @@
 
 #include "rclcpp/rclcpp.hpp"
 
-#include "ros_ign_interfaces/srv/control_world.hpp"
+#include "ros_gz_interfaces/srv/control_world.hpp"
 
 using namespace std::chrono_literals;
 
@@ -28,11 +28,11 @@ TEST(ROSClientTest, WorldControl)
 {
   rclcpp::init(0, NULL);
   auto node = std::make_shared<rclcpp::Node>("test_ros_client_to_gz_service");
-  auto client = node->create_client<ros_ign_interfaces::srv::ControlWorld>(
+  auto client = node->create_client<ros_gz_interfaces::srv::ControlWorld>(
     "/gz_ros/test/serviceclient/world_control");
   std::this_thread::sleep_for(1s);
   ASSERT_TRUE(client->wait_for_service(5s));
-  auto msg = std::make_shared<ros_ign_interfaces::srv::ControlWorld::Request>();
+  auto msg = std::make_shared<ros_gz_interfaces::srv::ControlWorld::Request>();
   auto future = client->async_send_request(msg);
   rclcpp::executors::SingleThreadedExecutor ex;
   ex.add_node(node);

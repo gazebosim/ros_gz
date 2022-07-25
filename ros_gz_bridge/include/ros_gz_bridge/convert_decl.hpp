@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
-#define ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT_DECL_HPP_
+#define ROS_GZ_BRIDGE__CONVERT_DECL_HPP_
 
 namespace ros_gz_bridge
 {
@@ -32,4 +32,4 @@ convert_gz_to_ros(
 
 }  // namespace ros_gz_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT_DECL_HPP_
+#endif  // ROS_GZ_BRIDGE__CONVERT_DECL_HPP_

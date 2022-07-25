@@ -70,9 +70,9 @@ void usage()
     "    parameter_bridge /chatter@std_msgs/String]ignition.msgs" <<
     ".StringMsg\n" <<
     "A service bridge:\n" <<
-    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld\n" <<
+    "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld\n" <<
     "Or equivalently:\n" <<
-    "    parameter_bridge /world/default/control@ros_ign_interfaces/srv/ControlWorld@"
+    "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld@"
     "ignition.msgs.WorldControl@ignition.msgs.Boolean\n" << std::endl;
 }
 

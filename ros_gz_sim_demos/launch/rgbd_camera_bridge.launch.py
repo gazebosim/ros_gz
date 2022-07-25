@@ -28,14 +28,14 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
 
-    pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
 
-    ign_gazebo = IncludeLaunchDescription(
+    gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')),
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
         launch_arguments={
-            'ign_args': '-r sensors_demo.sdf'
+            'gz_args': '-r sensors_demo.sdf'
         }.items(),
     )
 
@@ -44,14 +44,14 @@ def generate_launch_description():
         package='rviz2',
         executable='rviz2',
         arguments=[
-            '-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'rgbd_camera_bridge.rviz')
+            '-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'rgbd_camera_bridge.rviz')
         ],
         condition=IfCondition(LaunchConfiguration('rviz'))
     )
 
     # Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             '/rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image',
@@ -62,7 +62,7 @@ def generate_launch_description():
     )
 
     return LaunchDescription([
-        ign_gazebo,
+        gz_sim,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         bridge,

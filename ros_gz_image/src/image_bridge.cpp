@@ -21,7 +21,7 @@
 #include <ignition/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
-#include <ros_ign_bridge/convert.hpp>
+#include <ros_gz_bridge/convert.hpp>
 
 //////////////////////////////////////////////////
 /// \brief Bridges one topic
@@ -91,7 +91,7 @@ int main(int argc, char * argv[])
     handlers.push_back(std::make_shared<Handler>(topic, it_node, gz_node));
   }
 
-  // Spin ROS and Ign until shutdown
+  // Spin ROS and Gz until shutdown
   rclcpp::spin(node_);
 
   ignition::transport::waitForShutdown();

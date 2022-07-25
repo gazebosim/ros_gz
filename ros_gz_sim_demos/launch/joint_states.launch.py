@@ -25,11 +25,11 @@ import xacro
 def generate_launch_description():
 
     # Package Directories
-    pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
-    pkg_ros_ign_gazebo_demos = get_package_share_directory('ros_ign_gazebo_demos')
+    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
 
     # Parse robot description from xacro
-    robot_description_file = os.path.join(pkg_ros_ign_gazebo_demos, 'models', 'rrbot.xacro')
+    robot_description_file = os.path.join(pkg_ros_gz_sim_demos, 'models', 'rrbot.xacro')
     robot_description_config = xacro.process_file(
         robot_description_file
     )
@@ -44,24 +44,24 @@ def generate_launch_description():
         parameters=[robot_description],
     )
 
-    # Ignition gazebo
+    # Gazebo Sim
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_ign_gazebo, 'launch', 'ign_gazebo.launch.py')
+            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'ign_args': '-r empty.sdf'}.items(),
+        launch_arguments={'gz_args': '-r empty.sdf'}.items(),
     )
 
     # RViz
     rviz = Node(
         package='rviz2',
         executable='rviz2',
-        arguments=['-d', os.path.join(pkg_ros_ign_gazebo_demos, 'rviz', 'joint_states.rviz')],
+        arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'joint_states.rviz')],
     )
 
     # Spawn
     spawn = Node(
-        package='ros_ign_gazebo',
+        package='ros_gz_sim',
         executable='create',
         arguments=[
             '-name', 'rrbot',
@@ -70,9 +70,9 @@ def generate_launch_description():
         output='screen',
     )
 
-    # Ign - ROS Bridge
+    # Gz - ROS Bridge
     bridge = Node(
-        package='ros_ign_bridge',
+        package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             # Clock (IGN -> ROS2)

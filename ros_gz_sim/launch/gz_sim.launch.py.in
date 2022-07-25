@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch Ignition Gazebo with command line arguments."""
+"""Launch Gazebo Sim with command line arguments."""
 
 from os import environ
 
@@ -20,20 +20,37 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
 from launch.substitutions import LaunchConfiguration
+from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals
 
 
 def generate_launch_description():
-    env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
-           ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
-                     environ.get('LD_LIBRARY_PATH', default='')])}
+    env = {'GZ_SIM_SYSTEM_PLUGIN_PATH':
+           ':'.join([environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
+                     environ.get('LD_LIBRARY_PATH', default='')]),
+           'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':  # TODO(CH3): To support pre-garden. Deprecated.
+                      ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
+                                environ.get('LD_LIBRARY_PATH', default='')])}
 
     return LaunchDescription([
-        DeclareLaunchArgument('ign_args', default_value='',
-                              description='Arguments to be passed to Ignition Gazebo'),
-        # Ignition Gazebo's major version
-        DeclareLaunchArgument('ign_version', default_value='@IGN_GAZEBO_VER@',
-                              description='Ignition Gazebo\'s major version'),
+        DeclareLaunchArgument('gz_args', default_value='',
+                              description='Arguments to be passed to Gazebo Sim'),
+        # Gazebo Sim's major version
+        DeclareLaunchArgument('gz_version', default_value='@GZ_SIM_VER@',
+                              description='Gazebo Sim\'s major version'),
+
+        # TODO(CH3): Deprecated. Remove on tock.
+        DeclareLaunchArgument(
+            'ign_args', default_value='',
+            description='Deprecated: Arguments to be passed to Gazebo Sim'
+        ),
+        # Gazebo Sim's major version
+        DeclareLaunchArgument(
+            'ign_version', default_value='NO_VERSION',
+            description='Deprecated: Gazebo Sim\'s major version'
+        ),
+
         ExecuteProcess(
+            condition=LaunchConfigurationNotEquals('ign_version', 'NO_VERSION'),
             cmd=['ign gazebo',
                  LaunchConfiguration('ign_args'),
                  '--force-version',
@@ -42,5 +59,17 @@ def generate_launch_description():
             output='screen',
             additional_env=env,
             shell=True
-        )
+        ),
+
+        ExecuteProcess(
+            condition=LaunchConfigurationEquals('ign_version', 'NO_VERSION'),
+            cmd=['ign gazebo',
+                 LaunchConfiguration('gz_args'),
+                 '--force-version',
+                 LaunchConfiguration('gz_version'),
+                 ],
+            output='screen',
+            additional_env=env,
+            shell=True
+        ),
     ])
