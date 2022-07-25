@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
-#define ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
+#define ROS_GZ_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
 
 // Gazebo Msgs
 #include <ignition/msgs/joint_trajectory.pb.h>
@@ -21,7 +21,7 @@
 // ROS 2 messages
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
-#include <ros_ign_bridge/convert_decl.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
 namespace ros_gz_bridge
 {
@@ -53,4 +53,4 @@ convert_gz_to_ros(
 
 }  // namespace ros_gz_bridge
 
-#endif  // ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
+#endif  // ROS_GZ_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_

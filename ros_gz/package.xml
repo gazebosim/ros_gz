@@ -3,7 +3,7 @@
 <package format="2">
   <!-- TODO: Make this a metapackage, see
        https://github.com/ros2/ros2/issues/408 -->
-  <name>ros_ign</name>
+  <name>ros_gz</name>
   <version>0.244.3</version>
   <description>Meta-package containing interfaces for using ROS 2 with <a href="https://gazebosim.org">Gazebo</a> simulation.</description>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
@@ -11,12 +11,12 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <exec_depend>ros_ign_bridge</exec_depend>
-  <exec_depend>ros_ign_gazebo</exec_depend>
-  <exec_depend>ros_ign_gazebo_demos</exec_depend>
-  <exec_depend>ros_ign_image</exec_depend>
+  <exec_depend>ros_gz_bridge</exec_depend>
+  <exec_depend>ros_gz_gazebo</exec_depend>
+  <exec_depend>ros_gz_gazebo_demos</exec_depend>
+  <exec_depend>ros_gz_image</exec_depend>
   <!-- See https://github.com/gazebosim/ros_gz/issues/40 -->
-  <!--exec_depend>ros_ign_point_cloud</exec_depend-->
+  <!--exec_depend>ros_gz_point_cloud</exec_depend-->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

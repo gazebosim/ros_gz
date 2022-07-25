@@ -15,8 +15,8 @@
  *
 */
 
-#ifndef ROS_IGN_IMAGE__TEST_UTILS_H_
-#define ROS_IGN_IMAGE__TEST_UTILS_H_
+#ifndef ROS_GZ_IMAGE__TEST_UTILS_H_
+#define ROS_GZ_IMAGE__TEST_UTILS_H_
 
 #include <gtest/gtest.h>
 #include <ros/ros.h>
@@ -213,4 +213,4 @@ namespace testing
 }
 }
 
-#endif  // ROS_IGN_BRIDGE__TEST_UTILS_H_
+#endif  // ROS_GZ_BRIDGE__TEST_UTILS_H_

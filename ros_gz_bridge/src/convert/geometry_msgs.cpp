@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #include "convert/utils.hpp"
-#include "ros_ign_bridge/convert/geometry_msgs.hpp"
+#include "ros_gz_bridge/convert/geometry_msgs.hpp"
 
 namespace ros_gz_bridge
 {
