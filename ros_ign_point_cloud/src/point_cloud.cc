@@ -33,7 +33,7 @@
 #include <sensor_msgs/fill_image.h>
 #include <sensor_msgs/point_cloud2_iterator.h>
 
-GZ_ADD_PLUGIN(
+IGNITION_ADD_PLUGIN(
     ros_gz_point_cloud::PointCloud,
     ignition::gazebo::System,
     ros_gz_point_cloud::PointCloud::ISystemConfigure,

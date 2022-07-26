@@ -39,7 +39,7 @@ def generate_test_description():
         package='ros_ign_bridge',
         executable='parameter_bridge',
         arguments=[
-          '/ign_ros/test/serviceclient/world_control@ros_ign_interfaces/srv/ControlWorld',
+          '/gz_ros/test/serviceclient/world_control@ros_ign_interfaces/srv/ControlWorld',
         ],
         output='screen'
     )

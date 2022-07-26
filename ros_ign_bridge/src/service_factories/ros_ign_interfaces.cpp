@@ -45,21 +45,6 @@ get_service_factory__ros_ign_interfaces(
     >(ros_type_name, "ignition.msgs.WorldControl", "ignition.msgs.Boolean");
   }
 
-  // NOTE(CH3): Prioritising ignition since versions prior to Garden cannot support gz
-
-  if (
-    ros_type_name == "ros_ign_interfaces/srv/ControlWorld" &&
-    (gz_req_type_name.empty() || gz_req_type_name == "gz.msgs.WorldControl") &&
-    (gz_rep_type_name.empty() || gz_rep_type_name == "gz.msgs.Boolean"))
-  {
-    return std::make_shared<
-      ServiceFactory<
-        ros_ign_interfaces::srv::ControlWorld,
-        ignition::msgs::WorldControl,
-        ignition::msgs::Boolean>
-    >(ros_type_name, "gz.msgs.WorldControl", "gz.msgs.Boolean");
-  }
-
   return nullptr;
 }
 
