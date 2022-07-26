@@ -27,7 +27,7 @@ namespace ros_ign_point_cloud
   ///
   /// This plugin should be attached to an RGBD or GPU lidar sensor (i.e. <sensor...><plugin>)
   ///
-  /// Important: load `ignition::gazebo::systems::Sensors` as well, which will create the sensor.
+  /// Important: load `gz::sim::systems::Sensors` as well, which will create the sensor.
   ///
   /// SDF parameters:
   /// * `<namespace>`: Namespace for ROS node, defaults to sensor scoped name

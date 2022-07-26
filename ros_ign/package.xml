@@ -5,7 +5,7 @@
        https://github.com/ros2/ros2/issues/408 -->
   <name>ros_ign</name>
   <version>0.244.3</version>
-  <description>Meta-package containing interfaces for using ROS 2 with <a href="https://ignitionrobotics.org">Ignition</a> simulation.</description>
+  <description>Meta-package containing interfaces for using ROS 2 with <a href="https://gazebosim.org">Gazebo</a> simulation.</description>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
   <license>Apache 2.0</license>
 
@@ -15,7 +15,7 @@
   <exec_depend>ros_ign_gazebo</exec_depend>
   <exec_depend>ros_ign_gazebo_demos</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
-  <!-- See https://github.com/osrf/ros_ign/issues/40 -->
+  <!-- See https://github.com/gazebosim/ros_gz/issues/40 -->
   <!--exec_depend>ros_ign_point_cloud</exec_depend-->
 
   <test_depend>ament_lint_auto</test_depend>

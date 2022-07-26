@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <!--
-  Example publishing point cloud messages to ROS from Ignition.
+  Example publishing point cloud messages to ROS from Gazebo.
 
   Try it out:
 
@@ -8,10 +8,10 @@
 
           roscore
 
-  2. Make sure Ignition Gazebo can find the point cloud plugin by adding your lib install directory
+  2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
      to the path, for example:
 
-          export IGN_GAZEBO_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
 
   3. Load the example world, unpaused:
 

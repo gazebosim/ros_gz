@@ -69,7 +69,7 @@ template<>
 bool
 send_response_on_error(ros_ign_interfaces::srv::ControlWorld::Response & ros_res)
 {
-  // TODO(now): Is it worth it to have a different field to encode ignition request errors?
+  // TODO(now): Is it worth it to have a different field to encode Gazebo request errors?
   //  Currently we're reusing the success field, which seems fine for this case.
   ros_res.success = false;
   return true;

@@ -15,7 +15,7 @@
 #ifndef ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
 #define ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
 
-// Ignition messages
+// Gazebo Msgs
 #include <ignition/msgs/quaternion.pb.h>
 #include <ignition/msgs/vector3d.pb.h>
 #include <ignition/msgs/pose.pb.h>
