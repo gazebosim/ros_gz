@@ -28,9 +28,9 @@ get_factory__rosgraph_msgs(
   const std::string & ros_type_name,
   const std::string & gz_type_name)
 {
-  if ((ros_type_name == "rosgraph_msgs/msg/Clock" || ros_type_name.empty())
-      && (gz_type_name == "gz.msgs.Clock"
-          || gz_type_name == "ignition.msgs.Clock"))
+  if ((ros_type_name == "rosgraph_msgs/msg/Clock" || ros_type_name.empty()) &&
+    (gz_type_name == "gz.msgs.Clock" ||
+    gz_type_name == "ignition.msgs.Clock"))
   {
     return std::make_shared<
       Factory<

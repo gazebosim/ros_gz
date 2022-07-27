@@ -34,15 +34,16 @@
 #include <sensor_msgs/point_cloud2_iterator.h>
 
 IGNITION_ADD_PLUGIN(
-    ros_gz_point_cloud::PointCloud,
-    ignition::gazebo::System,
-    ros_gz_point_cloud::PointCloud::ISystemConfigure,
-    ros_gz_point_cloud::PointCloud::ISystemPostUpdate)
+  ros_gz_point_cloud::PointCloud,
+  ignition::gazebo::System,
+  ros_gz_point_cloud::PointCloud::ISystemConfigure,
+  ros_gz_point_cloud::PointCloud::ISystemPostUpdate)
 
 using namespace ros_gz_point_cloud;
 
 /// \brief Types of sensors supported by this plugin
-enum class SensorType {
+enum class SensorType
+{
   /// \brief A camera which combines an RGB and a depth camera
   RGBD_CAMERA,
 
@@ -63,109 +64,145 @@ class ros_gz_point_cloud::PointCloudPrivate
   /// \param[in] _height Image height in pixels
   /// \param[in] _channels Number of channels in image.
   /// \param[in] _format Image format as string.
-  public: void OnNewDepthFrame(const float *_scan,
-            unsigned int _width, unsigned int _height,
-            unsigned int _channels,
-            const std::string &_format);
+
+public:
+  void OnNewDepthFrame(
+    const float * _scan,
+    unsigned int _width, unsigned int _height,
+    unsigned int _channels,
+    const std::string & _format);
 
   /// \brief Get depth camera from rendering.
   /// \param[in] _ecm Immutable reference to ECM.
-  public: void LoadDepthCamera(const ignition::gazebo::EntityComponentManager &_ecm);
+
+public:
+  void LoadDepthCamera(const ignition::gazebo::EntityComponentManager & _ecm);
 
   /// \brief Get RGB camera from rendering.
   /// \param[in] _ecm Immutable reference to ECM.
-  public: void LoadRgbCamera(const ignition::gazebo::EntityComponentManager &_ecm);
+
+public:
+  void LoadRgbCamera(const ignition::gazebo::EntityComponentManager & _ecm);
 
   /// \brief Get GPU rays from rendering.
   /// \param[in] _ecm Immutable reference to ECM.
-  public: void LoadGpuRays(const ignition::gazebo::EntityComponentManager &_ecm);
+
+public:
+  void LoadGpuRays(const ignition::gazebo::EntityComponentManager & _ecm);
 
   /// \brief Rendering scene which manages the cameras.
-  public: ignition::rendering::ScenePtr scene_;
+
+public:
+  ignition::rendering::ScenePtr scene_;
 
   /// \brief Entity ID for sensor within Gazebo.
-  public: ignition::gazebo::Entity entity_;
+
+public:
+  ignition::gazebo::Entity entity_;
 
   /// \brief Rendering depth camera
-  public: std::shared_ptr<ignition::rendering::DepthCamera> depth_camera_;
+
+public:
+  std::shared_ptr < ignition::rendering::DepthCamera > depth_camera_;
 
   /// \brief Rendering RGB camera
-  public: std::shared_ptr<ignition::rendering::Camera> rgb_camera_;
+
+public:
+  std::shared_ptr < ignition::rendering::Camera > rgb_camera_;
 
   /// \brief Rendering GPU lidar
-  public: std::shared_ptr<ignition::rendering::GpuRays> gpu_rays_;
+
+public:
+  std::shared_ptr < ignition::rendering::GpuRays > gpu_rays_;
 
   /// \brief Keep latest image from RGB camera.
-  public: ignition::rendering::Image rgb_image_;
+
+public:
+  ignition::rendering::Image rgb_image_;
 
   /// \brief Message populated with latest image from RGB camera.
-  public: sensor_msgs::Image rgb_image_msg_;
+
+public:
+  sensor_msgs::Image rgb_image_msg_;
 
   /// \brief Connection to depth frame event.
-  public: ignition::common::ConnectionPtr depth_connection_;
+
+public:
+  ignition::common::ConnectionPtr depth_connection_;
 
   /// \brief Connection to GPU rays frame event.
-  public: ignition::common::ConnectionPtr gpu_rays_connection_;
+
+public:
+  ignition::common::ConnectionPtr gpu_rays_connection_;
 
   /// \brief Node to publish ROS messages.
-  public: std::unique_ptr<ros::NodeHandle> rosnode_;
+
+public:
+  std::unique_ptr < ros::NodeHandle > rosnode_;
 
   /// \brief Point cloud ROS publisher.
-  public: ros::Publisher pc_pub_;
+
+public:
+  ros::Publisher pc_pub_;
 
   /// \brief Current simulation time.
-  public: std::chrono::steady_clock::duration current_time_;
+
+public:
+  std::chrono::steady_clock::duration current_time_;
 
   /// \brief Frame ID to put in message header. Defaults to sensor scoped name.
-  public: std::string frame_id_;
+
+public:
+  std::string frame_id_;
 
   /// \brief Render engine name
-  public: std::string engine_name_;
+
+public:
+  std::string engine_name_;
 
   /// \brief Render scene name
-  public: std::string scene_name_;
+
+public:
+  std::string scene_name_;
 
   /// \brief Type of sensor which this plugin is attached to.
-  public: SensorType type_;
+
+public:
+  SensorType type_;
 };
 
 //////////////////////////////////////////////////
-PointCloud::PointCloud() : dataPtr(std::make_unique<PointCloudPrivate>())
+PointCloud::PointCloud()
+: dataPtr(std::make_unique < PointCloudPrivate > ())
 {
 }
 
 //////////////////////////////////////////////////
-void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
-    const std::shared_ptr<const sdf::Element> &_sdf,
-    ignition::gazebo::EntityComponentManager &_ecm,
-    ignition::gazebo::EventManager &)
+void PointCloud::Configure(
+  const ignition::gazebo::Entity & _entity,
+  const std::shared_ptr < const sdf::Element > & _sdf,
+  ignition::gazebo::EntityComponentManager & _ecm,
+  ignition::gazebo::EventManager &)
 {
   this->dataPtr->entity_ = _entity;
 
-  if (_ecm.Component<ignition::gazebo::components::RgbdCamera>(_entity) != nullptr)
-  {
+  if (_ecm.Component < ignition::gazebo::components::RgbdCamera > (_entity) != nullptr) {
     this->dataPtr->type_ = SensorType::RGBD_CAMERA;
-  }
-  else if (_ecm.Component<ignition::gazebo::components::DepthCamera>(_entity) != nullptr)
-  {
+  } else if (_ecm.Component < ignition::gazebo::components::DepthCamera > (_entity) != nullptr) {
     this->dataPtr->type_ = SensorType::DEPTH_CAMERA;
-  }
-  else if (_ecm.Component<ignition::gazebo::components::GpuLidar>(_entity) != nullptr)
-  {
+  } else if (_ecm.Component < ignition::gazebo::components::GpuLidar > (_entity) != nullptr) {
     this->dataPtr->type_ = SensorType::GPU_LIDAR;
-  }
-  else
-  {
-    ROS_ERROR_NAMED("ros_gz_point_cloud",
-        "Point cloud plugin must be attached to an RGBD camera, depth camera or GPU lidar.");
+  } else {
+    ROS_ERROR_NAMED(
+      "ros_gz_point_cloud",
+      "Point cloud plugin must be attached to an RGBD camera, depth camera or GPU lidar.");
     return;
   }
 
   // Initialize ROS
-  if (!ros::isInitialized())
-  {
+  if (!ros::isInitialized()) {
     int argc = 0;
-    char** argv = NULL;
+    char ** argv = NULL;
     ros::init(argc, argv, "ignition", ros::init_options::NoSigintHandler);
     ROS_INFO_NAMED("ros_gz_point_cloud", "Initialized ROS");
   }
@@ -174,53 +211,56 @@ void PointCloud::Configure(const ignition::gazebo::Entity &_entity,
   auto scoped_name = ignition::gazebo::scopedName(this->dataPtr->entity_, _ecm, "/", false);
 
   // ROS node
-  auto ns = _sdf->Get<std::string>("namespace", scoped_name).first;
-  this->dataPtr->rosnode_ = std::make_unique<ros::NodeHandle>(ns);
+  auto ns = _sdf->Get < std::string > ("namespace", scoped_name).first;
+  this->dataPtr->rosnode_ = std::make_unique < ros::NodeHandle > (ns);
 
   // Publisher
-  auto topic = _sdf->Get<std::string>("topic", "points").first;
-  this->dataPtr->pc_pub_ = this->dataPtr->rosnode_->advertise<sensor_msgs::PointCloud2>(topic, 1);
+  auto topic = _sdf->Get < std::string > ("topic", "points").first;
+  this->dataPtr->pc_pub_ = this->dataPtr->rosnode_->advertise < sensor_msgs::PointCloud2 >
+    (topic, 1);
 
   // TF frame ID
-  this->dataPtr->frame_id_ = _sdf->Get<std::string>("frame_id", scoped_name).first;
+  this->dataPtr->frame_id_ = _sdf->Get < std::string > ("frame_id", scoped_name).first;
 
   // Rendering engine and scene
-  this->dataPtr->engine_name_ = _sdf->Get<std::string>("engine", "ogre2").first;
-  this->dataPtr->scene_name_ = _sdf->Get<std::string>("scene", "scene").first;
+  this->dataPtr->engine_name_ = _sdf->Get < std::string > ("engine", "ogre2").first;
+  this->dataPtr->scene_name_ = _sdf->Get < std::string > ("scene", "scene").first;
 }
 
 //////////////////////////////////////////////////
-void PointCloud::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
-    const ignition::gazebo::EntityComponentManager &_ecm)
+void PointCloud::PostUpdate(
+  const ignition::gazebo::UpdateInfo & _info,
+  const ignition::gazebo::EntityComponentManager & _ecm)
 {
   this->dataPtr->current_time_ = _info.simTime;
 
   // Find engine / scene
-  if (!this->dataPtr->scene_)
-  {
+  if (!this->dataPtr->scene_) {
     auto engine = ignition::rendering::engine(this->dataPtr->engine_name_);
-    if (!engine)
+    if (!engine) {
       return;
+    }
 
     this->dataPtr->scene_ = engine->SceneByName(this->dataPtr->scene_name_);
-    if (!this->dataPtr->scene_)
+    if (!this->dataPtr->scene_) {
       return;
+    }
   }
 
   // Get rendering objects
   if (!this->dataPtr->depth_camera_ &&
-      (this->dataPtr->type_ == SensorType::RGBD_CAMERA ||
-       this->dataPtr->type_ == SensorType::DEPTH_CAMERA))
+    (this->dataPtr->type_ == SensorType::RGBD_CAMERA ||
+    this->dataPtr->type_ == SensorType::DEPTH_CAMERA))
   {
     this->dataPtr->LoadDepthCamera(_ecm);
   }
   if (!this->dataPtr->rgb_camera_ &&
-       this->dataPtr->type_ == SensorType::RGBD_CAMERA)
+    this->dataPtr->type_ == SensorType::RGBD_CAMERA)
   {
     this->dataPtr->LoadRgbCamera(_ecm);
   }
   if (!this->dataPtr->gpu_rays_ &&
-       this->dataPtr->type_ == SensorType::GPU_LIDAR)
+    this->dataPtr->type_ == SensorType::GPU_LIDAR)
   {
     this->dataPtr->LoadGpuRays(_ecm);
   }
@@ -228,60 +268,58 @@ void PointCloud::PostUpdate(const ignition::gazebo::UpdateInfo &_info,
 
 //////////////////////////////////////////////////
 void PointCloudPrivate::LoadDepthCamera(
-    const ignition::gazebo::EntityComponentManager &_ecm)
+  const ignition::gazebo::EntityComponentManager & _ecm)
 {
   // Sensor name scoped from the model
   auto sensor_name =
-      ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
+    ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
   sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
 
   // Get sensor
   auto sensor = this->scene_->SensorByName(sensor_name + "_depth");
-  if (!sensor)
-  {
+  if (!sensor) {
     sensor = this->scene_->SensorByName(sensor_name);
-    if (!sensor)
-    {
+    if (!sensor) {
       return;
     }
   }
 
   this->depth_camera_ =
-    std::dynamic_pointer_cast<ignition::rendering::DepthCamera>(sensor);
-  if (!this->depth_camera_)
-  {
-    ROS_ERROR_NAMED("ros_gz_point_cloud",
-        "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
+    std::dynamic_pointer_cast < ignition::rendering::DepthCamera > (sensor);
+  if (!this->depth_camera_) {
+    ROS_ERROR_NAMED(
+      "ros_gz_point_cloud",
+      "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
     return;
   }
 
   this->depth_connection_ = this->depth_camera_->ConnectNewDepthFrame(
-      std::bind(&PointCloudPrivate::OnNewDepthFrame, this,
+    std::bind(
+      &PointCloudPrivate::OnNewDepthFrame, this,
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
       std::placeholders::_4, std::placeholders::_5));
 }
 
 //////////////////////////////////////////////////
 void PointCloudPrivate::LoadRgbCamera(
-    const ignition::gazebo::EntityComponentManager &_ecm)
+  const ignition::gazebo::EntityComponentManager & _ecm)
 {
   // Sensor name scoped from the model
   auto sensor_name =
-      ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
+    ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
   sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
 
   // Get sensor
   auto sensor = this->scene_->SensorByName(sensor_name);
-  if (!sensor)
-  {
+  if (!sensor) {
     return;
   }
 
-  this->rgb_camera_ = std::dynamic_pointer_cast<ignition::rendering::Camera>(sensor);
-  if (!this->rgb_camera_)
-  {
-    ROS_ERROR_NAMED("ros_gz_point_cloud",
-        "Rendering sensor named [%s] is not an RGB camera", sensor_name.c_str());
+  this->rgb_camera_ = std::dynamic_pointer_cast < ignition::rendering::Camera > (sensor);
+  if (!this->rgb_camera_) {
+    ROS_ERROR_NAMED(
+      "ros_gz_point_cloud",
+      "Rendering sensor named [%s] is not an RGB camera", sensor_name.c_str());
     return;
   }
 
@@ -290,65 +328,68 @@ void PointCloudPrivate::LoadRgbCamera(
 
 //////////////////////////////////////////////////
 void PointCloudPrivate::LoadGpuRays(
-    const ignition::gazebo::EntityComponentManager &_ecm)
+  const ignition::gazebo::EntityComponentManager & _ecm)
 {
   // Sensor name scoped from the model
   auto sensor_name =
-      ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
+    ignition::gazebo::scopedName(this->entity_, _ecm, "::", false);
   sensor_name = sensor_name.substr(sensor_name.find("::") + 2);
 
   // Get sensor
   auto sensor = this->scene_->SensorByName(sensor_name);
-  if (!sensor)
-  {
+  if (!sensor) {
     return;
   }
 
   this->gpu_rays_ =
-    std::dynamic_pointer_cast<ignition::rendering::GpuRays>(sensor);
-  if (!this->gpu_rays_)
-  {
-    ROS_ERROR_NAMED("ros_gz_point_cloud",
-        "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
+    std::dynamic_pointer_cast < ignition::rendering::GpuRays > (sensor);
+  if (!this->gpu_rays_) {
+    ROS_ERROR_NAMED(
+      "ros_gz_point_cloud",
+      "Rendering sensor named [%s] is not a depth camera", sensor_name.c_str());
     return;
   }
 
   this->gpu_rays_connection_ = this->gpu_rays_->ConnectNewGpuRaysFrame(
-      std::bind(&PointCloudPrivate::OnNewDepthFrame, this,
+    std::bind(
+      &PointCloudPrivate::OnNewDepthFrame, this,
       std::placeholders::_1, std::placeholders::_2, std::placeholders::_3,
       std::placeholders::_4, std::placeholders::_5));
 }
 
 //////////////////////////////////////////////////
-void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
-                    unsigned int _width, unsigned int _height,
-                    unsigned int _channels,
-                    const std::string &_format)
+void PointCloudPrivate::OnNewDepthFrame(
+  const float * _scan,
+  unsigned int _width, unsigned int _height,
+  unsigned int _channels,
+  const std::string & _format)
 {
-  if (this->pc_pub_.getNumSubscribers() <= 0 || _height == 0 || _width == 0)
+  if (this->pc_pub_.getNumSubscribers() <= 0 || _height == 0 || _width == 0) {
     return;
+  }
 
   // Just sanity check, but don't prevent publishing
-  if (this->type_ == SensorType::RGBD_CAMERA && _channels != 1)
-  {
-    ROS_WARN_NAMED("ros_gz_point_cloud",
-        "Expected depth image to have 1 channel, but it has [%i]", _channels);
+  if (this->type_ == SensorType::RGBD_CAMERA && _channels != 1) {
+    ROS_WARN_NAMED(
+      "ros_gz_point_cloud",
+      "Expected depth image to have 1 channel, but it has [%i]", _channels);
   }
-  if (this->type_ == SensorType::GPU_LIDAR && _channels != 3)
-  {
-    ROS_WARN_NAMED("ros_gz_point_cloud",
-        "Expected GPU rays to have 3 channels, but it has [%i]", _channels);
+  if (this->type_ == SensorType::GPU_LIDAR && _channels != 3) {
+    ROS_WARN_NAMED(
+      "ros_gz_point_cloud",
+      "Expected GPU rays to have 3 channels, but it has [%i]", _channels);
   }
   if ((this->type_ == SensorType::RGBD_CAMERA ||
-       this->type_ == SensorType::DEPTH_CAMERA) && _format != "FLOAT32")
+    this->type_ == SensorType::DEPTH_CAMERA) && _format != "FLOAT32")
   {
-    ROS_WARN_NAMED("ros_gz_point_cloud",
-        "Expected depth image to have [FLOAT32] format, but it has [%s]", _format.c_str());
+    ROS_WARN_NAMED(
+      "ros_gz_point_cloud",
+      "Expected depth image to have [FLOAT32] format, but it has [%s]", _format.c_str());
   }
-  if (this->type_ == SensorType::GPU_LIDAR && _format != "PF_FLOAT32_RGB")
-  {
-    ROS_WARN_NAMED("ros_gz_point_cloud",
-        "Expected GPU rays to have [PF_FLOAT32_RGB] format, but it has [%s]", _format.c_str());
+  if (this->type_ == SensorType::GPU_LIDAR && _format != "PF_FLOAT32_RGB") {
+    ROS_WARN_NAMED(
+      "ros_gz_point_cloud",
+      "Expected GPU rays to have [PF_FLOAT32_RGB] format, but it has [%s]", _format.c_str());
   }
 
   // Fill message
@@ -367,41 +408,39 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
 
   sensor_msgs::PointCloud2Modifier modifier(msg);
   modifier.setPointCloud2FieldsByString(2, "xyz", "rgb");
-  modifier.resize(_width*_height);
+  modifier.resize(_width * _height);
 
-  sensor_msgs::PointCloud2Iterator<float> iter_x(msg, "x");
-  sensor_msgs::PointCloud2Iterator<float> iter_y(msg, "y");
-  sensor_msgs::PointCloud2Iterator<float> iter_z(msg, "z");
-  sensor_msgs::PointCloud2Iterator<uint8_t> iter_r(msg, "r");
-  sensor_msgs::PointCloud2Iterator<uint8_t> iter_g(msg, "g");
-  sensor_msgs::PointCloud2Iterator<uint8_t> iter_b(msg, "b");
+  sensor_msgs::PointCloud2Iterator < float > iter_x(msg, "x");
+  sensor_msgs::PointCloud2Iterator < float > iter_y(msg, "y");
+  sensor_msgs::PointCloud2Iterator < float > iter_z(msg, "z");
+  sensor_msgs::PointCloud2Iterator < uint8_t > iter_r(msg, "r");
+  sensor_msgs::PointCloud2Iterator < uint8_t > iter_g(msg, "g");
+  sensor_msgs::PointCloud2Iterator < uint8_t > iter_b(msg, "b");
 
-  if (this->rgb_camera_)
-  {
+  if (this->rgb_camera_) {
     this->rgb_camera_->Capture(this->rgb_image_);
-    fillImage(this->rgb_image_msg_, sensor_msgs::image_encodings::RGB8, _height,
-        _width, 3 * _width, this->rgb_image_.Data<unsigned char>());
+    fillImage(
+      this->rgb_image_msg_, sensor_msgs::image_encodings::RGB8, _height,
+      _width, 3 * _width, this->rgb_image_.Data < unsigned char > ());
   }
 
   // For depth calculation from image
-  double fl{0.0};
-  if (nullptr != this->depth_camera_)
-  {
+  double fl {0.0};
+  if (nullptr != this->depth_camera_) {
     auto hfov = this->depth_camera_->HFOV().Radian();
     fl = _width / (2.0 * tan(hfov / 2.0));
   }
 
   // For depth calculation from laser scan
-  double angle_step{0.0};
-  double vertical_angle_step{0.0};
-  double inclination{0.0};
-  double azimuth{0.0};
-  if (nullptr != this->gpu_rays_)
-  {
+  double angle_step {0.0};
+  double vertical_angle_step {0.0};
+  double inclination {0.0};
+  double azimuth {0.0};
+  if (nullptr != this->gpu_rays_) {
     angle_step = (this->gpu_rays_->AngleMax() - this->gpu_rays_->AngleMin()).Radian() /
-        (this->gpu_rays_->RangeCount()-1);
+      (this->gpu_rays_->RangeCount() - 1);
     vertical_angle_step = (this->gpu_rays_->VerticalAngleMax() -
-        this->gpu_rays_->VerticalAngleMin()).Radian() / (this->gpu_rays_->VerticalRangeCount()-1);
+      this->gpu_rays_->VerticalAngleMin()).Radian() / (this->gpu_rays_->VerticalRangeCount() - 1);
 
     // Angles of ray currently processing, azimuth is horizontal, inclination is vertical
     inclination = this->gpu_rays_->VerticalAngleMin().Radian();
@@ -410,34 +449,33 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
 
   // For color calculation
   uint8_t * image_src;
-  if (nullptr != this->rgb_camera_)
-  {
+  if (nullptr != this->rgb_camera_) {
     image_src = (uint8_t *)(&(this->rgb_image_msg_.data[0]));
   }
 
   // Iterate over scan and populate point cloud
-  for (uint32_t j = 0; j < _height; ++j)
-  {
-    double p_angle{0.0};
-    if (fl > 0 && _height > 1)
-      p_angle = atan2((double)j - 0.5 * (double)(_height-1), fl);
+  for (uint32_t j = 0; j < _height; ++j) {
+    double p_angle {0.0};
+    if (fl > 0 && _height > 1) {
+      p_angle = atan2((double)j - 0.5 * (double)(_height - 1), fl);
+    }
 
-    if (nullptr != this->gpu_rays_)
-    {
+    if (nullptr != this->gpu_rays_) {
       azimuth = this->gpu_rays_->AngleMin().Radian();
     }
-    for (uint32_t i = 0; i < _width; ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
+    for (uint32_t i = 0; i < _width;
+      ++i, ++iter_x, ++iter_y, ++iter_z, ++iter_r, ++iter_g, ++iter_b)
     {
       // Index of current point
       auto index = j * _width * _channels + i * _channels;
       double depth = _scan[index];
 
-      double y_angle{0.0};
-      if (fl > 0 && _width > 1)
-        y_angle = atan2((double)i - 0.5 * (double)(_width-1), fl);
+      double y_angle {0.0};
+      if (fl > 0 && _width > 1) {
+        y_angle = atan2((double)i - 0.5 * (double)(_width - 1), fl);
+      }
 
-      if (nullptr != this->depth_camera_)
-      {
+      if (nullptr != this->depth_camera_) {
         // in optical frame
         // hardcoded rotation rpy(-M_PI/2, 0, -M_PI/2) is built-in
         // to urdf, where the *_optical_frame should have above relative
@@ -447,19 +485,15 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
         *iter_z = depth;
 
         // Clamp according to REP 117
-        if (depth > this->depth_camera_->FarClipPlane())
-        {
+        if (depth > this->depth_camera_->FarClipPlane()) {
           *iter_z = ignition::math::INF_D;
           msg.is_dense = false;
         }
-        if (depth < this->depth_camera_->NearClipPlane())
-        {
+        if (depth < this->depth_camera_->NearClipPlane()) {
           *iter_z = -ignition::math::INF_D;
           msg.is_dense = false;
         }
-      }
-      else if (nullptr != this->gpu_rays_)
-      {
+      } else if (nullptr != this->gpu_rays_) {
         // Convert spherical coordinates to Cartesian for pointcloud
         // See https://en.wikipedia.org/wiki/Spherical_coordinate_system
         *iter_x = depth * cos(inclination) * cos(azimuth);
@@ -468,22 +502,17 @@ void PointCloudPrivate::OnNewDepthFrame(const float *_scan,
       }
 
       // Put image color data for each point
-      if (this->rgb_image_msg_.data.size() == _height * _width * 3)
-      {
+      if (this->rgb_image_msg_.data.size() == _height * _width * 3) {
         // color
-        *iter_r = image_src[i*3+j*_width*3+0];
-        *iter_g = image_src[i*3+j*_width*3+1];
-        *iter_b = image_src[i*3+j*_width*3+2];
-      }
-      else if (this->rgb_image_msg_.data.size() == _height*_width)
-      {
+        *iter_r = image_src[i * 3 + j * _width * 3 + 0];
+        *iter_g = image_src[i * 3 + j * _width * 3 + 1];
+        *iter_b = image_src[i * 3 + j * _width * 3 + 2];
+      } else if (this->rgb_image_msg_.data.size() == _height * _width) {
         // mono?
-        *iter_r = image_src[i+j*_width];
-        *iter_g = image_src[i+j*_width];
-        *iter_b = image_src[i+j*_width];
-      }
-      else
-      {
+        *iter_r = image_src[i + j * _width];
+        *iter_g = image_src[i + j * _width];
+        *iter_b = image_src[i + j * _width];
+      } else {
         // no image
         *iter_r = 0;
         *iter_g = 0;
