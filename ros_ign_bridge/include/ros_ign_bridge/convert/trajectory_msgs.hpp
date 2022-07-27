@@ -23,34 +23,34 @@
 
 #include <ros_ign_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
-  ignition::msgs::JointTrajectoryPoint & ign_msg);
+  ignition::msgs::JointTrajectoryPoint & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::JointTrajectoryPoint & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::JointTrajectoryPoint & gz_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
-  ignition::msgs::JointTrajectory & ign_msg);
+  ignition::msgs::JointTrajectory & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::JointTrajectory & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::JointTrajectory & gz_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg);
 
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_

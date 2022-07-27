@@ -23,21 +23,21 @@
 
 #include <ros_ign_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const tf2_msgs::msg::TFMessage & ros_msg,
-  ignition::msgs::Pose_V & ign_msg);
+  ignition::msgs::Pose_V & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose_V & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose_V & gz_msg,
   tf2_msgs::msg::TFMessage & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__TF2_MSGS_HPP_

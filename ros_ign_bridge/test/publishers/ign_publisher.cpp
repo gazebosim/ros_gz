@@ -52,17 +52,17 @@ int main(int /*argc*/, char **/*argv*/)
   // gz::msgs::Color.
   auto color_pub = node.Advertise<ignition::msgs::Color>("color");
   ignition::msgs::Color color_msg;
-  ros_ign_bridge::testing::createTestMsg(color_msg);
+  ros_gz_bridge::testing::createTestMsg(color_msg);
 
   // gz::msgs::Light.
   auto light_pub = node.Advertise<ignition::msgs::Light>("light");
   ignition::msgs::Light light_msg;
-  ros_ign_bridge::testing::createTestMsg(light_msg);
+  ros_gz_bridge::testing::createTestMsg(light_msg);
 
   // gz::msgs::Boolean.
   auto bool_pub = node.Advertise<ignition::msgs::Boolean>("bool");
   ignition::msgs::Boolean bool_msg;
-  ros_ign_bridge::testing::createTestMsg(bool_msg);
+  ros_gz_bridge::testing::createTestMsg(bool_msg);
 
   // gz::msgs::Empty.
   auto empty_pub = node.Advertise<ignition::msgs::Empty>("empty");
@@ -71,209 +71,209 @@ int main(int /*argc*/, char **/*argv*/)
   // gz::msgs::Float.
   auto float_pub = node.Advertise<ignition::msgs::Float>("float");
   ignition::msgs::Float float_msg;
-  ros_ign_bridge::testing::createTestMsg(float_msg);
+  ros_gz_bridge::testing::createTestMsg(float_msg);
 
   // gz::msgs::Double.
   auto double_pub = node.Advertise<ignition::msgs::Double>("double");
   ignition::msgs::Double double_msg;
-  ros_ign_bridge::testing::createTestMsg(double_msg);
+  ros_gz_bridge::testing::createTestMsg(double_msg);
 
   // gz::msgs::Uint32.
   auto uint32_pub = node.Advertise<ignition::msgs::UInt32>("uint32");
   ignition::msgs::UInt32 uint32_msg;
-  ros_ign_bridge::testing::createTestMsg(uint32_msg);
+  ros_gz_bridge::testing::createTestMsg(uint32_msg);
 
   // gz::msgs::Header.
   auto header_pub = node.Advertise<ignition::msgs::Header>("header");
   ignition::msgs::Header header_msg;
-  ros_ign_bridge::testing::createTestMsg(header_msg);
+  ros_gz_bridge::testing::createTestMsg(header_msg);
 
   // gz::msgs::StringMsg.
   auto string_pub = node.Advertise<ignition::msgs::StringMsg>("string");
   ignition::msgs::StringMsg string_msg;
-  ros_ign_bridge::testing::createTestMsg(string_msg);
+  ros_gz_bridge::testing::createTestMsg(string_msg);
 
   // gz::msgs::Quaternion.
   auto quaternion_pub =
     node.Advertise<ignition::msgs::Quaternion>("quaternion");
   ignition::msgs::Quaternion quaternion_msg;
-  ros_ign_bridge::testing::createTestMsg(quaternion_msg);
+  ros_gz_bridge::testing::createTestMsg(quaternion_msg);
 
   // gz::msgs::Vector3d.
   auto vector3_pub = node.Advertise<ignition::msgs::Vector3d>("vector3");
   ignition::msgs::Vector3d vector3_msg;
-  ros_ign_bridge::testing::createTestMsg(vector3_msg);
+  ros_gz_bridge::testing::createTestMsg(vector3_msg);
 
   // gz::msgs::Clock.
   auto clock_pub = node.Advertise<ignition::msgs::Clock>("clock");
   ignition::msgs::Clock clock_msg;
-  ros_ign_bridge::testing::createTestMsg(clock_msg);
+  ros_gz_bridge::testing::createTestMsg(clock_msg);
 
   // gz::msgs::Point.
   auto point_pub = node.Advertise<ignition::msgs::Vector3d>("point");
   ignition::msgs::Vector3d point_msg;
-  ros_ign_bridge::testing::createTestMsg(point_msg);
+  ros_gz_bridge::testing::createTestMsg(point_msg);
 
   // gz::msgs::Pose.
   auto pose_pub = node.Advertise<ignition::msgs::Pose>("pose");
   ignition::msgs::Pose pose_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_msg);
 
   // gz::msgs::PoseWithCovariance.
   auto pose_cov_pub = node.Advertise<ignition::msgs::PoseWithCovariance>("pose_with_covariance");
   ignition::msgs::PoseWithCovariance pose_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_cov_msg);
 
   // gz::msgs::PoseStamped.
   auto pose_stamped_pub = node.Advertise<ignition::msgs::Pose>("pose_stamped");
   ignition::msgs::Pose pose_stamped_msg;
-  ros_ign_bridge::testing::createTestMsg(pose_stamped_msg);
+  ros_gz_bridge::testing::createTestMsg(pose_stamped_msg);
 
   // gz::msgs::Transform.
   auto transform_pub =
     node.Advertise<ignition::msgs::Pose>("transform");
   ignition::msgs::Pose transform_msg;
-  ros_ign_bridge::testing::createTestMsg(transform_msg);
+  ros_gz_bridge::testing::createTestMsg(transform_msg);
 
   // gz::msgs::TransformStamped.
   auto transform_stamped_pub =
     node.Advertise<ignition::msgs::Pose>("transform_stamped");
   ignition::msgs::Pose transform_stamped_msg;
-  ros_ign_bridge::testing::createTestMsg(transform_stamped_msg);
+  ros_gz_bridge::testing::createTestMsg(transform_stamped_msg);
 
   // gz::msgs::Pose_V.
   auto tf2_message_pub =
     node.Advertise<ignition::msgs::Pose_V>("tf2_message");
   ignition::msgs::Pose_V tf2_msg;
-  ros_ign_bridge::testing::createTestMsg(tf2_msg);
+  ros_gz_bridge::testing::createTestMsg(tf2_msg);
 
   // gz::msgs::Image.
   auto image_pub = node.Advertise<ignition::msgs::Image>("image");
   ignition::msgs::Image image_msg;
-  ros_ign_bridge::testing::createTestMsg(image_msg);
+  ros_gz_bridge::testing::createTestMsg(image_msg);
 
   // gz::msgs::CameraInfo.
   auto camera_info_pub = node.Advertise<ignition::msgs::CameraInfo>("camera_info");
   ignition::msgs::CameraInfo camera_info_msg;
-  ros_ign_bridge::testing::createTestMsg(camera_info_msg);
+  ros_gz_bridge::testing::createTestMsg(camera_info_msg);
 
   // gz::msgs::FluidPressure.
   auto fluid_pressure_pub = node.Advertise<ignition::msgs::FluidPressure>("fluid_pressure");
   ignition::msgs::FluidPressure fluid_pressure_msg;
-  ros_ign_bridge::testing::createTestMsg(fluid_pressure_msg);
+  ros_gz_bridge::testing::createTestMsg(fluid_pressure_msg);
 
   // gz::msgs::IMU.
   auto imu_pub = node.Advertise<ignition::msgs::IMU>("imu");
   ignition::msgs::IMU imu_msg;
-  ros_ign_bridge::testing::createTestMsg(imu_msg);
+  ros_gz_bridge::testing::createTestMsg(imu_msg);
 
   // gz::msgs::LaserScan.
   auto laserscan_pub = node.Advertise<ignition::msgs::LaserScan>("laserscan");
   ignition::msgs::LaserScan laserscan_msg;
-  ros_ign_bridge::testing::createTestMsg(laserscan_msg);
+  ros_gz_bridge::testing::createTestMsg(laserscan_msg);
 
   // gz::msgs::Magnetometer.
   auto magnetic_pub = node.Advertise<ignition::msgs::Magnetometer>("magnetic");
   ignition::msgs::Magnetometer magnetometer_msg;
-  ros_ign_bridge::testing::createTestMsg(magnetometer_msg);
+  ros_gz_bridge::testing::createTestMsg(magnetometer_msg);
 
   // gz::msgs::Actuators.
   auto actuators_pub = node.Advertise<ignition::msgs::Actuators>("actuators");
   ignition::msgs::Actuators actuators_msg;
-  ros_ign_bridge::testing::createTestMsg(actuators_msg);
+  ros_gz_bridge::testing::createTestMsg(actuators_msg);
 
   // gz::msgs::Odometry.
   auto odometry_pub = node.Advertise<ignition::msgs::Odometry>("odometry");
   ignition::msgs::Odometry odometry_msg;
-  ros_ign_bridge::testing::createTestMsg(odometry_msg);
+  ros_gz_bridge::testing::createTestMsg(odometry_msg);
 
   // gz::msgs::OdometryWithCovariance.
   auto odometry_cov_pub = node.Advertise<ignition::msgs::OdometryWithCovariance>(
     "odometry_with_covariance");
   ignition::msgs::OdometryWithCovariance odometry_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(odometry_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(odometry_cov_msg);
 
   // gz::msgs::Model.
   auto joint_states_pub = node.Advertise<ignition::msgs::Model>("joint_states");
   ignition::msgs::Model joint_states_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_states_msg);
+  ros_gz_bridge::testing::createTestMsg(joint_states_msg);
 
   // gz::msgs::Twist.
   auto twist_pub = node.Advertise<ignition::msgs::Twist>("twist");
   ignition::msgs::Twist twist_msg;
-  ros_ign_bridge::testing::createTestMsg(twist_msg);
+  ros_gz_bridge::testing::createTestMsg(twist_msg);
 
   // gz::msgs::TwistWithCovariance.
   auto twist_cov_pub = node.Advertise<ignition::msgs::TwistWithCovariance>(
     "twist_with_covariance");
   ignition::msgs::TwistWithCovariance twist_cov_msg;
-  ros_ign_bridge::testing::createTestMsg(twist_cov_msg);
+  ros_gz_bridge::testing::createTestMsg(twist_cov_msg);
 
   // gz::msgs::Wrench.
   auto wrench_pub = node.Advertise<ignition::msgs::Wrench>("wrench");
   ignition::msgs::Wrench wrench_msg;
-  ros_ign_bridge::testing::createTestMsg(wrench_msg);
+  ros_gz_bridge::testing::createTestMsg(wrench_msg);
 
   // gz::msgs::JointWrench.
   auto joint_wrench_pub = node.Advertise<ignition::msgs::JointWrench>("joint_wrench");
   ignition::msgs::JointWrench joint_wrench_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_wrench_msg);
+  ros_gz_bridge::testing::createTestMsg(joint_wrench_msg);
 
   // gz::msgs::Entity.
   auto entity_pub = node.Advertise<ignition::msgs::Entity>("entity");
   ignition::msgs::Entity entity_msg;
-  ros_ign_bridge::testing::createTestMsg(entity_msg);
+  ros_gz_bridge::testing::createTestMsg(entity_msg);
 
   // gz::msgs::Contact.
   auto contact_pub = node.Advertise<ignition::msgs::Contact>("contact");
   ignition::msgs::Contact contact_msg;
-  ros_ign_bridge::testing::createTestMsg(contact_msg);
+  ros_gz_bridge::testing::createTestMsg(contact_msg);
 
   // gz::msgs::Contacts.
   auto contacts_pub = node.Advertise<ignition::msgs::Contacts>("contacts");
   ignition::msgs::Contacts contacts_msg;
-  ros_ign_bridge::testing::createTestMsg(contacts_msg);
+  ros_gz_bridge::testing::createTestMsg(contacts_msg);
 
   // gz::msgs::PointCloudPacked.
   auto pointcloudpacked_pub = node.Advertise<ignition::msgs::PointCloudPacked>(
     "pointcloud2");
   ignition::msgs::PointCloudPacked pointcloudpacked_msg;
-  ros_ign_bridge::testing::createTestMsg(pointcloudpacked_msg);
+  ros_gz_bridge::testing::createTestMsg(pointcloudpacked_msg);
 
   // gz::msgs::BatteryState.
   auto battery_state_pub = node.Advertise<ignition::msgs::BatteryState>("battery_state");
   ignition::msgs::BatteryState battery_state_msg;
-  ros_ign_bridge::testing::createTestMsg(battery_state_msg);
+  ros_gz_bridge::testing::createTestMsg(battery_state_msg);
 
   // gz::msgs::JointTrajectory.
   auto joint_trajectory_pub = node.Advertise<ignition::msgs::JointTrajectory>("joint_trajectory");
   ignition::msgs::JointTrajectory joint_trajectory_msg;
-  ros_ign_bridge::testing::createTestMsg(joint_trajectory_msg);
+  ros_gz_bridge::testing::createTestMsg(joint_trajectory_msg);
 
   // gz::msgs::GUICamera.
   auto gui_camera_pub = node.Advertise<ignition::msgs::GUICamera>("gui_camera");
   ignition::msgs::GUICamera gui_camera_msg;
-  ros_ign_bridge::testing::createTestMsg(gui_camera_msg);
+  ros_gz_bridge::testing::createTestMsg(gui_camera_msg);
 
   // gz::msgs::StringMsg_V.
   auto stringmsg_v_pub = node.Advertise<ignition::msgs::StringMsg_V>("stringmsg_v");
   ignition::msgs::StringMsg_V stringmsg_v_msg;
-  ros_ign_bridge::testing::createTestMsg(stringmsg_v_msg);
+  ros_gz_bridge::testing::createTestMsg(stringmsg_v_msg);
 
   // gz::msgs::Time.
   auto time_pub = node.Advertise<ignition::msgs::Time>("time");
   ignition::msgs::Time time_msg;
-  ros_ign_bridge::testing::createTestMsg(time_msg);
+  ros_gz_bridge::testing::createTestMsg(time_msg);
 
   // gz::msgs::TrackVisual.
   auto track_visual_pub = node.Advertise<ignition::msgs::TrackVisual>("track_visual");
   ignition::msgs::TrackVisual track_visual_msg;
-  ros_ign_bridge::testing::createTestMsg(track_visual_msg);
+  ros_gz_bridge::testing::createTestMsg(track_visual_msg);
 
   // gz::msgs::VideoRecord.
   auto video_record_pub = node.Advertise<ignition::msgs::VideoRecord>("video_record");
   ignition::msgs::VideoRecord video_record_msg;
-  ros_ign_bridge::testing::createTestMsg(video_record_msg);
+  ros_gz_bridge::testing::createTestMsg(video_record_msg);
 
   // Publish messages at 100Hz.
   while (!g_terminatePub) {

@@ -27,7 +27,7 @@ TEST(ROSSubscriberTest, Color)
   MyTestClass<std_msgs::msg::ColorRGBA> client("color");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -39,7 +39,7 @@ TEST(ROSSubscriberTest, Bool)
   MyTestClass<std_msgs::msg::Bool> client("bool");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -51,7 +51,7 @@ TEST(ROSSubscriberTest, Empty)
   MyTestClass<std_msgs::msg::Empty> client("empty");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -63,7 +63,7 @@ TEST(ROSSubscriberTest, Float)
   MyTestClass<std_msgs::msg::Float32> client("float");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -75,7 +75,7 @@ TEST(ROSSubscriberTest, Double)
   MyTestClass<std_msgs::msg::Float64> client("double");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -87,7 +87,7 @@ TEST(ROSSubscriberTest, UInt32)
   MyTestClass<std_msgs::msg::UInt32> client("uint32");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -99,7 +99,7 @@ TEST(ROSSubscriberTest, Header)
   MyTestClass<std_msgs::msg::Header> client("header");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -111,7 +111,7 @@ TEST(ROSSubscriberTest, String)
   MyTestClass<std_msgs::msg::String> client("string");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);

@@ -23,7 +23,7 @@
 #include <rclcpp/service.hpp>
 #include <rclcpp/node.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 class ServiceFactoryInterface
@@ -33,10 +33,10 @@ public:
   rclcpp::ServiceBase::SharedPtr
   create_ros_service(
     rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<ignition::transport::Node> ign_node,
+    std::shared_ptr<ignition::transport::Node> gz_node,
     const std::string & service_name) = 0;
 };
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // SERVICE_FACTORY_INTERFACE_HPP_

@@ -27,7 +27,7 @@ TEST(ROSSubscriberTest, Clock)
   MyTestClass<rosgraph_msgs::msg::Clock> client("clock");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);

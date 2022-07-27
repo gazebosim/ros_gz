@@ -38,142 +38,142 @@
 
 #include <ros_ign_bridge/convert_decl.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 // geometry_msgs
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Quaternion & ros_msg,
-  ignition::msgs::Quaternion & ign_msg);
+  ignition::msgs::Quaternion & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Quaternion & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Quaternion & gz_msg,
   geometry_msgs::msg::Quaternion & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Vector3 & ros_msg,
-  ignition::msgs::Vector3d & ign_msg);
+  ignition::msgs::Vector3d & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Vector3d & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Vector3 & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Point & ros_msg,
-  ignition::msgs::Vector3d & ign_msg);
+  ignition::msgs::Vector3d & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Vector3d & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Point & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Pose & ros_msg,
-  ignition::msgs::Pose & ign_msg);
+  ignition::msgs::Pose & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
-  ignition::msgs::PoseWithCovariance & ign_msg);
+  ignition::msgs::PoseWithCovariance & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::PoseWithCovariance & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::PoseStamped & ros_msg,
-  ignition::msgs::Pose & ign_msg);
+  ignition::msgs::Pose & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::PoseStamped & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Transform & ros_msg,
-  ignition::msgs::Pose & ign_msg);
+  ignition::msgs::Pose & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::Transform & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::TransformStamped & ros_msg,
-  ignition::msgs::Pose & ign_msg);
+  ignition::msgs::Pose & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Pose & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Pose & gz_msg,
   geometry_msgs::msg::TransformStamped & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Twist & ros_msg,
-  ignition::msgs::Twist & ign_msg);
+  ignition::msgs::Twist & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Twist & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
-  ignition::msgs::TwistWithCovariance & ign_msg);
+  ignition::msgs::TwistWithCovariance & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::TwistWithCovariance & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg);
 
 template<>
 void
-convert_ros_to_ign(
+convert_ros_to_gz(
   const geometry_msgs::msg::Wrench & ros_msg,
-  ignition::msgs::Wrench & ign_msg);
+  ignition::msgs::Wrench & gz_msg);
 
 template<>
 void
-convert_ign_to_ros(
-  const ignition::msgs::Wrench & ign_msg,
+convert_gz_to_ros(
+  const ignition::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // ROS_IGN_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
