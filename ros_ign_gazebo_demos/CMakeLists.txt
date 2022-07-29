@@ -29,12 +29,6 @@ install(
 
 install(
   DIRECTORY
-    ${CMAKE_CURRENT_SOURCE_DIR}/models/vehicle
-  DESTINATION share/${PROJECT_NAME}/models/
-)
-
-install(
-  DIRECTORY
     worlds/
   DESTINATION share/${PROJECT_NAME}/worlds
 )

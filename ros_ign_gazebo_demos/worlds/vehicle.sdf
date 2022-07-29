@@ -13,23 +13,6 @@
 -->
 <sdf version="1.8">
   <world name="demo">
-    <physics name="1ms" type="ignored">
-      <real_time_factor>0</real_time_factor>
-      <max_step_size>0.001</max_step_size>
-    </physics>
-
-    <plugin
-      filename="ignition-gazebo-physics-system"
-      name="ignition::gazebo::systems::Physics">
-    </plugin>
-    <plugin
-      filename="ignition-gazebo-user-commands-system"
-      name="ignition::gazebo::systems::UserCommands">
-    </plugin>
-    <plugin
-      filename="ignition-gazebo-scene-broadcaster-system"
-      name="ignition::gazebo::systems::SceneBroadcaster">
-    </plugin>
 
     <light name="sun" type="directional">
       <cast_shadows>true</cast_shadows>
@@ -79,14 +62,14 @@
         <uri>package://ros_ign_gazebo_demos/models/vehicle</uri>
       </include>
 
-    <plugin
-        filename="ignition-gazebo-joint-state-publisher-system"
-        name="ignition::gazebo::systems::JointStatePublisher">
+      <plugin
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
       </plugin>
 
       <plugin
-        filename="ignition-gazebo-pose-publisher-system"
-        name="ignition::gazebo::systems::PosePublisher">
+        filename="gz-sim-pose-publisher-system"
+        name="gz::sim::systems::PosePublisher">
         <publish_link_pose>true</publish_link_pose>
         <use_pose_vector_msg>true</use_pose_vector_msg>
         <static_publisher>true</static_publisher>
@@ -94,9 +77,8 @@
       </plugin>
 
       <plugin
-        filename="ignition-gazebo-odometry-publisher-system"
-        name="ignition::gazebo::systems::OdometryPublisher">
-        <dimensions>3</dimensions>
+        filename="gz-sim-odometry-publisher-system"
+        name="gz::sim::systems::OdometryPublisher">
         <odom_frame>vehicle/odom</odom_frame>
         <robot_base_frame>vehicle</robot_base_frame>
       </plugin>
