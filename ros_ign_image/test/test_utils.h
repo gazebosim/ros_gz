@@ -27,7 +27,7 @@
 #include <thread>
 #include <ignition/msgs.hh>
 
-namespace ros_ign_image
+namespace ros_gz_image
 {
 namespace testing
 {
@@ -137,7 +137,7 @@ namespace testing
   }
 
   //////////////////////////////////////////////////
-  /// Ignition::msgs test utils
+  /// gz::msgs test utils
   //////////////////////////////////////////////////
 
   /// \brief Create a message used for testing.

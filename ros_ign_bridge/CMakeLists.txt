@@ -22,24 +22,30 @@ find_package(std_msgs REQUIRED)
 find_package(tf2_msgs REQUIRED)
 find_package(trajectory_msgs REQUIRED)
 
+# TODO(CH3): Deprecated. Remove on tock.
+if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
+  message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
+  set(ENV{GZ_VERSION} ENV{IGNITION_VERSION})
+endif()
+
 # Edifice
-if("$ENV{IGNITION_VERSION}" STREQUAL "edifice")
+if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   find_package(ignition-msgs7 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
-elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
   find_package(gz-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX gz)
 
@@ -47,10 +53,10 @@ elseif("$ENV{IGNITION_VERSION}" STREQUAL "garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   find_package(ignition-msgs8 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
 
@@ -93,8 +99,8 @@ foreach(PKG ${PACKAGES})
   )
   target_link_libraries(${PKG}_bridge
     bridge_utils
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
     rclcpp::rclcpp
   )
   set_target_properties(${PKG}_bridge
@@ -146,8 +152,8 @@ foreach(bridge ${bridge_executables})
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
@@ -176,8 +182,8 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ${GZ_TARGET_PREFIX}-msgs${IGN_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${IGN_TRANSPORT_VER}::core
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
     builtin_interfaces

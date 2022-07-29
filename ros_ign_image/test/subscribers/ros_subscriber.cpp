@@ -35,7 +35,7 @@ class MyTestClass
   /// \brief Member function called each time a topic update is received.
   public: void Cb(const ROS_T& _msg)
   {
-    ros_ign_image::testing::compareTestMsg(_msg);
+    ros_gz_image::testing::compareTestMsg(_msg);
     this->callbackExecuted = true;
   };
 
@@ -55,7 +55,7 @@ TEST(ROSSubscriberTest, Image)
   MyTestClass<sensor_msgs::Image> client("image");
 
   using namespace std::chrono_literals;
-  ros_ign_image::testing::waitUntilBoolVarAndSpin(
+  ros_gz_image::testing::waitUntilBoolVarAndSpin(
     client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);

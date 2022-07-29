@@ -61,7 +61,7 @@
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -453,6 +453,6 @@ void createTestMsg(trajectory_msgs::msg::JointTrajectory & _msg);
 void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory> & _msg);
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // UTILS__ROS_TEST_MSG_HPP_

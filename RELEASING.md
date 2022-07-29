@@ -1,7 +1,7 @@
-# Release a new version of ros_ign
+# Release a new version of ros_gz
 
 Different branches of this repository support different combinations of
-ROS 1, ROS 2 and Ignition. Refer to the [README](README.md) to see what
+ROS 1, ROS 2 and Gazebo. Refer to the [README](README.md) to see what
 combinations are supported.
 
 We use 2 separate approaches for releasing ROS-enabled binaries:
@@ -12,9 +12,9 @@ We use 2 separate approaches for releasing ROS-enabled binaries:
   for ROS users.
 
 Releasing into ROS packages is ideal, but that's only possible if the necessary
-Ignition libraries are available either through official Ubuntu packages, or
+Gazebo libraries are available either through official Ubuntu packages, or
 directly from https://packages.ros.org. This situation varies according to the
-Ignition version:
+Gazebo version:
 
 * Citadel is available from:
     * https://packages.osrfoundation.org: all Ubuntu versions
@@ -24,22 +24,22 @@ Ignition version:
     * https://packages.osrfoundation.org: all Ubuntu versions
     * https://packages.ros.org: only Ubuntu Focal, once ROS 2 Galactic is out
 
-Another factor to take into consideration is which Ignition version is officially
+Another factor to take into consideration is which Gazebo version is officially
 supported for each ROS distro according to the following REPS:
 
 * ROS 1: [REP-0003](https://ros.org/reps/rep-0003.html)
 * ROS 2: [REP-2000](https://www.ros.org/reps/rep-2000.html)
 
-These factors determine which ROS + Ignition combinations are released into each
+These factors determine which ROS + Gazebo combinations are released into each
 repository.
 
 ## Versioning
 
-All `ros_ign` packages are under fast development and haven't reached version
+All `ros_gz` packages are under fast development and haven't reached version
 1.0 yet. The team will make an effort to keep changes backwards compatible
 within a ROS distribution, but API / ABI / behaviour may be broken if necessary.
 
-The versioning scheme uses the minor version to identify ROS and Ignition
+The versioning scheme uses the minor version to identify ROS and Gazebo
 versions:
 
 * 1st digit:
@@ -61,7 +61,7 @@ versions:
     * Fortress: 4
     * Garden: 5
 
-ROS | Ignition | Version
+ROS | Gazebo | Version
 -- | -- | --
 Melodic | Blueprint | 0.100.X
 Melodic | Citadel | 0.101.X
@@ -90,7 +90,7 @@ Foxy | Edifice | 0.223.X
     * `catkin_generate_changelog`
     * `catkin_prepare_release`
 
-1. Install `rosdep` for Ignition packages and run rosdep update
+1. Install `rosdep` for Gazebo packages and run rosdep update
     ```
     sudo bash -c 'echo "yaml https://github.com/osrf/osrf-rosdep/raw/master/ignition/ignition.yaml" >> /etc/ros/rosdep/sources.list.d/00-ignition.list'
     rosdep update
@@ -98,7 +98,7 @@ Foxy | Edifice | 0.223.X
 
 1. Bloom it into a custom repository
     ```
-    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_ign
+    BLOOM_RELEASE_REPO_BASE=https://github.com/osrf/ bloom-release --no-pull-request --rosdistro melodic --track melodic ros_gz
     ```
 
     Will fail fedora: ignore and continue:
@@ -110,5 +110,5 @@ Foxy | Edifice | 0.223.X
 1. Use [release-tools](https://bitbucket.org/osrf/release-tools)'s script to launch jenkins jobs:
     ```
     cd release-tools/bloom
-    ./ros_ign_bridge-release.py.bash 0.8.0 https://github.com/osrf/ros_ign-release <ros_distro> <token> --ignition-version <version_name>
+    ./ros_gz_bridge-release.py.bash 0.8.0 https://github.com/gazebosim/ros_ign-release <ros_distro> <token> --gz-version <version_name>
     ```

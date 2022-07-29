@@ -27,7 +27,7 @@ TEST(ROSSubscriberTest, Odometry)
   MyTestClass<nav_msgs::msg::Odometry> client("odometry");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
@@ -39,7 +39,7 @@ TEST(ROSSubscriberTest, OdometryWithCovariance)
   MyTestClass<nav_msgs::msg::Odometry> client("odometry_with_covariance");
 
   using namespace std::chrono_literals;
-  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);

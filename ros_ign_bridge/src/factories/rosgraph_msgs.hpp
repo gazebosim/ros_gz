@@ -20,14 +20,14 @@
 
 #include "factory_interface.hpp"
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 
 std::shared_ptr<FactoryInterface>
 get_factory__rosgraph_msgs(
   const std::string & ros_type_name,
-  const std::string & ign_type_name);
+  const std::string & gz_type_name);
 
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 
 #endif  // FACTORIES__ROSGRAPH_MSGS_HPP_

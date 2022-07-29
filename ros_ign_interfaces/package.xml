@@ -1,7 +1,7 @@
 <package format="3">
   <name>ros_ign_interfaces</name>
   <version>0.244.3</version>
-  <description>Message and service data structures for interacting with Ignition from ROS2.</description>
+  <description>Message and service data structures for interacting with Gazebo from ROS2.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
   <author email="zhenpeng.ge@qq.com">Zhenpeng Ge</author>

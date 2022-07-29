@@ -21,7 +21,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-namespace ros_ign_bridge
+namespace ros_gz_bridge
 {
 namespace testing
 {
@@ -73,5 +73,5 @@ void waitUntilBoolVarAndSpin(
 }
 
 }  // namespace testing
-}  // namespace ros_ign_bridge
+}  // namespace ros_gz_bridge
 #endif  // UTILS__TEST_UTILS_HPP_

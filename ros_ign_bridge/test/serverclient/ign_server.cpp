@@ -60,9 +60,9 @@ int main(int /*argc*/, char **/*argv*/)
   // Create a transport node and advertise a topic.
   ignition::transport::Node node;
 
-  // ignition::msgs::WorldControl.
+  // gz::msgs::WorldControl.
   node.Advertise(
-    "/ign_ros/test/serviceclient/world_control",
+    "/gz_ros/test/serviceclient/world_control",
     &control_world);
 
   // Requests are handled in another thread.
