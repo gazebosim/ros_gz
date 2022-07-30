@@ -1,0 +1,17 @@
+<package format="3">
+  <name>ros_gz_point_cloud</name>
+  <version>0.7.0</version>
+  <description>Point cloud utilities for Gazebo simulation with ROS.</description>
+  <license>Apache 2.0</license>
+  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <depend>ignition-gazebo2</depend>
+  <depend>ignition-rendering2</depend>
+  <depend>ignition-sensors2</depend>
+  <depend>roscpp</depend>
+  <depend>sensor_msgs</depend>
+
+  <exec_depend>message_runtime</exec_depend>
+</package>

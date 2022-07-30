@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- Launch the bridge -->
+  <node name="image_bridge_ros_subscriber" pkg="ros_gz_image"
+        type="image_bridge"
+        args="/image"
+  />
+
+  <!-- Launch the Gazebo Transport publisher -->
+  <node name="gz_publisher" pkg="ros_gz_image" type="gz_publisher_image" />
+
+</launch>
