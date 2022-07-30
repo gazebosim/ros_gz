@@ -59,7 +59,7 @@
       <self_collide>true</self_collide>
       <pose>0 0 0 0 0 0</pose>
       <include merge="true">
-        <uri>package://ros_ign_gazebo_demos/models/vehicle</uri>
+        <uri>package://ros_gz_sim_demos/models/vehicle</uri>
       </include>
 
       <plugin
