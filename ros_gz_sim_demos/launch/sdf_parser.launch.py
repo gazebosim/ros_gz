@@ -50,8 +50,9 @@ def generate_launch_description():
     )
 
     # Bridge to forward tf and joint states to ros2
-    joint_state_gz_topic = '/world/demo/model/vehicle/joint_state'
-    link_pose_gz_topic = '/model/vehicle/pose'
+    gz_topic = '/model/vehicle'
+    joint_state_gz_topic = '/world/demo/' + gz_topic + '/joint_state'
+    link_pose_gz_topic = gz_topic + '/pose'
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
@@ -63,6 +64,9 @@ def generate_launch_description():
             # Link poses (Gazebo -> ROS2)
             link_pose_gz_topic + '@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
             link_pose_gz_topic + '_static@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            # Velocity and odometry (Gazebo -> ROS2)
+            gz_topic + '/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
+            gz_topic + '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
         ],
         remappings=[
             (joint_state_gz_topic, 'joint_states'),
