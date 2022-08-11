@@ -1,11 +1,9 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
-  <!-- TODO: Make this a metapackage, see
-       https://github.com/ros2/ros2/issues/408 -->
   <name>ros_ign</name>
   <version>0.0.1</version>
-  <description>Shim meta-package to redirect to <a href="https://github.com/gazebosim/ros_gz">ros_gz</a>.</description>
+  <description>Shim meta-package to redirect to <a href="https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz">ros_gz</a>.</description>
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
   <license>Apache 2.0</license>
 
@@ -16,8 +14,6 @@
   <exec_depend>ros_ign_gazebo</exec_depend>
   <exec_depend>ros_ign_gazebo_demos</exec_depend>
   <exec_depend>ros_ign_image</exec_depend>
-  <!-- See https://github.com/gazebosim/ros_gz/issues/40 -->
-  <!--exec_depend>ros_gz_point_cloud</exec_depend-->
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

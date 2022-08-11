@@ -1,4 +1,4 @@
-# Copyright 2019 Open Source Robotics Foundation, Inc.
+# Copyright 2022 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,47 +17,18 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
-from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
-
-from launch_ros.actions import Node
 
 
 def generate_launch_description():
+    print("ros_ign_gazebo_demos is deprecated! Please use ros_gz_sim_demos instead!")
 
-    pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
-
-    gz_sim = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        launch_arguments={
-            'gz_args': '-r sensors.sdf'
-        }.items(),
-    )
-
-    # RQt
-    rqt = Node(
-        package='rqt_topic',
-        executable='rqt_topic',
-        arguments=['-t'],
-        condition=IfCondition(LaunchConfiguration('rqt'))
-    )
-
-    # Bridge
-    bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=['/magnetometer@sensor_msgs/msg/MagneticField@ignition.msgs.Magnetometer'],
-        output='screen'
-    )
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
 
     return LaunchDescription([
-        gz_sim,
-        DeclareLaunchArgument('rqt', default_value='true',
-                              description='Open RQt.'),
-        bridge,
-        rqt
+        IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_ros_gz_sim_demos, 'launch', 'magnetometer.launch.py')),
+        )
     ])

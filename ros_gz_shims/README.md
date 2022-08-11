@@ -10,4 +10,4 @@ ros2 run ros_gz parameter_bridge [...]
 ros2 run ros_ign parameter_bridge [...]  # Will emit deprecation warning
 ```
 
-Additionally, installed files like launchfiles, message interfaces etc. are **duplicated** versions of the ones in `ros_gz` (but renamed as appropriate), and point to `ros_gz` dependencies as well (e.g. launchfiles pointing to `ros_gz` nodes.)
+Additionally, installed files like launch files, message interfaces etc. are **duplicated** versions of the ones in `ros_gz` (but renamed as appropriate), and point to `ros_gz` dependencies as well (e.g. launch files pointing to `ros_gz` nodes.)
