@@ -57,6 +57,18 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
+add_library(StopwatchSimTime SHARED src/StopwatchSimTime.cpp)
+ament_target_dependencies(StopwatchSimTime
+  rclcpp
+)
+target_include_directories(StopwatchSimTime PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
+)
+
 configure_file(
   launch/ign_gazebo.launch.py.in
   launch/ign_gazebo.launch.py.configured
@@ -74,6 +86,7 @@ install(FILES
 
 install(TARGETS
   create
+  StopwatchSimTime
   DESTINATION lib/${PROJECT_NAME}
 )
 

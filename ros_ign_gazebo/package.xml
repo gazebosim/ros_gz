@@ -14,7 +14,6 @@
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>libgflags-dev</depend>
-  <depend>xterm</depend>
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
   <depend>std_msgs</depend>
