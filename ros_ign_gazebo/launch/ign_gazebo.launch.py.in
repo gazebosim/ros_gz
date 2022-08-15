@@ -19,28 +19,54 @@ from os import environ
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
+from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import LaunchConfiguration
-
 
 def generate_launch_description():
     env = {'IGN_GAZEBO_SYSTEM_PLUGIN_PATH':
            ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                      environ.get('LD_LIBRARY_PATH', default='')])}
 
+    ign_args = DeclareLaunchArgument('ign_args', default_value='',
+                                     description='Arguments to be passed to Ignition Gazebo')
+
+    # Ignition Gazebo's major version
+    ign_version = DeclareLaunchArgument('ign_version', default_value='@IGN_GAZEBO_VER@',
+                                        description='Ignition Gazebo\'s major version')
+
+    debugger = DeclareLaunchArgument('debugger', default_value='false',
+                                      description='Run in Debugger')
+
+    gazebo = ExecuteProcess(
+        cmd=['ign gazebo',
+             LaunchConfiguration('ign_args'),
+             '--force-version',
+             LaunchConfiguration('ign_version'),
+             ],
+        output='screen',
+        additional_env=env,
+        shell=True,
+        condition=UnlessCondition(LaunchConfiguration('debugger'))
+    )
+
+    gazebo_debug = ExecuteProcess(
+        cmd=['ruby $(which ign) gazebo -rs',
+             LaunchConfiguration('ign_args'),
+             '--force-version',
+             LaunchConfiguration('ign_version'),
+             ],
+        prefix=['xterm -e gdb -ex run --args'],
+        # prefix=['xterm -e valgrind'],
+        output='screen',
+        additional_env=env,
+        shell=True,
+        condition=IfCondition(LaunchConfiguration('debugger'))
+    )
+
     return LaunchDescription([
-        DeclareLaunchArgument('ign_args', default_value='',
-                              description='Arguments to be passed to Ignition Gazebo'),
-        # Ignition Gazebo's major version
-        DeclareLaunchArgument('ign_version', default_value='@IGN_GAZEBO_VER@',
-                              description='Ignition Gazebo\'s major version'),
-        ExecuteProcess(
-            cmd=['ign gazebo',
-                 LaunchConfiguration('ign_args'),
-                 '--force-version',
-                 LaunchConfiguration('ign_version'),
-                 ],
-            output='screen',
-            additional_env=env,
-            shell=True
-        )
+        ign_args,
+        ign_version,
+        debugger,
+        gazebo,
+        gazebo_debug
     ])
