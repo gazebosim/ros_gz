@@ -6,7 +6,8 @@
   <name>ros_ign</name>
   <version>0.221.2</version>
   <description>Meta-package containing interfaces for using ROS 2 with <a href="https://ignitionrobotics.org">Ignition</a> simulation.</description>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <author email="louise@openrobotics.org">Louise Poubel</author>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
   <license>Apache 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
