@@ -3,7 +3,8 @@
   <version>0.8.0</version>
   <description>Point cloud utilities for Ignition simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <author email="louise@openrobotics.org">Louise Poubel</author>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
 
