@@ -3,7 +3,8 @@
   <version>0.221.2</version>
   <description>Image utilities for Ignition simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+  <author email="louise@openrobotics.org">Louise Poubel</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
