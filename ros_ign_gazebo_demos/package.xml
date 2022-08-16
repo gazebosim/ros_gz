@@ -3,8 +3,8 @@
   <version>0.221.2</version>
   <description>Demos using Ignition Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <author email="louise@openrobotics.org">Louise Poubel</author>
   <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez Cordero</maintainer>
+  <author email="louise@openrobotics.org">Louise Poubel</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
