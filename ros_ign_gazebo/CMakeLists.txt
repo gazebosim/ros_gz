@@ -57,7 +57,7 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
-add_library(Stopwatch SHARED src/Stopwatch.cpp)
+add_library(Stopwatch src/Stopwatch.cpp)
 ament_target_dependencies(Stopwatch
   rclcpp
 )

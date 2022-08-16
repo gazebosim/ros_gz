@@ -25,7 +25,7 @@ namespace ros_ign_gazebo
 {
 
 const rclcpp::Duration duration_zero = rclcpp::Duration(0, 0U);
-const rclcpp::Time time_min = rclcpp::Time(0, 0U);
+rclcpp::Time time_min = rclcpp::Time(0, 0U);
 
 // Private data class
 class StopwatchPrivate
@@ -43,6 +43,21 @@ public:
     stopDuration(_watch.stopDuration),
     runDuration(_watch.runDuration)
   {
+    SetClock(_watch.clock);
+  }
+
+  void SetClock(rclcpp::Clock::SharedPtr _clock)
+  {
+    clock = _clock;
+    if (startTime.get_clock_type() != clock->get_clock_type()) {
+      startTime = rclcpp::Time(startTime.nanoseconds(), clock->get_clock_type());
+    }
+    if (stopTime.get_clock_type() != clock->get_clock_type()) {
+      stopTime = rclcpp::Time(stopTime.nanoseconds(), clock->get_clock_type());
+    }
+    if (time_min.get_clock_type() != clock->get_clock_type()) {
+      time_min = rclcpp::Time(0U, clock->get_clock_type());
+    }
   }
 
   /// \brief True if the real time clock is running.
@@ -90,7 +105,7 @@ Stopwatch::~Stopwatch()
 //////////////////////////////////////////////////
 void Stopwatch::SetClock(rclcpp::Clock::SharedPtr _clock)
 {
-  this->dataPtr->clock = _clock;
+  this->dataPtr->SetClock(_clock);
 }
 
 //////////////////////////////////////////////////
