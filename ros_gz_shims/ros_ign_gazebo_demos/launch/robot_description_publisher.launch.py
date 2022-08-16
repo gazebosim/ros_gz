@@ -29,8 +29,9 @@ def generate_launch_description():
     return LaunchDescription([
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
-                os.path.join(pkg_ros_gz_sim_demos,
-                'launch',
-                'robot_description_publisher.launch.py')),
+                os.path.join(
+                    pkg_ros_gz_sim_demos,
+                    'launch',
+                    'robot_description_publisher.launch.py')),
         )
     ])
