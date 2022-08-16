@@ -12,20 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_ign_gazebo/Stopwatch.hpp>
 
 #include <gtest/gtest.h>
-
-#include <chrono>
-#include <memory>
-#include <thread>
 
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/time_source.hpp>
 
+#include <ros_ign_gazebo/Stopwatch.hpp>
+
 #include <rosgraph_msgs/msg/clock.hpp>
 
+#include <chrono>
+#include <memory>
+#include <thread>
+#include <utility>
 
+
+// NOLINTNEXTLINE
 using namespace std::chrono;
 
 

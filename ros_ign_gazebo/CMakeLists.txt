@@ -91,13 +91,10 @@ install(TARGETS
 )
 
 if(BUILD_TESTING)
-  find_package(ignition-gazebo6 REQUIRED)
-  set(GZ_SIM_VER ${ignition-gazebo6_VERSION_MAJOR})
-
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
-   # GTest
+  # GTest
   find_package(ament_cmake_gtest REQUIRED)
   ament_find_gtest()
 
@@ -110,6 +107,7 @@ if(BUILD_TESTING)
       options
         ROS
         LAUNCH_TEST
+        GAZEBO
     )
     set(oneValueArgs)
     set(multiValueArgs
@@ -120,9 +118,11 @@ if(BUILD_TESTING)
     ament_add_gtest_executable(${TEST_NAME}
       test/${TEST_NAME}.cpp
     )
-    target_link_libraries(${TEST_NAME}
-      ignition-gazebo${GZ_SIM_VER}::ignition-gazebo${GZ_SIM_VER}
-    )
+    if(gz_add_test_GAZEBO)
+      target_link_libraries(${TEST_NAME}
+        ignition-gazebo${IGN_GAZEBO_VER}::ignition-gazebo${IGN_GAZEBO_VER}
+      )
+    endif()
     if(gz_add_test_ROS)
       set(ROS_PKGS rclcpp ${gz_add_test_EXTRA_ROS_PKGS})
       foreach(PKG ${ROS_PKGS})
