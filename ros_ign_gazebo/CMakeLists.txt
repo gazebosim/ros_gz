@@ -57,6 +57,18 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
+add_library(Stopwatch SHARED src/Stopwatch.cpp)
+ament_target_dependencies(Stopwatch
+  rclcpp
+)
+target_include_directories(Stopwatch PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
+)
+
 configure_file(
   launch/ign_gazebo.launch.py.in
   launch/ign_gazebo.launch.py.configured
@@ -74,12 +86,72 @@ install(FILES
 
 install(TARGETS
   create
+  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
+  find_package(ignition-gazebo6 REQUIRED)
+  set(GZ_SIM_VER ${ignition-gazebo6_VERSION_MAJOR})
+
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+   # GTest
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_find_gtest()
+
+  # launch_testing
+  find_package(launch_testing_ament_cmake REQUIRED)
+
+  # Helper function to generate gtest
+  function(gz_add_gtest TEST_NAME)
+    set(
+      options
+        ROS
+        LAUNCH_TEST
+    )
+    set(oneValueArgs)
+    set(multiValueArgs
+      EXTRA_ROS_PKGS)
+
+    cmake_parse_arguments(gz_add_test "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+
+    ament_add_gtest_executable(${TEST_NAME}
+      test/${TEST_NAME}.cpp
+    )
+    target_link_libraries(${TEST_NAME}
+      ignition-gazebo${GZ_SIM_VER}::ignition-gazebo${GZ_SIM_VER}
+    )
+    if(gz_add_test_ROS)
+      set(ROS_PKGS rclcpp ${gz_add_test_EXTRA_ROS_PKGS})
+      foreach(PKG ${ROS_PKGS})
+        find_package(${PKG} REQUIRED)
+      endforeach()
+      ament_target_dependencies(${TEST_NAME} ${ROS_PKGS})
+    endif()
+    target_include_directories(${TEST_NAME} PUBLIC
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<INSTALL_INTERFACE:include>)
+    target_link_libraries(${TEST_NAME}
+      Stopwatch
+    )
+    install(
+      TARGETS ${TEST_NAME}
+      DESTINATION lib/${PROJECT_NAME}
+    )
+    if(gz_add_test_LAUNCH_TEST)
+      add_launch_test(test/launch/${TEST_NAME}.launch.py
+        TIMEOUT 300
+      )
+    else()
+      ament_add_gtest_test(${TEST_NAME})
+    endif()
+  endfunction()
+
+  # Add gtests
+  gz_add_gtest(test_stopwatch ROS)
+
 endif()
 
 ament_package()
