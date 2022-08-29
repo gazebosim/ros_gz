@@ -98,59 +98,22 @@ if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   ament_find_gtest()
 
-  # launch_testing
-  find_package(launch_testing_ament_cmake REQUIRED)
-
-  # Helper function to generate gtest
-  function(gz_add_gtest TEST_NAME)
-    set(
-      options
-        ROS
-        LAUNCH_TEST
-        GAZEBO
-    )
-    set(oneValueArgs)
-    set(multiValueArgs
-      EXTRA_ROS_PKGS)
-
-    cmake_parse_arguments(gz_add_test "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
-
-    ament_add_gtest_executable(${TEST_NAME}
-      test/${TEST_NAME}.cpp
-    )
-    if(gz_add_test_GAZEBO)
-      target_link_libraries(${TEST_NAME}
-        ignition-gazebo${IGN_GAZEBO_VER}::ignition-gazebo${IGN_GAZEBO_VER}
-      )
-    endif()
-    if(gz_add_test_ROS)
-      set(ROS_PKGS rclcpp ${gz_add_test_EXTRA_ROS_PKGS})
-      foreach(PKG ${ROS_PKGS})
-        find_package(${PKG} REQUIRED)
-      endforeach()
-      ament_target_dependencies(${TEST_NAME} ${ROS_PKGS})
-    endif()
-    target_include_directories(${TEST_NAME} PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include>)
-    target_link_libraries(${TEST_NAME}
-      Stopwatch
-    )
-    install(
-      TARGETS ${TEST_NAME}
-      DESTINATION lib/${PROJECT_NAME}
-    )
-    if(gz_add_test_LAUNCH_TEST)
-      add_launch_test(test/launch/${TEST_NAME}.launch.py
-        TIMEOUT 300
-      )
-    else()
-      ament_add_gtest_test(${TEST_NAME})
-    endif()
-  endfunction()
-
-  # Add gtests
-  gz_add_gtest(test_stopwatch ROS)
+  ament_add_gtest_executable(test_stopwatch
+    test/test_stopwatch.cpp
+  )
+  find_package(rclcpp REQUIRED)
+  ament_target_dependencies(test_stopwatch rclcpp)
+  target_include_directories(test_stopwatch PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
+  target_link_libraries(test_stopwatch
+    Stopwatch
+  )
+  install(
+    TARGETS test_stopwatch
+    DESTINATION lib/${PROJECT_NAME}
+  )
+  ament_add_gtest_test(test_stopwatch)
 
 endif()
 
