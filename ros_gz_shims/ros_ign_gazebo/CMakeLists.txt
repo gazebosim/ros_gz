@@ -22,6 +22,12 @@ ament_export_dependencies(
   ros_gz_bridge
 )
 
+# TODO(CH3): Deprecated. Remove on tock.
+if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
+  message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
+  set(ENV{GZ_VERSION} $ENV{IGNITION_VERSION})
+endif()
+
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-gazebo5 REQUIRED)
