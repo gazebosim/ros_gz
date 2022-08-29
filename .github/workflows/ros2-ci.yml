@@ -32,7 +32,7 @@ jobs:
           ROS_DISTRO: ${{ matrix.ros-distro }}
       - name: Build sdformat_urdf from source
         uses: actions/checkout@v2
-        if: ${{ matrix.ignition-version  }} == "garden"
+        if: ${{ matrix.gz-version  }} == "garden"
         with:
           repository: ros/sdformat_urdf
           ref: ros2
