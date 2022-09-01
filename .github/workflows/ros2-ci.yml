@@ -30,3 +30,9 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.docker-image }}
           GZ_VERSION: ${{ matrix.gz-version  }}
           ROS_DISTRO: ${{ matrix.ros-distro }}
+      - name: Build sdformat_urdf from source
+        uses: actions/checkout@v2
+        if: ${{ matrix.gz-version  }} == "garden"
+        with:
+          repository: ros/sdformat_urdf
+          ref: ros2

@@ -17,6 +17,8 @@ if [ "$GZ_VERSION" == "garden" ]; then
   wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
   GZ_DEPS="libgz-sim7-dev"
+
+  ROSDEP_ARGS="--skip-keys='sdformat-urdf'"
 fi
 
 # Fortress comes through rosdep for Focal and Jammy
@@ -31,7 +33,7 @@ apt-get install -y $GZ_DEPS \
 
 rosdep init
 rosdep update
-rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
