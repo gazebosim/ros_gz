@@ -34,7 +34,7 @@ def generate_launch_description():
         robot_desc = infp.read()
 
     rviz_launch_arg = DeclareLaunchArgument(
-        'rviz', default_value='false',
+        'rviz', default_value='true',
         description='Open RViz.'
     )
 
@@ -51,7 +51,7 @@ def generate_launch_description():
 
     # Bridge to forward tf and joint states to ros2
     gz_topic = '/model/vehicle'
-    joint_state_gz_topic = '/world/demo/' + gz_topic + '/joint_state'
+    joint_state_gz_topic = '/world/demo' + gz_topic + '/joint_state'
     link_pose_gz_topic = gz_topic + '/pose'
     bridge = Node(
         package='ros_gz_bridge',
