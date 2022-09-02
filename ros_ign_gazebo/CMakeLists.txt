@@ -103,13 +103,13 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_stopwatch
     test/test_stopwatch.cpp
   )
-  
+
   ament_target_dependencies(test_stopwatch rclcpp)
 
   target_include_directories(test_stopwatch PUBLIC
-      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-      $<INSTALL_INTERFACE:include>
-   )
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
 
   target_link_libraries(test_stopwatch
     Stopwatch
