@@ -30,12 +30,14 @@ rclcpp::Time time_min = rclcpp::Time(0, 0U);
 // Private data class
 class StopwatchPrivate
 {
+public:
   /// \brief Default constructor.
-  public: StopwatchPrivate() = default;
+  StopwatchPrivate() = default;
 
+public:
   /// \brief Copy constructor.
   /// \param[in] _watch Watch to copy.
-  public: explicit StopwatchPrivate(const StopwatchPrivate & _watch)
+  explicit StopwatchPrivate(const StopwatchPrivate & _watch)
   : running(_watch.running),
     startTime(_watch.startTime),
     stopTime(_watch.stopTime),
@@ -45,7 +47,8 @@ class StopwatchPrivate
     SetClock(_watch.clock);
   }
 
-  public: void SetClock(rclcpp::Clock::SharedPtr _clock)
+public:
+  void SetClock(rclcpp::Clock::SharedPtr _clock)
   {
     clock = _clock;
     if (startTime.get_clock_type() != clock->get_clock_type()) {
@@ -59,23 +62,29 @@ class StopwatchPrivate
     }
   }
 
+public:
   /// \brief True if the real time clock is running.
-  public: bool running = false;
+  bool running = false;
 
+public:
   /// \brief Time point that marks the start of the real-time clock.
-  public: rclcpp::Time startTime = time_min;
+  rclcpp::Time startTime = time_min;
 
+public:
   /// \brief Time point that marks the stop of the real-time clock.
-  public: rclcpp::Time stopTime = time_min;
+  rclcpp::Time stopTime = time_min;
 
+public:
   /// \brief Amount of stop time.
-  public: rclcpp::Duration stopDuration = duration_zero;
+  rclcpp::Duration stopDuration = duration_zero;
 
+public:
   /// \brief Amount of run time.
-  public: rclcpp::Duration runDuration = duration_zero;
+  rclcpp::Duration runDuration = duration_zero;
 
+public:
   /// \brief ros clock instance
-  public: rclcpp::Clock::SharedPtr clock = nullptr;
+  rclcpp::Clock::SharedPtr clock = nullptr;
 };
 
 //////////////////////////////////////////////////
