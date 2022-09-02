@@ -63,7 +63,7 @@ ament_target_dependencies(Stopwatch
 )
 
 target_include_directories(Stopwatch PUBLIC
-  $&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
 
@@ -107,7 +107,7 @@ if(BUILD_TESTING)
   ament_target_dependencies(test_stopwatch rclcpp)
 
   target_include_directories(test_stopwatch PUBLIC
-      $&lt;BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+      $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
       $<INSTALL_INTERFACE:include>
    )
 
