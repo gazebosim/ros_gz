@@ -73,7 +73,8 @@ public:
 public:
   /// \brief Take a clock instance (e.g. get_clock() from rclcpp::Node).
   /// Can also follow sim time on /clock when node's use_sim_time param is set
-  void SetClock(rclcpp::Clock::SharedPtr _clock);
+    /// param[in] _clock
+    void SetClock(rclcpp::Clock::SharedPtr _clock);
 
   /// \brief Start the stopwatch.
   /// \param[in] _reset If true the stopwatch is reset first.

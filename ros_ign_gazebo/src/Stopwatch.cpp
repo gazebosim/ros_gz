@@ -148,7 +148,7 @@ bool Stopwatch::Stop()
   if (this->dataPtr->running) {
     this->dataPtr->running = false;
     this->dataPtr->stopTime = this->dataPtr->clock->now();
-    this->dataPtr->runDuration = this->dataPtr->runDuration + \
+    this->dataPtr->runDuration = this->dataPtr->runDuration +
       this->dataPtr->stopTime - this->dataPtr->startTime;
     return true;
   }
