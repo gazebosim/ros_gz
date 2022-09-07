@@ -22,6 +22,8 @@
 #include "service_factory.hpp"
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
 
+#include <ignition/msgs/boolean.pb.h>
+
 
 namespace ros_gz_bridge
 {
