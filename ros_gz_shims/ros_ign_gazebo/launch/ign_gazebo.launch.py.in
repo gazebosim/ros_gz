@@ -19,8 +19,8 @@ from os import environ
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import ExecuteProcess
-from launch.substitutions import LaunchConfiguration
-from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals
+from launch.substitutions import LaunchConfiguration, AndSubstitution, PythonExpression
+from launch.conditions import LaunchConfigurationEquals, LaunchConfigurationNotEquals, IfCondition
 
 
 def generate_launch_description():
@@ -64,7 +64,12 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            condition=LaunchConfigurationEquals('ign_version', ''),
+            condition=IfCondition(
+                AndSubstitution(
+                    PythonExpression(["'", LaunchConfiguration('ign_version'), "' == ''"]),
+                    PythonExpression(["'", LaunchConfiguration('gz_version'), "' < '7'"])
+                )
+            ),
             cmd=['ign gazebo',
                  LaunchConfiguration('gz_args'),
                  '--force-version',
@@ -74,4 +79,22 @@ def generate_launch_description():
             additional_env=env,
             shell=True
         ),
+
+        ExecuteProcess(
+            condition=IfCondition(
+                AndSubstitution(
+                    PythonExpression(["'", LaunchConfiguration('ign_version'), "' == ''"]),
+                    PythonExpression(["'", LaunchConfiguration('gz_version'), "' >= '7'"])
+                )
+            ),
+            cmd=['gz sim',
+                 LaunchConfiguration('gz_args'),
+                 '--force-version',
+                 LaunchConfiguration('gz_version'),
+                 ],
+            output='screen',
+            additional_env=env,
+            shell=True
+        ),
+
     ])
