@@ -7,12 +7,8 @@ Melodic | Fortress | [melodic](https://github.com/osrf/ros_ign/tree/melodic) | o
 Noetic | Citadel | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | https://packages.ros.org
 Noetic | Edifice | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
 Noetic | Fortress | [noetic](https://github.com/osrf/ros_ign/tree/noetic) | only from source
-Foxy | Citadel | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | https://packages.ros.org
-Foxy | Edifice | [foxy](https://github.com/osrf/ros_ign/tree/foxy) | only from source
-Galactic | Edifice | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | https://packages.ros.org
-Galactic | Fortress | [galactic](https://github.com/osrf/ros_ign/tree/galactic) | only from source
-Rolling | Edifice | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | only from source
-Rolling | Fortress | [ros2](https://github.com/osrf/ros_ign/tree/ros2) | https://packages.ros.org
+
+For information on ROS 2 and Gazebo compatibility, refer to the [ros2 branch README](https://github.com/gazebosim/ros_gz/tree/ros2) 
 
 > Please [ticket an issue](https://github.com/ignitionrobotics/ros_ign/issues/) if you'd like support to be added for some combination.
 
