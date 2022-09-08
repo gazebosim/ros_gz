@@ -14,6 +14,8 @@
 
 #include "factories/ros_gz_interfaces.hpp"
 
+#include <ignition/msgs/boolean.pb.h>
+
 #include <memory>
 #include <string>
 
