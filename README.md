@@ -1,12 +1,7 @@
 [![Build Status](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml)
 
-ROS version | Gazebo version | Branch | Binaries hosted at
+ROS 2 version | Gazebo version | Branch | Binaries hosted at
 -- | -- | -- | --
-Melodic | Citadel | [melodic](https://github.com/gazebosim/ros_gz/tree/melodic) | only from source
-Melodic | Fortress | [melodic](https://github.com/gazebosim/ros_gz/tree/melodic) | only from source
-Noetic | Citadel | [noetic](https://github.com/gazebosim/ros_gz/tree/noetic) | https://packages.ros.org
-Noetic | Edifice | [noetic](https://github.com/gazebosim/ros_gz/tree/noetic) | only from source
-Noetic | Fortress | [noetic](https://github.com/gazebosim/ros_gz/tree/noetic) | only from source
 Foxy | Citadel | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | https://packages.ros.org
 Foxy | Edifice | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | only from source
 Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | https://packages.ros.org
@@ -15,6 +10,8 @@ Humble | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | http
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+
+For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch README](https://github.com/gazebosim/ros_gz/tree/melodic) 
 
 > Please [ticket an issue](https://github.com/gazebosim/ros_gz/issues/) if you'd like support to be added for some combination.
 
