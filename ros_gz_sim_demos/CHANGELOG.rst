@@ -2,6 +2,52 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.4 (2022-09-09)
+--------------------
+* sdformat_urdf parser demo (`#265 <https://github.com/gazebosim/ros_gz/issues/265>`_)
+  * parser compatible model and launch framework
+  * added ground plane, common gz plugins, demo commands and cleaned install paths
+  * unique collision names and cleared flake
+  * updating model config
+  * building parser from source
+  * fix flake and update deb dependency for garden
+  * Move packages and files to gz
+  * feedback and ign->gz
+  * Support ros_ign migration
+  Clean up shared libraries, and tick-tock RosGzPointCloud
+  Tick-tock launch args
+  Hard-tock ign\_ in sources
+  Migrate ign, ign\_, IGN\_ for sources, launch, and test files
+  Migrate IGN_XXX_VER, IGN_T, header guards
+  Migrate launchfile, launchfile args, and test source references
+  Migrate ros_ign_XXX and gz_gazebo -> gz_sim
+  Migrate ros_ign_XXX project names
+  Migrate Ign, ign-, IGN_DEPS, ign-gazebo
+  Migrate ignitionrobotics, ignitionrobotics/ros_ign, osrf/ros_ign
+  Migrate ignition-version, IGNITION_VERSION, Ignition <LIB>, ros_ign_ci
+  * renaming and flake
+  * added ros commands
+  * gz-version
+  * feedback and ci trial
+  * removing garden condition
+  Co-authored-by: Michael Carroll <michael@openrobotics.org>
+  Co-authored-by: methylDragon <methylDragon@gmail.com>
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Support ros_ign migration (`#282 <https://github.com/gazebosim/ros_gz/issues/282>`_)
+  Clean up shared libraries, and tick-tock RosGzPointCloud
+  Tick-tock launch args
+  Hard-tock ign\_ in sources
+  Migrate ign, ign\_, IGN\_ for sources, launch, and test files
+  Migrate IGN_XXX_VER, IGN_T, header guards
+  Migrate launchfile, launchfile args, and test source references
+  Migrate ros_ign_XXX and gz_gazebo -> gz_sim
+  Migrate ros_ign_XXX project names
+  Migrate Ign, ign-, IGN_DEPS, ign-gazebo
+  Migrate ignitionrobotics, ignitionrobotics/ros_ign, osrf/ros_ign
+  Migrate ignition-version, IGNITION_VERSION, Ignition <LIB>, ros_ign_ci
+* Move packages and files to gz (`#282 <https://github.com/gazebosim/ros_gz/issues/282>`_)
+* Contributors: Dharini Dutia, methylDragon
+
 0.244.3 (2022-05-19)
 --------------------
 * [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/gazebosim/ros_gz/issues/252>`_)

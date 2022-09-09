@@ -1,0 +1,9 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package ros_ign
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.244.4 (2022-09-09)
+--------------------
+* ign -> gz : ros_gz Migration (Shims) (`#281 <https://github.com/gazebosim/ros_gz/issues/281>`_)
+  Co-authored-by: Louise Poubel <louise@openrobotics.org>
+* Contributors: methylDragon
