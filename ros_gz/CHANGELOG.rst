@@ -2,6 +2,27 @@
 Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.5 (2022-09-12)
+--------------------
+* Fix missing msgs include and packages.xml deps (`#292 <https://github.com/gazebosim/ros_gz/issues/292>`_)
+  * Fix missing msgs include and packages.xml deps
+  * Add additional conditions to support gz sim invocation
+  * Fix cpplint
+* Support ros_ign migration (`#282 <https://github.com/gazebosim/ros_gz/issues/282>`_)
+  Clean up shared libraries, and tick-tock RosGzPointCloud
+  Tick-tock launch args
+  Hard-tock ign\_ in sources
+  Migrate ign, ign\_, IGN\_ for sources, launch, and test files
+  Migrate IGN_XXX_VER, IGN_T, header guards
+  Migrate launchfile, launchfile args, and test source references
+  Migrate ros_ign_XXX and gz_gazebo -> gz_sim
+  Migrate ros_ign_XXX project names
+  Migrate Ign, ign-, IGN_DEPS, ign-gazebo
+  Migrate ignitionrobotics, ignitionrobotics/ros_ign, osrf/ros_ign
+  Migrate ignition-version, IGNITION_VERSION, Ignition <LIB>, ros_ign_ci
+* Move packages and files to gz (`#282 <https://github.com/gazebosim/ros_gz/issues/282>`_)
+* Contributors: methylDragon
+
 0.244.3 (2022-05-19)
 --------------------
 * [ros2] README updates (service bridge, Gazebo rename) (`#252 <https://github.com/gazebosim/ros_gz/issues/252>`_)
