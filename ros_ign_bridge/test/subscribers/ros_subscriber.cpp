@@ -44,6 +44,7 @@
 #include <sensor_msgs/JointState.h>
 #include <sensor_msgs/LaserScan.h>
 #include <sensor_msgs/MagneticField.h>
+#include <sensor_msgs/NavSatFix.h>
 #include <sensor_msgs/PointCloud2.h>
 #include <visualization_msgs/Marker.h>
 #include <visualization_msgs/MarkerArray.h>
@@ -383,6 +384,17 @@ TEST(ROSSubscriberTest, LaserScan)
 TEST(ROSSubscriberTest, MagneticField)
 {
   MyTestClass<sensor_msgs::MagneticField> client("magnetic");
+
+  using namespace std::chrono_literals;
+  ros_ign_bridge::testing::waitUntilBoolVarAndSpin(
+    client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+}
+
+TEST(ROSSubscriberTest, NavSatFix)
+{
+  MyTestClass<sensor_msgs::NavSatFix> client("navsat");
 
   using namespace std::chrono_literals;
   ros_ign_bridge::testing::waitUntilBoolVarAndSpin(

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<launch>
+
+  <include file="$(find ros_ign_gazebo)/launch/ign_gazebo.launch">
+    <arg name="ign_args" value="-r -v 3 spherical_coordinates.sdf"/>
+  </include>
+
+  <node
+    pkg="ros_ign_bridge"
+    type="parameter_bridge"
+    name="$(anon ros_ign_bridge)"
+    output="screen"
+    args="/navsat@sensor_msgs/NavSatFix@ignition.msgs.NavSat">
+  </node>
+
+  <node
+    type="rqt_topic"
+    name="rqt_topic"
+    pkg="rqt_topic"
+    args="-t" />
+</launch>
