@@ -15,6 +15,8 @@ For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch 
 
 > Please [ticket an issue](https://github.com/gazebosim/ros_gz/issues/) if you'd like support to be added for some combination.
 
+[Details about the renaming process](README_RENAME.md) from `ign` to `gz` .
+
 # Integration between ROS and Gazebo
 
 ## Packages
