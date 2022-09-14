@@ -11,9 +11,14 @@ Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only
 Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 
-For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch README](https://github.com/gazebosim/ros_gz/tree/melodic) 
+For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch README](https://github.com/gazebosim/ros_gz/tree/melodic)
 
 > Please [ticket an issue](https://github.com/gazebosim/ros_gz/issues/) if you'd like support to be added for some combination.
+
+[Details about the renaming process](README_RENAME.md) from `ign` to `gz` .
+
+**Note**: The `ros_ign` prefixed packages are shim packages that redirect to their `ros_gz` counterpart.
+Under most circumstances you want to be using the `ros_gz` counterpart.
 
 # Integration between ROS and Gazebo
 
