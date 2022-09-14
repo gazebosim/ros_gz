@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.6 (2022-09-14)
+--------------------
+
 0.244.5 (2022-09-12)
 --------------------
 * Support ros_ign migration (`#282 <https://github.com/gazebosim/ros_gz/issues/282>`_)

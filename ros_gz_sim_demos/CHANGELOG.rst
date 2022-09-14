@@ -2,6 +2,9 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.6 (2022-09-14)
+--------------------
+
 0.244.5 (2022-09-12)
 --------------------
 * sdformat_urdf parser demo (`#265 <https://github.com/gazebosim/ros_gz/issues/265>`_)

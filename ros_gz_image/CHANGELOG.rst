@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.6 (2022-09-14)
+--------------------
+
 0.244.5 (2022-09-12)
 --------------------
 * Add missing GZ_VERSION ticktocks (`#289 <https://github.com/gazebosim/ros_gz/issues/289>`_)
