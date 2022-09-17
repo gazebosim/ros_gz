@@ -57,7 +57,7 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
-add_library(Stopwatch src/Stopwatch.cpp)
+add_library(Stopwatch SHARED src/Stopwatch.cpp)
 ament_target_dependencies(Stopwatch
   rclcpp
 )
@@ -88,9 +88,17 @@ install(FILES
 
 install(TARGETS
   create
-  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
+
+install(
+  TARGETS Stopwatch EXPORT export_Stopwatch
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_targets(export_Stopwatch)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
