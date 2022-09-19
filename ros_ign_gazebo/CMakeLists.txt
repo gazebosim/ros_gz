@@ -57,12 +57,12 @@ target_link_libraries(create
   ignition-transport${IGN_TRANSPORT_VER}::core
 )
 
-add_library(Stopwatch SHARED src/Stopwatch.cpp)
-ament_target_dependencies(Stopwatch
+add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
 
-target_include_directories(Stopwatch PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -92,13 +92,15 @@ install(TARGETS
 )
 
 install(
-  TARGETS Stopwatch EXPORT export_Stopwatch
+  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
 )
 
-ament_export_targets(export_Stopwatch)
+ament_export_targets(${PROJECT_NAME})
+
+ament_export_dependencies(rclcpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -120,7 +122,7 @@ if(BUILD_TESTING)
   )
 
   target_link_libraries(test_stopwatch
-    Stopwatch
+    ${PROJECT_NAME}
   )
 
   install(
