@@ -1,0 +1,8 @@
+# Full set of configurations
+- ros_topic_name: "ros_chatter"
+  ign_topic_name: "ign_chatter"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+  subscriber_queue: 5
+  publisher_queue: 6
+  lazy: true

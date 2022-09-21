@@ -199,6 +199,58 @@ convert_ign_to_ros(
   }
 }
 
+#if HAVE_DATAFRAME
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::Dataframe & ros_msg,
+  ignition::msgs::Dataframe & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+  auto * rssiPtr = ign_msg.mutable_header()->add_data();
+  rssiPtr->set_key("rssi");
+  rssiPtr->add_value(std::to_string(ros_msg.rssi));
+
+  ign_msg.set_src_address(ros_msg.src_address);
+  ign_msg.set_dst_address(ros_msg.dst_address);
+
+  ign_msg.set_data(&(ros_msg.data[0]), ros_msg.data.size());
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Dataframe & ign_msg,
+  ros_ign_interfaces::msg::Dataframe & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  ros_msg.src_address = ign_msg.src_address();
+  ros_msg.dst_address = ign_msg.dst_address();
+
+  const auto & header = ign_msg.header();
+  for (auto i = 0; i < header.data_size(); ++i) {
+    if (header.data(i).key() == "rssi" && header.data(i).value_size() > 0) {
+      try {
+        ros_msg.rssi = std::stod(header.data(i).value(0));
+      } catch (const std::invalid_argument &) {
+        std::cerr << "RSSI value is invalid (" <<
+          header.data(i).value(0) << ")" << std::endl;
+      } catch (const std::out_of_range &) {
+        std::cerr << "RSSI value is out of range (" <<
+          header.data(i).value(0) << ")" << std::endl;
+      }
+    }
+  }
+
+  ros_msg.data.resize(ign_msg.data().size());
+  std::copy(
+    ign_msg.data().begin(),
+    ign_msg.data().begin() + ign_msg.data().size(),
+    ros_msg.data.begin());
+}
+#endif  // HAVE_DATAFRAME
+
 template<>
 void
 convert_ros_to_ign(
@@ -326,6 +378,90 @@ convert_ign_to_ros(
   convert_ign_to_ros(ign_msg.header(), ros_msg.header);
   for (const auto & elem : ign_msg.data()) {
     ros_msg.data.emplace_back(elem);
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  for (auto param : ros_msg.params) {
+    ignition::msgs::Any anyValue;
+    convert_ros_to_ign(param.value, anyValue);
+    auto new_param = ign_msg.mutable_params();
+    (*new_param)[param.name] = anyValue;
+  }
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  for (auto it : ign_msg.params()) {
+    rcl_interfaces::msg::Parameter p;
+    p.name = it.first;
+    convert_ign_to_ros(it.second, p.value);
+    ros_msg.params.push_back(p);
+  }
+
+  for (int childIdx = 0; childIdx < ign_msg.children().size(); ++childIdx) {
+    auto child = ign_msg.children().Get(childIdx);
+    ros_ign_interfaces::msg::ParamVec child_vec;
+    convert_ign_to_ros(child, child_vec);
+
+    for (size_t entryIdx = 0; entryIdx < child_vec.params.size(); ++entryIdx) {
+      auto ros_param = child_vec.params[entryIdx];
+      ros_param.name = "child_" + std::to_string(childIdx) + "/" + ros_param.name;
+      ros_msg.params.push_back(ros_param);
+    }
+  }
+}
+
+template<>
+void
+convert_ros_to_ign(
+  const ros_ign_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param_V & ign_msg)
+{
+  convert_ros_to_ign(ros_msg.header, (*ign_msg.mutable_header()));
+
+  // This will store all of the parameters available in the ros_msg in the
+  // first entry of the parameter vector
+  // \TODO(mjcarroll) Make this work fully round trip
+  // To do round trip, we must parse the parameter names and insert them
+  // into the correct indicies in the parameter vector
+
+  auto entry = ign_msg.mutable_param()->Add();
+  convert_ros_to_ign(ros_msg, *entry);
+}
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::Param_V & ign_msg,
+  ros_ign_interfaces::msg::ParamVec & ros_msg)
+{
+  convert_ign_to_ros(ign_msg.header(), ros_msg.header);
+
+  // Flatten the entries in the vector into a single range
+  for (int paramIdx = 0; paramIdx < ign_msg.param().size(); ++paramIdx) {
+    auto param = ign_msg.param().Get(paramIdx);
+    ros_ign_interfaces::msg::ParamVec param_vec;
+    convert_ign_to_ros(param, param_vec);
+
+    for (size_t entryIdx = 0; entryIdx < param_vec.params.size(); ++entryIdx) {
+      auto ros_param = param_vec.params[entryIdx];
+      ros_param.name = "param_" + std::to_string(paramIdx) + "/" + ros_param.name;
+      ros_msg.params.push_back(ros_param);
+    }
   }
 }
 

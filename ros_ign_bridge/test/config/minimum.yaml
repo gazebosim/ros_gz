@@ -1,0 +1,21 @@
+# Set just topic name, applies to both
+- topic_name: "chatter" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just ROS topic name, applies to both
+- ros_topic_name: "chatter_ros" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just IGN topic name, applies to both
+- ign_topic_name: "chatter_ign" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set each topic name explicitly
+- ros_topic_name: "chatter_both_ros"
+  ign_topic_name: "chatter_both_ign" 
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+

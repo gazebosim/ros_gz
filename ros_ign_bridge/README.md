@@ -28,11 +28,12 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/TransformStamped   | ignition::msgs::Pose                   |
 | geometry_msgs/msg/Twist              | ignition::msgs::Twist                  |
 | geometry_msgs/msg/TwistWithCovariance| ignition::msgs::TwistWithCovariance    |
-| mav_msgs/msg/Actuators (TODO)        | ignition::msgs::Actuators (TODO)       |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
+| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                  |
 | ros_ign_interfaces/msg/Contact       | ignition::msgs::Contact                |
 | ros_ign_interfaces/msg/Contacts      | ignition::msgs::Contacts               |
+| ros_ign_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
 | ros_ign_interfaces/msg/Entity        | ignition::msgs::Entity                 |
 | ros_ign_interfaces/msg/GuiCamera     | ignition::msgs::GUICamera              |
 | ros_ign_interfaces/msg/JointWrench   | ignition::msgs::JointWrench            |
@@ -50,6 +51,7 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/JointState           | ignition::msgs::Model                  |
 | sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan              |
 | sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer           |
+| sensor_msgs/msg/NavSatFixed          | ignition::msgs::NavSat               |
 | sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked       |
 | tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory        |
@@ -213,3 +215,60 @@ On terminal C, make a ROS request to unpause simulation:
 ```
 ros2 service call /world/<world_name>/control ros_ign_interfaces/srv/ControlWorld "{world_control: {pause: false}}"
 ```
+
+## Example 5: Configuring the Bridge via YAML
+
+When configuring many topics, it is easier to use a file-based configuration in a markup
+language. In this case, the `ros_ign` bridge supports using a YAML file to configure the
+various parameters.
+
+The configuration file must be a YAML array of maps.
+An example configuration for 5 bridges is below, showing the various ways that a
+bridge may be specified:
+
+```yaml
+ # Set just topic name, applies to both
+- topic_name: "chatter"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just ROS topic name, applies to both
+- ros_topic_name: "chatter_ros"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set just IGN topic name, applies to both
+- ign_topic_name: "chatter_ign"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Set each topic name explicitly
+- ros_topic_name: "chatter_both_ros"
+  ign_topic_name: "chatter_both_ign"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+
+# Full set of configurations
+- ros_topic_name: "ros_chatter"
+  ign_topic_name: "ign_chatter"
+  ros_type_name: "std_msgs/msg/String"
+  ign_type_name: "ignition.msgs.StringMsg"
+  subscriber_queue: 5       # Default 10
+  publisher_queue: 6        # Default 10
+  lazy: true                # Default "false"
+  direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
+                            # "IGN_TO_ROS" - Bridge Ignition topic to ROS
+                            # "ROS_TO_IGN" - Bridge ROS topic to Ignition
+```
+
+To run the bridge node with the above configuration:
+```bash
+ros2 run ros_ign_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_ign/ros_ign_bridge/test/config/full.yaml
+```
+
+## API
+
+ROS 2 Parameters:
+
+ * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
+ * `config_file` - YAML file to be loaded as the bridge configuration

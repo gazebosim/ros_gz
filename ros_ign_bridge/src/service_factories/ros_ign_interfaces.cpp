@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "factories/ros_ign_interfaces.hpp"
+#include <ignition/msgs/boolean.pb.h>
+#include <ignition/msgs/world_control.pb.h>
 
 #include <memory>
 #include <string>
@@ -20,6 +21,7 @@
 #include "ros_ign_interfaces/srv/control_world.hpp"
 
 #include "service_factory.hpp"
+#include "factories/ros_ign_interfaces.hpp"
 #include "ros_ign_bridge/convert/ros_ign_interfaces.hpp"
 
 

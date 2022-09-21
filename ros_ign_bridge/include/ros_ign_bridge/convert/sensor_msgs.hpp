@@ -24,6 +24,7 @@
 #include <ignition/msgs/laserscan.pb.h>
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
+#include <ignition/msgs/navsat.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
 
 // ROS 2 messages
@@ -35,6 +36,7 @@
 #include <sensor_msgs/msg/joint_state.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <sensor_msgs/msg/magnetic_field.hpp>
+#include <sensor_msgs/msg/nav_sat_fix.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 
 #include <ros_ign_bridge/convert_decl.hpp>
@@ -126,6 +128,18 @@ void
 convert_ign_to_ros(
   const ignition::msgs::Magnetometer & ign_msg,
   sensor_msgs::msg::MagneticField & ros_msg);
+
+template<>
+void
+convert_ros_to_ign(
+  const sensor_msgs::msg::NavSatFix & ros_msg,
+  ignition::msgs::NavSat & ign_msg);
+
+template<>
+void
+convert_ign_to_ros(
+  const ignition::msgs::NavSat & ign_msg,
+  sensor_msgs::msg::NavSatFix & ros_msg);
 
 template<>
 void

@@ -18,26 +18,10 @@
 #include <string>
 #include <vector>
 
-// include Ignition Transport
-#include <ignition/transport/Node.hh>
-
-// include ROS 2
 #include <rclcpp/rclcpp.hpp>
+#include <ros_ign_bridge/ros_ign_bridge.hpp>
 
-#include "bridge.hpp"
-
-// Direction of bridge.
-enum Direction
-{
-  // Both directions.
-  BIDIRECTIONAL = 0,
-  // Only from IGN to ROS
-  FROM_IGN_TO_ROS = 1,
-  // Only from ROS to IGN
-  FROM_ROS_TO_IGN = 2,
-  // Unspecified, only used for services
-  DIR_UNSPECIFIED = 3,
-};
+#include "bridge_handle.hpp"
 
 //////////////////////////////////////////////////
 void usage()
@@ -76,6 +60,10 @@ void usage()
     "ignition.msgs.WorldControl@ignition.msgs.Boolean\n" << std::endl;
 }
 
+using RosIgnBridge = ros_ign_bridge::RosIgnBridge;
+using BridgeDirection = ros_ign_bridge::BridgeDirection;
+using BridgeConfig = ros_ign_bridge::BridgeConfig;
+
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
@@ -88,63 +76,70 @@ int main(int argc, char * argv[])
   --argc;
   auto filteredArgs = rclcpp::init_and_remove_ros_arguments(argc, argv);
 
-  // ROS 2 node
-  auto ros_node = std::make_shared<rclcpp::Node>("ros_ign_bridge");
+  auto bridge_node = std::make_shared<RosIgnBridge>(rclcpp::NodeOptions());
+  auto ign_node = ignition::transport::Node();
 
-  // Ignition node
-  auto ign_node = std::make_shared<ignition::transport::Node>();
+  // Set lazy subscriber on a global basis
+  bridge_node->declare_parameter<bool>("lazy", false);
+  bool lazy_subscription;
+  bridge_node->get_parameter("lazy", lazy_subscription);
 
-  std::vector<ros_ign_bridge::BridgeHandles> bidirectional_handles;
-  std::vector<ros_ign_bridge::BridgeIgnToRosHandles> ign_to_ros_handles;
-  std::vector<ros_ign_bridge::BridgeRosToIgnHandles> ros_to_ign_handles;
-  std::vector<ros_ign_bridge::BridgeIgnServicesToRosHandles> service_bridge_handles;
-
-  // Filter arguments (i.e. remove ros args) then parse all the remaining ones
   const std::string delim = "@";
-  const size_t queue_size = 10;
+  const std::string delimIgnToROS = "[";
+  const std::string delimROSToIgn = "]";
+
   // TODO(ivanpauno): Improve the parsing code later, it's hard to read ...
-  for (auto & arg : filteredArgs) {
+  for (auto filteredArg : filteredArgs) {
+    std::string arg = filteredArg;
     auto delimPos = arg.find(delim);
     if (delimPos == std::string::npos || delimPos == 0) {
       usage();
       return -1;
     }
-    std::string topic_name = arg.substr(0, delimPos);
+
+    BridgeConfig config;
+    config.ros_topic_name = arg.substr(0, delimPos);
+    config.ign_topic_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
 
     // Get the direction delimeter, which should be one of:
     //   @ == bidirectional, or
     //   [ == only from IGN to ROS, or
     //   ] == only from ROS to IGN.
-    delimPos = arg.find("@");
-    Direction direction = BIDIRECTIONAL;
+    delimPos = arg.find(delim);
+    config.direction = BridgeDirection::BIDIRECTIONAL;
+
     if (delimPos == std::string::npos || delimPos == 0) {
-      delimPos = arg.find("[");
+      delimPos = arg.find(delimIgnToROS);
       if (delimPos == std::string::npos || delimPos == 0) {
-        delimPos = arg.find("]");
+        delimPos = arg.find(delimROSToIgn);
         if (delimPos == 0) {
           usage();
           return -1;
         } else if (delimPos == std::string::npos) {
-          direction = DIR_UNSPECIFIED;
+          // Fall through, to parse for services
+          config.direction = BridgeDirection::NONE;
         } else {
-          direction = FROM_ROS_TO_IGN;
+          config.direction = BridgeDirection::ROS_TO_IGN;
         }
       } else {
-        direction = FROM_IGN_TO_ROS;
+        config.direction = BridgeDirection::IGN_TO_ROS;
       }
     }
-    std::string ros_type_name = arg.substr(0, delimPos);
+
+    config.ros_type_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
-    if (ros_type_name.find("/srv/") != std::string::npos) {
+    if (config.ros_type_name.find("/srv/") != std::string::npos) {
       std::string ign_req_type_name;
       std::string ign_rep_type_name;
-      if (direction != DIR_UNSPECIFIED && direction != BIDIRECTIONAL) {
+      if (config.direction == BridgeDirection::ROS_TO_IGN ||
+        config.direction == BridgeDirection::IGN_TO_ROS)
+      {
         usage();
         return -1;
       }
-      if (direction == BIDIRECTIONAL) {
-        delimPos = arg.find("@");
+      if (config.direction == BridgeDirection::BIDIRECTIONAL) {
+        delimPos = arg.find(delim);
         if (delimPos == std::string::npos || delimPos == 0) {
           usage();
           return -1;
@@ -154,14 +149,11 @@ int main(int argc, char * argv[])
         ign_rep_type_name = std::move(arg);
       }
       try {
-        service_bridge_handles.push_back(
-          ros_ign_bridge::create_service_bridge(
-            ros_node,
-            ign_node,
-            ros_type_name,
-            ign_req_type_name,
-            ign_rep_type_name,
-            topic_name));
+        bridge_node->add_service_bridge(
+          config.ros_type_name,
+          ign_req_type_name,
+          ign_rep_type_name,
+          config.ros_topic_name);
       } catch (std::runtime_error & e) {
         std::cerr << e.what() << std::endl;
       }
@@ -173,41 +165,12 @@ int main(int argc, char * argv[])
       usage();
       return -1;
     }
-    std::string ign_type_name = arg;
-    try {
-      switch (direction) {
-        default:
-        case BIDIRECTIONAL:
-          bidirectional_handles.push_back(
-            ros_ign_bridge::create_bidirectional_bridge(
-              ros_node, ign_node,
-              ros_type_name, ign_type_name,
-              topic_name, queue_size));
-          break;
-        case FROM_IGN_TO_ROS:
-          ign_to_ros_handles.push_back(
-            ros_ign_bridge::create_bridge_from_ign_to_ros(
-              ign_node, ros_node,
-              ign_type_name, topic_name, queue_size,
-              ros_type_name, topic_name, queue_size));
-          break;
-        case FROM_ROS_TO_IGN:
-          ros_to_ign_handles.push_back(
-            ros_ign_bridge::create_bridge_from_ros_to_ign(
-              ros_node, ign_node,
-              ros_type_name, topic_name, queue_size,
-              ign_type_name, topic_name, queue_size));
-          break;
-      }
-    } catch (std::runtime_error & _e) {
-      std::cerr << "Failed to create a bridge for topic [" << topic_name << "] " <<
-        "with ROS2 type [" << ros_type_name << "] and " <<
-        "Ignition Transport type [" << ign_type_name << "]" << std::endl;
-    }
+    config.ign_type_name = arg;
+    bridge_node->add_bridge(config);
   }
 
   // ROS 2 spinner
-  rclcpp::spin(ros_node);
+  rclcpp::spin(bridge_node);
 
   // Wait for ign node shutdown
   ignition::transport::waitForShutdown();

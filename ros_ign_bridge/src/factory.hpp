@@ -40,6 +40,8 @@ public:
     ign_type_name_(ign_type_name)
   {}
 
+  virtual ~Factory() {}
+
   rclcpp::PublisherBase::SharedPtr
   create_ros_publisher(
     rclcpp::Node::SharedPtr ros_node,

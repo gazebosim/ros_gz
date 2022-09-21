@@ -130,6 +130,14 @@ Publishes magnetic field readings.
 
 ![](images/magnetometer_demo.png)
 
+## GNSS
+
+Publishes satellite navigation readings, only available in Fortress on.
+
+    ros2 launch ros_ign_gazebo_demos navsat.launch.py
+
+![](images/navsat_demo.png)
+
 ## RGBD camera
 
 RGBD camera data can be obtained as:
