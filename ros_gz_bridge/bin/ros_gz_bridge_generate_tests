@@ -1,0 +1,61 @@
+#!/usr/bin/env python3
+# Copyright 2022 Open Source Robotics Foundation, Inc.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+
+import argparse
+import os
+import sys
+
+# add ros_gz_bridge to the Python path
+ros_gz_bridge_root = os.path.join(os.path.dirname(__file__), '..')
+sys.path.insert(0, os.path.abspath(ros_gz_bridge_root))
+
+from ros_gz_bridge import generate_test_cpp
+
+
+def main(argv=sys.argv[1:]):
+    parser = argparse.ArgumentParser(
+        description='Generate C++ template specializations.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+    parser.add_argument(
+        '--output-path',
+        required=True,
+        help='The basepath of the generated C++ files')
+    parser.add_argument(
+        '--template-dir',
+        required=True,
+        help='The location of the template files')
+    parser.add_argument(
+        '--gz-msgs-ver',
+        required=False,
+        default="0.0.0",
+        help='Gazebo messages version')
+
+    args = parser.parse_args(argv)
+    msgs_ver = tuple(map(int, args.gz_msgs_ver.split('.')))
+
+    try:
+        return generate_test_cpp(
+            args.output_path,
+            args.template_dir,
+            msgs_ver
+        )
+    except RuntimeError as e:
+        print(str(e), file=sys.stderr)
+        return 1
+
+
+if __name__ == '__main__':
+    sys.exit(main())

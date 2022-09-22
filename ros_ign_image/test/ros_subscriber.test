@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<launch>
-
-  <include file="$(find ros_ign_image)/test/launch/test_ros_subscriber.launch">
-  </include>
-
-  <test test-name="ign_ros" pkg="ros_ign_image" type="test_ros_subscriber_image" time-limit="60.0" />
-
-</launch>
