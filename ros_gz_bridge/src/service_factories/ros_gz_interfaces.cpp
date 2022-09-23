@@ -15,8 +15,6 @@
 #include <ignition/msgs/boolean.pb.h>
 #include <ignition/msgs/world_control.pb.h>
 
-#include <ignition/msgs/boolean.pb.h>
-
 #include <memory>
 #include <string>
 
