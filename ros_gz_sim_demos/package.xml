@@ -7,11 +7,8 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- Fortress (default) -->
-  <exec_depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
-  <exec_depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-gazebo6</exec_depend>
-  <!-- Edifice -->
-  <exec_depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-gazebo5</exec_depend>
+  <!-- Garden -->
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-sim7</depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
