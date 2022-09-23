@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ignition/msgs/boolean.pb.h>
-#include <ignition/msgs/world_control.pb.h>
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/world_control.pb.h>
 
 #include <atomic>
 #include <chrono>
@@ -21,7 +21,7 @@
 #include <iostream>
 #include <thread>
 
-#include <ignition/transport.hh>
+#include <gz/transport.hh>
 
 #include "utils/test_utils.hpp"
 #include "utils/gz_test_msg.hpp"
@@ -42,8 +42,8 @@ void signal_handler(int _signal)
 
 //////////////////////////////////////////////////
 bool control_world(
-  const ignition::msgs::WorldControl &,
-  ignition::msgs::Boolean & _res)
+  const gz::msgs::WorldControl &,
+  gz::msgs::Boolean & _res)
 {
   _res.set_data(true);
   return true;
@@ -58,7 +58,7 @@ int main(int /*argc*/, char **/*argv*/)
   std::signal(SIGTERM, signal_handler);
 
   // Create a transport node and advertise a topic.
-  ignition::transport::Node node;
+  gz::transport::Node node;
 
   // gz::msgs::WorldControl.
   node.Advertise(

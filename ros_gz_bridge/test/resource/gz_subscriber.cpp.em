@@ -14,7 +14,7 @@
 
 
 #include <gtest/gtest.h>
-#include <ignition/transport.hh>
+#include <gz/transport.hh>
 
 #include <chrono>
 #include <memory>
@@ -47,7 +47,7 @@ public: void Cb(const GZ_T & _msg)
 public: bool callbackExecuted = false;
 
 /// \brief Transport node;
-private: ignition::transport::Node node;
+private: gz::transport::Node node;
 };
 
 @[for m in mappings]@

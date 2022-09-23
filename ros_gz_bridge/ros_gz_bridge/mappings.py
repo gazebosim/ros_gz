@@ -50,6 +50,7 @@ MAPPINGS = {
     'ros_gz_interfaces': [
         Mapping('Contact', 'Contact'),
         Mapping('Contacts', 'Contacts'),
+        Mapping('Dataframe', 'Dataframe'),
         Mapping('Entity', 'Entity'),
         Mapping('GuiCamera', 'GUICamera'),
         Mapping('JointWrench', 'JointWrench'),
@@ -91,11 +92,5 @@ MAPPINGS = {
     ],
     'trajectory_msgs': [
         Mapping('JointTrajectory', 'JointTrajectory'),
-    ],
-}
-
-MAPPINGS_8_4_0 = {
-    'ros_gz_interfaces': [
-        Mapping('Dataframe', 'Dataframe'),
     ],
 }
