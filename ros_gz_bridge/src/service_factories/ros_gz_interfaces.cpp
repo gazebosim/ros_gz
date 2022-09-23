@@ -12,18 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "factories/ros_gz_interfaces.hpp"
-
 #include <ignition/msgs/boolean.pb.h>
+#include <ignition/msgs/world_control.pb.h>
 
 #include <memory>
 #include <string>
 
+#include "service_factories/ros_gz_interfaces.hpp"
 #include "ros_gz_interfaces/srv/control_world.hpp"
-
-#include "service_factory.hpp"
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
 
+#include "service_factory.hpp"
 
 namespace ros_gz_bridge
 {

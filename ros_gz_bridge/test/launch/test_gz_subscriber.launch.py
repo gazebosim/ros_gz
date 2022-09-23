@@ -12,17 +12,43 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
+import sys
 import unittest
 
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 
 import launch_testing
 
+# add ros_gz_bridge to the Python path
+ros_gz_bridge_root = os.path.join(os.path.dirname(__file__), '..', '..')
+sys.path.insert(0, os.path.abspath(ros_gz_bridge_root))
+
+from ros_gz_bridge import mappings  # noqa: E402
+
+
+def bridge_setup(context, *args, **kwargs):
+    gz_msgs_ver = LaunchConfiguration('gz_msgs_ver').perform(context)
+    gz_msgs_ver = tuple(map(int, gz_msgs_ver.split('.')))
+
+    # Bridge
+    bridge = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+          f'/{m.unique()}@{m.ros2_string()}]{m.gz_string()}'
+          for m in mappings(gz_msgs_ver)
+        ],
+        output='screen'
+    )
+    return [bridge]
+
 
 def generate_test_description():
-
     publisher = Node(
         package='ros_gz_bridge',
         executable='test_ros_publisher',
@@ -34,78 +60,28 @@ def generate_test_description():
         output='screen'
     )
 
-    # Bridge
-    bridge = Node(
-        package='ros_gz_bridge',
-        executable='parameter_bridge',
-        arguments=[
-          '/time@builtin_interfaces/msg/Time@ignition.msgs.Time',
-          '/bool@std_msgs/msg/Bool@ignition.msgs.Boolean',
-          '/color@std_msgs/msg/ColorRGBA@ignition.msgs.Color',
-          '/empty@std_msgs/msg/Empty@ignition.msgs.Empty',
-          '/float@std_msgs/msg/Float32@ignition.msgs.Float',
-          '/double@std_msgs/msg/Float64@ignition.msgs.Double',
-          '/uint32@std_msgs/msg/UInt32@ignition.msgs.UInt32',
-          '/header@std_msgs/msg/Header@ignition.msgs.Header',
-          '/string@std_msgs/msg/String@ignition.msgs.StringMsg',
-          '/quaternion@geometry_msgs/msg/Quaternion@ignition.msgs.Quaternion',
-          '/vector3@geometry_msgs/msg/Vector3@ignition.msgs.Vector3d',
-          '/clock@rosgraph_msgs/msg/Clock@ignition.msgs.Clock',
-          '/point@geometry_msgs/msg/Point@ignition.msgs.Vector3d',
-          '/pose@geometry_msgs/msg/Pose@ignition.msgs.Pose',
-          '/pose_with_covariance@geometry_msgs/msg/PoseWithCovariance@'
-          'ignition.msgs.PoseWithCovariance',
-          '/pose_stamped@geometry_msgs/msg/PoseStamped@ignition.msgs.Pose',
-          '/transform@geometry_msgs/msg/Transform@ignition.msgs.Pose',
-          '/tf2_message@tf2_msgs/msg/TFMessage@ignition.msgs.Pose_V',
-          '/transform_stamped@geometry_msgs/msg/TransformStamped@ignition.msgs.Pose',
-          '/twist@geometry_msgs/msg/Twist@ignition.msgs.Twist',
-          '/twist_with_covariance@geometry_msgs/msg/TwistWithCovariance@'
-          'ignition.msgs.TwistWithCovariance',
-          '/wrench@geometry_msgs/msg/Wrench@ignition.msgs.Wrench',
-          '/joint_wrench@ros_gz_interfaces/msg/JointWrench@ignition.msgs.JointWrench',
-          '/entity@ros_gz_interfaces/msg/Entity@ignition.msgs.Entity',
-          '/contact@ros_gz_interfaces/msg/Contact@ignition.msgs.Contact',
-          '/contacts@ros_gz_interfaces/msg/Contacts@ignition.msgs.Contacts',
-          '/light@ros_gz_interfaces/msg/Light@ignition.msgs.Light',
-          '/gui_camera@ros_gz_interfaces/msg/GuiCamera@ignition.msgs.GUICamera',
-          '/stringmsg_v@ros_gz_interfaces/msg/StringVec@ignition.msgs.StringMsg_V',
-          '/track_visual@ros_gz_interfaces/msg/TrackVisual@ignition.msgs.TrackVisual',
-          '/video_record@ros_gz_interfaces/msg/VideoRecord@ignition.msgs.VideoRecord',
-          '/image@sensor_msgs/msg/Image@ignition.msgs.Image',
-          '/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo',
-          '/fluid_pressure@sensor_msgs/msg/FluidPressure@ignition.msgs.FluidPressure',
-          '/imu@sensor_msgs/msg/Imu@ignition.msgs.IMU',
-          '/laserscan@sensor_msgs/msg/LaserScan@ignition.msgs.LaserScan',
-          '/magnetic@sensor_msgs/msg/MagneticField@ignition.msgs.Magnetometer',
-          # '/actuators@mav_msgs/msg/Actuators@ignition.msgs.Actuators',
-          '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
-          '/odometry_with_covariance@nav_msgs/msg/Odometry@'
-          'ignition.msgs.OdometryWithCovariance',
-          '/pointcloud2@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
-          '/joint_states@sensor_msgs/msg/JointState@ignition.msgs.Model',
-          '/battery_state@sensor_msgs/msg/BatteryState@ignition.msgs.BatteryState',
-          '/joint_trajectory@trajectory_msgs/msg/JointTrajectory@ignition.msgs.JointTrajectory'
-        ],
-        output='screen'
-    )
     return LaunchDescription([
-        bridge,
+        DeclareLaunchArgument(
+            'gz_msgs_ver',
+            default_value=['0.0.0'],
+            description='Gazebo messages version to test against'
+        ),
         publisher,
         process_under_test,
+        OpaqueFunction(function=bridge_setup),
         launch_testing.util.KeepAliveProc(),
         launch_testing.actions.ReadyToTest(),
     ]), locals()
 
 
-class IgnSubscriberTest(unittest.TestCase):
+class GzSubscriberTest(unittest.TestCase):
 
     def test_termination(self, process_under_test, proc_info):
         proc_info.assertWaitForShutdown(process=process_under_test, timeout=200)
 
 
 @launch_testing.post_shutdown_test()
-class IgnSubscriberTestAfterShutdown(unittest.TestCase):
+class GzSubscriberTestAfterShutdown(unittest.TestCase):
 
     def test_exit_code(self, process_under_test, proc_info):
         launch_testing.asserts.assertExitCodes(

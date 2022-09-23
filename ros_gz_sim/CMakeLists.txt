@@ -91,6 +91,20 @@ target_link_libraries(create
 )
 ament_target_dependencies(create std_msgs)
 
+add_library(Stopwatch src/Stopwatch.cpp)
+ament_target_dependencies(Stopwatch
+  rclcpp
+)
+
+target_include_directories(Stopwatch PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION include/${PROJECT_NAME}
+)
+
 configure_file(
   launch/gz_sim.launch.py.in
   launch/gz_sim.launch.py.configured
@@ -108,12 +122,39 @@ install(FILES
 
 install(TARGETS
   create
+  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+  # GTest
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_find_gtest()
+
+  ament_add_gtest_executable(test_stopwatch
+    test/test_stopwatch.cpp
+  )
+
+  ament_target_dependencies(test_stopwatch rclcpp)
+
+  target_include_directories(test_stopwatch PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
+
+  target_link_libraries(test_stopwatch
+    Stopwatch
+  )
+
+  install(
+    TARGETS test_stopwatch
+    DESTINATION lib/${PROJECT_NAME}
+  )
+  ament_add_gtest_test(test_stopwatch)
+
 endif()
 
 ament_package()

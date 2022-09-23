@@ -419,6 +419,41 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const sensor_msgs::msg::NavSatFix & ros_msg,
+  ignition::msgs::NavSat & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  gz_msg.set_latitude_deg(ros_msg.latitude);
+  gz_msg.set_longitude_deg(ros_msg.longitude);
+  gz_msg.set_altitude(ros_msg.altitude);
+  gz_msg.set_frame_id(ros_msg.header.frame_id);
+
+  // Not supported in sensor_msgs::NavSatFix.
+  gz_msg.set_velocity_east(0.0);
+  gz_msg.set_velocity_north(0.0);
+  gz_msg.set_velocity_up(0.0);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::NavSat & gz_msg,
+  sensor_msgs::msg::NavSatFix & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.header.frame_id = frame_id_gz_to_ros(gz_msg.frame_id());
+  ros_msg.latitude = gz_msg.latitude_deg();
+  ros_msg.longitude = gz_msg.longitude_deg();
+  ros_msg.altitude = gz_msg.altitude();
+
+  // position_covariance is not supported in Ignition::Msgs::NavSat.
+  ros_msg.position_covariance_type = sensor_msgs::msg::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+  ros_msg.status.status = sensor_msgs::msg::NavSatStatus::STATUS_FIX;
+}
+
+template<>
+void
+convert_ros_to_gz(
   const sensor_msgs::msg::PointCloud2 & ros_msg,
   ignition::msgs::PointCloudPacked & gz_msg)
 {

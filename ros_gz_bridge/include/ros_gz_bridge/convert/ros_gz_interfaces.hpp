@@ -22,6 +22,8 @@
 #include <ignition/msgs/contacts.pb.h>
 #include <ignition/msgs/gui_camera.pb.h>
 #include <ignition/msgs/light.pb.h>
+#include <ignition/msgs/param.pb.h>
+#include <ignition/msgs/param_v.pb.h>
 #include <ignition/msgs/stringmsg_v.pb.h>
 #include <ignition/msgs/track_visual.pb.h>
 #include <ignition/msgs/video_record.pb.h>
@@ -34,10 +36,19 @@
 #include <ros_gz_interfaces/msg/contacts.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
 #include <ros_gz_interfaces/msg/track_visual.hpp>
 #include <ros_gz_interfaces/msg/video_record.hpp>
 #include <ros_gz_interfaces/msg/world_control.hpp>
+
+// Required for HAVE_DATAFRAME definition
+#include <ros_gz_bridge/ros_gz_bridge.hpp>
+
+#if HAVE_DATAFRAME
+#include <ignition/msgs/dataframe.pb.h>
+#include <ros_gz_interfaces/msg/dataframe.hpp>
+#endif  // HAVE_DATAFRAME
 
 #include <ros_gz_bridge/convert_decl.hpp>
 
@@ -92,6 +103,20 @@ convert_gz_to_ros(
   const ignition::msgs::Contacts & gz_msg,
   ros_gz_interfaces::msg::Contacts & ros_msg);
 
+#if HAVE_DATAFRAME
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Dataframe & ros_msg,
+  ignition::msgs::Dataframe & ign_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Dataframe & ign_msg,
+  ros_gz_interfaces::msg::Dataframe & ros_msg);
+#endif  // HAVE_DATAFRAME
+
 template<>
 void
 convert_ros_to_gz(
@@ -127,6 +152,30 @@ void
 convert_gz_to_ros(
   const ignition::msgs::StringMsg_V & gz_msg,
   ros_gz_interfaces::msg::StringVec & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Param & gz_msg,
+  ros_gz_interfaces::msg::ParamVec & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param_V & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Param_V & gz_msg,
+  ros_gz_interfaces::msg::ParamVec & ros_msg);
 
 template<>
 void

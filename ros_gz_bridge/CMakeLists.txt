@@ -4,23 +4,16 @@ project(ros_gz_bridge)
 
 # Default to C++14
 if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
+  set(CMAKE_CXX_STANDARD 17)
 endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
 
 find_package(ament_cmake REQUIRED)
-find_package(builtin_interfaces REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(nav_msgs REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(ros_gz_interfaces REQUIRED)
-find_package(rosgraph_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(std_msgs REQUIRED)
-find_package(tf2_msgs REQUIRED)
-find_package(trajectory_msgs REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(yaml_cpp_vendor REQUIRED)
 
 # TODO(CH3): Deprecated. Remove on tock.
 if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
@@ -31,42 +24,45 @@ endif()
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-transport10 REQUIRED)
-  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
-
   find_package(ignition-msgs7 REQUIRED)
-  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Edifice")
 # Garden
 elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-transport12 REQUIRED)
-  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
-
   find_package(gz-msgs9 REQUIRED)
-  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX gz)
+  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
-  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
-
   find_package(ignition-msgs8 REQUIRED)
-  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Fortress")
 endif()
 
-set(PACKAGES
+set(GZ_MSGS_VERSION_MAJOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MAJOR})
+set(GZ_MSGS_VERSION_MINOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MINOR})
+set(GZ_MSGS_VERSION_PATCH ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_PATCH})
+set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_MSGS_VERSION_PATCH})
+
+set(BRIDGE_MESSAGE_TYPES
   builtin_interfaces
   geometry_msgs
   nav_msgs
+  rcl_interfaces
   ros_gz_interfaces
   rosgraph_msgs
   sensor_msgs
@@ -75,43 +71,41 @@ set(PACKAGES
   trajectory_msgs
 )
 
-add_library(bridge_utils
-  STATIC
-  src/convert/utils.cpp
-)
-target_include_directories(bridge_utils
-  PRIVATE src
-)
-set_target_properties(bridge_utils PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set(generated_path "${CMAKE_BINARY_DIR}/generated")
+set(generated_files "${generated_path}/get_factory.cpp")
+list(APPEND generated_files "${generated_path}/get_mappings.cpp")
+set(convert_files "src/convert/utils.cpp")
 
-foreach(PKG ${PACKAGES})
-  add_library(${PKG}_bridge
-    STATIC
-    src/convert/${PKG}.cpp
-    src/factories/${PKG}.cpp
-  )
-  target_include_directories(${PKG}_bridge
-    PUBLIC include
-    PRIVATE src
-  )
-  ament_target_dependencies(${PKG}_bridge
-    "${PKG}"
-  )
-  target_link_libraries(${PKG}_bridge
-    bridge_utils
-    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
-    rclcpp::rclcpp
-  )
-  set_target_properties(${PKG}_bridge
-    PROPERTIES POSITION_INDEPENDENT_CODE ON)
+foreach(package_name ${BRIDGE_MESSAGE_TYPES})
+  find_package(${package_name} QUIET REQUIRED)
+  message(STATUS "Found ${package_name}: ${${package_name}_VERSION} (${${package_name}_DIR})")
 
+  list(APPEND generated_files "${generated_path}/factories/${package_name}.cpp")
+  list(APPEND generated_files "${generated_path}/factories/${package_name}.hpp")
+
+  list(APPEND convert_files "src/convert/${package_name}.cpp")
 endforeach()
 
-set(bridge_executables
-  parameter_bridge
-  static_bridge
-)
+set(target_dependencies
+  "bin/ros_gz_bridge_generate_factories"
+  "resource/get_factory.cpp.em"
+  "resource/get_mappings.cpp.em"
+  "resource/pkg_factories.cpp.em"
+  "resource/pkg_factories.hpp.em"
+  "ros_gz_bridge/__init__.py"
+  "ros_gz_bridge/mappings.py")
+
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+
+add_custom_command(
+  OUTPUT ${generated_files}
+  COMMAND Python3::Interpreter
+  ARGS bin/ros_gz_bridge_generate_factories
+    --output-path "${generated_path}" --template-dir resource
+    --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
+  DEPENDS ${target_dependencies}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "Generating factories for interface types")
 
 set(bridge_lib
   ros_gz_bridge_lib
@@ -119,19 +113,43 @@ set(bridge_lib
 
 add_library(${bridge_lib}
   SHARED
-  src/factories.cpp
+  src/bridge_config.cpp
+  src/bridge_handle.cpp
+  src/bridge_handle_ros_to_gz.cpp
+  src/bridge_handle_gz_to_ros.cpp
   src/factory_interface.cpp
   src/service_factories/ros_gz_interfaces.cpp
+  src/ros_gz_bridge.cpp
+  ${convert_files}
+  ${generated_files}
+)
+
+target_link_libraries(${bridge_lib}
+  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+)
+
+ament_target_dependencies(${bridge_lib}
+  rclcpp
+  rclcpp_components
+  yaml_cpp_vendor
+  ${BRIDGE_MESSAGE_TYPES}
 )
 
 target_include_directories(${bridge_lib}
   PUBLIC include
-  PRIVATE src
+  PRIVATE src ${generated_path}
 )
 
-foreach(PKG ${PACKAGES})
-  target_link_libraries(${bridge_lib} ${PKG}_bridge)
-endforeach()
+target_link_libraries(${bridge_lib}
+  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+)
+
+rclcpp_components_register_node(
+  ${bridge_lib}
+  PLUGIN ros_gz_bridge::RosGzBridge
+  EXECUTABLE bridge_node)
 
 install(TARGETS ${bridge_lib}
         ARCHIVE DESTINATION lib
@@ -146,18 +164,22 @@ install(
 ament_export_include_directories(include)
 ament_export_libraries(${bridge_lib})
 
+set(bridge_executables
+  parameter_bridge
+  static_bridge
+  bridge_types
+)
+
 foreach(bridge ${bridge_executables})
   add_executable(${bridge}
     src/${bridge}.cpp
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(${bridge}
     "rclcpp"
-    ${PACKAGES}
+    ${BRIDGE_MESSAGE_TYPES}
   )
   install(TARGETS ${bridge}
     DESTINATION lib/${PROJECT_NAME}
@@ -172,13 +194,43 @@ if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
 
+  ament_add_gtest(test_rcl_interfaces
+    ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces.cpp
+    ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces_TEST.cpp
+  )
+  target_link_libraries(test_rcl_interfaces
+    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    ${rcl_interfaces_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_rcl_interfaces
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
+  ament_add_gtest(test_ros_gz_interfaces
+    ${PROJECT_SOURCE_DIR}/src/convert/ros_gz_interfaces.cpp
+    ${PROJECT_SOURCE_DIR}/src/convert/ros_gz_interfaces_TEST.cpp
+  )
+  target_link_libraries(test_ros_gz_interfaces
+    ${bridge_lib}
+    ${ros_gz_interfaces_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_ros_gz_interfaces
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
   add_library(test_utils
     test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
 
   target_include_directories(test_utils
-    PUBLIC test ${GTEST_INCLUDE_DIRS}
+    PUBLIC test ${GTEST_INCLUDE_DIRS} include
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
@@ -186,10 +238,8 @@ if(BUILD_TESTING)
     ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
   )
   ament_target_dependencies(test_utils
-    builtin_interfaces
-    geometry_msgs
-    nav_msgs
     rclcpp
+    ${BRIDGE_MESSAGE_TYPES}
     ros_gz_interfaces
     rosgraph_msgs
     sensor_msgs
@@ -198,26 +248,49 @@ if(BUILD_TESTING)
     trajectory_msgs
   )
 
-  add_executable(test_ros_publisher test/publishers/ros_publisher.cpp)
-  target_link_libraries(test_ros_publisher test_utils)
+  set(generated_path "${CMAKE_BINARY_DIR}/generated/test")
 
-  add_executable(test_ros_subscriber
-        test/subscribers/ros_subscriber/ros_subscriber.cpp
-        test/subscribers/ros_subscriber/builtin_interfaces_subscriber.cpp
-        test/subscribers/ros_subscriber/geometry_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/nav_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/ros_gz_interfaces_subscriber.cpp
-        test/subscribers/ros_subscriber/rosgraph_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/sensor_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/std_msgs_subscriber.cpp
-        test/subscribers/ros_subscriber/trajectory_msgs_subscriber.cpp)
+  set(generated_files
+    "${generated_path}/gz_publisher.cpp"
+    "${generated_path}/gz_subscriber.cpp"
+    "${generated_path}/ros_publisher.cpp"
+  )
 
-  target_link_libraries(test_ros_subscriber test_utils)
+  set(ros_subscriber_files
+    "test/subscribers/ros_subscriber.cpp"
+  )
 
-  add_executable(test_gz_publisher test/publishers/gz_publisher.cpp)
+  foreach(package_name ${BRIDGE_MESSAGE_TYPES})
+    list(APPEND generated_files "${generated_path}/${package_name}_subscriber.cpp")
+    list(APPEND ros_subscriber_files "${generated_path}/${package_name}_subscriber.cpp")
+  endforeach()
+
+  set(target_dependencies
+    "bin/ros_gz_bridge_generate_factories"
+    "test/resource/gz_publisher.cpp.em"
+    "test/resource/gz_subscriber.cpp.em"
+    "test/resource/ros_publisher.cpp.em"
+    "test/resource/ros_pkg_subscriber.cpp.em"
+    "ros_gz_bridge/__init__.py"
+    "ros_gz_bridge/mappings.py")
+
+  add_custom_command(
+    OUTPUT ${generated_files}
+    COMMAND Python3::Interpreter
+    ARGS bin/ros_gz_bridge_generate_tests
+      --output-path "${generated_path}" --template-dir test/resource/
+      --gz-msgs-ver "${GZ_MSGS_VERSION_FULL}"
+    DEPENDS ${target_dependencies}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    COMMENT "Generating test helpers")
+
+  add_executable(test_gz_publisher ${generated_path}/gz_publisher.cpp)
   target_link_libraries(test_gz_publisher test_utils)
 
-  add_executable(test_gz_subscriber test/subscribers/gz_subscriber.cpp)
+  add_executable(test_ros_publisher ${generated_path}/ros_publisher.cpp)
+  target_link_libraries(test_ros_publisher test_utils)
+
+  add_executable(test_gz_subscriber ${generated_path}/gz_subscriber.cpp)
   target_link_libraries(test_gz_subscriber test_utils)
 
   add_executable(test_gz_server test/serverclient/gz_server.cpp)
@@ -226,32 +299,46 @@ if(BUILD_TESTING)
   add_executable(test_ros_client test/serverclient/ros_client.cpp)
   target_link_libraries(test_ros_client test_utils)
 
+  add_executable(test_ros_subscriber ${ros_subscriber_files})
+  target_link_libraries(test_ros_subscriber test_utils)
+  target_include_directories(test_ros_subscriber
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
+
   install(TARGETS
-    test_ros_client
     test_ros_publisher
     test_ros_subscriber
     test_gz_publisher
-    test_gz_server
     test_gz_subscriber
+    test_gz_server
+    test_ros_client
     DESTINATION lib/${PROJECT_NAME}
   )
 
   add_launch_test(test/launch/test_ros_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 
   add_launch_test(test/launch/test_gz_subscriber.launch.py
     TIMEOUT 200
+    ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
   )
 
   add_launch_test(test/launch/test_gz_server.launch.py
     TIMEOUT 200
   )
+
+  ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
+  ament_target_dependencies(${PROJECT_NAME}_bridge_config rclcpp)
+  target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
+
 endif()
 
 ament_export_dependencies(
   rclcpp
-  ${PACKAGES}
+  ${BRIDGE_MESSAGE_TYPES}
 )
 
 ament_package()

@@ -31,6 +31,7 @@ def generate_launch_description():
                       ':'.join([environ.get('IGN_GAZEBO_SYSTEM_PLUGIN_PATH', default=''),
                                 environ.get('LD_LIBRARY_PATH', default='')])}
 
+
     return LaunchDescription([
         DeclareLaunchArgument('gz_args', default_value='',
                               description='Arguments to be passed to Gazebo Sim'),
@@ -48,20 +49,9 @@ def generate_launch_description():
             'ign_version', default_value='',
             description='Deprecated: Gazebo Sim\'s major version'
         ),
-
-        # NOTE(CH3): We need ign gazebo to support pre-garden...
-        # It's deprecated. Remove on tock.
-        ExecuteProcess(
-            condition=LaunchConfigurationNotEquals('ign_version', ''),
-            cmd=['ign gazebo',
-                 LaunchConfiguration('ign_args'),
-                 '--force-version',
-                 LaunchConfiguration('ign_version'),
-                 ],
-            output='screen',
-            additional_env=env,
-            shell=True
-        ),
+        DeclareLaunchArgument(
+            'debugger', default_value='false',
+            description='Run in Debugger'),
 
         ExecuteProcess(
             condition=IfCondition(
@@ -70,14 +60,16 @@ def generate_launch_description():
                     PythonExpression(["'", LaunchConfiguration('gz_version'), "' < '7'"])
                 )
             ),
-            cmd=['ign gazebo',
+            cmd=['ruby $(which ign) gazebo',
                  LaunchConfiguration('gz_args'),
                  '--force-version',
                  LaunchConfiguration('gz_version'),
                  ],
             output='screen',
             additional_env=env,
-            shell=True
+            shell=True,
+            prefix=PythonExpression([
+                "'x-terminal-emulator -e gdb -ex run --args' if '", LaunchConfiguration('debugger'), "'=='true' else ''"])
         ),
 
         ExecuteProcess(
@@ -87,14 +79,15 @@ def generate_launch_description():
                     PythonExpression(["'", LaunchConfiguration('gz_version'), "' >= '7'"])
                 )
             ),
-            cmd=['gz sim',
+            cmd=['ruby $(which gz) sim',
                  LaunchConfiguration('gz_args'),
                  '--force-version',
                  LaunchConfiguration('gz_version'),
                  ],
             output='screen',
             additional_env=env,
-            shell=True
+            shell=True,
+            prefix=PythonExpression([
+                "'x-terminal-emulator -e gdb -ex run --args' if '", LaunchConfiguration('debugger'), "'=='true' else ''"])
         ),
-
     ])

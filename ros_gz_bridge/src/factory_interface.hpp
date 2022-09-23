@@ -30,8 +30,7 @@ namespace ros_gz_bridge
 class FactoryInterface
 {
 public:
-  virtual
-  ~FactoryInterface() = 0;
+  virtual ~FactoryInterface() = 0;
 
   virtual
   rclcpp::PublisherBase::SharedPtr

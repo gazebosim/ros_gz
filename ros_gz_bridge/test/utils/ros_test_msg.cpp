@@ -70,6 +70,10 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.a, _msg->a);
 }
 
+void createTestMsg(std_msgs::msg::Empty &)
+{
+}
+
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Empty> &)
 {
 }
@@ -100,6 +104,18 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float64> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
 }
 
+void createTestMsg(std_msgs::msg::Int32 & _msg)
+{
+  _msg.data = -10;
+}
+
+void compareTestMsg(const std::shared_ptr<std_msgs::msg::Int32> & _msg)
+{
+  std_msgs::msg::Int32 expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.data, _msg->data);
+}
 
 void createTestMsg(std_msgs::msg::UInt32 & _msg)
 {
@@ -111,7 +127,7 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::UInt32> & _msg)
   std_msgs::msg::UInt32 expected_msg;
   createTestMsg(expected_msg);
 
-  EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
+  EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
 void createTestMsg(std_msgs::msg::Header & _msg)
@@ -476,6 +492,35 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::GuiCamera> & _
   EXPECT_EQ(expected_msg.projection_type, _msg->projection_type);
 }
 
+void createTestMsg(ros_gz_interfaces::msg::ParamVec & _msg)
+{
+  createTestMsg(_msg.header);
+
+  rcl_interfaces::msg::Parameter p;
+  p.name = "parameter_name_foo";
+  p.value.type = rcl_interfaces::msg::ParameterType::PARAMETER_STRING;
+  p.value.string_value = "parameter_value_foo";
+  _msg.params.push_back(p);
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::ParamVec> & _msg)
+{
+  ros_gz_interfaces::msg::ParamVec expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(_msg->header);
+
+  EXPECT_EQ(expected_msg.params.size(), _msg->params.size());
+
+  // Handle the case that the source was a Param_V message
+  if (_msg->params[0].name.find("param_0") != std::string::npos) {
+    EXPECT_EQ("param_0/" + expected_msg.params[0].name, _msg->params[0].name);
+  } else {
+    EXPECT_EQ(expected_msg.params[0].name, _msg->params[0].name);
+  }
+  EXPECT_EQ(expected_msg.params[0].value.type, _msg->params[0].value.type);
+  EXPECT_EQ(expected_msg.params[0].value.string_value, _msg->params[0].value.string_value);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::StringVec & _msg)
 {
   createTestMsg(_msg.header);
@@ -652,6 +697,34 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Contacts> & _m
     compareTestMsg(std::make_shared<ros_gz_interfaces::msg::Contact>(_msg->contacts.at(i)));
   }
 }
+
+#if HAVE_DATAFRAME
+void createTestMsg(ros_gz_interfaces::msg::Dataframe & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.rssi = -10.3;
+  _msg.src_address = "localhost:8080";
+  _msg.dst_address = "localhost:8081";
+  _msg.data.resize(150, '1');
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Dataframe> & _msg)
+{
+  ros_gz_interfaces::msg::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.src_address, _msg->src_address);
+  EXPECT_EQ(expected_msg.dst_address, _msg->dst_address);
+  EXPECT_EQ(expected_msg.rssi, _msg->rssi);
+
+  ASSERT_EQ(expected_msg.data.size(), _msg->data.size());
+  for (size_t ii = 0; ii < _msg->data.size(); ++ii) {
+    EXPECT_EQ(expected_msg.data[ii], _msg->data[ii]);
+  }
+}
+#endif  // HAVE_DATAFRAME
 
 void createTestMsg(nav_msgs::msg::Odometry & _msg)
 {
@@ -909,6 +982,37 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::MagneticField> & _ms
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->magnetic_field));
 }
 
+void createTestMsg(sensor_msgs::msg::NavSatFix & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.status.status = sensor_msgs::msg::NavSatStatus::STATUS_FIX;
+  _msg.latitude = 0.00;
+  _msg.longitude = 0.00;
+  _msg.altitude = 0.00;
+  _msg.position_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.position_covariance_type = sensor_msgs::msg::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+}
+
+void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::NavSatFix> & _msg)
+{
+  sensor_msgs::msg::NavSatFix expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.status, _msg->status);
+  EXPECT_FLOAT_EQ(expected_msg.latitude, _msg->latitude);
+  EXPECT_FLOAT_EQ(expected_msg.longitude, _msg->longitude);
+  EXPECT_FLOAT_EQ(expected_msg.altitude, _msg->altitude);
+  EXPECT_EQ(expected_msg.position_covariance_type, _msg->position_covariance_type);
+
+  for (auto i = 0u; i < 9; ++i) {
+    EXPECT_FLOAT_EQ(0, _msg->position_covariance[i]);
+  }
+}
+
 void createTestMsg(sensor_msgs::msg::PointCloud2 & _msg)
 {
   createTestMsg(_msg.header);
@@ -1071,6 +1175,20 @@ void compareTestMsg(const std::shared_ptr<trajectory_msgs::msg::JointTrajectory>
   for (auto i = 0u; i < _msg->points.size(); ++i) {
     compareTestMsg(std::make_shared<trajectory_msgs::msg::JointTrajectoryPoint>(_msg->points[i]));
   }
+}
+
+void createTestMsg(rcl_interfaces::msg::ParameterValue & _msg)
+{
+  _msg.type = rcl_interfaces::msg::ParameterType::PARAMETER_STRING;
+  _msg.string_value = "foobar";
+}
+
+void compareTestMsg(const std::shared_ptr<rcl_interfaces::msg::ParameterValue> & _msg)
+{
+  rcl_interfaces::msg::ParameterValue expected_msg;
+  createTestMsg(expected_msg);
+  EXPECT_EQ(expected_msg.type, _msg->type);
+  EXPECT_EQ(expected_msg.string_value, _msg->string_value);
 }
 
 }  // namespace testing

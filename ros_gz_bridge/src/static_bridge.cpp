@@ -15,35 +15,34 @@
 #include <memory>
 #include <string>
 
-// include Gazebo Transport
-#include <ignition/transport/Node.hh>
-
-// include ROS 2
 #include <rclcpp/rclcpp.hpp>
+#include <ros_gz_bridge/ros_gz_bridge.hpp>
 
-#include "bridge.hpp"
-#include "service_factory.hpp"
+using RosGzBridge = ros_gz_bridge::RosGzBridge;
 
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
   // ROS node
   rclcpp::init(argc, argv);
-  auto ros_node = std::make_shared<rclcpp::Node>("test_node");
+  auto bridge_node = std::make_shared<RosGzBridge>(rclcpp::NodeOptions());
 
-  // Gazebo node
-  auto gz_node = std::make_shared<ignition::transport::Node>();
+  // Set lazy subscriber on a global basis
+  bool lazy_subscription = false;
+  bridge_node->declare_parameter<bool>("lazy", false);
+  bridge_node->get_parameter("lazy", lazy_subscription);
 
   // bridge one example topic
-  std::string topic_name = "chatter";
-  std::string ros_type_name = "std_msgs/msg/String";
-  std::string gz_type_name = "ignition.msgs.StringMsg";
-  size_t queue_size = 10;
+  ros_gz_bridge::BridgeConfig config;
+  config.ros_topic_name = "chatter";
+  config.gz_topic_name = "chatter";
+  config.ros_type_name = "std_msgs/msg/String";
+  config.gz_type_name = "ignition.msgs.StringMsg";
+  config.is_lazy = lazy_subscription;
 
-  auto handles = ros_gz_bridge::create_bidirectional_bridge(
-    ros_node, gz_node, ros_type_name, gz_type_name, topic_name, queue_size);
+  bridge_node->add_bridge(config);
 
-  rclcpp::spin(ros_node);
+  rclcpp::spin(bridge_node);
 
   // Wait for gz node shutdown
   ignition::transport::waitForShutdown();

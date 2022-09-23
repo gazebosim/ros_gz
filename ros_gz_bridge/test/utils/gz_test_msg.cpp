@@ -24,6 +24,21 @@ namespace ros_gz_bridge
 namespace testing
 {
 
+void createTestMsg(ignition::msgs::Any & _msg)
+{
+  _msg.set_type(ignition::msgs::Any_ValueType::Any_ValueType_STRING);
+  _msg.set_string_value("foobar");
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Any> & _msg)
+{
+  ignition::msgs::Any expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+  EXPECT_EQ(expected_msg.string_value(), _msg->string_value());
+}
+
 void createTestMsg(ignition::msgs::Boolean & _msg)
 {
   _msg.set_data(true);
@@ -56,6 +71,10 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg)
   EXPECT_EQ(expected_msg.a(), _msg->a());
 }
 
+void createTestMsg(ignition::msgs::Empty &)
+{
+}
+
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Empty> &)
 {
 }
@@ -81,6 +100,19 @@ void createTestMsg(ignition::msgs::Double & _msg)
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Double> & _msg)
 {
   ignition::msgs::Double expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());
+}
+
+void createTestMsg(ignition::msgs::Int32 & _msg)
+{
+  _msg.set_data(-10);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Int32> & _msg)
+{
+  ignition::msgs::Int32 expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_DOUBLE_EQ(expected_msg.data(), _msg->data());
@@ -196,6 +228,41 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Vector3d> & _msg)
   EXPECT_EQ(expected_msg.x(), _msg->x());
   EXPECT_EQ(expected_msg.y(), _msg->y());
   EXPECT_EQ(expected_msg.z(), _msg->z());
+}
+
+void createTestMsg(ignition::msgs::Param & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  auto * params = _msg.mutable_params();
+  {
+    ignition::msgs::Any param;
+    param.set_type(ignition::msgs::Any_ValueType::Any_ValueType_STRING);
+    param.set_string_value("parameter_value_foo");
+    (*params)["parameter_name_foo"] = param;
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param> & _msg)
+{
+  ignition::msgs::Param expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  EXPECT_EQ(expected_msg.params().size(), _msg->params().size());
+}
+
+void createTestMsg(ignition::msgs::Param_V & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  auto param = _msg.mutable_param()->Add();
+  createTestMsg(*param);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param_V> & _msg)
+{
+  ignition::msgs::Param_V expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Param>(_msg->param().Get(0)));
 }
 
 void createTestMsg(ignition::msgs::Pose & _msg)
@@ -472,6 +539,46 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg)
     compareTestMsg(std::make_shared<ignition::msgs::Contact>(_msg->contact(i)));
   }
 }
+
+#if HAVE_DATAFRAME
+void createTestMsg(ignition::msgs::Dataframe & _msg)
+{
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  auto * rssiPtr = _msg.mutable_header()->add_data();
+  rssiPtr->set_key("rssi");
+  rssiPtr->add_value("-10.3");
+
+  _msg.set_src_address("localhost:8080");
+  _msg.set_dst_address("localhost:8081");
+  _msg.set_data(std::string(150, '1'));
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg)
+{
+  ignition::msgs::Dataframe expected_msg;
+  createTestMsg(expected_msg);
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  ASSERT_GT(_msg->header().data_size(), 0);
+  bool rssiFound = false;
+  for (auto i = 0; i < _msg->header().data_size(); ++i) {
+    if (_msg->header().data(i).key() == "rssi" &&
+      _msg->header().data(i).value_size() > 0)
+    {
+      EXPECT_EQ(0u, _msg->header().data(i).value(0).find("-10.3"));
+      rssiFound = true;
+    }
+  }
+
+  EXPECT_TRUE(rssiFound);
+  EXPECT_EQ(expected_msg.src_address(), _msg->src_address());
+  EXPECT_EQ(expected_msg.dst_address(), _msg->dst_address());
+  EXPECT_EQ(expected_msg.data(), _msg->data());
+}
+#endif  // HAVE_DATAFRAME
 
 void createTestMsg(ignition::msgs::Image & _msg)
 {
@@ -764,6 +871,35 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Magnetometer> & _msg)
 {
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
   compareTestMsg(std::make_shared<ignition::msgs::Vector3d>(_msg->field_tesla()));
+}
+
+void createTestMsg(ignition::msgs::NavSat & _msg)
+{
+  ignition::msgs::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.set_frame_id("frame_id_value");
+  _msg.set_latitude_deg(0.00);
+  _msg.set_longitude_deg(0.00);
+  _msg.set_altitude(0.00);
+  _msg.set_velocity_east(0.00);
+  _msg.set_velocity_north(0.00);
+  _msg.set_velocity_up(0.00);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::NavSat> & _msg)
+{
+  ignition::msgs::NavSat expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+  EXPECT_FLOAT_EQ(expected_msg.latitude_deg(), _msg->latitude_deg());
+  EXPECT_FLOAT_EQ(expected_msg.longitude_deg(), _msg->longitude_deg());
+  EXPECT_FLOAT_EQ(expected_msg.altitude(), _msg->altitude());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_east(), _msg->velocity_east());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_north(), _msg->velocity_north());
+  EXPECT_FLOAT_EQ(expected_msg.velocity_up(), _msg->velocity_up());
 }
 
 void createTestMsg(ignition::msgs::Actuators & _msg)

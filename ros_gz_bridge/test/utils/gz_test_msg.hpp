@@ -16,6 +16,7 @@
 #define UTILS__GZ_TEST_MSG_HPP_
 
 #include <ignition/msgs/actuators.pb.h>
+#include <ignition/msgs/any.pb.h>
 #include <ignition/msgs/axis.pb.h>
 #include <ignition/msgs/battery_state.pb.h>
 #include <ignition/msgs/boolean.pb.h>
@@ -33,14 +34,18 @@
 #include <ignition/msgs/header.pb.h>
 #include <ignition/msgs/image.pb.h>
 #include <ignition/msgs/imu.pb.h>
+#include <ignition/msgs/int32.pb.h>
 #include <ignition/msgs/joint_trajectory.pb.h>
 #include <ignition/msgs/joint_wrench.pb.h>
 #include <ignition/msgs/laserscan.pb.h>
 #include <ignition/msgs/light.pb.h>
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
+#include <ignition/msgs/navsat.pb.h>
 #include <ignition/msgs/odometry.pb.h>
 #include <ignition/msgs/odometry_with_covariance.pb.h>
+#include <ignition/msgs/param.pb.h>
+#include <ignition/msgs/param_v.pb.h>
 #include <ignition/msgs/pointcloud_packed.pb.h>
 #include <ignition/msgs/pose.pb.h>
 #include <ignition/msgs/pose_with_covariance.pb.h>
@@ -58,10 +63,23 @@
 
 #include <memory>
 
+#include <ros_gz_bridge/ros_gz_bridge.hpp>
+#if HAVE_DATAFRAME
+#include <ignition/msgs/dataframe.pb.h>
+#endif  // HAVE_DATAFRAME
+
 namespace ros_gz_bridge
 {
 namespace testing
 {
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Any & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Any> & _msg);
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Boolean & _msg);
@@ -77,6 +95,10 @@ void createTestMsg(ignition::msgs::Color & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Empty & _msg);
 
 /// \brief Compare a message with the populated for testing. Noop for Empty
 /// \param[in] _msg The message to compare.
@@ -97,6 +119,14 @@ void createTestMsg(ignition::msgs::Double & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Double> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Int32 & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Int32> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -145,6 +175,22 @@ void createTestMsg(ignition::msgs::Vector3d & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Vector3d> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Param_V & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Param & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Param> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -226,6 +272,16 @@ void createTestMsg(ignition::msgs::Contacts & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg);
 
+#if HAVE_DATAFRAME
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Dataframe & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg);
+#endif  // HAVE_DATAFRAME
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::Image & _msg);
@@ -289,6 +345,14 @@ void createTestMsg(ignition::msgs::Magnetometer & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Magnetometer> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::NavSat & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::NavSat> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

@@ -199,6 +199,58 @@ convert_gz_to_ros(
   }
 }
 
+#if HAVE_DATAFRAME
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Dataframe & ros_msg,
+  ignition::msgs::Dataframe & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  auto * rssiPtr = gz_msg.mutable_header()->add_data();
+  rssiPtr->set_key("rssi");
+  rssiPtr->add_value(std::to_string(ros_msg.rssi));
+
+  gz_msg.set_src_address(ros_msg.src_address);
+  gz_msg.set_dst_address(ros_msg.dst_address);
+
+  gz_msg.set_data(&(ros_msg.data[0]), ros_msg.data.size());
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Dataframe & gz_msg,
+  ros_gz_interfaces::msg::Dataframe & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  ros_msg.src_address = gz_msg.src_address();
+  ros_msg.dst_address = gz_msg.dst_address();
+
+  const auto & header = gz_msg.header();
+  for (auto i = 0; i < header.data_size(); ++i) {
+    if (header.data(i).key() == "rssi" && header.data(i).value_size() > 0) {
+      try {
+        ros_msg.rssi = std::stod(header.data(i).value(0));
+      } catch (const std::invalid_argument &) {
+        std::cerr << "RSSI value is invalid (" <<
+          header.data(i).value(0) << ")" << std::endl;
+      } catch (const std::out_of_range &) {
+        std::cerr << "RSSI value is out of range (" <<
+          header.data(i).value(0) << ")" << std::endl;
+      }
+    }
+  }
+
+  ros_msg.data.resize(gz_msg.data().size());
+  std::copy(
+    gz_msg.data().begin(),
+    gz_msg.data().begin() + gz_msg.data().size(),
+    ros_msg.data.begin());
+}
+#endif  // HAVE_DATAFRAME
+
 template<>
 void
 convert_ros_to_gz(
@@ -326,6 +378,90 @@ convert_gz_to_ros(
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   for (const auto & elem : gz_msg.data()) {
     ros_msg.data.emplace_back(elem);
+  }
+}
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+
+  for (auto param : ros_msg.params) {
+    ignition::msgs::Any anyValue;
+    convert_ros_to_gz(param.value, anyValue);
+    auto new_param = gz_msg.mutable_params();
+    (*new_param)[param.name] = anyValue;
+  }
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Param & gz_msg,
+  ros_gz_interfaces::msg::ParamVec & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  for (auto it : gz_msg.params()) {
+    rcl_interfaces::msg::Parameter p;
+    p.name = it.first;
+    convert_gz_to_ros(it.second, p.value);
+    ros_msg.params.push_back(p);
+  }
+
+  for (int childIdx = 0; childIdx < gz_msg.children().size(); ++childIdx) {
+    auto child = gz_msg.children().Get(childIdx);
+    ros_gz_interfaces::msg::ParamVec child_vec;
+    convert_gz_to_ros(child, child_vec);
+
+    for (size_t entryIdx = 0; entryIdx < child_vec.params.size(); ++entryIdx) {
+      auto ros_param = child_vec.params[entryIdx];
+      ros_param.name = "child_" + std::to_string(childIdx) + "/" + ros_param.name;
+      ros_msg.params.push_back(ros_param);
+    }
+  }
+}
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::ParamVec & ros_msg,
+  ignition::msgs::Param_V & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+
+  // This will store all of the parameters available in the ros_msg in the
+  // first entry of the parameter vector
+  // \TODO(mjcarroll) Make this work fully round trip
+  // To do round trip, we must parse the parameter names and insert them
+  // into the correct indicies in the parameter vector
+
+  auto entry = gz_msg.mutable_param()->Add();
+  convert_ros_to_gz(ros_msg, *entry);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Param_V & gz_msg,
+  ros_gz_interfaces::msg::ParamVec & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  // Flatten the entries in the vector into a single range
+  for (int paramIdx = 0; paramIdx < gz_msg.param().size(); ++paramIdx) {
+    auto param = gz_msg.param().Get(paramIdx);
+    ros_gz_interfaces::msg::ParamVec param_vec;
+    convert_gz_to_ros(param, param_vec);
+
+    for (size_t entryIdx = 0; entryIdx < param_vec.params.size(); ++entryIdx) {
+      auto ros_param = param_vec.params[entryIdx];
+      ros_param.name = "param_" + std::to_string(paramIdx) + "/" + ros_param.name;
+      ros_msg.params.push_back(ros_param);
+    }
   }
 }
 
