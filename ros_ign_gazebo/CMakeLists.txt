@@ -81,12 +81,12 @@ rclcpp_components_register_node(${PROJECT_NAME}
   EXECUTABLE optical_frame_publisher
 )
 
-add_library(Stopwatch src/Stopwatch.cpp)
-ament_target_dependencies(Stopwatch
+add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
 
-target_include_directories(Stopwatch PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -112,7 +112,6 @@ install(FILES
 
 install(TARGETS
   create
-  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -121,9 +120,6 @@ install(TARGETS ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin)
-
-install(DIRECTORY include/
-  DESTINATION include/${PROJECT_NAME})
 
 if(BUILD_TESTING)
   # Disable some broken tests for now
@@ -148,7 +144,7 @@ if(BUILD_TESTING)
   )
 
   target_link_libraries(test_stopwatch
-    Stopwatch
+    ${PROJECT_NAME}
   )
 
   install(
@@ -158,6 +154,9 @@ if(BUILD_TESTING)
   ament_add_gtest_test(test_stopwatch)
 
 endif()
+
+# Export dependencies
+ament_export_dependencies(rclcpp)
 
 # Export old-style CMake variables
 ament_export_include_directories("include/${PROJECT_NAME}")
