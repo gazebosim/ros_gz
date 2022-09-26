@@ -60,8 +60,8 @@ target_link_libraries(create
 )
 
 add_library(
-  ${PROJECT_NAME} 
-  SHARED 
+  ${PROJECT_NAME}
+  SHARED
   src/optical_frame_publisher.cpp
   src/Stopwatch.cpp
 )
