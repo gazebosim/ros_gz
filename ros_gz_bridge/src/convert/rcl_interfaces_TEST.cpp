@@ -19,15 +19,15 @@
 #include <ros_gz_bridge/convert/rcl_interfaces.hpp>
 
 // A more specific set of tests for the rcl_interfaces/msg/ParamValue to
-// ignition::msgs::Any to verify behaviors that couldn't easily be captured
+// gz::msgs::Any to verify behaviors that couldn't easily be captured
 // by the generic test framework
 
 struct RosToGzTest : public ::testing::Test
 {
   using ParameterValue = rcl_interfaces::msg::ParameterValue;
   using ParameterType = rcl_interfaces::msg::ParameterType;
-  using Any = ignition::msgs::Any;
-  using Any_ValueType = ignition::msgs::Any_ValueType;
+  using Any = gz::msgs::Any;
+  using Any_ValueType = gz::msgs::Any_ValueType;
 
   Any gz_msg;
   ParameterValue ros_msg;

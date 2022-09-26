@@ -22,7 +22,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Quaternion & ros_msg,
-  ignition::msgs::Quaternion & gz_msg)
+  gz::msgs::Quaternion & gz_msg)
 {
   gz_msg.set_x(ros_msg.x);
   gz_msg.set_y(ros_msg.y);
@@ -33,7 +33,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Quaternion & gz_msg,
+  const gz::msgs::Quaternion & gz_msg,
   geometry_msgs::msg::Quaternion & ros_msg)
 {
   ros_msg.x = gz_msg.x();
@@ -46,7 +46,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Vector3 & ros_msg,
-  ignition::msgs::Vector3d & gz_msg)
+  gz::msgs::Vector3d & gz_msg)
 {
   gz_msg.set_x(ros_msg.x);
   gz_msg.set_y(ros_msg.y);
@@ -56,7 +56,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Vector3d & gz_msg,
+  const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Vector3 & ros_msg)
 {
   ros_msg.x = gz_msg.x();
@@ -68,7 +68,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Point & ros_msg,
-  ignition::msgs::Vector3d & gz_msg)
+  gz::msgs::Vector3d & gz_msg)
 {
   gz_msg.set_x(ros_msg.x);
   gz_msg.set_y(ros_msg.y);
@@ -78,7 +78,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Vector3d & gz_msg,
+  const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Point & ros_msg)
 {
   ros_msg.x = gz_msg.x();
@@ -90,7 +90,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Pose & ros_msg,
-  ignition::msgs::Pose & gz_msg)
+  gz::msgs::Pose & gz_msg)
 {
   convert_ros_to_gz(ros_msg.position, *gz_msg.mutable_position());
   convert_ros_to_gz(ros_msg.orientation, *gz_msg.mutable_orientation());
@@ -99,7 +99,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg)
 {
   convert_gz_to_ros(gz_msg.position(), ros_msg.position);
@@ -110,7 +110,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
-  ignition::msgs::PoseWithCovariance & gz_msg)
+  gz::msgs::PoseWithCovariance & gz_msg)
 {
   convert_ros_to_gz(ros_msg.pose.position, *gz_msg.mutable_pose()->mutable_position());
   convert_ros_to_gz(ros_msg.pose.orientation, *gz_msg.mutable_pose()->mutable_orientation());
@@ -122,7 +122,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::PoseWithCovariance & gz_msg,
+  const gz::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg)
 {
   convert_gz_to_ros(gz_msg.pose().position(), ros_msg.pose.position);
@@ -140,7 +140,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseStamped & ros_msg,
-  ignition::msgs::Pose & gz_msg)
+  gz::msgs::Pose & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.pose, gz_msg);
@@ -149,7 +149,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::PoseStamped & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -160,7 +160,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Transform & ros_msg,
-  ignition::msgs::Pose & gz_msg)
+  gz::msgs::Pose & gz_msg)
 {
   convert_ros_to_gz(ros_msg.translation, *gz_msg.mutable_position());
   convert_ros_to_gz(ros_msg.rotation, *gz_msg.mutable_orientation());
@@ -169,7 +169,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Transform & ros_msg)
 {
   convert_gz_to_ros(gz_msg.position(), ros_msg.translation);
@@ -180,7 +180,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::TransformStamped & ros_msg,
-  ignition::msgs::Pose & gz_msg)
+  gz::msgs::Pose & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.transform, gz_msg);
@@ -193,7 +193,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::TransformStamped & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -211,7 +211,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Twist & ros_msg,
-  ignition::msgs::Twist & gz_msg)
+  gz::msgs::Twist & gz_msg)
 {
   convert_ros_to_gz(ros_msg.linear, (*gz_msg.mutable_linear()));
   convert_ros_to_gz(ros_msg.angular, (*gz_msg.mutable_angular()));
@@ -220,7 +220,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Twist & gz_msg,
+  const gz::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg)
 {
   convert_gz_to_ros(gz_msg.linear(), ros_msg.linear);
@@ -231,7 +231,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
-  ignition::msgs::TwistWithCovariance & gz_msg)
+  gz::msgs::TwistWithCovariance & gz_msg)
 {
   convert_ros_to_gz(ros_msg.twist.linear, (*gz_msg.mutable_twist()->mutable_linear()));
   convert_ros_to_gz(ros_msg.twist.angular, (*gz_msg.mutable_twist()->mutable_angular()));
@@ -243,7 +243,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::TwistWithCovariance & gz_msg,
+  const gz::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg)
 {
   convert_gz_to_ros(gz_msg.twist().linear(), ros_msg.twist.linear);
@@ -261,7 +261,7 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Wrench & ros_msg,
-  ignition::msgs::Wrench & gz_msg)
+  gz::msgs::Wrench & gz_msg)
 {
   convert_ros_to_gz(ros_msg.force, (*gz_msg.mutable_force()));
   convert_ros_to_gz(ros_msg.torque, (*gz_msg.mutable_torque()));
@@ -270,7 +270,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Wrench & gz_msg,
+  const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg)
 {
   convert_gz_to_ros(gz_msg.force(), ros_msg.force);

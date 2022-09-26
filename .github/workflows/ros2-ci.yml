@@ -11,14 +11,8 @@ jobs:
       matrix:
         include:
           - docker-image: "ubuntu:22.04"
-            gz-version: "fortress"
-            ros-distro: "humble"
-          - docker-image: "ubuntu:22.04"
             gz-version: "garden"
             ros-distro: "humble"
-          - docker-image: "ubuntu:22.04"
-            gz-version: "fortress"
-            ros-distro: "rolling"
           - docker-image: "ubuntu:22.04"
             gz-version: "garden"
             ros-distro: "rolling"
