@@ -13,7 +13,12 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(ignition-math6 REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 
 # Fortress
 if("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
@@ -46,18 +51,39 @@ ign_find_package(gflags
     PKGCONFIG gflags)
 
 add_executable(create src/create.cpp)
-ament_target_dependencies(create
-  rclcpp
-  ignition-math6
-  std_msgs
-)
 target_link_libraries(create
   gflags
   ignition-msgs${IGN_MSGS_VER}::core
   ignition-transport${IGN_TRANSPORT_VER}::core
+  rclcpp::rclcpp
+  ${std_msgs_TARGETS}
 )
 
-add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+add_library(
+  ${PROJECT_NAME}
+  SHARED
+  src/optical_frame_publisher.cpp
+  src/Stopwatch.cpp
+)
+target_include_directories(${PROJECT_NAME} PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+
+ament_target_dependencies(
+  ${PROJECT_NAME}
+  rclcpp
+  rclcpp_components
+  tf2
+  tf2_ros
+  geometry_msgs
+  sensor_msgs
+)
+
+rclcpp_components_register_node(${PROJECT_NAME}
+  PLUGIN "ros_ign_utils::OpticalFramePublisher"
+  EXECUTABLE optical_frame_publisher
+)
+
 ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
@@ -91,18 +117,16 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-install(
-  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+install(TARGETS ${PROJECT_NAME}
+  EXPORT export_${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-
-ament_export_targets(${PROJECT_NAME})
-
-ament_export_dependencies(rclcpp)
+  RUNTIME DESTINATION bin)
 
 if(BUILD_TESTING)
+  # Disable some broken tests for now
+  set(ament_cmake_copyright_FOUND TRUE)
+
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
 
@@ -132,5 +156,15 @@ if(BUILD_TESTING)
   ament_add_gtest_test(test_stopwatch)
 
 endif()
+
+# Export dependencies
+ament_export_dependencies(rclcpp)
+
+# Export old-style CMake variables
+ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_libraries(${PROJECT_NAME})
+
+# Export modern CMake targets
+ament_export_targets(export_${PROJECT_NAME})
 
 ament_package()
