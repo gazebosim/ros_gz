@@ -59,9 +59,11 @@ target_link_libraries(create
   ${std_msgs_TARGETS}
 )
 
-add_library(${PROJECT_NAME}
-  SHARED
+add_library(
+  ${PROJECT_NAME} 
+  SHARED 
   src/optical_frame_publisher.cpp
+  src/Stopwatch.cpp
 )
 target_link_libraries(
   ${PROJECT_NAME}
@@ -81,7 +83,6 @@ rclcpp_components_register_node(${PROJECT_NAME}
   EXECUTABLE optical_frame_publisher
 )
 
-add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
