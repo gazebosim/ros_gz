@@ -108,8 +108,6 @@ add_library(${bridge_lib}
   ${generated_files}
 )
 
-message(STATUS ${GZ_MSGS_VER})
-
 ament_target_dependencies(${bridge_lib}
   rclcpp
   rclcpp_components
@@ -296,7 +294,6 @@ if(BUILD_TESTING)
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
   ament_target_dependencies(${PROJECT_NAME}_bridge_config rclcpp)
   target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
-
 endif()
 
 ament_export_dependencies(

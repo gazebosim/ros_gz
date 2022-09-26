@@ -65,18 +65,19 @@ add_library(
   src/optical_frame_publisher.cpp
   src/Stopwatch.cpp
 )
-target_link_libraries(
-  ${PROJECT_NAME}
-  ${geometry_msgs_TARGETS}
-  rclcpp::rclcpp
-  rclcpp_components::component
-  ${sensor_msgs_TARGETS}
-  tf2::tf2
-  tf2_ros::tf2_ros
-)
 target_include_directories(${PROJECT_NAME} PUBLIC
   "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
   "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
+
+ament_target_dependencies(
+  ${PROJECT_NAME}
+  rclcpp
+  rclcpp_components
+  tf2
+  tf2_ros
+  geometry_msgs
+  sensor_msgs
+)
 
 rclcpp_components_register_node(${PROJECT_NAME}
   PLUGIN "ros_ign_utils::OpticalFramePublisher"
