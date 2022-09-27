@@ -230,40 +230,40 @@ bridge may be specified:
  # Set just topic name, applies to both
 - topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"
-  ign_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "ignition.msgs.StringMsg"
 
 # Set just ROS topic name, applies to both
 - ros_topic_name: "chatter_ros"
   ros_type_name: "std_msgs/msg/String"
-  ign_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "ignition.msgs.StringMsg"
 
-# Set just IGN topic name, applies to both
-- ign_topic_name: "chatter_ign"
+# Set just GZ topic name, applies to both
+- gz_topic_name: "chatter_ign"
   ros_type_name: "std_msgs/msg/String"
-  ign_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "ignition.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  ign_topic_name: "chatter_both_ign"
+  gz_topic_name: "chatter_both_ign"
   ros_type_name: "std_msgs/msg/String"
-  ign_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "ignition.msgs.StringMsg"
 
 # Full set of configurations
 - ros_topic_name: "ros_chatter"
-  ign_topic_name: "ign_chatter"
+  gz_topic_name: "ign_chatter"
   ros_type_name: "std_msgs/msg/String"
-  ign_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "ignition.msgs.StringMsg"
   subscriber_queue: 5       # Default 10
   publisher_queue: 6        # Default 10
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
-                            # "IGN_TO_ROS" - Bridge Ignition topic to ROS
-                            # "ROS_TO_IGN" - Bridge ROS topic to Ignition
+                            # "GZ_TO_ROS" - Bridge Ignition topic to ROS
+                            # "ROS_TO_GZ" - Bridge ROS topic to Ignition
 ```
 
 To run the bridge node with the above configuration:
 ```bash
-ros2 run ros_gz_bridge bridge_node --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
+ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
 ```
 
 ## API
