@@ -22,6 +22,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d               |
 | geometry_msgs/msg/Point              | ignition::msgs::Vector3d               |
 | geometry_msgs/msg/Pose               | ignition::msgs::Pose                   |
+| geometry_msgs/msg/PoseArray          | ignition::msgs::Pose_V                 |
 | geometry_msgs/msg/PoseWithCovariance | ignition::msgs::PoseWithCovariance     |
 | geometry_msgs/msg/PoseStamped        | ignition::msgs::Pose                   |
 | geometry_msgs/msg/Transform          | ignition::msgs::Pose                   |
