@@ -103,6 +103,8 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Float32Array> 
   ros_gz_interfaces::msg::Float32Array expected_msg;
   createTestMsg(expected_msg);
 
+  EXPECT_EQ(expected_msg.data.size(), _msg->data.size());
+  EXPECT_EQ(1u, _msg->data.size());
   EXPECT_FLOAT_EQ(expected_msg.data[0], _msg->data[0]);
 }
 

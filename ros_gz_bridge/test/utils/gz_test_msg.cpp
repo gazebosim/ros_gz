@@ -104,6 +104,8 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg)
   ignition::msgs::Float_V expected_msg;
   createTestMsg(expected_msg);
 
+  EXPECT_EQ(expected_msg.data().size(), _msg->data().size());
+  EXPECT_EQ(1, _msg->data().size());
   EXPECT_FLOAT_EQ(expected_msg.data()[0], _msg->data()[0]);
 }
 
