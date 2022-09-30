@@ -20,6 +20,7 @@
 #include <ignition/msgs/joint_wrench.pb.h>
 #include <ignition/msgs/contact.pb.h>
 #include <ignition/msgs/contacts.pb.h>
+#include <ignition/msgs/float_v.pb.h>
 #include <ignition/msgs/gui_camera.pb.h>
 #include <ignition/msgs/light.pb.h>
 #include <ignition/msgs/param.pb.h>
@@ -34,6 +35,7 @@
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
+#include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
@@ -224,6 +226,18 @@ void
 convert_gz_to_ros(
   const ignition::msgs::WorldReset & gz_msg,
   ros_gz_interfaces::msg::WorldReset & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Float32Array & ros_msg,
+  ignition::msgs::Float_V & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Float_V & gz_msg,
+  ros_gz_interfaces::msg::Float32Array & ros_msg);
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_

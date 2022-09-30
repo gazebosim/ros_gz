@@ -20,7 +20,6 @@
 #include <ignition/msgs/color.pb.h>
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/float.pb.h>
-#include <ignition/msgs/float_v.pb.h>
 #include <ignition/msgs/double.pb.h>
 #include <ignition/msgs/header.pb.h>
 #include <ignition/msgs/int32.pb.h>
@@ -32,7 +31,6 @@
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float32_multi_array.hpp>
 #include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/int32.hpp>
@@ -103,18 +101,6 @@ void
 convert_gz_to_ros(
   const ignition::msgs::Float & gz_msg,
   std_msgs::msg::Float32 & ros_msg);
-
-template<>
-void
-convert_ros_to_gz(
-  const std_msgs::msg::Float32MultiArray & ros_msg,
-  ignition::msgs::Float_V & gz_msg);
-
-template<>
-void
-convert_gz_to_ros(
-  const ignition::msgs::Float_V & gz_msg,
-  std_msgs::msg::Float32MultiArray & ros_msg);
 
 template<>
 void

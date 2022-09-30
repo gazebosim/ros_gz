@@ -24,7 +24,6 @@
 #include <std_msgs/msg/color_rgba.hpp>
 #include <std_msgs/msg/empty.hpp>
 #include <std_msgs/msg/float32.hpp>
-#include <std_msgs/msg/float32_multi_array.hpp>
 #include <std_msgs/msg/float64.hpp>
 #include <std_msgs/msg/int32.hpp>
 #include <std_msgs/msg/u_int32.hpp>
@@ -47,6 +46,7 @@
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
+#include <ros_gz_interfaces/msg/float32_array.hpp>
 #if HAVE_DATAFRAME
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #endif  // HAVE_DATAFRAME
@@ -123,14 +123,6 @@ void createTestMsg(std_msgs::msg::Float32 & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32> & _msg);
-
-/// \brief Create a message used for testing.
-/// \param[out] _msg The message populated.
-void createTestMsg(std_msgs::msg::Float32MultiArray & _msg);
-
-/// \brief Compare a message with the populated for testing.
-/// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32MultiArray> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -407,6 +399,14 @@ void createTestMsg(ros_gz_interfaces::msg::VideoRecord & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::VideoRecord> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::Float32Array & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Float32Array> & _msg);
 
 /// sensor_msgs
 

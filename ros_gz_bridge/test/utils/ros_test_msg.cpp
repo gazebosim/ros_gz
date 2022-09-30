@@ -91,16 +91,16 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
 }
 
-void createTestMsg(std_msgs::msg::Float32MultiArray & _msg)
+void createTestMsg(ros_gz_interfaces::msg::Float32Array & _msg)
 {
   std_msgs::msg::Float32 msg;
   createTestMsg(msg);
   _msg.data.push_back(msg.data);
 }
 
-void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32MultiArray> & _msg)
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Float32Array> & _msg)
 {
-  std_msgs::msg::Float32MultiArray expected_msg;
+  ros_gz_interfaces::msg::Float32Array expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_FLOAT_EQ(expected_msg.data[0], _msg->data[0]);
