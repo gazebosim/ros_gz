@@ -29,6 +29,7 @@
 #include <ignition/msgs/empty.pb.h>
 #include <ignition/msgs/entity.pb.h>
 #include <ignition/msgs/float.pb.h>
+#include <ignition/msgs/float_v.pb.h>
 #include <ignition/msgs/fluid_pressure.pb.h>
 #include <ignition/msgs/gui_camera.pb.h>
 #include <ignition/msgs/header.pb.h>
@@ -111,6 +112,14 @@ void createTestMsg(ignition::msgs::Float & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Float> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Float_V & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

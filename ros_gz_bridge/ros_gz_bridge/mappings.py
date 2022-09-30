@@ -80,6 +80,7 @@ MAPPINGS = {
         Mapping('ColorRGBA', 'Color'),
         Mapping('Empty', 'Empty'),
         Mapping('Float32', 'Float'),
+        Mapping('Float32MultiArray', 'Float_V'),
         Mapping('Float64', 'Double'),
         Mapping('Header', 'Header'),
         Mapping('Int32', 'Int32'),

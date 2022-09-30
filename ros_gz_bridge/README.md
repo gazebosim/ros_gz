@@ -12,6 +12,7 @@ The following message types can be bridged for topics:
 | std_msgs/msg/ColorRGBA               | ignition::msgs::Color                  |
 | std_msgs/msg/Empty                   | ignition::msgs::Empty                  |
 | std_msgs/msg/Float32                 | ignition::msgs::Float                  |
+| std_msgs/msg/Float32MultiArray       | ignition::msgs::Float_V                |
 | std_msgs/msg/Float64                 | ignition::msgs::Double                 |
 | std_msgs/msg/Header                  | ignition::msgs::Header                 |
 | std_msgs/msg/Int32                   | ignition::msgs::Int32                  |

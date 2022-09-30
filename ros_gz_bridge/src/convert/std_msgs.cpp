@@ -116,6 +116,32 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const std_msgs::msg::Float32MultiArray & ros_msg,
+  ignition::msgs::Float_V & gz_msg)
+{
+  // the 'layout' field is not converted as it is not available in the gz msg
+  // the field is also being deprecated
+  gz_msg.clear_data();
+  for (auto const & t : ros_msg.data) {
+    gz_msg.add_data(t);
+  }
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Float_V & gz_msg,
+  std_msgs::msg::Float32MultiArray & ros_msg)
+{
+  ros_msg.data.clear();
+  for (auto const & p : gz_msg.data()) {
+    ros_msg.data.push_back(p);
+  }
+}
+
+template<>
+void
+convert_ros_to_gz(
   const std_msgs::msg::Float64 & ros_msg,
   ignition::msgs::Double & gz_msg)
 {
