@@ -7,10 +7,10 @@ Foxy | Edifice | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | only fr
 Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | https://packages.ros.org
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
-Humble | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Humble | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
-Rolling | Garden (not released) | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 
 For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch README](https://github.com/gazebosim/ros_gz/tree/melodic)
 
