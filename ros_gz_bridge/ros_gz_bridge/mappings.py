@@ -30,6 +30,7 @@ MAPPINGS = {
     'geometry_msgs': [
         Mapping('Point', 'Vector3d'),
         Mapping('Pose', 'Pose'),
+        Mapping('PoseArray', 'Pose_V'),
         Mapping('PoseStamped', 'Pose'),
         Mapping('PoseWithCovariance', 'PoseWithCovariance'),
         Mapping('Quaternion', 'Quaternion'),
