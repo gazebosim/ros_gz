@@ -576,4 +576,28 @@ convert_gz_to_ros(
   ros_msg.time_only = gz_msg.time_only();
   ros_msg.model_only = gz_msg.model_only();
 }
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Float32Array & ros_msg,
+  ignition::msgs::Float_V & gz_msg)
+{
+  gz_msg.clear_data();
+  for (auto const & t : ros_msg.data) {
+    gz_msg.add_data(t);
+  }
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Float_V & gz_msg,
+  ros_gz_interfaces::msg::Float32Array & ros_msg)
+{
+  ros_msg.data.clear();
+  for (auto const & p : gz_msg.data()) {
+    ros_msg.data.push_back(p);
+  }
+}
 }  // namespace ros_gz_bridge
