@@ -65,9 +65,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     RCLCPP_ERROR(
       logger,
       "%s is deprecated, migrate to %s", kIgnTypeName, kGzTypeName);
-  }
-  else if (yaml_node[kGzTypeName])
-  {
+  } else if (yaml_node[kGzTypeName]) {
     gz_type_name = yaml_node[kGzTypeName].as<std::string>();
   }
 
@@ -77,9 +75,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     RCLCPP_ERROR(
       logger,
       "%s is deprecated, migrate to %s", kIgnTopicName, kGzTopicName);
-  }
-  else if (yaml_node[kGzTopicName])
-  {
+  } else if (yaml_node[kGzTopicName]) {
     gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
   }
 
