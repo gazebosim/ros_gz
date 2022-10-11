@@ -31,18 +31,14 @@ endif()
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-gazebo5 REQUIRED)
-  set(GZ_SIM_VER ${ignition-gazebo5_VERSION_MAJOR})
   message(STATUS "Compiling against Gazebo Edifice")
 # Garden
 elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-sim7 REQUIRED)
-  set(GZ_SIM_VER ${gz-sim7_VERSION_MAJOR})
-  set(GZ_TARGET_PREFIX gz)
   message(STATUS "Compiling against Gazebo Garden")
 # Default to Fortress
 else()
   find_package(ignition-gazebo6 REQUIRED)
-  set(GZ_SIM_VER ${ignition-gazebo6_VERSION_MAJOR})
   message(STATUS "Compiling against Gazebo Fortress")
 endif()
 
