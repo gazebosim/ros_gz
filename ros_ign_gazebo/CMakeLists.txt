@@ -46,18 +46,8 @@ else()
   message(STATUS "Compiling against Gazebo Fortress")
 endif()
 
-configure_file(
-  launch/ign_gazebo.launch.py.in
-  launch/ign_gazebo.launch.py.configured
-  @ONLY
-)
-file(GENERATE
-  OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
-  INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py.configured"
-)
-
 install(FILES
-  "${CMAKE_CURRENT_BINARY_DIR}/launch/ign_gazebo.launch.py"
+  "${CMAKE_CURRENT_SOURCE_DIR}/launch/ign_gazebo.launch.py"
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
