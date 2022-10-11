@@ -54,7 +54,6 @@ def launch_gz(context, *args, **kwargs):
     else:
         debug_prefix = None
 
-
     return [ExecuteProcess(
             cmd=[exec, exec_args, '--force-version', gz_version],
             output='screen',
@@ -67,10 +66,11 @@ def launch_gz(context, *args, **kwargs):
 def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument('gz_args', default_value='',
-                description='Arguments to be passed to Gazebo Sim'),
+                              description='Arguments to be passed to Gazebo Sim'),
         # Gazebo Sim's major version
         DeclareLaunchArgument('gz_version', default_value='@GZ_SIM_VER@',
-                description='Gazebo Sim\'s major version'),
+                              description='Gazebo Sim\'s major version'),
+
         # TODO(CH3): Deprecated. Remove on tock.
         DeclareLaunchArgument(
             'ign_args', default_value='',
