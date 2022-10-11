@@ -40,6 +40,7 @@ constexpr const char kBidirectional[] = "BIDIRECTIONAL";
 constexpr const char kGzToRos[] = "GZ_TO_ROS";
 constexpr const char kRosToGz[] = "ROS_TO_GZ";
 
+/// \TODO(mjcarroll) Remove these in releases past Humble/Garden
 constexpr const char kIgnTypeName[] = "ign_type_name";
 constexpr const char kIgnTopicName[] = "ign_topic_name";
 constexpr const char kIgnToRos[] = "IGN_TO_ROS";
@@ -59,6 +60,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
+  /// \TODO(mjcarroll) Remove gz_type_name logic in releases past Humble
   std::string gz_type_name = "";
   if (yaml_node[kIgnTypeName] && !yaml_node[kGzTypeName]) {
     gz_type_name = yaml_node[kIgnTypeName].as<std::string>();
@@ -69,6 +71,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     gz_type_name = yaml_node[kGzTypeName].as<std::string>();
   }
 
+  /// \TODO(mjcarroll) Remove gz_topic_name logic in releases past Humble
   std::string gz_topic_name = "";
   if (yaml_node[kIgnTopicName] && !yaml_node[kGzTopicName]) {
     gz_topic_name = yaml_node[kIgnTopicName].as<std::string>();
@@ -113,16 +116,16 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       ret.direction = BridgeDirection::GZ_TO_ROS;
     } else if (dirStr == kRosToGz) {
       ret.direction = BridgeDirection::ROS_TO_GZ;
-      RCLCPP_WARN(
-        logger,
-        "%s constant is deprecated, migrate to %s", kRosToIgn, kRosToGz);
     } else if (dirStr == kIgnToRos) {
       ret.direction = BridgeDirection::GZ_TO_ROS;
       RCLCPP_WARN(
         logger,
         "%s constant is deprecated, migrate to %s", kIgnToRos, kGzToRos);
     } else if (dirStr == kRosToIgn) {
-      ret.direction = BridgeDirection::GZ_TO_ROS;
+      ret.direction = BridgeDirection::ROS_TO_GZ;
+      RCLCPP_WARN(
+        logger,
+        "%s constant is deprecated, migrate to %s", kRosToIgn, kRosToGz);
     } else {
       RCLCPP_ERROR(
         logger,
