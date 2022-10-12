@@ -2,6 +2,13 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)
+  Galactic to Humble
+* Merge branch 'ros2' into ports/galactic_to_ros2
+* Contributors: Michael Carroll
+
 0.244.6 (2022-09-14)
 --------------------
 

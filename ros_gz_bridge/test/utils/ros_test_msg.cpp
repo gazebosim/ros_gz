@@ -91,6 +91,23 @@ void compareTestMsg(const std::shared_ptr<std_msgs::msg::Float32> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data, _msg->data);
 }
 
+void createTestMsg(ros_gz_interfaces::msg::Float32Array & _msg)
+{
+  std_msgs::msg::Float32 msg;
+  createTestMsg(msg);
+  _msg.data.push_back(msg.data);
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Float32Array> & _msg)
+{
+  ros_gz_interfaces::msg::Float32Array expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.data.size(), _msg->data.size());
+  EXPECT_EQ(1u, _msg->data.size());
+  EXPECT_FLOAT_EQ(expected_msg.data[0], _msg->data[0]);
+}
+
 void createTestMsg(std_msgs::msg::Float64 & _msg)
 {
   _msg.data = 1.5;
@@ -278,6 +295,25 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Pose> & _msg)
 {
   compareTestMsg(_msg->position);
   compareTestMsg(_msg->orientation);
+}
+
+void createTestMsg(geometry_msgs::msg::PoseArray & _msg)
+{
+  createTestMsg(_msg.header);
+
+  geometry_msgs::msg::Pose pose;
+  createTestMsg(pose);
+  _msg.poses.push_back(pose);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseArray> & _msg)
+{
+  compareTestMsg(_msg->header);
+
+  geometry_msgs::msg::PoseArray expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->poses[0]));
 }
 
 void compareTestMsg(const geometry_msgs::msg::PoseWithCovariance & _msg)

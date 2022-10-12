@@ -1,21 +1,20 @@
 # Set just topic name, applies to both
-- topic_name: "chatter" 
+- topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "ignition.msgs.StringMsg"
 
 # Set just ROS topic name, applies to both
-- ros_topic_name: "chatter_ros" 
+- ros_topic_name: "chatter_ros"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "ignition.msgs.StringMsg"
 
 # Set just GZ topic name, applies to both
-- gz_topic_name: "chatter_gz" 
+- gz_topic_name: "chatter_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "ignition.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  gz_topic_name: "chatter_both_gz" 
+  gz_topic_name: "chatter_both_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "ignition.msgs.StringMsg"
-

@@ -54,21 +54,37 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
-  if (yaml_node[kTopicName] && yaml_node[kRosTopicName]) {
+  auto getValue = [yaml_node](const char * key) -> std::string
+    {
+      if (yaml_node[key]) {
+        return yaml_node[key].as<std::string>();
+      } else {
+        return "";
+      }
+    };
+
+  const auto topic_name = getValue(kTopicName);
+  const auto ros_topic_name = getValue(kRosTopicName);
+  const auto ros_type_name = getValue(kRosTypeName);
+  const auto gz_topic_name = getValue(kGzTopicName);
+  const auto gz_type_name = getValue(kGzTypeName);
+  const auto direction = getValue(kDirection);
+
+  if (!topic_name.empty() && !ros_topic_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: %s and %s are mutually exclusive", kTopicName, kRosTopicName);
     return {};
   }
 
-  if (yaml_node[kTopicName] && yaml_node[kGzTopicName]) {
+  if (!topic_name.empty() && !gz_topic_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: %s and %s are mutually exclusive", kTopicName, kGzTopicName);
     return {};
   }
 
-  if (!yaml_node[kRosTypeName] || !yaml_node[kGzTypeName]) {
+  if (ros_type_name.empty() || gz_type_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
@@ -80,43 +96,40 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   ret.direction = BridgeDirection::BIDIRECTIONAL;
 
   if (yaml_node[kDirection]) {
-    auto dirStr = yaml_node[kDirection].as<std::string>();
-
-    if (dirStr == kBidirectional) {
+    if (direction == kBidirectional) {
       ret.direction = BridgeDirection::BIDIRECTIONAL;
-    } else if (dirStr == kGzToRos) {
+    } else if (direction == kGzToRos) {
       ret.direction = BridgeDirection::GZ_TO_ROS;
-    } else if (dirStr == kRosToGz) {
+    } else if (direction == kRosToGz) {
       ret.direction = BridgeDirection::ROS_TO_GZ;
     } else {
       RCLCPP_ERROR(
         logger,
-        "Could not parse entry: invalid direction [%s]", dirStr.c_str());
+        "Could not parse entry: invalid direction [%s]", direction.c_str());
       return {};
     }
   }
 
-
-  if (yaml_node[kTopicName]) {
+  if (!topic_name.empty()) {
     // Only "topic_name" is set
-    ret.gz_topic_name = yaml_node[kTopicName].as<std::string>();
-    ret.ros_topic_name = yaml_node[kTopicName].as<std::string>();
-  } else if (yaml_node[kRosTopicName] && !yaml_node[kGzTopicName]) {
+    ret.gz_topic_name = topic_name;
+    ret.ros_topic_name = topic_name;
+  } else if (!ros_topic_name.empty() && gz_topic_name.empty()) {
     // Only "ros_topic_name" is set
-    ret.gz_topic_name = yaml_node[kRosTopicName].as<std::string>();
-    ret.ros_topic_name = yaml_node[kRosTopicName].as<std::string>();
-  } else if (yaml_node[kGzTopicName] && !yaml_node[kRosTopicName]) {
+    ret.gz_topic_name = ros_topic_name;
+    ret.ros_topic_name = ros_topic_name;
+  } else if (!gz_topic_name.empty() && ros_topic_name.empty()) {
     // Only kGzTopicName is set
-    ret.gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
-    ret.ros_topic_name = yaml_node[kGzTopicName].as<std::string>();
+    ret.gz_topic_name = gz_topic_name;
+    ret.ros_topic_name = gz_topic_name;
   } else {
     // Both are set
-    ret.gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
-    ret.ros_topic_name = yaml_node[kRosTopicName].as<std::string>();
+    ret.gz_topic_name = gz_topic_name;
+    ret.ros_topic_name = ros_topic_name;
   }
 
-  ret.gz_type_name = yaml_node[kGzTypeName].as<std::string>();
-  ret.ros_type_name = yaml_node[kRosTypeName].as<std::string>();
+  ret.gz_type_name = gz_type_name;
+  ret.ros_type_name = ros_type_name;
 
   if (yaml_node[kPublisherQueue]) {
     ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();

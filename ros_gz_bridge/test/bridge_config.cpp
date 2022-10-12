@@ -16,7 +16,7 @@
 
 #include <ros_gz_bridge/bridge_config.hpp>
 
-TEST(BridgeConfig, minimum)
+TEST(BridgeConfig, Minimum)
 {
   auto results = ros_gz_bridge::readFromYamlFile("test/config/minimum.yaml");
   EXPECT_EQ(4u, results.size());
@@ -63,10 +63,10 @@ TEST(BridgeConfig, minimum)
   }
 }
 
-TEST(BridgeConfig, full)
+TEST(BridgeConfig, FullGz)
 {
   auto results = ros_gz_bridge::readFromYamlFile("test/config/full.yaml");
-  EXPECT_EQ(1u, results.size());
+  EXPECT_EQ(2u, results.size());
 
   {
     auto config = results[0];
@@ -77,6 +77,19 @@ TEST(BridgeConfig, full)
     EXPECT_EQ(6u, config.publisher_queue_size);
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
+  }
+
+  {
+    auto config = results[1];
+    EXPECT_EQ("ros_chatter", config.ros_topic_name);
+    EXPECT_EQ("gz_chatter", config.gz_topic_name);
+    EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
+    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ(20u, config.publisher_queue_size);
+    EXPECT_EQ(10u, config.subscriber_queue_size);
+    EXPECT_EQ(false, config.is_lazy);
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
   }
 }
 
