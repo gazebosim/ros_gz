@@ -95,12 +95,12 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseArray & ros_msg,
-  ignition::msgs::Pose_V & gz_msg);
+  gz::msgs::Pose_V & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose_V & gz_msg,
+  const gz::msgs::Pose_V & gz_msg,
   geometry_msgs::msg::PoseArray & ros_msg);
 
 template<>

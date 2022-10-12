@@ -21,6 +21,7 @@
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
 #include <gz/msgs/dataframe.pb.h>
+#include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/gui_camera.pb.h>
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/param.pb.h>
@@ -224,12 +225,12 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Float32Array & ros_msg,
-  ignition::msgs::Float_V & gz_msg);
+  gz::msgs::Float_V & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Float_V & gz_msg,
+  const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg);
 }  // namespace ros_gz_bridge
 

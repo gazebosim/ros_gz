@@ -92,16 +92,16 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Float> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data(), _msg->data());
 }
 
-void createTestMsg(ignition::msgs::Float_V & _msg)
+void createTestMsg(gz::msgs::Float_V & _msg)
 {
-  ignition::msgs::Float msg;
+  gz::msgs::Float msg;
   createTestMsg(msg);
   _msg.add_data(msg.data());
 }
 
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg)
+void compareTestMsg(const std::shared_ptr<gz::msgs::Float_V> & _msg)
 {
-  ignition::msgs::Float_V expected_msg;
+  gz::msgs::Float_V expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_EQ(expected_msg.data().size(), _msg->data().size());
@@ -109,7 +109,7 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.data()[0], _msg->data()[0]);
 }
 
-void createTestMsg(ignition::msgs::Double & _msg)
+void createTestMsg(gz::msgs::Double & _msg)
 {
   _msg.set_data(1.5);
 }

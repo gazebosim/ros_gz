@@ -579,7 +579,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Float32Array & ros_msg,
-  ignition::msgs::Float_V & gz_msg)
+  gz::msgs::Float_V & gz_msg)
 {
   gz_msg.clear_data();
   for (auto const & t : ros_msg.data) {
@@ -590,7 +590,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Float_V & gz_msg,
+  const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg)
 {
   ros_msg.data.clear();
