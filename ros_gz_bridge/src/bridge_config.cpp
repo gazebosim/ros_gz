@@ -54,13 +54,14 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
-  auto getValue = [yaml_node](const char *key) -> std::string
-  {
-    if (yaml_node[key])
-      return yaml_node[key].as<std::string>();
-    else
-      return "";
-  };
+  auto getValue = [yaml_node](const char * key) -> std::string
+    {
+      if (yaml_node[key]) {
+        return yaml_node[key].as<std::string>();
+      } else {
+        return "";
+      }
+    };
 
   const auto topic_name = getValue(kTopicName);
   const auto ros_topic_name = getValue(kRosTopicName);
