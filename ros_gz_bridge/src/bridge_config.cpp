@@ -40,6 +40,12 @@ constexpr const char kBidirectional[] = "BIDIRECTIONAL";
 constexpr const char kGzToRos[] = "GZ_TO_ROS";
 constexpr const char kRosToGz[] = "ROS_TO_GZ";
 
+/// \TODO(mjcarroll) Remove these in releases past Humble/Garden
+constexpr const char kIgnTypeName[] = "ign_type_name";
+constexpr const char kIgnTopicName[] = "ign_topic_name";
+constexpr const char kIgnToRos[] = "IGN_TO_ROS";
+constexpr const char kRosToIgn[] = "ROS_TO_IGN";
+
 /// \brief Parse a single sequence entry into a BridgeConfig
 /// \param[in] yaml_node A node containing a map of bridge config params
 /// \return BridgeConfig on success, nullopt on failure
@@ -54,6 +60,28 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
+  /// \TODO(mjcarroll) Remove gz_type_name logic in releases past Humble
+  std::string gz_type_name = "";
+  if (yaml_node[kIgnTypeName] && !yaml_node[kGzTypeName]) {
+    gz_type_name = yaml_node[kIgnTypeName].as<std::string>();
+    RCLCPP_ERROR(
+      logger,
+      "%s is deprecated, migrate to %s", kIgnTypeName, kGzTypeName);
+  } else if (yaml_node[kGzTypeName]) {
+    gz_type_name = yaml_node[kGzTypeName].as<std::string>();
+  }
+
+  /// \TODO(mjcarroll) Remove gz_topic_name logic in releases past Humble
+  std::string gz_topic_name = "";
+  if (yaml_node[kIgnTopicName] && !yaml_node[kGzTopicName]) {
+    gz_topic_name = yaml_node[kIgnTopicName].as<std::string>();
+    RCLCPP_ERROR(
+      logger,
+      "%s is deprecated, migrate to %s", kIgnTopicName, kGzTopicName);
+  } else if (yaml_node[kGzTopicName]) {
+    gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
+  }
+
   if (yaml_node[kTopicName] && yaml_node[kRosTopicName]) {
     RCLCPP_ERROR(
       logger,
@@ -61,14 +89,14 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
-  if (yaml_node[kTopicName] && yaml_node[kGzTopicName]) {
+  if (yaml_node[kTopicName] && !gz_topic_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: %s and %s are mutually exclusive", kTopicName, kGzTopicName);
     return {};
   }
 
-  if (!yaml_node[kRosTypeName] || !yaml_node[kGzTypeName]) {
+  if (!yaml_node[kRosTypeName] || gz_type_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
@@ -88,6 +116,16 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       ret.direction = BridgeDirection::GZ_TO_ROS;
     } else if (dirStr == kRosToGz) {
       ret.direction = BridgeDirection::ROS_TO_GZ;
+    } else if (dirStr == kIgnToRos) {
+      ret.direction = BridgeDirection::GZ_TO_ROS;
+      RCLCPP_WARN(
+        logger,
+        "%s constant is deprecated, migrate to %s", kIgnToRos, kGzToRos);
+    } else if (dirStr == kRosToIgn) {
+      ret.direction = BridgeDirection::ROS_TO_GZ;
+      RCLCPP_WARN(
+        logger,
+        "%s constant is deprecated, migrate to %s", kRosToIgn, kRosToGz);
     } else {
       RCLCPP_ERROR(
         logger,
@@ -96,26 +134,25 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     }
   }
 
-
   if (yaml_node[kTopicName]) {
     // Only "topic_name" is set
     ret.gz_topic_name = yaml_node[kTopicName].as<std::string>();
     ret.ros_topic_name = yaml_node[kTopicName].as<std::string>();
-  } else if (yaml_node[kRosTopicName] && !yaml_node[kGzTopicName]) {
+  } else if (yaml_node[kRosTopicName] && gz_topic_name.empty()) {
     // Only "ros_topic_name" is set
     ret.gz_topic_name = yaml_node[kRosTopicName].as<std::string>();
     ret.ros_topic_name = yaml_node[kRosTopicName].as<std::string>();
-  } else if (yaml_node[kGzTopicName] && !yaml_node[kRosTopicName]) {
+  } else if (!gz_topic_name.empty() && !yaml_node[kRosTopicName]) {
     // Only kGzTopicName is set
-    ret.gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
-    ret.ros_topic_name = yaml_node[kGzTopicName].as<std::string>();
+    ret.gz_topic_name = gz_topic_name;
+    ret.ros_topic_name = gz_topic_name;
   } else {
     // Both are set
-    ret.gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
+    ret.gz_topic_name = gz_topic_name;
     ret.ros_topic_name = yaml_node[kRosTopicName].as<std::string>();
   }
 
-  ret.gz_type_name = yaml_node[kGzTypeName].as<std::string>();
+  ret.gz_type_name = gz_type_name;
   ret.ros_type_name = yaml_node[kRosTypeName].as<std::string>();
 
   if (yaml_node[kPublisherQueue]) {
