@@ -2,6 +2,13 @@
 Changelog for package ros_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Merge branch 'galactic' into ports/galactic_to_ros2
+* Port NavSat (`#224 <https://github.com/gazebosim/ros_gz/issues/224>`_) from ROS 1 to ROS 2 (`#268 <https://github.com/gazebosim/ros_gz/issues/268>`_)
+  Co-authored-by: Tyler Howell <76003804+TyHowellWork@users.noreply.github.com>
+* Contributors: Michael Carroll
+
 0.244.6 (2022-09-14)
 --------------------
 * Restructured directories (`#296 <https://github.com/gazebosim/ros_gz/issues/296>`_)

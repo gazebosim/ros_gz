@@ -2,6 +2,9 @@
 Changelog for package ros_ign
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+
 0.244.6 (2022-09-14)
 --------------------
 * Restructured directories (`#296 <https://github.com/gazebosim/ros_gz/issues/296>`_)
