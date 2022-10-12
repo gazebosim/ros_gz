@@ -112,15 +112,15 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Float> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Float_V & _msg);
+void createTestMsg(gz::msgs::Float_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Float_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Double & _msg);
+void createTestMsg(gz::msgs::Double & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.

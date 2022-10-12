@@ -15,7 +15,7 @@
 #ifndef ROS_GZ_BRIDGE__CONVERT__RCL_INTERFACES_HPP_
 #define ROS_GZ_BRIDGE__CONVERT__RCL_INTERFACES_HPP_
 
-// Ignition messages
+// GZ messages
 #include <gz/msgs/any.pb.h>
 
 // ROS 2 messages

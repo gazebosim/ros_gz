@@ -48,7 +48,6 @@
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
 #include <ros_gz_interfaces/msg/float32_array.hpp>
-#if HAVE_DATAFRAME
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
