@@ -109,6 +109,35 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const geometry_msgs::msg::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  gz_msg.clear_pose();
+  for (auto const & t : ros_msg.poses) {
+    auto p = gz_msg.add_pose();
+    convert_ros_to_gz(t, *p);
+  }
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Pose_V & gz_msg,
+  geometry_msgs::msg::PoseArray & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.poses.clear();
+  for (auto const & p : gz_msg.pose()) {
+    geometry_msgs::msg::Pose pose;
+    convert_gz_to_ros(p, pose);
+    ros_msg.poses.push_back(pose);
+  }
+}
+
+template<>
+void
+convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
   gz::msgs::PoseWithCovariance & gz_msg)
 {

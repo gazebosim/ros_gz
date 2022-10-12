@@ -2,6 +2,11 @@
 Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Merge branch 'ros2' into ports/galactic_to_ros2
+* Contributors: Michael Carroll
+
 0.244.6 (2022-09-14)
 --------------------
 

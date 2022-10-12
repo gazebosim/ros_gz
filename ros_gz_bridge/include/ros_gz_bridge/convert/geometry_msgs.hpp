@@ -28,6 +28,7 @@
 // ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/pose_array.hpp>
 #include <geometry_msgs/msg/pose_with_covariance.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
@@ -89,6 +90,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const geometry_msgs::msg::PoseArray & ros_msg,
+  ignition::msgs::Pose_V & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Pose_V & gz_msg,
+  geometry_msgs::msg::PoseArray & ros_msg);
 
 template<>
 void

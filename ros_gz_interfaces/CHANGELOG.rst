@@ -2,6 +2,16 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Bridge between msgs::Float_V and ros_gz_interfaces/Float32Array msg types (`#306 <https://github.com/gazebosim/ros_gz/issues/306>`_)
+  * bridge float_v and float32_multi_array msg type
+  Co-authored-by: Ian Chen <ichen@openrobotics.org>
+* Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)
+  Galactic to Humble
+* Merge branch 'ros2' into ports/galactic_to_ros2
+* Contributors: Ian Chen, Michael Carroll
+
 0.244.6 (2022-09-14)
 --------------------
 

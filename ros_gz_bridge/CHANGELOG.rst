@@ -2,6 +2,20 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Make sure that ign\_* yaml configs work as well (`#310 <https://github.com/gazebosim/ros_gz/issues/310>`_)
+* Bridge between msgs::Float_V and ros_gz_interfaces/Float32Array msg types (`#306 <https://github.com/gazebosim/ros_gz/issues/306>`_)
+  * bridge float_v and float32_multi_array msg type
+  Co-authored-by: Ian Chen <ichen@openrobotics.org>
+* Bridge between msgs::Pose_V and geometry_msgs/PoseArray msg types (`#305 <https://github.com/gazebosim/ros_gz/issues/305>`_)
+* replace ign with gz in ros_gz_bridge README (`#303 <https://github.com/gazebosim/ros_gz/issues/303>`_)
+* Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)
+  Galactic to Humble
+* Fix merge
+* Merge branch 'ros2' into ports/galactic_to_ros2
+* Contributors: Ian Chen, Michael Carroll, Olivier Kermorgant
+
 0.244.6 (2022-09-14)
 --------------------
 

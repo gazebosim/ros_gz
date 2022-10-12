@@ -2,6 +2,15 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.7 (2022-10-12)
+--------------------
+* Fix launch substitutions for ign_args (`#309 <https://github.com/gazebosim/ros_gz/issues/309>`_)
+  * Fix launch substitutions for ign_args
+* Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)
+  Galactic to Humble
+* Merge branch 'ros2' into ports/galactic_to_ros2
+* Contributors: Michael Carroll
+
 0.244.6 (2022-09-14)
 --------------------
 
