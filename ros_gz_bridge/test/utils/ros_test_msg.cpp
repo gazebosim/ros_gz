@@ -446,6 +446,37 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg)
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->torque));
 }
 
+void createTestMsg(gps_msgs::msg::GPSFix & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.status.status = sensor_msgs::msg::NavSatStatus::STATUS_FIX;
+  _msg.latitude = 0.00;
+  _msg.longitude = 0.00;
+  _msg.altitude = 0.00;
+  _msg.position_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.position_covariance_type = sensor_msgs::msg::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+}
+
+void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
+{
+  gps_msgs::msg::GPSFix expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.status, _msg->status);
+  EXPECT_FLOAT_EQ(expected_msg.latitude, _msg->latitude);
+  EXPECT_FLOAT_EQ(expected_msg.longitude, _msg->longitude);
+  EXPECT_FLOAT_EQ(expected_msg.altitude, _msg->altitude);
+  EXPECT_EQ(expected_msg.position_covariance_type, _msg->position_covariance_type);
+
+  for (auto i = 0u; i < 9; ++i) {
+    EXPECT_FLOAT_EQ(0, _msg->position_covariance[i]);
+  }
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Light & _msg)
 {
   createTestMsg(_msg.header);

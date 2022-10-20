@@ -12,17 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_BRIDGE__CONVERT_HPP_
-#define ROS_GZ_BRIDGE__CONVERT_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT__GPS_MSGS_HPP_
+#define ROS_GZ_BRIDGE__CONVERT__GPS_MSGS_HPP_
 
-#include <ros_gz_bridge/convert/geometry_msgs.hpp>
-#include <ros_gz_bridge/convert/gps_msgs.hpp>
-#include <ros_gz_bridge/convert/nav_msgs.hpp>
-#include <ros_gz_bridge/convert/ros_gz_interfaces.hpp>
-#include <ros_gz_bridge/convert/rosgraph_msgs.hpp>
-#include <ros_gz_bridge/convert/sensor_msgs.hpp>
-#include <ros_gz_bridge/convert/std_msgs.hpp>
-#include <ros_gz_bridge/convert/tf2_msgs.hpp>
-#include <ros_gz_bridge/convert/trajectory_msgs.hpp>
+// Gazebo Msgs
+#include <ignition/msgs/navsat.pb.h>
 
-#endif  // ROS_GZ_BRIDGE__CONVERT_HPP_
+// ROS 2 messages
+#include <gps_msgs/msg/gps_fix.hpp>
+
+#include <ros_gz_bridge/convert_decl.hpp>
+
+namespace ros_gz_bridge
+{
+
+template <>
+void convert_ros_to_gz(const gps_msgs::msg::GPSFix& ros_msg, ignition::msgs::NavSat& gz_msg);
+
+template <>
+void convert_gz_to_ros(const ignition::msgs::NavSat& gz_msg, gps_msgs::msg::GPSFix& ros_msg);
+
+}  // namespace ros_gz_bridge
+
+#endif  // ROS_GZ_BRIDGE__CONVERT__GPS_MSGS_HPP_
