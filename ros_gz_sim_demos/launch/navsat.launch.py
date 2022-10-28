@@ -50,7 +50,7 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/navsat@sensor_msgs/msg/NavSatFix@ignition.msgs.NavSat'],
+        arguments=['/navsat@sensor_msgs/msg/NavSatFix@gz.msgs.NavSat'],
         output='screen'
     )
 
