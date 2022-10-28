@@ -41,9 +41,9 @@ def generate_launch_description():
             executable='parameter_bridge',
             arguments=[
                 '/world/default/model/double_pendulum_with_base0/joint_state@'
-                'sensor_msgs/msg/JointState[ignition.msgs.Model',
+                'sensor_msgs/msg/JointState[gz.msgs.Model',
                 '/model/double_pendulum_with_base0/pose@'
-                'tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V'
+                'tf2_msgs/msg/TFMessage[gz.msgs.Pose_V'
             ],
             remappings=[
                 ('/model/double_pendulum_with_base0/pose', '/tf'),

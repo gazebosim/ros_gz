@@ -58,15 +58,15 @@ def generate_launch_description():
         executable='parameter_bridge',
         arguments=[
             # Clock (Gazebo -> ROS2)
-            '/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock',
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             # Joint states (Gazebo -> ROS2)
-            joint_state_gz_topic + '@sensor_msgs/msg/JointState[ignition.msgs.Model',
+            joint_state_gz_topic + '@sensor_msgs/msg/JointState[gz.msgs.Model',
             # Link poses (Gazebo -> ROS2)
-            link_pose_gz_topic + '@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
-            link_pose_gz_topic + '_static@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            link_pose_gz_topic + '@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            link_pose_gz_topic + '_static@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
             # Velocity and odometry (Gazebo -> ROS2)
-            gz_topic + '/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
-            gz_topic + '/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
+            gz_topic + '/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+            gz_topic + '/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry',
         ],
         remappings=[
             (joint_state_gz_topic, 'joint_states'),
