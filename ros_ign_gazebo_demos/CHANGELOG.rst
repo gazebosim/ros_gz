@@ -2,6 +2,9 @@
 Changelog for package ros_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.8 (2022-10-28)
+--------------------
+
 0.244.7 (2022-10-12)
 --------------------
 * Merge branch 'galactic' into ports/galactic_to_ros2
