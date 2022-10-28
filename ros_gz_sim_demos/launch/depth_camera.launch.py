@@ -60,7 +60,7 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/depth_camera@sensor_msgs/msg/Image@ignition.msgs.Image'],
+        arguments=['/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image'],
         output='screen'
     )
 

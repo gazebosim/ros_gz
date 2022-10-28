@@ -51,10 +51,10 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
-                   '/model/vehicle_blue/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry',
-                   '/model/vehicle_green/cmd_vel@geometry_msgs/msg/Twist@ignition.msgs.Twist',
-                   '/model/vehicle_green/odometry@nav_msgs/msg/Odometry@ignition.msgs.Odometry'],
+        arguments=['/model/vehicle_blue/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+                   '/model/vehicle_blue/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+                   '/model/vehicle_green/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+                   '/model/vehicle_green/odometry@nav_msgs/msg/Odometry@gz.msgs.Odometry'],
         parameters=[{'qos_overrides./model/vehicle_blue.subscriber.reliability': 'reliable',
                      'qos_overrides./model/vehicle_green.subscriber.reliability': 'reliable'}],
         output='screen'

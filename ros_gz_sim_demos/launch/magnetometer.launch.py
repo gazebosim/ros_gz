@@ -50,7 +50,7 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/magnetometer@sensor_msgs/msg/MagneticField@ignition.msgs.Magnetometer'],
+        arguments=['/magnetometer@sensor_msgs/msg/MagneticField@gz.msgs.Magnetometer'],
         output='screen'
     )
 
