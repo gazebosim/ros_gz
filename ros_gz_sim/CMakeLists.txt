@@ -56,7 +56,7 @@ target_link_libraries(create
 )
 ament_target_dependencies(create std_msgs)
 
-add_library(Stopwatch src/Stopwatch.cpp)
+add_library(Stopwatch SHARED src/Stopwatch.cpp)
 ament_target_dependencies(Stopwatch
   rclcpp
 )
@@ -69,6 +69,12 @@ target_include_directories(Stopwatch PUBLIC
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
+install(TARGETS Stopwatch EXPORT Stopwatch
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
 
 configure_file(
   launch/gz_sim.launch.py.in
@@ -87,7 +93,6 @@ install(FILES
 
 install(TARGETS
   create
-  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -121,5 +126,12 @@ if(BUILD_TESTING)
   ament_add_gtest_test(test_stopwatch)
 
 endif()
+
+# Export old-style CMake variables
+ament_export_include_directories("include/ros_gz_sim")
+ament_export_libraries(Stopwatch)
+
+# Export modern CMake targets
+ament_export_targets(Stopwatch)
 
 ament_package()
