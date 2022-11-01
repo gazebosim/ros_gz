@@ -91,12 +91,12 @@ target_link_libraries(create
 )
 ament_target_dependencies(create std_msgs)
 
-add_library(Stopwatch src/Stopwatch.cpp)
-ament_target_dependencies(Stopwatch
+add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
 
-target_include_directories(Stopwatch PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -122,9 +122,19 @@ install(FILES
 
 install(TARGETS
   create
-  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
+
+install(
+  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_targets(${PROJECT_NAME})
+
+ament_export_dependencies(rclcpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -146,7 +156,7 @@ if(BUILD_TESTING)
   )
 
   target_link_libraries(test_stopwatch
-    Stopwatch
+    ${PROJECT_NAME}
   )
 
   install(
@@ -154,7 +164,6 @@ if(BUILD_TESTING)
     DESTINATION lib/${PROJECT_NAME}
   )
   ament_add_gtest_test(test_stopwatch)
-
 endif()
 
 ament_package()
