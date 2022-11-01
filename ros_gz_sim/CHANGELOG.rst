@@ -14,6 +14,9 @@ Changelog for package ros_gz_sim
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
+0.244.8 (2022-10-28)
+--------------------
+
 0.244.7 (2022-10-12)
 --------------------
 * Fix launch substitutions for ign_args (`#309 <https://github.com/gazebosim/ros_gz/issues/309>`_)

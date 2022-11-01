@@ -9,6 +9,9 @@ Changelog for package ros_gz_interfaces
 * Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
 * Contributors: Alejandro Hernández Cordero, ahcorde
 
+0.244.8 (2022-10-28)
+--------------------
+
 0.244.7 (2022-10-12)
 --------------------
 * Bridge between msgs::Float_V and ros_gz_interfaces/Float32Array msg types (`#306 <https://github.com/gazebosim/ros_gz/issues/306>`_)
