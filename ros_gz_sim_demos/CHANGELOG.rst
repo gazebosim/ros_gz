@@ -14,6 +14,11 @@ Changelog for package ros1_gz_sim_demos
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
+0.244.8 (2022-10-28)
+--------------------
+* Fixed ros_gz_sim_demos launch files (`#319 <https://github.com/gazebosim/ros_gz/issues/319>`_) (`#320 <https://github.com/gazebosim/ros_gz/issues/320>`_)
+* Contributors: Alejandro Hernández Cordero
+
 0.244.7 (2022-10-12)
 --------------------
 * Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)

@@ -14,6 +14,9 @@ Changelog for package ros1_ign_image
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
+0.244.8 (2022-10-28)
+--------------------
+
 0.244.7 (2022-10-12)
 --------------------
 * Merge branch 'ros2' into ports/galactic_to_ros2
