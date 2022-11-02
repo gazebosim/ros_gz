@@ -376,9 +376,6 @@ convert_gz_to_ros(
   auto count = gz_msg.count();
   auto vertical_count = gz_msg.vertical_count();
 
-  // If there are multiple vertical beams, use the one in the middle.
-  //size_t start = (vertical_count / 2) * count;
-
   // Copy ranges into ROS message.
   ros_msg.ranges.resize(count*vertical_count);
   std::copy(
