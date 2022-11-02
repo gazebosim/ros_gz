@@ -377,20 +377,20 @@ convert_gz_to_ros(
   auto vertical_count = gz_msg.vertical_count();
 
   // If there are multiple vertical beams, use the one in the middle.
-  size_t start = (vertical_count / 2) * count;
+  //size_t start = (vertical_count / 2) * count;
 
   // Copy ranges into ROS message.
-  ros_msg.ranges.resize(count);
+  ros_msg.ranges.resize(count*vertical_count);
   std::copy(
-    gz_msg.ranges().begin() + start,
-    gz_msg.ranges().begin() + start + count,
+    gz_msg.ranges().begin(),
+    gz_msg.ranges().end(),
     ros_msg.ranges.begin());
 
   // Copy intensities into ROS message.
-  ros_msg.intensities.resize(count);
+  ros_msg.intensities.resize(count*vertical_count);
   std::copy(
-    gz_msg.intensities().begin() + start,
-    gz_msg.intensities().begin() + start + count,
+    gz_msg.intensities().begin(),
+    gz_msg.intensities().end(),
     ros_msg.intensities.begin());
 }
 
