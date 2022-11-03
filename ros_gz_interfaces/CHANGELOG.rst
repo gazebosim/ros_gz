@@ -2,6 +2,11 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.9 (2022-11-03)
+--------------------
+* Export rcl_interfaces exec dependency (`#317 <https://github.com/gazebosim/ros_gz/issues/317>`_)
+* Contributors: Michael Carroll
+
 0.244.8 (2022-10-28)
 --------------------
 
