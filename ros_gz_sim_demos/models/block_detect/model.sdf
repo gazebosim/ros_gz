@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='block_detect'>
+    <static>true</static>
+    <link name="base_link">
+      <visual name="base_visual">
+        <geometry>
+          <box>
+            <size>2 2 8</size>
+          </box>
+        </geometry>
+      </visual>
+
+      <collision name="base_collision">
+        <geometry>
+          <box>
+            <size>2 5 8</size>
+          </box>
+        </geometry>
+      </collision>
+      
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>400</mass>
+        <inertia>
+          <ixx>266</ixx>
+          <ixy>0</ixy>
+          <iyy>266</iyy>
+          <iyz>0</iyz>
+          <izz>266</izz>
+        </inertia>
+      </inertial>
+    </link>
+   
+  </model>
+</sdf>

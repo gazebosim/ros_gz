@@ -1,0 +1,83 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='lidar_block'>
+    <static>true</static>
+    <link name="base_link">
+      <visual name="base_visual">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+      </visual>
+
+      <collision name="base_collision">
+        <geometry>
+          <box>
+            <size>0.5 0.5 0.5</size>
+          </box>
+        </geometry>
+      </collision>
+      
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>400</mass>
+        <inertia>
+          <ixx>266</ixx>
+          <ixy>0</ixy>
+          <iyy>266</iyy>
+          <iyz>0</iyz>
+          <izz>266</izz>
+        </inertia>
+      </inertial>
+    </link>
+   	<link name="lidar_link">
+    	<inertial>
+      	<pose>0 0 0 0 0 0</pose>
+      	<mass>0.05</mass>
+      	<inertia>
+          <ixx>0.0133</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0133</iyy>
+          <iyz>0</iyz>
+          <izz>0.0133</izz>
+      	</inertia>
+    	</inertial>  
+    	<sensor name='gpu_lidar' type='gpu_lidar'>
+    		<pose>0.25 0.25 0.25 0 0 0</pose>
+    		<topic>lidar</topic>
+      	<update_rate>10</update_rate>
+      	<lidar>
+      		<scan>
+        		<horizontal>
+        	  	<samples>10</samples>
+        	    <resolution>1</resolution>
+        	    <min_angle>-0.396263</min_angle>
+        	    <max_angle>0.396263</max_angle>
+        	  </horizontal>
+        	  <vertical>
+        	  	<samples>10</samples>
+        	    <resolution>1</resolution>
+        	    <min_angle>-0.261799</min_angle>
+        	    <max_angle>0.261799</max_angle>
+        	  </vertical>
+       		</scan>
+        	<range>
+        		<min>0.08</min>
+          	<max>10.0</max>
+          	<resolution>0.01</resolution>
+        	</range>
+      	</lidar>
+      	<always_on>1</always_on>
+      	<visualize>true</visualize>
+  		</sensor>
+  	</link>
+  	<joint name="lidar_joint" type="fixed">
+    	<parent>base_link</parent>
+    	<child>lidar_link</child>
+    	<pose>0 0 0 0 0 0</pose>
+    	<axis>1 0 0</axis>
+  	</joint>
+  </model>
+</sdf>
