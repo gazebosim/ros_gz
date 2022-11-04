@@ -446,6 +446,19 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg)
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->torque));
 }
 
+void createTestMsg(geometry_msgs::msg::WrenchStamped & _msg)
+{
+    createTestMsg(_msg.header);
+    createTestMsg(_msg.wrench.force);
+    createTestMsg(_msg.wrench.torque);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::WrenchStamped> & _msg)
+{
+    compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+    compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->wrench.force));
+    compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->wrench.torque));
+}
 void createTestMsg(ros_gz_interfaces::msg::Light & _msg)
 {
   createTestMsg(_msg.header);
