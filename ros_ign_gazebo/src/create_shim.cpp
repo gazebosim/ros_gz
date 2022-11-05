@@ -30,8 +30,15 @@ int main(int argc, char * argv[])
 
   if (argc > 1)
   {
-    for (int i = 1; i < argc; i++)
-      cli_call << " " << argv[i];
+    for (int i = 1; i < argc; i++){
+      // If argv[i] contains a space, encapsulate it with double quotes
+      if (std::string{argv[i]}.find(" ") == std::string::npos)
+      {
+        cli_call << " " << argv[i];
+      } else {
+        cli_call << " \"" << argv[i] << "\"";
+      }
+    }
   }
 
   std::cerr << "[ros_ign_gazebo] is deprecated! "
