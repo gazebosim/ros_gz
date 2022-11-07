@@ -1,21 +1,7 @@
 <?xml version="1.0" ?>
-<!--
-  Gazebo Sim sdformat_urdf parser plugin demo
-
-  Try sending commands:
-
-    gz topic -t "/model/vehicle/cmd_vel" -m gz.msgs.Twist -p "linear: {x: 1.0}, angular: {z: -0.1}"
-    ros2 topic pub /model/vehicle/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.1}}"
-
-  Listen to odometry:
-
-    gz topic -e -t /model/vehicle/odometry
-    ros2 topic echo /model/vehicle/odometry
-
--->
 <sdf version="1.8">
   <world name="demo">
-		<plugin filename="gz-sim-physics-system"
+    <plugin filename="gz-sim-physics-system"
             name="gz::sim::systems::Physics">
     </plugin>
     <plugin filename="gz-sim-sensors-system"
@@ -190,12 +176,12 @@
     </model>
 
     <include>
-			<pose>0 0 1.5 0 0 0</pose>
-			<uri>model://lidar_block</uri>
-		</include>
-		<include>
-			<pose>5 0 0 0 0 0</pose>
-			<uri>model://block_detect</uri>
-		</include>
+      <pose>0 0 1.5 0 0 0</pose>
+      <uri>model://lidar_block</uri>
+    </include>
+    <include>
+      <pose>5 0 0 0 0 0</pose>
+      <uri>model://block_detect</uri>
+    </include>
   </world>
 </sdf>

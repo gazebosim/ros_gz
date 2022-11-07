@@ -1,4 +1,4 @@
-# Copyright 2019 Open Source Robotics Foundation, Inc.
+# Copyright 2022 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -36,15 +36,6 @@ def generate_launch_description():
         launch_arguments={'gz_args': '-v4 -r lidar_test.sdf' }.items(),
     )
 
-    # RViz
-    rviz = Node(
-       package='rviz2',
-       executable='rviz2',
-       # FIXME: Generate new RViz config once this demo is usable again
-       # arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'gpu_lidar.rviz')],
-       condition=IfCondition(LaunchConfiguration('rviz'))
-    )
-
     # Bridge
     bridge = Node(
         package='ros_gz_bridge',
@@ -53,7 +44,6 @@ def generate_launch_description():
         output='screen'
     )
 
-    # FIXME: need a SDF file (gpu_lidar.sdf) inside ros_gz_point_cloud/
     return LaunchDescription([
         gz_sim,
         bridge,
