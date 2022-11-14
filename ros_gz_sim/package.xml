@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_sim</name>
-  <version>0.244.7</version>
+  <version>0.245.0</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
@@ -19,16 +19,8 @@
   <depend>std_msgs</depend>
 
   <!-- Garden -->
-  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-sim7</depend>
-  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-math7</depend>
-  <!-- Fortress (default) -->
-  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-gazebo6</depend>
-  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-math6</depend>
-  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-gazebo6</depend>
-  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-math6</depend>
-  <!-- Edifice -->
-  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-gazebo5</depend>
-  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-math6</depend>
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-sim7</depend>
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-math7</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

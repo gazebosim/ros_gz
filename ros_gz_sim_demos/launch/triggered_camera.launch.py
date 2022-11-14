@@ -49,9 +49,9 @@ def generate_launch_description():
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/camera@sensor_msgs/msg/Image@ignition.msgs.Image',
-                   '/camera/trigger@std_msgs/msg/Bool@ignition.msgs.Boolean',
-                   '/camera_info@sensor_msgs/msg/CameraInfo@ignition.msgs.CameraInfo'],
+        arguments=['/camera@sensor_msgs/msg/Image@gz.msgs.Image',
+                   '/camera/trigger@std_msgs/msg/Bool@gz.msgs.Boolean',
+                   '/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo'],
         output='screen'
     )
 

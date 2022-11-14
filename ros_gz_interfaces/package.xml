@@ -1,6 +1,6 @@
 <package format="3">
   <name>ros_gz_interfaces</name>
-  <version>0.244.7</version>
+  <version>0.245.0</version>
   <description>Message and service data structures for interacting with Gazebo from ROS2.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
@@ -17,7 +17,7 @@
   <exec_depend>std_msgs</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>rosidl_default_runtime</exec_depend>
-  <build_depend>rcl_interfaces</build_depend>
+  <exec_depend>rcl_interfaces</exec_depend>
 
   <test_depend>ament_lint_common</test_depend>
   <member_of_group>rosidl_interface_packages</member_of_group>

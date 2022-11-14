@@ -2,6 +2,23 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.245.0 (2022-10-12)
+--------------------
+* humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
+  Co-authored-by: Michael Carroll <michael@openrobotics.org>
+* Remove Humble+ deprecations (`#312 <https://github.com/gazebosim/ros_gz/issues/312>`_)
+  * Remove Humble+ deprecations
+* Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
+* Remove all ignition references on ROS 2 branch (`#302 <https://github.com/gazebosim/ros_gz/issues/302>`_)
+  * Remove all shims
+  * Update CMakeLists and package.xml for garden
+  * Complete garden gz renaming
+  * Drop fortress CI
+* Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
+0.244.8 (2022-10-28)
+--------------------
+
 0.244.7 (2022-10-12)
 --------------------
 * Make sure that ign\_* yaml configs work as well (`#310 <https://github.com/gazebosim/ros_gz/issues/310>`_)

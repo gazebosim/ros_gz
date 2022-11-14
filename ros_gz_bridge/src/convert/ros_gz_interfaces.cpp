@@ -21,7 +21,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::JointWrench & ros_msg,
-  ignition::msgs::JointWrench & gz_msg)
+  gz::msgs::JointWrench & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.set_body_1_name(ros_msg.body_1_name.data);
@@ -35,7 +35,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointWrench & gz_msg,
+  const gz::msgs::JointWrench & gz_msg,
   ros_gz_interfaces::msg::JointWrench & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -51,34 +51,34 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Entity & ros_msg,
-  ignition::msgs::Entity & gz_msg)
+  gz::msgs::Entity & gz_msg)
 {
   gz_msg.set_id(ros_msg.id);
   gz_msg.set_name(ros_msg.name);
   switch (ros_msg.type) {
     case ros_gz_interfaces::msg::Entity::NONE:
-      gz_msg.set_type(ignition::msgs::Entity::NONE);
+      gz_msg.set_type(gz::msgs::Entity::NONE);
       break;
     case ros_gz_interfaces::msg::Entity::LIGHT:
-      gz_msg.set_type(ignition::msgs::Entity::LIGHT);
+      gz_msg.set_type(gz::msgs::Entity::LIGHT);
       break;
     case ros_gz_interfaces::msg::Entity::MODEL:
-      gz_msg.set_type(ignition::msgs::Entity::MODEL);
+      gz_msg.set_type(gz::msgs::Entity::MODEL);
       break;
     case ros_gz_interfaces::msg::Entity::LINK:
-      gz_msg.set_type(ignition::msgs::Entity::LINK);
+      gz_msg.set_type(gz::msgs::Entity::LINK);
       break;
     case ros_gz_interfaces::msg::Entity::VISUAL:
-      gz_msg.set_type(ignition::msgs::Entity::VISUAL);
+      gz_msg.set_type(gz::msgs::Entity::VISUAL);
       break;
     case ros_gz_interfaces::msg::Entity::COLLISION:
-      gz_msg.set_type(ignition::msgs::Entity::COLLISION);
+      gz_msg.set_type(gz::msgs::Entity::COLLISION);
       break;
     case ros_gz_interfaces::msg::Entity::SENSOR:
-      gz_msg.set_type(ignition::msgs::Entity::SENSOR);
+      gz_msg.set_type(gz::msgs::Entity::SENSOR);
       break;
     case ros_gz_interfaces::msg::Entity::JOINT:
-      gz_msg.set_type(ignition::msgs::Entity::JOINT);
+      gz_msg.set_type(gz::msgs::Entity::JOINT);
       break;
     default:
       std::cerr << "Unsupported entity type [" << ros_msg.type << "]\n";
@@ -88,26 +88,26 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Entity & gz_msg,
+  const gz::msgs::Entity & gz_msg,
   ros_gz_interfaces::msg::Entity & ros_msg)
 {
   ros_msg.id = gz_msg.id();
   ros_msg.name = gz_msg.name();
-  if (gz_msg.type() == ignition::msgs::Entity::Type::Entity_Type_NONE) {
+  if (gz_msg.type() == gz::msgs::Entity::Type::Entity_Type_NONE) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::NONE;
-  } else if (gz_msg.type() == ignition::msgs::Entity::LIGHT) {
+  } else if (gz_msg.type() == gz::msgs::Entity::LIGHT) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::LIGHT;
-  } else if (gz_msg.type() == ignition::msgs::Entity::MODEL) {
+  } else if (gz_msg.type() == gz::msgs::Entity::MODEL) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::MODEL;
-  } else if (gz_msg.type() == ignition::msgs::Entity::LINK) {
+  } else if (gz_msg.type() == gz::msgs::Entity::LINK) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::LINK;
-  } else if (gz_msg.type() == ignition::msgs::Entity::VISUAL) {
+  } else if (gz_msg.type() == gz::msgs::Entity::VISUAL) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::VISUAL;
-  } else if (gz_msg.type() == ignition::msgs::Entity::COLLISION) {
+  } else if (gz_msg.type() == gz::msgs::Entity::COLLISION) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::COLLISION;
-  } else if (gz_msg.type() == ignition::msgs::Entity::SENSOR) {
+  } else if (gz_msg.type() == gz::msgs::Entity::SENSOR) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::SENSOR;
-  } else if (gz_msg.type() == ignition::msgs::Entity::JOINT) {
+  } else if (gz_msg.type() == gz::msgs::Entity::JOINT) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::JOINT;
   } else {
     std::cerr << "Unsupported Entity [" <<
@@ -119,7 +119,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Contact & ros_msg,
-  ignition::msgs::Contact & gz_msg)
+  gz::msgs::Contact & gz_msg)
 {
   convert_ros_to_gz(ros_msg.collision1, (*gz_msg.mutable_collision1()));
   convert_ros_to_gz(ros_msg.collision1, (*gz_msg.mutable_collision2()));
@@ -146,7 +146,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Contact & gz_msg,
+  const gz::msgs::Contact & gz_msg,
   ros_gz_interfaces::msg::Contact & ros_msg)
 {
   convert_gz_to_ros(gz_msg.collision1(), ros_msg.collision1);
@@ -175,7 +175,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Contacts & ros_msg,
-  ignition::msgs::Contacts & gz_msg)
+  gz::msgs::Contacts & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.clear_contact();
@@ -188,7 +188,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Contacts & gz_msg,
+  const gz::msgs::Contacts & gz_msg,
   ros_gz_interfaces::msg::Contacts & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -199,12 +199,11 @@ convert_gz_to_ros(
   }
 }
 
-#if HAVE_DATAFRAME
 template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Dataframe & ros_msg,
-  ignition::msgs::Dataframe & gz_msg)
+  gz::msgs::Dataframe & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   auto * rssiPtr = gz_msg.mutable_header()->add_data();
@@ -220,7 +219,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Dataframe & gz_msg,
+  const gz::msgs::Dataframe & gz_msg,
   ros_gz_interfaces::msg::Dataframe & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -249,13 +248,12 @@ convert_gz_to_ros(
     gz_msg.data().begin() + gz_msg.data().size(),
     ros_msg.data.begin());
 }
-#endif  // HAVE_DATAFRAME
 
 template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::GuiCamera & ros_msg,
-  ignition::msgs::GUICamera & gz_msg)
+  gz::msgs::GUICamera & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
   gz_msg.set_name(ros_msg.name);
@@ -268,7 +266,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::GUICamera & gz_msg,
+  const gz::msgs::GUICamera & gz_msg,
   ros_gz_interfaces::msg::GuiCamera & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -283,18 +281,18 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Light & ros_msg,
-  ignition::msgs::Light & gz_msg)
+  gz::msgs::Light & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
   gz_msg.set_name(ros_msg.name);
   if (ros_msg.type == 0) {
-    gz_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_POINT);
+    gz_msg.set_type(gz::msgs::Light_LightType::Light_LightType_POINT);
   } else if (ros_msg.type == 1) {
-    gz_msg.set_type(ignition::msgs::Light_LightType::Light_LightType_SPOT);
+    gz_msg.set_type(gz::msgs::Light_LightType::Light_LightType_SPOT);
   } else if (ros_msg.type == 2) {
     gz_msg.set_type(
-      ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
+      gz::msgs::Light_LightType::Light_LightType_DIRECTIONAL);
   }
 
   convert_ros_to_gz(ros_msg.pose, *gz_msg.mutable_pose());
@@ -320,19 +318,19 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Light & gz_msg,
+  const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
 
   ros_msg.name = gz_msg.name();
   if (gz_msg.type() ==
-    ignition::msgs::Light_LightType::Light_LightType_POINT)
+    gz::msgs::Light_LightType::Light_LightType_POINT)
   {
     ros_msg.type = 0;
-  } else if (gz_msg.type() == ignition::msgs::Light_LightType::Light_LightType_SPOT) {
+  } else if (gz_msg.type() == gz::msgs::Light_LightType::Light_LightType_SPOT) {
     ros_msg.type = 1;
-  } else if (gz_msg.type() == ignition::msgs::Light_LightType::Light_LightType_DIRECTIONAL) {
+  } else if (gz_msg.type() == gz::msgs::Light_LightType::Light_LightType_DIRECTIONAL) {
     ros_msg.type = 2;
   }
 
@@ -360,7 +358,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::StringVec & ros_msg,
-  ignition::msgs::StringMsg_V & gz_msg)
+  gz::msgs::StringMsg_V & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
   for (const auto & elem : ros_msg.data) {
@@ -372,7 +370,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::StringMsg_V & gz_msg,
+  const gz::msgs::StringMsg_V & gz_msg,
   ros_gz_interfaces::msg::StringVec & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -385,12 +383,12 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::ParamVec & ros_msg,
-  ignition::msgs::Param & gz_msg)
+  gz::msgs::Param & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
   for (auto param : ros_msg.params) {
-    ignition::msgs::Any anyValue;
+    gz::msgs::Any anyValue;
     convert_ros_to_gz(param.value, anyValue);
     auto new_param = gz_msg.mutable_params();
     (*new_param)[param.name] = anyValue;
@@ -400,7 +398,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Param & gz_msg,
+  const gz::msgs::Param & gz_msg,
   ros_gz_interfaces::msg::ParamVec & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -429,7 +427,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::ParamVec & ros_msg,
-  ignition::msgs::Param_V & gz_msg)
+  gz::msgs::Param_V & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
@@ -446,7 +444,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Param_V & gz_msg,
+  const gz::msgs::Param_V & gz_msg,
   ros_gz_interfaces::msg::ParamVec & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -469,7 +467,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::TrackVisual & ros_msg,
-  ignition::msgs::TrackVisual & gz_msg)
+  gz::msgs::TrackVisual & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
   gz_msg.set_name(ros_msg.name);
@@ -486,7 +484,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::TrackVisual & gz_msg,
+  const gz::msgs::TrackVisual & gz_msg,
   ros_gz_interfaces::msg::TrackVisual & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -505,7 +503,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::VideoRecord & ros_msg,
-  ignition::msgs::VideoRecord & gz_msg)
+  gz::msgs::VideoRecord & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
   gz_msg.set_start(ros_msg.start);
@@ -517,7 +515,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::VideoRecord & gz_msg,
+  const gz::msgs::VideoRecord & gz_msg,
   ros_gz_interfaces::msg::VideoRecord & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -531,7 +529,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::WorldControl & ros_msg,
-  ignition::msgs::WorldControl & gz_msg)
+  gz::msgs::WorldControl & gz_msg)
 {
   gz_msg.set_pause(ros_msg.pause);
   gz_msg.set_step(ros_msg.step);
@@ -544,7 +542,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::WorldControl & gz_msg,
+  const gz::msgs::WorldControl & gz_msg,
   ros_gz_interfaces::msg::WorldControl & ros_msg)
 {
   ros_msg.pause = gz_msg.pause();
@@ -559,7 +557,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::WorldReset & ros_msg,
-  ignition::msgs::WorldReset & gz_msg)
+  gz::msgs::WorldReset & gz_msg)
 {
   gz_msg.set_all(ros_msg.all);
   gz_msg.set_time_only(ros_msg.time_only);
@@ -569,7 +567,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::WorldReset & gz_msg,
+  const gz::msgs::WorldReset & gz_msg,
   ros_gz_interfaces::msg::WorldReset & ros_msg)
 {
   ros_msg.all = gz_msg.all();
@@ -581,7 +579,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Float32Array & ros_msg,
-  ignition::msgs::Float_V & gz_msg)
+  gz::msgs::Float_V & gz_msg)
 {
   gz_msg.clear_data();
   for (auto const & t : ros_msg.data) {
@@ -592,7 +590,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Float_V & gz_msg,
+  const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg)
 {
   ros_msg.data.clear();

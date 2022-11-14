@@ -22,7 +22,7 @@ template<>
 void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
-  ignition::msgs::Odometry & gz_msg)
+  gz::msgs::Odometry & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.pose.pose, (*gz_msg.mutable_pose()));
@@ -36,7 +36,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Odometry & gz_msg,
+  const gz::msgs::Odometry & gz_msg,
   nav_msgs::msg::Odometry & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -56,7 +56,7 @@ template<>
 void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
-  ignition::msgs::OdometryWithCovariance & gz_msg)
+  gz::msgs::OdometryWithCovariance & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.pose, (*gz_msg.mutable_pose_with_covariance()));
@@ -70,7 +70,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::OdometryWithCovariance & gz_msg,
+  const gz::msgs::OdometryWithCovariance & gz_msg,
   nav_msgs::msg::Odometry & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);

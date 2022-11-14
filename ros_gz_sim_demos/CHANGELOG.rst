@@ -2,6 +2,23 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.245.0 (2022-10-12)
+--------------------
+* humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
+  Co-authored-by: Michael Carroll <michael@openrobotics.org>
+* Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
+* Remove all ignition references on ROS 2 branch (`#302 <https://github.com/gazebosim/ros_gz/issues/302>`_)
+  * Remove all shims
+  * Update CMakeLists and package.xml for garden
+  * Complete garden gz renaming
+  * Drop fortress CI
+* Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
+0.244.8 (2022-10-28)
+--------------------
+* Fixed ros_gz_sim_demos launch files (`#319 <https://github.com/gazebosim/ros_gz/issues/319>`_) (`#320 <https://github.com/gazebosim/ros_gz/issues/320>`_)
+* Contributors: Alejandro Hernández Cordero
+
 0.244.7 (2022-10-12)
 --------------------
 * Merge pull request `#275 <https://github.com/gazebosim/ros_gz/issues/275>`_ (Galactic to Humble)

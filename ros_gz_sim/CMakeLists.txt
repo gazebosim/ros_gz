@@ -14,31 +14,11 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-# TODO(CH3): Deprecated. Remove on tock.
-if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
-  message(DEPRECATION "Environment variable [IGNITION_VERSION] is deprecated. Use [GZ_VERSION] instead.")
-  set(ENV{GZ_VERSION} $ENV{IGNITION_VERSION})
+if(NOT DEFINED ENV{GZ_VERSION})
+  set(ENV{GZ_VERSION} "garden")
 endif()
 
-# Edifice
-if("$ENV{GZ_VERSION}" STREQUAL "edifice")
-  find_package(ignition-math6 REQUIRED)
-  set(GZ_MATH_VER ${ignition-math6_VERSION_MAJOR})
-
-  find_package(ignition-transport10 REQUIRED)
-  set(GZ_TRANSPORT_VER ${ignition-transport10_VERSION_MAJOR})
-
-  find_package(ignition-msgs7 REQUIRED)
-  set(GZ_MSGS_VER ${ignition-msgs7_VERSION_MAJOR})
-
-  find_package(ignition-gazebo5 REQUIRED)
-  set(GZ_SIM_VER ${ignition-gazebo5_VERSION_MAJOR})
-
-  set(GZ_TARGET_PREFIX ignition)
-
-  message(STATUS "Compiling against Gazebo Edifice")
-# Garden
-elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
+if("$ENV{GZ_VERSION}" STREQUAL "garden")
   find_package(gz-math7 REQUIRED)
   set(GZ_MATH_VER ${gz-math7_VERSION_MAJOR})
 
@@ -54,23 +34,8 @@ elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   set(GZ_TARGET_PREFIX gz)
 
   message(STATUS "Compiling against Gazebo Garden")
-# Default to Fortress
 else()
-  find_package(ignition-math6 REQUIRED)
-  set(GZ_MATH_VER ${ignition-math6_VERSION_MAJOR})
-
-  find_package(ignition-transport11 REQUIRED)
-  set(GZ_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
-
-  find_package(ignition-msgs8 REQUIRED)
-  set(GZ_MSGS_VER ${ignition-msgs8_VERSION_MAJOR})
-
-  find_package(ignition-gazebo6 REQUIRED)
-  set(GZ_SIM_VER ${ignition-gazebo6_VERSION_MAJOR})
-
-  set(GZ_TARGET_PREFIX ignition)
-
-  message(STATUS "Compiling against Gazebo Fortress")
+  message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
 endif()
 
 ign_find_package(gflags
@@ -91,12 +56,12 @@ target_link_libraries(create
 )
 ament_target_dependencies(create std_msgs)
 
-add_library(Stopwatch src/Stopwatch.cpp)
-ament_target_dependencies(Stopwatch
+add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
+ament_target_dependencies(${PROJECT_NAME}
   rclcpp
 )
 
-target_include_directories(Stopwatch PUBLIC
+target_include_directories(${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>
 )
@@ -122,9 +87,19 @@ install(FILES
 
 install(TARGETS
   create
-  Stopwatch
   DESTINATION lib/${PROJECT_NAME}
 )
+
+install(
+  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+ament_export_targets(${PROJECT_NAME})
+
+ament_export_dependencies(rclcpp)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -146,7 +121,7 @@ if(BUILD_TESTING)
   )
 
   target_link_libraries(test_stopwatch
-    Stopwatch
+    ${PROJECT_NAME}
   )
 
   install(
@@ -154,7 +129,6 @@ if(BUILD_TESTING)
     DESTINATION lib/${PROJECT_NAME}
   )
   ament_add_gtest_test(test_stopwatch)
-
 endif()
 
 ament_package()

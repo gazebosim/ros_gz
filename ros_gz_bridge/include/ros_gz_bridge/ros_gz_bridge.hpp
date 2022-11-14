@@ -19,22 +19,10 @@
 #include <string>
 #include <vector>
 
-#include <ignition/msgs/config.hh>
-#include <ignition/transport/Node.hh>
+#include <gz/msgs/config.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/node.hpp>
 #include "ros_gz_bridge/bridge_config.hpp"
-
-// Dataframe is available from versions 8.4.0 (fortress) forward
-// This can be removed when the minimum supported version passes 8.4.0
-#if (IGNITION_MSGS_MAJOR_VERSION > 8) || \
-  ((IGNITION_MSGS_MAJOR_VERSION == 8) && (IGNITION_MSGS_MINOR_VERSION >= 4))
-#define HAVE_DATAFRAME true
-#endif
-
-#if (GZ_MSGS_MAJOR_VERSION > 8) || \
-  ((GZ_MSGS_MAJOR_VERSION == 8) && (GZ_MSGS_MINOR_VERSION >= 4))
-#define HAVE_DATAFRAME true
-#endif
 
 namespace ros_gz_bridge
 {
@@ -49,7 +37,7 @@ public:
   /// \param[in] options options control creation of the ROS 2 node
   explicit RosGzBridge(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
 
-  /// \brief Add a new ROS-IGN bridge to the node
+  /// \brief Add a new ROS-GZ bridge to the node
   /// \param[in] config Parameters to control creation of a new bridge
   void add_bridge(const BridgeConfig & config);
 
@@ -70,7 +58,7 @@ protected:
 
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
-  std::shared_ptr<ignition::transport::Node> gz_node_;
+  std::shared_ptr<gz::transport::Node> gz_node_;
 
   /// \brief List of bridge handles
   std::vector<std::shared_ptr<ros_gz_bridge::BridgeHandle>> handles_;
