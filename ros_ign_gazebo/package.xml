@@ -16,6 +16,7 @@
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>ignition-math6</depend>
+  <depend>std_msgs</depend>
 
   <!-- Edifice -->
   <depend condition="$IGNITION_VERSION == edifice">ignition-gazebo5</depend>
