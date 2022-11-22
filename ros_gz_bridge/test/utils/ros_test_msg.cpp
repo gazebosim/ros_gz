@@ -452,12 +452,12 @@ void createTestMsg(gps_msgs::msg::GPSFix & _msg)
   createTestMsg(header_msg);
 
   _msg.header = header_msg;
-  _msg.status.status = sensor_msgs::msg::NavSatStatus::STATUS_FIX;
+  _msg.status.status = gps_msgs::msg::GPSStatus::STATUS_GBAS_FIX;
   _msg.latitude = 0.00;
   _msg.longitude = 0.00;
   _msg.altitude = 0.00;
   _msg.position_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-  _msg.position_covariance_type = sensor_msgs::msg::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
+  _msg.position_covariance_type = gps_msgs::msg::GPSFix::COVARIANCE_TYPE_UNKNOWN;
 }
 
 void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)

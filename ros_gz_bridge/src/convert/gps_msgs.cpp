@@ -21,8 +21,11 @@
 namespace ros_gz_bridge
 {
 
-template <>
-void convert_ros_to_gz(const gps_msgs::msg::GPSFix& ros_msg, ignition::msgs::NavSat& gz_msg)
+template<>
+void
+convert_ros_to_gz(
+  const gps_msgs::msg::GPSFix& ros_msg,
+  gz::msgs::NavSat& gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.set_latitude_deg(ros_msg.latitude);
@@ -35,8 +38,11 @@ void convert_ros_to_gz(const gps_msgs::msg::GPSFix& ros_msg, ignition::msgs::Nav
   gz_msg.set_velocity_up(ros_msg.climb);
 }
 
-template <>
-void convert_gz_to_ros(const ignition::msgs::NavSat& gz_msg, gps_msgs::msg::GPSFix& ros_msg)
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::NavSat& gz_msg,
+  gps_msgs::msg::GPSFix& ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   ros_msg.header.frame_id = frame_id_gz_to_ros(gz_msg.frame_id());
@@ -45,8 +51,8 @@ void convert_gz_to_ros(const ignition::msgs::NavSat& gz_msg, gps_msgs::msg::GPSF
   ros_msg.altitude = gz_msg.altitude();
 
   ros_msg.speed = sqrt(
-    gz_msg.velocity_east()*gz_msg.velocity_east()
-    + gz_msg.velocity_north()*gz_msg.velocity_north());
+    gz_msg.velocity_east()*gz_msg.velocity_east() +
+    gz_msg.velocity_north()*gz_msg.velocity_north());
   ros_msg.track = atan2(gz_msg.velocity_north(), gz_msg.velocity_east());
   ros_msg.climb = gz_msg.velocity_up();
 

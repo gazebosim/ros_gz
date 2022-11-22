@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__GPS_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/navsat.pb.h>
+#include <gz/msgs/navsat.pb.h>
 
 // ROS 2 messages
 #include <gps_msgs/msg/gps_fix.hpp>
@@ -26,11 +26,17 @@
 namespace ros_gz_bridge
 {
 
-template <>
-void convert_ros_to_gz(const gps_msgs::msg::GPSFix& ros_msg, ignition::msgs::NavSat& gz_msg);
+template<>
+void
+convert_ros_to_gz(
+  const gps_msgs::msg::GPSFix& ros_msg,
+  gz::msgs::NavSat& gz_msg);
 
-template <>
-void convert_gz_to_ros(const ignition::msgs::NavSat& gz_msg, gps_msgs::msg::GPSFix& ros_msg);
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::NavSat& gz_msg,
+  gps_msgs::msg::GPSFix& ros_msg);
 
 }  // namespace ros_gz_bridge
 
