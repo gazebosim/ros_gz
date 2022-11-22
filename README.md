@@ -121,3 +121,7 @@ The following steps are for Linux and OSX.
     cd ~/ws
     colcon build
     ```
+
+## ROSCon 2022
+
+[![](img/video_img.png)](https://vimeo.com/showcase/9954564/video/767127300)
