@@ -10,7 +10,7 @@ The following message types can be bridged for topics:
 | builtin_interfaces/Time            | gz.msgs.Time                       |
 | geometry_msgs/Point                | gz.msgs.Vector3d                   |
 | geometry_msgs/Pose                 | gz.msgs.Pose                       |
-| geometry_msgs/msg/PoseArray        | gz.msgs.Pose_V                   |
+| geometry_msgs/msg/PoseArray        | gz.msgs.Pose_V                     |
 | geometry_msgs/PoseStamped          | gz.msgs.Pose                       |
 | geometry_msgs/PoseWithCovariance   | gz.msgs.PoseWithCovariance         |
 | geometry_msgs/Quaternion           | gz.msgs.Quaternion                 |
@@ -20,6 +20,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/TwistWithCovariance  | gz.msgs.TwistWithCovariance        |
 | geometry_msgs/Vector3              | gz.msgs.Vector3d                   |
 | geometry_msgs/Wrench               | gz.msgs.Wrench                     |
+| gps_msgs/GPSFix                    | gz.msgs.NavSat                     |
 | nav_msgs/Odometry                  | gz.msgs.Odometry                   |
 | nav_msgs/Odometry                  | gz.msgs.OdometryWithCovariance     |
 | rcl_interfaces/ParameterValue      | gz.msgs.Any                        |
