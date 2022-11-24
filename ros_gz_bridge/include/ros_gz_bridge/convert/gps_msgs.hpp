@@ -25,19 +25,17 @@
 
 namespace ros_gz_bridge
 {
-
 template<>
 void
 convert_ros_to_gz(
-  const gps_msgs::msg::GPSFix& ros_msg,
-  gz::msgs::NavSat& gz_msg);
+  const gps_msgs::msg::GPSFix & ros_msg,
+  gz::msgs::NavSat & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const gz::msgs::NavSat& gz_msg,
-  gps_msgs::msg::GPSFix& ros_msg);
-
+  const gz::msgs::NavSat & gz_msg,
+  gps_msgs::msg::GPSFix & ros_msg);
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__GPS_MSGS_HPP_
