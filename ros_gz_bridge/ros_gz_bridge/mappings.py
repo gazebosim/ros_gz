@@ -46,6 +46,9 @@ MAPPINGS = {
         Mapping('WrenchStamped', 'Wrench'),
         Mapping('Vector3', 'Vector3d'),
     ],
+    'gps_msgs': [
+        Mapping('GPSFix', 'NavSat'),
+    ],
     'nav_msgs': [
         Mapping('Odometry', 'Odometry'),
         Mapping('Odometry', 'OdometryWithCovariance'),
