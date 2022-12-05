@@ -18,11 +18,11 @@
 #include <string>
 #include <vector>
 
+#include <rmw/qos_profiles.h>
 #include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
 #include <ros_gz_bridge/convert.hpp>
-#include <rmw/qos_profiles.h>
 
 //////////////////////////////////////////////////
 /// \brief Bridges one image topic
@@ -47,7 +47,8 @@ public:
     } else if (qos_str == "sensor_data") {
       qos_profile = rmw_qos_profile_sensor_data;
     } else if (qos_str != "default") {
-      RCLCPP_ERROR(_node->get_logger(),
+      RCLCPP_ERROR(
+        _node->get_logger(),
         "Invalid QoS profile %s specified. Using default profile.",
         qos_str.c_str());
     }
