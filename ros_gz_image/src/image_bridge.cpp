@@ -97,7 +97,5 @@ int main(int argc, char * argv[])
   // Spin ROS and Gz until shutdown
   rclcpp::spin(node_);
 
-  gz::transport::waitForShutdown();
-
   return 0;
 }

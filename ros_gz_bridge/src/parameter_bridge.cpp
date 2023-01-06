@@ -172,8 +172,5 @@ int main(int argc, char * argv[])
   // ROS 2 spinner
   rclcpp::spin(bridge_node);
 
-  // Wait for gz node shutdown
-  gz::transport::waitForShutdown();
-
   return 0;
 }
