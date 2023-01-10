@@ -39,7 +39,7 @@ get_factory__@(ros2_package_name)(
     return std::make_shared<
       Factory<
         @(m.ros2_type()),
-        @(m.gz_type())
+        @(m.ign_type())
       >
     >("@(m.ros2_string())", "@(m.gz_string())");
   }
@@ -52,10 +52,10 @@ template<>
 void
 Factory<
   @(m.ros2_type()),
-  @(m.gz_type())
+  @(m.ign_type())
 >::convert_ros_to_gz(
   const @(m.ros2_type()) & ros_msg,
-  @(m.gz_type()) & gz_msg)
+  @(m.ign_type()) & gz_msg)
 {
   ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
 }
@@ -64,9 +64,9 @@ template<>
 void
 Factory<
   @(m.ros2_type()),
-  @(m.gz_type())
+  @(m.ign_type())
 >::convert_gz_to_ros(
-  const @(m.gz_type()) & gz_msg,
+  const @(m.ign_type()) & gz_msg,
   @(m.ros2_type()) & ros_msg)
 {
   ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
