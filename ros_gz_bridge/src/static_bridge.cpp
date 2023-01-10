@@ -44,8 +44,5 @@ int main(int argc, char * argv[])
 
   rclcpp::spin(bridge_node);
 
-  // Wait for gz node shutdown
-  gz::transport::waitForShutdown();
-
   return 0;
 }
