@@ -76,6 +76,7 @@ MAPPINGS = {
         Mapping('Image', 'Image'),
         Mapping('Imu', 'IMU'),
         Mapping('JointState', 'Model'),
+        Mapping('Joy', 'Joy'),
         Mapping('LaserScan', 'LaserScan'),
         Mapping('MagneticField', 'Magnetometer'),
         Mapping('NavSatFix', 'NavSat'),
