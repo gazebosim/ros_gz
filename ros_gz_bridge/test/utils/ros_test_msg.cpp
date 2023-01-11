@@ -990,6 +990,32 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::JointState> & _msg)
   }
 }
 
+void createTestMsg(sensor_msgs::msg::Joy & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.axes = {0.5, 0.5, 0.5};
+  _msg.buttons = {0, 0, 0};
+}
+
+void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Joy> & _msg)
+{
+  sensor_msgs::msg::Joy expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  for (auto i = 0u; i < _msg->axes.size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.buttons[i], _msg->buttons[i]);
+  }
+
+  for (auto i = 0u; i < _msg->buttons.size(); ++i) {
+    EXPECT_EQ(expected_msg.buttons[i], _msg->buttons[i]);
+  }
+}
+
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
   const unsigned int num_readings = 100u;

@@ -44,6 +44,7 @@ The following message types can be bridged for topics:
 | sensor_msgs/Image                  | gz.msgs.Image                      |
 | sensor_msgs/Imu                    | gz.msgs.IMU                        |
 | sensor_msgs/JointState             | gz.msgs.Model                      |
+| sensor_msgs/Joy                    | gz.msgs.Joy                        |
 | sensor_msgs/LaserScan              | gz.msgs.LaserScan                  |
 | sensor_msgs/MagneticField          | gz.msgs.Magnetometer               |
 | sensor_msgs/NavSatFix              | gz.msgs.NavSat                     |

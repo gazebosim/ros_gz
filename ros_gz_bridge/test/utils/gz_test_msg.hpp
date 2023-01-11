@@ -38,6 +38,7 @@
 #include <gz/msgs/int32.pb.h>
 #include <gz/msgs/joint_trajectory.pb.h>
 #include <gz/msgs/joint_wrench.pb.h>
+#include <gz/msgs/joy.pb.h>
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/magnetometer.pb.h>
@@ -253,6 +254,14 @@ void createTestMsg(gz::msgs::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::Joy & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::Joy> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
