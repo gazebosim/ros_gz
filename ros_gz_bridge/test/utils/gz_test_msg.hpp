@@ -38,6 +38,7 @@
 #include <ignition/msgs/int32.pb.h>
 #include <ignition/msgs/joint_trajectory.pb.h>
 #include <ignition/msgs/joint_wrench.pb.h>
+#include <ignition/msgs/joy.pb.h>
 #include <ignition/msgs/laserscan.pb.h>
 #include <ignition/msgs/light.pb.h>
 #include <ignition/msgs/magnetometer.pb.h>
@@ -256,6 +257,14 @@ void createTestMsg(ignition::msgs::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Joy & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Joy> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

@@ -21,6 +21,7 @@
 #include <ignition/msgs/fluid_pressure.pb.h>
 #include <ignition/msgs/image.pb.h>
 #include <ignition/msgs/imu.pb.h>
+#include <ignition/msgs/joy.pb.h>
 #include <ignition/msgs/laserscan.pb.h>
 #include <ignition/msgs/magnetometer.pb.h>
 #include <ignition/msgs/model.pb.h>
@@ -34,6 +35,7 @@
 #include <sensor_msgs/msg/image.hpp>
 #include <sensor_msgs/msg/imu.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
+#include <sensor_msgs/msg/joy.hpp>
 #include <sensor_msgs/msg/laser_scan.hpp>
 #include <sensor_msgs/msg/magnetic_field.hpp>
 #include <sensor_msgs/msg/nav_sat_fix.hpp>
@@ -45,6 +47,18 @@ namespace ros_gz_bridge
 {
 
 // sensor_msgs
+template<>
+void
+convert_ros_to_gz(
+  const sensor_msgs::msg::Joy & ros_msg,
+  ignition::msgs::Joy & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Joy & gz_msg,
+  sensor_msgs::msg::Joy & ros_msg);
+
 template<>
 void
 convert_ros_to_gz(

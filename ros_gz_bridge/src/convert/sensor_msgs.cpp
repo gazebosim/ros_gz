@@ -326,6 +326,40 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const sensor_msgs::msg::Joy & ros_msg,
+  ignition::msgs::Joy & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+
+  for (auto i = 0u; i < ros_msg.axes.size(); ++i) {
+    gz_msg.add_axes(ros_msg.axes[i]);
+  }
+
+  for (auto i = 0u; i < ros_msg.buttons.size(); ++i) {
+    gz_msg.add_buttons(ros_msg.buttons[i]);
+  }
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Joy & gz_msg,
+  sensor_msgs::msg::Joy & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  for (auto i = 0; i < gz_msg.axes_size(); ++i) {
+    ros_msg.axes.push_back(gz_msg.axes(i));
+  }
+
+  for (auto i = 0; i < gz_msg.buttons_size(); ++i) {
+    ros_msg.buttons.push_back(gz_msg.buttons(i));
+  }
+}
+
+template<>
+void
+convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
   ignition::msgs::LaserScan & gz_msg)
 {
