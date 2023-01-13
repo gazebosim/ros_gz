@@ -816,6 +816,35 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Model> & _msg)
   }
 }
 
+void createTestMsg(ignition::msgs::Joy & _msg)
+{
+  ignition::msgs::Header header_msg;
+
+  createTestMsg(header_msg);
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  for (int i = 0u; i < 3; ++i) {
+    _msg.add_axes(0.5);
+    _msg.add_buttons(0);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Joy> & _msg)
+{
+  ignition::msgs::Joy expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
+
+  for (int i = 0; i < expected_msg.axes_size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.axes(i), _msg->axes(i));
+  }
+
+  for (int i = 0; i < expected_msg.buttons_size(); ++i) {
+    EXPECT_EQ(expected_msg.buttons(i), _msg->buttons(i));
+  }
+}
+
 void createTestMsg(ignition::msgs::LaserScan & _msg)
 {
   ignition::msgs::Header header_msg;

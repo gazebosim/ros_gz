@@ -51,6 +51,7 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/Imu                  | ignition::msgs::IMU                    |
 | sensor_msgs/msg/Image                | ignition::msgs::Image                  |
 | sensor_msgs/msg/JointState           | ignition::msgs::Model                  |
+| sensor_msgs/msg/Joy                  | ignition::msgs::Joy                  |
 | sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan              |
 | sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer           |
 | sensor_msgs/msg/NavSatFixed          | ignition::msgs::NavSat               |

@@ -22,7 +22,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 
 
 def generate_launch_description():
-    print("ros_ign_gazebo_demos is deprecated!Please use ros_gz_sim_demos instead!")
+    print('ros_ign_gazebo_demos is deprecated! Please use ros_gz_sim_demos instead!')
 
     pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
 
