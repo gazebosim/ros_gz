@@ -18,7 +18,7 @@ from os import environ
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
-from launch.actions import ExecuteProcess
+from launch.actions import ExecuteProcess, Shutdown
 from launch.substitutions import LaunchConfiguration
 
 def launch_gz(context, *args, **kwargs):
@@ -34,6 +34,7 @@ def launch_gz(context, *args, **kwargs):
     ign_args = LaunchConfiguration('ign_args').perform(context)
     ign_version = LaunchConfiguration('ign_version').perform(context)
     debugger = LaunchConfiguration('debugger').perform(context)
+    on_exit_shutdown = LaunchConfiguration('on_exit_shutdown').perform(context)
 
     if not len(gz_args) and len(ign_args):
         print("ign_args is deprecated, migrate to gz_args!")
@@ -54,12 +55,18 @@ def launch_gz(context, *args, **kwargs):
     else:
         debug_prefix = None
 
+    if on_exit_shutdown:
+        on_exit = Shutdown()
+    else:
+        on_exit = None
+
     return [ExecuteProcess(
             cmd=[exec, exec_args, '--force-version', gz_version],
             output='screen',
             additional_env=env,
             shell=True,
-            prefix=debug_prefix
+            prefix=debug_prefix,
+            on_exit=on_exit
         )]
 
 
@@ -84,5 +91,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'debugger', default_value='false',
             description='Run in Debugger'),
+        DeclareLaunchArgument(
+            'on_exit_shutdown', default_value='false',
+            description='Shutdown on gz-sim exit'),
         OpaqueFunction(function = launch_gz),
     ])
