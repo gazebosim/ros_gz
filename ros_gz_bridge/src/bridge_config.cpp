@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <yaml-cpp/exceptions.h>
 #include <yaml-cpp/yaml.h>
 
 #include <fstream>
@@ -146,16 +147,16 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
 
 std::vector<BridgeConfig> readFromYaml(std::istream & in)
 {
+  auto logger = rclcpp::get_logger("readFromYaml");
   auto ret = std::vector<BridgeConfig>();
 
   YAML::Node yaml_node;
   yaml_node = YAML::Load(in);
 
-  auto logger = rclcpp::get_logger("readFromYaml");
   if (!yaml_node.IsSequence()) {
     RCLCPP_ERROR(
       logger,
-      "Could not parse config, top level must be a YAML sequence");
+      "Could not parse config: top level must be a YAML sequence");
     return ret;
   }
 
@@ -173,6 +174,29 @@ std::vector<BridgeConfig> readFromYamlFile(const std::string & filename)
 {
   std::vector<BridgeConfig> ret;
   std::ifstream in(filename);
+
+  auto logger = rclcpp::get_logger("readFromYamlFile");
+  if (!in.is_open()) {
+    RCLCPP_ERROR(
+      logger,
+      "Could not parse config: failed to open file [%s]", filename.c_str());
+    return ret;
+  }
+
+  // Compute file size to warn on empty configuration
+  const auto fbegin = in.tellg();
+  in.seekg(0, std::ios::end);
+  const auto fend = in.tellg();
+  const auto fsize = fend - fbegin;
+
+  if (fsize == 0) {
+    RCLCPP_ERROR(
+      logger,
+      "Could not parse config: file empty [%s]", filename.c_str());
+    return ret;
+  }
+
+  in.seekg(0, std::ios::beg);
   return readFromYaml(in);
 }
 
