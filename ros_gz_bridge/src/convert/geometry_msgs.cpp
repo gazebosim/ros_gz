@@ -309,23 +309,23 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
-        const geometry_msgs::msg::WrenchStamped & ros_msg,
-        ignition::msgs::Wrench & gz_msg)
+  const geometry_msgs::msg::WrenchStamped & ros_msg,
+  ignition::msgs::Wrench & gz_msg)
 {
-    convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
-    convert_ros_to_gz(ros_msg.wrench.force, (*gz_msg.mutable_force()));
-    convert_ros_to_gz(ros_msg.wrench.torque, (*gz_msg.mutable_torque()));
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  convert_ros_to_gz(ros_msg.wrench.force, (*gz_msg.mutable_force()));
+  convert_ros_to_gz(ros_msg.wrench.torque, (*gz_msg.mutable_torque()));
 }
 
 template<>
 void
 convert_gz_to_ros(
-        const ignition::msgs::Wrench & gz_msg,
-        geometry_msgs::msg::WrenchStamped & ros_msg)
+  const ignition::msgs::Wrench & gz_msg,
+  geometry_msgs::msg::WrenchStamped & ros_msg)
 {
-    convert_gz_to_ros(gz_msg.header(), ros_msg.header);
-    convert_gz_to_ros(gz_msg.force(), ros_msg.wrench.force);
-    convert_gz_to_ros(gz_msg.torque(), ros_msg.wrench.torque);
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  convert_gz_to_ros(gz_msg.force(), ros_msg.wrench.force);
+  convert_gz_to_ros(gz_msg.torque(), ros_msg.wrench.torque);
 }
 
 }  // namespace ros_gz_bridge

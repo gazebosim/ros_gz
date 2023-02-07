@@ -191,14 +191,14 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
-        const geometry_msgs::msg::WrenchStamped & ros_msg,
-        ignition::msgs::Wrench & gz_msg);
+  const geometry_msgs::msg::WrenchStamped & ros_msg,
+  ignition::msgs::Wrench & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-        const ignition::msgs::Wrench & gz_msg,
-        geometry_msgs::msg::WrenchStamped & ros_msg);
+  const ignition::msgs::Wrench & gz_msg,
+  geometry_msgs::msg::WrenchStamped & ros_msg);
 
 }  // namespace ros_gz_bridge
 
