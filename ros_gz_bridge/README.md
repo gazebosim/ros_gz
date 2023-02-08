@@ -18,6 +18,7 @@ The following message types can be bridged for topics:
 | std_msgs/msg/UInt32                  | ignition::msgs::UInt32                 |
 | std_msgs/msg/String                  | ignition::msgs::StringMsg              |
 | geometry_msgs/msg/Wrench             | ignition::msgs::Wrench                 |
+| geometry_msgs/msg/WrenchStamped      | ignition::msgs::Wrench                 |
 | geometry_msgs/msg/Quaternion         | ignition::msgs::Quaternion             |
 | geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d               |
 | geometry_msgs/msg/Point              | ignition::msgs::Vector3d               |
