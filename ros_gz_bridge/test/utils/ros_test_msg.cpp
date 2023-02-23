@@ -704,6 +704,19 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Entity> & _msg
   EXPECT_EQ(expected_msg.type, _msg->type);
 }
 
+void createTestMsg(ros_gz_interfaces::msg::EntityFactory & _msg)
+{
+  _msg.name = "entity";
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::EntityFactory> & _msg)
+{
+  ros_gz_interfaces::msg::EntityFactory expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Contact & _msg)
 {
   createTestMsg(_msg.collision1);

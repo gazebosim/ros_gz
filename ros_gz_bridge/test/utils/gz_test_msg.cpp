@@ -466,6 +466,18 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Entity> & _msg)
   EXPECT_EQ(expected_msg.type(), _msg->type());
 }
 
+void createTestMsg(gz::msgs::EntityFactory & _msg)
+{
+  _msg.set_name("entity");
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::EntityFactory> & _msg)
+{
+  gz::msgs::EntityFactory expected_msg;
+  createTestMsg(expected_msg);
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+}
+
 void createTestMsg(gz::msgs::Contact & _msg)
 {
   gz::msgs::Entity collision1;
