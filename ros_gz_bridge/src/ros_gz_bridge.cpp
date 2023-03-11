@@ -110,8 +110,8 @@ void RosGzBridge::add_bridge(const BridgeConfig & config)
       "Failed to create a bridge for topic [%s] with ROS2 type [%s] "
       "to topic [%s] with Gazebo Transport type [%s]",
       config.ros_topic_name.c_str(),
-      config.gz_topic_name.c_str(),
       config.ros_type_name.c_str(),
+      config.gz_topic_name.c_str(),
       config.gz_type_name.c_str());
   }
 }
