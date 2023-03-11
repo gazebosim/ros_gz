@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gz/transport/Node.hh>
 #include <rmw/qos_profiles.h>
 
 #include <iostream>
@@ -20,8 +19,9 @@
 #include <string>
 #include <vector>
 
-#include <rclcpp/rclcpp.hpp>
+#include <gz/transport/Node.hh>
 #include <image_transport/image_transport.hpp>
+#include <rclcpp/rclcpp.hpp>
 #include <ros_gz_bridge/convert.hpp>
 
 //////////////////////////////////////////////////
