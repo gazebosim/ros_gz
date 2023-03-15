@@ -35,6 +35,7 @@
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
 #include <geometry_msgs/msg/twist_with_covariance.hpp>
+#include <geometry_msgs/msg/twist_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
 
 #include <ros_gz_bridge/convert_decl.hpp>
@@ -174,6 +175,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg,
+  gz::msgs::TwistWithCovariance & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::TwistWithCovariance & gz_msg,
+  geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg);
 
 template<>
 void
