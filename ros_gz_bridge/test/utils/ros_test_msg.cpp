@@ -948,6 +948,9 @@ void createTestMsg(sensor_msgs::msg::Imu & _msg)
   _msg.orientation = quaternion_msg;
   _msg.angular_velocity = vector3_msg;
   _msg.linear_acceleration = vector3_msg;
+  _msg.orientation_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.angular_velocity_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.linear_acceleration_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 }
 
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
@@ -956,6 +959,12 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
   compareTestMsg(_msg->orientation);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular_velocity));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
+
+  for (int i = 1; i < 10; ++i){
+    EXPECT_EQ(_msg->orientation_covariance[i], i);
+    EXPECT_EQ(_msg->angular_velocity_covariance[i], i);
+    EXPECT_EQ(_msg->linear_acceleration_covariance[i], i);
+  }
 }
 
 void createTestMsg(sensor_msgs::msg::JointState & _msg)
