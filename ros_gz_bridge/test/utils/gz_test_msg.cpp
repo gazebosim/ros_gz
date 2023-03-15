@@ -19,6 +19,10 @@
 #include <memory>
 #include <string>
 
+#if GZ_MSGS_MAJOR_VERSION >= 10
+#define GZ_MSGS_IMU_HAS_COVARIANCE
+#endif
+
 namespace ros_gz_bridge
 {
 namespace testing
@@ -810,6 +814,13 @@ void createTestMsg(gz::msgs::IMU & _msg)
   _msg.mutable_orientation()->CopyFrom(quaternion_msg);
   _msg.mutable_angular_velocity()->CopyFrom(vector3_msg);
   _msg.mutable_linear_acceleration()->CopyFrom(vector3_msg);
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
+  for (int i = 0; i < 9; i++) {
+    _msg.mutable_orientation_covariance()->add_data(i + 1);
+    _msg.mutable_angular_velocity_covariance()->add_data(i + 1);
+    _msg.mutable_linear_acceleration_covariance()->add_data(i + 1);
+  }
+#endif
 }
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::IMU> & _msg)
@@ -818,6 +829,13 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::IMU> & _msg)
   compareTestMsg(std::make_shared<gz::msgs::Quaternion>(_msg->orientation()));
   compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->angular_velocity()));
   compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->linear_acceleration()));
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
+  for (int i = 0; i < 9; i++) {
+    EXPECT_EQ(_msg->orientation_covariance().data(i), i + 1);
+    EXPECT_EQ(_msg->angular_velocity_covariance().data(i), i + 1);
+    EXPECT_EQ(_msg->linear_acceleration_covariance().data(i), i + 1);
+  }
+#endif
 }
 
 void createTestMsg(gz::msgs::Axis & _msg)
