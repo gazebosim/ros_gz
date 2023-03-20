@@ -5,6 +5,7 @@
   <version>0.245.0</version>
   <description>Bridge communication between ROS and Gazebo Transport</description>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
 
   <license>Apache 2.0</license>
 
