@@ -5,6 +5,7 @@
   <version>0.245.0</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
 
   <license>Apache 2.0</license>
 
