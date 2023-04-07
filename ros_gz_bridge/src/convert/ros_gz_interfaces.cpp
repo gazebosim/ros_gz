@@ -134,13 +134,22 @@ convert_ros_to_gz(
   
   gz_msg.set_name(ros_msg.name);
   gz_msg.set_allow_renaming(ros_msg.allow_renaming);
+  gz_msg.set_relative_to(ros_msg.relative_to);
 
+  bool has_sdf = !ros_msg.sdf.empty();
+  bool has_sdf_filename = !ros_msg.sdf_filename.empty();
+  bool has_clone_name = !ros_msg.clone_name.empty();
 
-  if(ros_msg.sdf.length()>0) {
+  bool provided_two = has_sdf ? (has_sdf_filename || has_clone_name) : (has_sdf_filename && has_clone_name);
+
+  if (provided_two)
+    std::cout << "Warning: You should only provide ONE of sdf, sdf_filname, or clone_name" << std::endl;
+  
+  if(has_sdf) {
     gz_msg.set_sdf(ros_msg.sdf);
-  } else if(ros_msg.sdf_filename.length()>0) {
+  } else if(has_sdf_filename) {
     gz_msg.set_sdf_filename(ros_msg.sdf_filename);
-  } else if(ros_msg.clone_name.length()>0) {
+  } else if(has_clone_name) {
     gz_msg.set_clone_name(ros_msg.clone_name);
   } else {
     std::cerr << "Must provide one of: sdf, sdf_filname, or clone_name" << std::endl;
@@ -148,8 +157,6 @@ convert_ros_to_gz(
 
 
   convert_ros_to_gz(ros_msg.pose, *gz_msg.mutable_pose());
-
-  gz_msg.set_relative_to(ros_msg.relative_to);
 
 }
 
