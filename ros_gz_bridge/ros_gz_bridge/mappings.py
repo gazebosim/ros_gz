@@ -27,6 +27,9 @@ MAPPINGS = {
     'builtin_interfaces': [
         Mapping('Time', 'Time'),
     ],
+    'actuator_msgs': [
+        Mapping('Actuators', 'Actuators'),
+    ],
     'geometry_msgs': [
         Mapping('Point', 'Vector3d'),
         Mapping('Pose', 'Pose'),

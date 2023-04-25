@@ -29,6 +29,7 @@
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <actuator_msgs/msg/actuators.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
@@ -178,6 +179,16 @@ void createTestMsg(rosgraph_msgs::msg::Clock & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<rosgraph_msgs::msg::Clock> & _msg);
+
+/// actuator_msgs
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(actuator_msgs::msg::Actuators & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<actuator_msgs::msg::Actuators> & _msg);
 
 /// geometry_msgs
 
