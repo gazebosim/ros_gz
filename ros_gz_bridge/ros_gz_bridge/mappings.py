@@ -36,6 +36,7 @@ MAPPINGS = {
         Mapping('PoseArray', 'Pose_V'),
         Mapping('PoseStamped', 'Pose'),
         Mapping('PoseWithCovariance', 'PoseWithCovariance'),
+        Mapping('PoseWithCovarianceStamped', 'PoseWithCovariance'),
         Mapping('Quaternion', 'Quaternion'),
         Mapping('Transform', 'Pose'),
         Mapping('TransformStamped', 'Pose'),
