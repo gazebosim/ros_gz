@@ -43,6 +43,7 @@ MAPPINGS = {
         Mapping('Twist', 'Twist'),
         Mapping('TwistWithCovariance', 'TwistWithCovariance'),
         Mapping('Wrench', 'Wrench'),
+        Mapping('WrenchStamped', 'Wrench'),
         Mapping('Vector3', 'Vector3d'),
     ],
     'gps_msgs': [
