@@ -16,6 +16,17 @@ Changelog for package ros_gz_bridge
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
+0.244.10 (2023-05-03)
+---------------------
+* Fix warning message (`#371 <https://github.com/gazebosim/ros_gz/issues/371>`_)
+* Introduce WrenchStamped into bridge (`#327 <https://github.com/gazebosim/ros_gz/issues/327>`_)
+* Humbly bringing the Joy to gazebo. (`#353 <https://github.com/gazebosim/ros_gz/issues/353>`_)
+* Make the bridge aware of both gz and ignition msgs (`#349 <https://github.com/gazebosim/ros_gz/issues/349>`_)
+* Contributors: Benjamin Perseghetti, El Jawad Alaa, Michael Carroll, livanov93
+
+0.244.9 (2022-11-03)
+--------------------
+
 0.244.8 (2022-10-28)
 --------------------
 

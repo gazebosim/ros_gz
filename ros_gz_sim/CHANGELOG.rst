@@ -14,6 +14,16 @@ Changelog for package ros_gz_sim
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
+0.244.10 (2023-05-03)
+---------------------
+
+0.244.9 (2022-11-03)
+--------------------
+* Export ROS Stopwatch library (`#299 <https://github.com/gazebosim/ros_gz/issues/299>`_) (`#322 <https://github.com/gazebosim/ros_gz/issues/322>`_)
+  New Stopwatch library needs to be exported and built as shared
+  Co-authored-by: Michael Anderson <anderson@mbari.org>
+* Contributors: Michael Carroll
+
 0.244.8 (2022-10-28)
 --------------------
 

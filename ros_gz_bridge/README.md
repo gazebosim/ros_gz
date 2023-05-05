@@ -21,6 +21,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/TwistWithCovariance       | gz.msgs.TwistWithCovariance    |
 | geometry_msgs/Vector3                   | gz.msgs.Vector3d               |
 | geometry_msgs/Wrench                    | gz.msgs.Wrench                 |
+| geometry_msgs/WrenchStamped             | gz.msgs.Wrench                 |
 | gps_msgs/GPSFix                         | gz.msgs.NavSat                 |
 | nav_msgs/Odometry                       | gz.msgs.Odometry               |
 | nav_msgs/Odometry                       | gz.msgs.OdometryWithCovariance |
@@ -38,6 +39,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/StringVec             | gz.msgs.StringMsg_V            |
 | ros_gz_interfaces/TrackVisual           | gz.msgs.TrackVisual            |
 | ros_gz_interfaces/VideoRecord           | gz.msgs.VideoRecord            |
+| ros_gz_interfaces/WorldControl          | gz.msgs.WorldControl           |
 | rosgraph_msgs/Clock                     | gz.msgs.Clock                  |
 | sensor_msgs/BatteryState                | gz.msgs.BatteryState           |
 | sensor_msgs/CameraInfo                  | gz.msgs.CameraInfo             |
