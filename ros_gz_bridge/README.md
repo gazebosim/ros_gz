@@ -5,32 +5,23 @@ between ROS and Gazebo Transport.
 
 The following message types can be bridged for topics:
 
-| ROS type                                     | Gazebo type                            |
-|----------------------------------------------|:--------------------------------------:|
+| ROS type                                     | Gazebo Transport Type          |
+|----------------------------------------------|:------------------------------:|
 | builtin_interfaces/msg/Time                  | gz.msgs.Time                   |
-| std_msgs/msg/Bool                            | gz.msgs.Boolean                |
-| std_msgs/msg/ColorRGBA                       | gz.msgs.Color                  |
-| std_msgs/msg/Empty                           | gz.msgs.Empty                  |
-| std_msgs/msg/Float32                         | gz.msgs.Float                  |
-| std_msgs/msg/Float64                         | gz.msgs.Double                 |
-| std_msgs/msg/Header                          | gz.msgs.Header                 |
-| std_msgs/msg/Int32                           | gz.msgs.Int32                  |
-| std_msgs/msg/UInt32                          | gz.msgs.UInt32                 |
-| std_msgs/msg/String                          | gz.msgs.StringMsg              |
-| geometry_msgs/msg/Wrench                     | gz.msgs.Wrench                 |
-| geometry_msgs/msg/WrenchStamped              | gz.msgs.Wrench                 |
-| geometry_msgs/msg/Quaternion                 | gz.msgs.Quaternion             |
-| geometry_msgs/msg/Vector3                    | gz.msgs.Vector3d               |
 | geometry_msgs/msg/Point                      | gz.msgs.Vector3d               |
 | geometry_msgs/msg/Pose                       | gz.msgs.Pose                   |
 | geometry_msgs/msg/PoseArray                  | gz.msgs.Pose_V                 |
-| geometry_msgs/msg/PoseWithCovariance         | gz.msgs.PoseWithCovariance     |
 | geometry_msgs/msg/PoseStamped                | gz.msgs.Pose                   |
+| geometry_msgs/msg/PoseWithCovariance         | gz.msgs.PoseWithCovariance     |
+| geometry_msgs/msg/Quaternion                 | gz.msgs.Quaternion             |
 | geometry_msgs/msg/Transform                  | gz.msgs.Pose                   |
 | geometry_msgs/msg/TransformStamped           | gz.msgs.Pose                   |
 | geometry_msgs/msg/Twist                      | gz.msgs.Twist                  |
 | geometry_msgs/msg/TwistWithCovariance        | gz.msgs.TwistWithCovariance    |
 | geometry_msgs/msg/TwistWithCovarianceStamped | gz.msgs.TwistWithCovariance    |
+| geometry_msgs/msg/Vector3                    | gz.msgs.Vector3d               |
+| geometry_msgs/msg/Wrench                     | gz.msgs.Wrench                 |
+| geometry_msgs/msg/WrenchStamped              | gz.msgs.Wrench                 |
 | nav_msgs/msg/Odometry                        | gz.msgs.Odometry               |
 | nav_msgs/msg/Odometry                        | gz.msgs.OdometryWithCovariance |
 | rcl_interfaces/msg/ParameterValue            | gz.msgs.Any                    |
@@ -50,16 +41,26 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/BatteryState                 | gz.msgs.BatteryState           |
 | sensor_msgs/msg/CameraInfo                   | gz.msgs.CameraInfo             |
 | sensor_msgs/msg/FluidPressure                | gz.msgs.FluidPressure          |
-| sensor_msgs/msg/Imu                          | gz.msgs.IMU                    |
 | sensor_msgs/msg/Image                        | gz.msgs.Image                  |
+| sensor_msgs/msg/Imu                          | gz.msgs.IMU                    |
 | sensor_msgs/msg/JointState                   | gz.msgs.Model                  |
 | sensor_msgs/msg/Joy                          | gz.msgs.Joy                    |
 | sensor_msgs/msg/LaserScan                    | gz.msgs.LaserScan              |
 | sensor_msgs/msg/MagneticField                | gz.msgs.Magnetometer           |
 | sensor_msgs/msg/NavSatFixed                  | gz.msgs.NavSat                 |
 | sensor_msgs/msg/PointCloud2                  | gz.msgs.PointCloudPacked       |
+| std_msgs/msg/Bool                            | gz.msgs.Boolean                |
+| std_msgs/msg/ColorRGBA                       | gz.msgs.Color                  |
+| std_msgs/msg/Empty                           | gz.msgs.Empty                  |
+| std_msgs/msg/Float32                         | gz.msgs.Float                  |
+| std_msgs/msg/Float64                         | gz.msgs.Double                 |
+| std_msgs/msg/Header                          | gz.msgs.Header                 |
+| std_msgs/msg/Int32                           | gz.msgs.Int32                  |
+| std_msgs/msg/String                          | gz.msgs.StringMsg              |
+| std_msgs/msg/UInt32                          | gz.msgs.UInt32                 |
 | tf2_msgs/msg/TFMessage                       | gz.msgs.Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory          | gz.msgs.JointTrajectory        |
+
 
 And the following for services:
 

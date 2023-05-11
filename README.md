@@ -106,7 +106,7 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro rolling
+    rosdep install -r --from-paths src -i -y --rosdistro humble
     ```
 
     > If `rosdep` fails to install Gazebo libraries and you have not installed them before, please follow [Gazebo installation instructions](https://gazebosim.org/docs/latest/install).

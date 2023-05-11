@@ -29,10 +29,12 @@
 #include <std_msgs/msg/u_int32.hpp>
 #include <std_msgs/msg/header.hpp>
 #include <std_msgs/msg/string.hpp>
+#include <actuator_msgs/msg/actuators.hpp>
 #include <geometry_msgs/msg/point.hpp>
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
 #include <geometry_msgs/msg/pose_with_covariance.hpp>
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
@@ -42,6 +44,7 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
+#include <geometry_msgs/msg/wrench_stamped.hpp>
 #include <gps_msgs/msg/gps_fix.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
@@ -180,6 +183,16 @@ void createTestMsg(rosgraph_msgs::msg::Clock & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<rosgraph_msgs::msg::Clock> & _msg);
 
+/// actuator_msgs
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(actuator_msgs::msg::Actuators & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<actuator_msgs::msg::Actuators> & _msg);
+
 /// geometry_msgs
 
 /// \brief Create a message used for testing.
@@ -246,6 +259,18 @@ void createTestMsg(geometry_msgs::msg::PoseWithCovariance & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovariance> & _msg);
 
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const geometry_msgs::msg::PoseWithCovarianceStamped & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(geometry_msgs::msg::PoseWithCovarianceStamped & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovarianceStamped> & _msg);
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(geometry_msgs::msg::PoseStamped & _msg);
@@ -305,6 +330,14 @@ void createTestMsg(geometry_msgs::msg::Wrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(geometry_msgs::msg::WrenchStamped & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::WrenchStamped> & _msg);
 
 /// gps_msgs
 

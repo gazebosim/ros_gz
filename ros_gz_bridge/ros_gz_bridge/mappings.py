@@ -27,12 +27,16 @@ MAPPINGS = {
     'builtin_interfaces': [
         Mapping('Time', 'Time'),
     ],
+    'actuator_msgs': [
+        Mapping('Actuators', 'Actuators'),
+    ],
     'geometry_msgs': [
         Mapping('Point', 'Vector3d'),
         Mapping('Pose', 'Pose'),
         Mapping('PoseArray', 'Pose_V'),
         Mapping('PoseStamped', 'Pose'),
         Mapping('PoseWithCovariance', 'PoseWithCovariance'),
+        Mapping('PoseWithCovarianceStamped', 'PoseWithCovariance'),
         Mapping('Quaternion', 'Quaternion'),
         Mapping('Transform', 'Pose'),
         Mapping('TransformStamped', 'Pose'),
@@ -40,6 +44,7 @@ MAPPINGS = {
         Mapping('TwistWithCovariance', 'TwistWithCovariance'),
         Mapping('TwistWithCovarianceStamped', 'TwistWithCovariance'),
         Mapping('Wrench', 'Wrench'),
+        Mapping('WrenchStamped', 'Wrench'),
         Mapping('Vector3', 'Vector3d'),
     ],
     'gps_msgs': [

@@ -6,8 +6,11 @@
   <name>ros_gz</name>
   <version>0.245.0</version>
   <description>Meta-package containing interfaces for using ROS 2 with <a href="https://gazebosim.org">Gazebo</a> simulation.</description>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
+  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
   <license>Apache 2.0</license>
+
+  <author>Louise Poubel</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 

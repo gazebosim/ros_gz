@@ -59,6 +59,37 @@ void createTestMsg(std_msgs::msg::ColorRGBA & _msg)
   _msg.a = 0.8;
 }
 
+void createTestMsg(actuator_msgs::msg::Actuators & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.position = {0.5, 0.5, 0.5};
+  _msg.velocity = {1.0, 1.0, 1.0};
+  _msg.normalized = {0.2, 0.2, 0.2};
+}
+
+void compareTestMsg(const std::shared_ptr<actuator_msgs::msg::Actuators> & _msg)
+{
+  actuator_msgs::msg::Actuators expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+
+  for (auto i = 0u; i < _msg->position.size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.position[i], _msg->position[i]);
+  }
+
+  for (auto i = 0u; i < _msg->velocity.size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.velocity[i], _msg->velocity[i]);
+  }
+
+  for (auto i = 0u; i < _msg->normalized.size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.normalized[i], _msg->normalized[i]);
+  }
+}
+
 void compareTestMsg(const std::shared_ptr<std_msgs::msg::ColorRGBA> & _msg)
 {
   std_msgs::msg::ColorRGBA expected_msg;
@@ -343,6 +374,18 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovariance
   }
 }
 
+void createTestMsg(geometry_msgs::msg::PoseWithCovarianceStamped & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.pose);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovarianceStamped> & _msg)
+{
+  compareTestMsg(std::make_shared<geometry_msgs::msg::PoseWithCovariance>(_msg->pose));
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+}
+
 void createTestMsg(geometry_msgs::msg::PoseStamped & _msg)
 {
   createTestMsg(_msg.header);
@@ -456,6 +499,20 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Wrench> & _msg)
 {
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->force));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->torque));
+}
+
+void createTestMsg(geometry_msgs::msg::WrenchStamped & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.wrench.force);
+  createTestMsg(_msg.wrench.torque);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::WrenchStamped> & _msg)
+{
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->wrench.force));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->wrench.torque));
 }
 
 void createTestMsg(gps_msgs::msg::GPSFix & _msg)
