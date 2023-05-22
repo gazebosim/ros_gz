@@ -37,7 +37,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/TrackVisual            | gz.msgs.TrackVisual            |
 | ros_gz_interfaces/msg/VideoRecord            | gz.msgs.VideoRecord            |
 | ros_gz_interfaces/msg/WorldControl           | gz.msgs.WorldControl           |
-| rosgraph_msgs/msg/Clock                      | gz.msgs.Clock                  |
+| rosgraph_msgs/msg/Clock*                     | gz.msgs.Clock*                 |
 | sensor_msgs/msg/BatteryState                 | gz.msgs.BatteryState           |
 | sensor_msgs/msg/CameraInfo                   | gz.msgs.CameraInfo             |
 | sensor_msgs/msg/FluidPressure                | gz.msgs.FluidPressure          |
@@ -61,7 +61,6 @@ The following message types can be bridged for topics:
 | tf2_msgs/msg/TFMessage                       | gz.msgs.Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory          | gz.msgs.JointTrajectory        |
 
-
 And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
@@ -69,6 +68,15 @@ And the following for services:
 | ros_gz_interfaces/srv/ControlWorld   | gz.msgs.WorldControl       | gz.msgs.Boolean       |
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
+
+**NOTE**: If during startup, gazebo detects that there is another publisher on `/clock`, it will only create the fully qualified `/world/<worldname>/clock topic`.
+Gazebo would be the only `/clock` publisher, the sole source of clock information.
+
+You should create an unidirectional `/clock` bridge:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock
+```
 
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
