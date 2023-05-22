@@ -955,10 +955,10 @@ void createTestMsg(ignition::msgs::Actuators & _msg)
   createTestMsg(header_msg);
   _msg.mutable_header()->CopyFrom(header_msg);
 
-  for (int i = 0u; i < 5; ++i) {
-    _msg.add_position(i);
-    _msg.add_velocity(i);
-    _msg.add_normalized(i);
+  for (int i = 0u; i < 3; ++i) {
+    _msg.add_position(0.5);
+    _msg.add_velocity(1.0);
+    _msg.add_normalized(0.2);
   }
 }
 
@@ -970,9 +970,15 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Actuators> & _msg)
   compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
 
   for (int i = 0; i < expected_msg.position_size(); ++i) {
-    EXPECT_EQ(expected_msg.position(i), _msg->position(i));
-    EXPECT_EQ(expected_msg.velocity(i), _msg->velocity(i));
-    EXPECT_EQ(expected_msg.normalized(i), _msg->normalized(i));
+    EXPECT_FLOAT_EQ(expected_msg.position(i), _msg->position(i));
+  }
+
+  for (int i = 0; i < expected_msg.velocity_size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.velocity(i), _msg->velocity(i));
+  }
+
+  for (int i = 0; i < expected_msg.normalized_size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.normalized(i), _msg->normalized(i));
   }
 }
 
