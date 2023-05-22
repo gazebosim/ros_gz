@@ -8,9 +8,12 @@ Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galacti
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Iron | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
+Iron | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
-Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
+Rolling | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+
 
 For information on ROS(1) and Gazebo compatibility, refer to the [noetic branch README](https://github.com/gazebosim/ros_gz/tree/noetic)
 
