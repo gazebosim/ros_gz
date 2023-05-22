@@ -14,6 +14,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
+  <buildtool_depend>rosidl_pycommon</buildtool_depend>
 
   <depend>actuator_msgs</depend>
   <depend>geometry_msgs</depend>
@@ -28,8 +29,6 @@
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
   <depend>yaml_cpp_vendor</depend>
-
-  <exec_depend>rosidl_cmake</exec_depend>
 
   <!-- Garden (default) -->
   <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-msgs9</depend>

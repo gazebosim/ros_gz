@@ -18,7 +18,7 @@ import os
 
 from ros_gz_bridge.mappings import MAPPINGS
 
-from rosidl_cmake import expand_template
+from rosidl_pycommon import expand_template
 
 
 @dataclass
