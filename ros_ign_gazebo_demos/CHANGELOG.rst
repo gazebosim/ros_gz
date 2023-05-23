@@ -2,6 +2,9 @@
 Changelog for package ros_ign_gazebo_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.11 (2023-05-23)
+---------------------
+
 0.244.10 (2023-05-03)
 ---------------------
 * Humbly bringing the Joy to gazebo. (`#353 <https://github.com/gazebosim/ros_gz/issues/353>`_)

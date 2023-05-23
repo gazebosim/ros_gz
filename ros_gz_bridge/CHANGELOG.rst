@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.11 (2023-05-23)
+---------------------
+* Add actuator_msgs to humble bridge. (`#394 <https://github.com/gazebosim/ros_gz/issues/394>`_)
+* Contributors: Benjamin Perseghetti
+
 0.244.10 (2023-05-03)
 ---------------------
 * Fix warning message (`#371 <https://github.com/gazebosim/ros_gz/issues/371>`_)
