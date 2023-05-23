@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.245.0 (2023-05-23)
+--------------------
+* Backport: Add missing rosidl_cmake dep to ros_gz_bridge (`#391 <https://github.com/gazebosim/ros_gz/issues/391>`_) (`#396 <https://github.com/gazebosim/ros_gz/issues/396>`_)
+* Contributors: Michael Carroll, Yadu, Chris Lalancette
+
 0.244.11 (2023-05-23)
 ---------------------
 * Add actuator_msgs to humble bridge. (`#394 <https://github.com/gazebosim/ros_gz/issues/394>`_)
