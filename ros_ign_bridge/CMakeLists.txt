@@ -196,4 +196,15 @@ if(BUILD_TESTING)
   )
 endif()
 
+ament_export_dependencies(
+  geometry_msgs
+  nav_msgs
+  rclcpp
+  rosgraph_msgs
+  sensor_msgs
+  std_msgs
+  tf2_msgs
+  trajectory_msgs
+)
+
 ament_package()
