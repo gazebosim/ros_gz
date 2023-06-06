@@ -98,7 +98,7 @@ Visualization Manager:
       Size (Pixels): 3
       Size (m): 0.009999999776482582
       Style: Flat Squares
-      Topic: /lidar
+      Topic: /lidar/points
       Unreliable: false
       Use Fixed Frame: true
       Use rainbow: true
