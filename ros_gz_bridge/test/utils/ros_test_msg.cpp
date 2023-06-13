@@ -756,6 +756,26 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::JointWrench> &
   compareTestMsg(std::make_shared<geometry_msgs::msg::Wrench>(_msg->body_2_wrench));
 }
 
+void createTestMsg(ros_gz_interfaces::msg::Altimeter & _msg)
+{
+  createTestMsg(_msg.header);
+  _msg.vertical_position = 100;
+  _msg.vertical_velocity = 200;
+  _msg.vertical_reference = 300;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Altimeter> & _msg)
+{
+  ros_gz_interfaces::msg::Altimeter expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.vertical_position, _msg->vertical_position);
+  EXPECT_EQ(expected_msg.vertical_velocity, _msg->vertical_velocity);
+  EXPECT_EQ(expected_msg.vertical_reference, _msg->vertical_reference);
+
+  compareTestMsg(_msg->header);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Entity & _msg)
 {
   _msg.id = 1;
