@@ -16,6 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
 
 // Gazebo Msgs
+#include <gz/msgs/altimeter.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/joint_wrench.pb.h>
 #include <gz/msgs/contact.pb.h>
@@ -32,6 +33,7 @@
 #include <gz/msgs/world_control.pb.h>
 
 // ROS 2 messages
+#include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
@@ -64,6 +66,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::JointWrench & gz_msg,
   ros_gz_interfaces::msg::JointWrench & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Altimeter & ros_msg,
+  gz::msgs::Altimeter & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Altimeter & gz_msg,
+  ros_gz_interfaces::msg::Altimeter & ros_msg);
 
 template<>
 void
