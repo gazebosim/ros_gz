@@ -27,6 +27,7 @@
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/param.pb.h>
 #include <gz/msgs/param_v.pb.h>
+#include <gz/msgs/sensor_noise.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/track_visual.pb.h>
 #include <gz/msgs/video_record.pb.h>
@@ -43,6 +44,7 @@
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
+#include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
 #include <ros_gz_interfaces/msg/track_visual.hpp>
 #include <ros_gz_interfaces/msg/video_record.hpp>
@@ -150,6 +152,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::SensorNoise & ros_msg,
+  gz::msgs::SensorNoise & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::SensorNoise & gz_msg,
+  ros_gz_interfaces::msg::SensorNoise & ros_msg);
 
 template<>
 void
