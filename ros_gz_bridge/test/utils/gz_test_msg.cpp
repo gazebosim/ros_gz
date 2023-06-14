@@ -247,6 +247,24 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Vector3d> & _msg)
   EXPECT_EQ(expected_msg.z(), _msg->z());
 }
 
+void createTestMsg(ignition::msgs::Altimeter & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  _msg.set_vertical_position(100);
+  _msg.set_vertical_velocity(200);
+  _msg.set_vertical_reference(300);
+}
+
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Altimeter> & _msg)
+{
+  gz::msgs::Altimeter expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.vertical_position(), _msg->vertical_position());
+  EXPECT_EQ(expected_msg.vertical_velocity(), _msg->vertical_velocity());
+  EXPECT_EQ(expected_msg.vertical_reference(), _msg->vertical_reference());
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+}
 void createTestMsg(ignition::msgs::Param & _msg)
 {
   createTestMsg(*_msg.mutable_header());

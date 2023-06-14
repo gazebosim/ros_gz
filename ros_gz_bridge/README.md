@@ -33,6 +33,7 @@ The following message types can be bridged for topics:
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
 | rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                  |
+| ros_gz_interfaces/msg/Altimeter      | ignition.msgs.Altimeter                |
 | ros_gz_interfaces/msg/Contact        | ignition::msgs::Contact                |
 | ros_gz_interfaces/msg/Contacts       | ignition::msgs::Contacts               |
 | ros_gz_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
