@@ -257,13 +257,13 @@ void createTestMsg(ignition::msgs::Altimeter & _msg)
 
 void compareTestMsg(const std::shared_ptr<ignition::msgs::Altimeter> & _msg)
 {
-  gz::msgs::Altimeter expected_msg;
+  ignition::msgs::Altimeter expected_msg;
   createTestMsg(expected_msg);
 
   EXPECT_EQ(expected_msg.vertical_position(), _msg->vertical_position());
   EXPECT_EQ(expected_msg.vertical_velocity(), _msg->vertical_velocity());
   EXPECT_EQ(expected_msg.vertical_reference(), _msg->vertical_reference());
-  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<ignition::msgs::Header>(_msg->header()));
 }
 void createTestMsg(ignition::msgs::Param & _msg)
 {

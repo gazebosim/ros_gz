@@ -75,12 +75,12 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Altimeter & ros_msg,
-  gz::msgs::Altimeter & gz_msg);
+  ignition::msgs::Altimeter & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const gz::msgs::Altimeter & gz_msg,
+  const ignition::msgs::Altimeter & gz_msg,
   ros_gz_interfaces::msg::Altimeter & ros_msg);
 
 template<>
