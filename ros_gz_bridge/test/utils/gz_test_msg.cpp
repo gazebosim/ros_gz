@@ -266,6 +266,33 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Altimeter> & _msg)
   compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
 }
 
+void createTestMsg(gz::msgs::SensorNoise & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  _msg.set_type(gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  _msg.set_mean(100);
+  _msg.set_stddev(200);
+  _msg.set_bias_mean(300);
+  _msg.set_bias_stddev(400);
+  _msg.set_precision(500);
+  _msg.set_dynamic_bias_stddev(600);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::SensorNoise> & _msg)
+{
+  gz::msgs::SensorNoise expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.type(), gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  EXPECT_EQ(expected_msg.mean(), _msg->mean());
+  EXPECT_EQ(expected_msg.stddev(), _msg->stddev());
+  EXPECT_EQ(expected_msg.bias_mean(), _msg->bias_mean());
+  EXPECT_EQ(expected_msg.bias_stddev(), _msg->bias_stddev());
+  EXPECT_EQ(expected_msg.precision(), _msg->precision());
+  EXPECT_EQ(expected_msg.dynamic_bias_stddev(), _msg->dynamic_bias_stddev());
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+}
+
 void createTestMsg(gz::msgs::Param & _msg)
 {
   createTestMsg(*_msg.mutable_header());

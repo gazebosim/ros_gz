@@ -69,6 +69,7 @@ MAPPINGS = {
         Mapping('Light', 'Light'),
         Mapping('ParamVec', 'Param'),
         Mapping('ParamVec', 'Param_V'),
+        Mapping('SensorNoise', 'SensorNoise'),
         Mapping('StringVec', 'StringMsg_V'),
         Mapping('TrackVisual', 'TrackVisual'),
         Mapping('VideoRecord', 'VideoRecord'),
