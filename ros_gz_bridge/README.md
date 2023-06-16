@@ -32,11 +32,11 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/TwistWithCovariance| ignition::msgs::TwistWithCovariance    |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
-| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                  |
+| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                    |
 | ros_gz_interfaces/msg/Altimeter      | ignition.msgs.Altimeter                |
 | ros_gz_interfaces/msg/Contact        | ignition::msgs::Contact                |
 | ros_gz_interfaces/msg/Contacts       | ignition::msgs::Contacts               |
-| ros_gz_interfaces/msg/Dataframe     | ignition::msgs::Dataframe            |
+| ros_gz_interfaces/msg/Dataframe      | ignition::msgs::Dataframe              |
 | ros_gz_interfaces/msg/Entity         | ignition::msgs::Entity                 |
 | ros_gz_interfaces/msg/Float32Array   | ignition::msgs::Float_V                |
 | ros_gz_interfaces/msg/GuiCamera      | ignition::msgs::GUICamera              |
@@ -44,8 +44,8 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Light          | ignition::msgs::Light                  |
 | ros_gz_interfaces/msg/StringVec      | ignition::msgs::StringMsg_V            |
 | ros_gz_interfaces/msg/TrackVisual    | ignition::msgs::TrackVisual            |
-| ros_gz_interfaces/msg/VideoRecord   | ignition::msgs::VideoRecord            |
-| ros_gz_interfaces/msg/WorldControl  | ignition::msgs::WorldControl           |
+| ros_gz_interfaces/msg/VideoRecord    | ignition::msgs::VideoRecord            |
+| ros_gz_interfaces/msg/WorldControl   | ignition::msgs::WorldControl           |
 | rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                  |
 | sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState           |
 | sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo             |
@@ -53,10 +53,10 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/Imu                  | ignition::msgs::IMU                    |
 | sensor_msgs/msg/Image                | ignition::msgs::Image                  |
 | sensor_msgs/msg/JointState           | ignition::msgs::Model                  |
-| sensor_msgs/msg/Joy                  | ignition::msgs::Joy                  |
+| sensor_msgs/msg/Joy                  | ignition::msgs::Joy                    |
 | sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan              |
 | sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer           |
-| sensor_msgs/msg/NavSatFixed          | ignition::msgs::NavSat               |
+| sensor_msgs/msg/NavSatFixed          | ignition::msgs::NavSat                 |
 | sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked       |
 | tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory        |
@@ -65,7 +65,7 @@ And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
-| ros_gz_interfaces/srv/ControlWorld  | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+| ros_gz_interfaces/srv/ControlWorld   | ignition.msgs.WorldControl | ignition.msgs.Boolean |
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
 
