@@ -601,6 +601,33 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::ParamVec> & _m
   EXPECT_EQ(expected_msg.params[0].value.string_value, _msg->params[0].value.string_value);
 }
 
+void createTestMsg(ros_gz_interfaces::msg::SensorNoise & _msg)
+{
+  createTestMsg(_msg.header);
+
+  _msg.type = 3;
+  _msg.mean = 100;
+  _msg.stddev = 200;
+  _msg.bias_mean = 300;
+  _msg.bias_stddev = 400;
+  _msg.precision = 500;
+  _msg.dynamic_bias_stddev = 600;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::SensorNoise> & _msg)
+{
+  ros_gz_interfaces::msg::SensorNoise expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.mean, _msg->mean);
+  EXPECT_EQ(expected_msg.stddev, _msg->stddev);
+  EXPECT_EQ(expected_msg.bias_mean, _msg->bias_mean);
+  EXPECT_EQ(expected_msg.bias_stddev, _msg->bias_stddev);
+  EXPECT_EQ(expected_msg.precision, _msg->precision);
+  EXPECT_EQ(expected_msg.dynamic_bias_stddev, _msg->dynamic_bias_stddev);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::StringVec & _msg)
 {
   createTestMsg(_msg.header);

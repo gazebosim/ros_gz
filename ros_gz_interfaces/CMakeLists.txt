@@ -28,6 +28,7 @@ set(msg_files
   "msg/JointWrench.msg"
   "msg/Light.msg"
   "msg/ParamVec.msg"
+  "msg/SensorNoise.msg"
   "msg/StringVec.msg"
   "msg/TrackVisual.msg"
   "msg/VideoRecord.msg"
