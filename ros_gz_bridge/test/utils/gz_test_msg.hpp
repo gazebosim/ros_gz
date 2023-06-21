@@ -16,6 +16,7 @@
 #define UTILS__GZ_TEST_MSG_HPP_
 
 #include <ignition/msgs/actuators.pb.h>
+#include <ignition/msgs/altimeter.pb.h>
 #include <ignition/msgs/any.pb.h>
 #include <ignition/msgs/axis.pb.h>
 #include <ignition/msgs/battery_state.pb.h>
@@ -257,6 +258,14 @@ void createTestMsg(ignition::msgs::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ignition::msgs::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::Altimeter & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::Altimeter> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

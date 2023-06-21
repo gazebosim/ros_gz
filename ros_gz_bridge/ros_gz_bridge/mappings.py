@@ -53,6 +53,7 @@ MAPPINGS = {
         Mapping('ParameterValue', 'Any'),
     ],
     'ros_gz_interfaces': [
+        Mapping('Altimeter', 'Altimeter'),
         Mapping('Contact', 'Contact'),
         Mapping('Contacts', 'Contacts'),
         Mapping('Entity', 'Entity'),
