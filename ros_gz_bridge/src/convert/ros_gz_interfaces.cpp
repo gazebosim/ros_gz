@@ -415,7 +415,9 @@ convert_gz_to_ros(
     ros_msg.type = 0;
   } else if (gz_msg.type() == ignition::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN) {
     ros_msg.type = 2;
-  } else if (gz_msg.type() == ignition::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED) {
+  } else if (gz_msg.type() ==  // NOLINT
+    ignition::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED)  // NOLINT
+  {  // NOLINT
     ros_msg.type = 3;
   }
 
