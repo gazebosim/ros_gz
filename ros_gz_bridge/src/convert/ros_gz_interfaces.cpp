@@ -50,6 +50,30 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Altimeter & ros_msg,
+  ignition::msgs::Altimeter & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  gz_msg.set_vertical_position(ros_msg.vertical_position);
+  gz_msg.set_vertical_velocity(ros_msg.vertical_velocity);
+  gz_msg.set_vertical_reference(ros_msg.vertical_reference);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const ignition::msgs::Altimeter & gz_msg,
+  ros_gz_interfaces::msg::Altimeter & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.vertical_position = gz_msg.vertical_position();
+  ros_msg.vertical_velocity = gz_msg.vertical_velocity();
+  ros_msg.vertical_reference = gz_msg.vertical_reference();
+}
+
+template<>
+void
+convert_ros_to_gz(
   const ros_gz_interfaces::msg::Entity & ros_msg,
   ignition::msgs::Entity & gz_msg)
 {
