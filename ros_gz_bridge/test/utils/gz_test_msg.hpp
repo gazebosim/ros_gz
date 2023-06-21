@@ -54,6 +54,7 @@
 #include <ignition/msgs/pose_with_covariance.pb.h>
 #include <ignition/msgs/pose_v.pb.h>
 #include <ignition/msgs/quaternion.pb.h>
+#include <ignition/msgs/sensor_noise.pb.h>
 #include <ignition/msgs/stringmsg.pb.h>
 #include <ignition/msgs/stringmsg_v.pb.h>
 #include <ignition/msgs/track_visual.pb.h>
@@ -166,6 +167,14 @@ void compareTestMsg(const std::shared_ptr<ignition::msgs::Clock> & _msg);
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ignition::msgs::StringMsg & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ignition::msgs::SensorNoise & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ignition::msgs::SensorNoise> & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
