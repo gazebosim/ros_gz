@@ -55,7 +55,7 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/Joy                  | ignition::msgs::Joy                  |
 | sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan              |
 | sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer           |
-| sensor_msgs/msg/NavSatFixed          | ignition::msgs::NavSat               |
+| sensor_msgs/msg/NavSatFix            | ignition::msgs::NavSat               |
 | sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked       |
 | tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V                 |
 | trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory        |
