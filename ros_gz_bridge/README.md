@@ -33,7 +33,7 @@ The following message types can be bridged for topics:
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
 | rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                    |
-| ros_gz_interfaces/msg/Altimeter      | ignition.msgs.Altimeter                |
+| ros_gz_interfaces/msg/Altimeter      | ignition::msgs::Altimeter              |
 | ros_gz_interfaces/msg/Contact        | ignition::msgs::Contact                |
 | ros_gz_interfaces/msg/Contacts       | ignition::msgs::Contacts               |
 | ros_gz_interfaces/msg/Dataframe      | ignition::msgs::Dataframe              |
@@ -42,7 +42,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/GuiCamera      | ignition::msgs::GUICamera              |
 | ros_gz_interfaces/msg/JointWrench    | ignition::msgs::JointWrench            |
 | ros_gz_interfaces/msg/Light          | ignition::msgs::Light                  |
-| ros_gz_interfaces/msg/SensorNoise    | ignition.msgs.SensorNoise              |
+| ros_gz_interfaces/msg/SensorNoise    | ignition::msgs::SensorNoise            |
 | ros_gz_interfaces/msg/StringVec      | ignition::msgs::StringMsg_V            |
 | ros_gz_interfaces/msg/TrackVisual    | ignition::msgs::TrackVisual            |
 | ros_gz_interfaces/msg/VideoRecord    | ignition::msgs::VideoRecord            |
