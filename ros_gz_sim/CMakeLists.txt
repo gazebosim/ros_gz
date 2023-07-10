@@ -38,7 +38,7 @@ else()
   message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
 endif()
 
-ign_find_package(gflags
+gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)
