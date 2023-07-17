@@ -69,7 +69,7 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_gz`
 
-        sudo apt install ros-rolling-ros-ign
+        sudo apt install ros-rolling-ros-gz
 
 ### From source
 
