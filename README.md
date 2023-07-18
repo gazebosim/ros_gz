@@ -8,6 +8,8 @@ Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galacti
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Iron | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
+Iron | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
@@ -51,11 +53,11 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Rolling. See above for other ROS versions.
+This branch supports ROS Iron. See above for other ROS versions.
 
 ### Binaries
 
-Rolling binaries are available for Fortress.
+Iron binaries are available for Fortress.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org
@@ -66,14 +68,14 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_gz`
 
-        sudo apt install ros-rolling-ros-gz
+        sudo apt install ros-iron-ros-gz
 
 ### From source
 
 #### ROS
 
 Be sure you've installed
-[ROS Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Iron](https://docs.ros.org/en/iron/Installation.html)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Gazebo
