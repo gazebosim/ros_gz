@@ -51,11 +51,11 @@ This repository holds packages that provide integration between
 
 ## Install
 
-This branch supports ROS Rolling. See above for other ROS versions.
+This branch supports ROS Humble. See above for other ROS versions.
 
 ### Binaries
 
-Rolling binaries are available for Fortress.
+Humble binaries are available for Fortress.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org
@@ -66,14 +66,14 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_gz`
 
-        sudo apt install ros-rolling-ros-gz
+        sudo apt install ros-humble-ros-gz
 
 ### From source
 
 #### ROS
 
 Be sure you've installed
-[ROS Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Humble](https://docs.ros.org/en/humble/Installation.html)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Gazebo
