@@ -83,7 +83,7 @@ Install either [Edifice, Fortress, or Garden](https://gazebosim.org/docs).
 Set the `GZ_VERSION` environment variable to the Gazebo version you'd
 like to compile against. For example:
 
-    export GZ_VERSION=edifice
+    export GZ_VERSION=edifice # IMPORTANT: Replace with correct version
 
 > You only need to set this variable when compiling, not when running.
 
@@ -99,7 +99,7 @@ The following steps are for Linux and OSX.
     cd ~/ws/src
 
     # Download needed software
-    git clone https://github.com/gazebosim/ros_gz.git -b ros2
+    git clone https://github.com/gazebosim/ros_gz.git -b humble
     ```
 
 1. Install dependencies (this may also install Gazebo):
@@ -119,6 +119,22 @@ The following steps are for Linux and OSX.
 
     # Build and install into workspace
     cd ~/ws
+    colcon build
+    ```
+
+    If `colcon build` fails with [this issue](https://github.com/gazebosim/ros_gz/issues/401)
+
+    ```
+    CMake Error at CMakeLists.txt:81 (find_package):
+      By not providing "Findactuator_msgs.cmake" in CMAKE_MODULE_PATH this
+      project has asked CMake to find a package configuration file provided by
+      "actuator_msgs", but CMake did not find one.
+    ```
+
+    ```bash
+    cd src
+    git clone git@github.com:rudislabs/actuator_msgs.git
+    cd ../
     colcon build
     ```
 
