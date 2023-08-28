@@ -13,7 +13,11 @@
 // limitations under the License.
 
 #include <gflags/gflags.h>
+
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/stringmsg_v.pb.h>
 
 #include <sstream>
 #include <string>
