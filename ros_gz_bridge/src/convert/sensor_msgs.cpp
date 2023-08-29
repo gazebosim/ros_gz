@@ -17,6 +17,12 @@
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/sensor_msgs.hpp"
 
+#include "gz/msgs/config.hh"
+
+#if GZ_MSGS_MAJOR_VERSION >= 10
+#define GZ_MSGS_IMU_HAS_COVARIANCE
+#endif
+
 namespace ros_gz_bridge
 {
 
@@ -275,6 +281,7 @@ convert_ros_to_gz(
   convert_ros_to_gz(ros_msg.angular_velocity, (*gz_msg.mutable_angular_velocity()));
   convert_ros_to_gz(ros_msg.linear_acceleration, (*gz_msg.mutable_linear_acceleration()));
 
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
   for (const auto & elem : ros_msg.linear_acceleration_covariance){
     gz_msg.mutable_linear_acceleration_covariance()->add_data(elem);
   }
@@ -284,6 +291,7 @@ convert_ros_to_gz(
   for (const auto & elem : ros_msg.angular_velocity_covariance){
     gz_msg.mutable_angular_velocity_covariance()->add_data(elem);
   }
+#endif
 }
 
 template<>
@@ -297,7 +305,7 @@ convert_gz_to_ros(
   convert_gz_to_ros(gz_msg.angular_velocity(), ros_msg.angular_velocity);
   convert_gz_to_ros(gz_msg.linear_acceleration(), ros_msg.linear_acceleration);
 
-  // Covariances not supported in gz::msgs::IMU
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
   int data_size = gz_msg.linear_acceleration_covariance().data_size();
   if (data_size == 9)
   {
@@ -322,6 +330,7 @@ convert_gz_to_ros(
       ros_msg.orientation_covariance[i] = data;
     }
   }
+#endif
 }
 
 template<>
