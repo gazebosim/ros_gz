@@ -25,6 +25,10 @@
   <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-msgs7</depend>
   <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-transport10</depend>
 
+  <!-- Harmonic -->
+  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
+
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <export>
