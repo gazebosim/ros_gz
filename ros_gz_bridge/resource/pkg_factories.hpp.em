@@ -29,7 +29,7 @@ namespace ros_gz_bridge
 
 std::shared_ptr<FactoryInterface>
 get_factory__@(ros2_package_name)(
-  const std::string & ros_type_name, 
+  const std::string & ros_type_name,
   const std::string & gz_type_name);
 
 }  // namespace ros_gz_bridge

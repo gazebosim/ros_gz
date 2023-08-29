@@ -3,7 +3,10 @@
   <version>0.245.0</version>
   <description>Image utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
+  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
+
+  <author>Louise Poubel</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
@@ -16,6 +19,10 @@
   <!-- Garden (default) -->
   <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-msgs9</depend>
   <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-transport12</depend>
+
+  <!-- Harmonic -->
+  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

@@ -247,6 +247,52 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Vector3d> & _msg)
   EXPECT_EQ(expected_msg.z(), _msg->z());
 }
 
+void createTestMsg(gz::msgs::Altimeter & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  _msg.set_vertical_position(100);
+  _msg.set_vertical_velocity(200);
+  _msg.set_vertical_reference(300);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::Altimeter> & _msg)
+{
+  gz::msgs::Altimeter expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.vertical_position(), _msg->vertical_position());
+  EXPECT_EQ(expected_msg.vertical_velocity(), _msg->vertical_velocity());
+  EXPECT_EQ(expected_msg.vertical_reference(), _msg->vertical_reference());
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+}
+
+void createTestMsg(gz::msgs::SensorNoise & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  _msg.set_type(gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  _msg.set_mean(100);
+  _msg.set_stddev(200);
+  _msg.set_bias_mean(300);
+  _msg.set_bias_stddev(400);
+  _msg.set_precision(500);
+  _msg.set_dynamic_bias_stddev(600);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::SensorNoise> & _msg)
+{
+  gz::msgs::SensorNoise expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.type(), gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  EXPECT_EQ(expected_msg.mean(), _msg->mean());
+  EXPECT_EQ(expected_msg.stddev(), _msg->stddev());
+  EXPECT_EQ(expected_msg.bias_mean(), _msg->bias_mean());
+  EXPECT_EQ(expected_msg.bias_stddev(), _msg->bias_stddev());
+  EXPECT_EQ(expected_msg.precision(), _msg->precision());
+  EXPECT_EQ(expected_msg.dynamic_bias_stddev(), _msg->dynamic_bias_stddev());
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+}
+
 void createTestMsg(gz::msgs::Param & _msg)
 {
   createTestMsg(*_msg.mutable_header());
@@ -323,6 +369,7 @@ void createTestMsg(gz::msgs::PoseWithCovariance & _msg)
 {
   createTestMsg(*_msg.mutable_pose()->mutable_position());
   createTestMsg(*_msg.mutable_pose()->mutable_orientation());
+  createTestMsg(*_msg.mutable_pose()->mutable_header());
   for (int i = 0; i < 36; i++) {
     _msg.mutable_covariance()->add_data(i);
   }
@@ -377,12 +424,15 @@ void createTestMsg(gz::msgs::TwistWithCovariance & _msg)
 {
   gz::msgs::Vector3d linear_msg;
   gz::msgs::Vector3d angular_msg;
+  gz::msgs::Header header_msg;
 
   createTestMsg(linear_msg);
   createTestMsg(angular_msg);
+  createTestMsg(header_msg);
 
   _msg.mutable_twist()->mutable_linear()->CopyFrom(linear_msg);
   _msg.mutable_twist()->mutable_angular()->CopyFrom(angular_msg);
+  _msg.mutable_twist()->mutable_header()->CopyFrom(header_msg);
   for (int i = 0; i < 36; i++) {
     _msg.mutable_covariance()->add_data(i);
   }
@@ -963,10 +1013,10 @@ void createTestMsg(gz::msgs::Actuators & _msg)
   createTestMsg(header_msg);
   _msg.mutable_header()->CopyFrom(header_msg);
 
-  for (int i = 0u; i < 5; ++i) {
-    _msg.add_position(i);
-    _msg.add_velocity(i);
-    _msg.add_normalized(i);
+  for (int i = 0u; i < 3; ++i) {
+    _msg.add_position(0.5);
+    _msg.add_velocity(1.0);
+    _msg.add_normalized(0.2);
   }
 }
 
@@ -978,9 +1028,15 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Actuators> & _msg)
   compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
 
   for (int i = 0; i < expected_msg.position_size(); ++i) {
-    EXPECT_EQ(expected_msg.position(i), _msg->position(i));
-    EXPECT_EQ(expected_msg.velocity(i), _msg->velocity(i));
-    EXPECT_EQ(expected_msg.normalized(i), _msg->normalized(i));
+    EXPECT_FLOAT_EQ(expected_msg.position(i), _msg->position(i));
+  }
+
+  for (int i = 0; i < expected_msg.velocity_size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.velocity(i), _msg->velocity(i));
+  }
+
+  for (int i = 0; i < expected_msg.normalized_size(); ++i) {
+    EXPECT_FLOAT_EQ(expected_msg.normalized(i), _msg->normalized(i));
   }
 }
 

@@ -50,6 +50,30 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Altimeter & ros_msg,
+  gz::msgs::Altimeter & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  gz_msg.set_vertical_position(ros_msg.vertical_position);
+  gz_msg.set_vertical_velocity(ros_msg.vertical_velocity);
+  gz_msg.set_vertical_reference(ros_msg.vertical_reference);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Altimeter & gz_msg,
+  ros_gz_interfaces::msg::Altimeter & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.vertical_position = gz_msg.vertical_position();
+  ros_msg.vertical_velocity = gz_msg.vertical_velocity();
+  ros_msg.vertical_reference = gz_msg.vertical_reference();
+}
+
+template<>
+void
+convert_ros_to_gz(
   const ros_gz_interfaces::msg::Entity & ros_msg,
   gz::msgs::Entity & gz_msg)
 {
@@ -352,6 +376,53 @@ convert_gz_to_ros(
   ros_msg.parent_id = gz_msg.parent_id();
 
   ros_msg.intensity = gz_msg.intensity();
+}
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::SensorNoise & ros_msg,
+  gz::msgs::SensorNoise & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
+  if (ros_msg.type == 0) {
+    gz_msg.set_type(gz::msgs::SensorNoise_Type::SensorNoise_Type_NONE);
+  } else if (ros_msg.type == 2) {
+    gz_msg.set_type(gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN);
+  } else if (ros_msg.type == 3) {
+    gz_msg.set_type(gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  }
+
+  gz_msg.set_mean(ros_msg.mean);
+  gz_msg.set_stddev(ros_msg.stddev);
+  gz_msg.set_bias_mean(ros_msg.bias_mean);
+  gz_msg.set_bias_stddev(ros_msg.bias_stddev);
+  gz_msg.set_precision(ros_msg.precision);
+  gz_msg.set_dynamic_bias_stddev(ros_msg.dynamic_bias_stddev);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::SensorNoise & gz_msg,
+  ros_gz_interfaces::msg::SensorNoise & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  if (gz_msg.type() == gz::msgs::SensorNoise_Type::SensorNoise_Type_NONE) {
+    ros_msg.type = 0;
+  } else if (gz_msg.type() == gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN) {
+    ros_msg.type = 2;
+  } else if (gz_msg.type() == gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED) {
+    ros_msg.type = 3;
+  }
+
+  ros_msg.mean = gz_msg.mean();
+  ros_msg.stddev = gz_msg.stddev();
+  ros_msg.bias_mean = gz_msg.bias_mean();
+  ros_msg.bias_stddev = gz_msg.bias_stddev();
+  ros_msg.precision = gz_msg.precision();
+  ros_msg.dynamic_bias_stddev = gz_msg.dynamic_bias_stddev();
 }
 
 template<>

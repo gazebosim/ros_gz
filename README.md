@@ -8,9 +8,12 @@ Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galacti
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Iron | Fortress | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
+Iron | Garden | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
 Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
-Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
+Rolling | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+
 
 For information on ROS(1) and Gazebo compatibility, refer to the [noetic branch README](https://github.com/gazebosim/ros_gz/tree/noetic)
 
@@ -66,7 +69,7 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_gz`
 
-        sudo apt install ros-rolling-ros-ign
+        sudo apt install ros-rolling-ros-gz
 
 ### From source
 
@@ -106,7 +109,7 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro rolling
+    rosdep install -r --from-paths src -i -y --rosdistro humble
     ```
 
     > If `rosdep` fails to install Gazebo libraries and you have not installed them before, please follow [Gazebo installation instructions](https://gazebosim.org/docs/latest/install).
@@ -125,3 +128,6 @@ The following steps are for Linux and OSX.
 ## ROSCon 2022
 
 [![](img/video_img.png)](https://vimeo.com/showcase/9954564/video/767127300)
+
+## Project Template
+[A template project integrating ROS and Gazebo simulator](https://github.com/gazebosim/ros_gz_project_template)

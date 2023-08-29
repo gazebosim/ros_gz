@@ -16,6 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
 
 // Gazebo Msgs
+#include <gz/msgs/altimeter.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/joint_wrench.pb.h>
 #include <gz/msgs/contact.pb.h>
@@ -26,12 +27,14 @@
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/param.pb.h>
 #include <gz/msgs/param_v.pb.h>
+#include <gz/msgs/sensor_noise.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/track_visual.pb.h>
 #include <gz/msgs/video_record.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
 // ROS 2 messages
+#include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
@@ -41,6 +44,7 @@
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
+#include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
 #include <ros_gz_interfaces/msg/track_visual.hpp>
 #include <ros_gz_interfaces/msg/video_record.hpp>
@@ -64,6 +68,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::JointWrench & gz_msg,
   ros_gz_interfaces::msg::JointWrench & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Altimeter & ros_msg,
+  gz::msgs::Altimeter & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Altimeter & gz_msg,
+  ros_gz_interfaces::msg::Altimeter & ros_msg);
 
 template<>
 void
@@ -136,6 +152,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::SensorNoise & ros_msg,
+  gz::msgs::SensorNoise & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::SensorNoise & gz_msg,
+  ros_gz_interfaces::msg::SensorNoise & ros_msg);
 
 template<>
 void
