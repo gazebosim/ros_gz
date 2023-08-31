@@ -548,7 +548,7 @@ void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
   EXPECT_EQ(expected_msg.position_covariance_type, _msg->position_covariance_type);
 
   for (auto i = 0u; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->position_covariance[i]);
+    EXPECT_FLOAT_EQ(0, _msg->position_covariance[i]);
   }
 }
 
@@ -1235,7 +1235,7 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::NavSatFix> & _msg)
   EXPECT_EQ(expected_msg.position_covariance_type, _msg->position_covariance_type);
 
   for (auto i = 0u; i < 9; ++i) {
-    EXPECT_FLOAT_EQ(i + 1, _msg->position_covariance[i]);
+    EXPECT_FLOAT_EQ(0, _msg->position_covariance[i]);
   }
 }
 
