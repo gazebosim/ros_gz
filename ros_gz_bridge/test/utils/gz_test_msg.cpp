@@ -813,9 +813,9 @@ void createTestMsg(gz::msgs::IMU & _msg)
   _msg.mutable_linear_acceleration()->CopyFrom(vector3_msg);
 #ifdef GZ_MSGS_IMU_HAS_COVARIANCE
   for (int i = 0; i < 9; i++) {
-    _msg.mutable_orientation_covariance()->add_data(i);
-    _msg.mutable_angular_velocity_covariance()->add_data(i);
-    _msg.mutable_linear_acceleration_covariance()->add_data(i);
+    _msg.mutable_orientation_covariance()->add_data(i + 1);
+    _msg.mutable_angular_velocity_covariance()->add_data(i + 1);
+    _msg.mutable_linear_acceleration_covariance()->add_data(i + 1);
   }
 #endif
 }
