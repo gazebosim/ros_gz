@@ -92,7 +92,7 @@ int main(int _argc, char ** _argv)
   std::string service{"/world/" + world_name + "/create"};
 
   // Request message
-  ignition::msgs::EntityFactory req;
+  gz::msgs::EntityFactory req;
 
   // File
   if (!FLAGS_file.empty()) {
