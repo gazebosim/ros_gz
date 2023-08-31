@@ -29,10 +29,12 @@
   <!-- Fortress (default) -->
   <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">gz-sim6</depend>
+  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">gz-msgs8</depend>
   <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-math6</depend>
   <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">gz-math6</depend>
   <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-gazebo6</depend>
   <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">gz-sim6</depend>
+  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">gz-sim8</depend>
   <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-math6</depend>
   <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">gz-math6</depend>
   <!-- Edifice -->
