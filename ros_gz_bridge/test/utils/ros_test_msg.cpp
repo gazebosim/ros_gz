@@ -1085,7 +1085,7 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
 
 #ifdef GZ_MSGS_IMU_HAS_COVARIANCE
-  for (int i = 0; i < 9; ++i){
+  for (int i = 0; i < 9; ++i) {
     EXPECT_EQ(_msg->orientation_covariance[i], i + 1);
     EXPECT_EQ(_msg->angular_velocity_covariance[i], i + 1);
     EXPECT_EQ(_msg->linear_acceleration_covariance[i], i + 1);
