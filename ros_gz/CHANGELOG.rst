@@ -2,6 +2,13 @@
 Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)

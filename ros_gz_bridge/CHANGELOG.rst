@@ -2,6 +2,38 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
+  * Add harmonic CI
+  * Include garden options
+  * Add harmonic stanza
+  * Additional message headers
+  ---------
+* SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)
+* Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_)
+* Update README.md (`#411 <https://github.com/gazebosim/ros_gz/issues/411>`_)
+  The ROS type for gz.msgs.NavSat messages should be **sensor_msgs/msg/NavSatFix** instead of **sensor_msgs/msg/NavSatFixed**
+* Add missing rosidl_cmake dep to ros_gz_bridge (`#391 <https://github.com/gazebosim/ros_gz/issues/391>`_)
+  Co-authored-by: Chris Lalancette <clalancette@gmail.com>
+* allow converting from/to TwistWithCovarianceStamped (`#374 <https://github.com/gazebosim/ros_gz/issues/374>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Added doc (`#393 <https://github.com/gazebosim/ros_gz/issues/393>`_)
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Merge branch 'humble' into mjcarroll/humble_to_ros2
+* allow converting from/to PoseWithCovarianceStamped (`#381 <https://github.com/gazebosim/ros_gz/issues/381>`_)
+  * allow converting from/to PoseWithCovarianceStamped
+* Add actuator_msgs to bridge. (`#378 <https://github.com/gazebosim/ros_gz/issues/378>`_)
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Fix warning message (`#371 <https://github.com/gazebosim/ros_gz/issues/371>`_)
+* Improve error messages around config loading (`#356 <https://github.com/gazebosim/ros_gz/issues/356>`_)
+* Bringing the Joy to gazebo. (`#350 <https://github.com/gazebosim/ros_gz/issues/350>`_)
+  Enable using the gazebo bridge with Joy.
+* Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_)
+* Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz/issues/316>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Arjun K Haridas, Benjamin Perseghetti, El Jawad Alaa, Michael Carroll, Rousseau Vincent, Yadu, ahcorde, ymd-stella
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)

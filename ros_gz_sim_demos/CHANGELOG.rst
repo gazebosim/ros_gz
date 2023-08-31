@@ -2,6 +2,20 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
+* Fix incorrect subscription on demo (`#405 <https://github.com/gazebosim/ros_gz/issues/405>`_) (`#408 <https://github.com/gazebosim/ros_gz/issues/408>`_)
+  Co-authored-by: Arjo Chakravarty <arjoc@intrinsic.ai>
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Merge branch 'humble' into mjcarroll/humble_to_ros2
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Rename 'ign gazebo' to 'gz sim' (`#343 <https://github.com/gazebosim/ros_gz/issues/343>`_)
+* Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz/issues/316>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Fixed ros_gz_sim_demos launch files (`#319 <https://github.com/gazebosim/ros_gz/issues/319>`_)
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Clyde McQueen, Michael Carroll, Rousseau Vincent, ahcorde
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
