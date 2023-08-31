@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.246.0 (2023-08-31)
+--------------------
 * Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
   * Add harmonic CI
   * Include garden options

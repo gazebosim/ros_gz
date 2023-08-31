@@ -2,8 +2,8 @@
 Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.246.0 (2023-08-31)
+--------------------
 * Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
 * Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
 * Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)

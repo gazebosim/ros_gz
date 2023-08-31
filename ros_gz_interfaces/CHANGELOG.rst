@@ -2,8 +2,8 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.246.0 (2023-08-31)
+--------------------
 * SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)
 * Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_)
 * Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)

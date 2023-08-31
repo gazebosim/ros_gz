@@ -2,8 +2,8 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.246.0 (2023-08-31)
+--------------------
 * Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
 * Fix incorrect subscription on demo (`#405 <https://github.com/gazebosim/ros_gz/issues/405>`_) (`#408 <https://github.com/gazebosim/ros_gz/issues/408>`_)
   Co-authored-by: Arjo Chakravarty <arjoc@intrinsic.ai>
