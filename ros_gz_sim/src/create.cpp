@@ -49,15 +49,23 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 // If these are not needed, just use the `gz service` command line instead.
 int main(int _argc, char ** _argv)
 {
-  rclcpp::init(_argc, _argv);
+  auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
   auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
+
+  int filtered_argc = filtered_arguments.size();
+  std::vector<char *> filtered_argv;
+
+  for (auto arg: filtered_arguments)
+  {
+    filtered_argv.push_back(arg.c_str());
+  }
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
     R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
                        [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
-  gflags::ParseCommandLineFlags(&_argc, &_argv, true);
+  gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv.data(), true);
 
   // World
   std::string world_name = FLAGS_world;
