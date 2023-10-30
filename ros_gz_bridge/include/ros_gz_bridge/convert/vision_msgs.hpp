@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,6 @@
 
 namespace ros_gz_bridge
 {
-
 template<>
 void
 convert_ros_to_gz(
@@ -48,8 +47,6 @@ void
 convert_gz_to_ros(
   const ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
   vision_msgs::msg::Detection2DArray & ros_msg);
-
-
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__VISION_MSGS_HPP_

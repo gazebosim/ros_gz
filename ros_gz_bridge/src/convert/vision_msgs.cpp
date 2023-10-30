@@ -1,4 +1,4 @@
-// Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,10 +17,8 @@
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/vision_msgs.hpp"
 
-
 namespace ros_gz_bridge
 {
-
 template<>
 void
 convert_ros_to_gz(
@@ -70,7 +68,7 @@ convert_ros_to_gz(
   ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
-  for (auto ros_box : ros_msg.detections) {
+  for (const auto & ros_box : ros_msg.detections) {
     ignition::msgs::AnnotatedAxisAligned2DBox * gz_box = gz_msg.add_annotated_box();
     convert_ros_to_gz(ros_box, *gz_box);
   }
@@ -83,7 +81,7 @@ convert_gz_to_ros(
   vision_msgs::msg::Detection2DArray & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
-  for (auto gz_box : gz_msg.annotated_box()) {
+  for (const auto & gz_box : gz_msg.annotated_box()) {
     vision_msgs::msg::Detection2D ros_box;
     convert_gz_to_ros(gz_box, ros_box);
     ros_msg.detections.push_back(ros_box);
