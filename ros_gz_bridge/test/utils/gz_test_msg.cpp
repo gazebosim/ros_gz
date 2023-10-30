@@ -1471,14 +1471,17 @@ void createTestMsg(ignition::msgs::AnnotatedAxisAligned2DBox & _msg)
 
   _msg.set_label(1);
 
-  ignition::msgs::AxisAligned2DBox box = _msg.box();
-  ignition::msgs::Vector2d min_corner = box.min_corner();
-  ignition::msgs::Vector2d max_corner = box.max_corner();
+  ignition::msgs::AxisAligned2DBox * box = new ignition::msgs::AxisAligned2DBox();
+  ignition::msgs::Vector2d * min_corner = new ignition::msgs::Vector2d();
+  ignition::msgs::Vector2d * max_corner = new ignition::msgs::Vector2d();
 
-  min_corner.set_x(1.0);
-  min_corner.set_y(2.0);
-  max_corner.set_x(4.0);
-  max_corner.set_y(6.0);
+  min_corner->set_x(2.0);
+  min_corner->set_y(2.0);
+  max_corner->set_x(4.0);
+  max_corner->set_y(6.0);
+  box->set_allocated_min_corner(min_corner);
+  box->set_allocated_max_corner(max_corner);
+  _msg.set_allocated_box(box);
 }
 
 void compareTestMsg(const std::shared_ptr<ignition::msgs::AnnotatedAxisAligned2DBox> & _msg)

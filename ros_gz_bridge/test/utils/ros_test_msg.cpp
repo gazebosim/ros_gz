@@ -1351,8 +1351,8 @@ void createTestMsg(vision_msgs::msg::Detection2D & _msg)
   _msg.header = header_msg;
 
   vision_msgs::msg::ObjectHypothesisWithPose class_prob;
-  class_prob.hypothesis.class_id = std::to_string(1);
-  class_prob.hypothesis.score = 0.1;
+  class_prob.hypothesis.class_id = "1";
+  class_prob.hypothesis.score = 1.0;
   _msg.results.push_back(class_prob);
 
   _msg.bbox.size_x = 2.0;

@@ -27,17 +27,22 @@ convert_ros_to_gz(
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
-  ignition::msgs::AxisAligned2DBox box = gz_msg.box();
-  ignition::msgs::Vector2d min_corner = box.min_corner();
-  ignition::msgs::Vector2d max_corner = box.max_corner();
+  ignition::msgs::AxisAligned2DBox * box = new ignition::msgs::AxisAligned2DBox();
+  ignition::msgs::Vector2d * min_corner = new ignition::msgs::Vector2d();
+  ignition::msgs::Vector2d * max_corner = new ignition::msgs::Vector2d();
 
-  auto id = ros_msg.results.at(0).hypothesis.class_id;
-  gz_msg.set_label(std::stoi(id));
+  if (ros_msg.results.size() != 0) {
+    auto id = ros_msg.results.at(0).hypothesis.class_id;
+    gz_msg.set_label(std::stoi(id));
+  }
 
-  min_corner.set_x(ros_msg.bbox.center.position.x - ros_msg.bbox.size_x / 2);
-  min_corner.set_y(ros_msg.bbox.center.position.y - ros_msg.bbox.size_y / 2);
-  max_corner.set_x(ros_msg.bbox.center.position.x + ros_msg.bbox.size_x / 2);
-  max_corner.set_y(ros_msg.bbox.center.position.y + ros_msg.bbox.size_y / 2);
+  min_corner->set_x(ros_msg.bbox.center.position.x - ros_msg.bbox.size_x / 2);
+  min_corner->set_y(ros_msg.bbox.center.position.y - ros_msg.bbox.size_y / 2);
+  max_corner->set_x(ros_msg.bbox.center.position.x + ros_msg.bbox.size_x / 2);
+  max_corner->set_y(ros_msg.bbox.center.position.y + ros_msg.bbox.size_y / 2);
+  box->set_allocated_min_corner(min_corner);
+  box->set_allocated_max_corner(max_corner);
+  gz_msg.set_allocated_box(box);
 }
 
 template<>
@@ -48,7 +53,8 @@ convert_gz_to_ros(
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
 
-  ros_msg.results.at(0).hypothesis.class_id = gz_msg.label();
+  ros_msg.results.resize(1);
+  ros_msg.results.at(0).hypothesis.class_id = std::to_string(gz_msg.label());
   ros_msg.results.at(0).hypothesis.score = 1.0;
 
   ros_msg.bbox.center.position.x = (
@@ -87,4 +93,5 @@ convert_gz_to_ros(
     ros_msg.detections.push_back(ros_box);
   }
 }
+
 }  // namespace ros_gz_bridge
