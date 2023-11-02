@@ -52,20 +52,31 @@ int main(int _argc, char ** _argv)
   auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
   auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
 
+  // Construct a new argc/argv pair from the flags that weren't parsed by ROS 
+  // Gflags wants a mutable pointer to argv, which is why we can't use a
+  // vector of strings here
   int filtered_argc = filtered_arguments.size();
-  std::vector<char *> filtered_argv;
-
-  for (auto arg: filtered_arguments)
+  char **filtered_argv = new char*[(filtered_argc + 1)];
+  for (int ii = 0; ii < filtered_argc; ++ii)
   {
-    filtered_argv.push_back(arg.c_str());
+    filtered_argv[ii] = new char[filtered_arguments[ii].size() + 1];
+    strcpy(filtered_argv[ii], filtered_arguments[ii].c_str());
   }
+  filtered_argv[filtered_argc] = nullptr;
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
     R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
                        [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
-  gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv.data(), true);
+  gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv, false);
+
+  // Free our temporary argc/argv pair
+  for (size_t ii = 0; filtered_argv[ii] != nullptr; ++ii)
+  {
+    delete [] filtered_argv[ii];
+  }
+  delete [] filtered_argv;
 
   // World
   std::string world_name = FLAGS_world;
