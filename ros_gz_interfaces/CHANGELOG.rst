@@ -2,6 +2,15 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.247.0 (2023-11-02)
+--------------------
+* [backport iron] SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_) (`#425 <https://github.com/gazebosim/ros_gz/issues/425>`_)
+  Co-authored-by: Aditya Pande <aditya050995@gmail.com>
+* Merge branch 'iron' into ahcorde/iron/backport/411
+* [backport Iron] Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_) (`#414 <https://github.com/gazebosim/ros_gz/issues/414>`_)
+  Co-authored-by: Aditya Pande <aditya050995@gmail.com>
+* Contributors: Alejandro Hernández Cordero
+
 0.245.0 (2023-05-23)
 --------------------
 

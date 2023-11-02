@@ -2,6 +2,12 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.247.0 (2023-11-02)
+--------------------
+* Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_) (`#449 <https://github.com/gazebosim/ros_gz/issues/449>`_)
+  Co-authored-by: ymd-stella <7959916+ymd-stella@users.noreply.github.com>
+* Contributors: Alejandro Hernández Cordero
+
 0.245.0 (2023-05-23)
 --------------------
 

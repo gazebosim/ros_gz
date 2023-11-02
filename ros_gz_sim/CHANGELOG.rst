@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.247.0 (2023-11-02)
+--------------------
+* set on_exit_shutdown argument for gz-sim ExecuteProcess (`#355 <https://github.com/gazebosim/ros_gz/issues/355>`_) (`#452 <https://github.com/gazebosim/ros_gz/issues/452>`_)
+  Co-authored-by: andermi <anderson@mbari.org>
+* Contributors: Michael Carroll
+
 0.245.0 (2023-05-23)
 --------------------
 
