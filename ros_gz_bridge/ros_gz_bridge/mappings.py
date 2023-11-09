@@ -101,6 +101,10 @@ MAPPINGS = {
     'trajectory_msgs': [
         Mapping('JointTrajectory', 'JointTrajectory'),
     ],
+    'vision_msgs': [
+        Mapping('Detection2DArray', 'AnnotatedAxisAligned2DBox_V'),
+        Mapping('Detection2D', 'AnnotatedAxisAligned2DBox'),
+    ],
 }
 
 MAPPINGS_8_4_0 = {
