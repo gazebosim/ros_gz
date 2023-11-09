@@ -1479,5 +1479,80 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::VideoRecord> & _msg)
   EXPECT_EQ(expected_msg.save_filename(), _msg->save_filename());
 }
 
+void createTestMsg(gz::msgs::AnnotatedAxisAligned2DBox & _msg)
+{
+  gz::msgs::Header header_msg;
+
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  _msg.set_label(1);
+
+  gz::msgs::AxisAligned2DBox * box = new gz::msgs::AxisAligned2DBox();
+  gz::msgs::Vector2d * min_corner = new gz::msgs::Vector2d();
+  gz::msgs::Vector2d * max_corner = new gz::msgs::Vector2d();
+
+  min_corner->set_x(2.0);
+  min_corner->set_y(2.0);
+  max_corner->set_x(4.0);
+  max_corner->set_y(6.0);
+  box->set_allocated_min_corner(min_corner);
+  box->set_allocated_max_corner(max_corner);
+  _msg.set_allocated_box(box);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedAxisAligned2DBox> & _msg)
+{
+  gz::msgs::AnnotatedAxisAligned2DBox expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+
+  EXPECT_EQ(expected_msg.label(), _msg->label());
+
+  gz::msgs::AxisAligned2DBox expected_box = expected_msg.box();
+  gz::msgs::Vector2d expected_min_corner = expected_box.min_corner();
+  gz::msgs::Vector2d expected_max_corner = expected_box.max_corner();
+
+  gz::msgs::AxisAligned2DBox box = _msg->box();
+  gz::msgs::Vector2d min_corner = box.min_corner();
+  gz::msgs::Vector2d max_corner = box.max_corner();
+
+  EXPECT_EQ(expected_min_corner.x(), min_corner.x());
+  EXPECT_EQ(expected_min_corner.y(), min_corner.y());
+  EXPECT_EQ(expected_max_corner.x(), max_corner.x());
+  EXPECT_EQ(expected_max_corner.y(), max_corner.y());
+}
+
+void createTestMsg(gz::msgs::AnnotatedAxisAligned2DBox_V & _msg)
+{
+  gz::msgs::Header header_msg;
+
+  createTestMsg(header_msg);
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+
+  for (size_t i = 0; i < 4; i++) {
+    gz::msgs::AnnotatedAxisAligned2DBox * box = _msg.add_annotated_box();
+    createTestMsg(*box);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedAxisAligned2DBox_V> & _msg)
+{
+  gz::msgs::AnnotatedAxisAligned2DBox_V expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+
+  for (size_t i = 0; i < 4; i++) {
+    compareTestMsg(
+      std::make_shared<gz::msgs::AnnotatedAxisAligned2DBox>(
+        _msg->annotated_box(
+          i)));
+  }
+}
+
 }  // namespace testing
 }  // namespace ros_gz_bridge
