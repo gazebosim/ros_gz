@@ -18,6 +18,11 @@
   <depend>rclcpp</depend>
   <depend>std_msgs</depend>
 
+  <!-- Harmonic -->
+  <depend condition="$GZ_VERSION == harmonic">gz-math7</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-sim8</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
   <!-- Garden -->
   <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-sim7</depend>
   <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-math7</depend>
@@ -29,11 +34,6 @@
   <!-- Edifice -->
   <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-gazebo5</depend>
   <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-math6</depend>
-  <!-- Harmonic -->
-  <depend condition="$GZ_VERSION == harmonic">gz-math7</depend>
-  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
-  <depend condition="$GZ_VERSION == harmonic">gz-sim8</depend>
-  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

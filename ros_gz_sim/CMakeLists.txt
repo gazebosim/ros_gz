@@ -35,6 +35,9 @@ if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   set(GZ_SIM_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  macro(gz_find_package)
+    ign_find_package(${ARGV})
+  endmacro()
 
   message(STATUS "Compiling against Gazebo Edifice")
 # Garden
@@ -87,9 +90,12 @@ else()
   set(GZ_TARGET_PREFIX ignition)
 
   message(STATUS "Compiling against Gazebo Fortress")
+  macro(gz_find_package)
+    ign_find_package(${ARGV})
+  endmacro()
 endif()
 
-ign_find_package(gflags
+gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)

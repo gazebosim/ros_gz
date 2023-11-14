@@ -52,7 +52,7 @@ elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
   set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
   set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Gazebo Garden")
+  message(STATUS "Compiling against Gazebo Harmonic")
 # Default to Fortress
 else()
   find_package(ignition-transport11 REQUIRED)
