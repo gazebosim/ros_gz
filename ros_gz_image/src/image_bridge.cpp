@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
 #include <ros_gz_bridge/convert.hpp>

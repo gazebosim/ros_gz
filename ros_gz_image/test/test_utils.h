@@ -25,7 +25,7 @@
 #include <chrono>
 #include <string>
 #include <thread>
-#include <ignition/msgs.hh>
+#include <gz/msgs.hh>
 
 namespace ros_gz_image
 {

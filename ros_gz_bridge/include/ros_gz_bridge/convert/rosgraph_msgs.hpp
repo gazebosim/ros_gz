@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ROSGRAPH_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs.hh>
+#include <gz/msgs.hh>
 
 // ROS 2 messages
 #include <rosgraph_msgs/msg/clock.hpp>

@@ -16,17 +16,17 @@
 #define ROS_GZ_BRIDGE__CONVERT__SENSOR_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/battery_state.pb.h>
-#include <ignition/msgs/camera_info.pb.h>
-#include <ignition/msgs/fluid_pressure.pb.h>
-#include <ignition/msgs/image.pb.h>
-#include <ignition/msgs/imu.pb.h>
-#include <ignition/msgs/joy.pb.h>
-#include <ignition/msgs/laserscan.pb.h>
-#include <ignition/msgs/magnetometer.pb.h>
-#include <ignition/msgs/model.pb.h>
-#include <ignition/msgs/navsat.pb.h>
-#include <ignition/msgs/pointcloud_packed.pb.h>
+#include <gz/msgs/battery_state.pb.h>
+#include <gz/msgs/camera_info.pb.h>
+#include <gz/msgs/fluid_pressure.pb.h>
+#include <gz/msgs/image.pb.h>
+#include <gz/msgs/imu.pb.h>
+#include <gz/msgs/joy.pb.h>
+#include <gz/msgs/laserscan.pb.h>
+#include <gz/msgs/magnetometer.pb.h>
+#include <gz/msgs/model.pb.h>
+#include <gz/msgs/navsat.pb.h>
+#include <gz/msgs/pointcloud_packed.pb.h>
 
 // ROS 2 messages
 #include <sensor_msgs/msg/battery_state.hpp>

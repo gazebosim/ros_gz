@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/joint_trajectory.pb.h>
+#include <gz/msgs/joint_trajectory.pb.h>
 
 // ROS 2 messages
 #include <trajectory_msgs/msg/joint_trajectory.hpp>

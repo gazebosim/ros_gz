@@ -17,8 +17,8 @@
 #include <csignal>
 #include <iostream>
 #include <thread>
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
+#include <gz/msgs.hh>
+#include <gz/transport.hh>
 #include "../test_utils.h"
 
 /// \brief Flag used to break the publisher loop and terminate the program.

@@ -13,19 +13,19 @@
 // limitations under the License.
 
 #include "point_cloud.hh"
-#include <ignition/common/Event.hh>
-#include <ignition/gazebo/components/Name.hh>
-#include <ignition/gazebo/components/DepthCamera.hh>
-#include <ignition/gazebo/components/GpuLidar.hh>
-#include <ignition/gazebo/components/RgbdCamera.hh>
-#include <ignition/gazebo/Util.hh>
-#include <ignition/plugin/Register.hh>
-#include <ignition/rendering/Camera.hh>
-#include <ignition/rendering/DepthCamera.hh>
-#include <ignition/rendering/GpuRays.hh>
-#include <ignition/rendering/RenderEngine.hh>
-#include <ignition/rendering/RenderingIface.hh>
-#include <ignition/rendering/Scene.hh>
+#include <gz/common/Event.hh>
+#include <gz/sim/components/Name.hh>
+#include <gz/sim/components/DepthCamera.hh>
+#include <gz/sim/components/GpuLidar.hh>
+#include <gz/sim/components/RgbdCamera.hh>
+#include <gz/sim/Util.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/rendering/Camera.hh>
+#include <gz/rendering/DepthCamera.hh>
+#include <gz/rendering/GpuRays.hh>
+#include <gz/rendering/RenderEngine.hh>
+#include <gz/rendering/RenderingIface.hh>
+#include <gz/rendering/Scene.hh>
 
 #include <ros/ros.h>
 #include <ros/advertise_options.h>

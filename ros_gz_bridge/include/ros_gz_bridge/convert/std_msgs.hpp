@@ -16,15 +16,15 @@
 #define ROS_GZ_BRIDGE__CONVERT__STD_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/boolean.pb.h>
-#include <ignition/msgs/color.pb.h>
-#include <ignition/msgs/empty.pb.h>
-#include <ignition/msgs/float.pb.h>
-#include <ignition/msgs/double.pb.h>
-#include <ignition/msgs/header.pb.h>
-#include <ignition/msgs/int32.pb.h>
-#include <ignition/msgs/uint32.pb.h>
-#include <ignition/msgs/stringmsg.pb.h>
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/color.pb.h>
+#include <gz/msgs/empty.pb.h>
+#include <gz/msgs/float.pb.h>
+#include <gz/msgs/double.pb.h>
+#include <gz/msgs/header.pb.h>
+#include <gz/msgs/int32.pb.h>
+#include <gz/msgs/uint32.pb.h>
+#include <gz/msgs/stringmsg.pb.h>
 
 // ROS 2 messages
 #include <std_msgs/msg/bool.hpp>

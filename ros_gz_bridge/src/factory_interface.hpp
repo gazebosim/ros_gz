@@ -19,7 +19,7 @@
 #include <string>
 
 // include Gazebo Transport
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>

@@ -16,7 +16,7 @@
 #define ROS_GZ_POINTCLOUD__POINTCLOUD_HPP_
 
 #include <memory>
-#include <ignition/gazebo/System.hh>
+#include <gz/sim/System.hh>
 
 namespace ros_gz_point_cloud
 {

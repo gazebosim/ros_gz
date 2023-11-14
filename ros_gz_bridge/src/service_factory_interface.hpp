@@ -18,7 +18,7 @@
 #include <memory>
 #include <string>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 
 #include <rclcpp/service.hpp>
 #include <rclcpp/node.hpp>

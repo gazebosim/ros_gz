@@ -16,21 +16,21 @@
 #define ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/altimeter.pb.h>
-#include <ignition/msgs/entity.pb.h>
-#include <ignition/msgs/joint_wrench.pb.h>
-#include <ignition/msgs/contact.pb.h>
-#include <ignition/msgs/contacts.pb.h>
-#include <ignition/msgs/float_v.pb.h>
-#include <ignition/msgs/gui_camera.pb.h>
-#include <ignition/msgs/light.pb.h>
-#include <ignition/msgs/param.pb.h>
-#include <ignition/msgs/param_v.pb.h>
-#include <ignition/msgs/sensor_noise.pb.h>
-#include <ignition/msgs/stringmsg_v.pb.h>
-#include <ignition/msgs/track_visual.pb.h>
-#include <ignition/msgs/video_record.pb.h>
-#include <ignition/msgs/world_control.pb.h>
+#include <gz/msgs/altimeter.pb.h>
+#include <gz/msgs/entity.pb.h>
+#include <gz/msgs/joint_wrench.pb.h>
+#include <gz/msgs/contact.pb.h>
+#include <gz/msgs/contacts.pb.h>
+#include <gz/msgs/float_v.pb.h>
+#include <gz/msgs/gui_camera.pb.h>
+#include <gz/msgs/light.pb.h>
+#include <gz/msgs/param.pb.h>
+#include <gz/msgs/param_v.pb.h>
+#include <gz/msgs/sensor_noise.pb.h>
+#include <gz/msgs/stringmsg_v.pb.h>
+#include <gz/msgs/track_visual.pb.h>
+#include <gz/msgs/video_record.pb.h>
+#include <gz/msgs/world_control.pb.h>
 
 // ROS 2 messages
 #include <ros_gz_interfaces/msg/altimeter.hpp>
@@ -52,7 +52,7 @@
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 
 #if HAVE_DATAFRAME
-#include <ignition/msgs/dataframe.pb.h>
+#include <gz/msgs/dataframe.pb.h>
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #endif  // HAVE_DATAFRAME
 

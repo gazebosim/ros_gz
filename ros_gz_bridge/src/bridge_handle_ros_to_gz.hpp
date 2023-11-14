@@ -15,7 +15,7 @@
 #ifndef BRIDGE_HANDLE_ROS_TO_GZ_HPP_
 #define BRIDGE_HANDLE_ROS_TO_GZ_HPP_
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/subscription_base.hpp>
 
 #include "bridge_handle.hpp"

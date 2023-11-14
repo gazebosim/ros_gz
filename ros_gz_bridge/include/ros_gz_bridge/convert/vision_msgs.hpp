@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__VISION_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/annotated_axis_aligned_2d_box_v.pb.h>
+#include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
 
 // ROS 2 messages
 #include "vision_msgs/msg/detection2_d_array.hpp"

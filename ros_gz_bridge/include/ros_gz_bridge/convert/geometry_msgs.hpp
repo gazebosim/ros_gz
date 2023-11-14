@@ -16,14 +16,14 @@
 #define ROS_GZ_BRIDGE__CONVERT__GEOMETRY_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/quaternion.pb.h>
-#include <ignition/msgs/vector3d.pb.h>
-#include <ignition/msgs/pose.pb.h>
-#include <ignition/msgs/pose_with_covariance.pb.h>
-#include <ignition/msgs/pose_v.pb.h>
-#include <ignition/msgs/twist.pb.h>
-#include <ignition/msgs/twist_with_covariance.pb.h>
-#include <ignition/msgs/wrench.pb.h>
+#include <gz/msgs/quaternion.pb.h>
+#include <gz/msgs/vector3d.pb.h>
+#include <gz/msgs/pose.pb.h>
+#include <gz/msgs/pose_with_covariance.pb.h>
+#include <gz/msgs/pose_v.pb.h>
+#include <gz/msgs/twist.pb.h>
+#include <gz/msgs/twist_with_covariance.pb.h>
+#include <gz/msgs/wrench.pb.h>
 
 // ROS 2 messages
 #include <geometry_msgs/msg/point.hpp>

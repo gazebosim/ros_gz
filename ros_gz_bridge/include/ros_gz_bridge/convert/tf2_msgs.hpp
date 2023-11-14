@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__TF2_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/pose_v.pb.h>
+#include <gz/msgs/pose_v.pb.h>
 
 // ROS 2 messages
 #include <tf2_msgs/msg/tf_message.hpp>

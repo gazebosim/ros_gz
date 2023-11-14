@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ACTUATOR_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/actuators.pb.h>
+#include <gz/msgs/actuators.pb.h>
 
 // ROS 2 messages
 #include <actuator_msgs/msg/actuators.hpp>

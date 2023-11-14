@@ -14,7 +14,7 @@
 
 
 #include <gtest/gtest.h>
-#include <ignition/transport.hh>
+#include <gz/transport.hh>
 
 #include <chrono>
 #include <memory>

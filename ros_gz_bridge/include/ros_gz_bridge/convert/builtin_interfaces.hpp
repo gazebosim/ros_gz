@@ -15,7 +15,7 @@
 #ifndef ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 #define ROS_GZ_BRIDGE__CONVERT__BUILTIN_INTERFACES_HPP_
 
-#include <ignition/msgs/time.pb.h>
+#include <gz/msgs/time.pb.h>
 
 #include <builtin_interfaces/msg/time.hpp>
 

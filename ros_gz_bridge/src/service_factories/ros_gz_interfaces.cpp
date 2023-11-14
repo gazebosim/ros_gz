@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ignition/msgs/boolean.pb.h>
-#include <ignition/msgs/world_control.pb.h>
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/world_control.pb.h>
 
 #include <memory>
 #include <string>

@@ -14,8 +14,8 @@
 
 // This file is generated from test/resource/gz_publisher.cpp.em
 
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
+#include <gz/msgs.hh>
+#include <gz/transport.hh>
 
 #include <atomic>
 #include <chrono>

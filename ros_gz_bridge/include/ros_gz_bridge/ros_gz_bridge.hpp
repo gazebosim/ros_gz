@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
-#include <ignition/msgs/config.hh>
-#include <ignition/transport/Node.hh>
+#include <gz/msgs/config.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/node.hpp>
 #include "ros_gz_bridge/bridge_config.hpp"
 

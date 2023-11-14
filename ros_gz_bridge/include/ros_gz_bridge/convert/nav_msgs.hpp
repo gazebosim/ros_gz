@@ -16,8 +16,8 @@
 #define ROS_GZ_BRIDGE__CONVERT__NAV_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/odometry.pb.h>
-#include <ignition/msgs/odometry_with_covariance.pb.h>
+#include <gz/msgs/odometry.pb.h>
+#include <gz/msgs/odometry_with_covariance.pb.h>
 
 // ROS 2 messages
 #include <nav_msgs/msg/odometry.hpp>

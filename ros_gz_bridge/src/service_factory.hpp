@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
 
