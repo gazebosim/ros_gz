@@ -30,24 +30,24 @@ template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
-  ignition::msgs::JointTrajectoryPoint & gz_msg);
+  gz::msgs::JointTrajectoryPoint & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectoryPoint & gz_msg,
+  const gz::msgs::JointTrajectoryPoint & gz_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
-  ignition::msgs::JointTrajectory & gz_msg);
+  gz::msgs::JointTrajectory & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectory & gz_msg,
+  const gz::msgs::JointTrajectory & gz_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg);
 
 

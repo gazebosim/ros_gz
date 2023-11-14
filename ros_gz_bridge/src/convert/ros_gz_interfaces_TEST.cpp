@@ -23,11 +23,11 @@ struct RosToGzTest : public ::testing::Test
   using ParameterValue = rcl_interfaces::msg::ParameterValue;
   using ParameterType = rcl_interfaces::msg::ParameterType;
 
-  using Any = ignition::msgs::Any;
-  using Any_ValueType = ignition::msgs::Any_ValueType;
+  using Any = gz::msgs::Any;
+  using Any_ValueType = gz::msgs::Any_ValueType;
 
   using ParamVec = ros_gz_interfaces::msg::ParamVec;
-  using Param = ignition::msgs::Param;
+  using Param = gz::msgs::Param;
 
   Param gz_msg;
   ParamVec ros_msg;

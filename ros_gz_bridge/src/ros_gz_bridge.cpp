@@ -26,7 +26,7 @@ namespace ros_gz_bridge
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 : rclcpp::Node("ros_gz_bridge", options)
 {
-  gz_node_ = std::make_shared<ignition::transport::Node>();
+  gz_node_ = std::make_shared<gz::transport::Node>();
 
   this->declare_parameter<int>("subscription_heartbeat", 1000);
   this->declare_parameter<std::string>("config_file", "");

@@ -79,437 +79,437 @@ namespace testing
 {
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Any & _msg);
+void createTestMsg(gz::msgs::Any & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Any> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Any> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Boolean & _msg);
+void createTestMsg(gz::msgs::Boolean & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Boolean> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Boolean> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Color & _msg);
+void createTestMsg(gz::msgs::Color & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Color> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Empty & _msg);
+void createTestMsg(gz::msgs::Empty & _msg);
 
 /// \brief Compare a message with the populated for testing. Noop for Empty
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Empty> &);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Empty> &);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Float & _msg);
+void createTestMsg(gz::msgs::Float & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Float> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Float> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Float_V & _msg);
+void createTestMsg(gz::msgs::Float_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Float_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Float_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Double & _msg);
+void createTestMsg(gz::msgs::Double & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Double> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Double> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Int32 & _msg);
+void createTestMsg(gz::msgs::Int32 & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Int32> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Int32> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::UInt32 & _msg);
+void createTestMsg(gz::msgs::UInt32 & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::UInt32> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::UInt32> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Header & _msg);
+void createTestMsg(gz::msgs::Header & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Header> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Header> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Clock & _msg);
+void createTestMsg(gz::msgs::Clock & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Clock> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Clock> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::StringMsg & _msg);
+void createTestMsg(gz::msgs::StringMsg & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::SensorNoise & _msg);
+void createTestMsg(gz::msgs::SensorNoise & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::SensorNoise> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::SensorNoise> & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::StringMsg> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::StringMsg> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Quaternion & _msg);
+void createTestMsg(gz::msgs::Quaternion & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Quaternion> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Quaternion> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Vector3d & _msg);
+void createTestMsg(gz::msgs::Vector3d & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Vector3d> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Vector3d> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Param_V & _msg);
+void createTestMsg(gz::msgs::Param_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Param_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Param_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Param & _msg);
+void createTestMsg(gz::msgs::Param & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Param> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Param> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Pose & _msg);
+void createTestMsg(gz::msgs::Pose & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Pose> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::PoseWithCovariance & _msg);
+void createTestMsg(gz::msgs::PoseWithCovariance & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::PoseWithCovariance> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::PoseWithCovariance> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Pose_V & _msg);
+void createTestMsg(gz::msgs::Pose_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Pose_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Pose_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Twist & _msg);
+void createTestMsg(gz::msgs::Twist & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Twist> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Twist> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::TwistWithCovariance & _msg);
+void createTestMsg(gz::msgs::TwistWithCovariance & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::TwistWithCovariance> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::TwistWithCovariance> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Wrench & _msg);
+void createTestMsg(gz::msgs::Wrench & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Wrench> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Wrench> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::JointWrench & _msg);
+void createTestMsg(gz::msgs::JointWrench & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::JointWrench> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::JointWrench> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Altimeter & _msg);
+void createTestMsg(gz::msgs::Altimeter & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Altimeter> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Altimeter> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Joy & _msg);
+void createTestMsg(gz::msgs::Joy & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Joy> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Joy> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Entity & _msg);
+void createTestMsg(gz::msgs::Entity & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Entity> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Entity> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Contact & _msg);
+void createTestMsg(gz::msgs::Contact & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Contact> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Contact> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Contacts & _msg);
+void createTestMsg(gz::msgs::Contacts & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Contacts> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Contacts> & _msg);
 
 #if HAVE_DATAFRAME
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Dataframe & _msg);
+void createTestMsg(gz::msgs::Dataframe & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Dataframe> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Dataframe> & _msg);
 #endif  // HAVE_DATAFRAME
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Image & _msg);
+void createTestMsg(gz::msgs::Image & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Image> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Image> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::CameraInfo & _msg);
+void createTestMsg(gz::msgs::CameraInfo & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::CameraInfo> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::CameraInfo> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::FluidPressure & _msg);
+void createTestMsg(gz::msgs::FluidPressure & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::FluidPressure> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::FluidPressure> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::IMU & _msg);
+void createTestMsg(gz::msgs::IMU & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::IMU> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::IMU> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Axis & _msg);
+void createTestMsg(gz::msgs::Axis & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Axis> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Axis> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Model & _msg);
+void createTestMsg(gz::msgs::Model & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Model> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Model> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::LaserScan & _msg);
+void createTestMsg(gz::msgs::LaserScan & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::LaserScan> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::LaserScan> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Magnetometer & _msg);
+void createTestMsg(gz::msgs::Magnetometer & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Magnetometer> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Magnetometer> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::NavSat & _msg);
+void createTestMsg(gz::msgs::NavSat & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::NavSat> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::NavSat> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Actuators & _msg);
+void createTestMsg(gz::msgs::Actuators & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Actuators> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Actuators> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Odometry & _msg);
+void createTestMsg(gz::msgs::Odometry & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Odometry> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Odometry> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::OdometryWithCovariance & _msg);
+void createTestMsg(gz::msgs::OdometryWithCovariance & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::OdometryWithCovariance> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::OdometryWithCovariance> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::PointCloudPacked & _msg);
+void createTestMsg(gz::msgs::PointCloudPacked & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::PointCloudPacked> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::PointCloudPacked> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::BatteryState & _msg);
+void createTestMsg(gz::msgs::BatteryState & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::BatteryState> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::BatteryState> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::JointTrajectoryPoint & _msg);
+void createTestMsg(gz::msgs::JointTrajectoryPoint & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectoryPoint> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::JointTrajectoryPoint> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::JointTrajectory & _msg);
+void createTestMsg(gz::msgs::JointTrajectory & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::JointTrajectory> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::JointTrajectory> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Light & _msg);
+void createTestMsg(gz::msgs::Light & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Light> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Light> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::GUICamera & _msg);
+void createTestMsg(gz::msgs::GUICamera & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::GUICamera> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::GUICamera> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::StringMsg_V & _msg);
+void createTestMsg(gz::msgs::StringMsg_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::StringMsg_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::StringMsg_V> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::Time & _msg);
+void createTestMsg(gz::msgs::Time & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::Time> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::Time> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::TrackVisual & _msg);
+void createTestMsg(gz::msgs::TrackVisual & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::TrackVisual> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::TrackVisual> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::VideoRecord & _msg);
+void createTestMsg(gz::msgs::VideoRecord & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::VideoRecord> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::VideoRecord> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::AnnotatedAxisAligned2DBox & _msg);
+void createTestMsg(gz::msgs::AnnotatedAxisAligned2DBox & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::AnnotatedAxisAligned2DBox> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedAxisAligned2DBox> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
-void createTestMsg(ignition::msgs::AnnotatedAxisAligned2DBox_V & _msg);
+void createTestMsg(gz::msgs::AnnotatedAxisAligned2DBox_V & _msg);
 
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
-void compareTestMsg(const std::shared_ptr<ignition::msgs::AnnotatedAxisAligned2DBox_V> & _msg);
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedAxisAligned2DBox_V> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

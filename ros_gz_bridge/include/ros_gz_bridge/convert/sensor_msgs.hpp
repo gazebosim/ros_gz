@@ -51,132 +51,132 @@ template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::Joy & ros_msg,
-  ignition::msgs::Joy & gz_msg);
+  gz::msgs::Joy & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Joy & gz_msg,
+  const gz::msgs::Joy & gz_msg,
   sensor_msgs::msg::Joy & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::FluidPressure & ros_msg,
-  ignition::msgs::FluidPressure & gz_msg);
+  gz::msgs::FluidPressure & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::FluidPressure & gz_msg,
+  const gz::msgs::FluidPressure & gz_msg,
   sensor_msgs::msg::FluidPressure & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::Image & ros_msg,
-  ignition::msgs::Image & gz_msg);
+  gz::msgs::Image & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Image & gz_msg,
+  const gz::msgs::Image & gz_msg,
   sensor_msgs::msg::Image & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::CameraInfo & ros_msg,
-  ignition::msgs::CameraInfo & gz_msg);
+  gz::msgs::CameraInfo & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::CameraInfo & gz_msg,
+  const gz::msgs::CameraInfo & gz_msg,
   sensor_msgs::msg::CameraInfo & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::Imu & ros_msg,
-  ignition::msgs::IMU & gz_msg);
+  gz::msgs::IMU & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::IMU & gz_msg,
+  const gz::msgs::IMU & gz_msg,
   sensor_msgs::msg::Imu & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::JointState & ros_msg,
-  ignition::msgs::Model & gz_msg);
+  gz::msgs::Model & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Model & gz_msg,
+  const gz::msgs::Model & gz_msg,
   sensor_msgs::msg::JointState & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
-  ignition::msgs::LaserScan & gz_msg);
+  gz::msgs::LaserScan & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::LaserScan & gz_msg,
+  const gz::msgs::LaserScan & gz_msg,
   sensor_msgs::msg::LaserScan & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::MagneticField & ros_msg,
-  ignition::msgs::Magnetometer & gz_msg);
+  gz::msgs::Magnetometer & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Magnetometer & gz_msg,
+  const gz::msgs::Magnetometer & gz_msg,
   sensor_msgs::msg::MagneticField & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::NavSatFix & ros_msg,
-  ignition::msgs::NavSat & gz_msg);
+  gz::msgs::NavSat & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::NavSat & gz_msg,
+  const gz::msgs::NavSat & gz_msg,
   sensor_msgs::msg::NavSatFix & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::PointCloud2 & ros_msg,
-  ignition::msgs::PointCloudPacked & gz_msg);
+  gz::msgs::PointCloudPacked & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::PointCloudPacked & gz_msg,
+  const gz::msgs::PointCloudPacked & gz_msg,
   sensor_msgs::msg::PointCloud2 & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const sensor_msgs::msg::BatteryState & ros_msg,
-  ignition::msgs::BatteryState & gz_msg);
+  gz::msgs::BatteryState & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::BatteryState & gz_msg,
+  const gz::msgs::BatteryState & gz_msg,
   sensor_msgs::msg::BatteryState & ros_msg);
 
 }  // namespace ros_gz_bridge

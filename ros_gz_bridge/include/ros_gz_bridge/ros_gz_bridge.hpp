@@ -70,7 +70,7 @@ protected:
 
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
-  std::shared_ptr<ignition::transport::Node> gz_node_;
+  std::shared_ptr<gz::transport::Node> gz_node_;
 
   /// \brief List of bridge handles
   std::vector<std::shared_ptr<ros_gz_bridge::BridgeHandle>> handles_;

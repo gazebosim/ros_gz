@@ -32,12 +32,12 @@ template<>
 void
 convert_ros_to_gz(
   const rcl_interfaces::msg::ParameterValue & ros_msg,
-  ignition::msgs::Any & ign_msg);
+  gz::msgs::Any & ign_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Any & ign_msg,
+  const gz::msgs::Any & ign_msg,
   rcl_interfaces::msg::ParameterValue & ros_msg);
 
 }  // namespace ros_gz_bridge

@@ -42,8 +42,8 @@ void signal_handler(int _signal)
 
 //////////////////////////////////////////////////
 bool control_world(
-  const ignition::msgs::WorldControl &,
-  ignition::msgs::Boolean & _res)
+  const gz::msgs::WorldControl &,
+  gz::msgs::Boolean & _res)
 {
   _res.set_data(true);
   return true;
@@ -58,7 +58,7 @@ int main(int /*argc*/, char **/*argv*/)
   std::signal(SIGTERM, signal_handler);
 
   // Create a transport node and advertise a topic.
-  ignition::transport::Node node;
+  gz::transport::Node node;
 
   // gz::msgs::WorldControl.
   node.Advertise(

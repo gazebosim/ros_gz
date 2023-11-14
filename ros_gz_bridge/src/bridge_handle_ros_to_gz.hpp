@@ -59,7 +59,7 @@ protected:
   rclcpp::SubscriptionBase::SharedPtr ros_subscriber_ = {nullptr};
 
   /// \brief Gazebo publisher, populated when publisher active
-  ignition::transport::Node::Publisher gz_publisher_;
+  gz::transport::Node::Publisher gz_publisher_;
 };
 
 }  // namespace ros_gz_bridge

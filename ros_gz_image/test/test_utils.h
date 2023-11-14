@@ -142,7 +142,7 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(ignition::msgs::Header &_msg)
+  void createTestMsg(gz::msgs::Header &_msg)
   {
     auto seq_entry = _msg.add_data();
     seq_entry->set_key("seq");
@@ -156,9 +156,9 @@ namespace testing
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const ignition::msgs::Header &_msg)
+  void compareTestMsg(const gz::msgs::Header &_msg)
   {
-    ignition::msgs::Header expected_msg;
+    gz::msgs::Header expected_msg;
     createTestMsg(expected_msg);
 
     EXPECT_EQ(expected_msg.stamp().sec(),    _msg.stamp().sec());
@@ -183,24 +183,24 @@ namespace testing
 
   /// \brief Create a message used for testing.
   /// \param[out] _msg The message populated.
-  void createTestMsg(ignition::msgs::Image &_msg)
+  void createTestMsg(gz::msgs::Image &_msg)
   {
-    ignition::msgs::Header header_msg;
+    gz::msgs::Header header_msg;
     createTestMsg(header_msg);
 
     _msg.mutable_header()->CopyFrom(header_msg);
     _msg.set_width(320);
     _msg.set_height(240);
-    _msg.set_pixel_format_type(ignition::msgs::PixelFormatType::RGB_INT8);
+    _msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT8);
     _msg.set_step(_msg.width() * 3);
     _msg.set_data(std::string(_msg.height() * _msg.step(), '1'));
   }
 
   /// \brief Compare a message with the populated for testing.
   /// \param[in] _msg The message to compare.
-  void compareTestMsg(const ignition::msgs::Image &_msg)
+  void compareTestMsg(const gz::msgs::Image &_msg)
   {
-    ignition::msgs::Image expected_msg;
+    gz::msgs::Image expected_msg;
     createTestMsg(expected_msg);
 
     compareTestMsg(_msg.header());

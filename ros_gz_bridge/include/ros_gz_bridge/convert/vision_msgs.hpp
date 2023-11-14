@@ -28,24 +28,24 @@ template<>
 void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2D & ros_msg,
-  ignition::msgs::AnnotatedAxisAligned2DBox & gz_msg);
+  gz::msgs::AnnotatedAxisAligned2DBox & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::AnnotatedAxisAligned2DBox & gz_msg,
+  const gz::msgs::AnnotatedAxisAligned2DBox & gz_msg,
   vision_msgs::msg::Detection2D & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2DArray & ros_msg,
-  ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg);
+  gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
+  const gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
   vision_msgs::msg::Detection2DArray & ros_msg);
 }  // namespace ros_gz_bridge
 

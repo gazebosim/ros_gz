@@ -41,8 +41,8 @@ get_service_factory__ros_gz_interfaces(
     return std::make_shared<
       ServiceFactory<
         ros_gz_interfaces::srv::ControlWorld,
-        ignition::msgs::WorldControl,
-        ignition::msgs::Boolean>
+        gz::msgs::WorldControl,
+        gz::msgs::Boolean>
     >(ros_type_name, "ignition.msgs.WorldControl", "ignition.msgs.Boolean");
   }
 
@@ -53,7 +53,7 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::srv::ControlWorld::Request & ros_req,
-  ignition::msgs::WorldControl & gz_req)
+  gz::msgs::WorldControl & gz_req)
 {
   convert_ros_to_gz(ros_req.world_control, gz_req);
 }
@@ -61,7 +61,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Boolean & gz_rep,
+  const gz::msgs::Boolean & gz_rep,
   ros_gz_interfaces::srv::ControlWorld::Response & ros_res)
 {
   ros_res.success = gz_rep.data();

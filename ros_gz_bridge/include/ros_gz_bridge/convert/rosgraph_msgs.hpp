@@ -29,14 +29,14 @@ namespace ros_gz_bridge
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Clock & gz_msg,
+  const gz::msgs::Clock & gz_msg,
   rosgraph_msgs::msg::Clock & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const rosgraph_msgs::msg::Clock & ros_msg,
-  ignition::msgs::Clock & gz_msg);
+  gz::msgs::Clock & gz_msg);
 
 }  // namespace ros_gz_bridge
 

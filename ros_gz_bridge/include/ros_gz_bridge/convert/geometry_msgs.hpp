@@ -48,156 +48,156 @@ template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Quaternion & ros_msg,
-  ignition::msgs::Quaternion & gz_msg);
+  gz::msgs::Quaternion & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Quaternion & gz_msg,
+  const gz::msgs::Quaternion & gz_msg,
   geometry_msgs::msg::Quaternion & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Vector3 & ros_msg,
-  ignition::msgs::Vector3d & gz_msg);
+  gz::msgs::Vector3d & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Vector3d & gz_msg,
+  const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Vector3 & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Point & ros_msg,
-  ignition::msgs::Vector3d & gz_msg);
+  gz::msgs::Vector3d & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Vector3d & gz_msg,
+  const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Point & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Pose & ros_msg,
-  ignition::msgs::Pose & gz_msg);
+  gz::msgs::Pose & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseArray & ros_msg,
-  ignition::msgs::Pose_V & gz_msg);
+  gz::msgs::Pose_V & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose_V & gz_msg,
+  const gz::msgs::Pose_V & gz_msg,
   geometry_msgs::msg::PoseArray & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
-  ignition::msgs::PoseWithCovariance & gz_msg);
+  gz::msgs::PoseWithCovariance & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::PoseWithCovariance & gz_msg,
+  const gz::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseStamped & ros_msg,
-  ignition::msgs::Pose & gz_msg);
+  gz::msgs::Pose & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::PoseStamped & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Transform & ros_msg,
-  ignition::msgs::Pose & gz_msg);
+  gz::msgs::Pose & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Transform & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::TransformStamped & ros_msg,
-  ignition::msgs::Pose & gz_msg);
+  gz::msgs::Pose & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose & gz_msg,
+  const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::TransformStamped & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Twist & ros_msg,
-  ignition::msgs::Twist & gz_msg);
+  gz::msgs::Twist & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Twist & gz_msg,
+  const gz::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
-  ignition::msgs::TwistWithCovariance & gz_msg);
+  gz::msgs::TwistWithCovariance & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::TwistWithCovariance & gz_msg,
+  const gz::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::Wrench & ros_msg,
-  ignition::msgs::Wrench & gz_msg);
+  gz::msgs::Wrench & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Wrench & gz_msg,
+  const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const geometry_msgs::msg::WrenchStamped & ros_msg,
-  ignition::msgs::Wrench & gz_msg);
+  gz::msgs::Wrench & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Wrench & gz_msg,
+  const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::WrenchStamped & ros_msg);
 
 }  // namespace ros_gz_bridge
