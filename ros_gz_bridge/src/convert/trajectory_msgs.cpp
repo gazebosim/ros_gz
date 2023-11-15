@@ -24,7 +24,7 @@ template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
-  ignition::msgs::JointTrajectoryPoint & gz_msg)
+  gz::msgs::JointTrajectoryPoint & gz_msg)
 {
   for (const auto & ros_position : ros_msg.positions) {
     gz_msg.add_positions(ros_position);
@@ -39,7 +39,7 @@ convert_ros_to_gz(
     gz_msg.add_effort(ros_effort);
   }
 
-  ignition::msgs::Duration * gz_duration = gz_msg.mutable_time_from_start();
+  gz::msgs::Duration * gz_duration = gz_msg.mutable_time_from_start();
   gz_duration->set_sec(ros_msg.time_from_start.sec);
   gz_duration->set_nsec(ros_msg.time_from_start.nanosec);
 }
@@ -47,7 +47,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectoryPoint & gz_msg,
+  const gz::msgs::JointTrajectoryPoint & gz_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg)
 {
   for (auto i = 0; i < gz_msg.positions_size(); ++i) {
@@ -72,7 +72,7 @@ template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
-  ignition::msgs::JointTrajectory & gz_msg)
+  gz::msgs::JointTrajectory & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
@@ -81,7 +81,7 @@ convert_ros_to_gz(
   }
 
   for (const auto & ros_point : ros_msg.points) {
-    ignition::msgs::JointTrajectoryPoint * gz_point = gz_msg.add_points();
+    gz::msgs::JointTrajectoryPoint * gz_point = gz_msg.add_points();
     convert_ros_to_gz(ros_point, (*gz_point));
   }
 }
@@ -89,7 +89,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectory & gz_msg,
+  const gz::msgs::JointTrajectory & gz_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);

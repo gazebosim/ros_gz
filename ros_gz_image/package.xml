@@ -13,6 +13,9 @@
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 
+  <!-- Harmonic -->
+  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
   <!-- Garden -->
   <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-msgs9</depend>
   <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-transport12</depend>

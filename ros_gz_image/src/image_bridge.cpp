@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <image_transport/image_transport.hpp>
 #include <ros_gz_bridge/convert.hpp>
@@ -35,7 +35,7 @@ public:
   Handler(
     const std::string & _topic,
     std::shared_ptr<image_transport::ImageTransport> _it_node,
-    std::shared_ptr<ignition::transport::Node> _gz_node)
+    std::shared_ptr<gz::transport::Node> _gz_node)
   {
     this->ros_pub = _it_node->advertise(_topic, 1);
 
@@ -45,7 +45,7 @@ public:
 private:
   /// \brief Callback when Gazebo image is received
   /// \param[in] _gz_msg Gazebo message
-  void OnImage(const ignition::msgs::Image & _gz_msg)
+  void OnImage(const gz::msgs::Image & _gz_msg)
   {
     sensor_msgs::msg::Image ros_msg;
     ros_gz_bridge::convert_gz_to_ros(_gz_msg, ros_msg);
@@ -80,7 +80,7 @@ int main(int argc, char * argv[])
   auto it_node = std::make_shared<image_transport::ImageTransport>(node_);
 
   // Gazebo node
-  auto gz_node = std::make_shared<ignition::transport::Node>();
+  auto gz_node = std::make_shared<gz::transport::Node>();
 
   std::vector<std::shared_ptr<Handler>> handlers;
 

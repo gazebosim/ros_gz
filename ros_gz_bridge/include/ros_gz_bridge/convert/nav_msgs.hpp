@@ -16,8 +16,8 @@
 #define ROS_GZ_BRIDGE__CONVERT__NAV_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/odometry.pb.h>
-#include <ignition/msgs/odometry_with_covariance.pb.h>
+#include <gz/msgs/odometry.pb.h>
+#include <gz/msgs/odometry_with_covariance.pb.h>
 
 // ROS 2 messages
 #include <nav_msgs/msg/odometry.hpp>
@@ -31,24 +31,24 @@ template<>
 void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
-  ignition::msgs::Odometry & gz_msg);
+  gz::msgs::Odometry & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Odometry & gz_msg,
+  const gz::msgs::Odometry & gz_msg,
   nav_msgs::msg::Odometry & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
-  ignition::msgs::OdometryWithCovariance & gz_msg);
+  gz::msgs::OdometryWithCovariance & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::OdometryWithCovariance & gz_msg,
+  const gz::msgs::OdometryWithCovariance & gz_msg,
   nav_msgs::msg::Odometry & ros_msg);
 
 }  // namespace ros_gz_bridge

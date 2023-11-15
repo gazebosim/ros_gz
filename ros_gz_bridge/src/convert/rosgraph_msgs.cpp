@@ -23,7 +23,7 @@ namespace ros_gz_bridge
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Clock & gz_msg,
+  const gz::msgs::Clock & gz_msg,
   rosgraph_msgs::msg::Clock & ros_msg)
 {
   ros_msg.clock = rclcpp::Time(gz_msg.sim().sec(), gz_msg.sim().nsec());
@@ -33,7 +33,7 @@ template<>
 void
 convert_ros_to_gz(
   const rosgraph_msgs::msg::Clock & ros_msg,
-  ignition::msgs::Clock & gz_msg)
+  gz::msgs::Clock & gz_msg)
 {
   gz_msg.mutable_sim()->set_sec(ros_msg.clock.sec);
   gz_msg.mutable_sim()->set_nsec(ros_msg.clock.nanosec);
