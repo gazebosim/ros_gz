@@ -35,6 +35,9 @@ if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   set(GZ_SIM_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  macro(gz_find_package)
+    ign_find_package(${ARGV})
+  endmacro()
 
   message(STATUS "Compiling against Gazebo Edifice")
 # Garden
@@ -54,6 +57,22 @@ elseif("$ENV{GZ_VERSION}" STREQUAL "garden")
   set(GZ_TARGET_PREFIX gz)
 
   message(STATUS "Compiling against Gazebo Garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
+  find_package(gz-math7 REQUIRED)
+  set(GZ_MATH_VER ${gz-math7_VERSION_MAJOR})
+
+  find_package(gz-transport13 REQUIRED)
+  set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
+
+  find_package(gz-msgs10 REQUIRED)
+  set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
+
+  find_package(gz-sim8 REQUIRED)
+  set(GZ_SIM_VER ${gz-sim8_VERSION_MAJOR})
+
+  set(GZ_TARGET_PREFIX gz)
+
+  message(STATUS "Compiling against Gazebo Harmonic")
 # Default to Fortress
 else()
   find_package(ignition-math6 REQUIRED)
@@ -71,9 +90,12 @@ else()
   set(GZ_TARGET_PREFIX ignition)
 
   message(STATUS "Compiling against Gazebo Fortress")
+  macro(gz_find_package)
+    ign_find_package(${ARGV})
+  endmacro()
 endif()
 
-ign_find_package(gflags
+gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)

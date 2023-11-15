@@ -20,7 +20,7 @@
 #include <string>
 #include <utility>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 
 #include <rclcpp/rclcpp.hpp>
 
@@ -50,7 +50,7 @@ public:
   rclcpp::ServiceBase::SharedPtr
   create_ros_service(
     rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<ignition::transport::Node> gz_node,
+    std::shared_ptr<gz::transport::Node> gz_node,
     const std::string & service_name) override
   {
     return ros_node->create_service<RosServiceT>(

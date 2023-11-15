@@ -20,7 +20,7 @@ template<>
 void
 convert_ros_to_gz(
   const builtin_interfaces::msg::Time & ros_msg,
-  ignition::msgs::Time & gz_msg)
+  gz::msgs::Time & gz_msg)
 {
   gz_msg.set_sec(ros_msg.sec);
   gz_msg.set_nsec(ros_msg.nanosec);
@@ -29,7 +29,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Time & gz_msg,
+  const gz::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg)
 {
   ros_msg.sec = gz_msg.sec();

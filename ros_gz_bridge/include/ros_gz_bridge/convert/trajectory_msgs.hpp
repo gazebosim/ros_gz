@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__TRAJECTORY_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/joint_trajectory.pb.h>
+#include <gz/msgs/joint_trajectory.pb.h>
 
 // ROS 2 messages
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
@@ -30,24 +30,24 @@ template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
-  ignition::msgs::JointTrajectoryPoint & gz_msg);
+  gz::msgs::JointTrajectoryPoint & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectoryPoint & gz_msg,
+  const gz::msgs::JointTrajectoryPoint & gz_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg);
 
 template<>
 void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
-  ignition::msgs::JointTrajectory & gz_msg);
+  gz::msgs::JointTrajectory & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::JointTrajectory & gz_msg,
+  const gz::msgs::JointTrajectory & gz_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg);
 
 
