@@ -116,7 +116,7 @@ int main(int _argc, char ** _argv)
   std::string world_name = ros2_node->get_parameter("world").as_string();
   if (world_name.empty() && !FLAGS_world.empty()) {
     world_name = FLAGS_world;
-  } 
+  }
   if (world_name.empty()) {
     // If caller doesn't provide a world name, get list of worlds from gz-sim server
     gz::transport::Node node;
