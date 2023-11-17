@@ -48,38 +48,7 @@ DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
 DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
 DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
-// Utility Functions to avoid code duplication
-
-// get world name from gz-sim server
-bool set_world_name(std::string & world_name, const rclcpp::Node::SharedPtr ros2_node)
-{
-  gz::transport::Node node;
-
-  bool executed{false};
-  bool result{false};
-  unsigned int timeout{5000};
-  std::string service{"/gazebo/worlds"};
-  gz::msgs::StringMsg_V worlds_msg;
-
-  // This loop is here to allow the server time to download resources.
-  while (rclcpp::ok() && !executed) {
-    RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
-    executed = node.Request(service, timeout, worlds_msg, result);
-  }
-
-  if (!executed) {
-    RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
-    return false;
-  }
-
-  if (!result || worlds_msg.data().empty()) {
-    RCLCPP_INFO(ros2_node->get_logger(), "Failed to get world names.");
-    return false;
-  }
-
-  world_name = worlds_msg.data(0);
-  return true;
-}
+// Utility Function to avoid code duplication
 
 bool set_XML_from_topic(
   const std::string & topic_name, const rclcpp::Node::SharedPtr ros2_node,
@@ -143,8 +112,42 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("R", static_cast<double>(0));
   ros2_node->declare_parameter("P", static_cast<double>(0));
   ros2_node->declare_parameter("Y", static_cast<double>(0));
+  // World
+  std::string world_name = ros2_node->get_parameter("world").as_string();
+  if (world_name.empty() && !FLAGS_world.empty()) {
+    world_name = FLAGS_world;
+  } 
+  if (world_name.empty()) {
+    // If caller doesn't provide a world name, get list of worlds from gz-sim server
+    gz::transport::Node node;
 
-  // Request message for Entity creation
+    bool executed{false};
+    bool result{false};
+    unsigned int timeout{5000};
+    std::string service{"/gazebo/worlds"};
+    gz::msgs::StringMsg_V worlds_msg;
+
+    // This loop is here to allow the server time to download resources.
+    while (rclcpp::ok() && !executed) {
+      RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
+      executed = node.Request(service, timeout, worlds_msg, result);
+    }
+
+    if (!executed) {
+      RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
+      return -1;
+    }
+
+    if (!result || worlds_msg.data().empty()) {
+      RCLCPP_INFO(ros2_node->get_logger(), "Failed to get world names.");
+      return -1;
+    }
+
+    world_name = worlds_msg.data(0);
+  }
+  std::string service{"/world/" + world_name + "/create"};
+
+  // Request message
   gz::msgs::EntityFactory req;
 
   // Get ROS parameters
@@ -194,17 +197,6 @@ int main(int _argc, char ** _argv)
     return -1;
   }
 
-  // World
-  std::string world_name = ros2_node->get_parameter("world").as_string();
-  if (world_name.empty() && !FLAGS_world.empty()) {
-    world_name = FLAGS_world;
-  } else if (world_name.empty() && FLAGS_world.empty()) {
-    if (!set_world_name(world_name, ros2_node)) {
-      return -1;
-    }
-  }
-  std::string service{"/world/" + world_name + "/create"};
-
   // Pose
   double x_coords = ros2_node->get_parameter("x").as_double();
   double y_coords = ros2_node->get_parameter("y").as_double();
@@ -213,14 +205,14 @@ int main(int _argc, char ** _argv)
   double pitch = ros2_node->get_parameter("P").as_double();
   double yaw = ros2_node->get_parameter("Y").as_double();
 
-  x_coords = (x_coords != 0.0) ? x_coords : FLAGS_x;
-  y_coords = (y_coords != 0.0) ? y_coords : FLAGS_y;
-  z_coords = (z_coords != 0.0) ? z_coords : FLAGS_z;
-  roll = (roll != 0.0) ? roll : FLAGS_R;
-  pitch = (pitch != 0.0) ? pitch : FLAGS_P;
-  yaw = (yaw != 0.0) ? yaw : FLAGS_Y;
+  FLAGS_x = (x_coords != 0.0) ? x_coords : FLAGS_x;
+  FLAGS_y = (y_coords != 0.0) ? y_coords : FLAGS_y;
+  FLAGS_z = (z_coords != 0.0) ? z_coords : FLAGS_z;
+  FLAGS_R = (roll != 0.0) ? roll : FLAGS_R;
+  FLAGS_P = (pitch != 0.0) ? pitch : FLAGS_P;
+  FLAGS_Y = (yaw != 0.0) ? yaw : FLAGS_Y;
+  gz::math::Pose3d pose{FLAGS_x, FLAGS_y, FLAGS_z, FLAGS_R, FLAGS_P, FLAGS_Y};
 
-  gz::math::Pose3d pose{x_coords, y_coords, z_coords, roll, pitch, yaw};
   gz::msgs::Set(req.mutable_pose(), pose);
 
   // Name
