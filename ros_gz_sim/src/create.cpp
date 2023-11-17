@@ -30,54 +30,50 @@
 #include <std_msgs/msg/string.hpp>
 
 
-DEFINE_string(world, "", "World name.");
-DEFINE_string(file, "", "Load XML from a file.");
-DEFINE_string(param, "", "Load XML from a ROS param.");
-DEFINE_string(string, "", "Load XML from a string.");
-DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
-DEFINE_string(name, "", "Name for spawned entity.");
-DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
-DEFINE_double(x, 0, "X component of initial position, in meters.");
-DEFINE_double(y, 0, "Y component of initial position, in meters.");
-DEFINE_double(z, 0, "Z component of initial position, in meters.");
-DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
-DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
-DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
-
 // ROS interface for spawning entities into Gazebo.
 // Suggested for use with roslaunch and loading entities from ROS param.
 // If these are not needed, just use the `gz service` command line instead.
 int main(int _argc, char ** _argv)
 {
-  auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
+  rclcpp::init(_argc, _argv);
   auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
 
-  // Construct a new argc/argv pair from the flags that weren't parsed by ROS
-  // Gflags wants a mutable pointer to argv, which is why we can't use a
-  // vector of strings here
-  int filtered_argc = filtered_arguments.size();
-  char ** filtered_argv = new char *[(filtered_argc + 1)];
-  for (int ii = 0; ii < filtered_argc; ++ii) {
-    filtered_argv[ii] = new char[filtered_arguments[ii].size() + 1];
-    snprintf(filtered_argv[ii], sizeof(filtered_argv), "%s", filtered_arguments[ii].c_str());
-  }
-  filtered_argv[filtered_argc] = nullptr;
+  std::string world_prm,file_prm,param_prm,string_prm,topic_prm,name_prm;
+  bool allow_renaming_prm;
+  double x_prm,y_prm,z_prm,R_prm,P_prm,Y_prm;
 
-  gflags::AllowCommandLineReparsing();
-  gflags::SetUsageMessage(
-    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
-                       [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
-                       [-R ROLL] [-P PITCH] [-Y YAW])");
-  gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv, false);
+  // declaring ros param 
+  ros2_node->declare_parameter("world","");
+  ros2_node->declare_parameter("file","");
+  ros2_node->declare_parameter("param","");
+  ros2_node->declare_parameter("string", "");
+  ros2_node->declare_parameter("topic", "");
+  ros2_node->declare_parameter("name", "");
+  ros2_node->declare_parameter("allow_renaming", false);
+  ros2_node->declare_parameter("x", 0.0);
+  ros2_node->declare_parameter("y", 0.0);
+  ros2_node->declare_parameter("z", 0.0);
+  ros2_node->declare_parameter("R", 0.0);
+  ros2_node->declare_parameter("P", 0.0);
+  ros2_node->declare_parameter("Y", 0.0);
 
-  // Free our temporary argc/argv pair
-  for (size_t ii = 0; filtered_argv[ii] != nullptr; ++ii) {
-    delete[] filtered_argv[ii];
-  }
-  delete[] filtered_argv;
-
+  // getting value of ros param (from param server or command line)
+  ros2_node->get_parameter("world", world_prm);
+  ros2_node->get_parameter("file", file_prm);
+  ros2_node->get_parameter("param", param_prm);
+  ros2_node->get_parameter("string", string_prm);
+  ros2_node->get_parameter("topic", topic_prm);
+  ros2_node->get_parameter("name", name_prm);
+  ros2_node->get_parameter("allow_renaming", allow_renaming_prm);
+  ros2_node->get_parameter("x", x_prm);
+  ros2_node->get_parameter("y", y_prm);
+  ros2_node->get_parameter("z", z_prm);
+  ros2_node->get_parameter("R", R_prm);
+  ros2_node->get_parameter("P", P_prm);
+  ros2_node->get_parameter("Y", Y_prm);
+  
   // World
-  std::string world_name = FLAGS_world;
+  std::string world_name = world_prm;
   if (world_name.empty()) {
     // If caller doesn't provide a world name, get list of worlds from gz-sim server
     gz::transport::Node node;
@@ -112,22 +108,22 @@ int main(int _argc, char ** _argv)
   gz::msgs::EntityFactory req;
 
   // File
-  if (!FLAGS_file.empty()) {
-    req.set_sdf_filename(FLAGS_file);
-  } else if (!FLAGS_param.empty()) {  // Param
-    ros2_node->declare_parameter<std::string>(FLAGS_param);
+  if (!file_prm.empty()) {
+    req.set_sdf_filename(file_prm);
+  } else if (!param_prm.empty()) {  // Param
+    ros2_node->declare_parameter<std::string>(param_prm);
 
     std::string xmlStr;
-    if (ros2_node->get_parameter(FLAGS_param, xmlStr)) {
+    if (ros2_node->get_parameter(param_prm, xmlStr)) {
       req.set_sdf(xmlStr);
     } else {
       RCLCPP_ERROR(
-        ros2_node->get_logger(), "Failed to get XML from param [%s].", FLAGS_param.c_str());
+        ros2_node->get_logger(), "Failed to get XML from param [%s].", param_prm.c_str());
       return -1;
     }
-  } else if (!FLAGS_string.empty()) {  // string
-    req.set_sdf(FLAGS_string);
-  } else if (!FLAGS_topic.empty()) {  // topic
+  } else if (!string_prm.empty()) {  // string
+    req.set_sdf(string_prm);
+  } else if (!topic_prm.empty()) {  // topic
     const auto timeout = std::chrono::seconds(1);
     std::promise<std::string> xml_promise;
     std::shared_future<std::string> xml_future(xml_promise.get_future());
@@ -142,11 +138,11 @@ int main(int _argc, char ** _argv)
     rclcpp::Subscription<std_msgs::msg::String>::SharedPtr description_subs;
     // Transient local is similar to latching in ROS 1.
     description_subs = ros2_node->create_subscription<std_msgs::msg::String>(
-      FLAGS_topic, rclcpp::QoS(1).transient_local(), fun);
+      topic_prm, rclcpp::QoS(1).transient_local(), fun);
 
     rclcpp::FutureReturnCode future_ret;
     do {
-      RCLCPP_INFO(ros2_node->get_logger(), "Waiting messages on topic [%s].", FLAGS_topic.c_str());
+      RCLCPP_INFO(ros2_node->get_logger(), "Waiting messages on topic [%s].", topic_prm.c_str());
       future_ret = executor.spin_until_future_complete(xml_future, timeout);
     } while (rclcpp::ok() && future_ret != rclcpp::FutureReturnCode::SUCCESS);
 
@@ -154,7 +150,7 @@ int main(int _argc, char ** _argv)
       req.set_sdf(xml_future.get());
     } else {
       RCLCPP_ERROR(
-        ros2_node->get_logger(), "Failed to get XML from topic [%s].", FLAGS_topic.c_str());
+        ros2_node->get_logger(), "Failed to get XML from topic [%s].", topic_prm.c_str());
       return -1;
     }
   } else {
@@ -163,16 +159,16 @@ int main(int _argc, char ** _argv)
   }
 
   // Pose
-  gz::math::Pose3d pose{FLAGS_x, FLAGS_y, FLAGS_z, FLAGS_R, FLAGS_P, FLAGS_Y};
+  gz::math::Pose3d pose{x_prm, y_prm, z_prm, R_prm, P_prm, Y_prm};
   gz::msgs::Set(req.mutable_pose(), pose);
 
   // Name
-  if (!FLAGS_name.empty()) {
-    req.set_name(FLAGS_name);
+  if (!name_prm.empty()) {
+    req.set_name(name_prm);
   }
 
-  if (FLAGS_allow_renaming) {
-    req.set_allow_renaming(FLAGS_allow_renaming);
+  if (allow_renaming_prm) {
+    req.set_allow_renaming(allow_renaming_prm);
   }
 
   // Request
