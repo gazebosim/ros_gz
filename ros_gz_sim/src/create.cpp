@@ -52,7 +52,7 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
 bool set_XML_from_topic(
   const std::string & topic_name, const rclcpp::Node::SharedPtr ros2_node,
-  ignition::msgs::EntityFactory & req)
+  gz::msgs::EntityFactory & req)
 {
   const auto timeout = std::chrono::seconds(1);
   std::promise<std::string> xml_promise;
