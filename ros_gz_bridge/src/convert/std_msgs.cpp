@@ -23,7 +23,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Bool & ros_msg,
-  ignition::msgs::Boolean & gz_msg)
+  gz::msgs::Boolean & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -31,7 +31,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Boolean & gz_msg,
+  const gz::msgs::Boolean & gz_msg,
   std_msgs::msg::Bool & ros_msg)
 {
   ros_msg.data = gz_msg.data();
@@ -41,7 +41,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::ColorRGBA & ros_msg,
-  ignition::msgs::Color & gz_msg)
+  gz::msgs::Color & gz_msg)
 {
   gz_msg.set_r(ros_msg.r);
   gz_msg.set_g(ros_msg.g);
@@ -52,7 +52,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Color & gz_msg,
+  const gz::msgs::Color & gz_msg,
   std_msgs::msg::ColorRGBA & ros_msg)
 {
   ros_msg.r = gz_msg.r();
@@ -65,14 +65,14 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Empty &,
-  ignition::msgs::Empty &)
+  gz::msgs::Empty &)
 {
 }
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Empty &,
+  const gz::msgs::Empty &,
   std_msgs::msg::Empty &)
 {
 }
@@ -81,7 +81,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::UInt32 & ros_msg,
-  ignition::msgs::UInt32 & gz_msg)
+  gz::msgs::UInt32 & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -89,7 +89,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::UInt32 & gz_msg,
+  const gz::msgs::UInt32 & gz_msg,
   std_msgs::msg::UInt32 & ros_msg)
 {
   ros_msg.data = gz_msg.data();
@@ -99,7 +99,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Float32 & ros_msg,
-  ignition::msgs::Float & gz_msg)
+  gz::msgs::Float & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -107,7 +107,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Float & gz_msg,
+  const gz::msgs::Float & gz_msg,
   std_msgs::msg::Float32 & ros_msg)
 {
   ros_msg.data = gz_msg.data();
@@ -117,7 +117,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Float64 & ros_msg,
-  ignition::msgs::Double & gz_msg)
+  gz::msgs::Double & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -125,7 +125,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Double & gz_msg,
+  const gz::msgs::Double & gz_msg,
   std_msgs::msg::Float64 & ros_msg)
 {
   ros_msg.data = gz_msg.data();
@@ -135,7 +135,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Header & ros_msg,
-  ignition::msgs::Header & gz_msg)
+  gz::msgs::Header & gz_msg)
 {
   convert_ros_to_gz(ros_msg.stamp, *gz_msg.mutable_stamp());
   auto newPair = gz_msg.add_data();
@@ -147,7 +147,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::Int32 & ros_msg,
-  ignition::msgs::Int32 & gz_msg)
+  gz::msgs::Int32 & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -155,7 +155,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Int32 & gz_msg,
+  const gz::msgs::Int32 & gz_msg,
   std_msgs::msg::Int32 & ros_msg)
 {
   ros_msg.data = gz_msg.data();
@@ -164,7 +164,7 @@ convert_gz_to_ros(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Header & gz_msg,
+  const gz::msgs::Header & gz_msg,
   std_msgs::msg::Header & ros_msg)
 {
   convert_gz_to_ros(gz_msg.stamp(), ros_msg.stamp);
@@ -180,7 +180,7 @@ template<>
 void
 convert_ros_to_gz(
   const std_msgs::msg::String & ros_msg,
-  ignition::msgs::StringMsg & gz_msg)
+  gz::msgs::StringMsg & gz_msg)
 {
   gz_msg.set_data(ros_msg.data);
 }
@@ -188,7 +188,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::StringMsg & gz_msg,
+  const gz::msgs::StringMsg & gz_msg,
   std_msgs::msg::String & ros_msg)
 {
   ros_msg.data = gz_msg.data();
