@@ -280,6 +280,26 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const geometry_msgs::msg::TwistStamped & ros_msg,
+  gz::msgs::Twist & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  convert_ros_to_gz(ros_msg.twist, gz_msg);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Twist & gz_msg,
+  geometry_msgs::msg::TwistStamped & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  convert_gz_to_ros(gz_msg, ros_msg.twist);
+}
+
+template<>
+void
+convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
   gz::msgs::TwistWithCovariance & gz_msg)
 {
