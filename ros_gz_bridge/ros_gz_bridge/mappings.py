@@ -41,6 +41,7 @@ MAPPINGS = {
         Mapping('Transform', 'Pose'),
         Mapping('TransformStamped', 'Pose'),
         Mapping('Twist', 'Twist'),
+        Mapping('TwistStamped', 'Twist'),
         Mapping('TwistWithCovariance', 'TwistWithCovariance'),
         Mapping('TwistWithCovarianceStamped', 'TwistWithCovariance'),
         Mapping('Wrench', 'Wrench'),

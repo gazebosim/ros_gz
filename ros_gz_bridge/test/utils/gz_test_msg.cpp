@@ -420,6 +420,9 @@ void createTestMsg(gz::msgs::Twist & _msg)
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::Twist> & _msg)
 {
+  if (_msg->has_header()) {
+    compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  }
   compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->linear()));
   compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->angular()));
 }
