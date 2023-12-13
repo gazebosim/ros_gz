@@ -19,8 +19,8 @@
 #include <string>
 #include <vector>
 
-#include <ignition/msgs/config.hh>
-#include <ignition/transport/Node.hh>
+#include <gz/msgs/config.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/node.hpp>
 #include "ros_gz_bridge/bridge_config.hpp"
 
@@ -70,7 +70,7 @@ protected:
 
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
-  std::shared_ptr<ignition::transport::Node> gz_node_;
+  std::shared_ptr<gz::transport::Node> gz_node_;
 
   /// \brief List of bridge handles
   std::vector<std::shared_ptr<ros_gz_bridge::BridgeHandle>> handles_;

@@ -17,8 +17,8 @@
 #include <csignal>
 #include <iostream>
 #include <thread>
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
+#include <gz/msgs.hh>
+#include <gz/transport.hh>
 #include "../test_utils.h"
 
 /// \brief Flag used to break the publisher loop and terminate the program.
@@ -42,11 +42,11 @@ int main(int /*argc*/, char **/*argv*/)
   std::signal(SIGTERM, signal_handler);
 
   // Create a transport node and advertise a topic.
-  ignition::transport::Node node;
+  gz::transport::Node node;
 
   // gz::msgs::Image.
-  auto image_pub = node.Advertise<ignition::msgs::Image>("image");
-  ignition::msgs::Image image_msg;
+  auto image_pub = node.Advertise<gz::msgs::Image>("image");
+  gz::msgs::Image image_msg;
   ros_gz_image::testing::createTestMsg(image_msg);
 
   // Publish messages at 1Hz.

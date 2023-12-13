@@ -17,7 +17,7 @@
 
 #include <memory>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/subscription_base.hpp>
 
 #include "bridge_handle.hpp"
@@ -58,7 +58,7 @@ protected:
 
 protected:
   /// \brief Gazebo subscriber, populated when subscriber active
-  std::shared_ptr<ignition::transport::Node> gz_subscriber_ = {nullptr};
+  std::shared_ptr<gz::transport::Node> gz_subscriber_ = {nullptr};
 
   /// \brief ROS publisher, populated when publisher active
   rclcpp::PublisherBase::SharedPtr ros_publisher_ = {nullptr};

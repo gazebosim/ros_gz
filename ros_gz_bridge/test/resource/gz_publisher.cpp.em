@@ -14,8 +14,8 @@
 
 // This file is generated from test/resource/gz_publisher.cpp.em
 
-#include <ignition/msgs.hh>
-#include <ignition/transport.hh>
+#include <gz/msgs.hh>
+#include <gz/transport.hh>
 
 #include <atomic>
 #include <chrono>
@@ -50,7 +50,7 @@ int main(int /*argc*/, char **/*argv*/)
   std::signal(SIGTERM, signal_handler);
 
   // Create a transport node and advertise a topic.
-  ignition::transport::Node node;
+  gz::transport::Node node;
 
 @[for m in mappings]@
   // @(m.gz_string()).

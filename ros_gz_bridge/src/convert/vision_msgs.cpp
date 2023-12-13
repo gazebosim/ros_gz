@@ -23,13 +23,13 @@ template<>
 void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2D & ros_msg,
-  ignition::msgs::AnnotatedAxisAligned2DBox & gz_msg)
+  gz::msgs::AnnotatedAxisAligned2DBox & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
-  ignition::msgs::AxisAligned2DBox * box = new ignition::msgs::AxisAligned2DBox();
-  ignition::msgs::Vector2d * min_corner = new ignition::msgs::Vector2d();
-  ignition::msgs::Vector2d * max_corner = new ignition::msgs::Vector2d();
+  gz::msgs::AxisAligned2DBox * box = new gz::msgs::AxisAligned2DBox();
+  gz::msgs::Vector2d * min_corner = new gz::msgs::Vector2d();
+  gz::msgs::Vector2d * max_corner = new gz::msgs::Vector2d();
 
   if (ros_msg.results.size() != 0) {
     auto id = ros_msg.results.at(0).hypothesis.class_id;
@@ -48,7 +48,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::AnnotatedAxisAligned2DBox & gz_msg,
+  const gz::msgs::AnnotatedAxisAligned2DBox & gz_msg,
   vision_msgs::msg::Detection2D & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
@@ -71,11 +71,11 @@ template<>
 void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2DArray & ros_msg,
-  ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg)
+  gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   for (const auto & ros_box : ros_msg.detections) {
-    ignition::msgs::AnnotatedAxisAligned2DBox * gz_box = gz_msg.add_annotated_box();
+    gz::msgs::AnnotatedAxisAligned2DBox * gz_box = gz_msg.add_annotated_box();
     convert_ros_to_gz(ros_box, *gz_box);
   }
 }
@@ -83,7 +83,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
+  const gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
   vision_msgs::msg::Detection2DArray & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);

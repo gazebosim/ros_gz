@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__TF2_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/pose_v.pb.h>
+#include <gz/msgs/pose_v.pb.h>
 
 // ROS 2 messages
 #include <tf2_msgs/msg/tf_message.hpp>
@@ -30,12 +30,12 @@ template<>
 void
 convert_ros_to_gz(
   const tf2_msgs::msg::TFMessage & ros_msg,
-  ignition::msgs::Pose_V & gz_msg);
+  gz::msgs::Pose_V & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Pose_V & gz_msg,
+  const gz::msgs::Pose_V & gz_msg,
   tf2_msgs::msg::TFMessage & ros_msg);
 
 }  // namespace ros_gz_bridge
