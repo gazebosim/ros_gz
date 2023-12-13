@@ -447,6 +447,18 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::Twist> & _msg)
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular));
 }
 
+void createTestMsg(geometry_msgs::msg::TwistStamped & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.twist);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistStamped> & _msg)
+{
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Twist>(_msg->twist));
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+}
+
 void createTestMsg(geometry_msgs::msg::TwistWithCovariance & _msg)
 {
   createTestMsg(_msg.twist.linear);
