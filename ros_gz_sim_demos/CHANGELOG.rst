@@ -2,8 +2,8 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.12 (2023-12-13)
+---------------------
 * [backport Humble] Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
 * Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
 * Fix incorrect subscription on demo (`#405 <https://github.com/gazebosim/ros_gz/issues/405>`_)

@@ -2,8 +2,8 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.244.12 (2023-12-13)
+---------------------
 * Add support for Harmonic/Humble pairing (`#462 <https://github.com/gazebosim/ros_gz/issues/462>`_)
 * Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_) (`#450 <https://github.com/gazebosim/ros_gz/issues/450>`_)
 * Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero
