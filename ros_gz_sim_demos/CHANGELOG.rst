@@ -2,6 +2,13 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [backport Humble] Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
+* Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz/issues/422>`_)
+* Fix incorrect subscription on demo (`#405 <https://github.com/gazebosim/ros_gz/issues/405>`_)
+* Contributors: Alejandro Hernández Cordero, Arjo Chakravarty
+
 0.244.11 (2023-05-23)
 ---------------------
 

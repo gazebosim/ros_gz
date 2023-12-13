@@ -2,6 +2,12 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* [backport humble] SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)
+* [backport humble] Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_) (`#414 <https://github.com/gazebosim/ros_gz/issues/414>`_) (`#426 <https://github.com/gazebosim/ros_gz/issues/426>`_)
+* Contributors: Alejandro Hernández Cordero
+
 0.244.11 (2023-05-23)
 ---------------------
 
