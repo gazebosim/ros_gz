@@ -29,6 +29,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/Transform          | ignition::msgs::Pose                   |
 | geometry_msgs/msg/TransformStamped   | ignition::msgs::Pose                   |
 | geometry_msgs/msg/Twist              | ignition::msgs::Twist                  |
+| geometry_msgs/msg/TwistStamped       | ignition::msgs::Twist                  |
 | geometry_msgs/msg/TwistWithCovariance| ignition::msgs::TwistWithCovariance    |
 | nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
 | nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |

@@ -2,6 +2,18 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.12 (2023-12-13)
+---------------------
+* Backport: Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_) (`#470 <https://github.com/gazebosim/ros_gz/issues/470>`_)
+* Add support for Harmonic/Humble pairing (`#462 <https://github.com/gazebosim/ros_gz/issues/462>`_)
+* Added messages for 2D Bounding Boxes to ros_gz_bridge (`#458 <https://github.com/gazebosim/ros_gz/issues/458>`_)
+* Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_) (`#450 <https://github.com/gazebosim/ros_gz/issues/450>`_)
+* [backport humble] SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)
+* [backport humble] Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_) (`#414 <https://github.com/gazebosim/ros_gz/issues/414>`_) (`#426 <https://github.com/gazebosim/ros_gz/issues/426>`_)
+* [backport humble] Update README.md (`#411 <https://github.com/gazebosim/ros_gz/issues/411>`_)
+  The ROS type for gz.msgs.NavSat messages should be **sensor_msgs/msg/NavSatFix** instead of **sensor_msgs/msg/NavSatFixed**
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Arjun K Haridas, wittenator
+
 0.244.11 (2023-05-23)
 ---------------------
 * Add actuator_msgs to humble bridge. (`#394 <https://github.com/gazebosim/ros_gz/issues/394>`_)

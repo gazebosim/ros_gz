@@ -34,6 +34,7 @@
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
+#include <geometry_msgs/msg/twist_stamped.hpp>
 #include <geometry_msgs/msg/twist_with_covariance.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
 #include <geometry_msgs/msg/wrench_stamped.hpp>
@@ -163,6 +164,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const geometry_msgs::msg::TwistStamped & ros_msg,
+  gz::msgs::Twist & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Twist & gz_msg,
+  geometry_msgs::msg::TwistStamped & ros_msg);
 
 template<>
 void
