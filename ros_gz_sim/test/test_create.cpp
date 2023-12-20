@@ -13,13 +13,13 @@
 // limitations under the License.
 
 
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
 #include <csignal>
 #include <chrono>
 #include <condition_variable>
 #include <functional>
 #include <mutex>
-#include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
 #include <gz/transport/Node.hh>
 
 // Simple application that provides a `/create` service and prints out the
@@ -32,25 +32,25 @@ int main()
   bool test_complete = false;
 
   gz::transport::Node node;
-  auto cb = std::function([&](
-        const gz::msgs::EntityFactory &_req,
-        gz::msgs::Boolean &_res) -> bool {
+  auto cb = std::function(
+    [&](
+      const gz::msgs::EntityFactory & _req,
+      gz::msgs::Boolean & _res) -> bool {
+      std::cout << _req.sdf_filename() << std::endl;
+      _res.set_data(true);
 
-    std::cout << _req.sdf_filename() << std::endl;
-    _res.set_data(true);
-
-    {
-      std::lock_guard<std::mutex> lk(m);
-      test_complete = true;
-    }
-    cv.notify_one();
-    return true;
-  });
+      {
+        std::lock_guard<std::mutex> lk(m);
+        test_complete = true;
+      }
+      cv.notify_one();
+      return true;
+    });
 
   node.Advertise("/world/default/create", cb);
   // wait until we receive a message.
   std::unique_lock<std::mutex> lk(m);
-  cv.wait(lk, [&]{return test_complete;});
+  cv.wait(lk, [&] {return test_complete;});
   // Sleep so that the service response can be sent before exiting.
   std::this_thread::sleep_for(std::chrono::seconds(1));
 }

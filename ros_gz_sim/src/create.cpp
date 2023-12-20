@@ -59,7 +59,9 @@ int main(int _argc, char ** _argv)
   char ** filtered_argv = new char *[(filtered_argc + 1)];
   for (int ii = 0; ii < filtered_argc; ++ii) {
     filtered_argv[ii] = new char[filtered_arguments[ii].size() + 1];
-    snprintf(filtered_argv[ii], filtered_arguments[ii].size() + 1, "%s", filtered_arguments[ii].c_str());
+    snprintf(
+      filtered_argv[ii],
+      filtered_arguments[ii].size() + 1, "%s", filtered_arguments[ii].c_str());
   }
   filtered_argv[filtered_argc] = nullptr;
 

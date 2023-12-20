@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import os
-import sys
 import unittest
 
 from launch import LaunchDescription
@@ -24,9 +22,9 @@ import launch_testing
 
 
 def generate_test_description():
-    expected_file_name =  'nonexistent/long/file_name'
-    create = Node(package='ros_gz_sim', executable='create', arguments=['-world', 
-        'default', '-file', expected_file_name], output='screen')
+    expected_file_name = 'nonexistent/long/file_name'
+    create = Node(package='ros_gz_sim', executable='create',
+                  arguments=['-world', 'default', '-file', expected_file_name], output='screen')
     test_create = Node(package='ros_gz_sim', executable='test_create', output='screen')
     return LaunchDescription([
         create,
@@ -35,14 +33,15 @@ def generate_test_description():
         launch_testing.actions.ReadyToTest(),
     ]), locals()
 
+
 class WaitForTests(unittest.TestCase):
 
     def test_termination(self, test_create, proc_info):
         proc_info.assertWaitForShutdown(process=test_create, timeout=200)
+
 
 @launch_testing.post_shutdown_test()
 class CreateTest(unittest.TestCase):
 
     def test_output(self, expected_file_name, test_create, proc_output):
         launch_testing.asserts.assertInStdout(proc_output, expected_file_name, test_create)
-
