@@ -123,10 +123,14 @@ if(BUILD_TESTING)
 
   # GTest
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
 
   ament_add_gtest_executable(test_stopwatch
     test/test_stopwatch.cpp
+  )
+  ament_add_gtest_executable(test_create
+    test/test_create.cpp
   )
 
   ament_target_dependencies(test_stopwatch rclcpp)
@@ -139,12 +143,16 @@ if(BUILD_TESTING)
   target_link_libraries(test_stopwatch
     ${PROJECT_NAME}
   )
+  target_link_libraries(test_create
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  )
 
   install(
-    TARGETS test_stopwatch
+    TARGETS test_stopwatch test_create
     DESTINATION lib/${PROJECT_NAME}
   )
   ament_add_gtest_test(test_stopwatch)
+  add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
 endif()
 
 ament_package()
