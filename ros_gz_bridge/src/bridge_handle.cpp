@@ -23,7 +23,7 @@ namespace ros_gz_bridge
 {
 BridgeHandle::BridgeHandle(
   rclcpp::Node::SharedPtr ros_node,
-  std::shared_ptr<ignition::transport::Node> gz_node,
+  std::shared_ptr<gz::transport::Node> gz_node,
   const BridgeConfig & config)
 : ros_node_(ros_node),
   gz_node_(gz_node),

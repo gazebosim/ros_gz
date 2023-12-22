@@ -22,7 +22,7 @@ template<>
 void
 convert_ros_to_gz(
   const actuator_msgs::msg::Actuators & ros_msg,
-  ignition::msgs::Actuators & gz_msg)
+  gz::msgs::Actuators & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
@@ -41,7 +41,7 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Actuators & gz_msg,
+  const gz::msgs::Actuators & gz_msg,
   actuator_msgs::msg::Actuators & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);

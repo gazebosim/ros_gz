@@ -50,7 +50,7 @@ struct BridgeConfig
   /// \brief The ROS topic name to bridge
   std::string ros_topic_name;
 
-  /// \brief The Gazebo message type (eg ignition.msgs.String)
+  /// \brief The Gazebo message type (eg gz.msgs.String)
   /// Used with topic bridges
   std::string gz_type_name;
 

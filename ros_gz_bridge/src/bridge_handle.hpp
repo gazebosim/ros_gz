@@ -18,7 +18,7 @@
 #include <memory>
 #include <string>
 
-#include <ignition/transport/Node.hh>
+#include <gz/transport/Node.hh>
 #include <rclcpp/node.hpp>
 
 #include "get_factory.hpp"
@@ -40,7 +40,7 @@ public:
   /// \param[in] config Configuration parameters for this handle
   BridgeHandle(
     rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<ignition::transport::Node> gz_node,
+    std::shared_ptr<gz::transport::Node> gz_node,
     const BridgeConfig & config);
 
   /// \brief Destructor
@@ -94,7 +94,7 @@ protected:
   rclcpp::Node::SharedPtr ros_node_;
 
   /// \brief The Gazebo node used to create publishers/subscriptions
-  std::shared_ptr<ignition::transport::Node> gz_node_;
+  std::shared_ptr<gz::transport::Node> gz_node_;
 
   /// \brief The configuration parameters of this bridge
   BridgeConfig config_;

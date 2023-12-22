@@ -16,7 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ACTUATOR_MSGS_HPP_
 
 // Gazebo Msgs
-#include <ignition/msgs/actuators.pb.h>
+#include <gz/msgs/actuators.pb.h>
 
 // ROS 2 messages
 #include <actuator_msgs/msg/actuators.hpp>
@@ -30,12 +30,12 @@ template<>
 void
 convert_ros_to_gz(
   const actuator_msgs::msg::Actuators & ros_msg,
-  ignition::msgs::Actuators & gz_msg);
+  gz::msgs::Actuators & gz_msg);
 
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Actuators & gz_msg,
+  const gz::msgs::Actuators & gz_msg,
   actuator_msgs::msg::Actuators & ros_msg);
 
 }  // namespace ros_gz_bridge

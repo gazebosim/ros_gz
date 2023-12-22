@@ -26,7 +26,7 @@ TEST(BridgeConfig, Minimum)
     EXPECT_EQ("chatter", config.ros_topic_name);
     EXPECT_EQ("chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -36,7 +36,7 @@ TEST(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_ros", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -46,7 +46,7 @@ TEST(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_gz", config.ros_topic_name);
     EXPECT_EQ("chatter_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -56,7 +56,7 @@ TEST(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_both_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_both_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -73,7 +73,7 @@ TEST(BridgeConfig, MinimumIgn)
     EXPECT_EQ("chatter", config.ros_topic_name);
     EXPECT_EQ("chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -83,7 +83,7 @@ TEST(BridgeConfig, MinimumIgn)
     EXPECT_EQ("chatter_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_ros", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -93,7 +93,7 @@ TEST(BridgeConfig, MinimumIgn)
     EXPECT_EQ("chatter_gz", config.ros_topic_name);
     EXPECT_EQ("chatter_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -103,7 +103,7 @@ TEST(BridgeConfig, MinimumIgn)
     EXPECT_EQ("chatter_both_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_both_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -121,7 +121,7 @@ TEST(BridgeConfig, FullGz)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(6u, config.publisher_queue_size);
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
@@ -133,7 +133,7 @@ TEST(BridgeConfig, FullGz)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(20u, config.publisher_queue_size);
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
@@ -151,7 +151,7 @@ TEST(BridgeConfig, FullIgn)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(6u, config.publisher_queue_size);
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
@@ -163,7 +163,7 @@ TEST(BridgeConfig, FullIgn)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(20u, config.publisher_queue_size);
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
@@ -212,7 +212,7 @@ TEST(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg)";
+    gz_type_name: gz.msgs.StringMsg)";
 
     auto results = ros_gz_bridge::readFromYamlString(yaml);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::BIDIRECTIONAL, results[0].direction);
@@ -223,7 +223,7 @@ TEST(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: BIDIRECTIONAL
     )";
 
@@ -236,7 +236,7 @@ TEST(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: ROS_TO_GZ
     )";
 
@@ -249,7 +249,7 @@ TEST(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: GZ_TO_ROS
     )";
 
@@ -263,7 +263,7 @@ TEST(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: asdfasdfasdfasdf
     )";
 

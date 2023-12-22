@@ -38,11 +38,11 @@ class MessageMapping:
 
     def ign_string(self):
         # Return GZ string version of a message (eg ignition.msgs.Bool)
-        return f'ignition.msgs.{self.gz_message_name}'
+        return f'gz.msgs.{self.gz_message_name}'
 
     def ign_type(self):
         # Return GZ type of a message (eg ignition::msgs::Bool)
-        return f'ignition::msgs::{self.gz_message_name}'
+        return f'gz::msgs::{self.gz_message_name}'
 
     def gz_string(self):
         # Return GZ string version of a message (eg ignition.msgs.Bool)

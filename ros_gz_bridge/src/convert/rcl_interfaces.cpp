@@ -27,10 +27,10 @@ template<>
 void
 convert_ros_to_gz(
   const rcl_interfaces::msg::ParameterValue & ros_msg,
-  ignition::msgs::Any & gz_msg)
+  gz::msgs::Any & gz_msg)
 {
   using ParameterType = rcl_interfaces::msg::ParameterType;
-  using Any_ValueType = ignition::msgs::Any_ValueType;
+  using Any_ValueType = gz::msgs::Any_ValueType;
 
   std::string unsupported_type;
   gz_msg.set_type(Any_ValueType::Any_ValueType_NONE);
@@ -92,11 +92,11 @@ convert_ros_to_gz(
 template<>
 void
 convert_gz_to_ros(
-  const ignition::msgs::Any & gz_msg,
+  const gz::msgs::Any & gz_msg,
   rcl_interfaces::msg::ParameterValue & ros_msg)
 {
   using ParameterType = rcl_interfaces::msg::ParameterType;
-  using Any_ValueType = ignition::msgs::Any_ValueType;
+  using Any_ValueType = gz::msgs::Any_ValueType;
 
   ros_msg.type = ParameterType::PARAMETER_NOT_SET;
 
