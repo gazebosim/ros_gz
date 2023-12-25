@@ -246,6 +246,10 @@ int main(int _argc, char ** _argv)
     req.set_name(FLAGS_name);
   }
 
+  // Allow Renaming
+  bool allow_renaming = ros2_node->get_parameter("allow_renaming").as_bool();
+  req.set_allow_renaming((allow_renaming || FLAGS_allow_renaming));
+
   // Request
   gz::transport::Node node;
   gz::msgs::Boolean rep;
