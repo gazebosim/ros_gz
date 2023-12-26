@@ -24,6 +24,7 @@
 #include <chrono>
 #include <future>
 #include <functional>
+#include <memory>
 
 #include <gz/math/Pose3.hh>
 #include <gz/msgs/Utility.hh>
