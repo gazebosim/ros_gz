@@ -37,6 +37,7 @@
 // Suggested for use with roslaunch and loading entities from ROS param.
 // If these are not needed, just use the `gz service` command line instead.
 
+// \TODO(anyone) Remove GFlags in ROS-J
 DEFINE_string(world, "", "World name.");
 DEFINE_string(file, "", "Load XML from a file.");
 DEFINE_string(param, "", "Load XML from a ROS param.");
