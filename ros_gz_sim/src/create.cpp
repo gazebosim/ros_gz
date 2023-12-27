@@ -215,7 +215,8 @@ int main(int _argc, char ** _argv)
       return -1;
     }
     RCLCPP_WARN(
-      ros2_node->get_logger(), "Usage of Commandline flags for spawning entities is deprecated. Please use ROS 2 parameters."
+      ros2_node->get_logger(),
+      "Usage of Commandline flags for spawning entities is deprecated. Please use ROS 2 parameters."
     );
   } else {
     RCLCPP_ERROR(
