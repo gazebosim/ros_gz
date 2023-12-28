@@ -24,7 +24,7 @@ import launch_testing
 def generate_test_description():
     expected_file_name = 'nonexistent/long/file_name'
     create = Node(package='ros_gz_sim', executable='create',
-                  arguments=['-world', 'default', '-file', expected_file_name], output='screen')
+                  parameters=[{'world': 'default', 'file': expected_file_name}], output='screen')
     test_create = Node(package='ros_gz_sim', executable='test_create', output='screen')
     return LaunchDescription([
         create,
