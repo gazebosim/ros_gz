@@ -125,6 +125,9 @@ The following steps are for Linux and OSX.
     cd ~/ws
     colcon build
     ```
+  > [!TIP]
+  > The `ros_gz` library makes heavy use of templates which causes compilers to consume a lot of memory. If your build fails with `c++: fatal error: Killed signal terminated program cc1plus`
+  > try building with `colcon build --parallel-workers=1 --executor sequential`.
 
     If `colcon build` fails with [this issue](https://github.com/gazebosim/ros_gz/issues/401)
 
