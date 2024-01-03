@@ -130,7 +130,8 @@ The following steps are for Linux and OSX.
     ```
   > [!TIP]
   > The `ros_gz` library makes heavy use of templates which causes compilers to consume a lot of memory. If your build fails with `c++: fatal error: Killed signal terminated program cc1plus`
-  > try building with `colcon build --parallel-workers=1 --executor sequential`.
+  > try building with `colcon build --parallel-workers=1 --executor sequential`. You might also have to set `export MAKEFLAGS="-j 1"` before running `colcon build` to limit
+  > the number of processors used to build a single package.
 
 ## ROSCon 2022
 
