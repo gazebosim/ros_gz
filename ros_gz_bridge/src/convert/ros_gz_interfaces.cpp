@@ -178,8 +178,6 @@ convert_gz_to_ros(
   ros_msg.relative_to = gz_msg.relative_to();
 }
 
-
-
 template<>
 void
 convert_ros_to_gz(
