@@ -155,9 +155,7 @@ convert_ros_to_gz(
     std::cerr << "Must provide one of: sdf, sdf_filname, or clone_name" << std::endl;
   }
 
-
   convert_ros_to_gz(ros_msg.pose, *gz_msg.mutable_pose());
-
 }
 
 template<>
