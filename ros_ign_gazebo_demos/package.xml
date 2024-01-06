@@ -7,6 +7,8 @@
 
   <buildtool_depend>catkin</buildtool_depend>
 
+  <!-- Garden -->
+  <exec_depend condition="$IGNITION_VERSION == garden">ignition-gazebo7</exec_depend>
   <!-- Fortress -->
   <exec_depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</exec_depend>
   <!-- Edifice -->

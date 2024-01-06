@@ -9,6 +9,8 @@
 
   <depend>libgflags-dev</depend>
 
+  <!-- Garden -->
+  <depend condition="$IGNITION_VERSION == garden">ignition-gazebo7</depend>
   <!-- Fortress -->
   <depend condition="$IGNITION_VERSION == fortress">ignition-gazebo6</depend>
   <!-- Edifice -->
