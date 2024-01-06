@@ -9,6 +9,18 @@ find_package(catkin
 )
 
 # Fortress
+if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+  find_package(ignition-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+
+  find_package(ignition-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+
+  find_package(ignition-gazebo7 REQUIRED)
+  set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Garden")
+# Fortress
 if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
