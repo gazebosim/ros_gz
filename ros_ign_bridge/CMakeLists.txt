@@ -19,6 +19,15 @@ find_package(catkin REQUIRED COMPONENTS
                std_msgs
                tf2_msgs
                visualization_msgs)
+# Garden
+if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
+  find_package(ignition-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+
+  find_package(ignition-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Ignition Garden")
 
 # Fortress
 if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
