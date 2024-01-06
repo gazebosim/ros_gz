@@ -29,7 +29,7 @@ if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
 
   message(STATUS "Compiling against Ignition Garden")
 # Fortress
-if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+elseif ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 

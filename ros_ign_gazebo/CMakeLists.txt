@@ -8,7 +8,7 @@ find_package(catkin
     roscpp
 )
 
-# Fortress
+# Garden
 if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
   find_package(ignition-transport12 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
@@ -21,7 +21,7 @@ if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
 
   message(STATUS "Compiling against Ignition Garden")
 # Fortress
-if ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
+elseif ("$ENV{IGNITION_VERSION}" STREQUAL "fortress")
   find_package(ignition-transport11 REQUIRED)
   set(IGN_TRANSPORT_VER ${ignition-transport11_VERSION_MAJOR})
 
