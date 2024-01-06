@@ -18,11 +18,11 @@ find_package(catkin REQUIRED COMPONENTS
 
 # Garden
 if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
-  find_package(ignition-transport12 REQUIRED)
-  set(IGN_TRANSPORT_VER ${ignition-transport12_VERSION_MAJOR})
+  find_package(gz-transport12 REQUIRED)
+  set(IGN_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
-  find_package(ignition-msgs9 REQUIRED)
-  set(IGN_MSGS_VER ${ignition-msgs9_VERSION_MAJOR})
+  find_package(gz-msgs9 REQUIRED)
+  set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
   find_package(ignition-gazebo7 REQUIRED)
   set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
