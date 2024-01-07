@@ -24,8 +24,8 @@ if ("$ENV{IGNITION_VERSION}" STREQUAL "garden")
   find_package(gz-msgs9 REQUIRED)
   set(IGN_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
 
-  find_package(ignition-gazebo7 REQUIRED)
-  set(IGN_GAZEBO_VER ${ignition-gazebo7_VERSION_MAJOR})
+  find_package(gz-sim7 REQUIRED)
+  set(IGN_GAZEBO_VER ${gz-sim7_VERSION_MAJOR})
 
   message(STATUS "Compiling against Ignition Garden")
 # Fortress
