@@ -2,6 +2,9 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.0 (2024-01-08)
+--------------------
+
 0.247.0 (2023-11-02)
 --------------------
 * Merge branch 'iron' into ahcorde/iron/backport/411

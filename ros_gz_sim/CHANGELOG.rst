@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.0 (2024-01-08)
+--------------------
+* Forward port: Add support for Harmonic/Humble pairing (`#462 <https://github.com/gazebosim/ros_gz/issues/462>`_)
+* Contributors: Addisu Z. Taddese, Michael Carroll
+
 0.247.0 (2023-11-02)
 --------------------
 * set on_exit_shutdown argument for gz-sim ExecuteProcess (`#355 <https://github.com/gazebosim/ros_gz/issues/355>`_) (`#452 <https://github.com/gazebosim/ros_gz/issues/452>`_)
