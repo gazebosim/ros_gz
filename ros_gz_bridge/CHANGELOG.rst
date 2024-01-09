@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.0 (2024-01-08)
+--------------------
+* Backport: Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_) (`#471 <https://github.com/gazebosim/ros_gz/issues/471>`_)
+* Forward Port: Add support for Harmonic/Humble pairing (`#462 <https://github.com/gazebosim/ros_gz/issues/462>`_)
+* Added messages for 2D Bounding Boxes to ros_gz_bridge (`#458 <https://github.com/gazebosim/ros_gz/issues/458>`_)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Arjun K Haridas, wittenator
+
 0.247.0 (2023-11-02)
 --------------------
 * Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_) (`#449 <https://github.com/gazebosim/ros_gz/issues/449>`_)
