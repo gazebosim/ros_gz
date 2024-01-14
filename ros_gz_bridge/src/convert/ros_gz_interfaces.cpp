@@ -1,4 +1,6 @@
 // Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright (C) 2024 CogniPilot Foundation
+// Copyright (C) 2024 Rudis Laboratories LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -378,6 +380,41 @@ convert_gz_to_ros(
   ros_msg.parent_id = gz_msg.parent_id();
 
   ros_msg.intensity = gz_msg.intensity();
+}
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::MaterialColor & ros_msg,
+  gz::msgs::MaterialColor & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+
+  gz_msg.set_name(ros_msg.name);
+  
+  convert_ros_to_gz(ros_msg.ambient, *gz_msg.mutable_ambient());
+  convert_ros_to_gz(ros_msg.diffuse, *gz_msg.mutable_diffuse());
+  convert_ros_to_gz(ros_msg.specular, *gz_msg.mutable_specular());
+  convert_ros_to_gz(ros_msg.emissive, *gz_msg.mutable_emissive());
+
+  gz_msg.set_parent_name(ros_msg.parent_name);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::MaterialColor & gz_msg,
+  ros_gz_interfaces::msg::MaterialColor & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  ros_msg.name = gz_msg.name();
+  convert_gz_to_ros(gz_msg.ambient(), ros_msg.ambient);
+  convert_gz_to_ros(gz_msg.diffuse(), ros_msg.diffuse);
+  convert_gz_to_ros(gz_msg.specular(), ros_msg.specular);
+  convert_gz_to_ros(gz_msg.emissive(), ros_msg.emissive);
+
+  ros_msg.parent_name = gz_msg.parent_name();
 }
 
 template<>

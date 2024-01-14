@@ -1,4 +1,6 @@
 // Copyright 2018 Open Source Robotics Foundation, Inc.
+// Copyright (C) 2024 CogniPilot Foundation
+// Copyright (C) 2024 Rudis Laboratories LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,6 +26,7 @@
 #include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/gui_camera.pb.h>
 #include <gz/msgs/light.pb.h>
+#include <gz/msgs/material_color.pb.h>
 #include <gz/msgs/param.pb.h>
 #include <gz/msgs/param_v.pb.h>
 #include <gz/msgs/sensor_noise.pb.h>
@@ -41,6 +44,7 @@
 #include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/material_color.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
@@ -158,6 +162,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::MaterialColor & ros_msg,
+  gz::msgs::MaterialColor & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::MaterialColor & gz_msg,
+  ros_gz_interfaces::msg::MaterialColor & ros_msg);
 
 template<>
 void
