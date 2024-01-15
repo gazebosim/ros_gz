@@ -1,6 +1,6 @@
 std_msgs/Header header            # Optional header data
 
-string name                		  # name
+string name                	  # name
 string parent_name                # parent name
 
 std_msgs/ColorRGBA ambient        # ambient 
