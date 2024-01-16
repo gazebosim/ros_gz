@@ -7,67 +7,69 @@ The following message types can be bridged for topics:
 
 | ROS type                             | Gazebo type                            |
 |--------------------------------------|:--------------------------------------:|
-| builtin_interfaces/msg/Time          | ignition::msgs::Time                   |
-| std_msgs/msg/Bool                    | ignition::msgs::Boolean                |
-| std_msgs/msg/ColorRGBA               | ignition::msgs::Color                  |
-| std_msgs/msg/Empty                   | ignition::msgs::Empty                  |
-| std_msgs/msg/Float32                 | ignition::msgs::Float                  |
-| std_msgs/msg/Float64                 | ignition::msgs::Double                 |
-| std_msgs/msg/Header                  | ignition::msgs::Header                 |
-| std_msgs/msg/Int32                   | ignition::msgs::Int32                  |
-| std_msgs/msg/UInt32                  | ignition::msgs::UInt32                 |
-| std_msgs/msg/String                  | ignition::msgs::StringMsg              |
-| geometry_msgs/msg/Wrench             | ignition::msgs::Wrench                 |
-| geometry_msgs/msg/WrenchStamped      | ignition::msgs::Wrench                 |
-| geometry_msgs/msg/Quaternion         | ignition::msgs::Quaternion             |
-| geometry_msgs/msg/Vector3            | ignition::msgs::Vector3d               |
-| geometry_msgs/msg/Point              | ignition::msgs::Vector3d               |
-| geometry_msgs/msg/Pose               | ignition::msgs::Pose                   |
-| geometry_msgs/msg/PoseArray          | ignition::msgs::Pose_V                 |
-| geometry_msgs/msg/PoseWithCovariance | ignition::msgs::PoseWithCovariance     |
-| geometry_msgs/msg/PoseStamped        | ignition::msgs::Pose                   |
-| geometry_msgs/msg/Transform          | ignition::msgs::Pose                   |
-| geometry_msgs/msg/TransformStamped   | ignition::msgs::Pose                   |
-| geometry_msgs/msg/Twist              | ignition::msgs::Twist                  |
-| geometry_msgs/msg/TwistStamped       | ignition::msgs::Twist                  |
-| geometry_msgs/msg/TwistWithCovariance| ignition::msgs::TwistWithCovariance    |
-| nav_msgs/msg/Odometry                | ignition::msgs::Odometry               |
-| nav_msgs/msg/Odometry                | ignition::msgs::OdometryWithCovariance |
-| rcl_interfaces/msg/ParameterValue    | ignition::msgs::Any                    |
-| ros_gz_interfaces/msg/Altimeter      | ignition::msgs::Altimeter              |
-| ros_gz_interfaces/msg/Contact        | ignition::msgs::Contact                |
-| ros_gz_interfaces/msg/Contacts       | ignition::msgs::Contacts               |
-| ros_gz_interfaces/msg/Dataframe      | ignition::msgs::Dataframe              |
-| ros_gz_interfaces/msg/Entity         | ignition::msgs::Entity                 |
-| ros_gz_interfaces/msg/Float32Array   | ignition::msgs::Float_V                |
-| ros_gz_interfaces/msg/GuiCamera      | ignition::msgs::GUICamera              |
-| ros_gz_interfaces/msg/JointWrench    | ignition::msgs::JointWrench            |
-| ros_gz_interfaces/msg/Light          | ignition::msgs::Light                  |
-| ros_gz_interfaces/msg/SensorNoise    | ignition::msgs::SensorNoise            |
-| ros_gz_interfaces/msg/StringVec      | ignition::msgs::StringMsg_V            |
-| ros_gz_interfaces/msg/TrackVisual    | ignition::msgs::TrackVisual            |
-| ros_gz_interfaces/msg/VideoRecord    | ignition::msgs::VideoRecord            |
-| ros_gz_interfaces/msg/WorldControl   | ignition::msgs::WorldControl           |
-| rosgraph_msgs/msg/Clock              | ignition::msgs::Clock                  |
-| sensor_msgs/msg/BatteryState         | ignition::msgs::BatteryState           |
-| sensor_msgs/msg/CameraInfo           | ignition::msgs::CameraInfo             |
-| sensor_msgs/msg/FluidPressure        | ignition::msgs::FluidPressure          |
-| sensor_msgs/msg/Imu                  | ignition::msgs::IMU                    |
-| sensor_msgs/msg/Image                | ignition::msgs::Image                  |
-| sensor_msgs/msg/JointState           | ignition::msgs::Model                  |
-| sensor_msgs/msg/Joy                  | ignition::msgs::Joy                    |
-| sensor_msgs/msg/LaserScan            | ignition::msgs::LaserScan              |
-| sensor_msgs/msg/MagneticField        | ignition::msgs::Magnetometer           |
-| sensor_msgs/msg/NavSatFix            | ignition::msgs::NavSat                 |
-| sensor_msgs/msg/PointCloud2          | ignition::msgs::PointCloudPacked       |
-| tf2_msgs/msg/TFMessage               | ignition::msgs::Pose_V                 |
-| trajectory_msgs/msg/JointTrajectory  | ignition::msgs::JointTrajectory        |
+| builtin_interfaces/msg/Time          | gz::msgs::Time                   |
+| actuator_msgs/msg/Actuators          | gz::msgs::Actuators              |
+| std_msgs/msg/Bool                    | gz::msgs::Boolean                |
+| std_msgs/msg/ColorRGBA               | gz::msgs::Color                  |
+| std_msgs/msg/Empty                   | gz::msgs::Empty                  |
+| std_msgs/msg/Float32                 | gz::msgs::Float                  |
+| std_msgs/msg/Float64                 | gz::msgs::Double                 |
+| std_msgs/msg/Header                  | gz::msgs::Header                 |
+| std_msgs/msg/Int32                   | gz::msgs::Int32                  |
+| std_msgs/msg/UInt32                  | gz::msgs::UInt32                 |
+| std_msgs/msg/String                  | gz::msgs::StringMsg              |
+| geometry_msgs/msg/Wrench             | gz::msgs::Wrench                 |
+| geometry_msgs/msg/WrenchStamped      | gz::msgs::Wrench                 |
+| geometry_msgs/msg/Quaternion         | gz::msgs::Quaternion             |
+| geometry_msgs/msg/Vector3            | gz::msgs::Vector3d               |
+| geometry_msgs/msg/Point              | gz::msgs::Vector3d               |
+| geometry_msgs/msg/Pose               | gz::msgs::Pose                   |
+| geometry_msgs/msg/PoseArray          | gz::msgs::Pose_V                 |
+| geometry_msgs/msg/PoseWithCovariance | gz::msgs::PoseWithCovariance     |
+| geometry_msgs/msg/PoseStamped        | gz::msgs::Pose                   |
+| geometry_msgs/msg/Transform          | gz::msgs::Pose                   |
+| geometry_msgs/msg/TransformStamped   | gz::msgs::Pose                   |
+| geometry_msgs/msg/Twist              | gz::msgs::Twist                  |
+| geometry_msgs/msg/TwistStamped       | gz::msgs::Twist                  |
+| geometry_msgs/msg/TwistWithCovariance| gz::msgs::TwistWithCovariance    |
+| nav_msgs/msg/Odometry                | gz::msgs::Odometry               |
+| nav_msgs/msg/Odometry                | gz::msgs::OdometryWithCovariance |
+| rcl_interfaces/msg/ParameterValue    | gz::msgs::Any                    |
+| ros_gz_interfaces/msg/Altimeter      | gz::msgs::Altimeter              |
+| ros_gz_interfaces/msg/Contact        | gz::msgs::Contact                |
+| ros_gz_interfaces/msg/Contacts       | gz::msgs::Contacts               |
+| ros_gz_interfaces/msg/Dataframe      | gz::msgs::Dataframe              |
+| ros_gz_interfaces/msg/Entity         | gz::msgs::Entity                 |
+| ros_gz_interfaces/msg/Float32Array   | gz::msgs::Float_V                |
+| ros_gz_interfaces/msg/GuiCamera      | gz::msgs::GUICamera              |
+| ros_gz_interfaces/msg/JointWrench    | gz::msgs::JointWrench            |
+| ros_gz_interfaces/msg/Light          | gz::msgs::Light                  |
+| ros_gz_interfaces/msg/MaterialColor  | gz::msgs::MaterialColor          |
+| ros_gz_interfaces/msg/SensorNoise    | gz::msgs::SensorNoise            |
+| ros_gz_interfaces/msg/StringVec      | gz::msgs::StringMsg_V            |
+| ros_gz_interfaces/msg/TrackVisual    | gz::msgs::TrackVisual            |
+| ros_gz_interfaces/msg/VideoRecord    | gz::msgs::VideoRecord            |
+| ros_gz_interfaces/msg/WorldControl   | gz::msgs::WorldControl           |
+| rosgraph_msgs/msg/Clock              | gz::msgs::Clock                  |
+| sensor_msgs/msg/BatteryState         | gz::msgs::BatteryState           |
+| sensor_msgs/msg/CameraInfo           | gz::msgs::CameraInfo             |
+| sensor_msgs/msg/FluidPressure        | gz::msgs::FluidPressure          |
+| sensor_msgs/msg/Imu                  | gz::msgs::IMU                    |
+| sensor_msgs/msg/Image                | gz::msgs::Image                  |
+| sensor_msgs/msg/JointState           | gz::msgs::Model                  |
+| sensor_msgs/msg/Joy                  | gz::msgs::Joy                    |
+| sensor_msgs/msg/LaserScan            | gz::msgs::LaserScan              |
+| sensor_msgs/msg/MagneticField        | gz::msgs::Magnetometer           |
+| sensor_msgs/msg/NavSatFix            | gz::msgs::NavSat                 |
+| sensor_msgs/msg/PointCloud2          | gz::msgs::PointCloudPacked       |
+| tf2_msgs/msg/TFMessage               | gz::msgs::Pose_V                 |
+| trajectory_msgs/msg/JointTrajectory  | gz::msgs::JointTrajectory        |
 
 And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
-| ros_gz_interfaces/srv/ControlWorld   | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+| ros_gz_interfaces/srv/ControlWorld   | gz.msgs.WorldControl | gz.msgs.Boolean |
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
 
@@ -78,7 +80,7 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz.msgs.StringMsg
 ```
 
 Now we start the ROS listener.
@@ -93,7 +95,7 @@ Now we start the Gazebo Transport talker.
 
 ```
 # Shell C:
-ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
+gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS 2 talker and Gazebo Transport listener
@@ -103,14 +105,14 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz.msgs.StringMsg
 ```
 
 Now we start the Gazebo Transport listener.
 
 ```
 # Shell B:
-ign topic -e -t /chatter
+gz topic -e -t /chatter
 ```
 
 Now we start the ROS talker.
@@ -131,14 +133,14 @@ First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generat
 
 ```
 # Shell A:
-ign gazebo sensors_demo.sdf
+gz gazebo sensors_demo.sdf
 ```
 
 Let's see the topic where camera images are published.
 
 ```
 # Shell B:
-ign topic -l | grep image
+gz topic -l | grep image
 /rgbd_camera/depth_image
 /rgbd_camera/image
 ```
@@ -148,7 +150,7 @@ Then we start the parameter bridge with the previous topic.
 ```
 # Shell B:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image
 ```
 
 Now we start the ROS GUI:
@@ -189,15 +191,15 @@ On terminal B, we start a ROS 2 listener:
 
 And terminal C, publish an Gazebo message:
 
-`ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'`
+`gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
 Now let's try the other way around, ROS 2 -> Gazebo.
 
-On terminal D, start an Igntion listener:
+On terminal D, start an gz listener:
 
-`ign topic -e -t /chatter`
+`gz topic -e -t /chatter`
 
 And on terminal E, publish a ROS 2 message:
 
@@ -215,7 +217,7 @@ On terminal A, start the service bridge:
 
 On terminal B, start Gazebo, it will be paused by default:
 
-`ign gazebo shapes.sdf`
+`gz gazebo shapes.sdf`
 
 On terminal C, make a ROS request to unpause simulation:
 
@@ -237,35 +239,35 @@ bridge may be specified:
  # Set just topic name, applies to both
 - topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set just ROS topic name, applies to both
 - ros_topic_name: "chatter_ros"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set just GZ topic name, applies to both
-- gz_topic_name: "chatter_ign"
+- gz_topic_name: "chatter_gz"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  gz_topic_name: "chatter_both_ign"
+  gz_topic_name: "chatter_both_gz"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Full set of configurations
 - ros_topic_name: "ros_chatter"
-  gz_topic_name: "ign_chatter"
+  gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
   subscriber_queue: 5       # Default 10
   publisher_queue: 6        # Default 10
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
-                            # "GZ_TO_ROS" - Bridge Ignition topic to ROS
-                            # "ROS_TO_GZ" - Bridge ROS topic to Ignition
+                            # "GZ_TO_ROS" - Bridge gz topic to ROS
+                            # "ROS_TO_GZ" - Bridge ROS topic to gz
 ```
 
 To run the bridge node with the above configuration:
