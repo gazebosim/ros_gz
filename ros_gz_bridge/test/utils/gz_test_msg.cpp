@@ -1325,6 +1325,45 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Light> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.intensity(), _msg->intensity());
 }
 
+void createTestMsg(gz::msgs::MaterialColor & _msg)
+{
+  gz::msgs::Header header_msg;
+  gz::msgs::Color ambient_msg;
+  gz::msgs::Color diffuse_msg;
+  gz::msgs::Color specular_msg;
+  gz::msgs::Color emissive_msg;
+
+  createTestMsg(header_msg);
+  createTestMsg(ambient_msg);
+  createTestMsg(diffuse_msg);
+  createTestMsg(specular_msg);
+  createTestMsg(emissive_msg);
+
+  _msg.set_name("test_material_color_name");
+  _msg.set_parent_name("test_material_color_parent_name");
+
+  _msg.mutable_header()->CopyFrom(header_msg);
+  _msg.mutable_specular()->CopyFrom(ambient_msg);
+  _msg.mutable_diffuse()->CopyFrom(diffuse_msg);
+  _msg.mutable_specular()->CopyFrom(specular_msg);
+  _msg.mutable_specular()->CopyFrom(emissive_msg);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg)
+{
+  gz::msgs::MaterialColor expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<gz::msgs::Color>(_msg->ambient()));
+  compareTestMsg(std::make_shared<gz::msgs::Color>(_msg->diffuse()));
+  compareTestMsg(std::make_shared<gz::msgs::Color>(_msg->specular()));
+  compareTestMsg(std::make_shared<gz::msgs::Color>(_msg->emissive()));
+
+  EXPECT_EQ(expected_msg.name(), _msg->name());
+  EXPECT_EQ(expected_msg.parent_name(), _msg->parent_name());
+}
+
 void createTestMsg(gz::msgs::GUICamera & _msg)
 {
   gz::msgs::Header header_msg;
