@@ -389,15 +389,13 @@ convert_ros_to_gz(
   gz::msgs::MaterialColor & gz_msg)
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
-
-  gz_msg.set_name(ros_msg.name);
-  
+  convert_ros_to_gz(ros_msg.entity, *gz_msg.mutable_entity());
   convert_ros_to_gz(ros_msg.ambient, *gz_msg.mutable_ambient());
   convert_ros_to_gz(ros_msg.diffuse, *gz_msg.mutable_diffuse());
   convert_ros_to_gz(ros_msg.specular, *gz_msg.mutable_specular());
   convert_ros_to_gz(ros_msg.emissive, *gz_msg.mutable_emissive());
 
-  gz_msg.set_parent_name(ros_msg.parent_name);
+  gz_msg.set_shininess(ros_msg.shininess);
 }
 
 template<>
@@ -407,14 +405,13 @@ convert_gz_to_ros(
   ros_gz_interfaces::msg::MaterialColor & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
-
-  ros_msg.name = gz_msg.name();
+  convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);
   convert_gz_to_ros(gz_msg.ambient(), ros_msg.ambient);
   convert_gz_to_ros(gz_msg.diffuse(), ros_msg.diffuse);
   convert_gz_to_ros(gz_msg.specular(), ros_msg.specular);
   convert_gz_to_ros(gz_msg.emissive(), ros_msg.emissive);
 
-  ros_msg.parent_name = gz_msg.parent_name();
+  ros_msg.shininess = gz_msg.shininess();
 }
 
 template<>
