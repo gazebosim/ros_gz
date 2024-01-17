@@ -388,15 +388,15 @@ convert_ros_to_gz(
   const ros_gz_interfaces::msg::MaterialColor & ros_msg,
   gz::msgs::MaterialColor & gz_msg)
 {
-    switch (ros_msg.apply) {
+    switch (ros_msg.entity_match) {
     case ros_gz_interfaces::msg::MaterialColor::FIRST:
-      gz_msg.set_apply(gz::msgs::MaterialColor::Apply::MaterialColor_Apply_FIRST);
+      gz_msg.set_entity_match(gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST);
       break;
     case ros_gz_interfaces::msg::MaterialColor::ALL:
-      gz_msg.set_apply(gz::msgs::MaterialColor::Apply::MaterialColor_Apply_ALL);
+      gz_msg.set_entity_match(gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL);
       break;
     default:
-      std::cerr << "Unsupported apply type [" << ros_msg.apply << "]\n";
+      std::cerr << "Unsupported entity match type [" << ros_msg.entity_match << "]\n";
   }
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
@@ -415,13 +415,13 @@ convert_gz_to_ros(
   const gz::msgs::MaterialColor & gz_msg,
   ros_gz_interfaces::msg::MaterialColor & ros_msg)
 {
-  if (gz_msg.apply() == gz::msgs::MaterialColor::Apply::MaterialColor_Apply_FIRST) {
-    ros_msg.apply = ros_gz_interfaces::msg::MaterialColor::FIRST;
-  } else if (gz_msg.apply() == gz::msgs::MaterialColor::Apply::MaterialColor_Apply_ALL) {
-    ros_msg.apply = ros_gz_interfaces::msg::MaterialColor::ALL;
+  if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST) {
+    ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::FIRST;
+  } else if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL) {
+    ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
   } else {
-    std::cerr << "Unsupported Apply [" <<
-      gz_msg.apply() << "]" << std::endl;
+    std::cerr << "Unsupported EntityMatch [" <<
+      gz_msg.entity_match() << "]" << std::endl;
   }
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);

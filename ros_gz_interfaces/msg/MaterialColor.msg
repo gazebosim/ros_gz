@@ -1,4 +1,4 @@
-# Entities to apply material color: constant definition
+# Entities that match to apply material color: constant definition
 uint8 FIRST     = 0
 uint8 ALL       = 1
 
@@ -9,4 +9,4 @@ std_msgs/ColorRGBA diffuse        # Diffuse color
 std_msgs/ColorRGBA specular       # Specular color
 std_msgs/ColorRGBA emissive       # Emissive color
 float64 shininess                 # Specular exponent
-uint8 apply                       # Entities to apply material color
+uint8 entity_match                # Entities that match to apply material color
