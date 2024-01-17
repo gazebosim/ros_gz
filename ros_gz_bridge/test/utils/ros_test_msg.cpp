@@ -568,6 +568,7 @@ void createTestMsg(ros_gz_interfaces::msg::MaterialColor & _msg)
   createTestMsg(_msg.specular);
   createTestMsg(_msg.emissive);
   _msg.shininess = 1.0;
+  _msg.apply = ros_gz_interfaces::msg::MaterialColor::ALL;
 }
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor> & _msg)
@@ -583,6 +584,7 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor>
   compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->emissive));
 
   EXPECT_EQ(expected_msg.shininess, _msg->shininess);
+  EXPECT_EQ(expected_msg.apply, _msg->apply);
 }
 
 void createTestMsg(ros_gz_interfaces::msg::GuiCamera & _msg)

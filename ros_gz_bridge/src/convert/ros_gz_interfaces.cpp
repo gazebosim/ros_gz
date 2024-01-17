@@ -388,6 +388,17 @@ convert_ros_to_gz(
   const ros_gz_interfaces::msg::MaterialColor & ros_msg,
   gz::msgs::MaterialColor & gz_msg)
 {
+    switch (ros_msg.apply) {
+    case ros_gz_interfaces::msg::MaterialColor::FIRST:
+      gz_msg.set_apply(gz::msgs::MaterialColor::Apply::MaterialColor_Apply_FIRST);
+      break;
+    case ros_gz_interfaces::msg::MaterialColor::ALL:
+      gz_msg.set_apply(gz::msgs::MaterialColor::Apply::MaterialColor_Apply_ALL);
+      break;
+    default:
+      std::cerr << "Unsupported apply type [" << ros_msg.apply << "]\n";
+  }
+
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.entity, *gz_msg.mutable_entity());
   convert_ros_to_gz(ros_msg.ambient, *gz_msg.mutable_ambient());
@@ -404,6 +415,14 @@ convert_gz_to_ros(
   const gz::msgs::MaterialColor & gz_msg,
   ros_gz_interfaces::msg::MaterialColor & ros_msg)
 {
+  if (gz_msg.apply() == gz::msgs::MaterialColor::Apply::MaterialColor_Apply_FIRST) {
+    ros_msg.apply = ros_gz_interfaces::msg::MaterialColor::FIRST;
+  } else if (gz_msg.apply() == gz::msgs::MaterialColor::Apply::MaterialColor_Apply_ALL) {
+    ros_msg.apply = ros_gz_interfaces::msg::MaterialColor::ALL;
+  } else {
+    std::cerr << "Unsupported Apply [" <<
+      gz_msg.apply() << "]" << std::endl;
+  }
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);
   convert_gz_to_ros(gz_msg.ambient(), ros_msg.ambient);

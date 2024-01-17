@@ -1348,6 +1348,7 @@ void createTestMsg(gz::msgs::MaterialColor & _msg)
   _msg.mutable_specular()->CopyFrom(specular_msg);
   _msg.mutable_specular()->CopyFrom(emissive_msg);
   _msg.set_shininess(1.0);
+  _msg.set_apply(gz::msgs::MaterialColor::Apply::MaterialColor_Apply_ALL);
 }
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg)
@@ -1363,6 +1364,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg)
   compareTestMsg(std::make_shared<gz::msgs::Color>(_msg->emissive()));
 
   EXPECT_EQ(expected_msg.shininess(), _msg->shininess());
+  EXPECT_EQ(expected_msg.apply(), _msg->apply());
 }
 
 void createTestMsg(gz::msgs::GUICamera & _msg)
