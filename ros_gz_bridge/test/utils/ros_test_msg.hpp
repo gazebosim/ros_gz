@@ -40,6 +40,7 @@
 #include <geometry_msgs/msg/twist.hpp>
 #include <geometry_msgs/msg/twist_stamped.hpp>
 #include <geometry_msgs/msg/twist_with_covariance.hpp>
+#include <geometry_msgs/msg/twist_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/vector3.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
@@ -313,6 +314,14 @@ void createTestMsg(geometry_msgs::msg::TwistWithCovariance & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistWithCovariance> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(geometry_msgs::msg::TwistWithCovarianceStamped & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistWithCovarianceStamped> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
