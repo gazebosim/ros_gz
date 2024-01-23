@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.13 (2024-01-23)
+---------------------
+* backport pr 374 (`#489 <https://github.com/gazebosim/ros_gz/issues/489>`_)
+* populate imu covariances when converting (`#488 <https://github.com/gazebosim/ros_gz/issues/488>`_)
+* Contributors: El Jawad Alaa
+
 0.244.12 (2023-12-13)
 ---------------------
 * Backport: Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_) (`#470 <https://github.com/gazebosim/ros_gz/issues/470>`_)
