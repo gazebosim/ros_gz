@@ -19,6 +19,12 @@
 #include <memory>
 #include <string>
 
+#include "gz/msgs/config.hh"
+
+#if GZ_MSGS_MAJOR_VERSION >= 10
+#define GZ_MSGS_IMU_HAS_COVARIANCE
+#endif
+
 namespace ros_gz_bridge
 {
 namespace testing
@@ -475,6 +481,18 @@ void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistWithCovarianc
   for (int i = 0; i < 36; i++) {
     EXPECT_EQ(_msg->covariance[i], i);
   }
+}
+
+void createTestMsg(geometry_msgs::msg::TwistWithCovarianceStamped & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.twist);
+}
+
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::TwistWithCovarianceStamped> & _msg)
+{
+  compareTestMsg(std::make_shared<geometry_msgs::msg::TwistWithCovariance>(_msg->twist));
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
 }
 
 void createTestMsg(geometry_msgs::msg::Wrench & _msg)
@@ -1050,6 +1068,11 @@ void createTestMsg(sensor_msgs::msg::Imu & _msg)
   _msg.orientation = quaternion_msg;
   _msg.angular_velocity = vector3_msg;
   _msg.linear_acceleration = vector3_msg;
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
+  _msg.orientation_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.angular_velocity_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+  _msg.linear_acceleration_covariance = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+#endif
 }
 
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
@@ -1058,6 +1081,14 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Imu> & _msg)
   compareTestMsg(_msg->orientation);
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->angular_velocity));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->linear_acceleration));
+
+#ifdef GZ_MSGS_IMU_HAS_COVARIANCE
+  for (int i = 0; i < 9; ++i) {
+    EXPECT_EQ(_msg->orientation_covariance[i], i + 1);
+    EXPECT_EQ(_msg->angular_velocity_covariance[i], i + 1);
+    EXPECT_EQ(_msg->linear_acceleration_covariance[i], i + 1);
+  }
+#endif
 }
 
 void createTestMsg(sensor_msgs::msg::JointState & _msg)
