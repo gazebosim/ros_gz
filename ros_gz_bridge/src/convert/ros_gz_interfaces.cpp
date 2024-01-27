@@ -391,13 +391,16 @@ convert_ros_to_gz(
 {
     switch (ros_msg.entity_match) {
     case ros_gz_interfaces::msg::MaterialColor::FIRST:
-      gz_msg.set_entity_match(gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST);
+      gz_msg.set_entity_match(
+        gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST);
       break;
     case ros_gz_interfaces::msg::MaterialColor::ALL:
-      gz_msg.set_entity_match(gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL);
+      gz_msg.set_entity_match(
+        gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL);
       break;
     default:
-      std::cerr << "Unsupported entity match type [" << ros_msg.entity_match << "]\n";
+      std::cerr << "Unsupported entity match type ["
+                << ros_msg.entity_match << "]\n";
   }
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
@@ -416,9 +419,11 @@ convert_gz_to_ros(
   const gz::msgs::MaterialColor & gz_msg,
   ros_gz_interfaces::msg::MaterialColor & ros_msg)
 {
-  if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST) {
+  if (gz_msg.entity_match() ==
+      gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST) {
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::FIRST;
-  } else if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL) {
+  } else if (gz_msg.entity_match() ==
+      gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL) {
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
   } else {
     std::cerr << "Unsupported EntityMatch [" <<
@@ -433,7 +438,7 @@ convert_gz_to_ros(
 
   ros_msg.shininess = gz_msg.shininess();
 }
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 template<>
 void

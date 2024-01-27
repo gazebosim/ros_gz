@@ -59,7 +59,7 @@
 #include <ros_gz_interfaces/msg/light.hpp>
 #if HAVE_MATERIALCOLOR
 #include <ros_gz_interfaces/msg/material_color.hpp>
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
@@ -396,7 +396,7 @@ void createTestMsg(ros_gz_interfaces::msg::MaterialColor & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor> & _msg);
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

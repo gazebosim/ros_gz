@@ -75,7 +75,7 @@
 
 #if HAVE_MATERIALCOLOR
 #include <gz/msgs/material_color.pb.h>
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 namespace ros_gz_bridge
 {
@@ -467,7 +467,7 @@ void createTestMsg(gz::msgs::MaterialColor & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg);
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

@@ -605,7 +605,7 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor>
   EXPECT_EQ(expected_msg.shininess, _msg->shininess);
   EXPECT_EQ(expected_msg.entity_match, _msg->entity_match);
 }
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 void createTestMsg(ros_gz_interfaces::msg::GuiCamera & _msg)
 {

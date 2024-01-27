@@ -1388,7 +1388,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg)
   EXPECT_EQ(expected_msg.shininess(), _msg->shininess());
   EXPECT_EQ(expected_msg.entity_match(), _msg->entity_match());
 }
-#endif // HAVE_MATERIALCOLOR
+#endif  // HAVE_MATERIALCOLOR
 
 void createTestMsg(gz::msgs::GUICamera & _msg)
 {
