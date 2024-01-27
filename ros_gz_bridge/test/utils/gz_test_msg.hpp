@@ -43,7 +43,6 @@
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/magnetometer.pb.h>
-#include <gz/msgs/material_color.pb.h>
 #include <gz/msgs/model.pb.h>
 #include <gz/msgs/navsat.pb.h>
 #include <gz/msgs/odometry.pb.h>
@@ -73,6 +72,10 @@
 #if HAVE_DATAFRAME
 #include <gz/msgs/dataframe.pb.h>
 #endif  // HAVE_DATAFRAME
+
+#if HAVE_MATERIALCOLOR
+#include <gz/msgs/material_color.pb.h>
+#endif // HAVE_MATERIALCOLOR
 
 namespace ros_gz_bridge
 {
@@ -456,6 +459,7 @@ void createTestMsg(gz::msgs::Light & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::Light> & _msg);
 
+#if HAVE_MATERIALCOLOR
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(gz::msgs::MaterialColor & _msg);
@@ -463,6 +467,7 @@ void createTestMsg(gz::msgs::MaterialColor & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::MaterialColor> & _msg);
+#endif // HAVE_MATERIALCOLOR
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

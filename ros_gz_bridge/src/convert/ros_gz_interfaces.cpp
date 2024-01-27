@@ -382,6 +382,7 @@ convert_gz_to_ros(
   ros_msg.intensity = gz_msg.intensity();
 }
 
+#if HAVE_MATERIALCOLOR
 template<>
 void
 convert_ros_to_gz(
@@ -432,6 +433,7 @@ convert_gz_to_ros(
 
   ros_msg.shininess = gz_msg.shininess();
 }
+#endif // HAVE_MATERIALCOLOR
 
 template<>
 void
