@@ -65,7 +65,6 @@ MAPPINGS = {
         Mapping('GuiCamera', 'GUICamera'),
         Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
-        Mapping('MaterialColor', 'MaterialColor'),
         Mapping('ParamVec', 'Param'),
         Mapping('ParamVec', 'Param_V'),
         Mapping('SensorNoise', 'SensorNoise'),
@@ -115,5 +114,11 @@ MAPPINGS = {
 MAPPINGS_8_4_0 = {
     'ros_gz_interfaces': [
         Mapping('Dataframe', 'Dataframe'),
+    ],
+}
+
+MAPPINGS_10_1_0 = {
+    'ros_gz_interfaces': [
+        Mapping('MaterialColor', 'MaterialColor'),
     ],
 }
