@@ -214,10 +214,6 @@ int main(int _argc, char ** _argv)
         ros2_node->get_logger(), "Must specify either -file, -param, -string or -topic");
       return -1;
     }
-    RCLCPP_WARN(
-      ros2_node->get_logger(),
-      "Usage of Commandline flags for spawning entities is deprecated. Please use ROS 2 parameters."
-    );
   } else {
     RCLCPP_ERROR(
       ros2_node->get_logger(), "Must specify either file, string or topic as ROS 2 parameters");
