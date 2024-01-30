@@ -214,6 +214,8 @@ int main(int _argc, char ** _argv)
         ros2_node->get_logger(), "Must specify either -file, -param, -string or -topic");
       return -1;
     }
+    // TODO(azeey) Deprecate use of command line flags in ROS 2 K-turtle in
+    // favor of ROS 2 parameters.
   } else {
     RCLCPP_ERROR(
       ros2_node->get_logger(), "Must specify either file, string or topic as ROS 2 parameters");
