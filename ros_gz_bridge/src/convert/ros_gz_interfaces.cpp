@@ -387,7 +387,7 @@ convert_ros_to_gz(
   const ros_gz_interfaces::msg::MaterialColor & ros_msg,
   gz::msgs::MaterialColor & gz_msg)
 {
-    switch (ros_msg.entity_match) {
+  switch (ros_msg.entity_match) {
     case ros_gz_interfaces::msg::MaterialColor::FIRST:
       gz_msg.set_entity_match(
         gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST);
