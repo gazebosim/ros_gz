@@ -417,11 +417,9 @@ convert_gz_to_ros(
   const gz::msgs::MaterialColor & gz_msg,
   ros_gz_interfaces::msg::MaterialColor & ros_msg)
 {
-  if (gz_msg.entity_match() ==
-      gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST) {
+  if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_FIRST) {
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::FIRST;
-  } else if (gz_msg.entity_match() ==
-      gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL) {
+  } else if (gz_msg.entity_match() == gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL) {
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
   } else {
     std::cerr << "Unsupported EntityMatch [" <<
