@@ -1349,26 +1349,13 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Light> & _msg)
 #if HAVE_MATERIALCOLOR
 void createTestMsg(gz::msgs::MaterialColor & _msg)
 {
-  gz::msgs::Header header_msg;
-  gz::msgs::Entity entity_msg;
-  gz::msgs::Color ambient_msg;
-  gz::msgs::Color diffuse_msg;
-  gz::msgs::Color specular_msg;
-  gz::msgs::Color emissive_msg;
+  createTestMsg(*_msg.mutable_header());
+  createTestMsg(*_msg.mutable_entity());
+  createTestMsg(*_msg.mutable_ambient());
+  createTestMsg(*_msg.mutable_diffuse());
+  createTestMsg(*_msg.mutable_specular());
+  createTestMsg(*_msg.mutable_emissive());
 
-  createTestMsg(header_msg);
-  createTestMsg(entity_msg);
-  createTestMsg(ambient_msg);
-  createTestMsg(diffuse_msg);
-  createTestMsg(specular_msg);
-  createTestMsg(emissive_msg);
-
-  _msg.mutable_header()->CopyFrom(header_msg);
-  _msg.mutable_entity()->CopyFrom(entity_msg);
-  _msg.mutable_specular()->CopyFrom(ambient_msg);
-  _msg.mutable_diffuse()->CopyFrom(diffuse_msg);
-  _msg.mutable_specular()->CopyFrom(specular_msg);
-  _msg.mutable_specular()->CopyFrom(emissive_msg);
   _msg.set_shininess(1.0);
   _msg.set_entity_match(gz::msgs::MaterialColor::EntityMatch::MaterialColor_EntityMatch_ALL);
 }
