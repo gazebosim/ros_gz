@@ -577,6 +577,36 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Light> & _msg)
   EXPECT_FLOAT_EQ(expected_msg.intensity, _msg->intensity);
 }
 
+#if HAVE_MATERIALCOLOR
+void createTestMsg(ros_gz_interfaces::msg::MaterialColor & _msg)
+{
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.entity);
+  createTestMsg(_msg.ambient);
+  createTestMsg(_msg.diffuse);
+  createTestMsg(_msg.specular);
+  createTestMsg(_msg.emissive);
+  _msg.shininess = 1.0;
+  _msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor> & _msg)
+{
+  ros_gz_interfaces::msg::MaterialColor expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::Entity>(_msg->entity));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->ambient));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->diffuse));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->specular));
+  compareTestMsg(std::make_shared<std_msgs::msg::ColorRGBA>(_msg->emissive));
+
+  EXPECT_EQ(expected_msg.shininess, _msg->shininess);
+  EXPECT_EQ(expected_msg.entity_match, _msg->entity_match);
+}
+#endif  // HAVE_MATERIALCOLOR
+
 void createTestMsg(ros_gz_interfaces::msg::GuiCamera & _msg)
 {
   createTestMsg(_msg.header);

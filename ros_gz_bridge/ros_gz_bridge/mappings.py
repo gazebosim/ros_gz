@@ -114,3 +114,9 @@ MAPPINGS_8_4_0 = {
         Mapping('Dataframe', 'Dataframe'),
     ],
 }
+
+MAPPINGS_10_1_0 = {
+    'ros_gz_interfaces': [
+        Mapping('MaterialColor', 'MaterialColor'),
+    ],
+}

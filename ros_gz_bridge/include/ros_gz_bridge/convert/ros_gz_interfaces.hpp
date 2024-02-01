@@ -56,6 +56,11 @@
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #endif  // HAVE_DATAFRAME
 
+#if HAVE_MATERIALCOLOR
+#include <gz/msgs/material_color.pb.h>
+#include <ros_gz_interfaces/msg/material_color.hpp>
+#endif  // HAVE_MATERIALCOLOR
+
 #include <ros_gz_bridge/convert_decl.hpp>
 
 namespace ros_gz_bridge
@@ -158,6 +163,20 @@ void
 convert_gz_to_ros(
   const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg);
+
+#if HAVE_MATERIALCOLOR
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::MaterialColor & ros_msg,
+  gz::msgs::MaterialColor & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::MaterialColor & gz_msg,
+  ros_gz_interfaces::msg::MaterialColor & ros_msg);
+#endif  // HAVE_MATERIALCOLOR
 
 template<>
 void
