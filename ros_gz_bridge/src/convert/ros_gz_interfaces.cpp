@@ -420,8 +420,10 @@ convert_gz_to_ros(
   using EntityMatch = gz::msgs::MaterialColor::EntityMatch;
   if (gz_msg.entity_match() == EntityMatch::MaterialColor_EntityMatch_FIRST) {
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::FIRST;
+/* *INDENT-OFF* */
   } else if (gz_msg.entity_match() ==
-             EntityMatch::MaterialColor_EntityMatch_ALL) {
+    EntityMatch::MaterialColor_EntityMatch_ALL) {
+/* *INDENT-ON* */
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
   } else {
     std::cerr << "Unsupported EntityMatch [" <<
