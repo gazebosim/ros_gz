@@ -148,8 +148,9 @@ ament_target_dependencies(${bridge_lib}
 )
 
 target_include_directories(${bridge_lib}
-  PUBLIC include
-  PRIVATE src ${generated_path}
+  PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+  "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>")
 )
 
 target_link_libraries(${bridge_lib}
@@ -168,7 +169,7 @@ install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
         RUNTIME DESTINATION bin)
 
 install(
-  DIRECTORY include/
+  DIRECTORY include/${PROJECT_NAME}
   DESTINATION include
 )
 
