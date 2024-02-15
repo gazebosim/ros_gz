@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2024-02-15)
+------------------
+
 0.246.0 (2023-08-31)
 --------------------
 * Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
