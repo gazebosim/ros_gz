@@ -162,7 +162,7 @@ rclcpp_components_register_node(
   PLUGIN ros_gz_bridge::RosGzBridge
   EXECUTABLE bridge_node)
 
-install(TARGETS ${bridge_lib}
+install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
@@ -347,6 +347,8 @@ if(BUILD_TESTING)
   target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
 
 endif()
+
+ament_export_targets(export_${PROJECT_NAME})
 
 ament_export_dependencies(
   rclcpp
