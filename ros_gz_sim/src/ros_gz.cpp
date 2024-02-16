@@ -1,19 +1,16 @@
-/*
- * Copyright (C) 2024 Open Source Robotics Foundation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
-*/
+// Copyright 2024 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #include <filesystem>
 #include <memory>
@@ -26,8 +23,8 @@
 
 #include "ros_gz.hpp"
 
-using namespace gz;
-using namespace ros_gz_sim;
+namespace ros_gz_sim
+{
 
 /// \brief Private ROSGzPlugin data class.
 class ROSGzPlugin::Implementation
@@ -44,7 +41,7 @@ class ROSGzPlugin::Implementation
 
 //////////////////////////////////////////////////
 ROSGzPlugin::ROSGzPlugin()
-  : System(), dataPtr(utils::MakeUniqueImpl<Implementation>())
+  : System(), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
 }
 
@@ -56,9 +53,9 @@ ROSGzPlugin::~ROSGzPlugin()
 }
 
 //////////////////////////////////////////////////
-void ROSGzPlugin::Configure(const sim::Entity &/*_entity*/,
+void ROSGzPlugin::Configure(const gz::sim::Entity &/*_entity*/,
   const std::shared_ptr<const sdf::Element> &_sdf,
-  sim::EntityComponentManager &/*_ecm*/, sim::EventManager &/*_eventMgr*/)
+  gz::sim::EntityComponentManager &/*_ecm*/, gz::sim::EventManager &/*_eventMgr*/)
 {
   // Ensure that ROS is setup.
   if (!rclcpp::ok())
@@ -91,10 +88,11 @@ void ROSGzPlugin::Configure(const sim::Entity &/*_entity*/,
   // Spin in a separate thread to not block Gazebo.
   this->dataPtr->thread = std::thread([this](){this->dataPtr->exec->spin();});
 }
+}  // namespace ros_gz_sim
 
-GZ_ADD_PLUGIN(ROSGzPlugin,
-              sim::System,
-              ROSGzPlugin::ISystemConfigure)
+GZ_ADD_PLUGIN(ros_gz_sim::ROSGzPlugin,
+              gz::sim::System,
+              ros_gz_sim::ROSGzPlugin::ISystemConfigure)
 
 GZ_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
                     "ros_gz_sim::ROSGzPlugin")
