@@ -12,6 +12,8 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
+find_package(ros_gz_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 
 # TODO(CH3): Deprecated. Remove on tock.
@@ -126,6 +128,21 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
+
+# ROS Gz bridge
+add_library(ROSGzPlugin SHARED src/ros_gz.cc)
+target_link_libraries(ROSGzPlugin PUBLIC
+  gz-sim${GZ_SIM_VER}::core
+  rclcpp::rclcpp
+  ros_gz_bridge::ros_gz_bridge_lib
+)
+target_include_directories(ROSGzPlugin PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ros_gz_sim>
+  $<INSTALL_INTERFACE:include/ros_gz_sim>
+)
+install(
+  TARGETS ROSGzPlugin
+  DESTINATION lib)
 
 configure_file(
   launch/gz_sim.launch.py.in

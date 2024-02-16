@@ -148,7 +148,9 @@ ament_target_dependencies(${bridge_lib}
 )
 
 target_include_directories(${bridge_lib}
-  PUBLIC include
+  PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include/>"
   PRIVATE src ${generated_path}
 )
 
@@ -162,13 +164,13 @@ rclcpp_components_register_node(
   PLUGIN ros_gz_bridge::RosGzBridge
   EXECUTABLE bridge_node)
 
-install(TARGETS ${bridge_lib}
+install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
 
 install(
-  DIRECTORY include/
+  DIRECTORY include/${PROJECT_NAME}
   DESTINATION include
 )
 
@@ -347,6 +349,8 @@ if(BUILD_TESTING)
   target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
 
 endif()
+
+ament_export_targets(export_${PROJECT_NAME})
 
 ament_export_dependencies(
   rclcpp

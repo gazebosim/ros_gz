@@ -44,6 +44,7 @@ void RosGzBridge::spin()
     std::string config_file;
     this->get_parameter("config_file", config_file);
     if (!config_file.empty()) {
+      std::cerr << "Reading parameters" << std::endl;
       auto entries = readFromYamlFile(config_file);
       for (const auto & entry : entries) {
         this->add_bridge(entry);
