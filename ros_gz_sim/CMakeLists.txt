@@ -130,7 +130,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 )
 
 # ROS Gz bridge
-add_library(ROSGzPlugin SHARED src/ros_gz.cc)
+add_library(ROSGzPlugin SHARED src/ros_gz.cpp)
 target_link_libraries(ROSGzPlugin PUBLIC
   gz-sim${GZ_SIM_VER}::core
   rclcpp::rclcpp

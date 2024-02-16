@@ -24,7 +24,7 @@
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 #include <ros_gz_bridge/bridge_config.hpp>
 
-#include "ros_gz.hh"
+#include "ros_gz.hpp"
 
 using namespace gz;
 using namespace ros_gz_sim;
