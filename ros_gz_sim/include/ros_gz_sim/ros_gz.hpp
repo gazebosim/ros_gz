@@ -24,7 +24,7 @@ namespace ros_gz_sim
 {
 /// \brief ToDo
 class ROSGzPlugin
-: public gz::sim::System,
+  : public gz::sim::System,
   public gz::sim::ISystemConfigure
 {
 public:
@@ -36,10 +36,10 @@ public:
 
   // Documentation inherited.
   void Configure(
-    const gz::sim::Entity &_entity,
-    const std::shared_ptr<const sdf::Element> &_sdf,
-    gz::sim::EntityComponentManager &_ecm,
-    gz::sim::EventManager &_eventMgr) override;
+    const gz::sim::Entity & _entity,
+    const std::shared_ptr<const sdf::Element> & _sdf,
+    gz::sim::EntityComponentManager & _ecm,
+    gz::sim::EventManager & _eventMgr) override;
 
   /// \brief Private data pointer.
   GZ_UTILS_UNIQUE_IMPL_PTR(dataPtr)
