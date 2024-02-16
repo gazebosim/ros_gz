@@ -20,6 +20,7 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import PathJoinSubstitution
 
+
 def generate_launch_description():
 
     pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')

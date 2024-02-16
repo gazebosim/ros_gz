@@ -29,20 +29,20 @@ namespace ros_gz_sim
 /// \brief Private ROSGzPlugin data class.
 class ROSGzPlugin::Implementation
 {
-  public:
-    /// \brief The ROS 2 <--> Gz bridge.
-    std::shared_ptr<ros_gz_bridge::RosGzBridge> bridge;
+public:
+  /// \brief The ROS 2 <--> Gz bridge.
+  std::shared_ptr<ros_gz_bridge::RosGzBridge> bridge;
 
-    /// \brief The ROS 2 executor.
-    std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> exec;
+  /// \brief The ROS 2 executor.
+  std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> exec;
 
-    /// \brief A thread to call spin and not block the Gazebo thread.
-    std::thread thread;
+  /// \brief A thread to call spin and not block the Gazebo thread.
+  std::thread thread;
 };
 
 //////////////////////////////////////////////////
 ROSGzPlugin::ROSGzPlugin()
-  : System(), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
+: System(), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
 }
 
@@ -54,24 +54,25 @@ ROSGzPlugin::~ROSGzPlugin()
 }
 
 //////////////////////////////////////////////////
-void ROSGzPlugin::Configure(const gz::sim::Entity &/*_entity*/,
-  const std::shared_ptr<const sdf::Element> &_sdf,
-  gz::sim::EntityComponentManager &/*_ecm*/, gz::sim::EventManager &/*_eventMgr*/)
+void ROSGzPlugin::Configure(
+  const gz::sim::Entity & /*_entity*/,
+  const std::shared_ptr<const sdf::Element> & _sdf,
+  gz::sim::EntityComponentManager & /*_ecm*/,
+  gz::sim::EventManager & /*_eventMgr*/)
 {
   // Ensure that ROS is setup.
-  if (!rclcpp::ok())
+  if (!rclcpp::ok()) {
     rclcpp::init(0, nullptr);
+  }
 
-  if (!_sdf->HasElement("config_file"))
-  {
+  if (!_sdf->HasElement("config_file")) {
     gzerr << "No <config_file> found. Plugin disabled." << std::endl;
     return;
   }
 
   // Sanity check: Make sure that the config file exists and it's a file.
   std::filesystem::path configFile = _sdf->Get<std::string>("config_file");
-  if (!std::filesystem::is_regular_file(configFile))
-  {
+  if (!std::filesystem::is_regular_file(configFile)) {
     gzerr << "[" << configFile << "] is not a regular file. Plugin disabled"
           << std::endl;
     return;
@@ -87,13 +88,15 @@ void ROSGzPlugin::Configure(const gz::sim::Entity &/*_entity*/,
   this->dataPtr->exec->add_node(this->dataPtr->bridge);
 
   // Spin in a separate thread to not block Gazebo.
-  this->dataPtr->thread = std::thread([this](){this->dataPtr->exec->spin();});
+  this->dataPtr->thread = std::thread([this]() {this->dataPtr->exec->spin();});
 }
 }  // namespace ros_gz_sim
 
-GZ_ADD_PLUGIN(ros_gz_sim::ROSGzPlugin,
-              gz::sim::System,
-              ros_gz_sim::ROSGzPlugin::ISystemConfigure)
+GZ_ADD_PLUGIN(
+  ros_gz_sim::ROSGzPlugin,
+  gz::sim::System,
+  ros_gz_sim::ROSGzPlugin::ISystemConfigure)
 
-GZ_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
-                    "ros_gz_sim::ROSGzPlugin")
+GZ_ADD_PLUGIN_ALIAS(
+  ros_gz_sim::ROSGzPlugin,
+  "ros_gz_sim::ROSGzPlugin")
