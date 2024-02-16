@@ -27,12 +27,12 @@ class ROSGzPlugin
     : public gz::sim::System,
       public gz::sim::ISystemConfigure
 {
-  public: 
+  public:
     // \brief Constructor.
     ROSGzPlugin();
 
     /// \brief Destructor.
-    virtual ~ROSGzPlugin() override;
+    ~ROSGzPlugin() override;
 
     // Documentation inherited.
     void Configure(const gz::sim::Entity &_entity,

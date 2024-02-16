@@ -29,14 +29,15 @@ namespace ros_gz_sim
 /// \brief Private ROSGzPlugin data class.
 class ROSGzPlugin::Implementation
 {
-  /// \brief The ROS 2 <--> Gz bridge.
-  public: std::shared_ptr<ros_gz_bridge::RosGzBridge> bridge;
+  public:
+    /// \brief The ROS 2 <--> Gz bridge.
+    std::shared_ptr<ros_gz_bridge::RosGzBridge> bridge;
 
-  /// \brief The ROS 2 executor.
-  public: std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> exec;
+    /// \brief The ROS 2 executor.
+    std::shared_ptr<rclcpp::executors::MultiThreadedExecutor> exec;
 
-  /// \brief A thread to call spin and not block the Gazebo thread.
-  public: std::thread thread;
+    /// \brief A thread to call spin and not block the Gazebo thread.
+    std::thread thread;
 };
 
 //////////////////////////////////////////////////
