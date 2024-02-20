@@ -25,9 +25,8 @@
 
 namespace ros_gz_sim
 {
-
 /// \brief Private ROSGzPlugin data class.
-class ROSGzPlugin::Implementation
+class ROSGzPluginPrivate
 {
 public:
   /// \brief The ROS 2 <--> Gz bridge.
@@ -42,7 +41,7 @@ public:
 
 //////////////////////////////////////////////////
 ROSGzPlugin::ROSGzPlugin()
-: System(), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
+: System(), dataPtr(new ROSGzPluginPrivate())
 {
 }
 

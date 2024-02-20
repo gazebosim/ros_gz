@@ -17,11 +17,13 @@
 
 #include <memory>
 #include <gz/sim/System.hh>
-#include <gz/utils/ImplPtr.hh>
 #include <sdf/sdf.hh>
 
 namespace ros_gz_sim
 {
+// Private class.
+class ROSGzPluginPrivate;
+
 /// \brief ToDo
 class ROSGzPlugin
   : public gz::sim::System,
@@ -41,8 +43,9 @@ public:
     gz::sim::EntityComponentManager & _ecm,
     gz::sim::EventManager & _eventMgr) override;
 
+
   /// \brief Private data pointer.
-  GZ_UTILS_UNIQUE_IMPL_PTR(dataPtr)
+  std::unique_ptr<ROSGzPluginPrivate> dataPtr;
 };
 }  // namespace ros_gz_sim
 #endif  // ROS_GZ_SIM__ROS_GZ_HPP_
