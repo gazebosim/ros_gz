@@ -91,7 +91,22 @@ void ROSGzPlugin::Configure(
 }
 }  // namespace ros_gz_sim
 
+#if (IGNITION_GAZEBO_MAJOR_VERSION == 6)
+IGNITION_ADD_PLUGIN(
+  ros_gz_sim::ROSGzPlugin,
+  gz::sim::System,
+  ros_gz_sim::ROSGzPlugin::ISystemConfigure)
+#else
 GZ_ADD_PLUGIN(
   ros_gz_sim::ROSGzPlugin,
   gz::sim::System,
   ros_gz_sim::ROSGzPlugin::ISystemConfigure)
+#endif
+
+#if (IGNITION_GAZEBO_MAJOR_VERSION == 6)
+IGNITION_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
+                          "ros_gz_sim::ROSGzPlugin")
+#else
+GZ_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
+                    "ros_gz_sim::ROSGzPlugin")
+#endif  
