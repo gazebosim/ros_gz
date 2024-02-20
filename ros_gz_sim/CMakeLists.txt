@@ -22,6 +22,8 @@ if("$ENV{GZ_VERSION}" STREQUAL "" AND NOT "$ENV{IGNITION_VERSION}" STREQUAL "")
   set(ENV{GZ_VERSION} $ENV{IGNITION_VERSION})
 endif()
 
+set(GZ_TARGET_SIM gz-sim)
+
 # Edifice
 if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   find_package(ignition-math6 REQUIRED)
@@ -37,6 +39,7 @@ if("$ENV{GZ_VERSION}" STREQUAL "edifice")
   set(GZ_SIM_VER ${ignition-gazebo5_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  set(GZ_TARGET_SIM ignition-gazebo)
   macro(gz_find_package)
     ign_find_package(${ARGV})
   endmacro()
@@ -90,6 +93,7 @@ else()
   set(GZ_SIM_VER ${ignition-gazebo6_VERSION_MAJOR})
 
   set(GZ_TARGET_PREFIX ignition)
+  set(GZ_TARGET_SIM ignition-gazebo)
 
   message(STATUS "Compiling against Gazebo Fortress")
   macro(gz_find_package)
@@ -132,7 +136,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 # ROS Gz bridge
 add_library(ROSGzPlugin SHARED src/ros_gz.cpp)
 target_link_libraries(ROSGzPlugin PUBLIC
-  gz-sim${GZ_SIM_VER}::core
+  ${GZ_TARGET_SIM}${GZ_SIM_VER}::core
   rclcpp::rclcpp
   ros_gz_bridge::ros_gz_bridge_lib
 )
