@@ -16,7 +16,6 @@
 #include <memory>
 #include <string>
 
-#include <gz/common/Console.hh>
 #include <gz/plugin/Register.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
@@ -66,14 +65,14 @@ void ROSGzPlugin::Configure(
   }
 
   if (!_sdf->HasElement("config_file")) {
-    gzerr << "No <config_file> found. Plugin disabled." << std::endl;
+    std::cerr << "No <config_file> found. Plugin disabled." << std::endl;
     return;
   }
 
   // Sanity check: Make sure that the config file exists and it's a file.
   std::filesystem::path configFile = _sdf->Get<std::string>("config_file");
   if (!std::filesystem::is_regular_file(configFile)) {
-    gzerr << "[" << configFile << "] is not a regular file. Plugin disabled"
+    std::cerr << "[" << configFile << "] is not a regular file. Plugin disabled"
           << std::endl;
     return;
   }
