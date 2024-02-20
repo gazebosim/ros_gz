@@ -16,6 +16,7 @@
 #include <memory>
 #include <string>
 
+#include <gz/common/Console.hh>
 #include <gz/plugin/Register.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
