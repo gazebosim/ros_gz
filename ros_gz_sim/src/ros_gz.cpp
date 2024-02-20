@@ -73,7 +73,7 @@ void ROSGzPlugin::Configure(
   std::filesystem::path configFile = _sdf->Get<std::string>("config_file");
   if (!std::filesystem::is_regular_file(configFile)) {
     std::cerr << "[" << configFile << "] is not a regular file. Plugin disabled"
-          << std::endl;
+              << std::endl;
     return;
   }
 
