@@ -109,4 +109,4 @@ IGNITION_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
 #else
 GZ_ADD_PLUGIN_ALIAS(ros_gz_sim::ROSGzPlugin,
                     "ros_gz_sim::ROSGzPlugin")
-#endif  
+#endif
