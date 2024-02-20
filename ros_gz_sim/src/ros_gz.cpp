@@ -95,7 +95,3 @@ GZ_ADD_PLUGIN(
   ros_gz_sim::ROSGzPlugin,
   gz::sim::System,
   ros_gz_sim::ROSGzPlugin::ISystemConfigure)
-
-GZ_ADD_PLUGIN_ALIAS(
-  ros_gz_sim::ROSGzPlugin,
-  "ros_gz_sim::ROSGzPlugin")
