@@ -13,7 +13,7 @@ Iron | Garden | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only fro
 Iron | Harmonic | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
 Jazzy* | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
 Jazzy* | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
-Jazzy* | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | [only from source](https://packages.ros.org)
+Jazzy* | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 Rolling | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
