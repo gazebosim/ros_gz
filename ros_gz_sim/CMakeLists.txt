@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(ros_gz_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 
@@ -137,7 +138,7 @@ add_library(ROSGzPlugin SHARED src/ros_gz.cpp)
 target_link_libraries(ROSGzPlugin PUBLIC
   ${GZ_TARGET_SIM}${GZ_SIM_VER}::core
   rclcpp::rclcpp
-  ros_gz_bridge::ros_gz_bridge
+  ros_gz_bridge::ros_gz_bridge_lib
 )
 target_include_directories(ROSGzPlugin PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ros_gz_sim>
@@ -145,7 +146,8 @@ target_include_directories(ROSGzPlugin PUBLIC
 )
 install(
   TARGETS ROSGzPlugin
-  DESTINATION lib)
+  DESTINATION lib
+)
 
 configure_file(
   launch/gz_sim.launch.py.in
