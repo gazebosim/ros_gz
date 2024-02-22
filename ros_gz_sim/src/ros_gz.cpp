@@ -50,8 +50,7 @@ ROSGzPlugin::ROSGzPlugin()
 //////////////////////////////////////////////////
 ROSGzPlugin::~ROSGzPlugin()
 {
-  if (this->dataPtr->exec)
-  {
+  if (this->dataPtr->exec) {
     this->dataPtr->exec->cancel();
     this->dataPtr->thread.join();
   }
