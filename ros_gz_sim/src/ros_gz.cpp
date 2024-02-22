@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <filesystem>
 #include <iostream>
 #include <memory>
 #include <string>
 #include <thread>
 
+#include <gz/common/Util.hh>
 #include <gz/plugin/Register.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
@@ -50,8 +50,11 @@ ROSGzPlugin::ROSGzPlugin()
 //////////////////////////////////////////////////
 ROSGzPlugin::~ROSGzPlugin()
 {
-  this->dataPtr->exec->cancel();
-  this->dataPtr->thread.join();
+  if (this->dataPtr->exec)
+  {
+    this->dataPtr->exec->cancel();
+    this->dataPtr->thread.join();
+  }
 }
 
 //////////////////////////////////////////////////
@@ -72,16 +75,17 @@ void ROSGzPlugin::Configure(
   }
 
   // Sanity check: Make sure that the config file exists and it's a file.
-  std::filesystem::path configFile = _sdf->Get<std::string>("config_file");
-  if (!std::filesystem::is_regular_file(configFile)) {
-    std::cerr << "[" << configFile << "] is not a regular file. Plugin disabled"
-              << std::endl;
+  std::string filename = _sdf->Get<std::string>("config_file");
+  std::string path = gz::common::findFile(filename);
+  if (!gz::common::isFile(path)) {
+    std::cerr << "Unable to open YAML file [" << filename
+              << "], check your GAZEBO_RESOURCE_PATH settings." << std::endl;
     return;
   }
 
   // Create the bridge passing the parameters as rclcpp::NodeOptions().
   this->dataPtr->bridge = std::make_shared<ros_gz_bridge::RosGzBridge>(
-    rclcpp::NodeOptions().append_parameter_override("config_file", configFile));
+    rclcpp::NodeOptions().append_parameter_override("config_file", path));
 
   // Create the executor.
   this->dataPtr->exec =

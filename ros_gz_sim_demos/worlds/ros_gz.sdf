@@ -6,6 +6,27 @@
 <sdf version="1.8">
   <world name="demo">
 
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+    <plugin
+      filename="ignition-gazebo-physics-system"
+      name="gz::sim::systems::Physics">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-user-commands-system"
+      name="gz::sim::systems::UserCommands">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
+    </plugin>
+    <plugin
+      filename="ignition-gazebo-contact-system"
+      name="gz::sim::systems::Contact">
+    </plugin>
+
     <light name="sun" type="directional">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
@@ -47,39 +68,10 @@
       </link>
     </model>
 
-    <model name="vehicle">
-      <self_collide>true</self_collide>
-      <pose>0 0 0 0 0 0</pose>
-      <include merge="true">
-        <uri>package://ros_gz_sim_demos/models/vehicle</uri>
-      </include>
+    <plugin name="ros_gz_sim::ROSGzPlugin"
+            filename="libROSGzPlugin.so">
+      <config_file>config/full.yaml</config_file>
+    </plugin>
 
-      <plugin
-        filename="gz-sim-joint-state-publisher-system"
-        name="gz::sim::systems::JointStatePublisher">
-      </plugin>
-
-      <plugin
-        filename="gz-sim-pose-publisher-system"
-        name="gz::sim::systems::PosePublisher">
-        <publish_link_pose>true</publish_link_pose>
-        <use_pose_vector_msg>true</use_pose_vector_msg>
-        <static_publisher>true</static_publisher>
-        <static_update_frequency>1</static_update_frequency>
-      </plugin>
-
-      <plugin
-        filename="gz-sim-odometry-publisher-system"
-        name="gz::sim::systems::OdometryPublisher">
-        <odom_frame>vehicle/odom</odom_frame>
-        <robot_base_frame>vehicle</robot_base_frame>
-      </plugin>
-
-      <plugin name="ros_gz_sim::ROSGzPlugin"
-              filename="libROSGzPlugin.so">
-        <config_file>/home/caguero/ros_gz_ws/src/ros_gz/ros_gz_sim_demos/config/full.yaml</config_file>
-      </plugin>
-
-    </model>
   </world>
 </sdf>
