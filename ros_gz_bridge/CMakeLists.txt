@@ -129,6 +129,7 @@ add_library(${bridge_lib}
   src/bridge_handle_ros_to_gz.cpp
   src/bridge_handle_gz_to_ros.cpp
   src/factory_interface.cpp
+  src/service_factory_interface.cpp
   src/service_factories/ros_gz_interfaces.cpp
   src/ros_gz_bridge.cpp
   ${convert_files}
