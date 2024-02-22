@@ -13,8 +13,10 @@
 // limitations under the License.
 
 #include <filesystem>
+#include <iostream>
 #include <memory>
 #include <string>
+#include <thread>
 
 #include <gz/plugin/Register.hh>
 #include <rclcpp/rclcpp.hpp>

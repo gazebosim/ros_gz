@@ -43,7 +43,6 @@ public:
     gz::sim::EntityComponentManager & _ecm,
     gz::sim::EventManager & _eventMgr) override;
 
-
   /// \brief Private data pointer.
   std::unique_ptr<ROSGzPluginPrivate> dataPtr;
 };
