@@ -70,7 +70,7 @@
 
     <plugin name="ros_gz_sim::ROSGzPlugin"
             filename="libROSGzPlugin.so">
-      <config_file>config/full.yaml</config_file>
+      <config_file>ros_gz_sim_demos/config/full.yaml</config_file>
     </plugin>
 
   </world>

@@ -33,11 +33,10 @@ install(
   DESTINATION share/${PROJECT_NAME}/worlds
 )
 
-
 install(
   DIRECTORY
     config/
-  DESTINATION share
+  DESTINATION share/${PROJECT_NAME}/config
 )
 
 ament_environment_hooks("${CMAKE_CURRENT_SOURCE_DIR}/hooks/${PROJECT_NAME}.dsv.in")
