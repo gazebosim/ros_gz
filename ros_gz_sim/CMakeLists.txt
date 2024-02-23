@@ -140,8 +140,8 @@ target_link_libraries(ROSGzPlugin PUBLIC
   ros_gz_bridge::ros_gz_bridge
 )
 target_include_directories(ROSGzPlugin PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ros_gz_sim>
-  $<INSTALL_INTERFACE:include/ros_gz_sim>
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ros_gz_sim>"
+  "$<INSTALL_INTERFACE:include/ros_gz_sim>"
 )
 install(
   TARGETS ROSGzPlugin
