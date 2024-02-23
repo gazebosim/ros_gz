@@ -119,7 +119,7 @@ add_custom_command(
   COMMENT "Generating factories for interface types")
 
 set(bridge_lib
-  ros_gz_bridge_lib
+  ros_gz_bridge
 )
 
 add_library(${bridge_lib}
@@ -129,6 +129,7 @@ add_library(${bridge_lib}
   src/bridge_handle_ros_to_gz.cpp
   src/bridge_handle_gz_to_ros.cpp
   src/factory_interface.cpp
+  src/service_factory_interface.cpp
   src/service_factories/ros_gz_interfaces.cpp
   src/ros_gz_bridge.cpp
   ${convert_files}
@@ -149,9 +150,11 @@ ament_target_dependencies(${bridge_lib}
 
 target_include_directories(${bridge_lib}
   PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include/>"
-  PRIVATE src ${generated_path}
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
 )
 
 target_link_libraries(${bridge_lib}
@@ -170,12 +173,9 @@ install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
         RUNTIME DESTINATION bin)
 
 install(
-  DIRECTORY include/${PROJECT_NAME}
-  DESTINATION include
+  DIRECTORY include/
+  DESTINATION include/${PROJECT_NAME}
 )
-
-ament_export_include_directories(include)
-ament_export_libraries(${bridge_lib})
 
 set(bridge_executables
   parameter_bridge
@@ -195,7 +195,7 @@ foreach(bridge ${bridge_executables})
     ${BRIDGE_MESSAGE_TYPES}
   )
   install(TARGETS ${bridge}
-    DESTINATION lib/${PROJECT_NAME}
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
   )
 endforeach()
 
@@ -350,11 +350,19 @@ if(BUILD_TESTING)
 
 endif()
 
+# Export old-style CMake variables
+ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_libraries(${bridge_lib})
+
+# Export modern CMake targets
 ament_export_targets(export_${PROJECT_NAME})
 
-ament_export_dependencies(
-  rclcpp
-  ${BRIDGE_MESSAGE_TYPES}
-)
+# specific order: dependents before dependencies
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(rclcpp_components)
+ament_export_dependencies(${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER})
+ament_export_dependencies(${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER})
+ament_export_dependencies(yaml_cpp_vendor)
+ament_export_dependencies(${BRIDGE_MESSAGE_TYPES})
 
 ament_package()
