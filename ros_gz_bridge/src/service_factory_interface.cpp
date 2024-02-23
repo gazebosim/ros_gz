@@ -1,4 +1,4 @@
-// Copyright 2022 Open Source Robotics Foundation, Inc.
+// Copyright 2024 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef  SERVICE_FACTORY_INTERFACE_HPP_
-#define  SERVICE_FACTORY_INTERFACE_HPP_
-
-#include <memory>
-#include <string>
-
-#include <gz/transport/Node.hh>
-
-#include <rclcpp/service.hpp>
-#include <rclcpp/node.hpp>
+#include "service_factory_interface.hpp"
 
 namespace ros_gz_bridge
 {
 
-class ServiceFactoryInterface
+ServiceFactoryInterface::~ServiceFactoryInterface()
 {
-public:
-  virtual ~ServiceFactoryInterface() = 0;
-
-  virtual
-  rclcpp::ServiceBase::SharedPtr
-  create_ros_service(
-    rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<gz::transport::Node> gz_node,
-    const std::string & service_name) = 0;
-};
+}
 
 }  // namespace ros_gz_bridge
-
-#endif  // SERVICE_FACTORY_INTERFACE_HPP_
