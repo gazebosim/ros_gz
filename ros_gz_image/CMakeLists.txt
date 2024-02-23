@@ -14,7 +14,6 @@ find_package(ament_cmake REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(ros_gz_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(rclcpp_components REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
 # TODO(CH3): Deprecated. Remove on tock.
