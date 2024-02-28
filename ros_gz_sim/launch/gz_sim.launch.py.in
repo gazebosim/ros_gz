@@ -30,8 +30,8 @@ from launch.substitutions import LaunchConfiguration
 Search for model, plugin and media paths exported by packages.
 
 e.g.  <export>
-          <gazebo_ros gazebo_model_path="${prefix}/models"/>
-          <gazebo_ros gazebo_media_path="${prefix}/models"/>
+          <gazebo_ros gazebo_model_path="${prefix}/../"/>
+          <gazebo_ros gazebo_media_path="${prefix}/../"/>
       </export>
 ${prefix} is replaced by package's share directory in install.
 
@@ -71,42 +71,39 @@ class GazeboRosPaths:
                             xml_path = xml_path.replace('${prefix}', package_share_path)
                             gazebo_media_path.append(xml_path)
 
-        gazebo_model_path = os.pathsep.join(gazebo_model_path)
+        gazebo_model_path = os.pathsep.join(gazebo_model_path + gazebo_media_path)
         gazebo_plugin_path = os.pathsep.join(gazebo_plugin_path)
-        gazebo_media_path = os.pathsep.join(gazebo_media_path)
 
-        return gazebo_model_path, gazebo_plugin_path, gazebo_media_path
-
+        return gazebo_model_path, gazebo_plugin_path
 
 def launch_gz(context, *args, **kwargs):
-    model_path, plugin_path, media_path = GazeboRosPaths.get_paths()
+    model_paths, plugin_paths = GazeboRosPaths.get_paths()
+
     env = {
         "GZ_SIM_SYSTEM_PLUGIN_PATH": os.pathsep.join(
             [
                 environ.get("GZ_SIM_SYSTEM_PLUGIN_PATH", default=""),
                 environ.get("LD_LIBRARY_PATH", default=""),
-                plugin_path,
+                plugin_paths,
             ]
         ),
-        "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": os.pathsep.join(  # TODO(CH3): To support pre-garden. Deprecated.
+        "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": os.pathsep.join(  # TODO(azeey): To support pre-garden. Deprecated.
             [
                 environ.get("IGN_GAZEBO_SYSTEM_PLUGIN_PATH", default=""),
                 environ.get("LD_LIBRARY_PATH", default=""),
-                plugin_path,
+                plugin_paths,
             ]
         ),
         "GZ_SIM_RESOURCE_PATH": os.pathsep.join(
             [
                 environ.get("GZ_SIM_RESOURCE_PATH", default=""),
-                model_path,
-                media_path
+                model_paths,
             ]
         ),
         "IGN_GAZEBO_RESOURCE_PATH": os.pathsep.join(  # TODO(azeey): To support pre-garden. Deprecated.
             [
                 environ.get("IGN_GAZEBO_RESOURCE_PATH", default=""),
-                model_path,
-                media_path,
+                model_paths,
             ]
         ),
     }
