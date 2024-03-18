@@ -44,11 +44,20 @@ void RosGzBridge::spin()
     std::string config_file;
     this->get_parameter("config_file", config_file);
     const std::string ros_ns = this->get_namespace();
+    const std::string ros_node_name = this->get_name();
     if (!config_file.empty()) {
       auto entries = readFromYamlFile(config_file);
       for (auto & entry : entries) {
-        if (entry.gz_topic_name[0] != '/' && ros_ns.length() > 1) {
-          entry.gz_topic_name = ros_ns + '/' + entry.gz_topic_name;
+        if (entry.gz_topic_name[0] != '/') {
+          if (entry.gz_topic_name[0] == '~' && 
+              entry.gz_topic_name[1] == '/' &&
+              ros_node_name.length() > 1) {
+            entry.gz_topic_name = ros_node_name + '/' + 
+              entry.gz_topic_name.substr(2);
+          }
+          if (ros_ns.length() > 1) {
+            entry.gz_topic_name = ros_ns + '/' + entry.gz_topic_name;
+          }
         }
         this->add_bridge(entry);
       }
