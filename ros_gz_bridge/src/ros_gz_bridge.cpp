@@ -43,9 +43,13 @@ void RosGzBridge::spin()
   if (handles_.empty()) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
+    const std::string ros_ns = this->get_namespace();
     if (!config_file.empty()) {
       auto entries = readFromYamlFile(config_file);
-      for (const auto & entry : entries) {
+      for (auto & entry : entries) {
+        if (entry.gz_topic_name[0] != '/' && ros_ns.length() > 1) {
+          entry.gz_topic_name = ros_ns + '/' + entry.gz_topic_name;
+        }
         this->add_bridge(entry);
       }
     }
@@ -55,7 +59,6 @@ void RosGzBridge::spin()
     bridge->Spin();
   }
 }
-
 void RosGzBridge::add_bridge(const BridgeConfig & config)
 {
   bool gz_to_ros = false;
