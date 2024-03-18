@@ -63,11 +63,12 @@ void RosGzBridge::spin()
       }
     }
   }
-
+  
   for (auto & bridge : handles_) {
     bridge->Spin();
   }
 }
+
 void RosGzBridge::add_bridge(const BridgeConfig & config)
 {
   bool gz_to_ros = false;
