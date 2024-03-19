@@ -61,7 +61,6 @@ void RosGzBridge::spin()
       }
     }
   }
-  
   for (auto & bridge : handles_) {
     bridge->Spin();
   }
