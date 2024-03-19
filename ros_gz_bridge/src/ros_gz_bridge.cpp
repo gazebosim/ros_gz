@@ -17,6 +17,8 @@
 #include <memory>
 #include <string>
 
+#include "rclcpp/expand_topic_or_service_name.hpp"
+
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
 
@@ -30,6 +32,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
   this->declare_parameter<int>("subscription_heartbeat", 1000);
   this->declare_parameter<std::string>("config_file", "");
+  this->declare_parameter<bool>("expand_gz_topic_names", false);
 
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
@@ -43,21 +46,16 @@ void RosGzBridge::spin()
   if (handles_.empty()) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
+    bool expand_names;
+    this->get_parameter("expand_gz_topic_names", expand_names);
     const std::string ros_ns = this->get_namespace();
     const std::string ros_node_name = this->get_name();
     if (!config_file.empty()) {
       auto entries = readFromYamlFile(config_file);
       for (auto & entry : entries) {
-        if (entry.gz_topic_name[0] != '/') {
-          if (entry.gz_topic_name[0] == '~' && 
-              entry.gz_topic_name[1] == '/' &&
-              ros_node_name.length() > 1) {
-            entry.gz_topic_name = ros_node_name + '/' + 
-              entry.gz_topic_name.substr(2);
-          }
-          if (ros_ns.length() > 1) {
-            entry.gz_topic_name = ros_ns + '/' + entry.gz_topic_name;
-          }
+        if (expand_names) {
+          entry.gz_topic_name = rclcpp::expand_topic_or_service_name(
+            entry.gz_topic_name, ros_node_name, ros_ns, false);
         }
         this->add_bridge(entry);
       }
