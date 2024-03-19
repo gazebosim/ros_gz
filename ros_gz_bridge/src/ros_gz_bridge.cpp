@@ -21,6 +21,7 @@
 #include "bridge_handle_gz_to_ros.hpp"
 
 #include <rclcpp/expand_topic_or_service_name.hpp>
+
 namespace ros_gz_bridge
 {
 
