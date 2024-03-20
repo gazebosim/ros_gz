@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <rclcpp/rclcpp.hpp>
+#include <resource_retriever/retriever.hpp>
 #include <ros_gz_bridge/bridge_config.hpp>
 
 namespace ros_gz_bridge
@@ -173,31 +174,30 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
 std::vector<BridgeConfig> readFromYamlFile(const std::string & filename)
 {
   std::vector<BridgeConfig> ret;
-  std::ifstream in(filename);
+  resource_retriever::Retriever r;
+  resource_retriever::MemoryResource res;
 
   auto logger = rclcpp::get_logger("readFromYamlFile");
-  if (!in.is_open()) {
+
+  try {
+    res = r.get(filename);
+  } catch (const resource_retriever::Exception & exc) {
     RCLCPP_ERROR(
       logger,
       "Could not parse config: failed to open file [%s]", filename.c_str());
     return ret;
   }
 
-  // Compute file size to warn on empty configuration
-  const auto fbegin = in.tellg();
-  in.seekg(0, std::ios::end);
-  const auto fend = in.tellg();
-  const auto fsize = fend - fbegin;
-
-  if (fsize == 0) {
+  // Sanity check: Avoid empty configuration.
+  if (res.size == 0) {
     RCLCPP_ERROR(
       logger,
       "Could not parse config: file empty [%s]", filename.c_str());
     return ret;
   }
 
-  in.seekg(0, std::ios::beg);
-  return readFromYaml(in);
+  std::string str(reinterpret_cast<char *>(res.data.get()), res.size);
+  return readFromYamlString(str);
 }
 
 std::vector<BridgeConfig> readFromYamlString(const std::string & data)

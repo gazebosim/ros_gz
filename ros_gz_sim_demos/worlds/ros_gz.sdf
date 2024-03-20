@@ -70,7 +70,7 @@
 
     <plugin name="ros_gz_sim::ROSGzBridge"
             filename="ros-gz-bridge-system">
-      <config_file>package://ros_gz_sim_demos/config/full.yaml</config_file>
+      <config_file>package://ros_gz_bridge/config/full.yaml</config_file>
     </plugin>
 
   </world>

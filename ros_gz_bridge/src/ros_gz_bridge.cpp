@@ -15,7 +15,6 @@
 #include <memory>
 #include <string>
 
-#include <resource_retriever/retriever.hpp>
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 
 #include "bridge_handle_ros_to_gz.hpp"
@@ -47,18 +46,9 @@ void RosGzBridge::spin()
     this->get_parameter("config_file", config_file);
     if (!config_file.empty() && !config_file_parsed_) {
       config_file_parsed_ = true;
-      resource_retriever::Retriever r;
-      try {
-        resource_retriever::MemoryResource res = r.get(config_file);
-        std::string str(reinterpret_cast<char *>(res.data.get()), res.size);
-        auto entries = readFromYamlString(str);
-        for (const auto & entry : entries) {
-          this->add_bridge(entry);
-        }
-      } catch (const resource_retriever::Exception & exc) {
-        RCLCPP_ERROR(
-          this->get_logger(),
-          "Unable to find: [%s]", config_file.c_str());
+      auto entries = readFromYamlFile(config_file);
+      for (const auto & entry : entries) {
+        this->add_bridge(entry);
       }
     }
   }
