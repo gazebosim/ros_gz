@@ -283,7 +283,7 @@ Namespaces are applied to Gazebo topic both when specified as `topic_name` as we
 By default, the Bridge will not apply ROS namespace on the Gazebo topics. To enable this feature, use parameter `expand_gz_topic_names`.
 Let's test our topic with namespace:
 
-```
+```bash
 # Shell A:
 . ~/bridge_ws/install/setup.bash
 ros2 run ros_gz_bridge parameter_bridge chatter@std_msgs/msg/String@ignition.msgs.StringMsg \
