@@ -71,7 +71,7 @@ public:
 TEST_F(BridgeConfig, Minimum)
 {
   auto results = ros_gz_bridge::readFromYamlFile(
-    "file:///home/caguero/ros_gz_ws/src/ros_gz/ros_gz_bridge/test/config/minimum.yaml");
+    "package://ros_gz_bridge/test/config/minimum.yaml");
   EXPECT_EQ(4u, results.size());
 
   {
@@ -119,7 +119,7 @@ TEST_F(BridgeConfig, Minimum)
 TEST_F(BridgeConfig, FullGz)
 {
   auto results = ros_gz_bridge::readFromYamlFile(
-    "file:///home/caguero/ros_gz_ws/src/ros_gz/ros_gz_bridge/test/config/full.yaml");
+    "package://ros_gz_bridge/test/config/full.yaml");
   EXPECT_EQ(2u, results.size());
 
   {
@@ -270,7 +270,7 @@ TEST_F(BridgeConfig, InvalidFileDoesntExist)
 TEST_F(BridgeConfig, InvalidTopLevel)
 {
   auto results = ros_gz_bridge::readFromYamlFile(
-    "file:///home/caguero/ros_gz_ws/src/ros_gz/ros_gz_bridge/test/config/invalid.yaml");
+    "package://ros_gz_bridge/test/config/invalid.yaml");
   EXPECT_EQ(0u, results.size());
   EXPECT_EQ(
     "Could not parse config: top level must be a YAML sequence",
@@ -280,10 +280,10 @@ TEST_F(BridgeConfig, InvalidTopLevel)
 TEST_F(BridgeConfig, EmptyYAML)
 {
   auto results = ros_gz_bridge::readFromYamlFile(
-    "file:///home/caguero/ros_gz_ws/src/ros_gz/ros_gz_bridge/test/config/empty.yaml");
+    "package://ros_gz_bridge/test/config/empty.yaml");
   EXPECT_EQ(0u, results.size());
   EXPECT_EQ(
     "Could not parse config: file empty ["
-    "file:///home/caguero/ros_gz_ws/src/ros_gz/ros_gz_bridge/test/config/empty.yaml]",
+    "package://ros_gz_bridge/test/config/empty.yaml]",
     g_last_log_event.message);
 }

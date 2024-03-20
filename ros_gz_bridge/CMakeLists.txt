@@ -311,6 +311,10 @@ if(BUILD_TESTING)
     DESTINATION lib/${PROJECT_NAME}
   )
 
+  install(DIRECTORY
+    test/config
+    DESTINATION share/${PROJECT_NAME}/test/)
+
   add_launch_test(test/launch/test_ros_subscriber.launch.py
     TIMEOUT 200
     ARGS "gz_msgs_ver:=${GZ_MSGS_VERSION_FULL}"
