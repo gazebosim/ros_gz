@@ -164,7 +164,7 @@ You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Gazebo Msgs over Gazebo Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS 2 humble and Gazebo Fortress):
+(it was taken using ROS 2 Galactic and Gazebo Fortress):
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
