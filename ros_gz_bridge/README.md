@@ -86,7 +86,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/humble/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -118,7 +118,7 @@ Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/humble/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -156,7 +156,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/humble/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -164,7 +164,7 @@ You should see the current images in `rqt_image_view` which are coming from
 Gazebo (published as Gazebo Msgs over Gazebo Transport).
 
 The screenshot shows all the shell windows and their expected content
-(it was taken using ROS 2 Galactic and Gazebo Fortress):
+(it was taken using ROS 2 humble and Gazebo Fortress):
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
@@ -274,9 +274,44 @@ To run the bridge node with the above configuration:
 ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
 ```
 
+## Example 6: Using ROS namespace with the Bridge
+
+When spawning multiple robots inside the same ROS environment, it is convenient to use namespaces to avoid overlapping topic names.
+There are three main types of namespaces: relative, global (`/`) and private (`~/`). For more information, refer to ROS documentation.
+Namespaces are applied to Gazebo topic both when specified as `topic_name` as well as `gz_topic_name`.
+
+By default, the Bridge will not apply ROS namespace on the Gazebo topics. To enable this feature, use parameter `expand_gz_topic_names`.
+Let's test our topic with namespace:
+
+```
+# Shell A:
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge chatter@std_msgs/msg/String@ignition.msgs.StringMsg \
+  --ros-args -p expand_gz_topic_names:=true -r __ns:=/demo
+```
+
+Now we start the Gazebo Transport listener.
+
+```
+# Shell B:
+ign topic -e -t /demo/chatter
+```
+
+Now we start the ROS talker.
+
+```
+# Shell C:
+. /opt/ros/humble/setup.bash
+ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a namespace'" --once
+```
+
+By changing `chatter` to `/chatter` or `~/chatter` you can obtain different results.
+
+
 ## API
 
 ROS 2 Parameters:
 
  * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
  * `config_file` - YAML file to be loaded as the bridge configuration
+ * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
