@@ -292,7 +292,7 @@ ros2 run ros_gz_bridge parameter_bridge chatter@std_msgs/msg/String@ignition.msg
 
 Now we start the Gazebo Transport listener.
 
-```
+```bash
 # Shell B:
 ign topic -e -t /demo/chatter
 ```
