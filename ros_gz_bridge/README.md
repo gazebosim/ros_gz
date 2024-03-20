@@ -307,7 +307,6 @@ ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a nam
 
 By changing `chatter` to `/chatter` or `~/chatter` you can obtain different results.
 
-
 ## API
 
 ROS 2 Parameters:
