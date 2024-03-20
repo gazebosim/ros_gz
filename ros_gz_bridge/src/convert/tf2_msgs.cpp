@@ -44,9 +44,15 @@ convert_gz_to_ros(
   tf2_msgs::msg::TFMessage & ros_msg)
 {
   ros_msg.transforms.clear();
+  builtin_interfaces::msg::Time ros_stamp;
+  convert_gz_to_ros(gz_msg.header().stamp(), ros_stamp);
+  
   for (auto const & p : gz_msg.pose()) {
     geometry_msgs::msg::TransformStamped tf;
     convert_gz_to_ros(p, tf);
+    tf.header.stamp = ros_stamp;
+    tf.header.frame_id = "world";
+    tf.child_frame_id = p.name();
     ros_msg.transforms.push_back(tf);
   }
 }
