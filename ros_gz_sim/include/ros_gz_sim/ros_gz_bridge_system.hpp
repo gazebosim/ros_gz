@@ -16,6 +16,9 @@
 #define ROS_GZ_SIM__ROS_GZ_BRIDGE_SYSTEM_HPP_
 
 #include <memory>
+#include <gz/sim/Entity.hh>
+#include <gz/sim/EntityComponentManager.hh>
+#include <gz/sim/EventManager.hh>
 #include <gz/sim/System.hh>
 #include <sdf/sdf.hh>
 
