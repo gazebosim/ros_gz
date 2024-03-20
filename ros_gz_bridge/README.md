@@ -299,7 +299,7 @@ ign topic -e -t /demo/chatter
 
 Now we start the ROS talker.
 
-```
+```bash
 # Shell C:
 . /opt/ros/humble/setup.bash
 ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a namespace'" --once
