@@ -13,6 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(resource_retriever REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
 if(NOT DEFINED ENV{GZ_VERSION})
@@ -120,6 +121,7 @@ add_library(${bridge_lib}
 target_link_libraries(${bridge_lib}
   ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
   ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  resource_retriever::resource_retriever
 )
 
 ament_target_dependencies(${bridge_lib}
@@ -341,6 +343,7 @@ ament_export_targets(export_${PROJECT_NAME})
 # specific order: dependents before dependencies
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(rclcpp_components)
+ament_export_dependencies(resource_retriever)
 ament_export_dependencies(${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER})
 ament_export_dependencies(${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER})
 ament_export_dependencies(yaml_cpp_vendor)

@@ -12,10 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_gz_bridge/ros_gz_bridge.hpp>
-
 #include <memory>
 #include <string>
+
+#include <resource_retriever/retriever.hpp>
+#include <ros_gz_bridge/ros_gz_bridge.hpp>
 
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
@@ -24,7 +25,8 @@ namespace ros_gz_bridge
 {
 
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
-: rclcpp::Node("ros_gz_bridge", options)
+: rclcpp::Node("ros_gz_bridge", options),
+  config_file_parsed_(false)
 {
   gz_node_ = std::make_shared<gz::transport::Node>();
 
@@ -43,10 +45,20 @@ void RosGzBridge::spin()
   if (handles_.empty()) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
-    if (!config_file.empty()) {
-      auto entries = readFromYamlFile(config_file);
-      for (const auto & entry : entries) {
-        this->add_bridge(entry);
+    if (!config_file.empty() && !config_file_parsed_) {
+      config_file_parsed_ = true;
+      resource_retriever::Retriever r;
+      try {
+        resource_retriever::MemoryResource res = r.get(config_file);
+        std::string str(reinterpret_cast<char *>(res.data.get()), res.size);
+        auto entries = readFromYamlString(str);
+        for (const auto & entry : entries) {
+          this->add_bridge(entry);
+        }
+      } catch (const resource_retriever::Exception & exc) {
+        RCLCPP_ERROR(
+          this->get_logger(),
+          "Unable to find: [%s]", config_file.c_str());
       }
     }
   }

@@ -22,6 +22,7 @@
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
+  <depend>resource_retriever</depend>
   <depend>ros_gz_interfaces</depend>
   <depend>rosgraph_msgs</depend>
   <depend>sensor_msgs</depend>
