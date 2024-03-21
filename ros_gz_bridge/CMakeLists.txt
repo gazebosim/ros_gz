@@ -313,7 +313,8 @@ if(BUILD_TESTING)
 
   install(DIRECTORY
     test/config
-    DESTINATION share/${PROJECT_NAME}/test/)
+    DESTINATION share/${PROJECT_NAME}/test/
+  )
 
   add_launch_test(test/launch/test_ros_subscriber.launch.py
     TIMEOUT 200
