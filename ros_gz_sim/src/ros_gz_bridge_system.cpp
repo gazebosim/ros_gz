@@ -12,11 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <iostream>
 #include <memory>
 #include <string>
 #include <thread>
 
+#include <gz/common/Console.hh>
 #include <gz/common/Util.hh>
 #include <gz/plugin/Register.hh>
 #include <rclcpp/rclcpp.hpp>
@@ -69,7 +69,7 @@ void ROSGzBridgeSystem::Configure(
   }
 
   if (!_sdf->HasElement("config_file")) {
-    std::cerr << "No <config_file> found. Plugin disabled." << std::endl;
+    gzerr << "No <config_file> found. Plugin disabled." << std::endl;
     return;
   }
 
