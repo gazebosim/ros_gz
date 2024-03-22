@@ -70,7 +70,8 @@ public:
 
 TEST_F(BridgeConfig, Minimum)
 {
-  auto results = ros_gz_bridge::readFromYamlFile("test/config/minimum.yaml");
+  auto results = ros_gz_bridge::readFromYamlFile(
+    "package://ros_gz_bridge/test/config/minimum.yaml");
   EXPECT_EQ(4u, results.size());
 
   {
@@ -78,7 +79,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter", config.ros_topic_name);
     EXPECT_EQ("chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -88,7 +89,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_ros", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -98,7 +99,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_gz", config.ros_topic_name);
     EXPECT_EQ("chatter_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -108,7 +109,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_both_ros", config.ros_topic_name);
     EXPECT_EQ("chatter_both_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
@@ -117,7 +118,8 @@ TEST_F(BridgeConfig, Minimum)
 
 TEST_F(BridgeConfig, FullGz)
 {
-  auto results = ros_gz_bridge::readFromYamlFile("test/config/full.yaml");
+  auto results = ros_gz_bridge::readFromYamlFile(
+    "package://ros_gz_bridge/test/config/full.yaml");
   EXPECT_EQ(2u, results.size());
 
   {
@@ -125,7 +127,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(6u, config.publisher_queue_size);
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
@@ -137,7 +139,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ("ros_chatter", config.ros_topic_name);
     EXPECT_EQ("gz_chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
-    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ("gz.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(20u, config.publisher_queue_size);
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
@@ -195,7 +197,7 @@ TEST_F(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg)";
+    gz_type_name: gz.msgs.StringMsg)";
 
     auto results = ros_gz_bridge::readFromYamlString(yaml);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::BIDIRECTIONAL, results[0].direction);
@@ -206,7 +208,7 @@ TEST_F(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: BIDIRECTIONAL
     )";
 
@@ -219,7 +221,7 @@ TEST_F(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: ROS_TO_GZ
     )";
 
@@ -232,7 +234,7 @@ TEST_F(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: GZ_TO_ROS
     )";
 
@@ -246,7 +248,7 @@ TEST_F(BridgeConfig, ParseDirection)
       R"(
   - topic_name: foo
     ros_type_name: std_msgs/msg/String
-    gz_type_name: ignition.msgs.StringMsg
+    gz_type_name: gz.msgs.StringMsg
     direction: foobar
     )";
 
@@ -267,7 +269,8 @@ TEST_F(BridgeConfig, InvalidFileDoesntExist)
 
 TEST_F(BridgeConfig, InvalidTopLevel)
 {
-  auto results = ros_gz_bridge::readFromYamlFile("test/config/invalid.yaml");
+  auto results = ros_gz_bridge::readFromYamlFile(
+    "package://ros_gz_bridge/test/config/invalid.yaml");
   EXPECT_EQ(0u, results.size());
   EXPECT_EQ(
     "Could not parse config: top level must be a YAML sequence",
@@ -276,9 +279,11 @@ TEST_F(BridgeConfig, InvalidTopLevel)
 
 TEST_F(BridgeConfig, EmptyYAML)
 {
-  auto results = ros_gz_bridge::readFromYamlFile("test/config/empty.yaml");
+  auto results = ros_gz_bridge::readFromYamlFile(
+    "package://ros_gz_bridge/test/config/empty.yaml");
   EXPECT_EQ(0u, results.size());
   EXPECT_EQ(
-    "Could not parse config: file empty [test/config/empty.yaml]",
+    "Could not parse config: file empty ["
+    "package://ros_gz_bridge/test/config/empty.yaml]",
     g_last_log_event.message);
 }

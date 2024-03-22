@@ -73,18 +73,11 @@ void ROSGzBridgeSystem::Configure(
     return;
   }
 
-  // Sanity check: Make sure that the config file exists and it's a file.
   std::string filename = _sdf->Get<std::string>("config_file");
-  std::string path = gz::common::findFile(filename);
-  if (!gz::common::isFile(path)) {
-    std::cerr << "Unable to open YAML file [" << filename
-              << "], check your GZ_SIM_RESOURCE_PATH settings." << std::endl;
-    return;
-  }
 
   // Create the bridge passing the parameters as rclcpp::NodeOptions().
   this->dataPtr->bridge = std::make_shared<ros_gz_bridge::RosGzBridge>(
-    rclcpp::NodeOptions().append_parameter_override("config_file", path));
+    rclcpp::NodeOptions().append_parameter_override("config_file", filename));
 
   // Create the executor.
   this->dataPtr->exec =
