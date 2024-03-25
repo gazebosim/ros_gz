@@ -310,7 +310,7 @@ Now we start the Gazebo Transport listener.
 
 ```bash
 # Shell B:
-ign topic -e -t /demo/chatter
+gz topic -e -t /demo/chatter
 ```
 
 Now we start the ROS talker.
