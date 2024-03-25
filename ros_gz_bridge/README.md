@@ -148,7 +148,7 @@ First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generat
 
 ```
 # Shell A:
-gz gazebo sensors_demo.sdf
+gz sim sensors_demo.sdf
 ```
 
 Let's see the topic where camera images are published.
@@ -232,7 +232,7 @@ On terminal A, start the service bridge:
 
 On terminal B, start Gazebo, it will be paused by default:
 
-`gz gazebo shapes.sdf`
+`gz sim shapes.sdf`
 
 On terminal C, make a ROS request to unpause simulation:
 
