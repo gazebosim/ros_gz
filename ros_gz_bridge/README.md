@@ -110,7 +110,7 @@ Now we start the Gazebo Transport talker.
 
 ```
 # Shell C:
-ign topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
+gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS 2 talker and Gazebo Transport listener
@@ -127,7 +127,7 @@ Now we start the Gazebo Transport listener.
 
 ```
 # Shell B:
-ign topic -e -t /chatter
+gz topic -e -t /chatter
 ```
 
 Now we start the ROS talker.
@@ -148,14 +148,14 @@ First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generat
 
 ```
 # Shell A:
-ign gazebo sensors_demo.sdf
+gz sim sensors_demo.sdf
 ```
 
 Let's see the topic where camera images are published.
 
 ```
 # Shell B:
-ign topic -l | grep image
+gz topic -l | grep image
 /rgbd_camera/depth_image
 /rgbd_camera/image
 ```
@@ -206,15 +206,15 @@ On terminal B, we start a ROS 2 listener:
 
 And terminal C, publish an Gazebo message:
 
-`ign topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
+`gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
 Now let's try the other way around, ROS 2 -> Gazebo.
 
-On terminal D, start an Igntion listener:
+On terminal D, start an Gazebo listener:
 
-`ign topic -e -t /chatter`
+`gz topic -e -t /chatter`
 
 And on terminal E, publish a ROS 2 message:
 
@@ -232,7 +232,7 @@ On terminal A, start the service bridge:
 
 On terminal B, start Gazebo, it will be paused by default:
 
-`ign gazebo shapes.sdf`
+`gz sim shapes.sdf`
 
 On terminal C, make a ROS request to unpause simulation:
 
@@ -262,19 +262,19 @@ bridge may be specified:
   gz_type_name: "gz.msgs.StringMsg"
 
 # Set just GZ topic name, applies to both
-- gz_topic_name: "chatter_ign"
+- gz_topic_name: "chatter_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  gz_topic_name: "chatter_both_ign"
+  gz_topic_name: "chatter_both_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
 
 # Full set of configurations
 - ros_topic_name: "ros_chatter"
-  gz_topic_name: "ign_chatter"
+  gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
   subscriber_queue: 5       # Default 10
