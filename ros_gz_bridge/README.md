@@ -85,7 +85,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/humble/setup.bash
+. /opt/ros/iron/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -117,7 +117,7 @@ Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/humble/setup.bash
+. /opt/ros/iron/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -155,7 +155,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/humble/setup.bash
+. /opt/ros/iron/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -300,7 +300,7 @@ Now we start the ROS talker.
 
 ```bash
 # Shell C:
-. /opt/ros/humble/setup.bash
+. /opt/ros/iron/setup.bash
 ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a namespace'" --once
 ```
 
