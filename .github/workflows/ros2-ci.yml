@@ -12,9 +12,6 @@ jobs:
         include:
           - docker-image: "ubuntu:22.04"
             gz-version: "garden"
-            ros-distro: "iron"
-          - docker-image: "ubuntu:22.04"
-            gz-version: "garden"
             ros-distro: "rolling"
           - docker-image: "ubuntu:22.04"
             gz-version: "harmonic"
