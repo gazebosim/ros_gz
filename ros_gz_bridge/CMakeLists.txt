@@ -15,32 +15,16 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 
-if(NOT DEFINED ENV{GZ_VERSION})
-  set(ENV{GZ_VERSION} "garden")
-endif()
+find_package(gz_transport_vendor REQUIRED)
+find_package(gz-transport REQUIRED)
 
-# Garden
-if("$ENV{GZ_VERSION}" STREQUAL "garden")
-  find_package(gz-transport12 REQUIRED)
-  find_package(gz-msgs9 REQUIRED)
+find_package(gz_msgs_vendor REQUIRED)
+find_package(gz-msgs REQUIRED)
 
-  set(GZ_TARGET_PREFIX gz)
-  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
-  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
+set(GZ_TARGET_PREFIX gz)
+set(GZ_MSGS_VER ${gz-msgs_VERSION_MAJOR})
+set(GZ_TRANSPORT_VER ${gz-transport_VERSION_MAJOR})
 
-  message(STATUS "Compiling against Gazebo Garden")
-elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
-  find_package(gz-transport13 REQUIRED)
-  find_package(gz-msgs10 REQUIRED)
-
-  set(GZ_TARGET_PREFIX gz)
-  set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
-  set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Gazebo Harmonic")
-else()
-  message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
-endif()
 
 set(GZ_MSGS_VERSION_MAJOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MAJOR})
 set(GZ_MSGS_VERSION_MINOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MINOR})
