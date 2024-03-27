@@ -68,6 +68,7 @@ MAPPINGS = {
         Mapping('GuiCamera', 'GUICamera'),
         Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
+        Mapping('MaterialColor', 'MaterialColor'),
         Mapping('ParamVec', 'Param'),
         Mapping('ParamVec', 'Param_V'),
         Mapping('SensorNoise', 'SensorNoise'),
