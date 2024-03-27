@@ -36,6 +36,13 @@
 #define HAVE_DATAFRAME true
 #endif
 
+// MaterialColor is available from versions 10.1.0 (Harmonic) forward
+// This can be removed when the minimum supported version passes 10.1.0
+#if (GZ_MSGS_MAJOR_VERSION > 10) || \
+  ((GZ_MSGS_MAJOR_VERSION == 10) && (GZ_MSGS_MINOR_VERSION >= 1))
+#define HAVE_MATERIALCOLOR true
+#endif
+
 namespace ros_gz_bridge
 {
 /// Forward declarations
