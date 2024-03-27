@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(ros_gz_bridge REQUIRED)
 find_package(std_msgs REQUIRED)
 
 if(NOT DEFINED ENV{GZ_VERSION})
@@ -84,6 +85,22 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
+)
+
+# ROS Gz bridge
+add_library(ros-gz-bridge-system SHARED src/ros_gz_bridge_system.cpp)
+target_link_libraries(ros-gz-bridge-system PUBLIC
+  gz-sim${GZ_SIM_VER}::core
+  rclcpp::rclcpp
+  ros_gz_bridge::ros_gz_bridge
+)
+target_include_directories(ros-gz-bridge-system PUBLIC
+  "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/ros_gz_sim>"
+  "$<INSTALL_INTERFACE:include/ros_gz_sim>"
+)
+install(
+  TARGETS ros-gz-bridge-system
+  DESTINATION lib
 )
 
 configure_file(

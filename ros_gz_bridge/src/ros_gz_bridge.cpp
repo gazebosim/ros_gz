@@ -12,10 +12,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <ros_gz_bridge/ros_gz_bridge.hpp>
-
 #include <memory>
 #include <string>
+
+#include <ros_gz_bridge/ros_gz_bridge.hpp>
 
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
@@ -24,7 +24,8 @@ namespace ros_gz_bridge
 {
 
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
-: rclcpp::Node("ros_gz_bridge", options)
+: rclcpp::Node("ros_gz_bridge", options),
+  config_file_parsed_(false)
 {
   gz_node_ = std::make_shared<gz::transport::Node>();
 
@@ -43,7 +44,8 @@ void RosGzBridge::spin()
   if (handles_.empty()) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
-    if (!config_file.empty()) {
+    if (!config_file.empty() && !config_file_parsed_) {
+      config_file_parsed_ = true;
       auto entries = readFromYamlFile(config_file);
       for (const auto & entry : entries) {
         this->add_bridge(entry);
