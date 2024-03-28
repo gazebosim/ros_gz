@@ -2,6 +2,14 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2024-02-15)
+------------------
+* Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_)
+* Added messages for 2D Bounding Boxes to ros_gz_bridge (`#458 <https://github.com/gazebosim/ros_gz/issues/458>`_) (`#466 <https://github.com/gazebosim/ros_gz/issues/466>`_)
+  Co-authored-by: Alejandro Hernandez Cordero <ahcorde@gmail.com>
+* populate imu covariances when converting (`#375 <https://github.com/gazebosim/ros_gz/issues/375>`_)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, El Jawad Alaa
+
 0.246.0 (2023-08-31)
 --------------------
 * Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)

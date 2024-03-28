@@ -2,6 +2,15 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2024-02-15)
+------------------
+* Undeprecate use of commandline flags (`#491 <https://github.com/gazebosim/ros_gz/issues/491>`_)
+* Remove deprecations using ros_gz_sim_create (`#476 <https://github.com/gazebosim/ros_gz/issues/476>`_)
+* Added support for using ROS 2 parameters to spawn entities in Gazebo using ros_gz_sim::create (`#475 <https://github.com/gazebosim/ros_gz/issues/475>`_)
+* Fix bug in `create` where command line arguments were truncated (`#472 <https://github.com/gazebosim/ros_gz/issues/472>`_)
+* Filter ROS arguments before gflags parsing (`#453 <https://github.com/gazebosim/ros_gz/issues/453>`_)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Ayush Singh, Michael Carroll
+
 0.246.0 (2023-08-31)
 --------------------
 * Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
