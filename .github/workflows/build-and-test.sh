@@ -38,11 +38,6 @@ apt-get install -y $GZ_DEPS \
                        python3-rosdep
 
 rosdep init
-# Temporarily pin rosdep to fix CI on rolling
-sed -i "s|ros\/rosdistro\/master|ros\/rosdistro\/rolling\/2024-03-13|" /etc/ros/rosdep/sources.list.d/20-default.list
-export ROSDISTRO_INDEX_URL=https://raw.githubusercontent.com/ros/rosdistro/rolling/2024-03-13/index-v4.yaml
-# end Temporary fix
-
 rosdep update
 rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 

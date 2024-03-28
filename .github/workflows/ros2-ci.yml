@@ -27,6 +27,7 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.docker-image }}
           GZ_VERSION: ${{ matrix.gz-version  }}
           ROS_DISTRO: ${{ matrix.ros-distro }}
+          ROSDISTRO_INDEX_URL: https://raw.githubusercontent.com/ros/rosdistro/rolling/2024-02-28/index-v4.yaml # Temporarily pin rosdep to fix rolling on Jammy
       - name: Build sdformat_urdf from source
         uses: actions/checkout@v4
         if: ${{ matrix.gz-version  }} == "garden"
