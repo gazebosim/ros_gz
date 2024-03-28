@@ -27,6 +27,13 @@ elif [ "$GZ_VERSION" == "harmonic" ]; then
   ROSDEP_ARGS="--skip-keys='sdformat-urdf'"
 fi
 
+# Temporarily pin rosdep to fix CI on rolling
+(
+  cd /tmp/
+  git clone https://github.com/ros/rosdistro/ -b rolling/2024-03-13
+)
+export ROSDISTRO_INDEX_URL=file:///tmp/rosdistro/index-v4.yaml
+
 # Fortress comes through rosdep for Focal and Jammy
 
 # Dependencies.
