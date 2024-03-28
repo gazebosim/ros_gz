@@ -8,7 +8,7 @@ export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
 apt update -qq
-apt install -qq -y lsb-release wget curl build-essential
+apt install -qq -y lsb-release wget curl build-essential git
 
 if [ "$GZ_VERSION" == "garden" ]; then
   echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
