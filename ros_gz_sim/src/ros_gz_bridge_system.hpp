@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__ROS_GZ_BRIDGE_SYSTEM_HPP_
-#define ROS_GZ_SIM__ROS_GZ_BRIDGE_SYSTEM_HPP_
+#ifndef ROS_GZ_BRIDGE_SYSTEM_HPP_
+#define ROS_GZ_BRIDGE_SYSTEM_HPP_
 
 #include <memory>
 #include <gz/sim/Entity.hh>
@@ -57,4 +57,4 @@ public:
   std::unique_ptr<ROSGzBridgeSystemPrivate> dataPtr;
 };
 }  // namespace ros_gz_sim
-#endif  // ROS_GZ_SIM__ROS_GZ_BRIDGE_SYSTEM_HPP_
+#endif  // ROS_GZ_BRIDGE_SYSTEM_HPP_
