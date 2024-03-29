@@ -70,7 +70,7 @@ protected:
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
 
   /// \brief Whether the config_file parameter was parsed or not.
-  bool config_file_parsed_;
+  bool config_file_parsed_{false};
 };
 }  // namespace ros_gz_bridge
 

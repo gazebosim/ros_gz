@@ -70,9 +70,8 @@ public:
 
 TEST_F(BridgeConfig, Minimum)
 {
-  auto results = ros_gz_bridge::readFromYamlFile(
-    "package://ros_gz_bridge/test/config/minimum.yaml");
-  EXPECT_EQ(4u, results.size());
+  auto results = ros_gz_bridge::readFromYamlFile("test/config/minimum.yaml");
+  ASSERT_EQ(4u, results.size());
 
   {
     auto config = results[0];

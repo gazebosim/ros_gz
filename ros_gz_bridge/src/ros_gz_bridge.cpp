@@ -24,8 +24,7 @@ namespace ros_gz_bridge
 {
 
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
-: rclcpp::Node("ros_gz_bridge", options),
-  config_file_parsed_(false)
+: rclcpp::Node("ros_gz_bridge", options)
 {
   gz_node_ = std::make_shared<gz::transport::Node>();
 
