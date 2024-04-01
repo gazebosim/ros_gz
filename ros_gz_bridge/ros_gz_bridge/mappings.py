@@ -105,6 +105,8 @@ MAPPINGS = {
     'vision_msgs': [
         Mapping('Detection2DArray', 'AnnotatedAxisAligned2DBox_V'),
         Mapping('Detection2D', 'AnnotatedAxisAligned2DBox'),
+        Mapping('Detection3DArray', 'AnnotatedOriented3DBox_V'),
+        Mapping('Detection3D', 'AnnotatedOriented3DBox'),
     ],
 }
 
