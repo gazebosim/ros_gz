@@ -65,6 +65,7 @@
 #include <gz/msgs/video_record.pb.h>
 #include <gz/msgs/wrench.pb.h>
 #include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
+#include <gz/msgs/annotated_oriented_3d_box_v.pb.h>
 
 #include <memory>
 
@@ -524,6 +525,22 @@ void createTestMsg(gz::msgs::AnnotatedAxisAligned2DBox_V & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedAxisAligned2DBox_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::AnnotatedOriented3DBox & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::AnnotatedOriented3DBox_V & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox_V> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge
