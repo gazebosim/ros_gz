@@ -69,7 +69,8 @@ The following message types can be bridged for topics:
 | trajectory_msgs/msg/JointTrajectory            | gz.msgs.JointTrajectory             |
 | vision_msgs/msg/Detection2D                    | gz.msgs.AnnotatedAxisAligned2DBox   |
 | vision_msgs/msg/Detection2DArray               | gz.msgs.AnnotatedAxisAligned2DBox_V |
-
+| vision_msgs/msg/Detection3D                    | gz::msgs::AnnotatedOriented3DBox    |
+| vision_msgs/msg/Detection3DArray               | gz::msgs::AnnotatedOriented3DBox_V  |
 
 And the following for services:
 
