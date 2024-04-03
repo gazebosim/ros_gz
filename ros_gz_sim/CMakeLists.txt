@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 if(NOT DEFINED ENV{GZ_VERSION})
@@ -86,15 +87,23 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
 
-add_executable(gzserver src/gzserver.cpp)
-ament_target_dependencies(gzserver
+add_library(gzserver_component SHARED src/gzserver.cpp)
+rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
+#add_executable(gzserver src/gzserver.cpp)
+ament_target_dependencies(gzserver_component
   rclcpp
+  rclcpp_components
   std_msgs
 )
-target_link_libraries(gzserver
+target_link_libraries(gzserver_component
   ${GZ_TARGET_PREFIX}-sim${GZ_SIM_VER}::core
 )
-ament_target_dependencies(gzserver std_msgs)
+ament_target_dependencies(gzserver_component std_msgs)
+rclcpp_components_register_node(
+  gzserver_component
+  PLUGIN "ros_gz_sim::GzServer"
+  EXECUTABLE gzserver
+)
 
 configure_file(
   launch/gz_sim.launch.py.in
@@ -111,14 +120,27 @@ install(FILES
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
+install(FILES
+  "launch/gz_sim_composition.launch.py"
+  DESTINATION share/${PROJECT_NAME}/launch
+)
+
 install(TARGETS
   create
   DESTINATION lib/${PROJECT_NAME}
 )
-install(TARGETS
-  gzserver
-  DESTINATION lib/${PROJECT_NAME}
+
+ament_export_targets(export_gzserver_component)
+install(TARGETS gzserver_component
+        EXPORT export_gzserver_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
 )
+#install(TARGETS
+#  gzserver
+#  DESTINATION lib/${PROJECT_NAME}
+#)
 
 install(
   TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}

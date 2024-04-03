@@ -17,6 +17,7 @@
   <depend>ament_index_python</depend>
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
 
   <!-- Garden -->
