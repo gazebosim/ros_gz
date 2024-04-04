@@ -24,18 +24,7 @@ from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
 
-    world_sdf_file = LaunchConfiguration('world_sdf_file')
-    world_sdf_string = LaunchConfiguration('world_sdf_string')
-
-    world_sdf_file_arg = DeclareLaunchArgument(
-        'world_sdf_file',
-        default_value=''
-    )
-
-    world_sdf_string_arg = DeclareLaunchArgument(
-        'world_sdf_string',
-        default_value=''
-    )
+    world_sdf_file_param = LaunchConfiguration('world_sdf_file')
 
     """Generate launch description with multiple components."""
     container = ComposableNodeContainer(
@@ -48,14 +37,11 @@ def generate_launch_description():
                     package='ros_gz_sim',
                     plugin='ros_gz_sim::GzServer',
                     name='gzserver',
-                    parameters=[{'world_sdf_file': world_sdf_file},
-                                {'world_sdf_string': world_sdf_string}],
+                    parameters=[{'world_sdf_file': world_sdf_file_param}],
                     extra_arguments=[{'use_intra_process_comms': True}],
                 ),
             ],
             output='screen',
     )
 
-    return launch.LaunchDescription([container,
-        world_sdf_file_arg,
-        world_sdf_string_arg])
+    return launch.LaunchDescription([container,])
