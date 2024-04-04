@@ -15,7 +15,7 @@
 
   3. Load this world, unpaused:
 
-          ign gazebo -r examples/gpu_lidar.sdf
+          gz sim -r examples/gpu_lidar.sdf
 
   4. Launch RViz to visualize the point cloud:
 
