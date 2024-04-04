@@ -16,7 +16,7 @@
 
   3. Load the example world, unpaused:
 
-          ign gazebo -r examples/rgbd_camera.sdf
+          gz sim -r examples/rgbd_camera.sdf
 
   4. Launch RViz to visualize the point cloud:
 

@@ -69,7 +69,8 @@ The following message types can be bridged for topics:
 | trajectory_msgs/msg/JointTrajectory            | gz.msgs.JointTrajectory             |
 | vision_msgs/msg/Detection2D                    | gz.msgs.AnnotatedAxisAligned2DBox   |
 | vision_msgs/msg/Detection2DArray               | gz.msgs.AnnotatedAxisAligned2DBox_V |
-
+| vision_msgs/msg/Detection3D                    | gz::msgs::AnnotatedOriented3DBox    |
+| vision_msgs/msg/Detection3DArray               | gz::msgs::AnnotatedOriented3DBox_V  |
 
 And the following for services:
 
@@ -102,7 +103,7 @@ Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -110,7 +111,7 @@ Now we start the Gazebo Transport talker.
 
 ```
 # Shell C:
-ign topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
+gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS 2 talker and Gazebo Transport listener
@@ -127,14 +128,14 @@ Now we start the Gazebo Transport listener.
 
 ```
 # Shell B:
-ign topic -e -t /chatter
+gz topic -e -t /chatter
 ```
 
 Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -148,14 +149,14 @@ First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generat
 
 ```
 # Shell A:
-ign gazebo sensors_demo.sdf
+gz sim sensors_demo.sdf
 ```
 
 Let's see the topic where camera images are published.
 
 ```
 # Shell B:
-ign topic -l | grep image
+gz topic -l | grep image
 /rgbd_camera/depth_image
 /rgbd_camera/image
 ```
@@ -172,7 +173,7 @@ Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/galactic/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -206,15 +207,15 @@ On terminal B, we start a ROS 2 listener:
 
 And terminal C, publish an Gazebo message:
 
-`ign topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
+`gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
 Now let's try the other way around, ROS 2 -> Gazebo.
 
-On terminal D, start an Igntion listener:
+On terminal D, start an Gazebo listener:
 
-`ign topic -e -t /chatter`
+`gz topic -e -t /chatter`
 
 And on terminal E, publish a ROS 2 message:
 
@@ -232,7 +233,7 @@ On terminal A, start the service bridge:
 
 On terminal B, start Gazebo, it will be paused by default:
 
-`ign gazebo shapes.sdf`
+`gz sim shapes.sdf`
 
 On terminal C, make a ROS request to unpause simulation:
 
@@ -262,19 +263,19 @@ bridge may be specified:
   gz_type_name: "gz.msgs.StringMsg"
 
 # Set just GZ topic name, applies to both
-- gz_topic_name: "chatter_ign"
+- gz_topic_name: "chatter_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  gz_topic_name: "chatter_both_ign"
+  gz_topic_name: "chatter_both_gz"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
 
 # Full set of configurations
 - ros_topic_name: "ros_chatter"
-  gz_topic_name: "ign_chatter"
+  gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
   subscriber_queue: 5       # Default 10
@@ -290,9 +291,43 @@ To run the bridge node with the above configuration:
 ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
 ```
 
+## Example 6: Using ROS namespace with the Bridge
+
+When spawning multiple robots inside the same ROS environment, it is convenient to use namespaces to avoid overlapping topic names.
+There are three main types of namespaces: relative, global (`/`) and private (`~/`). For more information, refer to ROS documentation.
+Namespaces are applied to Gazebo topic both when specified as `topic_name` as well as `gz_topic_name`.
+
+By default, the Bridge will not apply ROS namespace on the Gazebo topics. To enable this feature, use parameter `expand_gz_topic_names`.
+Let's test our topic with namespace:
+
+```bash
+# Shell A:
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge chatter@std_msgs/msg/String@ignition.msgs.StringMsg \
+  --ros-args -p expand_gz_topic_names:=true -r __ns:=/demo
+```
+
+Now we start the Gazebo Transport listener.
+
+```bash
+# Shell B:
+gz topic -e -t /demo/chatter
+```
+
+Now we start the ROS talker.
+
+```bash
+# Shell C:
+. /opt/ros/rolling/setup.bash
+ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a namespace'" --once
+```
+
+By changing `chatter` to `/chatter` or `~/chatter` you can obtain different results.
+
 ## API
 
 ROS 2 Parameters:
 
  * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
  * `config_file` - YAML file to be loaded as the bridge configuration
+ * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
