@@ -68,4 +68,4 @@ def generate_launch_description():
         world_sdf_file_arg,
         world_sdf_string_arg,
         config_file_arg,
-        container,])
+        container, ])
