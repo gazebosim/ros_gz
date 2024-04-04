@@ -121,7 +121,7 @@ install(FILES
 )
 
 install(FILES
-  "launch/gz_sim_composition.launch.py"
+  "launch/ros_gz_sim.launch.py"
   DESTINATION share/${PROJECT_NAME}/launch
 )
 

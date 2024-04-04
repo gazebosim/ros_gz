@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <functional>
+#include <thread>
 #include <gz/common/Console.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/SystemLoader.hh>
@@ -30,6 +32,7 @@ namespace ros_gz_sim
       thread_ = std::thread(std::bind(&GzServer::OnStart, this));
     }
 
+    // Class destructor.
     public: ~GzServer()
     {
       // Make sure to join the thread on shutdown.
@@ -38,6 +41,7 @@ namespace ros_gz_sim
       }
     }
 
+    /// \brief Run the gz sim server.
     public: void OnStart()
     {
       auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
@@ -48,11 +52,9 @@ namespace ros_gz_sim
 
       if (!world_sdf_file.empty())
       {
-        RCLCPP_ERROR(this->get_logger(), "world_sdf_file param used [%s]", world_sdf_file.c_str());
         server_config.SetSdfFile(world_sdf_file);
       }
       else if (!world_sdf_string.empty()) {
-        RCLCPP_ERROR(this->get_logger(), "world_sdf_string param used");
         server_config.SetSdfString(world_sdf_string);
       }
       else {
@@ -84,57 +86,9 @@ namespace ros_gz_sim
       server.Run(true /*blocking*/, 0, false /*paused*/);
     }
 
+    /// \brief We don't want to block the ROS thread.
     private: std::thread thread_;
   };
 }
 
 RCLCPP_COMPONENTS_REGISTER_NODE(ros_gz_sim::GzServer)
-
-// int main(int _argc, char ** _argv)
-// {
-//   using namespace gz;
-//   auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
-//   auto node = rclcpp::Node::make_shared("gzserver");
-//   auto world_sdf_file = node->declare_parameter("world_sdf_file", "");
-//   auto world_sdf_string = node->declare_parameter("world_sdf_string", "");
-
-//   common::Console::SetVerbosity(4);
-//   sim::ServerConfig server_config;
-
-
-//   if (!world_sdf_file.empty())
-//   {
-//     server_config.SetSdfFile(world_sdf_file);
-//   }
-//   else if (!world_sdf_string.empty()) {
-//     server_config.SetSdfString(world_sdf_string);
-//   }
-//   else {
-//     RCLCPP_ERROR(
-//       node->get_logger(), "Must specify either 'world_sdf_file' or 'world_sdf_string'");
-//     return -1;
-//   }
-
-//   // (azeey) Testing if a plugin can be loaded along side the defaults. Not working yet.
-
-//   // <plugin
-//   //   filename="gz-sim-imu-system"
-//   //   name="gz::sim::systems::Imu">
-//   // </plugin>
-//   sdf::Plugin imu_sdf_plugin;
-//   imu_sdf_plugin.SetName("gz::sim::systems::Imu");
-//   imu_sdf_plugin.SetFilename("gz-sim-imu-system");
-//   sim::SystemLoader loader;
-//   auto imu_plugin = loader.LoadPlugin(imu_sdf_plugin);
-//   std::cout << imu_plugin.value() << std::endl;
-
-//   gz::sim::Server server(server_config);
-//   server.RunOnce();
-//   if (!server.AddSystem(*imu_plugin))
-//   {
-//     RCLCPP_ERROR(
-//       node->get_logger(), "IMU system not added");
-
-//   }
-//   server.Run(true /*blocking*/, 0, false /*paused*/);
-// }

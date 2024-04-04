@@ -17,18 +17,27 @@
 
 import launch
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import ComposableNodeContainer
 from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
 
+    world_sdf_file_arg = DeclareLaunchArgument(
+        'world_sdf_file', default_value=TextSubstitution(text=''))
+    world_sdf_string_arg = DeclareLaunchArgument(
+        'world_sdf_string', default_value=TextSubstitution(text=''))
+    config_file_arg = DeclareLaunchArgument(
+        'config_file', default_value=TextSubstitution(text=''))
+
     world_sdf_file_param = LaunchConfiguration('world_sdf_file')
+    world_sdf_string_param = LaunchConfiguration('world_sdf_string')
+    bridge_config_file_param = LaunchConfiguration('config_file')
 
     """Generate launch description with multiple components."""
     container = ComposableNodeContainer(
-            name='my_container',
+            name='gz_sim_container',
             namespace='',
             package='rclcpp_components',
             executable='component_container',
@@ -37,11 +46,23 @@ def generate_launch_description():
                     package='ros_gz_sim',
                     plugin='ros_gz_sim::GzServer',
                     name='gzserver',
-                    parameters=[{'world_sdf_file': world_sdf_file_param}],
+                    parameters=[{'world_sdf_file': world_sdf_file_param,
+                                 'world_sdf_string': world_sdf_string_param}],
+                    extra_arguments=[{'use_intra_process_comms': True}],
+                ),
+                ComposableNode(
+                    package='ros_gz_bridge',
+                    plugin='ros_gz_bridge::RosGzBridge',
+                    name='bridge',
+                    parameters=[{'config_file': bridge_config_file_param}],
                     extra_arguments=[{'use_intra_process_comms': True}],
                 ),
             ],
             output='screen',
     )
 
-    return launch.LaunchDescription([container,])
+    return launch.LaunchDescription([
+        world_sdf_file_arg,
+        world_sdf_string_arg,
+        config_file_arg,
+        container,])
