@@ -25,11 +25,14 @@ from launch_ros.descriptions import ComposableNode
 def generate_launch_description():
 
     world_sdf_file_arg = DeclareLaunchArgument(
-        'world_sdf_file', default_value=TextSubstitution(text=''))
+        'world_sdf_file', default_value=TextSubstitution(text=''),
+        description='Path to the SDF world file')
     world_sdf_string_arg = DeclareLaunchArgument(
-        'world_sdf_string', default_value=TextSubstitution(text=''))
+        'world_sdf_string', default_value=TextSubstitution(text=''),
+        description='SDF world string')
     config_file_arg = DeclareLaunchArgument(
-        'config_file', default_value=TextSubstitution(text=''))
+        'config_file', default_value=TextSubstitution(text=''),
+        description='Path to the YAML configuration for the bridge')
 
     world_sdf_file_param = LaunchConfiguration('world_sdf_file')
     world_sdf_string_param = LaunchConfiguration('world_sdf_string')
