@@ -89,7 +89,6 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 add_library(gzserver_component SHARED src/gzserver.cpp)
 rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
-#add_executable(gzserver src/gzserver.cpp)
 ament_target_dependencies(gzserver_component
   rclcpp
   rclcpp_components
@@ -137,10 +136,6 @@ install(TARGETS gzserver_component
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin
 )
-#install(TARGETS
-#  gzserver
-#  DESTINATION lib/${PROJECT_NAME}
-#)
 
 install(
   TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
