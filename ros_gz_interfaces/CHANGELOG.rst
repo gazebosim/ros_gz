@@ -2,6 +2,15 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.1 (2024-04-08)
+--------------------
+* Add option to change material color from ROS. (`#520 <https://github.com/gazebosim/ros_gz/issues/520>`_)
+  Forward port of `#486 <https://github.com/gazebosim/ros_gz/issues/486>`_
+  * Message and bridge for MaterialColor.
+  This allows bridging MaterialColor from ROS to GZ and is
+  important for allowing simulation users to create status lights.
+* Contributors: Benjamin Perseghetti
+
 0.254.0 (2024-01-08)
 --------------------
 

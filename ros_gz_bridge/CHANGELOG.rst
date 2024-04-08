@@ -2,6 +2,21 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.1 (2024-04-08)
+--------------------
+* Added conversion for Detection3D and Detection3DArray (`#523 <https://github.com/gazebosim/ros_gz/issues/523>`_)
+* Add option to change material color from ROS. (`#520 <https://github.com/gazebosim/ros_gz/issues/520>`_)
+  Forward port of `#486 <https://github.com/gazebosim/ros_gz/issues/486>`_
+  * Message and bridge for MaterialColor.
+  This allows bridging MaterialColor from ROS to GZ and is
+  important for allowing simulation users to create status lights.
+* [forward iron] Add ROS namespaces to GZ topics (`#516 <https://github.com/gazebosim/ros_gz/issues/516>`_)
+  Co-authored-by: Krzysztof Wojciechowski <49921081+Kotochleb@users.noreply.github.com>
+* Correctly export ros_gz_bridge for downstream targets (`#503 <https://github.com/gazebosim/ros_gz/issues/503>`_) (`#507 <https://github.com/gazebosim/ros_gz/issues/507>`_)
+* Add a virtual destructor to suppress compiler warning (`#502 <https://github.com/gazebosim/ros_gz/issues/502>`_) (`#504 <https://github.com/gazebosim/ros_gz/issues/504>`_)
+  Co-authored-by: Michael Carroll <mjcarroll@intrinsic.ai>
+* Contributors: Alejandro Hernández Cordero, Benjamin Perseghetti, Michael Carroll, wittenator
+
 0.254.0 (2024-01-08)
 --------------------
 * Backport: Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_) (`#471 <https://github.com/gazebosim/ros_gz/issues/471>`_)

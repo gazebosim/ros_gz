@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.1 (2024-04-08)
+--------------------
+
 0.254.0 (2024-01-08)
 --------------------
 * Forward port: Add support for Harmonic/Humble pairing (`#462 <https://github.com/gazebosim/ros_gz/issues/462>`_)
