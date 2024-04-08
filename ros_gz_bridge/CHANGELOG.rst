@@ -2,6 +2,25 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.14 (2024-04-08)
+---------------------
+* Added conversion for Detection3D and Detection3DArray (`#523 <https://github.com/gazebosim/ros_gz/issues/523>`_) (`#526 <https://github.com/gazebosim/ros_gz/issues/526>`_)
+  Co-authored-by: wittenator <9154515+wittenator@users.noreply.github.com>
+* Add ROS namespaces to GZ topics (`#512 <https://github.com/gazebosim/ros_gz/issues/512>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Correctly export ros_gz_bridge for downstream targets (`#503 <https://github.com/gazebosim/ros_gz/issues/503>`_) (`#506 <https://github.com/gazebosim/ros_gz/issues/506>`_)
+* Add a virtual destructor to suppress compiler warning (`#502 <https://github.com/gazebosim/ros_gz/issues/502>`_) (`#505 <https://github.com/gazebosim/ros_gz/issues/505>`_)
+  Co-authored-by: Michael Carroll <mjcarroll@intrinsic.ai>
+* Add option to change material color from ROS. (`#486 <https://github.com/gazebosim/ros_gz/issues/486>`_)
+  * Message and bridge for MaterialColor.
+  This allows bridging MaterialColor from ROS to GZ and is
+  important for allowing simulation users to create status lights.
+  ---------
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+  Co-authored-by: Addisu Z. Taddese <addisuzt@intrinsic.ai>
+  Co-authored-by: Addisu Z. Taddese <addisu@openrobotics.org>
+* Contributors: Alejandro Hernández Cordero, Benjamin Perseghetti, Krzysztof Wojciechowski, Michael Carroll
+
 0.244.13 (2024-01-23)
 ---------------------
 * backport pr 374 (`#489 <https://github.com/gazebosim/ros_gz/issues/489>`_)
