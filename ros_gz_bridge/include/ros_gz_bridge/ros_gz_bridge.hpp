@@ -37,9 +37,6 @@ public:
   /// \param[in] options options control creation of the ROS 2 node
   explicit RosGzBridge(const rclcpp::NodeOptions & options = rclcpp::NodeOptions());
 
-  /// \brief Destructor
-  ~RosGzBridge();
-
   /// \brief Add a new ROS-GZ bridge to the node
   /// \param[in] config Parameters to control creation of a new bridge
   void add_bridge(const BridgeConfig & config);

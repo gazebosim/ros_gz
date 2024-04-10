@@ -41,10 +41,6 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
     std::bind(&RosGzBridge::spin, this));
 }
 
-RosGzBridge::~RosGzBridge()
-{
-}
-
 void RosGzBridge::spin()
 {
   if (handles_.empty()) {
