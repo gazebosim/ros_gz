@@ -1,4 +1,3 @@
-
 # Copyright 2024 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +38,7 @@ def generate_launch_description():
     declare_container_name_cmd = DeclareLaunchArgument(
         'container_name',
         default_value='ros_gz_container',
-        description='the name of container that nodes will load in if use composition',
+        description='Name of container that nodes will load in if use composition',
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
