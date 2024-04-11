@@ -30,12 +30,16 @@
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
 #include <geometry_msgs/msg/pose_with_covariance.hpp>
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/quaternion.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
 #include <geometry_msgs/msg/twist.hpp>
+#include <geometry_msgs/msg/twist_stamped.hpp>
 #include <geometry_msgs/msg/twist_with_covariance.hpp>
+#include <geometry_msgs/msg/twist_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/wrench.hpp>
+#include <geometry_msgs/msg/wrench_stamped.hpp>
 
 #include <ros_gz_bridge/convert_decl.hpp>
 
@@ -113,6 +117,18 @@ template<>
 void
 convert_gz_to_ros(
   const gz::msgs::PoseWithCovariance & gz_msg,
+  geometry_msgs::msg::PoseWithCovarianceStamped & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const geometry_msgs::msg::PoseWithCovarianceStamped & ros_msg,
+  gz::msgs::PoseWithCovariance & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg);
 
 template<>
@@ -166,6 +182,18 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const geometry_msgs::msg::TwistStamped & ros_msg,
+  gz::msgs::Twist & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Twist & gz_msg,
+  geometry_msgs::msg::TwistStamped & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
   gz::msgs::TwistWithCovariance & gz_msg);
 
@@ -178,6 +206,18 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg,
+  gz::msgs::TwistWithCovariance & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::TwistWithCovariance & gz_msg,
+  geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
   const geometry_msgs::msg::Wrench & ros_msg,
   gz::msgs::Wrench & gz_msg);
 
@@ -186,6 +226,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const geometry_msgs::msg::WrenchStamped & ros_msg,
+  gz::msgs::Wrench & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Wrench & gz_msg,
+  geometry_msgs::msg::WrenchStamped & ros_msg);
 
 }  // namespace ros_gz_bridge
 

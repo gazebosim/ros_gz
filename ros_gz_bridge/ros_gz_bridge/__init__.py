@@ -18,7 +18,7 @@ import os
 
 from ros_gz_bridge.mappings import MAPPINGS
 
-from rosidl_cmake import expand_template
+from rosidl_pycommon import expand_template
 
 
 @dataclass
@@ -36,12 +36,20 @@ class MessageMapping:
         # Return ROS2 type of a message (eg std_msgs::msg::Bool)
         return f'{self.ros2_package_name}::msg::{self.ros2_message_name}'
 
+    def ign_string(self):
+        # Return GZ string version of a message (eg ignition.msgs.Bool)
+        return f'ignition.msgs.{self.gz_message_name}'
+
+    def ign_type(self):
+        # Return GZ type of a message (eg ignition::msgs::Bool)
+        return f'ignition::msgs::{self.gz_message_name}'
+
     def gz_string(self):
-        # Return GZ string version of a message (eg gz.msgs.Bool)
+        # Return GZ string version of a message (eg ignition.msgs.Bool)
         return f'gz.msgs.{self.gz_message_name}'
 
     def gz_type(self):
-        # Return GZ type of a message (eg gz::msgs::Bool)
+        # Return GZ type of a message (eg ignition::msgs::Bool)
         return f'gz::msgs::{self.gz_message_name}'
 
     def unique(self):

@@ -8,9 +8,17 @@ Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galacti
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
-Rolling | Edifice | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
-Rolling | Fortress | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
+Iron | Fortress | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
+Iron | Garden | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
+Iron | Harmonic | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
+Jazzy* | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Jazzy* | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+Jazzy* | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
+Rolling | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+
+* ROS 2 Jazzy Jalisco is slated for release on May 23rd, 2024. [Full ROS 2 release information is available in REP-2000.]
 
 For information on ROS(1) and Gazebo compatibility, refer to the [noetic branch README](https://github.com/gazebosim/ros_gz/tree/noetic)
 
@@ -66,7 +74,7 @@ They are hosted at https://packages.ros.org.
 
 1. Install `ros_gz`
 
-        sudo apt install ros-rolling-ros-ign
+        sudo apt install ros-rolling-ros-gz
 
 ### From source
 
@@ -106,7 +114,7 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro rolling
+    rosdep install -r --from-paths src -i -y --rosdistro humble
     ```
 
     > If `rosdep` fails to install Gazebo libraries and you have not installed them before, please follow [Gazebo installation instructions](https://gazebosim.org/docs/latest/install).
@@ -121,7 +129,14 @@ The following steps are for Linux and OSX.
     cd ~/ws
     colcon build
     ```
+  > [!TIP]
+  > The `ros_gz` library makes heavy use of templates which causes compilers to consume a lot of memory. If your build fails with `c++: fatal error: Killed signal terminated program cc1plus`
+  > try building with `colcon build --parallel-workers=1 --executor sequential`. You might also have to set `export MAKEFLAGS="-j 1"` before running `colcon build` to limit
+  > the number of processors used to build a single package.
 
 ## ROSCon 2022
 
 [![](img/video_img.png)](https://vimeo.com/showcase/9954564/video/767127300)
+
+## Project Template
+[A template project integrating ROS and Gazebo simulator](https://github.com/gazebosim/ros_gz_project_template)

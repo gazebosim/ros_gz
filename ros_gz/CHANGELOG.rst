@@ -2,12 +2,25 @@
 Changelog for package ros_gz
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.246.0 (2023-08-31)
+--------------------
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
   Co-authored-by: Michael Carroll <michael@openrobotics.org>
 * Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
 * Contributors: Alejandro Hernández Cordero, ahcorde
+
+0.244.10 (2023-05-03)
+---------------------
+
+0.244.9 (2022-11-03)
+--------------------
 
 0.244.8 (2022-10-28)
 --------------------

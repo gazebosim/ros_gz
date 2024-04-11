@@ -17,6 +17,7 @@ find_package(geometry_msgs REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 
 set(msg_files
+  "msg/Altimeter.msg"
   "msg/Contact.msg"
   "msg/Contacts.msg"
   "msg/Dataframe.msg"
@@ -27,6 +28,7 @@ set(msg_files
   "msg/JointWrench.msg"
   "msg/Light.msg"
   "msg/ParamVec.msg"
+  "msg/SensorNoise.msg"
   "msg/StringVec.msg"
   "msg/TrackVisual.msg"
   "msg/VideoRecord.msg"

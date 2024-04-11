@@ -29,6 +29,15 @@ if("$ENV{GZ_VERSION}" STREQUAL "garden")
   set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
 
   message(STATUS "Compiling against Gazebo Garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
+  find_package(gz-transport13 REQUIRED)
+  find_package(gz-msgs10 REQUIRED)
+
+  set(GZ_TARGET_PREFIX gz)
+  set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
+  set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
+
+  message(STATUS "Compiling against Gazebo Harmonic")
 else()
   message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
 endif()
@@ -40,6 +49,7 @@ set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_
 
 set(BRIDGE_MESSAGE_TYPES
   builtin_interfaces
+  actuator_msgs
   geometry_msgs
   gps_msgs
   nav_msgs
@@ -50,6 +60,7 @@ set(BRIDGE_MESSAGE_TYPES
   std_msgs
   tf2_msgs
   trajectory_msgs
+  vision_msgs
 )
 
 set(generated_path "${CMAKE_BINARY_DIR}/generated")
@@ -89,7 +100,7 @@ add_custom_command(
   COMMENT "Generating factories for interface types")
 
 set(bridge_lib
-  ros_gz_bridge_lib
+  ros_gz_bridge
 )
 
 add_library(${bridge_lib}
@@ -99,6 +110,7 @@ add_library(${bridge_lib}
   src/bridge_handle_ros_to_gz.cpp
   src/bridge_handle_gz_to_ros.cpp
   src/factory_interface.cpp
+  src/service_factory_interface.cpp
   src/service_factories/ros_gz_interfaces.cpp
   src/ros_gz_bridge.cpp
   ${convert_files}
@@ -118,8 +130,12 @@ ament_target_dependencies(${bridge_lib}
 )
 
 target_include_directories(${bridge_lib}
-  PUBLIC include
-  PRIVATE src ${generated_path}
+  PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
+  PRIVATE
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
 )
 
 target_link_libraries(${bridge_lib}
@@ -132,18 +148,15 @@ rclcpp_components_register_node(
   PLUGIN ros_gz_bridge::RosGzBridge
   EXECUTABLE bridge_node)
 
-install(TARGETS ${bridge_lib}
+install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
 
 install(
   DIRECTORY include/
-  DESTINATION include
+  DESTINATION include/${PROJECT_NAME}
 )
-
-ament_export_include_directories(include)
-ament_export_libraries(${bridge_lib})
 
 set(bridge_executables
   parameter_bridge
@@ -163,7 +176,7 @@ foreach(bridge ${bridge_executables})
     ${BRIDGE_MESSAGE_TYPES}
   )
   install(TARGETS ${bridge}
-    DESTINATION lib/${PROJECT_NAME}
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
   )
 endforeach()
 
@@ -227,6 +240,7 @@ if(BUILD_TESTING)
     std_msgs
     tf2_msgs
     trajectory_msgs
+    vision_msgs
   )
 
   set(generated_path "${CMAKE_BINARY_DIR}/generated/test")
@@ -317,9 +331,19 @@ if(BUILD_TESTING)
 
 endif()
 
-ament_export_dependencies(
-  rclcpp
-  ${BRIDGE_MESSAGE_TYPES}
-)
+# Export old-style CMake variables
+ament_export_include_directories("include/${PROJECT_NAME}")
+ament_export_libraries(${bridge_lib})
+
+# Export modern CMake targets
+ament_export_targets(export_${PROJECT_NAME})
+
+# specific order: dependents before dependencies
+ament_export_dependencies(rclcpp)
+ament_export_dependencies(rclcpp_components)
+ament_export_dependencies(${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER})
+ament_export_dependencies(${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER})
+ament_export_dependencies(yaml_cpp_vendor)
+ament_export_dependencies(${BRIDGE_MESSAGE_TYPES})
 
 ament_package()

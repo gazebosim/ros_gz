@@ -10,13 +10,19 @@ export ROS_PYTHON_VERSION=3
 apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
-# Garden only has nightlies for now
 if [ "$GZ_VERSION" == "garden" ]; then
   echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
-  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list
   wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
   GZ_DEPS="libgz-sim7-dev"
+
+  ROSDEP_ARGS="--skip-keys='sdformat-urdf'"
+elif [ "$GZ_VERSION" == "harmonic" ]; then
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+  echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-prerelease `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-prerelease.list
+  wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+
+  GZ_DEPS="libgz-sim8-dev"
 
   ROSDEP_ARGS="--skip-keys='sdformat-urdf'"
 fi

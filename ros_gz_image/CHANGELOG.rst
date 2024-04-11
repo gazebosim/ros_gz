@@ -2,6 +2,26 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.246.0 (2023-08-31)
+--------------------
+* Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
+  * Add harmonic CI
+  * Include garden options
+  * Add harmonic stanza
+  * Additional message headers
+  ---------
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Fix linter error by reordering headers (`#373 <https://github.com/gazebosim/ros_gz/issues/373>`_)
+* Add QoS profile parameter to image bridge (`#335 <https://github.com/gazebosim/ros_gz/issues/335>`_)
+* Fix double wait in ros_gz_bridge (`#347 <https://github.com/gazebosim/ros_gz/issues/347>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Remove all ignition references on ROS 2 branch (`#302 <https://github.com/gazebosim/ros_gz/issues/302>`_)
+  * Remove all shims
+  * Update CMakeLists and package.xml for garden
+  * Complete garden gz renaming
+  * Drop fortress CI
+* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Michael Carroll, Sebastian Castro, ahcorde, ymd-stella
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
@@ -13,6 +33,13 @@ Changelog for package ros1_ign_image
   * Complete garden gz renaming
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
+
+0.244.10 (2023-05-03)
+---------------------
+
+0.244.9 (2022-11-03)
+--------------------
 
 0.244.8 (2022-10-28)
 --------------------

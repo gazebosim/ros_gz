@@ -1,4 +1,4 @@
-// Copyright 2022 Open Source Robotics Foundation, Inc.
+// Copyright 2023 Rudis Laboratories LLC
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,33 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef  SERVICE_FACTORY_INTERFACE_HPP_
-#define  SERVICE_FACTORY_INTERFACE_HPP_
+#ifndef ROS_GZ_BRIDGE__CONVERT__ACTUATOR_MSGS_HPP_
+#define ROS_GZ_BRIDGE__CONVERT__ACTUATOR_MSGS_HPP_
 
-#include <memory>
-#include <string>
+// Gazebo Msgs
+#include <gz/msgs/actuators.pb.h>
 
-#include <gz/transport/Node.hh>
+// ROS 2 messages
+#include <actuator_msgs/msg/actuators.hpp>
 
-#include <rclcpp/service.hpp>
-#include <rclcpp/node.hpp>
+#include <ros_gz_bridge/convert_decl.hpp>
 
 namespace ros_gz_bridge
 {
+// actuator_msgs
+template<>
+void
+convert_ros_to_gz(
+  const actuator_msgs::msg::Actuators & ros_msg,
+  gz::msgs::Actuators & gz_msg);
 
-class ServiceFactoryInterface
-{
-public:
-  virtual ~ServiceFactoryInterface() = 0;
-
-  virtual
-  rclcpp::ServiceBase::SharedPtr
-  create_ros_service(
-    rclcpp::Node::SharedPtr ros_node,
-    std::shared_ptr<gz::transport::Node> gz_node,
-    const std::string & service_name) = 0;
-};
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Actuators & gz_msg,
+  actuator_msgs::msg::Actuators & ros_msg);
 
 }  // namespace ros_gz_bridge
 
-#endif  // SERVICE_FACTORY_INTERFACE_HPP_
+#endif  // ROS_GZ_BRIDGE__CONVERT__ACTUATOR_MSGS_HPP_

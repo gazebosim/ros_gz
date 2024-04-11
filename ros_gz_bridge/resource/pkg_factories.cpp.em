@@ -34,7 +34,7 @@ get_factory__@(ros2_package_name)(
 {
 @[for m in mappings]@
   if ((ros_type_name == "@(m.ros2_string())" || ros_type_name.empty()) &&
-    gz_type_name == "@(m.gz_string())")
+      (gz_type_name == "@(m.gz_string())" || gz_type_name == "@(m.ign_string())"))
   {
     return std::make_shared<
       Factory<

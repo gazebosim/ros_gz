@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_sim</name>
-  <version>0.245.0</version>
+  <version>0.246.0</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
   <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
@@ -20,11 +20,22 @@
   <depend>std_msgs</depend>
 
   <!-- Garden -->
-  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-sim7</depend>
   <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-math7</depend>
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-msgs9</depend>
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-sim7</depend>
+  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-transport12</depend>
+
+  <!-- Harmonic -->
+  <depend condition="$GZ_VERSION == harmonic">gz-math7</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-sim8</depend>
+  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+  <test_depend>launch_ros</test_depend>
+  <test_depend>launch_testing</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

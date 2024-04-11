@@ -2,6 +2,28 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.246.0 (2023-08-31)
+--------------------
+* Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
+  * Add harmonic CI
+  * Include garden options
+  * Add harmonic stanza
+  * Additional message headers
+  ---------
+* Replace deprecated ign_find_package with gz_find_package (`#432 <https://github.com/gazebosim/ros_gz/issues/432>`_)
+  Co-authored-by: jmackay2 <jmackay@gmail.com>
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Merge branch 'humble' into mjcarroll/humble_to_ros2
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* set on_exit_shutdown argument for gz-sim ExecuteProcess (`#355 <https://github.com/gazebosim/ros_gz/issues/355>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Remove all ignition references on ROS 2 branch (`#302 <https://github.com/gazebosim/ros_gz/issues/302>`_)
+  * Remove all shims
+  * Update CMakeLists and package.xml for garden
+  * Complete garden gz renaming
+  * Drop fortress CI
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Michael Carroll, ahcorde, andermi, jmackay2
+
 0.245.0 (2022-10-12)
 --------------------
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
@@ -13,6 +35,17 @@ Changelog for package ros_gz_sim
   * Complete garden gz renaming
   * Drop fortress CI
 * Contributors: Alejandro Hernández Cordero, Michael Carroll, ahcorde
+
+
+0.244.10 (2023-05-03)
+---------------------
+
+0.244.9 (2022-11-03)
+--------------------
+* Export ROS Stopwatch library (`#299 <https://github.com/gazebosim/ros_gz/issues/299>`_) (`#322 <https://github.com/gazebosim/ros_gz/issues/322>`_)
+  New Stopwatch library needs to be exported and built as shared
+  Co-authored-by: Michael Anderson <anderson@mbari.org>
+* Contributors: Michael Carroll
 
 0.244.8 (2022-10-28)
 --------------------

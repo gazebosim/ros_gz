@@ -34,11 +34,27 @@ if("$ENV{GZ_VERSION}" STREQUAL "garden")
   set(GZ_TARGET_PREFIX gz)
 
   message(STATUS "Compiling against Gazebo Garden")
+elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
+  find_package(gz-math7 REQUIRED)
+  set(GZ_MATH_VER ${gz-math7_VERSION_MAJOR})
+
+  find_package(gz-transport13 REQUIRED)
+  set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
+
+  find_package(gz-msgs10 REQUIRED)
+  set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
+
+  find_package(gz-sim8 REQUIRED)
+  set(GZ_SIM_VER ${gz-sim8_VERSION_MAJOR})
+
+  set(GZ_TARGET_PREFIX gz)
+
+  message(STATUS "Compiling against Gazebo Harmonic")
 else()
   message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
 endif()
 
-ign_find_package(gflags
+gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)
@@ -107,10 +123,14 @@ if(BUILD_TESTING)
 
   # GTest
   find_package(ament_cmake_gtest REQUIRED)
+  find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
 
   ament_add_gtest_executable(test_stopwatch
     test/test_stopwatch.cpp
+  )
+  ament_add_gtest_executable(test_create
+    test/test_create.cpp
   )
 
   ament_target_dependencies(test_stopwatch rclcpp)
@@ -123,12 +143,16 @@ if(BUILD_TESTING)
   target_link_libraries(test_stopwatch
     ${PROJECT_NAME}
   )
+  target_link_libraries(test_create
+    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  )
 
   install(
-    TARGETS test_stopwatch
+    TARGETS test_stopwatch test_create
     DESTINATION lib/${PROJECT_NAME}
   )
   ament_add_gtest_test(test_stopwatch)
+  add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
 endif()
 
 ament_package()
