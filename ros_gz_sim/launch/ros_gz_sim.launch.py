@@ -40,7 +40,7 @@ def generate_launch_description():
 
     """Generate launch description with multiple components."""
     container = ComposableNodeContainer(
-            name='gz_sim_container',
+            name='ros_gz_container',
             namespace='',
             package='rclcpp_components',
             executable='component_container',
