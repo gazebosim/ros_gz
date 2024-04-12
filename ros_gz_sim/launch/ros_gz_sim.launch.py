@@ -13,59 +13,100 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch gzsim in a component container."""
+"""Launch gzsim + ros_gz_bridge in a component container."""
 
-import launch
-from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration, TextSubstitution
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
+from launch_ros.substitutions import FindPackageShare
 
 
 def generate_launch_description():
 
-    world_sdf_file_arg = DeclareLaunchArgument(
-        'world_sdf_file', default_value=TextSubstitution(text=''),
-        description='Path to the SDF world file')
-    world_sdf_string_arg = DeclareLaunchArgument(
-        'world_sdf_string', default_value=TextSubstitution(text=''),
-        description='SDF world string')
-    config_file_arg = DeclareLaunchArgument(
-        'config_file', default_value=TextSubstitution(text=''),
-        description='Path to the YAML configuration for the bridge')
+    config_file = LaunchConfiguration('config_file')
+    container_name = LaunchConfiguration('container_name')
+    namespace = LaunchConfiguration('namespace')
+    use_composition = LaunchConfiguration('use_composition')
+    use_respawn = LaunchConfiguration('use_respawn')
+    log_level = LaunchConfiguration('log_level')
 
-    world_sdf_file_param = LaunchConfiguration('world_sdf_file')
-    world_sdf_string_param = LaunchConfiguration('world_sdf_string')
-    bridge_config_file_param = LaunchConfiguration('config_file')
+    world_sdf_file = LaunchConfiguration('world_sdf_file')
+    world_sdf_string = LaunchConfiguration('world_sdf_string')
 
-    """Generate launch description with multiple components."""
-    container = ComposableNodeContainer(
-            name='ros_gz_container',
-            namespace='',
-            package='rclcpp_components',
-            executable='component_container',
-            composable_node_descriptions=[
-                ComposableNode(
-                    package='ros_gz_sim',
-                    plugin='ros_gz_sim::GzServer',
-                    name='gzserver',
-                    parameters=[{'world_sdf_file': world_sdf_file_param,
-                                 'world_sdf_string': world_sdf_string_param}],
-                    extra_arguments=[{'use_intra_process_comms': True}],
-                ),
-                ComposableNode(
-                    package='ros_gz_bridge',
-                    plugin='ros_gz_bridge::RosGzBridge',
-                    name='bridge',
-                    parameters=[{'config_file': bridge_config_file_param}],
-                    extra_arguments=[{'use_intra_process_comms': True}],
-                ),
-            ],
-            output='screen',
+    declare_config_file_cmd = DeclareLaunchArgument(
+        'config_file', default_value='', description='YAML config file'
     )
 
-    return launch.LaunchDescription([
-        world_sdf_file_arg,
-        world_sdf_string_arg,
-        config_file_arg,
-        container, ])
+    declare_container_name_cmd = DeclareLaunchArgument(
+        'container_name',
+        default_value='ros_gz_container',
+        description='Name of container that nodes will load in if use composition',
+    )
+
+    declare_namespace_cmd = DeclareLaunchArgument(
+        'namespace', default_value='', description='Top-level namespace'
+    )
+
+    declare_use_composition_cmd = DeclareLaunchArgument(
+        'use_composition', default_value='False', description='Use composed bringup if True'
+    )
+
+    declare_use_respawn_cmd = DeclareLaunchArgument(
+        'use_respawn',
+        default_value='False',
+        description='Whether to respawn if a node crashes. Applied when composition is disabled.',
+    )
+
+    declare_log_level_cmd = DeclareLaunchArgument(
+        'log_level', default_value='info', description='log level'
+    )
+
+    declare_world_sdf_file_cmd = DeclareLaunchArgument(
+        'world_sdf_file', default_value=TextSubstitution(text=''),
+        description='Path to the SDF world file'
+    )
+
+    declare_world_sdf_string_cmd = DeclareLaunchArgument(
+        'world_sdf_string', default_value=TextSubstitution(text=''),
+        description='SDF world string'
+    )
+
+    bridge_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
+                                   'launch',
+                                   'ros_gz_bridge.launch.py'])]),
+        launch_arguments=[('config_file', config_file),
+                          ('container_name', container_name),
+                          ('namespace', namespace),
+                          ('use_composition', use_composition),
+                          ('use_respawn', use_respawn),
+                          ('log_level', log_level), ])
+
+    gzserver_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
+                                   'launch',
+                                   'gz_server.launch.py'])]),
+        launch_arguments=[('world_sdf_file', world_sdf_file),
+                          ('world_sdf_string', world_sdf_string),
+                          ('use_composition', use_composition), ])
+
+    # Create the launch description and populate
+    ld = LaunchDescription()
+
+    # Declare the launch options
+    ld.add_action(declare_config_file_cmd)
+    ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_namespace_cmd)
+    ld.add_action(declare_use_composition_cmd)
+    ld.add_action(declare_use_respawn_cmd)
+    ld.add_action(declare_log_level_cmd)
+    ld.add_action(declare_world_sdf_file_cmd)
+    ld.add_action(declare_world_sdf_string_cmd)
+    # Add the actions to launch all of the bridge + gzserver nodes
+    ld.add_action(bridge_description)
+    ld.add_action(gzserver_description)
+
+    return ld
