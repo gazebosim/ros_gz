@@ -120,6 +120,7 @@ install(FILES
 )
 
 install(FILES
+  "launch/gz_server.launch.py"
   "launch/ros_gz_sim.launch.py"
   DESTINATION share/${PROJECT_NAME}/launch
 )
