@@ -15,7 +15,7 @@
 """Launch create to spawn models in gz sim."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 
@@ -77,7 +77,6 @@ def generate_launch_description():
                      'Y': yaw,
                      }],
     )
-                     
 
     # Create the launch description and populate
     ld = LaunchDescription()
