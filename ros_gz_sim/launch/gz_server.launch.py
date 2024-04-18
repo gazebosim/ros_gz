@@ -21,6 +21,7 @@ from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression, TextSubstitution
 from launch_ros.actions import ComposableNodeContainer, Node
 from launch_ros.descriptions import ComposableNode
+from launch_gz.actions import GzServer
 
 
 def generate_launch_description():
@@ -58,7 +59,8 @@ def generate_launch_description():
         ],
     )
 
-    load_composable_nodes = ComposableNodeContainer(
+    load_composable_nodes = GzServer(
+    # load_composable_nodes = ComposableNodeContainer(
         condition=IfCondition(use_composition),
         name=container_name,
         namespace='',
