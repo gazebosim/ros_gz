@@ -81,7 +81,7 @@ def generate_launch_description():
                           ('namespace', namespace),
                           ('use_composition', use_composition),
                           ('use_respawn', use_respawn),
-                          ('log_level', log_level), ])
+                          ('log_level', log_level)])
 
     gzserver_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
