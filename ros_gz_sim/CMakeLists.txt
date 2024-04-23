@@ -25,6 +25,8 @@ find_package(gz-msgs REQUIRED)
 
 find_package(gz_sim_vendor REQUIRED)
 find_package(gz-sim REQUIRED)
+# Needed in launch/gz_sim.launch.py.in
+set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
 
 gz_find_package(gflags
     REQUIRED

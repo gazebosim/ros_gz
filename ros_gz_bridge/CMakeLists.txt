@@ -14,6 +14,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
+find_package(yaml-cpp REQUIRED)
 
 find_package(gz_transport_vendor REQUIRED)
 find_package(gz-transport REQUIRED)
@@ -21,15 +22,7 @@ find_package(gz-transport REQUIRED)
 find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
-set(GZ_TARGET_PREFIX gz)
-set(GZ_MSGS_VER ${gz-msgs_VERSION_MAJOR})
-set(GZ_TRANSPORT_VER ${gz-transport_VERSION_MAJOR})
-
-
-set(GZ_MSGS_VERSION_MAJOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MAJOR})
-set(GZ_MSGS_VERSION_MINOR ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_MINOR})
-set(GZ_MSGS_VERSION_PATCH ${${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}_VERSION_PATCH})
-set(GZ_MSGS_VERSION_FULL ${GZ_MSGS_VERSION_MAJOR}.${GZ_MSGS_VERSION_MINOR}.${GZ_MSGS_VERSION_PATCH})
+set(GZ_MSGS_VERSION_FULL ${gz-msgs_VERSION})
 
 set(BRIDGE_MESSAGE_TYPES
   builtin_interfaces
@@ -102,15 +95,18 @@ add_library(${bridge_lib}
 )
 
 target_link_libraries(${bridge_lib}
-  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  PUBLIC
+    gz-msgs::core
+    gz-transport::core
+  PRIVATE
+    yaml-cpp::yaml-cpp
 )
 
 ament_target_dependencies(${bridge_lib}
-  rclcpp
-  rclcpp_components
-  yaml_cpp_vendor
-  ${BRIDGE_MESSAGE_TYPES}
+  PUBLIC
+    rclcpp
+    rclcpp_components
+    ${BRIDGE_MESSAGE_TYPES}
 )
 
 target_include_directories(${bridge_lib}
@@ -120,11 +116,6 @@ target_include_directories(${bridge_lib}
   PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
-)
-
-target_link_libraries(${bridge_lib}
-  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
 )
 
 rclcpp_components_register_node(
@@ -177,7 +168,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces_TEST.cpp
   )
   target_link_libraries(test_rcl_interfaces
-    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
+    gz-msgs::core
     ${rcl_interfaces_TARGETS}
     gtest
     gtest_main
@@ -212,8 +203,8 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_utils
     ${GTEST_LIBRARIES}
-    ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-    ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+    gz-msgs::core
+    gz-transport::core
   )
   ament_target_dependencies(test_utils
     rclcpp
@@ -325,9 +316,10 @@ ament_export_targets(export_${PROJECT_NAME})
 # specific order: dependents before dependencies
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(rclcpp_components)
-ament_export_dependencies(${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER})
-ament_export_dependencies(${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER})
-ament_export_dependencies(yaml_cpp_vendor)
+ament_export_dependencies(gz_msgs_vendor)
+ament_export_dependencies(gz-msgs)
+ament_export_dependencies(gz_transport_vendor)
+ament_export_dependencies(gz-transport)
 ament_export_dependencies(${BRIDGE_MESSAGE_TYPES})
 
 ament_package()
