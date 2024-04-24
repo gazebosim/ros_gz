@@ -2,8 +2,8 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2024-04-24)
+------------------
 * Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz/issues/531>`_)
 * Added conversion for Detection3D and Detection3DArray (`#523 <https://github.com/gazebosim/ros_gz/issues/523>`_) (`#525 <https://github.com/gazebosim/ros_gz/issues/525>`_)
   Co-authored-by: wittenator <9154515+wittenator@users.noreply.github.com>

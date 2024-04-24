@@ -2,8 +2,8 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2024-04-24)
+------------------
 * Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz/issues/531>`_)
 * Remove deprecations using ros_gz_sim_create (`#476 <https://github.com/gazebosim/ros_gz/issues/476>`_)
 * Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero

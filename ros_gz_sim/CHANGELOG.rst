@@ -2,8 +2,8 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.0 (2024-04-24)
+------------------
 * Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz/issues/531>`_)
 * ign to gz (`#519 <https://github.com/gazebosim/ros_gz/issues/519>`_)
 * Undeprecate use of commandline flags (`#491 <https://github.com/gazebosim/ros_gz/issues/491>`_)
