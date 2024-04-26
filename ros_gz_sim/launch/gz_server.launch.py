@@ -46,36 +46,21 @@ def generate_launch_description():
         'use_composition', default_value='False', description='Use composed bringup if True'
     )
 
-    load_nodes = GroupAction(
+    load_nodes = Node(
         condition=IfCondition(PythonExpression(['not ', use_composition])),
-        actions=[
-            Node(
-                package='ros_gz_sim',
-                executable='gzserver',
-                output='screen',
-                parameters=[{'world_sdf_file': world_sdf_file,
-                             'world_sdf_string': world_sdf_string}],
-            ),
-        ],
+        package='ros_gz_sim',
+        executable='gzserver',
+        output='screen',
+        parameters=[{'world_sdf_file': world_sdf_file,
+                     'world_sdf_string': world_sdf_string}],
     )
 
     load_composable_nodes = GzServer(
-    # load_composable_nodes = ComposableNodeContainer(
         condition=IfCondition(use_composition),
         name=container_name,
         namespace='',
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            ComposableNode(
-                package='ros_gz_sim',
-                plugin='ros_gz_sim::GzServer',
-                name='gzserver',
-                parameters=[{'world_sdf_file': world_sdf_file,
-                             'world_sdf_string': world_sdf_string}],
-                extra_arguments=[{'use_intra_process_comms': True}],
-            ),
-        ],
+        world_sdf_file=world_sdf_file,
+        world_sdf_string=world_sdf_string,
         output='screen',
     )
 

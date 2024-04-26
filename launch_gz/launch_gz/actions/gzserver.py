@@ -33,7 +33,10 @@ class GzServer(ComposableNodeContainer):
         *,
         name: SomeSubstitutionsType,
         namespace: SomeSubstitutionsType,
-        composable_node_descriptions: Optional[List[ComposableNode]] = None,
+        world_sdf_file: SomeSubstitutionsType,
+        world_sdf_string: SomeSubstitutionsType,
+        condition: SomeSubstitutionsType,
+        # composable_node_descriptions: Optional[List[ComposableNode]] = None,
         **kwargs
     ) -> None:
         """
@@ -47,9 +50,21 @@ class GzServer(ComposableNodeContainer):
              name resolution
         :param composable_node_descriptions: optional descriptions of composable nodes to be loaded
         """
+        composable_node_descriptions = [
+            ComposableNode(
+                package='ros_gz_sim',
+                plugin='ros_gz_sim::GzServer',
+                name='gzserver',
+                parameters=[{'world_sdf_file': world_sdf_file,
+                             'world_sdf_string': world_sdf_string}],
+                extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+        ]
+
         super().__init__(name=name, namespace=namespace,
                          composable_node_descriptions=composable_node_descriptions,
-                         **kwargs)
+                         package='rclcpp_components', executable='component_container',
+                         condition=condition, **kwargs)
 
     @classmethod
     def parse(cls, entity: Entity, parser: Parser):
