@@ -17,9 +17,11 @@
 
 // Gazebo Msgs
 #include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
+#include <gz/msgs/annotated_oriented_3d_box_v.pb.h>
 
 // ROS 2 messages
 #include "vision_msgs/msg/detection2_d_array.hpp"
+#include "vision_msgs/msg/detection3_d_array.hpp"
 #include <ros_gz_bridge/convert_decl.hpp>
 
 namespace ros_gz_bridge
@@ -47,6 +49,30 @@ void
 convert_gz_to_ros(
   const gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
   vision_msgs::msg::Detection2DArray & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const vision_msgs::msg::Detection3D & ros_msg,
+  gz::msgs::AnnotatedOriented3DBox & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::AnnotatedOriented3DBox & gz_msg,
+  vision_msgs::msg::Detection3D & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const vision_msgs::msg::Detection3DArray & ros_msg,
+  gz::msgs::AnnotatedOriented3DBox_V & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::AnnotatedOriented3DBox_V & gz_msg,
+  vision_msgs::msg::Detection3DArray & ros_msg);
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__VISION_MSGS_HPP_
