@@ -27,6 +27,16 @@
 
 #include "factory_interface.hpp"
 
+template <class T, class = void>
+struct has_header : std::false_type
+{
+};
+
+template <class T>
+struct has_header<T, std::void_t<decltype(T::header)>> : std::true_type
+{
+};
+
 namespace ros_gz_bridge
 {
 
@@ -103,15 +113,16 @@ public:
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,
     size_t /*queue_size*/,
-    rclcpp::PublisherBase::SharedPtr ros_pub)
+    rclcpp::PublisherBase::SharedPtr ros_pub,
+    bool use_sim_time)
   {
     std::function<void(const GZ_T &,
       const gz::transport::MessageInfo &)> subCb =
-      [this, ros_pub](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
+      [this, ros_pub, use_sim_time](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
         if (!_info.IntraProcess()) {
-          this->gz_callback(_msg, ros_pub);
+          this->gz_callback(_msg, ros_pub, use_sim_time);
         }
       };
 
@@ -139,10 +150,19 @@ protected:
   static
   void gz_callback(
     const GZ_T & gz_msg,
-    rclcpp::PublisherBase::SharedPtr ros_pub)
+    rclcpp::PublisherBase::SharedPtr ros_pub,
+    bool use_sim_time)
   {
     ROS_T ros_msg;
     convert_gz_to_ros(gz_msg, ros_msg);
+    if constexpr (has_header<ROS_T>::value) {
+      if (!use_sim_time) {
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        auto ns = std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
+        ros_msg.header.stamp.sec = ns / 1e9;
+        ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
+      }
+    }
     std::shared_ptr<rclcpp::Publisher<ROS_T>> pub =
       std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub != nullptr) {

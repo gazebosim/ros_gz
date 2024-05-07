@@ -70,7 +70,8 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->gz_node_,
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size,
-    this->ros_publisher_);
+    this->ros_publisher_,
+    this->ros_node_->get_clock()->ros_time_is_active());
 
   this->gz_subscriber_ = this->gz_node_;
 }

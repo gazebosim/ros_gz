@@ -60,7 +60,8 @@ public:
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,
     size_t queue_size,
-    rclcpp::PublisherBase::SharedPtr ros_pub) = 0;
+    rclcpp::PublisherBase::SharedPtr ros_pub,
+    bool use_sim_time) = 0;
 };
 
 }  // namespace ros_gz_bridge
