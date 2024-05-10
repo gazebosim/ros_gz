@@ -15,14 +15,15 @@
   <author email="caguero@openrobotics.org">Carlos Agüero</author>
 
   <depend>ament_index_python</depend>
+  <depend>composition_interfaces</depend>
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>lifecycle_msgs</depend>
   <depend>osrf_pycommon</depend>
-  <depend>rclpy</depend>
+  <depend>ros_gz_sim</depend>
   <depend>python3-importlib-metadata</depend>
   <depend>python3-yaml</depend>
-  <depend>composition_interfaces</depend>
+  <depend>rclpy</depend>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>

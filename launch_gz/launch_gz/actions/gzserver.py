@@ -18,67 +18,98 @@ from typing import List
 from typing import Optional
 
 from launch.action import Action
+from launch.actions import IncludeLaunchDescription
 from launch.frontend import Entity, expose_action, Parser
 from launch.launch_context import LaunchContext
-from launch_ros.actions import ComposableNodeContainer
-from launch_ros.descriptions import ComposableNode
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.some_substitutions_type import SomeSubstitutionsType
+from launch.substitutions import PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
 
 @expose_action('gzserver')
-class GzServer(ComposableNodeContainer):
-    """Action that executes a container ROS node for composable ROS nodes."""
+class GzServer(Action):
+	"""Action that executes a gzserver ROS [composable] node."""
 
-    def __init__(
-        self,
-        *,
-        name: SomeSubstitutionsType,
-        namespace: SomeSubstitutionsType,
-        world_sdf_file: SomeSubstitutionsType,
-        world_sdf_string: SomeSubstitutionsType,
-        condition: SomeSubstitutionsType,
-        # composable_node_descriptions: Optional[List[ComposableNode]] = None,
-        **kwargs
-    ) -> None:
-        """
-        Construct a ComposableNodeContainer action.
+	def __init__(
+		self,
+		*,
+		world_sdf_file: SomeSubstitutionsType,
+		world_sdf_string: SomeSubstitutionsType,
+		container_name: SomeSubstitutionsType,
+		use_composition: SomeSubstitutionsType,
+		**kwargs
+	) -> None:
+		"""
+		Construct a gzserver action.
 
-        Most arguments are forwarded to :class:`launch_ros.actions.Node`, so see the documentation
-        of that class for further details.
+		All arguments are forwarded to `ros_gz_sim.launch.gzserver.launch.py`, so see the documentation
+		of that class for further details.
 
-        :param: name the name of the node, mandatory for full container node name resolution
-        :param: namespace the ROS namespace for this Node, mandatory for full container node
-             name resolution
-        :param composable_node_descriptions: optional descriptions of composable nodes to be loaded
-        """
-        composable_node_descriptions = [
-            ComposableNode(
-                package='ros_gz_sim',
-                plugin='ros_gz_sim::GzServer',
-                name='gzserver',
-                parameters=[{'world_sdf_file': world_sdf_file,
-                             'world_sdf_string': world_sdf_string}],
-                extra_arguments=[{'use_intra_process_comms': True}],
-            ),
-        ]
+		:param: world_sdf_file
+		:param: world_sdf_string
+		:param: container_name
+		:param: use_composition
+		"""
 
-        super().__init__(name=name, namespace=namespace,
-                         composable_node_descriptions=composable_node_descriptions,
-                         package='rclcpp_components', executable='component_container',
-                         condition=condition, **kwargs)
+		super().__init__(**kwargs)
+		self.__world_sdf_file = world_sdf_file
+		self.__world_sdf_string = world_sdf_string
+		self.__container_name = container_name
+		self.__use_composition = use_composition
 
-    @classmethod
-    def parse(cls, entity: Entity, parser: Parser):
-        """Parse node_container."""
-        _, kwargs = super().parse(entity, parser)
+	@classmethod
+	def parse(cls, entity: Entity, parser: Parser):
+		"""Parse gzserver."""
+		_, kwargs = super().parse(entity, parser)
 
-        return cls, kwargs
+		world_sdf_file = entity.get_attr(
+			'world_sdf_file', data_type=str,
+			optional=True)
 
-    def execute(self, context: LaunchContext) -> Optional[List[Action]]:
-        """
-        Execute the action.
+		world_sdf_string = entity.get_attr(
+		    'world_sdf_string', data_type=str,
+		    optional=True)
 
-        Most work is delegated to :meth:`launch_ros.actions.Node.execute`, except for the
-        composable nodes load action if it applies.
-        """
+		container_name = entity.get_attr(
+		    'container_name', data_type=str,
+		    optional=True)
 
-        return super().execute(context)
+		use_composition = entity.get_attr(
+		    'use_composition', data_type=str,
+		    optional=True)
+
+		if isinstance(world_sdf_file, str):
+			world_sdf_file = parser.parse_substitution(world_sdf_file)
+			kwargs['world_sdf_file'] = world_sdf_file
+
+		if isinstance(world_sdf_string, str):
+		    world_sdf_string = parser.parse_substitution(world_sdf_string)
+		    kwargs['world_sdf_string'] = world_sdf_string
+
+		if isinstance(container_name, str):
+		    container_name = parser.parse_substitution(container_name)
+		    kwargs['container_name'] = container_name
+
+		if isinstance(use_composition, str):
+		    use_composition = parser.parse_substitution(use_composition)
+		    kwargs['use_composition'] = use_composition
+
+		return cls, kwargs
+
+	def execute(self, context: LaunchContext) -> Optional[List[Action]]:
+		"""
+		Execute the action.
+		"""
+
+		gzserver_description = IncludeLaunchDescription(
+			PythonLaunchDescriptionSource(
+				[PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
+									   'launch',
+									   'gzserver.launch.py'])]),
+				launch_arguments=[('world_sdf_file',   self.__world_sdf_file),
+								  ('world_sdf_string', self.__world_sdf_string),
+								  ('container_name',   self.__container_name),
+								  ('use_composition',  self.__use_composition),
+								 ])
+
+		return [gzserver_description]
