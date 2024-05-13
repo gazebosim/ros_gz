@@ -45,10 +45,10 @@ class GzServer(Action):
 		All arguments are forwarded to `ros_gz_sim.launch.gzserver.launch.py`, so see the documentation
 		of that class for further details.
 
-		:param: world_sdf_file
-		:param: world_sdf_string
-		:param: container_name
-		:param: use_composition
+		:param: world_sdf_file Path to the SDF world file.
+		:param: world_sdf_string SDF world string.
+		:param: container_name Name of container that nodes will load in if use composition.
+		:param: use_composition Use composed bringup if True.
 		"""
 
 		super().__init__(**kwargs)
