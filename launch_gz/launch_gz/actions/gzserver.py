@@ -19,7 +19,7 @@ from typing import Optional
 
 from launch.action import Action
 from launch.actions import IncludeLaunchDescription
-from launch.frontend import Entity, expose_action, Parser
+from launch.frontend import expose_action, Entity, Parser
 from launch.launch_context import LaunchContext
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.some_substitutions_type import SomeSubstitutionsType
