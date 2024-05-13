@@ -23,7 +23,7 @@ setup(
     zip_safe=True,
     author='Carlos Agüero',
     author_email='caguero@openrobotics.org',
-    maintainer='Aditya Pande, Brandon Ong',
+    maintainer='Carlos, Alejandro, Michael',
     maintainer_email='aditya.pande@openrobotics.org, brandon@openrobotics.org',
     url='https://github.com/gazebosim/ros_gz/launch_gz',
     download_url='https://github.com/gazebosim/ros_gz/releases',
