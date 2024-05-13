@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2024-04-24)
+------------------
+
 0.246.0 (2023-08-31)
 --------------------
 * SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)

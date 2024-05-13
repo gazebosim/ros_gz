@@ -2,6 +2,22 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.0 (2024-04-24)
+------------------
+* Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz/issues/531>`_)
+* Added conversion for Detection3D and Detection3DArray (`#523 <https://github.com/gazebosim/ros_gz/issues/523>`_) (`#525 <https://github.com/gazebosim/ros_gz/issues/525>`_)
+  Co-authored-by: wittenator <9154515+wittenator@users.noreply.github.com>
+* [Backport rolling] Add ROS namespaces to GZ topics (`#517 <https://github.com/gazebosim/ros_gz/issues/517>`_)
+  Co-authored-by: Krzysztof Wojciechowski <49921081+Kotochleb@users.noreply.github.com>
+* ign to gz (`#519 <https://github.com/gazebosim/ros_gz/issues/519>`_)
+* Correctly export ros_gz_bridge for downstream targets (`#503 <https://github.com/gazebosim/ros_gz/issues/503>`_)
+* Add a virtual destructor to suppress compiler warning (`#502 <https://github.com/gazebosim/ros_gz/issues/502>`_)
+* Add conversion for geometry_msgs/msg/TwistStamped <-> gz.msgs.Twist (`#468 <https://github.com/gazebosim/ros_gz/issues/468>`_)
+* Added messages for 2D Bounding Boxes to ros_gz_bridge (`#458 <https://github.com/gazebosim/ros_gz/issues/458>`_) (`#466 <https://github.com/gazebosim/ros_gz/issues/466>`_)
+  Co-authored-by: Alejandro Hernandez Cordero <ahcorde@gmail.com>
+* populate imu covariances when converting (`#375 <https://github.com/gazebosim/ros_gz/issues/375>`_)
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, El Jawad Alaa, Michael Carroll
+
 0.246.0 (2023-08-31)
 --------------------
 * Add harmonic CI (`#447 <https://github.com/gazebosim/ros_gz/issues/447>`_)
