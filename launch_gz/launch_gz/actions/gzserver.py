@@ -106,7 +106,7 @@ class GzServer(Action):
 				[PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
 									   'launch',
 									   'gzserver.launch.py'])]),
-				launch_arguments=[('world_sdf_file',   self.__world_sdf_file),
+				launch_arguments=[('world_sdf_file', self.__world_sdf_file),
 								  ('world_sdf_string', self.__world_sdf_string),
 								  ('container_name',   self.__container_name),
 								  ('use_composition',  self.__use_composition),
