@@ -10,10 +10,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - docker-image: "ubuntu:22.04"
-            gz-version: "garden"
-            ros-distro: "rolling"
-          - docker-image: "ubuntu:22.04"
+          - docker-image: "ubuntu:24.04"
             gz-version: "harmonic"
             ros-distro: "rolling"
     container:
@@ -27,10 +24,3 @@ jobs:
           DOCKER_IMAGE: ${{ matrix.docker-image }}
           GZ_VERSION: ${{ matrix.gz-version  }}
           ROS_DISTRO: ${{ matrix.ros-distro }}
-          ROSDISTRO_INDEX_URL: https://raw.githubusercontent.com/ros/rosdistro/rolling/2024-02-28/index-v4.yaml # Temporarily pin rosdep to fix rolling on Jammy
-      - name: Build sdformat_urdf from source
-        uses: actions/checkout@v4
-        if: ${{ matrix.gz-version  }} == "garden"
-        with:
-          repository: ros/sdformat_urdf
-          ref: ros2

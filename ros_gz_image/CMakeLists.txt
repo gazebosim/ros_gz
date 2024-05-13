@@ -16,32 +16,11 @@ find_package(ros_gz_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-if(NOT DEFINED ENV{GZ_VERSION})
-  set(ENV{GZ_VERSION} "garden")
-endif()
+find_package(gz_transport_vendor REQUIRED)
+find_package(gz-transport REQUIRED)
 
-# Garden
-if("$ENV{GZ_VERSION}" STREQUAL "garden")
-  find_package(gz-transport12 REQUIRED)
-  find_package(gz-msgs9 REQUIRED)
-
-  set(GZ_TARGET_PREFIX gz)
-  set(GZ_MSGS_VER ${gz-msgs9_VERSION_MAJOR})
-  set(GZ_TRANSPORT_VER ${gz-transport12_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Gazebo Garden")
-elseif("$ENV{GZ_VERSION}" STREQUAL "harmonic")
-  find_package(gz-transport13 REQUIRED)
-  find_package(gz-msgs10 REQUIRED)
-
-  set(GZ_TARGET_PREFIX gz)
-  set(GZ_MSGS_VER ${gz-msgs10_VERSION_MAJOR})
-  set(GZ_TRANSPORT_VER ${gz-transport13_VERSION_MAJOR})
-
-  message(STATUS "Compiling against Gazebo Garden")
-else()
-  message(FATAL_ERROR "This branch is only compatible with Gazebo Garden forward.")
-endif()
+find_package(gz_msgs_vendor REQUIRED)
+find_package(gz-msgs REQUIRED)
 
 include_directories(include)
 
@@ -54,8 +33,8 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-  ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  gz-msgs::core
+  gz-transport::core
 )
 
 ament_target_dependencies(${executable}
@@ -89,8 +68,8 @@ if(BUILD_TESTING)
   #   )
   #   target_link_libraries(${test_publisher}_image
   #     ${catkin_LIBRARIES}
-  #     ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-  #     ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  #     $gz-msgs$::core
+  #     $gz-transport::core
   #     gtest
   #     gtest_main
   #   )
@@ -102,8 +81,8 @@ if(BUILD_TESTING)
   #     test/subscribers/${test_subscriber}.cpp)
   #   target_link_libraries(test_${test_subscriber}_image
   #     ${catkin_LIBRARIES}
-  #     ${GZ_TARGET_PREFIX}-msgs${GZ_MSGS_VER}::core
-  #     ${GZ_TARGET_PREFIX}-transport${GZ_TRANSPORT_VER}::core
+  #     $gz-msgs::core
+  #     $gz-transport::core
   #   )
   # endforeach(test_subscriber)
 endif()
