@@ -1,4 +1,3 @@
-
 # Copyright 2024 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,7 +81,7 @@ def generate_launch_description():
                           ('namespace', namespace),
                           ('use_composition', use_composition),
                           ('use_respawn', use_respawn),
-                          ('log_level', log_level), ])
+                          ('log_level', log_level)])
 
     gzserver_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

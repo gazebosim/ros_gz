@@ -125,7 +125,6 @@ install(FILES
   "launch/gz_spawn_model.launch.py"
   "launch/ros_gz_sim.launch.py"
   "launch/ros_gz_spawn_model.launch.py"
-
   DESTINATION share/${PROJECT_NAME}/launch
 )
 

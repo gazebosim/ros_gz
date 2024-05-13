@@ -1,4 +1,3 @@
-
 # Copyright 2024 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,7 @@
 """Launch create to spawn models in gz sim."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 
@@ -60,27 +59,23 @@ def generate_launch_description():
         description='Whether the entity allows renaming or not'
     )
 
-    load_nodes = GroupAction(
-        actions=[
-            Node(
-                package='ros_gz_sim',
-                executable='create',
-                output='screen',
-                parameters=[{'world': world,
-                             'file': file,
-                             'string': xml_string,
-                             'topic': topic,
-                             'name': name,
-                             'allow_renaming': allow_renaming,
-                             'x': x,
-                             'y': y,
-                             'z': z,
-                             'R': roll,
-                             'P': pitch,
-                             'Y': yaw,
-                             }],
-            ),
-        ],
+    load_nodes = Node(
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        parameters=[{'world': world,
+                     'file': file,
+                     'string': xml_string,
+                     'topic': topic,
+                     'name': name,
+                     'allow_renaming': allow_renaming,
+                     'x': x,
+                     'y': y,
+                     'z': z,
+                     'R': roll,
+                     'P': pitch,
+                     'Y': yaw,
+                     }],
     )
 
     # Create the launch description and populate
