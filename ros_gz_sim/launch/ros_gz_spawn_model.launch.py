@@ -28,10 +28,20 @@ def generate_launch_description():
     namespace = LaunchConfiguration('namespace')
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
-    bridge_log_level = LaunchConfiguration('bridge_log_level')
+    log_level = LaunchConfiguration('log_level')
 
-    world_sdf_file = LaunchConfiguration('world_sdf_file')
-    world_sdf_string = LaunchConfiguration('world_sdf_string')
+    world = LaunchConfiguration('world')
+    file = LaunchConfiguration('file')
+    xml_string = LaunchConfiguration('string')
+    topic = LaunchConfiguration('topic')
+    name = LaunchConfiguration('name')
+    allow_renaming = LaunchConfiguration('allow_renaming')
+    x = LaunchConfiguration('x', default='0.0')
+    y = LaunchConfiguration('y', default='0.0')
+    z = LaunchConfiguration('z', default='0.0')
+    roll = LaunchConfiguration('R', default='0.0')
+    pitch = LaunchConfiguration('P', default='0.0')
+    yaw = LaunchConfiguration('Y', default='0.0')
 
     declare_config_file_cmd = DeclareLaunchArgument(
         'config_file', default_value='', description='YAML config file'
@@ -57,18 +67,37 @@ def generate_launch_description():
         description='Whether to respawn if a node crashes. Applied when composition is disabled.',
     )
 
-    declare_bridge_log_level_cmd = DeclareLaunchArgument(
-        'bridge_log_level', default_value='info', description='Bridge log level'
+    declare_log_level_cmd = DeclareLaunchArgument(
+        'log_level', default_value='info', description='log level'
     )
 
-    declare_world_sdf_file_cmd = DeclareLaunchArgument(
-        'world_sdf_file', default_value=TextSubstitution(text=''),
-        description='Path to the SDF world file'
+    declare_world_cmd = DeclareLaunchArgument(
+        'world', default_value=TextSubstitution(text=''),
+        description='World name')
+
+    declare_file_cmd = DeclareLaunchArgument(
+        'file', default_value=TextSubstitution(text=''),
+        description='SDF filename')
+
+    declare_xml_string_cmd = DeclareLaunchArgument(
+        'string',
+        default_value='',
+        description='XML string',
     )
 
-    declare_world_sdf_string_cmd = DeclareLaunchArgument(
-        'world_sdf_string', default_value=TextSubstitution(text=''),
-        description='SDF world string'
+    declare_topic_cmd = DeclareLaunchArgument(
+        'topic', default_value=TextSubstitution(text=''),
+        description='Get XML from this topic'
+    )
+
+    declare_name_cmd = DeclareLaunchArgument(
+        'name', default_value=TextSubstitution(text=''),
+        description='Name of the entity'
+    )
+
+    declare_allow_renaming_cmd = DeclareLaunchArgument(
+        'allow_renaming', default_value='False',
+        description='Whether the entity allows renaming or not'
     )
 
     bridge_description = IncludeLaunchDescription(
@@ -81,15 +110,25 @@ def generate_launch_description():
                           ('namespace', namespace),
                           ('use_composition', use_composition),
                           ('use_respawn', use_respawn),
-                          ('bridge_log_level', bridge_log_level)])
+                          ('log_level', log_level), ])
 
-    gzserver_description = IncludeLaunchDescription(
+    spawn_model_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
                                    'launch',
-                                   'gz_server.launch.py'])]),
-        launch_arguments=[('world_sdf_file', world_sdf_file),
-                          ('world_sdf_string', world_sdf_string),
+                                   'gz_spawn_model.launch.py'])]),
+        launch_arguments=[('world', world),
+                          ('file', file),
+                          ('xml_string', xml_string),
+                          ('topic', topic),
+                          ('name', name),
+                          ('allow_renaming', allow_renaming),
+                          ('x', x),
+                          ('y', y),
+                          ('z', z),
+                          ('R', roll),
+                          ('P', pitch),
+                          ('Y', yaw),
                           ('use_composition', use_composition), ])
 
     # Create the launch description and populate
@@ -101,11 +140,15 @@ def generate_launch_description():
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
-    ld.add_action(declare_bridge_log_level_cmd)
-    ld.add_action(declare_world_sdf_file_cmd)
-    ld.add_action(declare_world_sdf_string_cmd)
-    # Add the actions to launch all of the bridge + gzserver nodes
+    ld.add_action(declare_log_level_cmd)
+    ld.add_action(declare_world_cmd)
+    ld.add_action(declare_file_cmd)
+    ld.add_action(declare_xml_string_cmd)
+    ld.add_action(declare_topic_cmd)
+    ld.add_action(declare_name_cmd)
+    ld.add_action(declare_allow_renaming_cmd)
+    # Add the actions to launch all of the bridge + spawn_model nodes
     ld.add_action(bridge_description)
-    ld.add_action(gzserver_description)
+    ld.add_action(spawn_model_description)
 
     return ld
