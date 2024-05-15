@@ -29,7 +29,7 @@ def generate_launch_description():
     namespace = LaunchConfiguration('namespace')
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
-    log_level = LaunchConfiguration('log_level')
+    bridge_log_level = LaunchConfiguration('bridge_log_level')
 
     world_sdf_file = LaunchConfiguration('world_sdf_file')
     world_sdf_string = LaunchConfiguration('world_sdf_string')
@@ -58,8 +58,8 @@ def generate_launch_description():
         description='Whether to respawn if a node crashes. Applied when composition is disabled.',
     )
 
-    declare_log_level_cmd = DeclareLaunchArgument(
-        'log_level', default_value='info', description='log level'
+    declare_bridge_log_level_cmd = DeclareLaunchArgument(
+        'bridge_log_level', default_value='info', description='Bridge log level'
     )
 
     declare_world_sdf_file_cmd = DeclareLaunchArgument(
@@ -82,7 +82,7 @@ def generate_launch_description():
                           ('namespace', namespace),
                           ('use_composition', use_composition),
                           ('use_respawn', use_respawn),
-                          ('log_level', log_level)])
+                          ('bridge_log_level', bridge_log_level)])
 
     gzserver_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
