@@ -27,7 +27,6 @@ find_package(gz-msgs REQUIRED)
 find_package(gz_sim_vendor REQUIRED)
 find_package(gz-sim REQUIRED)
 # Needed in launch/gz_sim.launch.py.in
-set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
 
 gz_find_package(gflags
     REQUIRED
@@ -69,7 +68,7 @@ ament_target_dependencies(gzserver_component
   std_msgs
 )
 target_link_libraries(gzserver_component
-  ${GZ_TARGET_PREFIX}-sim${GZ_SIM_VER}::core
+  gz-sim::core
 )
 ament_target_dependencies(gzserver_component std_msgs)
 rclcpp_components_register_node(
