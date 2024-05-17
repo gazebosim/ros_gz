@@ -17,6 +17,7 @@ setup(
         'setuptools',
         'ament_index_python',
         'launch',
+        'launch_ros',
         'osrf_pycommon',
         'pyyaml',
     ],
