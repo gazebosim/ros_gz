@@ -6,7 +6,7 @@
   <gzserver 
     world_sdf_file="$(var world_sdf_file)"
     world_sdf_string="$(var world_sdf_string)"
-	  container_name="$(var container_name)"
-	  use_composition="$(var use_composition)">
+    container_name="$(var container_name)"
+    use_composition="$(var use_composition)">
   </gzserver>
 </launch>
