@@ -136,4 +136,4 @@ class RosGzBridge(Action):
                                   ('log_level',   self.__log_level),
                                  ])
 
-        return [gzserver_description]
+        return [ros_gz_bridge_description]
