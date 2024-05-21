@@ -87,7 +87,7 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
                                    'launch',
-                                   'gz_server.launch.py'])]),
+                                   'gzserver.launch.py'])]),
         launch_arguments=[('world_sdf_file', world_sdf_file),
                           ('world_sdf_string', world_sdf_string),
                           ('use_composition', use_composition), ])

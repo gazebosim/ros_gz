@@ -15,7 +15,7 @@
 """Launch gzserver in a component container."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction
+from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression, TextSubstitution
 from launch_ros.actions import ComposableNodeContainer, Node
@@ -24,11 +24,6 @@ from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
 
-    world_sdf_file = LaunchConfiguration('world_sdf_file')
-    world_sdf_string = LaunchConfiguration('world_sdf_string')
-    container_name = LaunchConfiguration('container_name')
-    use_composition = LaunchConfiguration('use_composition')
-
     declare_world_sdf_file_cmd = DeclareLaunchArgument(
         'world_sdf_file', default_value=TextSubstitution(text=''),
         description='Path to the SDF world file')
@@ -36,30 +31,24 @@ def generate_launch_description():
         'world_sdf_string', default_value=TextSubstitution(text=''),
         description='SDF world string')
     declare_container_name_cmd = DeclareLaunchArgument(
-        'container_name',
-        default_value='ros_gz_container',
-        description='Name of container that nodes will load in if use composition',
-    )
+        'container_name', default_value='ros_gz_container',
+        description='Name of container that nodes will load in if use composition',)
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='False', description='Use composed bringup if True'
-    )
+        'use_composition', default_value='False',
+        description='Use composed bringup if True')
 
-    load_nodes = GroupAction(
-        condition=IfCondition(PythonExpression(['not ', use_composition])),
-        actions=[
-            Node(
-                package='ros_gz_sim',
-                executable='gzserver',
-                output='screen',
-                parameters=[{'world_sdf_file': world_sdf_file,
-                             'world_sdf_string': world_sdf_string}],
-            ),
-        ],
+    load_nodes = Node(
+        condition=IfCondition(PythonExpression(['not ', LaunchConfiguration('use_composition')])),
+        package='ros_gz_sim',
+        executable='gzserver',
+        output='screen',
+        parameters=[{'world_sdf_file': LaunchConfiguration('world_sdf_file'),
+                     'world_sdf_string': LaunchConfiguration('world_sdf_string')}],
     )
 
     load_composable_nodes = ComposableNodeContainer(
-        condition=IfCondition(use_composition),
-        name=container_name,
+        condition=IfCondition(LaunchConfiguration('use_composition')),
+        name=LaunchConfiguration('container_name'),
         namespace='',
         package='rclcpp_components',
         executable='component_container',
@@ -68,8 +57,8 @@ def generate_launch_description():
                 package='ros_gz_sim',
                 plugin='ros_gz_sim::GzServer',
                 name='gzserver',
-                parameters=[{'world_sdf_file': world_sdf_file,
-                             'world_sdf_string': world_sdf_string}],
+                parameters=[{'world_sdf_file': LaunchConfiguration('world_sdf_file'),
+                             'world_sdf_string': LaunchConfiguration('world_sdf_string')}],
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
         ],
