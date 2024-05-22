@@ -21,6 +21,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
 
+// ROS node that executes a gz-sim Server given a world SDF file or string.
 namespace ros_gz_sim
 {
 class GzServer : public rclcpp::Node
@@ -64,24 +65,7 @@ public:
       return;
     }
 
-    // (azeey) Testing if a plugin can be loaded along side the defaults. Not working yet.
-
-    // <plugin
-    //   filename="gz-sim-imu-system"
-    //   name="gz::sim::systems::Imu">
-    // </plugin>
-    sdf::Plugin imu_sdf_plugin;
-    imu_sdf_plugin.SetName("gz::sim::systems::Imu");
-    imu_sdf_plugin.SetFilename("gz-sim-imu-system");
-    gz::sim::SystemLoader loader;
-    auto imu_plugin = loader.LoadPlugin(imu_sdf_plugin);
-    std::cout << imu_plugin.value() << std::endl;
-
     gz::sim::Server server(server_config);
-    server.RunOnce();
-    if (!server.AddSystem(*imu_plugin)) {
-      RCLCPP_ERROR(this->get_logger(), "IMU system not added");
-    }
     server.Run(true /*blocking*/, 0, false /*paused*/);
   }
 
