@@ -105,6 +105,10 @@ install(TARGETS
   create
   DESTINATION lib/${PROJECT_NAME}
 )
+install(TARGETS
+  gzserver
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 ament_export_targets(export_gzserver_component)
 install(TARGETS gzserver_component
