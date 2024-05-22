@@ -29,7 +29,6 @@ int main(int _argc, char ** _argv)
   common::Console::SetVerbosity(4);
   sim::ServerConfig server_config;
 
-
   if (!world_sdf_file.empty())
   {
     server_config.SetSdfFile(world_sdf_file);
@@ -43,26 +42,6 @@ int main(int _argc, char ** _argv)
     return -1;
   }
 
-  // (azeey) Testing if a plugin can be loaded along side the defaults. Not working yet.
-
-  // <plugin
-  //   filename="gz-sim-imu-system"
-  //   name="gz::sim::systems::Imu">
-  // </plugin>
-  sdf::Plugin imu_sdf_plugin;
-  imu_sdf_plugin.SetName("gz::sim::systems::Imu");
-  imu_sdf_plugin.SetFilename("gz-sim-imu-system");
-  sim::SystemLoader loader;
-  auto imu_plugin = loader.LoadPlugin(imu_sdf_plugin);
-  std::cout << imu_plugin.value() << std::endl;
-
   gz::sim::Server server(server_config);
-  server.RunOnce();
-  if (!server.AddSystem(*imu_plugin))
-  {
-    RCLCPP_ERROR(
-      node->get_logger(), "IMU system not added");
-
-  }
   server.Run(true /*blocking*/, 0, false /*paused*/);
 }

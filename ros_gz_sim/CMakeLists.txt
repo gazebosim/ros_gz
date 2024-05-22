@@ -66,7 +66,7 @@ ament_target_dependencies(gzserver
   std_msgs
 )
 target_link_libraries(gzserver
-  ${GZ_TARGET_PREFIX}-sim${GZ_SIM_VER}::core
+  gz-sim::core
 )
 ament_target_dependencies(gzserver std_msgs)
 
