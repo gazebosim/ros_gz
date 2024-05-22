@@ -60,6 +60,16 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
 
+add_executable(gzserver src/gzserver.cpp)
+ament_target_dependencies(gzserver
+  rclcpp
+  std_msgs
+)
+target_link_libraries(gzserver
+  gz-sim::core
+)
+ament_target_dependencies(gzserver std_msgs)
+
 configure_file(
   launch/gz_sim.launch.py.in
   launch/gz_sim.launch.py.configured
@@ -77,6 +87,10 @@ install(FILES
 
 install(TARGETS
   create
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(TARGETS
+  gzserver
   DESTINATION lib/${PROJECT_NAME}
 )
 
