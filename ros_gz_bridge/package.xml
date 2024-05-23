@@ -11,14 +11,18 @@
 
   <author>Shivesh Khaitan</author>
   <author>Louise Poubel</author>
+  <author email="caguero@openrobotics.org">Carlos Agüero</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
   <buildtool_depend>rosidl_pycommon</buildtool_depend>
 
   <depend>actuator_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>gps_msgs</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
