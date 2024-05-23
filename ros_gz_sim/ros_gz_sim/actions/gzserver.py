@@ -26,23 +26,23 @@ from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
 
-@expose_action('gzserver')
+@expose_action('gz_server')
 class GzServer(Action):
-	"""Action that executes a gzserver ROS [composable] node."""
+	"""Action that executes a gz_server ROS [composable] node."""
 
 	def __init__(
 		self,
 		*,
-		world_sdf_file: SomeSubstitutionsType,
-		world_sdf_string: SomeSubstitutionsType,
-		container_name: SomeSubstitutionsType,
-		use_composition: SomeSubstitutionsType,
+		world_sdf_file: Optional[SomeSubstitutionsType],
+		world_sdf_string: Optional[SomeSubstitutionsType],
+		container_name: Optional[SomeSubstitutionsType],
+		use_composition: Optional[SomeSubstitutionsType],
 		**kwargs
 	) -> None:
 		"""
-		Construct a gzserver action.
+		Construct a gz_server action.
 
-		All arguments are forwarded to `ros_gz_sim.launch.gzserver.launch.py`, so see the documentation
+		All arguments are forwarded to `ros_gz_sim.launch.gz_server.launch.py`, so see the documentation
 		of that class for further details.
 
 		:param: world_sdf_file Path to the SDF world file.
@@ -59,7 +59,7 @@ class GzServer(Action):
 
 	@classmethod
 	def parse(cls, entity: Entity, parser: Parser):
-		"""Parse gzserver."""
+		"""Parse gz_server."""
 		_, kwargs = super().parse(entity, parser)
 
 		world_sdf_file = entity.get_attr(
@@ -101,15 +101,15 @@ class GzServer(Action):
 		Execute the action.
 		"""
 
-		gzserver_description = IncludeLaunchDescription(
+		gz_server_description = IncludeLaunchDescription(
 			PythonLaunchDescriptionSource(
 				[PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
 									   'launch',
-									   'gzserver.launch.py'])]),
+									   'gz_server.launch.py'])]),
 				launch_arguments=[('world_sdf_file', self.__world_sdf_file),
 								  ('world_sdf_string', self.__world_sdf_string),
 								  ('container_name',   self.__container_name),
 								  ('use_composition',  self.__use_composition),
 								 ])
 
-		return [gzserver_description]
+		return [gz_server_description]

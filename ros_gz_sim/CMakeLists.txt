@@ -27,11 +27,15 @@ find_package(gz-msgs REQUIRED)
 find_package(gz_sim_vendor REQUIRED)
 find_package(gz-sim REQUIRED)
 # Needed in launch/gz_sim.launch.py.in
+set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
 
 gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)
+
+# Install the python module for this package
+ament_python_install_package(${PROJECT_NAME})
 
 add_executable(create src/create.cpp)
 ament_target_dependencies(create
@@ -93,8 +97,8 @@ install(FILES
 )
 
 install(FILES
-  "launch/gzserver.launch"
-  "launch/gzserver.launch.py"
+  "launch/gz_server.launch"
+  "launch/gz_server.launch.py"
   "launch/gz_spawn_model.launch.py"
   "launch/ros_gz_sim.launch.py"
   "launch/ros_gz_spawn_model.launch.py"

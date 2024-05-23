@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Main entry point for the `launch_gz` package."""
+"""Main entry point for the `ros_gz_sim` package."""
 
 from . import actions
 
