@@ -22,6 +22,9 @@ find_package(gz-transport REQUIRED)
 find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
+# Install the python module for this package
+ament_python_install_package(${PROJECT_NAME})
+
 set(GZ_MSGS_VERSION_FULL ${gz-msgs_VERSION})
 
 set(BRIDGE_MESSAGE_TYPES
