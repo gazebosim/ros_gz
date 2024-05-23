@@ -34,12 +34,12 @@ class RosGzBridge(Action):
     def __init__(
         self,
         *,
-        config_file: Optional[SomeSubstitutionsType],
-        container_name: Optional[SomeSubstitutionsType],
-        namespace: Optional[SomeSubstitutionsType],
-        use_composition: Optional[SomeSubstitutionsType],
-        use_respawn: Optional[SomeSubstitutionsType],
-        log_level: Optional[SomeSubstitutionsType],
+        config_file: Optional[SomeSubstitutionsType] = None,
+        container_name: Optional[SomeSubstitutionsType] = None,
+        namespace: Optional[SomeSubstitutionsType] = None,
+        use_composition: Optional[SomeSubstitutionsType] = None,
+        use_respawn: Optional[SomeSubstitutionsType] = None,
+        log_level: Optional[SomeSubstitutionsType] = None,
         **kwargs
     ) -> None:
         """
