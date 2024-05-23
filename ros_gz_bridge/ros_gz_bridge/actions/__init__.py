@@ -14,9 +14,9 @@
 
 """Actions module."""
 
-from .gzserver import GzServer
+from .ros_gz_bridge import RosGzBridge
 
 
 __all__ = [
-    'GzServer',
+    'RosGzBridge',
 ]
