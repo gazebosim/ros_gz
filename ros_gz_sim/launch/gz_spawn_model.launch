@@ -4,7 +4,7 @@
   <arg name="xml_string" default="" />
   <arg name="topic" default="" />
   <arg name="name" default="" />
-  <arg name="allow_renaming" default="" />
+  <arg name="allow_renaming" default="False" />
   <arg name="x" default="" />
   <arg name="y" default="" />
   <arg name="z" default="" />
