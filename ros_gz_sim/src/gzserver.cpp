@@ -62,6 +62,7 @@ public:
       RCLCPP_ERROR(
         this->get_logger(),
         "Must specify either 'world_sdf_file' or 'world_sdf_string'");
+      rclcpp::shutdown();
       return;
     }
 
