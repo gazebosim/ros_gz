@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Launch gzserver in a component container."""
+"""Launch gz_server in a component container."""
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
@@ -56,7 +56,7 @@ def generate_launch_description():
             ComposableNode(
                 package='ros_gz_sim',
                 plugin='ros_gz_sim::GzServer',
-                name='gzserver',
+                name='gz_server',
                 parameters=[{'world_sdf_file': LaunchConfiguration('world_sdf_file'),
                              'world_sdf_string': LaunchConfiguration('world_sdf_string')}],
                 extra_arguments=[{'use_intra_process_comms': True}],
@@ -73,7 +73,7 @@ def generate_launch_description():
     ld.add_action(declare_world_sdf_string_cmd)
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_use_composition_cmd)
-    # Add the actions to launch all of the gzserver nodes
+    # Add the actions to launch all of the gz_server nodes
     ld.add_action(load_nodes)
     ld.add_action(load_composable_nodes)
 

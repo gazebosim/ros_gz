@@ -19,12 +19,13 @@ from typing import Optional
 
 from launch.action import Action
 from launch.actions import IncludeLaunchDescription
-from launch.frontend import expose_action, Entity, Parser
+from launch.frontend import Entity, expose_action, Parser
 from launch.launch_context import LaunchContext
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+
 
 @expose_action('ros_gz_bridge')
 class RosGzBridge(Action):
@@ -33,28 +34,27 @@ class RosGzBridge(Action):
     def __init__(
         self,
         *,
-        config_file: SomeSubstitutionsType,
-        container_name: SomeSubstitutionsType,
-        namespace: SomeSubstitutionsType,
-        use_composition: SomeSubstitutionsType,
-        use_respawn: SomeSubstitutionsType,
-        log_level: SomeSubstitutionsType,
+        config_file: Optional[SomeSubstitutionsType],
+        container_name: Optional[SomeSubstitutionsType],
+        namespace: Optional[SomeSubstitutionsType],
+        use_composition: Optional[SomeSubstitutionsType],
+        use_respawn: Optional[SomeSubstitutionsType],
+        log_level: Optional[SomeSubstitutionsType],
         **kwargs
     ) -> None:
         """
         Construct a ros_gz bridge action.
 
-        All arguments are forwarded to `ros_gz_bridge.launch.ros_gz_bridge.launch.py`, so see the documentation
-        of that class for further details.
+        All arguments are forwarded to `ros_gz_bridge.launch.ros_gz_bridge.launch.py`,
+        so see the documentation of that class for further details.
 
         :param: config_file YAML config file.
         :param: container_name Name of container that nodes will load in if use composition.
         :param: namespace Top-level namespace.
         :param: use_composition Use composed bringup if True.
-        :param: use_respawn Whether to respawn if a node crashes. Applied when composition is disabled..
+        :param: use_respawn Whether to respawn if a node crashes (when composition is disabled).
         :param: log_level Log level.
         """
-
         super().__init__(**kwargs)
         self.__config_file = config_file
         self.__container_name = container_name
@@ -119,21 +119,17 @@ class RosGzBridge(Action):
         return cls, kwargs
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
-        """
-        Execute the action.
-        """
-
+        """Execute the action."""
         ros_gz_bridge_description = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                        'launch',
                                        'ros_gz_bridge.launch.py'])]),
-                launch_arguments=[('config_file', self.__config_file),
-                                  ('container_name', self.__container_name),
-                                  ('namespace',   self.__namespace),
-                                  ('use_composition',  self.__use_composition),
-                                  ('use_respawn',  self.__use_respawn),
-                                  ('log_level',   self.__log_level),
-                                 ])
+            launch_arguments=[('config_file', self.__config_file),
+                              ('container_name', self.__container_name),
+                              ('namespace',   self.__namespace),
+                              ('use_composition',  self.__use_composition),
+                              ('use_respawn',  self.__use_respawn),
+                              ('log_level',   self.__log_level), ])
 
         return [ros_gz_bridge_description]
