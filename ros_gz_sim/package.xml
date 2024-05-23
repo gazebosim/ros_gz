@@ -18,14 +18,9 @@
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>ament_index_python</depend>
-  <depend>composition_interfaces</depend>
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>libgflags-dev</depend>
-  <depend>lifecycle_msgs</depend>
-  <depend>osrf_pycommon</depend>
-  <depend>python3-importlib-metadata</depend>
-  <depend>python3-yaml</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
