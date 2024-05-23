@@ -68,6 +68,7 @@ public:
 
     gz::sim::Server server(server_config);
     server.Run(true /*blocking*/, 0, false /*paused*/);
+    rclcpp::shutdown()
   }
 
 private:
