@@ -10,13 +10,19 @@
   <license>Apache 2.0</license>
 
   <author>Alejandro Hernandez</author>
+  <author email="addisuzt@intrinsic.ai">Addisu Taddese</author>
+  <author email="caguero@openrobotics.org">Carlos Agüero</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
 
   <depend>ament_index_python</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
   <depend>std_msgs</depend>
 
   <depend>gz_math_vendor</depend>
