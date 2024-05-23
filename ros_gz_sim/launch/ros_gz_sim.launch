@@ -7,12 +7,12 @@
   <arg name="log_level" default="info" />
   <arg name="world_sdf_file" default="empty.sdf" />
   <arg name="world_sdf_string" default="" />
-  <gzserver 
+  <gz_server
     world_sdf_file="$(var world_sdf_file)"
     world_sdf_string="$(var world_sdf_string)"
     container_name="$(var container_name)"
     use_composition="$(var use_composition)">
-  </gzserver>
+  </gz_server>
   <ros_gz_bridge 
     config_file="$(var config_file)"
     container_name="$(var container_name)"

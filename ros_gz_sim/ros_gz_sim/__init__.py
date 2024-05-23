@@ -12,11 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Actions module."""
+"""Main entry point for the `ros_gz_sim` package."""
 
-from .gzserver import GzServer
+from . import actions
 
 
 __all__ = [
-    'GzServer',
+    'actions',
 ]

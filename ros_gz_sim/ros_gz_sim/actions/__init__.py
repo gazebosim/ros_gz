@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Main entry point for the `launch_gz` package."""
+"""Actions module."""
 
-from . import actions
+from .gzserver import GzServer
 
 
 __all__ = [
-    'actions',
+    'GzServer',
+    'RosGzBridge',
 ]
