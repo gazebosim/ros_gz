@@ -23,6 +23,6 @@
     z="$(var z)"
     roll="$(var roll)"
     pitch="$(var pitch)"
-    yaw="$(var yaw)"
+    yaw="$(var yaw)">
   </gz_spawn_model>
 </launch>

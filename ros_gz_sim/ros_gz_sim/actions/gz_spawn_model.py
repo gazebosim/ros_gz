@@ -19,12 +19,13 @@ from typing import Optional
 
 from launch.action import Action
 from launch.actions import IncludeLaunchDescription
-from launch.frontend import expose_action, Entity, Parser
+from launch.frontend import Entity, expose_action, Parser
 from launch.launch_context import LaunchContext
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitutions import PathJoinSubstitution
 from launch_ros.substitutions import FindPackageShare
+
 
 @expose_action('gz_spawn_model')
 class GzSpawnModel(Action):
@@ -33,25 +34,25 @@ class GzSpawnModel(Action):
     def __init__(
         self,
         *,
-        world: SomeSubstitutionsType,
-        file: SomeSubstitutionsType,
-        xml_string: SomeSubstitutionsType,
-        topic: SomeSubstitutionsType,
-        name: SomeSubstitutionsType,
-        allow_renaming: SomeSubstitutionsType,
-        x: SomeSubstitutionsType,
-        y: SomeSubstitutionsType,
-        z: SomeSubstitutionsType,
-        roll: SomeSubstitutionsType,
-        pitch: SomeSubstitutionsType,
-        yaw: SomeSubstitutionsType,
+        world: Optional[SomeSubstitutionsType] = None,
+        file: Optional[SomeSubstitutionsType] = None,
+        xml_string: Optional[SomeSubstitutionsType] = None,
+        topic: Optional[SomeSubstitutionsType] = None,
+        name: Optional[SomeSubstitutionsType] = None,
+        allow_renaming: Optional[SomeSubstitutionsType] = None,
+        x: Optional[SomeSubstitutionsType] = None,
+        y: Optional[SomeSubstitutionsType] = None,
+        z: Optional[SomeSubstitutionsType] = None,
+        roll: Optional[SomeSubstitutionsType] = None,
+        pitch: Optional[SomeSubstitutionsType] = None,
+        yaw: Optional[SomeSubstitutionsType] = None,
         **kwargs
     ) -> None:
         """
         Construct a gz_spawn_model action.
 
-        All arguments are forwarded to `ros_gz_sim.launch.gz_spawn_model.launch.py`, so see the documentation
-        of that class for further details.
+        All arguments are forwarded to `ros_gz_sim.launch.gz_spawn_model.launch.py`,
+        so see the documentation of that class for further details.
 
         :param: world World name.
         :param: file SDF filename.
@@ -66,7 +67,6 @@ class GzSpawnModel(Action):
         :param: pitch Pitch orientation.
         :param: yaw Yaw orientation.
         """
-
         super().__init__(**kwargs)
         self.__world = world
         self.__file = file
@@ -185,27 +185,23 @@ class GzSpawnModel(Action):
         return cls, kwargs
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
-        """
-        Execute the action.
-        """
-
+        """Execute the action."""
         gz_spawn_model_description = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
                                        'launch',
                                        'gz_spawn_model.launch.py'])]),
-                launch_arguments=[('world', self.__world),
-                                  ('file', self.__file),
-                                  ('xml_string',   self.__xml_string),
-                                  ('topic',  self.__topic),
-                                  ('name', self.__name),
-                                  ('allow_renaming', self.__allow_renaming),
-                                  ('x',   self.__x),
-                                  ('y',  self.__y),
-                                  ('z', self.__z),
-                                  ('roll', self.__roll),
-                                  ('pitch',   self.__pitch),
-                                  ('yaw',  self.__yaw),
-                                 ])
+            launch_arguments=[('world', self.__world),
+                              ('file', self.__file),
+                              ('xml_string',   self.__xml_string),
+                              ('topic',  self.__topic),
+                              ('name', self.__name),
+                              ('allow_renaming', self.__allow_renaming),
+                              ('x',   self.__x),
+                              ('y',  self.__y),
+                              ('z', self.__z),
+                              ('roll', self.__roll),
+                              ('pitch',   self.__pitch),
+                              ('yaw',  self.__yaw), ])
 
         return [gz_spawn_model_description]

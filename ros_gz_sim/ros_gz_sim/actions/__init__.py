@@ -15,8 +15,10 @@
 """Actions module."""
 
 from .gzserver import GzServer
+from .gz_spawn_model import GzSpawnModel
 
 
 __all__ = [
     'GzServer',
+    'GzSpawnModel',
 ]
