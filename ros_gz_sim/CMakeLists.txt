@@ -99,6 +99,7 @@ install(FILES
 install(FILES
   "launch/gz_server.launch"
   "launch/gz_server.launch.py"
+  "launch/gz_spawn_model.launch"
   "launch/gz_spawn_model.launch.py"
   "launch/ros_gz_sim.launch"
   "launch/ros_gz_sim.launch.py"
