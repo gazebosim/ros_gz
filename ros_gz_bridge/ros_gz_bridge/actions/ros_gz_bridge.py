@@ -34,6 +34,7 @@ class RosGzBridge(Action):
     def __init__(
         self,
         *,
+        name: SomeSubstitutionsType,
         config_file: Optional[SomeSubstitutionsType] = None,
         container_name: Optional[SomeSubstitutionsType] = None,
         namespace: Optional[SomeSubstitutionsType] = None,
@@ -48,6 +49,7 @@ class RosGzBridge(Action):
         All arguments are forwarded to `ros_gz_bridge.launch.ros_gz_bridge.launch.py`,
         so see the documentation of that class for further details.
 
+        :param: name Name of ros_gz_bridge  node
         :param: config_file YAML config file.
         :param: container_name Name of container that nodes will load in if use composition.
         :param: namespace Top-level namespace.
@@ -56,6 +58,7 @@ class RosGzBridge(Action):
         :param: log_level Log level.
         """
         super().__init__(**kwargs)
+        self.__name = name
         self.__config_file = config_file
         self.__container_name = container_name
         self.__namespace = namespace
@@ -67,6 +70,10 @@ class RosGzBridge(Action):
     def parse(cls, entity: Entity, parser: Parser):
         """Parse ros_gz_bridge."""
         _, kwargs = super().parse(entity, parser)
+
+        name = entity.get_attr(
+            'name', data_type=str,
+            optional=False)
 
         config_file = entity.get_attr(
             'config_file', data_type=str,
@@ -91,6 +98,10 @@ class RosGzBridge(Action):
         log_level = entity.get_attr(
             'log_level', data_type=str,
             optional=True)
+
+        if isinstance(name, str):
+            name = parser.parse_substitution(name)
+            kwargs['name'] = name
 
         if isinstance(config_file, str):
             config_file = parser.parse_substitution(config_file)
@@ -125,7 +136,8 @@ class RosGzBridge(Action):
                 [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                        'launch',
                                        'ros_gz_bridge.launch.py'])]),
-            launch_arguments=[('config_file', self.__config_file),
+            launch_arguments=[('name', self.__name),
+                              ('config_file', self.__config_file),
                               ('container_name', self.__container_name),
                               ('namespace',   self.__namespace),
                               ('use_composition',  self.__use_composition),
