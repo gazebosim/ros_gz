@@ -1,4 +1,5 @@
 <launch>
+  <arg name="name" default="ros_gz_bridge" />
   <arg name="config_file" default="" />
   <arg name="container_name" default="ros_gz_container" />
   <arg name="namespace" default="" />
@@ -13,7 +14,8 @@
     container_name="$(var container_name)"
     use_composition="$(var use_composition)">
   </gz_server>
-  <ros_gz_bridge 
+  <ros_gz_bridge
+    name="$(var name)"
     config_file="$(var config_file)"
     container_name="$(var container_name)"
     namespace="$(var namespace)"
