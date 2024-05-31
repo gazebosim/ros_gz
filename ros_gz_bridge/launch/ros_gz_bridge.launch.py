@@ -18,18 +18,23 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import ComposableNodeContainer, Node
+from launch_ros.actions import LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 
 
 def generate_launch_description():
 
+    name = LaunchConfiguration('name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
     namespace = LaunchConfiguration('namespace')
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
+
+    declare_name_cmd = DeclareLaunchArgument(
+        'name', description='Name of ros_gz_bridge node'
+    )
 
     declare_config_file_cmd = DeclareLaunchArgument(
         'config_file', default_value='', description='YAML config file'
@@ -65,6 +70,8 @@ def generate_launch_description():
             Node(
                 package='ros_gz_bridge',
                 executable='bridge_node',
+                name=name,
+                namespace=namespace,
                 output='screen',
                 respawn=use_respawn,
                 respawn_delay=2.0,
@@ -74,28 +81,26 @@ def generate_launch_description():
         ],
     )
 
-    load_composable_nodes = ComposableNodeContainer(
+    load_composable_nodes = LoadComposableNodes(
         condition=IfCondition(use_composition),
-        name=container_name,
-        namespace=namespace,
-        package='rclcpp_components',
-        executable='component_container',
+        target_container=container_name,
         composable_node_descriptions=[
             ComposableNode(
                 package='ros_gz_bridge',
                 plugin='ros_gz_bridge::RosGzBridge',
-                name='ros_gz_bridge',
+                name=name,
+                namespace=namespace,
                 parameters=[{'config_file': config_file}],
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
         ],
-        output='screen',
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
+    ld.add_action(declare_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_namespace_cmd)
