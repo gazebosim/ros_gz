@@ -110,9 +110,9 @@ public:
       [this, ros_pub](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
-        // if (!_info.IntraProcess()) {
+        if (!_info.IntraProcess()) {
           this->gz_callback(_msg, ros_pub);
-        // }
+        }
       };
 
     node->Subscribe(topic_name, subCb);
