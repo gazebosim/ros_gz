@@ -20,6 +20,7 @@
 #include <string>
 
 #include <gz/transport/Node.hh>
+#include <gz/transport/SubscriptionOptions.hh>
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
