@@ -114,7 +114,7 @@ public:
       };
 
     // Ignore messages that are published from this bridge.
-    gz::transport::SubscriptionOptions opts;
+    gz::transport::SubscribeOptions opts;
     opts.SetIgnoreLocalMessages(true);
     node->Subscribe(topic_name, subCb, opts);
   }
