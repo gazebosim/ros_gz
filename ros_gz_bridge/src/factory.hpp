@@ -106,9 +106,8 @@ public:
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub)
   {
-    std::function<void(const GZ_T &,
-      const gz::transport::MessageInfo &)> subCb =
-      [this, ros_pub](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
+    std::function<void(const GZ_T &)> subCb =
+      [this, ros_pub](const GZ_T & _msg)
       {
         this->gz_callback(_msg, ros_pub);
       };
