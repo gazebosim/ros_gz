@@ -20,6 +20,7 @@
 #include <string>
 
 #include <gz/transport/Node.hh>
+#include <gz/transport/SubscribeOptions.hh>
 
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
@@ -105,17 +106,16 @@ public:
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub)
   {
-    std::function<void(const GZ_T &,
-      const gz::transport::MessageInfo &)> subCb =
-      [this, ros_pub](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
+    std::function<void(const GZ_T &)> subCb =
+      [this, ros_pub](const GZ_T & _msg)
       {
-        // Ignore messages that are published from this bridge.
-        if (!_info.IntraProcess()) {
-          this->gz_callback(_msg, ros_pub);
-        }
+        this->gz_callback(_msg, ros_pub);
       };
 
-    node->Subscribe(topic_name, subCb);
+    // Ignore messages that are published from this bridge.
+    gz::transport::SubscribeOptions opts;
+    opts.SetIgnoreLocalMessages(true);
+    node->Subscribe(topic_name, subCb, opts);
   }
 
 protected:
