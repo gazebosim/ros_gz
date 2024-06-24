@@ -169,10 +169,7 @@ convert_gz_to_ros(
 
   auto count = ros_msg.step * ros_msg.height;
   ros_msg.data.resize(ros_msg.step * ros_msg.height);
-  std::copy(
-    gz_msg.data().begin(),
-    gz_msg.data().begin() + count,
-    ros_msg.data.begin());
+  memcpy(ros_msg.data.data(), gz_msg.data().c_str(), gz_msg.data().size());
 }
 
 template<>
