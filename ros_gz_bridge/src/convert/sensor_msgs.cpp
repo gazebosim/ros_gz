@@ -168,6 +168,7 @@ convert_gz_to_ros(
   ros_msg.step = ros_msg.width * num_channels * octets_per_channel;
   ros_msg.data.resize(ros_msg.step * ros_msg.height);
 
+  # prefer memcpy over std::copy for performance reasons, see https://github.com/gazebosim/ros_gz/pull/565
   memcpy(ros_msg.data.data(), gz_msg.data().c_str(), gz_msg.data().size());
 }
 
