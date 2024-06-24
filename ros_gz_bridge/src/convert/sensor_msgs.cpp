@@ -166,9 +166,8 @@ convert_gz_to_ros(
 
   ros_msg.is_bigendian = false;
   ros_msg.step = ros_msg.width * num_channels * octets_per_channel;
-
-  auto count = ros_msg.step * ros_msg.height;
   ros_msg.data.resize(ros_msg.step * ros_msg.height);
+
   memcpy(ros_msg.data.data(), gz_msg.data().c_str(), gz_msg.data().size());
 }
 
