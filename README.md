@@ -8,7 +8,7 @@ Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galacti
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
 Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | [gazebo packages](https://gazebosim.org/docs/latest/ros_installation#gazebo-garden-with-ros-2-humble-iron-or-rolling-use-with-caution-)[^1]
-Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
+Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | [gazebo packages](https://gazebosim.org/docs/harmonic/ros_installation#-gazebo-harmonic-with-ros-2-humble-iron-or-rolling-use-with-caution-)[^1]
 Iron | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
 Iron | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
 Iron | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
