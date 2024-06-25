@@ -520,7 +520,7 @@ convert_gz_to_ros(
   ros_msg.longitude = gz_msg.longitude_deg();
   ros_msg.altitude = gz_msg.altitude();
 
-  // position_covariance is not supported in Ignition::Msgs::NavSat.
+  // position_covariance is not supported in gz::msgs::NavSat.
   ros_msg.position_covariance_type = sensor_msgs::msg::NavSatFix::COVARIANCE_TYPE_UNKNOWN;
   ros_msg.status.status = sensor_msgs::msg::NavSatStatus::STATUS_FIX;
 }

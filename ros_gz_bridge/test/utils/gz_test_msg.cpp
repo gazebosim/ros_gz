@@ -288,7 +288,9 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::SensorNoise> & _msg)
   gz::msgs::SensorNoise expected_msg;
   createTestMsg(expected_msg);
 
-  EXPECT_EQ(expected_msg.type(), gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
+  EXPECT_EQ(
+    expected_msg.type(),
+    gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED);
   EXPECT_EQ(expected_msg.mean(), _msg->mean());
   EXPECT_EQ(expected_msg.stddev(), _msg->stddev());
   EXPECT_EQ(expected_msg.bias_mean(), _msg->bias_mean());
