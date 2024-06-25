@@ -47,15 +47,15 @@ class MessageMapping:
         return f'ignition.msgs.{self.gz_message_name}'
 
     def ign_type(self):
-        # Return GZ type of a message (eg ignition::msgs::Bool)
-        return f'ignition::msgs::{self.gz_message_name}'
+        # Return GZ type of a message (eg gz::msgs::Bool)
+        return f'gz::msgs::{self.gz_message_name}'
 
     def gz_string(self):
         # Return GZ string version of a message (eg ignition.msgs.Bool)
         return f'gz.msgs.{self.gz_message_name}'
 
     def gz_type(self):
-        # Return GZ type of a message (eg ignition::msgs::Bool)
+        # Return GZ type of a message (eg gz::msgs::Bool)
         return f'gz::msgs::{self.gz_message_name}'
 
     def unique(self):
