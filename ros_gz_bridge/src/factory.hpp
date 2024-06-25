@@ -28,13 +28,13 @@
 
 #include "factory_interface.hpp"
 
-template <class T, class = void>
+template<class T, class = void>
 struct has_header : std::false_type
 {
 };
 
-template <class T>
-struct has_header<T, std::void_t<decltype(T::header)>> : std::true_type
+template<class T>
+struct has_header<T, std::void_t<decltype(T::header)>>: std::true_type
 {
 };
 
