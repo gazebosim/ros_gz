@@ -1,6 +1,6 @@
 <package format="3">
   <name>ros_gz_sim_demos</name>
-  <version>0.246.0</version>
+  <version>1.0.0</version>
   <description>Demos using Gazebo Sim simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
@@ -10,8 +10,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- Garden -->
-  <depend condition="$GZ_VERSION == '' or $GZ_VERSION == garden">gz-sim7</depend>
+  <depend>gz_sim_vendor</depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
