@@ -156,18 +156,6 @@ convert_gz_to_ros(
   const gz::msgs::EntityWrench & gz_msg,
   ros_gz_interfaces::msg::EntityWrench & ros_msg)
 {
-  // std_msgs::msg::Header ros_header;
-  // convert_gz_to_ros(gz_msg.header(), ros_header);
-  // ros_msg.header = ros_header;
-
-  // ros_gz_interfaces::msg::Entity ros_entity;
-  // convert_gz_to_ros(gz_msg.entity(), ros_entity);
-  // ros_msg.entity = ros_entity;
-
-  // geometry_msgs::msg::Wrench ros_wrench;
-  // convert_gz_to_ros(gz_msg.wrench(), ros_wrench);
-  // ros_msg.wrench = ros_wrench;
-
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);
   convert_gz_to_ros(gz_msg.wrench(), ros_msg.wrench);
