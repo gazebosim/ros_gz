@@ -2,21 +2,27 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_bridge</name>
-  <version>0.254.1</version>
+  <version>1.0.0</version>
   <description>Bridge communication between ROS and Gazebo Transport</description>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
+  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
   <license>Apache 2.0</license>
 
   <author>Shivesh Khaitan</author>
+  <author>Louise Poubel</author>
+  <author email="caguero@openrobotics.org">Carlos Agüero</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_python</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
   <buildtool_depend>rosidl_pycommon</buildtool_depend>
 
   <depend>actuator_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>gps_msgs</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
@@ -29,20 +35,8 @@
   <depend>yaml_cpp_vendor</depend>
   <depend>vision_msgs</depend>
 
-  <!-- Harmonic -->
-  <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
-  <depend condition="$GZ_VERSION == harmonic">gz-transport13</depend>
-  <!-- Garden -->
-  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-msgs9</depend>
-  <depend condition="$GZ_VERSION == garden or $IGNITION_VERSION == garden">gz-transport12</depend>
-  <!-- Fortress (default) -->
-  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-msgs8</depend>
-  <depend condition="$GZ_VERSION == fortress or $IGNITION_VERSION == fortress">ignition-transport11</depend>
-  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-msgs8</depend>
-  <depend condition="$GZ_VERSION == '' and $IGNITION_VERSION == ''">ignition-transport11</depend>
-  <!-- Edifice -->
-  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-msgs7</depend>
-  <depend condition="$GZ_VERSION == edifice or $IGNITION_VERSION == edifice">ignition-transport10</depend>
+  <depend>gz_msgs_vendor</depend>
+  <depend>gz_transport_vendor</depend>
 
   <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>

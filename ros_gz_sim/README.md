@@ -29,7 +29,7 @@ ros2 launch ros_gz_sim gz_sim.launch.py
 then spawn a model:
 
 ```
-ros2 run ros_gz_sim create -world default -file 'https://fuel.ignitionrobotics.org/1.0/openrobotics/models/Gazebo'
+ros2 run ros_gz_sim create -world default -file 'https://fuel.gazebosim.org/1.0/openrobotics/models/Gazebo'
 ```
 
 See more options with:

@@ -72,9 +72,18 @@ And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
-| ros_gz_interfaces/srv/ControlWorld   | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+| ros_gz_interfaces/srv/ControlWorld   | gz.msgs.WorldControl       | gz.msgs.Boolean       |
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
+
+**NOTE**: If during startup, gazebo detects that there is another publisher on `/clock`, it will only create the fully qualified `/world/<worldname>/clock topic`.
+Gazebo would be the only `/clock` publisher, the sole source of clock information.
+
+You should create an unidirectional `/clock` bridge:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
+```
 
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
@@ -83,14 +92,14 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz.msgs.StringMsg
 ```
 
 Now we start the ROS listener.
 
 ```
 # Shell B:
-. /opt/ros/iron/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 topic echo /chatter
 ```
 
@@ -98,7 +107,7 @@ Now we start the Gazebo Transport talker.
 
 ```
 # Shell C:
-ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'
+gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'
 ```
 
 ## Example 1b: ROS 2 talker and Gazebo Transport listener
@@ -108,21 +117,21 @@ Start the parameter bridge which will watch the specified topics.
 ```
 # Shell A:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@ignition.msgs.StringMsg
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz.msgs.StringMsg
 ```
 
 Now we start the Gazebo Transport listener.
 
 ```
 # Shell B:
-ign topic -e -t /chatter
+gz topic -e -t /chatter
 ```
 
 Now we start the ROS talker.
 
 ```
 # Shell C:
-. /opt/ros/iron/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
 
@@ -136,14 +145,14 @@ First we start Gazebo Sim (don't forget to hit play, or Gazebo Sim won't generat
 
 ```
 # Shell A:
-ign gazebo sensors_demo.sdf
+gz sim sensors_demo.sdf
 ```
 
 Let's see the topic where camera images are published.
 
 ```
 # Shell B:
-ign topic -l | grep image
+gz topic -l | grep image
 /rgbd_camera/depth_image
 /rgbd_camera/image
 ```
@@ -153,14 +162,14 @@ Then we start the parameter bridge with the previous topic.
 ```
 # Shell B:
 . ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@ignition.msgs.Image
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image
 ```
 
 Now we start the ROS GUI:
 
 ```
 # Shell C:
-. /opt/ros/iron/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 run rqt_image_view rqt_image_view /rgbd_camera/image
 ```
 
@@ -194,15 +203,15 @@ On terminal B, we start a ROS 2 listener:
 
 And terminal C, publish an Gazebo message:
 
-`ign topic -t /chatter -m ignition.msgs.StringMsg -p 'data:"Hello"'`
+`gz topic -t /chatter -m gz.msgs.StringMsg -p 'data:"Hello"'`
 
 At this point, you should see the ROS 2 listener echoing the message.
 
 Now let's try the other way around, ROS 2 -> Gazebo.
 
-On terminal D, start an Igntion listener:
+On terminal D, start an Gazebo listener:
 
-`ign topic -e -t /chatter`
+`gz topic -e -t /chatter`
 
 And on terminal E, publish a ROS 2 message:
 
@@ -220,7 +229,7 @@ On terminal A, start the service bridge:
 
 On terminal B, start Gazebo, it will be paused by default:
 
-`ign gazebo shapes.sdf`
+`gz sim shapes.sdf`
 
 On terminal C, make a ROS request to unpause simulation:
 
@@ -242,35 +251,35 @@ bridge may be specified:
  # Set just topic name, applies to both
 - topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set just ROS topic name, applies to both
 - ros_topic_name: "chatter_ros"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set just GZ topic name, applies to both
-- gz_topic_name: "chatter_ign"
+- gz_topic_name: "chatter_gz"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Set each topic name explicitly
 - ros_topic_name: "chatter_both_ros"
-  gz_topic_name: "chatter_both_ign"
+  gz_topic_name: "chatter_both_gz"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
 
 # Full set of configurations
 - ros_topic_name: "ros_chatter"
-  gz_topic_name: "ign_chatter"
+  gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "ignition.msgs.StringMsg"
+  gz_type_name: "gz.msgs.StringMsg"
   subscriber_queue: 5       # Default 10
   publisher_queue: 6        # Default 10
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
-                            # "GZ_TO_ROS" - Bridge Ignition topic to ROS
-                            # "ROS_TO_GZ" - Bridge ROS topic to Ignition
+                            # "GZ_TO_ROS" - Bridge Gz topic to ROS
+                            # "ROS_TO_GZ" - Bridge ROS topic to Gz
 ```
 
 To run the bridge node with the above configuration:
@@ -298,14 +307,14 @@ Now we start the Gazebo Transport listener.
 
 ```bash
 # Shell B:
-ign topic -e -t /demo/chatter
+gz topic -e -t /demo/chatter
 ```
 
 Now we start the ROS talker.
 
 ```bash
 # Shell C:
-. /opt/ros/iron/setup.bash
+. /opt/ros/rolling/setup.bash
 ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a namespace'" --once
 ```
 

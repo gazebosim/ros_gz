@@ -35,7 +35,7 @@ template<typename RosResT>
 bool
 send_response_on_error(RosResT & ros_response);
 
-template<typename RosServiceT, typename IgnRequestT, typename IgnReplyT>
+template<typename RosServiceT, typename GzRequestT, typename GzReplyT>
 class ServiceFactory : public ServiceFactoryInterface
 {
 public:
@@ -60,12 +60,12 @@ public:
         std::shared_ptr<rmw_request_id_t> reqid,
         std::shared_ptr<typename RosServiceT::Request> ros_req)
       {
-        std::function<void(const IgnReplyT &, bool)> callback;
+        std::function<void(const GzReplyT &, bool)> callback;
         callback = [
           srv_handle = std::move(srv_handle),
           reqid
         ](
-          const IgnReplyT & reply,
+          const GzReplyT & reply,
           const bool result)
         {
           typename RosServiceT::Response ros_res;
@@ -77,7 +77,7 @@ public:
           convert_gz_to_ros(reply, ros_res);
           srv_handle->send_response(*reqid, ros_res);
         };
-        IgnRequestT gz_req;
+        GzRequestT gz_req;
         convert_ros_to_gz(*ros_req, gz_req);
         gz_node->Request(
           service_name,

@@ -87,22 +87,9 @@ def launch_gz(context, *args, **kwargs):
                 plugin_paths,
             ]
         ),
-        "IGN_GAZEBO_SYSTEM_PLUGIN_PATH": os.pathsep.join(  # TODO(azeey): To support pre-garden. Deprecated.
-            [
-                environ.get("IGN_GAZEBO_SYSTEM_PLUGIN_PATH", default=""),
-                environ.get("LD_LIBRARY_PATH", default=""),
-                plugin_paths,
-            ]
-        ),
         "GZ_SIM_RESOURCE_PATH": os.pathsep.join(
             [
                 environ.get("GZ_SIM_RESOURCE_PATH", default=""),
-                model_paths,
-            ]
-        ),
-        "IGN_GAZEBO_RESOURCE_PATH": os.pathsep.join(  # TODO(azeey): To support pre-garden. Deprecated.
-            [
-                environ.get("IGN_GAZEBO_RESOURCE_PATH", default=""),
                 model_paths,
             ]
         ),
