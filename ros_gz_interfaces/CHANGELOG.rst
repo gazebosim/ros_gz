@@ -2,32 +2,27 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-0.254.1 (2024-04-08)
---------------------
-* Add option to change material color from ROS. (`#520 <https://github.com/gazebosim/ros_gz/issues/520>`_)
-  Forward port of `#486 <https://github.com/gazebosim/ros_gz/issues/486>`_
-  * Message and bridge for MaterialColor.
-  This allows bridging MaterialColor from ROS to GZ and is
-  important for allowing simulation users to create status lights.
-* Contributors: Benjamin Perseghetti
+1.0.0 (2024-04-24)
+------------------
 
-0.254.0 (2024-01-08)
+0.246.0 (2023-08-31)
 --------------------
+* SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_)
+* Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_)
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz/issues/386>`_)
+* Merge branch 'humble' into mjcarroll/humble_to_ros2
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz/issues/376>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz/issues/323>`_)
+* Export rcl_interfaces exec dependency (`#317 <https://github.com/gazebosim/ros_gz/issues/317>`_)
+* Contributors: Aditya Pande, Alejandro Hernández Cordero, Michael Carroll, ahcorde
 
-0.247.0 (2023-11-02)
+0.245.0 (2022-10-12)
 --------------------
-* [backport iron] SensorNoise msg bridging (`#417 <https://github.com/gazebosim/ros_gz/issues/417>`_) (`#425 <https://github.com/gazebosim/ros_gz/issues/425>`_)
-  Co-authored-by: Aditya Pande <aditya050995@gmail.com>
-* Merge branch 'iron' into ahcorde/iron/backport/411
-* [backport Iron] Added Altimeter msg bridging (`#413 <https://github.com/gazebosim/ros_gz/issues/413>`_) (`#414 <https://github.com/gazebosim/ros_gz/issues/414>`_)
-  Co-authored-by: Aditya Pande <aditya050995@gmail.com>
-* Contributors: Alejandro Hernández Cordero
+* humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz/issues/311>`_)
+  Co-authored-by: Michael Carroll <michael@openrobotics.org>
+* Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
+* Contributors: Alejandro Hernández Cordero, ahcorde
 
-0.245.0 (2023-05-23)
---------------------
-
-0.244.11 (2023-05-23)
----------------------
 
 0.244.10 (2023-05-03)
 ---------------------

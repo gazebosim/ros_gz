@@ -54,7 +54,7 @@ private: gz::transport::Node node;
 /////////////////////////////////////////////////
 TEST(GzSubscriberTest, @(m.unique()))
 {
-  MyTestClass<@(m.ign_type())> client("@(m.unique())");
+  MyTestClass<@(m.gz_type())> client("@(m.unique())");
 
   using namespace std::chrono_literals;
   ros_gz_bridge::testing::waitUntilBoolVar(

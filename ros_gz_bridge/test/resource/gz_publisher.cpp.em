@@ -55,8 +55,8 @@ int main(int /*argc*/, char **/*argv*/)
 @[for m in mappings]@
   // @(m.gz_string()).
   auto @(m.unique())_pub =
-    node.Advertise<@(m.ign_type())>("@(m.unique())");
-  @(m.ign_type()) @(m.unique())_msg;
+    node.Advertise<@(m.gz_type())>("@(m.unique())");
+  @(m.gz_type()) @(m.unique())_msg;
   ros_gz_bridge::testing::createTestMsg(@(m.unique())_msg);
 
 @[end for]@

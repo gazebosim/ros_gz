@@ -17,7 +17,6 @@
 
 namespace ros_gz_bridge
 {
-
 template<>
 void
 convert_ros_to_gz(

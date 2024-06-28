@@ -34,6 +34,7 @@
 #include <geometry_msgs/msg/pose.hpp>
 #include <geometry_msgs/msg/pose_array.hpp>
 #include <geometry_msgs/msg/pose_with_covariance.hpp>
+#include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/transform.hpp>
 #include <geometry_msgs/msg/transform_stamped.hpp>
@@ -55,13 +56,9 @@
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
 #include <ros_gz_interfaces/msg/float32_array.hpp>
-#if HAVE_DATAFRAME
 #include <ros_gz_interfaces/msg/dataframe.hpp>
-#endif  // HAVE_DATAFRAME
 #include <ros_gz_interfaces/msg/light.hpp>
-#if HAVE_MATERIALCOLOR
 #include <ros_gz_interfaces/msg/material_color.hpp>
-#endif  // HAVE_MATERIALCOLOR
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
@@ -269,6 +266,18 @@ void createTestMsg(geometry_msgs::msg::PoseWithCovariance & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovariance> & _msg);
 
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const geometry_msgs::msg::PoseWithCovarianceStamped & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(geometry_msgs::msg::PoseWithCovarianceStamped & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<geometry_msgs::msg::PoseWithCovarianceStamped> & _msg);
+
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(geometry_msgs::msg::PoseStamped & _msg);
@@ -401,7 +410,6 @@ void createTestMsg(ros_gz_interfaces::msg::Light & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Light> & _msg);
 
-#if HAVE_MATERIALCOLOR
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ros_gz_interfaces::msg::MaterialColor & _msg);
@@ -409,7 +417,6 @@ void createTestMsg(ros_gz_interfaces::msg::MaterialColor & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::MaterialColor> & _msg);
-#endif  // HAVE_MATERIALCOLOR
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -443,7 +450,6 @@ void createTestMsg(ros_gz_interfaces::msg::Contacts & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Contacts> & _msg);
 
-#if HAVE_DATAFRAME
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(ros_gz_interfaces::msg::Dataframe & _msg);
@@ -451,7 +457,6 @@ void createTestMsg(ros_gz_interfaces::msg::Dataframe & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Dataframe> & _msg);
-#endif  // HAVE_DATAFRAME
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

@@ -1,7 +1,7 @@
 # Image utilities for using ROS and Gazebo Transport
 
 This package provides a unidirectional bridge for images from Gazebo to ROS.
-The bridge subscribes to Gazebo image messages (`ignition::msgs::Image`)
+The bridge subscribes to Gazebo image messages (`gz::msgs::Image`)
 and republishes them to ROS using [image_transport](http://wiki.ros.org/image_transport).
 
 For compressed images, install
@@ -9,3 +9,14 @@ For compressed images, install
 and the bridge will publish `/compressed` images. The same goes for other
 `image_transport` plugins.
 
+To run the bridge from the command line:
+
+```shell
+ros2 run ros_gz_image image_bridge /topic1 /topic2
+```
+
+You can also modify the [Quality of Service (QoS) policy](https://docs.ros.org/en/rolling/Concepts/About-Quality-of-Service-Settings.html#qos-policies) used to publish images using an additional `qos` ROS parameter. For example:
+
+```shell
+ros2 run ros_gz_image image_bridge /topic1 /topic2 --ros-args qos:=sensor_data
+```

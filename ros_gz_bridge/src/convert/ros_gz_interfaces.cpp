@@ -245,7 +245,6 @@ convert_gz_to_ros(
   }
 }
 
-#if HAVE_DATAFRAME
 template<>
 void
 convert_ros_to_gz(
@@ -295,7 +294,6 @@ convert_gz_to_ros(
     gz_msg.data().begin() + gz_msg.data().size(),
     ros_msg.data.begin());
 }
-#endif  // HAVE_DATAFRAME
 
 template<>
 void
@@ -402,7 +400,6 @@ convert_gz_to_ros(
   ros_msg.intensity = gz_msg.intensity();
 }
 
-#if HAVE_MATERIALCOLOR
 template<>
 void
 convert_ros_to_gz(
@@ -460,7 +457,6 @@ convert_gz_to_ros(
 
   ros_msg.shininess = gz_msg.shininess();
 }
-#endif  // HAVE_MATERIALCOLOR
 
 template<>
 void
@@ -497,9 +493,7 @@ convert_gz_to_ros(
     ros_msg.type = 0;
   } else if (gz_msg.type() == gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN) {
     ros_msg.type = 2;
-  } else if (gz_msg.type() ==  // NOLINT
-    gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED)  // NOLINT
-  {  // NOLINT
+  } else if (gz_msg.type() == gz::msgs::SensorNoise_Type::SensorNoise_Type_GAUSSIAN_QUANTIZED) {
     ros_msg.type = 3;
   }
 
