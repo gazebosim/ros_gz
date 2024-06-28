@@ -7,7 +7,7 @@ The following message types can be bridged for topics:
 
 | ROS type                                    | Gazebo type                                 |
 |---------------------------------------------|:-------------------------------------------:|
-| builtin_interfaces/msg/Time                 | ignition::msgs::Time                        |
+| builtin_interfaces/msg/Time                 | gz::msgs::Time                        |
 | std_msgs/msg/Bool                           | ignition::msgs::Boolean                     |
 | std_msgs/msg/ColorRGBA                      | ignition::msgs::Color                       |
 | std_msgs/msg/Empty                          | ignition::msgs::Empty                       |
