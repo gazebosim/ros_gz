@@ -35,4 +35,4 @@ jobs:
         if: ${{ matrix.gz-version  }} == "garden"
         with:
           repository: ros/sdformat_urdf
-          ref: ros2
+          ref: rolling
