@@ -34,6 +34,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Contacts                 | gz.msgs.Contacts                    |
 | ros_gz_interfaces/msg/Dataframe                | gz.msgs.Dataframe                   |
 | ros_gz_interfaces/msg/Entity                   | gz.msgs.Entity                      |
+| ros_gz_interfaces/msg/EntityWrench             | gz.msgs.EntityWrench                |
 | ros_gz_interfaces/msg/Float32Array             | gz.msgs.Float_V                     |
 | ros_gz_interfaces/msg/GuiCamera                | gz.msgs.GUICamera                   |
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
