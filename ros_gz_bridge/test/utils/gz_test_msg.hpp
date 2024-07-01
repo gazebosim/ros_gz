@@ -29,11 +29,7 @@
 #include <gz/msgs/double.pb.h>
 #include <gz/msgs/empty.pb.h>
 #include <gz/msgs/entity.pb.h>
-<<<<<<< HEAD
-=======
 #include <gz/msgs/entity_wrench.pb.h>
-#include <gz/msgs/dataframe.pb.h>
->>>>>>> f9afb69 (Add support for gz.msgs.EntityWrench (base branch: ros2) (#573))
 #include <gz/msgs/float.pb.h>
 #include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/fluid_pressure.pb.h>
