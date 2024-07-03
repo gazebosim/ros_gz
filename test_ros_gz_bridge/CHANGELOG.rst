@@ -1,0 +1,10 @@
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Changelog for package test_ros_gz_bridge
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+0.254.2 (2024-07-03)
+--------------------
+* 0.244.14
+* Changelog
+* Correctly export ros_gz_bridge for downstream targets (`#503 <https://github.com/gazebosim/ros_gz//issues/503>`_) (`#506 <https://github.com/gazebosim/ros_gz//issues/506>`_)
+* Contributors: Alejandro Hernández Cordero, Michael Carroll

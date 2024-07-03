@@ -2,6 +2,20 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.2 (2024-07-03)
+--------------------
+* [backport Humble] Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_) (`#538 <https://github.com/gazebosim/ros_gz//issues/538>`_)
+  Co-authored-by: Rousseau Vincent <vincentrou@gmail.com>
+* [backport Iron] Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_) (`#537 <https://github.com/gazebosim/ros_gz//issues/537>`_)
+  Co-authored-by: Rousseau Vincent <vincentrou@gmail.com>
+* 0.244.14
+* Changelog
+* 0.244.13
+* Changelog
+* 0.244.12
+* Changelog
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero
+
 0.254.1 (2024-04-08)
 --------------------
 

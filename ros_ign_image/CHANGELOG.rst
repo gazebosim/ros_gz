@@ -2,6 +2,16 @@
 Changelog for package ros_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.2 (2024-07-03)
+--------------------
+* 0.244.14
+* Changelog
+* 0.244.13
+* Changelog
+* 0.244.12
+* Changelog
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero
+
 0.254.1 (2024-04-08)
 --------------------
 

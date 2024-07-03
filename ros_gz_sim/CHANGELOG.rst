@@ -2,6 +2,31 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.2 (2024-07-03)
+--------------------
+* Merge pull request `#564 <https://github.com/gazebosim/ros_gz//issues/564>`_ from azeey/humble_to_iron
+  Humble ➡️ Iron
+* Merge humble -> iron
+* 0.244.14
+* Changelog
+* Support `<gazebo_ros>` in `package.xml` exports (`#492 <https://github.com/gazebosim/ros_gz//issues/492>`_)
+  This copies the implementation from `gazebo_ros_paths.py` to provide a
+  way for packages to set resource paths from `package.xml`.
+  ```
+  e.g.  <export>
+  <gazebo_ros gazebo_model_path="${prefix}/models"/>
+  <gazebo_ros gazebo_media_path="${prefix}/models"/>
+  </export>
+  ```
+  The value of `gazebo_model_path` and `gazebo_media_path` is appended to `GZ_SIM_RESOURCE_PATH`
+  The value of `plugin_path` appended to `GZ_SIM_SYSTEM_PLUGIN_PATH`
+  ---------
+* 0.244.13
+* Changelog
+* 0.244.12
+* Changelog
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero
+
 0.254.1 (2024-04-08)
 --------------------
 

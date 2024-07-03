@@ -2,6 +2,34 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.254.2 (2024-07-03)
+--------------------
+* Add support for gz.msgs.EntityWrench (base branch: ros2) (backport `#573 <https://github.com/gazebosim/ros_gz//issues/573>`_) (`#576 <https://github.com/gazebosim/ros_gz//issues/576>`_)
+  * Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz//issues/573>`_)
+  (cherry picked from commit f9afb69d1163633dd978024bb7271a28cf7b551a)
+  # Conflicts:
+  #	ros_gz_bridge/README.md
+  #	ros_gz_bridge/test/utils/gz_test_msg.hpp
+  * Fixed merge
+  ---------
+  Co-authored-by: Victor T. Noppeney <Vtn21@users.noreply.github.com>
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* 0.244.14
+* Changelog
+* Add option to change material color from ROS. (`#486 <https://github.com/gazebosim/ros_gz//issues/486>`_)
+  * Message and bridge for MaterialColor.
+  This allows bridging MaterialColor from ROS to GZ and is
+  important for allowing simulation users to create status lights.
+  ---------
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+  Co-authored-by: Addisu Z. Taddese <addisuzt@intrinsic.ai>
+  Co-authored-by: Addisu Z. Taddese <addisu@openrobotics.org>
+* 0.244.13
+* Changelog
+* 0.244.12
+* Changelog
+* Contributors: Addisu Z. Taddese, Alejandro Hernández Cordero, Benjamin Perseghetti, mergify[bot]
+
 0.254.1 (2024-04-08)
 --------------------
 * Add option to change material color from ROS. (`#520 <https://github.com/gazebosim/ros_gz/issues/520>`_)
