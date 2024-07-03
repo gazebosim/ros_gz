@@ -2,27 +2,17 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-1.0.4 (2024-08-29)
+1.0.1 (2024-07-03)
 ------------------
-* feat: `override_timestamps_with_wall_time` parameter (backport `#562 <https://github.com/gazebosim/ros_gz/issues/562>`_) (`#584 <https://github.com/gazebosim/ros_gz/issues/584>`_)
-  Co-authored-by: Rein Appeldoorn <rein.appeldoorn@nobleo.nl>
-* Use memcpy instead of std::copy when bridging images (`#565 <https://github.com/gazebosim/ros_gz/issues/565>`_) (`#585 <https://github.com/gazebosim/ros_gz/issues/585>`_)
+* Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz//issues/573>`_)
+* Merge pull request `#571 <https://github.com/gazebosim/ros_gz//issues/571>`_ from azeey/jazzy_to_ros2
+  Merge jazzy ➡️  ros2
+* Merge branch 'ros2' into jazzy_to_ros2
+* Use memcpy instead of std::copy when bridging images (`#565 <https://github.com/gazebosim/ros_gz//issues/565>`_)
   While testing ros <-> gz communication using the bridge I noticed that the bridge was talking quite a bit of time copying images from Gazebo to ROS. I found that the std::copy operation that we're doing is substantially slower than the memcpy alternative. I think that in principle this shouldn't happen but the numbers are quite clear. Perhaps std::copy is doing something that doesn't use cache effectively
   ---------
   Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
-  (cherry picked from commit a781b78852112246245c05481db6335388d4f736)
-  Co-authored-by: Carlos Agüero <caguero@openrobotics.org>
-* Contributors: mergify[bot]
-
-1.0.3 (2024-07-22)
-------------------
-* Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#574 <https://github.com/gazebosim/ros_gz/issues/574>`_)
-  (cherry picked from commit f9afb69d1163633dd978024bb7271a28cf7b551a)
-  Co-authored-by: Victor T. Noppeney <Vtn21@users.noreply.github.com>
-* Contributors: mergify[bot]
-
-1.0.2 (2024-07-03)
-------------------
+* Merge jazzy into ros2
 * Merge pull request `#569 <https://github.com/gazebosim/ros_gz//issues/569>`_ from azeey/iron_to_jazzy
   Merge iron ➡️  jazzy
 * Merge iron into jazzy
@@ -35,6 +25,22 @@ Changelog for package ros_gz_bridge
 * Merge pull request `#564 <https://github.com/gazebosim/ros_gz//issues/564>`_ from azeey/humble_to_iron
   Humble ➡️ Iron
 * Merge humble -> iron
+* Use `ignoreLocalMessages` in the bridge (`#559 <https://github.com/gazebosim/ros_gz//issues/559>`_)
+  * Ignore local messages
+* Update launch files with name parameter (`#556 <https://github.com/gazebosim/ros_gz//issues/556>`_)
+  * Name is required.
+* Ensure the same container is used for the bridge and gz_server (`#553 <https://github.com/gazebosim/ros_gz//issues/553>`_)
+  This also adds a required `name` parameter for the bridge so that
+  multiple different bridges can be created without name collision
+* Launch ros_gz_bridge from xml (`#550 <https://github.com/gazebosim/ros_gz//issues/550>`_)
+  * Add gzserver with ability to load an SDF file or string
+* Launch gzserver and the bridge as composable nodes (`#528 <https://github.com/gazebosim/ros_gz//issues/528>`_)
+  * Add gzserver with ability to load an SDF file or string
+* Add option to change material color from ROS. (`#521 <https://github.com/gazebosim/ros_gz//issues/521>`_)
+  Forward port of `#486 <https://github.com/gazebosim/ros_gz//issues/486>`_.
+  * Message and bridge for MaterialColor.
+  This allows bridging MaterialColor from ROS to GZ and is
+  important for allowing simulation users to create status lights.
 * populate imu covariances when converting (`#375 <https://github.com/gazebosim/ros_gz//issues/375>`_) (`#540 <https://github.com/gazebosim/ros_gz//issues/540>`_)
   Co-authored-by: El Jawad Alaa <ejalaa12@gmail.com>
 * Prepare for 1.0.0 Release (`#495 <https://github.com/gazebosim/ros_gz//issues/495>`_)
@@ -124,7 +130,7 @@ Changelog for package ros_gz_bridge
   * Update CMakeLists and package.xml for garden
   * Complete garden gz renaming
   * Drop fortress CI
-* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Arjun K Haridas, Benjamin Perseghetti, El Jawad Alaa, Jose Luis Rivero, Krzysztof Wojciechowski, Michael Carroll, Rousseau Vincent, Yadu, ahcorde, wittenator, ymd-stella
+* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Arjun K Haridas, Benjamin Perseghetti, Carlos Agüero, El Jawad Alaa, Jose Luis Rivero, Krzysztof Wojciechowski, Michael Carroll, Rousseau Vincent, Victor T. Noppeney, Yadu, ahcorde, wittenator, ymd-stella
 
 1.0.0 (2024-04-24)
 ------------------
