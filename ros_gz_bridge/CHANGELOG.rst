@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.15(2024-07-03)
+---------------------
+* [backport Humble] Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_) (`#538 <https://github.com/gazebosim/ros_gz//issues/538>`_)
+  Co-authored-by: Rousseau Vincent <vincentrou@gmail.com>
+* Contributors: Alejandro Hernández Cordero
+
 0.244.14 (2024-04-08)
 ---------------------
 * Added conversion for Detection3D and Detection3DArray (`#523 <https://github.com/gazebosim/ros_gz/issues/523>`_) (`#526 <https://github.com/gazebosim/ros_gz/issues/526>`_)

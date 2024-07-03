@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.15(2024-07-03)
+---------------------
+
 0.244.14 (2024-04-08)
 ---------------------
 * Support `<gazebo_ros>` in `package.xml` exports (`#492 <https://github.com/gazebosim/ros_gz/issues/492>`_)
