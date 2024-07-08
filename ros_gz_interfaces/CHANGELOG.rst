@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.15(2024-07-03)
+---------------------
+
 0.244.14 (2024-04-08)
 ---------------------
 * Add option to change material color from ROS. (`#486 <https://github.com/gazebosim/ros_gz/issues/486>`_)
