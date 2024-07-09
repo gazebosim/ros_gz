@@ -41,6 +41,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Contacts              | ignition::msgs::Contacts                    |
 | ros_gz_interfaces/msg/Dataframe             | ignition::msgs::Dataframe                   |
 | ros_gz_interfaces/msg/Entity                | ignition::msgs::Entity                      |
+| ros_gz_interfaces/msg/EntityWrench          | ignition::msgs::EntityWrench                  |
 | ros_gz_interfaces/msg/Float32Array          | ignition::msgs::Float_V                     |
 | ros_gz_interfaces/msg/GuiCamera             | ignition::msgs::GUICamera                   |
 | ros_gz_interfaces/msg/JointWrench           | ignition::msgs::JointWrench                 |
