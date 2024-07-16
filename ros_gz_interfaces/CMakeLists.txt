@@ -23,6 +23,7 @@ set(msg_files
   "msg/Dataframe.msg"
   "msg/Entity.msg"
   "msg/EntityFactory.msg"
+  "msg/EntityWrench.msg"
   "msg/Float32Array.msg"
   "msg/GuiCamera.msg"
   "msg/JointWrench.msg"
