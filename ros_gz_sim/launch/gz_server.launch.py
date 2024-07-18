@@ -34,7 +34,7 @@ def generate_launch_description():
         'container_name', default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',)
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='False',
+        'use_composition', default_value='True',
         description='Use composed bringup if True')
 
     load_nodes = Node(
