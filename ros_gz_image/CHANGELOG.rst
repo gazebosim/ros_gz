@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2024-07-22)
+------------------
+
 1.0.1 (2024-07-03)
 ------------------
 * Merge pull request `#571 <https://github.com/gazebosim/ros_gz//issues/571>`_ from azeey/jazzy_to_ros2

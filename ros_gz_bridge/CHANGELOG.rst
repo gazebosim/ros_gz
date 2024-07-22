@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2024-07-22)
+------------------
+* Making use_composition true by default (`#578 <https://github.com/gazebosim/ros_gz/issues/578>`_)
+* Contributors: Addisu Z. Taddese
+
 1.0.1 (2024-07-03)
 ------------------
 * Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz//issues/573>`_)

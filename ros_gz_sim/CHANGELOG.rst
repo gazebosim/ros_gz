@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2024-07-22)
+------------------
+* Making use_composition true by default (`#578 <https://github.com/gazebosim/ros_gz/issues/578>`_)
+* Contributors: Addisu Z. Taddese
+
 1.0.1 (2024-07-03)
 ------------------
 * Merge pull request `#571 <https://github.com/gazebosim/ros_gz//issues/571>`_ from azeey/jazzy_to_ros2

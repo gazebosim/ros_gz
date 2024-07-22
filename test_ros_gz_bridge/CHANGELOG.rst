@@ -2,6 +2,9 @@
 Changelog for package test_ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.0 (2024-07-22)
+------------------
+
 1.0.1 (2024-07-03)
 ------------------
 * Prepare for 1.0.0 Release (`#495 <https://github.com/gazebosim/ros_gz//issues/495>`_)
