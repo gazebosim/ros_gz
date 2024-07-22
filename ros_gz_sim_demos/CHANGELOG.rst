@@ -2,6 +2,9 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.3 (2024-07-22)
+------------------
+
 1.0.2 (2024-07-03)
 ------------------
 * Prepare for 1.0.0 Release (`#495 <https://github.com/gazebosim/ros_gz//issues/495>`_)

@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.3 (2024-07-22)
+------------------
+
 1.0.2 (2024-07-03)
 ------------------
 * Merge pull request `#569 <https://github.com/gazebosim/ros_gz//issues/569>`_ from azeey/iron_to_jazzy

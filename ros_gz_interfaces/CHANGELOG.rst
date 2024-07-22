@@ -2,6 +2,13 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.3 (2024-07-22)
+------------------
+* Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#574 <https://github.com/gazebosim/ros_gz/issues/574>`_)
+  (cherry picked from commit f9afb69d1163633dd978024bb7271a28cf7b551a)
+  Co-authored-by: Victor T. Noppeney <Vtn21@users.noreply.github.com>
+* Contributors: mergify[bot]
+
 1.0.2 (2024-07-03)
 ------------------
 * Add option to change material color from ROS. (`#521 <https://github.com/gazebosim/ros_gz//issues/521>`_)
