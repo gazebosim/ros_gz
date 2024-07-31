@@ -15,9 +15,11 @@
 #ifndef FACTORY_HPP_
 #define FACTORY_HPP_
 
+#include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
+#include <type_traits>
 
 #include <gz/transport/Node.hh>
 #include <gz/transport/SubscribeOptions.hh>
