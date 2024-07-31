@@ -102,7 +102,7 @@ protected:
   /// \brief Typed factory used to create publishers/subscribers
   std::shared_ptr<FactoryInterface> factory_;
 
-  /// \brief Whether to override the header.stamp field of the outgoing ROS messages with the wall time
+  /// \brief Override the header.stamp field of the outgoing messages with the wall time
   bool override_timestamps_with_wall_time_ = false;
 };
 
