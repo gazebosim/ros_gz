@@ -15,9 +15,11 @@
 #ifndef FACTORY_HPP_
 #define FACTORY_HPP_
 
+#include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
+#include <type_traits>
 
 #include <gz/transport/Node.hh>
 #include <gz/transport/SubscribeOptions.hh>
@@ -27,6 +29,16 @@
 #include <rclcpp/subscription_options.hpp>
 
 #include "factory_interface.hpp"
+
+template<class T, class = void>
+struct has_header : std::false_type
+{
+};
+
+template<class T>
+struct has_header<T, std::void_t<decltype(T::header)>>: std::true_type
+{
+};
 
 namespace ros_gz_bridge
 {
@@ -104,12 +116,13 @@ public:
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,
     size_t /*queue_size*/,
-    rclcpp::PublisherBase::SharedPtr ros_pub)
+    rclcpp::PublisherBase::SharedPtr ros_pub,
+    bool override_timestamps_with_wall_time)
   {
     std::function<void(const GZ_T &)> subCb =
-      [this, ros_pub](const GZ_T & _msg)
+      [this, ros_pub, override_timestamps_with_wall_time](const GZ_T & _msg)
       {
-        this->gz_callback(_msg, ros_pub);
+        this->gz_callback(_msg, ros_pub, override_timestamps_with_wall_time);
       };
 
     // Ignore messages that are published from this bridge.
@@ -139,10 +152,20 @@ protected:
   static
   void gz_callback(
     const GZ_T & gz_msg,
-    rclcpp::PublisherBase::SharedPtr ros_pub)
+    rclcpp::PublisherBase::SharedPtr ros_pub,
+    bool override_timestamps_with_wall_time)
   {
     ROS_T ros_msg;
     convert_gz_to_ros(gz_msg, ros_msg);
+    if constexpr (has_header<ROS_T>::value) {
+      if (override_timestamps_with_wall_time) {
+        auto now = std::chrono::system_clock::now().time_since_epoch();
+        auto ns =
+          std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
+        ros_msg.header.stamp.sec = ns / 1e9;
+        ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
+      }
+    }
     std::shared_ptr<rclcpp::Publisher<ROS_T>> pub =
       std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub != nullptr) {
