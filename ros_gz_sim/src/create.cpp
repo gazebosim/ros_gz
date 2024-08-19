@@ -266,7 +266,7 @@ int main(int _argc, char ** _argv)
         RCLCPP_ERROR(
           ros2_node->get_logger(), "Entity creation failed.\n %s",
           req.DebugString().c_str());
-          return 1;
+        return 1;
       }
     } else {
       RCLCPP_WARN(
