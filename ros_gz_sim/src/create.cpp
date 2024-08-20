@@ -277,4 +277,3 @@ int main(int _argc, char ** _argv)
   RCLCPP_INFO(ros2_node->get_logger(), "Entity creation was interrupted.");
   return 0;
 }
-
