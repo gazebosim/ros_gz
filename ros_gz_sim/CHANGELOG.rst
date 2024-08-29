@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.1 (2024-08-29)
+------------------
+* Wait for create service to be available. (`#588 <https://github.com/gazebosim/ros_gz/issues/588>`_)
+* Contributors: Sebastian Kasperski
+
 2.0.0 (2024-07-22)
 ------------------
 * Making use_composition true by default (`#578 <https://github.com/gazebosim/ros_gz/issues/578>`_)
