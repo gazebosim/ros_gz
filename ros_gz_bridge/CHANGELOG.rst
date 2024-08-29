@@ -2,6 +2,18 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.4 (2024-08-29)
+------------------
+* feat: `override_timestamps_with_wall_time` parameter (backport `#562 <https://github.com/gazebosim/ros_gz/issues/562>`_) (`#584 <https://github.com/gazebosim/ros_gz/issues/584>`_)
+  Co-authored-by: Rein Appeldoorn <rein.appeldoorn@nobleo.nl>
+* Use memcpy instead of std::copy when bridging images (`#565 <https://github.com/gazebosim/ros_gz/issues/565>`_) (`#585 <https://github.com/gazebosim/ros_gz/issues/585>`_)
+  While testing ros <-> gz communication using the bridge I noticed that the bridge was talking quite a bit of time copying images from Gazebo to ROS. I found that the std::copy operation that we're doing is substantially slower than the memcpy alternative. I think that in principle this shouldn't happen but the numbers are quite clear. Perhaps std::copy is doing something that doesn't use cache effectively
+  ---------
+  Co-authored-by: Jose Luis Rivero <jrivero@osrfoundation.org>
+  (cherry picked from commit a781b78852112246245c05481db6335388d4f736)
+  Co-authored-by: Carlos Agüero <caguero@openrobotics.org>
+* Contributors: mergify[bot]
+
 1.0.3 (2024-07-22)
 ------------------
 * Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#574 <https://github.com/gazebosim/ros_gz/issues/574>`_)

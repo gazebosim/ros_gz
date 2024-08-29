@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.4 (2024-08-29)
+------------------
+
 1.0.3 (2024-07-22)
 ------------------
 * Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#574 <https://github.com/gazebosim/ros_gz/issues/574>`_)
