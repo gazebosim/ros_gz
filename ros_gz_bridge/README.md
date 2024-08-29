@@ -90,6 +90,9 @@ You should create an unidirectional `/clock` bridge:
 ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
 ```
 
+An alternative set-up can be using the bridge with the `override_timestamps_with_wall_time` ros parameter set to `true` (default=`false`). In this set-up,
+all header timestamps of the outgoing messages will be stamped with the wall time. This can be useful when the simulator has to communicate with an external system that requires wall times.
+
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
 Start the parameter bridge which will watch the specified topics.
