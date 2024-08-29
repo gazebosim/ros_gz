@@ -118,21 +118,15 @@ public:
     rclcpp::PublisherBase::SharedPtr ros_pub,
     bool override_timestamps_with_wall_time)
   {
-<<<<<<< HEAD
     std::function<void(const GZ_T &,
       const gz::transport::MessageInfo &)> subCb =
-      [this, ros_pub](const GZ_T & _msg, const gz::transport::MessageInfo & _info)
+      [this, ros_pub, override_timestamps_with_wall_time](const GZ_T & _msg,
+      const gz::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
         if (!_info.IntraProcess()) {
-          this->gz_callback(_msg, ros_pub);
+          this->gz_callback(_msg, ros_pub, override_timestamps_with_wall_time);
         }
-=======
-    std::function<void(const GZ_T &)> subCb =
-      [this, ros_pub, override_timestamps_with_wall_time](const GZ_T & _msg)
-      {
-        this->gz_callback(_msg, ros_pub, override_timestamps_with_wall_time);
->>>>>>> 6daea2c (Stamp all outgoing headers with the wall time if parameter override_timestamps_with_wall_time is set to true (#562))
       };
 
     node->Subscribe(topic_name, subCb);
