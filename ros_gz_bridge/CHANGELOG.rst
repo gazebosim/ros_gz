@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.0.1 (2024-08-29)
+------------------
+* Stamp all outgoing headers with the wall time if parameter override_timestamps_with_wall_time is set to true (`#562 <https://github.com/gazebosim/ros_gz/issues/562>`_)
+* Contributors: Rein Appeldoorn
+
 2.0.0 (2024-07-22)
 ------------------
 * Making use_composition true by default (`#578 <https://github.com/gazebosim/ros_gz/issues/578>`_)
