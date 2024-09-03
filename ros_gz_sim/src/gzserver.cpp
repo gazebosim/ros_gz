@@ -12,33 +12,69 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <functional>
+#include <thread>
 #include <gz/common/Console.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/SystemLoader.hh>
 #include <gz/sim/ServerConfig.hh>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp_components/register_node_macro.hpp>
 
 // ROS node that executes a gz-sim Server given a world SDF file or string.
-int main(int _argc, char ** _argv)
+namespace ros_gz_sim
 {
-  auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
-  auto node = rclcpp::Node::make_shared("gzserver");
-  auto world_sdf_file = node->declare_parameter("world_sdf_file", "");
-  auto world_sdf_string = node->declare_parameter("world_sdf_string", "");
-
-  gz::common::Console::SetVerbosity(4);
-  gz::sim::ServerConfig server_config;
-
-  if (!world_sdf_file.empty()) {
-    server_config.SetSdfFile(world_sdf_file);
-  } else if (!world_sdf_string.empty()) {
-    server_config.SetSdfString(world_sdf_string);
-  } else {
-    RCLCPP_ERROR(
-      node->get_logger(), "Must specify either 'world_sdf_file' or 'world_sdf_string'");
-    return -1;
+class GzServer : public rclcpp::Node
+{
+public:
+  // Class constructor.
+  explicit GzServer(const rclcpp::NodeOptions & options)
+  : Node("gzserver", options)
+  {
+    thread_ = std::thread(std::bind(&GzServer::OnStart, this));
   }
 
-  gz::sim::Server server(server_config);
-  server.Run(true /*blocking*/, 0, false /*paused*/);
-}
+public:
+  // Class destructor.
+  ~GzServer()
+  {
+    // Make sure to join the thread on shutdown.
+    if (thread_.joinable()) {
+      thread_.join();
+    }
+  }
+
+public:
+  /// \brief Run the gz sim server.
+  void OnStart()
+  {
+    auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
+    auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
+
+    gz::common::Console::SetVerbosity(4);
+    gz::sim::ServerConfig server_config;
+
+    if (!world_sdf_file.empty()) {
+      server_config.SetSdfFile(world_sdf_file);
+    } else if (!world_sdf_string.empty()) {
+      server_config.SetSdfString(world_sdf_string);
+    } else {
+      RCLCPP_ERROR(
+        this->get_logger(),
+        "Must specify either 'world_sdf_file' or 'world_sdf_string'");
+      rclcpp::shutdown();
+      return;
+    }
+
+    gz::sim::Server server(server_config);
+    server.Run(true /*blocking*/, 0, false /*paused*/);
+    rclcpp::shutdown();
+  }
+
+private:
+  /// \brief We don't want to block the ROS thread.
+  std::thread thread_;
+};
+}  // namespace ros_gz_sim
+
+RCLCPP_COMPONENTS_REGISTER_NODE(ros_gz_sim::GzServer)

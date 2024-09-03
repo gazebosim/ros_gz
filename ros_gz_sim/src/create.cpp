@@ -256,22 +256,24 @@ int main(int _argc, char ** _argv)
   gz::msgs::Boolean rep;
   bool result;
   unsigned int timeout = 5000;
-  bool executed = node.Request(service, req, timeout, rep, result);
 
-  if (executed) {
-    if (result && rep.data()) {
-      RCLCPP_INFO(ros2_node->get_logger(), "Requested creation of entity.");
+  while(rclcpp::ok()) {
+    if (node.Request(service, req, timeout, rep, result)) {
+      if (result && rep.data()) {
+        RCLCPP_INFO(ros2_node->get_logger(), "Entity creation successfull.");
+        return 0;
+      } else {
+        RCLCPP_ERROR(
+          ros2_node->get_logger(), "Entity creation failed.\n %s",
+          req.DebugString().c_str());
+        return 1;
+      }
     } else {
-      RCLCPP_ERROR(
-        ros2_node->get_logger(), "Failed request to create entity.\n %s",
-        req.DebugString().c_str());
+      RCLCPP_WARN(
+        ros2_node->get_logger(), "Waiting for service [%s] to become available ...",
+        service.c_str());
     }
-  } else {
-    RCLCPP_ERROR(
-      ros2_node->get_logger(), "Request to create entity from service [%s] timed out..\n %s",
-      service.c_str(), req.DebugString().c_str());
   }
-  RCLCPP_INFO(ros2_node->get_logger(), "OK creation of entity.");
-
+  RCLCPP_INFO(ros2_node->get_logger(), "Entity creation was interrupted.");
   return 0;
 }

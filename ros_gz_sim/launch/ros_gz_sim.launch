@@ -1,0 +1,26 @@
+<launch>
+  <arg name="name" />
+  <arg name="config_file" default="" />
+  <arg name="container_name" default="ros_gz_container" />
+  <arg name="namespace" default="" />
+  <arg name="use_composition" default="True" />
+  <arg name="use_respawn" default="False" />
+  <arg name="log_level" default="info" />
+  <arg name="world_sdf_file" default="empty.sdf" />
+  <arg name="world_sdf_string" default="" />
+  <gz_server
+    world_sdf_file="$(var world_sdf_file)"
+    world_sdf_string="$(var world_sdf_string)"
+    container_name="$(var container_name)"
+    use_composition="$(var use_composition)">
+  </gz_server>
+  <ros_gz_bridge
+    name="$(var name)"
+    config_file="$(var config_file)"
+    container_name="$(var container_name)"
+    namespace="$(var namespace)"
+    use_composition="$(var use_composition)"
+    use_respawn="$(var use_respawn)"
+    log_level="$(var log_level)">
+  </ros_gz_bridge>
+</launch>
