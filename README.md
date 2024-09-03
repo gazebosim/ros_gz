@@ -86,12 +86,12 @@ Be sure you've installed
 
 #### Gazebo
 
-Install either [Edifice, Fortress, or Garden](https://gazebosim.org/docs).
+Install either [Fortress, Garden, or Harmonic](https://gazebosim.org/docs).
 
 Set the `GZ_VERSION` environment variable to the Gazebo version you'd
 like to compile against. For example:
 
-    export GZ_VERSION=edifice # IMPORTANT: Replace with correct version
+    export GZ_VERSION= # IMPORTANT: Replace with correct version
 
 > You only need to set this variable when compiling, not when running.
 
@@ -114,7 +114,7 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro humble
+    rosdep install -r --from-paths src -i -y --rosdistro rolling
     ```
 
     > If `rosdep` fails to install Gazebo libraries and you have not installed them before, please follow [Gazebo installation instructions](https://gazebosim.org/docs/latest/install).
