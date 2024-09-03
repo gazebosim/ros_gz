@@ -81,7 +81,7 @@ They are hosted at https://packages.ros.org.
 #### ROS
 
 Be sure you've installed
-[ROS Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Rolling](https://docs.ros.org/en/rolling/index.html)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Gazebo
