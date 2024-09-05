@@ -43,11 +43,11 @@ def generate_launch_description():
     roll = LaunchConfiguration('R', default='0.0')
     pitch = LaunchConfiguration('P', default='0.0')
     yaw = LaunchConfiguration('Y', default='0.0')
-    
+
     declare_bridge_name_cmd = DeclareLaunchArgument(
         'bridge_name', default_value='', description='Name of the bridge'
     )
-    
+
     declare_config_file_cmd = DeclareLaunchArgument(
         'config_file', default_value='', description='YAML config file'
     )
