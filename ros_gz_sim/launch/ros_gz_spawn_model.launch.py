@@ -23,6 +23,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
+    bridge_name = LaunchConfiguration('bridge_name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
     namespace = LaunchConfiguration('namespace')
@@ -34,7 +35,7 @@ def generate_launch_description():
     file = LaunchConfiguration('file')
     xml_string = LaunchConfiguration('string')
     topic = LaunchConfiguration('topic')
-    name = LaunchConfiguration('name')
+    entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
     x = LaunchConfiguration('x', default='0.0')
     y = LaunchConfiguration('y', default='0.0')
@@ -42,7 +43,11 @@ def generate_launch_description():
     roll = LaunchConfiguration('R', default='0.0')
     pitch = LaunchConfiguration('P', default='0.0')
     yaw = LaunchConfiguration('Y', default='0.0')
-
+    
+    declare_bridge_name_cmd = DeclareLaunchArgument(
+        'bridge_name', default_value='', description='Name of the bridge'
+    )
+    
     declare_config_file_cmd = DeclareLaunchArgument(
         'config_file', default_value='', description='YAML config file'
     )
@@ -90,8 +95,8 @@ def generate_launch_description():
         description='Get XML from this topic'
     )
 
-    declare_name_cmd = DeclareLaunchArgument(
-        'name', default_value=TextSubstitution(text=''),
+    declare_entity_name_cmd = DeclareLaunchArgument(
+        'entity_name', default_value=TextSubstitution(text=''),
         description='Name of the entity'
     )
 
@@ -105,7 +110,8 @@ def generate_launch_description():
             [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                    'launch',
                                    'ros_gz_bridge.launch.py'])]),
-        launch_arguments=[('config_file', config_file),
+        launch_arguments=[('name', bridge_name),
+                          ('config_file', config_file),
                           ('container_name', container_name),
                           ('namespace', namespace),
                           ('use_composition', use_composition),
@@ -121,20 +127,20 @@ def generate_launch_description():
                           ('file', file),
                           ('xml_string', xml_string),
                           ('topic', topic),
-                          ('name', name),
+                          ('name', entity_name),
                           ('allow_renaming', allow_renaming),
                           ('x', x),
                           ('y', y),
                           ('z', z),
                           ('R', roll),
                           ('P', pitch),
-                          ('Y', yaw),
-                          ('use_composition', use_composition), ])
+                          ('Y', yaw), ])
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
+    ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_namespace_cmd)
@@ -145,7 +151,7 @@ def generate_launch_description():
     ld.add_action(declare_file_cmd)
     ld.add_action(declare_xml_string_cmd)
     ld.add_action(declare_topic_cmd)
-    ld.add_action(declare_name_cmd)
+    ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
     # Add the actions to launch all of the bridge + spawn_model nodes
     ld.add_action(bridge_description)
