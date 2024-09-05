@@ -34,10 +34,10 @@ class GzServer(Action):
     def __init__(
         self,
         *,
-        world_sdf_file: Optional[SomeSubstitutionsType] = "",
-        world_sdf_string: Optional[SomeSubstitutionsType] = "",
-        container_name: Optional[SomeSubstitutionsType] = "ros_gz_container",
-        use_composition: Optional[SomeSubstitutionsType] = "True",
+        world_sdf_file: Optional[SomeSubstitutionsType] = '',
+        world_sdf_string: Optional[SomeSubstitutionsType] = '',
+        container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
+        use_composition: Optional[SomeSubstitutionsType] = 'True',
         **kwargs
     ) -> None:
         """

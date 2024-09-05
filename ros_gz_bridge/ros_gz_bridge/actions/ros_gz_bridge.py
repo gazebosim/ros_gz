@@ -36,11 +36,11 @@ class RosGzBridge(Action):
         *,
         name: SomeSubstitutionsType,
         config_file: SomeSubstitutionsType,
-        container_name: Optional[SomeSubstitutionsType] = "ros_gz_container",
-        namespace: Optional[SomeSubstitutionsType] = "",
-        use_composition: Optional[SomeSubstitutionsType] = "True",
-        use_respawn: Optional[SomeSubstitutionsType] = "False",
-        log_level: Optional[SomeSubstitutionsType] = "info",
+        container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
+        namespace: Optional[SomeSubstitutionsType] = '',
+        use_composition: Optional[SomeSubstitutionsType] = 'True',
+        use_respawn: Optional[SomeSubstitutionsType] = 'False',
+        log_level: Optional[SomeSubstitutionsType] = 'info',
         **kwargs
     ) -> None:
         """
