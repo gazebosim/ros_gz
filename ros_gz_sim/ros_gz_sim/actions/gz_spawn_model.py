@@ -38,7 +38,7 @@ class GzSpawnModel(Action):
         file: Optional[SomeSubstitutionsType] = None,
         xml_string: Optional[SomeSubstitutionsType] = None,
         topic: Optional[SomeSubstitutionsType] = None,
-        name: Optional[SomeSubstitutionsType] = None,
+        entity_name: Optional[SomeSubstitutionsType] = None,
         allow_renaming: Optional[SomeSubstitutionsType] = None,
         x: Optional[SomeSubstitutionsType] = None,
         y: Optional[SomeSubstitutionsType] = None,
@@ -72,7 +72,7 @@ class GzSpawnModel(Action):
         self.__file = file
         self.__xml_string = xml_string
         self.__topic = topic
-        self.__name = name
+        self.__entity_name = entity_name
         self.__allow_renaming = allow_renaming
         self.__x = x
         self.__y = y
@@ -102,8 +102,8 @@ class GzSpawnModel(Action):
             'topic', data_type=str,
             optional=True)
 
-        name = entity.get_attr(
-            'name', data_type=str,
+        entity_name = entity.get_attr(
+            'entity_name', data_type=str,
             optional=True)
 
         allow_renaming = entity.get_attr(
@@ -150,9 +150,9 @@ class GzSpawnModel(Action):
             topic = parser.parse_substitution(topic)
             kwargs['topic'] = topic
 
-        if isinstance(name, str):
-            name = parser.parse_substitution(name)
-            kwargs['name'] = name
+        if isinstance(entity_name, str):
+            entity_name = parser.parse_substitution(entity_name)
+            kwargs['entity_name'] = entity_name
 
         if isinstance(allow_renaming, str):
             allow_renaming = parser.parse_substitution(allow_renaming)
@@ -195,7 +195,7 @@ class GzSpawnModel(Action):
                               ('file', self.__file),
                               ('xml_string',   self.__xml_string),
                               ('topic',  self.__topic),
-                              ('name', self.__name),
+                              ('entity_name', self.__entity_name),
                               ('allow_renaming', self.__allow_renaming),
                               ('x',   self.__x),
                               ('y',  self.__y),

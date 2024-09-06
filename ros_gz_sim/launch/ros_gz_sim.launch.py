@@ -81,7 +81,7 @@ def generate_launch_description():
             [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                    'launch',
                                    'ros_gz_bridge.launch.py'])]),
-        launch_arguments=[('name', bridge_name),
+        launch_arguments=[('bridge_name', bridge_name),
                           ('config_file', config_file),
                           ('container_name', container_name),
                           ('namespace', namespace),
