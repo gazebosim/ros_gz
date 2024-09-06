@@ -3,7 +3,7 @@
   <arg name="file" default="" />
   <arg name="xml_string" default="" />
   <arg name="topic" default="" />
-  <arg name="name" default="" />
+  <arg name="entity_name" default="" />
   <arg name="allow_renaming" default="False" />
   <arg name="x" default="" />
   <arg name="y" default="" />
@@ -16,7 +16,7 @@
     file="$(var file)"
     xml_string="$(var xml_string)"
     topic="$(var topic)"
-    name="$(var name)"
+    entity_name="$(var entity_name)"
     allow_renaming="$(var allow_renaming)"
     x="$(var x)"
     y="$(var y)"
