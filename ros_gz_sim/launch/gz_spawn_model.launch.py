@@ -26,7 +26,7 @@ def generate_launch_description():
     file = LaunchConfiguration('file')
     xml_string = LaunchConfiguration('string')
     topic = LaunchConfiguration('topic')
-    name = LaunchConfiguration('name')
+    entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
     x = LaunchConfiguration('x', default='0.0')
     y = LaunchConfiguration('y', default='0.0')
@@ -50,8 +50,8 @@ def generate_launch_description():
         'topic', default_value=TextSubstitution(text=''),
         description='Get XML from this topic'
     )
-    declare_name_cmd = DeclareLaunchArgument(
-        'name', default_value=TextSubstitution(text=''),
+    declare_entity_name_cmd = DeclareLaunchArgument(
+        'entity_name', default_value=TextSubstitution(text=''),
         description='Name of the entity'
     )
     declare_allow_renaming_cmd = DeclareLaunchArgument(
@@ -67,7 +67,7 @@ def generate_launch_description():
                      'file': file,
                      'string': xml_string,
                      'topic': topic,
-                     'name': name,
+                     'name': entity_name,
                      'allow_renaming': allow_renaming,
                      'x': x,
                      'y': y,
@@ -86,7 +86,7 @@ def generate_launch_description():
     ld.add_action(declare_file_cmd)
     ld.add_action(declare_xml_string_cmd)
     ld.add_action(declare_topic_cmd)
-    ld.add_action(declare_name_cmd)
+    ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
     # Add the actions to launch all of the create nodes
     ld.add_action(load_nodes)
