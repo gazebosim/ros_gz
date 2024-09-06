@@ -23,6 +23,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def generate_launch_description():
 
+    bridge_name = LaunchConfiguration('bridge_name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
     namespace = LaunchConfiguration('namespace')
@@ -32,6 +33,10 @@ def generate_launch_description():
 
     world_sdf_file = LaunchConfiguration('world_sdf_file')
     world_sdf_string = LaunchConfiguration('world_sdf_string')
+
+    declare_bridge_name_cmd = DeclareLaunchArgument(
+        'bridge_name', default_value='', description='Name of the bridge'
+    )
 
     declare_config_file_cmd = DeclareLaunchArgument(
         'config_file', description='YAML config file'
@@ -76,7 +81,8 @@ def generate_launch_description():
             [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                    'launch',
                                    'ros_gz_bridge.launch.py'])]),
-        launch_arguments=[('config_file', config_file),
+        launch_arguments=[('bridge_name', bridge_name),
+                          ('config_file', config_file),
                           ('container_name', container_name),
                           ('namespace', namespace),
                           ('use_composition', use_composition),
@@ -96,6 +102,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
+    ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_namespace_cmd)

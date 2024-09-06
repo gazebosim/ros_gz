@@ -34,7 +34,7 @@ class RosGzBridge(Action):
     def __init__(
         self,
         *,
-        name: SomeSubstitutionsType,
+        bridge_name: SomeSubstitutionsType,
         config_file: SomeSubstitutionsType,
         container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
         namespace: Optional[SomeSubstitutionsType] = '',
@@ -49,7 +49,7 @@ class RosGzBridge(Action):
         All arguments are forwarded to `ros_gz_bridge.launch.ros_gz_bridge.launch.py`,
         so see the documentation of that class for further details.
 
-        :param: name Name of ros_gz_bridge  node
+        :param: bridge_name Name of ros_gz_bridge  node
         :param: config_file YAML config file.
         :param: container_name Name of container that nodes will load in if use composition.
         :param: namespace Top-level namespace.
@@ -58,7 +58,7 @@ class RosGzBridge(Action):
         :param: log_level Log level.
         """
         super().__init__(**kwargs)
-        self.__name = name
+        self.__bridge_name = bridge_name
         self.__config_file = config_file
         self.__container_name = container_name
         self.__namespace = namespace
@@ -71,8 +71,8 @@ class RosGzBridge(Action):
         """Parse ros_gz_bridge."""
         _, kwargs = super().parse(entity, parser)
 
-        name = entity.get_attr(
-            'name', data_type=str,
+        bridge_name = entity.get_attr(
+            'bridge_name', data_type=str,
             optional=False)
 
         config_file = entity.get_attr(
@@ -99,9 +99,9 @@ class RosGzBridge(Action):
             'log_level', data_type=str,
             optional=True)
 
-        if isinstance(name, str):
-            name = parser.parse_substitution(name)
-            kwargs['name'] = name
+        if isinstance(bridge_name, str):
+            bridge_name = parser.parse_substitution(bridge_name)
+            kwargs['bridge_name'] = bridge_name
 
         if isinstance(config_file, str):
             config_file = parser.parse_substitution(config_file)
@@ -136,7 +136,7 @@ class RosGzBridge(Action):
                 [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
                                        'launch',
                                        'ros_gz_bridge.launch.py'])]),
-            launch_arguments=[('name', self.__name),
+            launch_arguments=[('bridge_name', self.__bridge_name),
                               ('config_file', self.__config_file),
                               ('container_name', self.__container_name),
                               ('namespace',   self.__namespace),
