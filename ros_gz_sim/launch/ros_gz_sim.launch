@@ -1,5 +1,5 @@
 <launch>
-  <arg name="name" />
+  <arg name="bridge_name" />
   <arg name="config_file" default="" />
   <arg name="container_name" default="ros_gz_container" />
   <arg name="namespace" default="" />
