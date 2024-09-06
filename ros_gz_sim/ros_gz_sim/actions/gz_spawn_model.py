@@ -58,7 +58,7 @@ class GzSpawnModel(Action):
         :param: file SDF filename.
         :param: xml_string XML string.
         :param: topic Get XML from this topic.
-        :param: name Name of the entity.
+        :param: entity_name Name of the entity.
         :param: allow_renaming Whether the entity allows renaming or not.
         :param: x X coordinate.
         :param: y Y coordinate.

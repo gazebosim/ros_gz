@@ -49,7 +49,7 @@ class RosGzBridge(Action):
         All arguments are forwarded to `ros_gz_bridge.launch.ros_gz_bridge.launch.py`,
         so see the documentation of that class for further details.
 
-        :param: name Name of ros_gz_bridge  node
+        :param: bridge_name Name of ros_gz_bridge  node
         :param: config_file YAML config file.
         :param: container_name Name of container that nodes will load in if use composition.
         :param: namespace Top-level namespace.
