@@ -15,7 +15,7 @@
     use_composition="$(var use_composition)">
   </gz_server>
   <ros_gz_bridge
-    name="$(var name)"
+    name="$(var bridge_name)"
     config_file="$(var config_file)"
     container_name="$(var container_name)"
     namespace="$(var namespace)"
