@@ -24,7 +24,7 @@ from launch_ros.descriptions import ComposableNode
 
 def generate_launch_description():
 
-    name = LaunchConfiguration('name')
+    bridge_name = LaunchConfiguration('bridge_name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
     namespace = LaunchConfiguration('namespace')
@@ -32,8 +32,8 @@ def generate_launch_description():
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
 
-    declare_name_cmd = DeclareLaunchArgument(
-        'name', description='Name of ros_gz_bridge node'
+    declare_bridge_name_cmd = DeclareLaunchArgument(
+        'bridge_name', description='Name of ros_gz_bridge node'
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
@@ -70,7 +70,7 @@ def generate_launch_description():
             Node(
                 package='ros_gz_bridge',
                 executable='bridge_node',
-                name=name,
+                name=bridge_name,
                 namespace=namespace,
                 output='screen',
                 respawn=use_respawn,
@@ -88,7 +88,7 @@ def generate_launch_description():
             ComposableNode(
                 package='ros_gz_bridge',
                 plugin='ros_gz_bridge::RosGzBridge',
-                name=name,
+                name=bridge_name,
                 namespace=namespace,
                 parameters=[{'config_file': config_file}],
                 extra_arguments=[{'use_intra_process_comms': True}],
@@ -100,7 +100,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(declare_name_cmd)
+    ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_namespace_cmd)
