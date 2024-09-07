@@ -1,5 +1,5 @@
 <launch>
-  <arg name="name" />
+  <arg name="bridge_name" />
   <arg name="config_file" default="" />
   <arg name="container_name" default="ros_gz_container" />
   <arg name="namespace" default="" />
@@ -7,7 +7,7 @@
   <arg name="use_respawn" default="False" />
   <arg name="log_level" default="info" />
   <ros_gz_bridge
-    name="$(var name)"
+    bridge_name="$(var bridge_name)"
     config_file="$(var config_file)"
     container_name="$(var container_name)"
     namespace="$(var namespace)"
