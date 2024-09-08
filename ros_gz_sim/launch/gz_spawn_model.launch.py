@@ -24,7 +24,7 @@ def generate_launch_description():
 
     world = LaunchConfiguration('world')
     file = LaunchConfiguration('file')
-    xml_string = LaunchConfiguration('string')
+    string = LaunchConfiguration('string')
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
@@ -41,7 +41,7 @@ def generate_launch_description():
     declare_file_cmd = DeclareLaunchArgument(
         'file', default_value=TextSubstitution(text=''),
         description='SDF filename')
-    declare_xml_string_cmd = DeclareLaunchArgument(
+    declare_string_cmd = DeclareLaunchArgument(
         'string',
         default_value='',
         description='XML string',
@@ -65,7 +65,7 @@ def generate_launch_description():
         output='screen',
         parameters=[{'world': world,
                      'file': file,
-                     'string': xml_string,
+                     'string': string,
                      'topic': topic,
                      'name': entity_name,
                      'allow_renaming': allow_renaming,
@@ -84,7 +84,7 @@ def generate_launch_description():
     # Declare the launch options
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_file_cmd)
-    ld.add_action(declare_xml_string_cmd)
+    ld.add_action(declare_string_cmd)
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
