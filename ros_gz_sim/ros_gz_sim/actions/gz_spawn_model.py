@@ -36,7 +36,7 @@ class GzSpawnModel(Action):
         *,
         world: Optional[SomeSubstitutionsType] = None,
         file: Optional[SomeSubstitutionsType] = None,
-        xml_string: Optional[SomeSubstitutionsType] = None,
+        string: Optional[SomeSubstitutionsType] = None,
         topic: Optional[SomeSubstitutionsType] = None,
         entity_name: Optional[SomeSubstitutionsType] = None,
         allow_renaming: Optional[SomeSubstitutionsType] = None,
@@ -56,7 +56,7 @@ class GzSpawnModel(Action):
 
         :param: world World name.
         :param: file SDF filename.
-        :param: xml_string XML string.
+        :param: string XML string.
         :param: topic Get XML from this topic.
         :param: entity_name Name of the entity.
         :param: allow_renaming Whether the entity allows renaming or not.
@@ -70,7 +70,7 @@ class GzSpawnModel(Action):
         super().__init__(**kwargs)
         self.__world = world
         self.__file = file
-        self.__xml_string = xml_string
+        self.__string = string
         self.__topic = topic
         self.__entity_name = entity_name
         self.__allow_renaming = allow_renaming
@@ -94,8 +94,8 @@ class GzSpawnModel(Action):
             'file', data_type=str,
             optional=True)
 
-        xml_string = entity.get_attr(
-            'xml_string', data_type=str,
+        string = entity.get_attr(
+            'string', data_type=str,
             optional=True)
 
         topic = entity.get_attr(
@@ -142,9 +142,9 @@ class GzSpawnModel(Action):
             file = parser.parse_substitution(file)
             kwargs['file'] = file
 
-        if isinstance(xml_string, str):
-            xml_string = parser.parse_substitution(xml_string)
-            kwargs['xml_string'] = xml_string
+        if isinstance(string, str):
+            string = parser.parse_substitution(string)
+            kwargs['string'] = string
 
         if isinstance(topic, str):
             topic = parser.parse_substitution(topic)
@@ -193,7 +193,7 @@ class GzSpawnModel(Action):
                                        'gz_spawn_model.launch.py'])]),
             launch_arguments=[('world', self.__world),
                               ('file', self.__file),
-                              ('xml_string',   self.__xml_string),
+                              ('string',   self.__string),
                               ('topic',  self.__topic),
                               ('entity_name', self.__entity_name),
                               ('allow_renaming', self.__allow_renaming),
