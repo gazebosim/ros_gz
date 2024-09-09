@@ -8,7 +8,7 @@
   <arg name="log_level" default="info" />
   <arg name="world" default="" />
   <arg name="file" default="" />
-  <arg name="sdf_string" default="" />
+  <arg name="world_string" default="" />
   <arg name="topic" default="" />
   <arg name="entity_name" default="" />
   <arg name="allow_renaming" default="False" />
@@ -32,7 +32,7 @@
   <gz_spawn_model 
     world="$(var world)"
     file="$(var file)"
-    sdf_string="$(var sdf_string)"
+    sdf_string="$(var world_string)"
     topic="$(var topic)"
     entity_name="$(var entity_name)"
     allow_renaming="$(var allow_renaming)"
