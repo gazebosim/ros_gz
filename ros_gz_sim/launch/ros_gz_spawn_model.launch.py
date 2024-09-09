@@ -33,7 +33,7 @@ def generate_launch_description():
 
     world = LaunchConfiguration('world')
     file = LaunchConfiguration('file')
-    string = LaunchConfiguration('string')
+    sdf_string = LaunchConfiguration('sdf_string')
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
@@ -84,8 +84,8 @@ def generate_launch_description():
         'file', default_value=TextSubstitution(text=''),
         description='SDF filename')
 
-    declare_string_cmd = DeclareLaunchArgument(
-        'string',
+    declare_sdf_string_cmd = DeclareLaunchArgument(
+        'sdf_string',
         default_value='',
         description='XML string',
     )
@@ -125,7 +125,7 @@ def generate_launch_description():
                                    'gz_spawn_model.launch.py'])]),
         launch_arguments=[('world', world),
                           ('file', file),
-                          ('string', string),
+                          ('sdf_string', sdf_string),
                           ('topic', topic),
                           ('entity_name', entity_name),
                           ('allow_renaming', allow_renaming),
@@ -149,7 +149,7 @@ def generate_launch_description():
     ld.add_action(declare_log_level_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_file_cmd)
-    ld.add_action(declare_string_cmd)
+    ld.add_action(declare_sdf_string_cmd)
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
