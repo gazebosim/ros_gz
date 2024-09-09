@@ -95,7 +95,7 @@ class GzSpawnModel(Action):
             optional=True)
 
         world_string = entity.get_attr(
-            'sdf_string', data_type=str,
+            'world_string', data_type=str,
             optional=True)
 
         topic = entity.get_attr(
