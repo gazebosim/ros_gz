@@ -37,7 +37,7 @@ def generate_launch_description():
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', default_value='', description='YAML config file'
+        'config_file', description='YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
