@@ -33,7 +33,7 @@ def generate_launch_description():
 
     world = LaunchConfiguration('world')
     file = LaunchConfiguration('file')
-    xml_string = LaunchConfiguration('string')
+    world_string = LaunchConfiguration('world_string')
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
@@ -45,11 +45,11 @@ def generate_launch_description():
     yaw = LaunchConfiguration('Y', default='0.0')
 
     declare_bridge_name_cmd = DeclareLaunchArgument(
-        'bridge_name', default_value='', description='Name of the bridge'
+        'bridge_name', description='Name of the bridge'
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', default_value='', description='YAML config file'
+        'config_file', description='YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
@@ -84,8 +84,8 @@ def generate_launch_description():
         'file', default_value=TextSubstitution(text=''),
         description='SDF filename')
 
-    declare_xml_string_cmd = DeclareLaunchArgument(
-        'string',
+    declare_world_string_cmd = DeclareLaunchArgument(
+        'world_string',
         default_value='',
         description='XML string',
     )
@@ -125,7 +125,7 @@ def generate_launch_description():
                                    'gz_spawn_model.launch.py'])]),
         launch_arguments=[('world', world),
                           ('file', file),
-                          ('xml_string', xml_string),
+                          ('world_string', world_string),
                           ('topic', topic),
                           ('entity_name', entity_name),
                           ('allow_renaming', allow_renaming),
@@ -149,7 +149,7 @@ def generate_launch_description():
     ld.add_action(declare_log_level_cmd)
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_file_cmd)
-    ld.add_action(declare_xml_string_cmd)
+    ld.add_action(declare_world_string_cmd)
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
