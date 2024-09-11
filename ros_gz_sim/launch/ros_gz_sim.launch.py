@@ -35,11 +35,11 @@ def generate_launch_description():
     world_sdf_string = LaunchConfiguration('world_sdf_string')
 
     declare_bridge_name_cmd = DeclareLaunchArgument(
-        'bridge_name', default_value='', description='Name of the bridge'
+        'bridge_name', description='Name of the bridge'
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', default_value='', description='YAML config file'
+        'config_file', description='YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
