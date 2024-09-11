@@ -36,7 +36,7 @@ class GzSpawnModel(Action):
         *,
         world: Optional[SomeSubstitutionsType] = None,
         file: Optional[SomeSubstitutionsType] = None,
-        world_string: Optional[SomeSubstitutionsType] = None,
+        model_string: Optional[SomeSubstitutionsType] = None,
         topic: Optional[SomeSubstitutionsType] = None,
         entity_name: Optional[SomeSubstitutionsType] = None,
         allow_renaming: Optional[SomeSubstitutionsType] = None,
@@ -56,7 +56,7 @@ class GzSpawnModel(Action):
 
         :param: world World name.
         :param: file SDF filename.
-        :param: world_string XML string.
+        :param: model_string XML string.
         :param: topic Get XML from this topic.
         :param: entity_name Name of the entity.
         :param: allow_renaming Whether the entity allows renaming or not.
@@ -70,7 +70,7 @@ class GzSpawnModel(Action):
         super().__init__(**kwargs)
         self.__world = world
         self.__file = file
-        self.__world_string = world_string
+        self.__model_string = model_string
         self.__topic = topic
         self.__entity_name = entity_name
         self.__allow_renaming = allow_renaming
@@ -94,8 +94,8 @@ class GzSpawnModel(Action):
             'file', data_type=str,
             optional=True)
 
-        world_string = entity.get_attr(
-            'world_string', data_type=str,
+        model_string = entity.get_attr(
+            'model_string', data_type=str,
             optional=True)
 
         topic = entity.get_attr(
@@ -142,9 +142,9 @@ class GzSpawnModel(Action):
             file = parser.parse_substitution(file)
             kwargs['file'] = file
 
-        if isinstance(world_string, str):
-            world_string = parser.parse_substitution(world_string)
-            kwargs['world_string'] = world_string
+        if isinstance(model_string, str):
+            model_string = parser.parse_substitution(model_string)
+            kwargs['model_string'] = model_string
 
         if isinstance(topic, str):
             topic = parser.parse_substitution(topic)
@@ -193,7 +193,7 @@ class GzSpawnModel(Action):
                                        'gz_spawn_model.launch.py'])]),
             launch_arguments=[('world', self.__world),
                               ('file', self.__file),
-                              ('world_string',   self.__world_string),
+                              ('model_string',   self.__model_string),
                               ('topic',  self.__topic),
                               ('entity_name', self.__entity_name),
                               ('allow_renaming', self.__allow_renaming),
