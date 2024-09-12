@@ -87,7 +87,7 @@ def generate_launch_description():
     declare_model_string_cmd = DeclareLaunchArgument(
         'model_string',
         default_value='',
-        description='XML string',
+        description='XML(SDF) string',
     )
 
     declare_topic_cmd = DeclareLaunchArgument(
