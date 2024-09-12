@@ -56,7 +56,7 @@ class GzSpawnModel(Action):
 
         :param: world World name.
         :param: file SDF filename.
-        :param: model_string XML string.
+        :param: model_string XML(SDF) string.
         :param: topic Get XML from this topic.
         :param: entity_name Name of the entity.
         :param: allow_renaming Whether the entity allows renaming or not.
