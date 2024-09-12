@@ -2,6 +2,15 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.0 (2024-09-12)
+------------------
+* Remove default_value for required arguments (`#602 <https://github.com/gazebosim/ros_gz//issues/602>`_)
+  * Remove default_value for config_file
+* Fix errors with name of bridge not being given (`#600 <https://github.com/gazebosim/ros_gz//issues/600>`_)
+  * Add argument bridge_name to fix errors
+* Use optional parameters in actions (`#601 <https://github.com/gazebosim/ros_gz//issues/601>`_)
+* Contributors: Amronos, Carlos Agüero
+
 2.0.1 (2024-08-29)
 ------------------
 * Stamp all outgoing headers with the wall time if parameter override_timestamps_with_wall_time is set to true (`#562 <https://github.com/gazebosim/ros_gz/issues/562>`_)
