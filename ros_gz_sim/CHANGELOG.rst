@@ -2,6 +2,20 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.0 (2024-09-12)
+------------------
+* Change world_string to model_string in gz_spawn_model files (`#606 <https://github.com/gazebosim/ros_gz//issues/606>`_)
+  * Change world_string to model_string
+  Also changed description from XML string to XML(SDF) string
+* Use model string in ros_gz_spawn_model.launch.py (`#605 <https://github.com/gazebosim/ros_gz//issues/605>`_)
+* Remove default_value for required arguments (`#602 <https://github.com/gazebosim/ros_gz//issues/602>`_)
+  * Remove default_value for config_file
+* Fix errors with name of bridge not being given (`#600 <https://github.com/gazebosim/ros_gz//issues/600>`_)
+  * Add argument bridge_name to fix errors
+* Restore launch file (`#603 <https://github.com/gazebosim/ros_gz//issues/603>`_)
+* Use optional parameters in actions (`#601 <https://github.com/gazebosim/ros_gz//issues/601>`_)
+* Contributors: Amronos, Carlos Agüero
+
 2.0.1 (2024-08-29)
 ------------------
 * Wait for create service to be available. (`#588 <https://github.com/gazebosim/ros_gz/issues/588>`_)
