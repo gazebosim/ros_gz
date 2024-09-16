@@ -128,6 +128,7 @@ def launch_gz(context, *args, **kwargs):
 
     return [ExecuteProcess(
             cmd=[exec, exec_args, '--force-version', gz_version],
+            name='gazebo',
             output='screen',
             additional_env=env,
             shell=True,
