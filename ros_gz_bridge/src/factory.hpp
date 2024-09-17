@@ -65,9 +65,11 @@ public:
     auto options = rclcpp::PublisherOptions();
     options.qos_overriding_options = rclcpp::QosOverridingOptions {
       {
+        rclcpp::QosPolicyKind::Deadline,
         rclcpp::QosPolicyKind::Depth,
         rclcpp::QosPolicyKind::Durability,
         rclcpp::QosPolicyKind::History,
+        rclcpp::QosPolicyKind::Liveliness,
         rclcpp::QosPolicyKind::Reliability
       },
     };
