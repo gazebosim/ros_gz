@@ -2,20 +2,14 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.1.0 (2024-09-12)
+1.0.4 (2024-08-29)
 ------------------
 
-2.0.1 (2024-08-29)
+1.0.3 (2024-07-22)
 ------------------
 
-2.0.0 (2024-07-22)
+1.0.2 (2024-07-03)
 ------------------
-
-1.0.1 (2024-07-03)
-------------------
-* Merge pull request `#571 <https://github.com/gazebosim/ros_gz//issues/571>`_ from azeey/jazzy_to_ros2
-  Merge jazzy ➡️  ros2
-* Merge jazzy into ros2
 * Merge pull request `#569 <https://github.com/gazebosim/ros_gz//issues/569>`_ from azeey/iron_to_jazzy
   Merge iron ➡️  jazzy
 * Merge iron into jazzy

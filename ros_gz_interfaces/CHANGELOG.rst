@@ -2,29 +2,24 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-2.1.0 (2024-09-12)
+1.0.4 (2024-08-29)
 ------------------
 
-2.0.1 (2024-08-29)
+1.0.3 (2024-07-22)
 ------------------
+* Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#574 <https://github.com/gazebosim/ros_gz/issues/574>`_)
+  (cherry picked from commit f9afb69d1163633dd978024bb7271a28cf7b551a)
+  Co-authored-by: Victor T. Noppeney <Vtn21@users.noreply.github.com>
+* Contributors: mergify[bot]
 
-2.0.0 (2024-07-22)
+1.0.2 (2024-07-03)
 ------------------
-
-1.0.1 (2024-07-03)
-------------------
-* Add support for gz.msgs.EntityWrench (base branch: ros2) (`#573 <https://github.com/gazebosim/ros_gz//issues/573>`_)
 * Add option to change material color from ROS. (`#521 <https://github.com/gazebosim/ros_gz//issues/521>`_)
   Forward port of `#486 <https://github.com/gazebosim/ros_gz//issues/486>`_.
   * Message and bridge for MaterialColor.
   This allows bridging MaterialColor from ROS to GZ and is
   important for allowing simulation users to create status lights.
   (cherry picked from commit 78dc4823121f085594e6028a93f1e571eb04f58b)
-* Add option to change material color from ROS. (`#521 <https://github.com/gazebosim/ros_gz//issues/521>`_)
-  Forward port of `#486 <https://github.com/gazebosim/ros_gz//issues/486>`_.
-  * Message and bridge for MaterialColor.
-  This allows bridging MaterialColor from ROS to GZ and is
-  important for allowing simulation users to create status lights.
 * Prepare for 1.0.0 Release (`#495 <https://github.com/gazebosim/ros_gz//issues/495>`_)
 * 0.244.14
 * Changelog
@@ -56,7 +51,7 @@ Changelog for package ros_gz_interfaces
 * humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz//issues/311>`_)
   Co-authored-by: Michael Carroll <michael@openrobotics.org>
 * Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
-* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Benjamin Perseghetti, Jose Luis Rivero, Michael Carroll, Victor T. Noppeney, ahcorde
+* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Benjamin Perseghetti, Jose Luis Rivero, Michael Carroll, ahcorde
 
 1.0.0 (2024-04-24)
 ------------------
