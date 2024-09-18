@@ -12,6 +12,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_components REQUIRED)
 find_package(std_msgs REQUIRED)
 
 find_package(gz_math_vendor REQUIRED)
@@ -32,6 +33,9 @@ gz_find_package(gflags
     REQUIRED
     PKGCONFIG gflags)
 find_package(std_msgs REQUIRED)
+
+# Install the python module for this package
+ament_python_install_package(${PROJECT_NAME})
 
 add_executable(create src/create.cpp)
 ament_target_dependencies(create
@@ -60,15 +64,22 @@ install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION include/${PROJECT_NAME}
 )
 
-add_executable(gzserver src/gzserver.cpp)
-ament_target_dependencies(gzserver
+add_library(gzserver_component SHARED src/gzserver.cpp)
+rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
+ament_target_dependencies(gzserver_component
   rclcpp
+  rclcpp_components
   std_msgs
 )
-target_link_libraries(gzserver
+target_link_libraries(gzserver_component
   gz-sim::core
 )
-ament_target_dependencies(gzserver std_msgs)
+ament_target_dependencies(gzserver_component std_msgs)
+rclcpp_components_register_node(
+  gzserver_component
+  PLUGIN "ros_gz_sim::GzServer"
+  EXECUTABLE gzserver
+)
 
 configure_file(
   launch/gz_sim.launch.py.in
@@ -85,6 +96,17 @@ install(FILES
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
+install(FILES
+  "launch/gz_server.launch"
+  "launch/gz_server.launch.py"
+  "launch/gz_spawn_model.launch"
+  "launch/gz_spawn_model.launch.py"
+  "launch/ros_gz_sim.launch"
+  "launch/ros_gz_sim.launch.py"
+  "launch/ros_gz_spawn_model.launch.py"
+  DESTINATION share/${PROJECT_NAME}/launch
+)
+
 install(TARGETS
   create
   DESTINATION lib/${PROJECT_NAME}
@@ -92,6 +114,14 @@ install(TARGETS
 install(TARGETS
   gzserver
   DESTINATION lib/${PROJECT_NAME}
+)
+
+ament_export_targets(export_gzserver_component)
+install(TARGETS gzserver_component
+        EXPORT export_gzserver_component
+        ARCHIVE DESTINATION lib
+        LIBRARY DESTINATION lib
+        RUNTIME DESTINATION bin
 )
 
 install(

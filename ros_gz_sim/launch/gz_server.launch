@@ -1,0 +1,12 @@
+<launch>
+  <arg name="world_sdf_file" default="empty.sdf" />
+  <arg name="world_sdf_string" default="" />
+  <arg name="container_name" default="ros_gz_container" />
+  <arg name="use_composition" default="True" />
+  <gz_server 
+    world_sdf_file="$(var world_sdf_file)"
+    world_sdf_string="$(var world_sdf_string)"
+    container_name="$(var container_name)"
+    use_composition="$(var use_composition)">
+  </gz_server>
+</launch>
