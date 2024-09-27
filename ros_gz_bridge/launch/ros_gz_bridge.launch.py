@@ -18,7 +18,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, GroupAction
 from launch.conditions import IfCondition
 from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import LoadComposableNodes, Node
+from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 
 
@@ -27,6 +27,7 @@ def generate_launch_description():
     bridge_name = LaunchConfiguration('bridge_name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
+    start_container = LaunchConfiguration('start_container')
     namespace = LaunchConfiguration('namespace')
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
@@ -44,6 +45,12 @@ def generate_launch_description():
         'container_name',
         default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',
+    )
+
+    declare_start_container_cmd = DeclareLaunchArgument(
+        'start_container',
+        default_value='False',
+        description='Whether to start a ROS container when using composition',
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -81,8 +88,27 @@ def generate_launch_description():
         ],
     )
 
-    load_composable_nodes = LoadComposableNodes(
-        condition=IfCondition(use_composition),
+    load_composable_nodes_with_container = ComposableNodeContainer(
+        condition=IfCondition(PythonExpression([use_composition, ' and ', start_container])),
+        name=LaunchConfiguration('container_name'),
+        namespace='',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='ros_gz_bridge',
+                plugin='ros_gz_bridge::RosGzBridge',
+                name=bridge_name,
+                namespace=namespace,
+                parameters=[{'config_file': config_file}],
+                extra_arguments=[{'use_intra_process_comms': True}],
+            ),
+        ],
+        output='screen',
+    )
+
+    load_composable_nodes_without_container = LoadComposableNodes(
+        condition=IfCondition(PythonExpression([use_composition, ' and not ', start_container])),
         target_container=container_name,
         composable_node_descriptions=[
             ComposableNode(
@@ -94,6 +120,7 @@ def generate_launch_description():
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
         ],
+        output='screen',
     )
 
     # Create the launch description and populate
@@ -103,12 +130,14 @@ def generate_launch_description():
     ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_start_container_cmd)
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_log_level_cmd)
     # Add the actions to launch all of the bridge nodes
     ld.add_action(load_nodes)
-    ld.add_action(load_composable_nodes)
+    ld.add_action(load_composable_nodes_with_container)
+    ld.add_action(load_composable_nodes_without_container)
 
     return ld
