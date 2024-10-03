@@ -89,7 +89,8 @@ def generate_launch_description():
     )
 
     load_composable_nodes_with_container = ComposableNodeContainer(
-        condition=IfCondition(PythonExpression([use_composition, ' and ', create_own_container])),
+        condition=IfCondition(
+            PythonExpression([use_composition, ' and ', create_own_container])),
         name=LaunchConfiguration('container_name'),
         namespace='',
         package='rclcpp_components',
@@ -108,7 +109,8 @@ def generate_launch_description():
     )
 
     load_composable_nodes_without_container = LoadComposableNodes(
-        condition=IfCondition(PythonExpression([use_composition, ' and not ', create_own_container])),
+        condition=IfCondition(
+            PythonExpression([use_composition, ' and not ', create_own_container])),
         target_container=container_name,
         composable_node_descriptions=[
             ComposableNode(
