@@ -120,7 +120,6 @@ def generate_launch_description():
                 extra_arguments=[{'use_intra_process_comms': True}],
             ),
         ],
-        output='screen',
     )
 
     # Create the launch description and populate

@@ -119,7 +119,8 @@ class RosGzBridge(Action):
             kwargs['container_name'] = container_name
 
         if isinstance(create_own_container, str):
-            create_own_container = parser.parse_substitution(create_own_container)
+            create_own_container =
+                parser.parse_substitution(create_own_container)
             kwargs['create_own_container'] = create_own_container
 
         if isinstance(namespace, str):
