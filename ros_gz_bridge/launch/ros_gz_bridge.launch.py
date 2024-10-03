@@ -50,7 +50,9 @@ def generate_launch_description():
     declare_create_own_container_cmd = DeclareLaunchArgument(
         'create_own_container',
         default_value='False',
-        description='Whether to start a ROS container when using composition',
+        description='Whether the bridge should starts its own ROS container when using composition (Not Recommended). \
+         This option should only be set to true if the you plan to put your ROS node in the container created by the bridge. \
+          This is not needed if you want Gazebo and the bridge to be in the same ROS container. ',
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
