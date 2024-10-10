@@ -51,7 +51,7 @@ def generate_launch_description():
 
     declare_create_own_container_cmd = DeclareLaunchArgument(
         'create_own_container',
-        default_value='True',
+        default_value='False',
         description='Whether we should start a ROS container when using composition.',
     )
 

@@ -34,7 +34,7 @@ def generate_launch_description():
         'container_name', default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',)
     declare_create_own_container_cmd = DeclareLaunchArgument(
-        'create_own_container', default_value='True',
+        'create_own_container', default_value='False',
         description='Whether we should start our own ROS container when using composition.',)
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition', default_value='False',

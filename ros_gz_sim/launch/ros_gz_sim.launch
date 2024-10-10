@@ -2,7 +2,7 @@
   <arg name="bridge_name" />
   <arg name="config_file" />
   <arg name="container_name" default="ros_gz_container" />
-  <arg name="create_own_container" default="True" />
+  <arg name="create_own_container" default="False" />
   <arg name="namespace" default="" />
   <arg name="use_composition" default="False" />
   <arg name="use_respawn" default="False" />
