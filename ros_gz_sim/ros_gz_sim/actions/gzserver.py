@@ -37,8 +37,8 @@ class GzServer(Action):
         world_sdf_file: Optional[SomeSubstitutionsType] = '',
         world_sdf_string: Optional[SomeSubstitutionsType] = '',
         container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
-        create_own_container: Optional[SomeSubstitutionsType] = 'True',
-        use_composition: Optional[SomeSubstitutionsType] = 'True',
+        create_own_container: Optional[SomeSubstitutionsType] = 'False',
+        use_composition: Optional[SomeSubstitutionsType] = 'False',
         **kwargs
     ) -> None:
         """

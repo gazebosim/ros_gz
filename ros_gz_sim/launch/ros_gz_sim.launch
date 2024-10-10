@@ -4,7 +4,7 @@
   <arg name="container_name" default="ros_gz_container" />
   <arg name="create_own_container" default="True" />
   <arg name="namespace" default="" />
-  <arg name="use_composition" default="True" />
+  <arg name="use_composition" default="False" />
   <arg name="use_respawn" default="False" />
   <arg name="log_level" default="info" />
   <arg name="world_sdf_file" default="empty.sdf" />

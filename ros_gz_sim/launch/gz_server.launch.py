@@ -37,7 +37,7 @@ def generate_launch_description():
         'create_own_container', default_value='True',
         description='Whether we should start our own ROS container when using composition.',)
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='True',
+        'use_composition', default_value='False',
         description='Use composed bringup if True')
 
     load_nodes = Node(
