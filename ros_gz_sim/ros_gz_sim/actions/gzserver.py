@@ -37,7 +37,8 @@ class GzServer(Action):
         world_sdf_file: Optional[SomeSubstitutionsType] = '',
         world_sdf_string: Optional[SomeSubstitutionsType] = '',
         container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
-        use_composition: Optional[SomeSubstitutionsType] = 'True',
+        create_own_container: Optional[SomeSubstitutionsType] = 'False',
+        use_composition: Optional[SomeSubstitutionsType] = 'False',
         **kwargs
     ) -> None:
         """
@@ -49,12 +50,14 @@ class GzServer(Action):
         :param: world_sdf_file Path to the SDF world file.
         :param: world_sdf_string SDF world string.
         :param: container_name Name of container that nodes will load in if use composition.
+        :param: create_own_container Whether to start a ROS container when using composition.
         :param: use_composition Use composed bringup if True.
         """
         super().__init__(**kwargs)
         self.__world_sdf_file = world_sdf_file
         self.__world_sdf_string = world_sdf_string
         self.__container_name = container_name
+        self.__create_own_container = create_own_container
         self.__use_composition = use_composition
 
     @classmethod
@@ -74,6 +77,10 @@ class GzServer(Action):
             'container_name', data_type=str,
             optional=True)
 
+        create_own_container = entity.get_attr(
+            'create_own_container', data_type=str,
+            optional=True)
+
         use_composition = entity.get_attr(
             'use_composition', data_type=str,
             optional=True)
@@ -89,6 +96,11 @@ class GzServer(Action):
         if isinstance(container_name, str):
             container_name = parser.parse_substitution(container_name)
             kwargs['container_name'] = container_name
+
+        if isinstance(create_own_container, str):
+            create_own_container = \
+                parser.parse_substitution(create_own_container)
+            kwargs['create_own_container'] = create_own_container
 
         if isinstance(use_composition, str):
             use_composition = parser.parse_substitution(use_composition)
@@ -106,6 +118,7 @@ class GzServer(Action):
             launch_arguments=[('world_sdf_file', self.__world_sdf_file),
                               ('world_sdf_string', self.__world_sdf_string),
                               ('container_name',   self.__container_name),
+                              ('create_own_container', self.__create_own_container),
                               ('use_composition',  self.__use_composition), ])
 
         return [gz_server_description]
