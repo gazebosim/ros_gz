@@ -26,6 +26,7 @@ def generate_launch_description():
     bridge_name = LaunchConfiguration('bridge_name')
     config_file = LaunchConfiguration('config_file')
     container_name = LaunchConfiguration('container_name')
+    create_own_container = LaunchConfiguration('create_own_container')
     namespace = LaunchConfiguration('namespace')
     use_composition = LaunchConfiguration('use_composition')
     use_respawn = LaunchConfiguration('use_respawn')
@@ -48,12 +49,18 @@ def generate_launch_description():
         description='Name of container that nodes will load in if use composition',
     )
 
+    declare_create_own_container_cmd = DeclareLaunchArgument(
+        'create_own_container',
+        default_value='False',
+        description='Whether we should start a ROS container when using composition.',
+    )
+
     declare_namespace_cmd = DeclareLaunchArgument(
         'namespace', default_value='', description='Top-level namespace'
     )
 
     declare_use_composition_cmd = DeclareLaunchArgument(
-        'use_composition', default_value='True', description='Use composed bringup if True'
+        'use_composition', default_value='False', description='Use composed bringup if True'
     )
 
     declare_use_respawn_cmd = DeclareLaunchArgument(
@@ -96,6 +103,8 @@ def generate_launch_description():
                                    'gz_server.launch.py'])]),
         launch_arguments=[('world_sdf_file', world_sdf_file),
                           ('world_sdf_string', world_sdf_string),
+                          ('container_name', container_name),
+                          ('create_own_container', create_own_container),
                           ('use_composition', use_composition), ])
 
     # Create the launch description and populate
@@ -105,6 +114,7 @@ def generate_launch_description():
     ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
