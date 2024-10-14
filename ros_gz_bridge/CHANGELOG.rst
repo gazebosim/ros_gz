@@ -2,6 +2,23 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.5 (2024-10-14)
+------------------
+* Merge pull request `#607 <https://github.com/gazebosim/ros_gz/issues/607>`_ from Amronos/ros2-jazzy-backport
+* Fix changelogs and versions
+* adds deadline and liveliness QoSPolicyKinds to qos_overriding_options (`#609 <https://github.com/gazebosim/ros_gz/issues/609>`_) (`#613 <https://github.com/gazebosim/ros_gz/issues/613>`_)
+* Remove default_value for required arguments (`#602 <https://github.com/gazebosim/ros_gz/issues/602>`_)
+* Fix errors with name of bridge not being given (`#600 <https://github.com/gazebosim/ros_gz/issues/600>`_)
+* Use optional parameters in actions (`#601 <https://github.com/gazebosim/ros_gz/issues/601>`_)
+* Making use_composition true by default (`#578 <https://github.com/gazebosim/ros_gz/issues/578>`_)
+* Use `ignoreLocalMessages` in the bridge (`#559 <https://github.com/gazebosim/ros_gz/issues/559>`_)
+* Update launch files with name parameter (`#556 <https://github.com/gazebosim/ros_gz/issues/556>`_)
+* Ensure the same container is used for the bridge and gz_server (`#553 <https://github.com/gazebosim/ros_gz/issues/553>`_)
+* Launch ros_gz_bridge from xml (`#550 <https://github.com/gazebosim/ros_gz/issues/550>`_)
+* Launch gzserver and the bridge as composable nodes (`#528 <https://github.com/gazebosim/ros_gz/issues/528>`_)
+* adds deadline and liveliness QoSPolicyKinds to qos_overriding_options (`#609 <https://github.com/gazebosim/ros_gz/issues/609>`_) (`#613 <https://github.com/gazebosim/ros_gz/issues/613>`_)
+* Contributors: Aarav Gupta, Addisu Z. Taddese, Alejandro Hernández Cordero, Amronos, Carlos Agüero, mergify[bot]
+
 1.0.4 (2024-08-29)
 ------------------
 * feat: `override_timestamps_with_wall_time` parameter (backport `#562 <https://github.com/gazebosim/ros_gz/issues/562>`_) (`#584 <https://github.com/gazebosim/ros_gz/issues/584>`_)

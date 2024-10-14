@@ -2,6 +2,25 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.5 (2024-10-14)
+------------------
+* Merge pull request `#607 <https://github.com/gazebosim/ros_gz/issues/607>`_ from Amronos/ros2-jazzy-backport
+* Fix changelogs and versions
+* Name gazebo sim node (`#611 <https://github.com/gazebosim/ros_gz/issues/611>`_) (`#612 <https://github.com/gazebosim/ros_gz/issues/612>`_)
+* Change world_string to model_string in gz_spawn_model files (`#606 <https://github.com/gazebosim/ros_gz/issues/606>`_)
+* Use model string in ros_gz_spawn_model.launch.py (`#605 <https://github.com/gazebosim/ros_gz/issues/605>`_)
+* Remove default_value for required arguments (`#602 <https://github.com/gazebosim/ros_gz/issues/602>`_)
+* Fix errors with name of bridge not being given (`#600 <https://github.com/gazebosim/ros_gz/issues/600>`_)
+* Restore launch file (`#603 <https://github.com/gazebosim/ros_gz/issues/603>`_)
+* Use optional parameters in actions (`#601 <https://github.com/gazebosim/ros_gz/issues/601>`_)
+* Wait for create service to be available. (`#588 <https://github.com/gazebosim/ros_gz/issues/588>`_)
+* Update launch files with name parameter (`#556 <https://github.com/gazebosim/ros_gz/issues/556>`_)
+* Launch gz_spawn_model from xml (`#551 <https://github.com/gazebosim/ros_gz/issues/551>`_)
+* Launch ros_gz_bridge from xml (`#550 <https://github.com/gazebosim/ros_gz/issues/550>`_)
+* Launch gzserver and the bridge as composable nodes (`#528 <https://github.com/gazebosim/ros_gz/issues/528>`_)
+* Name gazebo sim node (`#611 <https://github.com/gazebosim/ros_gz/issues/611>`_) (`#612 <https://github.com/gazebosim/ros_gz/issues/612>`_)
+* Contributors: Aarav Gupta, Addisu Z. Taddese, Alejandro Hernández Cordero, Amronos, Carlos Agüero, Sebastian Kasperski, mergify[bot]
+
 1.0.4 (2024-08-29)
 ------------------
 
