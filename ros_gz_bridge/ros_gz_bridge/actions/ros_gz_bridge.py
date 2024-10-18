@@ -37,8 +37,9 @@ class RosGzBridge(Action):
         bridge_name: SomeSubstitutionsType,
         config_file: SomeSubstitutionsType,
         container_name: Optional[SomeSubstitutionsType] = 'ros_gz_container',
+        create_own_container: Optional[SomeSubstitutionsType] = 'False',
         namespace: Optional[SomeSubstitutionsType] = '',
-        use_composition: Optional[SomeSubstitutionsType] = 'True',
+        use_composition: Optional[SomeSubstitutionsType] = 'False',
         use_respawn: Optional[SomeSubstitutionsType] = 'False',
         log_level: Optional[SomeSubstitutionsType] = 'info',
         **kwargs
@@ -52,6 +53,7 @@ class RosGzBridge(Action):
         :param: bridge_name Name of ros_gz_bridge  node
         :param: config_file YAML config file.
         :param: container_name Name of container that nodes will load in if use composition.
+        :param: create_own_container Whether to start a ROS container when using composition.
         :param: namespace Top-level namespace.
         :param: use_composition Use composed bringup if True.
         :param: use_respawn Whether to respawn if a node crashes (when composition is disabled).
@@ -61,6 +63,7 @@ class RosGzBridge(Action):
         self.__bridge_name = bridge_name
         self.__config_file = config_file
         self.__container_name = container_name
+        self.__create_own_container = create_own_container
         self.__namespace = namespace
         self.__use_composition = use_composition
         self.__use_respawn = use_respawn
@@ -81,6 +84,10 @@ class RosGzBridge(Action):
 
         container_name = entity.get_attr(
             'container_name', data_type=str,
+            optional=True)
+
+        create_own_container = entity.get_attr(
+            'create_own_container', data_type=str,
             optional=True)
 
         namespace = entity.get_attr(
@@ -111,6 +118,11 @@ class RosGzBridge(Action):
             container_name = parser.parse_substitution(container_name)
             kwargs['container_name'] = container_name
 
+        if isinstance(create_own_container, str):
+            create_own_container = \
+                parser.parse_substitution(create_own_container)
+            kwargs['create_own_container'] = create_own_container
+
         if isinstance(namespace, str):
             namespace = parser.parse_substitution(namespace)
             kwargs['namespace'] = namespace
@@ -139,6 +151,7 @@ class RosGzBridge(Action):
             launch_arguments=[('bridge_name', self.__bridge_name),
                               ('config_file', self.__config_file),
                               ('container_name', self.__container_name),
+                              ('create_own_container', self.__create_own_container),
                               ('namespace',   self.__namespace),
                               ('use_composition',  self.__use_composition),
                               ('use_respawn',  self.__use_respawn),

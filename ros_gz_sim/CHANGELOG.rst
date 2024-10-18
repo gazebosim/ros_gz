@@ -2,6 +2,24 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.1 (2024-10-14)
+------------------
+* Extra parameter to start a container (`#616 <https://github.com/gazebosim/ros_gz/issues/616>`_)
+* Bugfix: `if "false"` is always `True` (`#617 <https://github.com/gazebosim/ros_gz/issues/617>`_)
+  There is an issue in this launch file when passing the string 'false' as
+  an argument. In Python, non-empty strings are always evaluated as True,
+  regardless of their content. This means that even if you pass 'false',
+  the system will still evaluate it as True.
+  This bug results in the launch system incorrectly calling the OnShutdown
+  method twice. When any ROS launch action invokes a RosAdapter, it
+  triggers the following exception: "Cannot shutdown a ROS adapter that is
+  not running."
+  To temporarily work around this issue, you can launch gz_sim_launch.py
+  with the on_exit_shutdown argument set to an empty string. This prevents
+  the erroneous shutdown sequence and avoids the associated exception.
+* Name gazebo sim node (`#611 <https://github.com/gazebosim/ros_gz/issues/611>`_)
+* Contributors: Carlos Agüero, Ignacio Vizzo, Nabeel Sherazi
+
 2.1.0 (2024-09-12)
 ------------------
 * Change world_string to model_string in gz_spawn_model files (`#606 <https://github.com/gazebosim/ros_gz//issues/606>`_)

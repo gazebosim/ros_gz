@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.1 (2024-10-14)
+------------------
+* Extra parameter to start a container (`#616 <https://github.com/gazebosim/ros_gz/issues/616>`_)
+* adds deadline and liveliness QoSPolicyKinds to qos_overriding_options (`#609 <https://github.com/gazebosim/ros_gz/issues/609>`_)
+  Co-authored-by: nora <nko@bogaertsgl.com>
+* Contributors: Carlos Agüero, norakon
+
 2.1.0 (2024-09-12)
 ------------------
 * Remove default_value for required arguments (`#602 <https://github.com/gazebosim/ros_gz//issues/602>`_)
