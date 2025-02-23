@@ -1706,7 +1706,7 @@ void createTestMsg(gz::msgs::LogicalCameraImage & _msg)
   createTestMsg(*_msg.mutable_pose());
 
   for (int i = 0; i < 4; ++i) {
-    auto* model = _msg.add_model();
+    auto * model = _msg.add_model();
     model->set_name("model_" + std::to_string(i));
     createTestMsg(*model->mutable_pose());
   }

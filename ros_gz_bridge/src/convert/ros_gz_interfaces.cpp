@@ -761,7 +761,7 @@ convert_ros_to_gz(
 
   gz_msg.clear_model();
   for(const auto & m : ros_msg.model) {
-    auto* model = gz_msg.add_model();
+    auto * model = gz_msg.add_model();
     model->set_name(m.name);
     convert_ros_to_gz(m.pose, *model->mutable_pose());
   }
