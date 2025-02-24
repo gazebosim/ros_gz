@@ -26,6 +26,7 @@
 #include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/gui_camera.pb.h>
 #include <gz/msgs/light.pb.h>
+#include <gz/msgs/logical_camera_image.pb.h>
 #include <gz/msgs/material_color.pb.h>
 #include <gz/msgs/param.pb.h>
 #include <gz/msgs/param_v.pb.h>
@@ -46,6 +47,7 @@
 #include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/logical_camera_image.hpp>
 #include <ros_gz_interfaces/msg/material_color.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
@@ -288,6 +290,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::LogicalCameraImage & ros_msg,
+  gz::msgs::LogicalCameraImage & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::LogicalCameraImage & gz_msg,
+  ros_gz_interfaces::msg::LogicalCameraImage & ros_msg);
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
