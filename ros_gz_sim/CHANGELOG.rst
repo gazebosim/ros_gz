@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.10 (2025-02-24)
+-------------------
+
 1.0.9 (2025-02-12)
 ------------------
 * Fix spelling in entity creation (`#688 <https://github.com/gazebosim/ros_gz/issues/688>`_) (`#689 <https://github.com/gazebosim/ros_gz/issues/689>`_)
