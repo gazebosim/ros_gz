@@ -1614,7 +1614,7 @@ void createTestMsg(ros_gz_interfaces::msg::LogicalCameraImage & _msg)
   geometry_msgs::msg::Pose pose_msg;
   createTestMsg(pose_msg);
   _msg.pose = pose_msg;
-  
+
   for (int i = 0; i < 4; ++i) {
     ros_gz_interfaces::msg::LogicalCameraImageModel model;
     model.name = "model_" + std::to_string(i);
@@ -1630,7 +1630,7 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraI
 
   compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
   compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
-  
+
   ASSERT_EQ(expected_msg.model.size(), _msg->model.size());
   for (int i = 0; i < _msg->model.size(); ++i) {
     EXPECT_EQ(expected_msg.model[i].name, _msg->model[i].name);
