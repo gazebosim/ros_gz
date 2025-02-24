@@ -1632,7 +1632,7 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraI
   compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
 
   ASSERT_EQ(expected_msg.model.size(), _msg->model.size());
-  for (int i = 0; i < _msg->model.size(); ++i) {
+  for (size_t i = 0; i < _msg->model.size(); ++i) {
     EXPECT_EQ(expected_msg.model[i].name, _msg->model[i].name);
     compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->model[i].pose));
   }
