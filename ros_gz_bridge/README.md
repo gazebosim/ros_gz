@@ -189,6 +189,47 @@ The screenshot shows all the shell windows and their expected content
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
+### GZ to ROS Optical frame conversion
+
+For sensors like cameras, it is commonly expected that ROS image data are in a
+z-forward optical frame, see [REP-0103](https://www.ros.org/reps/rep-0103.html).
+Historically, when bridging GZ to ROS `Image` and `CameraInfo` topics, users
+would typically create a new optical frame with a x to z-forward transformation,
+e.g. by using a static tranform publisher. The sensor's frame id in SDF would
+then set to point to the new optical frame.
+
+The bridge now has a parameter named `publish_optical_frame` to automate
+this process. In the above example for bridging image topics, you can run the
+bridge and pass these extra ROS arguments:
+
+```bash
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image --ros-args -p publish_optical_frame:=true -r /rgbd_camera/image:=/rgbd_camera/optical/image
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo --ros-args -p publish_optical_frame:=true -r /rgbd_camera/camera_info:=/rgbd_camera/optical/camera_info
+```
+
+Each command above sets the `publish_optical_frame` parameter to `true`, and
+it also remaps the original topic to a new name with an `optical` sub-namespace:
+
+```bash
+# Original topics:
+# /rgbd_camera/image
+# /rgbd_camera/camera_info
+# New remapped optical frame topics
+/rgbd_camera/optical/image
+/rgbd_camera/optical/camera_info
+```
+
+The messages from these topics will include a header with its `frame_id` set
+to a new optical frame that contains a `_optical` suffix string. This new
+optical frame is published by the bridge using a static tranform broadcaster.
+The TF tree should now look like:
+
+```bash
+# New TF tree. A new frame with `_optical` suffix is added
+/rgbd_camera/link/rgbd_camera -> /rgbd_camera/link/rgbd_camera_optical
+```
+
 ## Example 3: Static bridge
 
 In this example, we're going to run an executable that starts a bidirectional

@@ -19,6 +19,20 @@
 namespace ros_gz_bridge
 {
 
+BridgeHandleGzToRos::BridgeHandleGzToRos(
+  rclcpp::Node::SharedPtr ros_node,
+  std::shared_ptr<gz::transport::Node> gz_node,
+  const BridgeConfig & config)
+  : BridgeHandle(ros_node, gz_node, config)
+{
+  ros_node_->get_parameter("override_timestamps_with_wall_time",
+    gz_to_ros_parameters_.override_timestamps_with_wall_time);
+  ros_node_->get_parameter("publish_optical_frame",
+    gz_to_ros_parameters_.publish_optical_frame);
+  gz_to_ros_parameters_.publish_optical_frame |= config.publish_optical_frame;
+}
+
+
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
 
 size_t BridgeHandleGzToRos::NumSubscriptions() const
@@ -71,7 +85,8 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size,
     this->ros_publisher_,
-    override_timestamps_with_wall_time_);
+    this->ros_node_,
+    gz_to_ros_parameters_);
 
   this->gz_subscriber_ = this->gz_node_;
 }

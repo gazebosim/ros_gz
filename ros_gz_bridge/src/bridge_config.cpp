@@ -35,6 +35,7 @@ constexpr const char kDirection[] = "direction";
 constexpr const char kPublisherQueue[] = "publisher_queue";
 constexpr const char kSubscriberQueue[] = "subscriber_queue";
 constexpr const char kLazy[] = "lazy";
+constexpr const char kPublishOpticalFrame[] = "publish_optical_frame";
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -70,6 +71,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   const auto gz_topic_name = getValue(kGzTopicName);
   const auto gz_type_name = getValue(kGzTypeName);
   const auto direction = getValue(kDirection);
+  const auto publish_optical_frame = getValue(kPublishOpticalFrame);
 
   if (!topic_name.empty() && !ros_topic_name.empty()) {
     RCLCPP_ERROR(
@@ -140,6 +142,19 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   }
   if (yaml_node[kLazy]) {
     ret.is_lazy = yaml_node[kLazy].as<bool>();
+  }
+
+  if (publish_optical_frame) {
+    if (direction == kGzToRos) {
+      ret.publish_optical_frame = publish_optical_frame;
+    }
+    else {
+      RCLCPP_ERROR(
+        logger,
+        "The %s parameter is only applicable to the [%s] direction",
+        kPublishOpticalFrame.c_str(), direction.c_str());
+      return {};
+    }
   }
 
   return ret;

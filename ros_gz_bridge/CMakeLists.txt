@@ -22,6 +22,9 @@ find_package(gz-transport REQUIRED)
 find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+
 # Install the python module for this package
 ament_python_install_package(${PROJECT_NAME})
 
@@ -109,6 +112,8 @@ ament_target_dependencies(${bridge_lib}
   PUBLIC
     rclcpp
     rclcpp_components
+    tf2
+    tf2_ros
     ${BRIDGE_MESSAGE_TYPES}
 )
 

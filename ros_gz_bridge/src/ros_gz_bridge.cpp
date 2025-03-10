@@ -24,7 +24,6 @@
 
 namespace ros_gz_bridge
 {
-
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 : rclcpp::Node("ros_gz_bridge", options)
 {
@@ -34,6 +33,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter<std::string>("config_file", "");
   this->declare_parameter<bool>("expand_gz_topic_names", false);
   this->declare_parameter<bool>("override_timestamps_with_wall_time", false);
+  this->declare_parameter<bool>("publish_optical_frame", false);
 
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
@@ -99,6 +99,45 @@ void RosGzBridge::add_bridge(const BridgeConfig & config)
           config));
 
       handles_.back()->Start();
+
+/*
+      if (publish_optical_frame_) {
+        if (config.gz_type_name == "gz.msgs.CameraInfo" ||
+            config.gz_type_name == "gz.msgs.Image") {
+          auto config_optical = config;
+          // Update topic name to follow common ROS topic naming convention for
+          // images and camera infos. If an Image message is published to
+          // the topic `/<topic_prefix_str>/image`, there is an expectation
+          // that a CameraInfo message to be published to
+          // /<topic_prefix_str>/camera_info. Following this convention, the
+          // new topic name for optical frames will inject an "/optical" string
+          // before the messsage type topic suffix, i.e.
+          // /<topic_prefix>/image -> /<topic_prefix>/optical/image
+          // /<topic_prefix>/camera_info -> /<topic_prefix>/optical/camera_info
+          size_t idx = config_optical.ros_topic_name.rfind('/');
+          if (idx != std::string::npos) {
+            config_optical.ros_topic_name = config_optical.ros_topic_name.substr(0, idx)
+                + "/optical" +  config_optical.ros_topic_name.substr(idx);
+          }
+          else {
+            config_optical.ros_topic_name = "/optical" + config_optical.ros_topic_name;
+          }
+
+          config_optical.publish_optical_frame = true;
+          RCLCPP_INFO(
+            this->get_logger(),
+            "Creating GZ->ROS Bridge: [%s (%s) -> %s (%s)] (Lazy %d)",
+            config_optical.gz_topic_name.c_str(), config.gz_type_name.c_str(),
+            config_optical.ros_topic_name.c_str(), config.ros_type_name.c_str(),
+            config_optical.is_lazy);
+          handles_.push_back(
+            std::make_unique<ros_gz_bridge::BridgeHandleGzToRos>(
+              shared_from_this(), gz_node_,
+              config_optical));
+           handles_.back()->Start();
+        }
+      }
+*/
     }
 
     if (ros_to_gz) {
