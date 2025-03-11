@@ -67,6 +67,7 @@ protected:
   /// \brief ROS publisher, populated when publisher active
   rclcpp::PublisherBase::SharedPtr ros_publisher_ = {nullptr};
 
+  /// \brief GZ to ROS parameters
   BridgeHandleGzToRosParameters gz_to_ros_parameters_;
 };
 

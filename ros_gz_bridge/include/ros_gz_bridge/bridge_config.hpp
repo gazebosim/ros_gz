@@ -69,8 +69,7 @@ struct BridgeConfig
   /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy = kDefaultLazy;
 
-  /// \brief True to publish CameraInfo and Image message types in ROS
-  /// z-forward optical frame
+  /// \brief True to publish message from GZ to ROS in z-forward optical frame.
   bool publish_optical_frame{false};
 };
 

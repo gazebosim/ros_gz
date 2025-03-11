@@ -24,6 +24,7 @@
 
 namespace ros_gz_bridge
 {
+
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 : rclcpp::Node("ros_gz_bridge", options)
 {

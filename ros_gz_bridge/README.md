@@ -196,7 +196,7 @@ z-forward optical frame, see [REP-0103](https://www.ros.org/reps/rep-0103.html).
 Historically, when bridging GZ to ROS `Image` and `CameraInfo` topics, users
 would typically create a new optical frame with a x to z-forward transformation,
 e.g. by using a static tranform publisher. The sensor's frame id in SDF would
-then set to point to the new optical frame.
+then be set to point to the new optical frame.
 
 The bridge now has a parameter named `publish_optical_frame` to automate
 this process. In the above example for bridging image topics, you can run the
@@ -223,7 +223,15 @@ it also remaps the original topic to a new name with an `optical` sub-namespace:
 The messages from these topics will include a header with its `frame_id` set
 to a new optical frame that contains a `_optical` suffix string. This new
 optical frame is published by the bridge using a static tranform broadcaster.
-The TF tree should now look like:
+
+You can introspect the TF tree using `tf2_tools` and viewing the generated pdf:
+
+```bash
+ros2 run tf2_tools view_frames
+evince frames_<timestamp>.pdf
+```
+
+The TF tree should look like:
 
 ```bash
 # New TF tree. A new frame with `_optical` suffix is added

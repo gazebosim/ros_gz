@@ -166,7 +166,6 @@ int main(int argc, char * argv[])
       return -1;
     }
     config.gz_type_name = arg;
-
     bridge_node->add_bridge(config);
   }
 

@@ -65,8 +65,6 @@ public:
     rclcpp::PublisherBase::SharedPtr ros_pub,
     rclcpp::Node::SharedPtr ros_node,
     BridgeHandleGzToRosParameters gz_to_ros_parameters) = 0;
-    // bool override_timestamps_with_wall_time,
-    // bool update_gz_to_ros_optical_frame) = 0;
 };
 
 }  // namespace ros_gz_bridge
