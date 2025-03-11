@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.5 (2025-02-24)
+------------------
+* Add LogicalCameraImage support (`#698 <https://github.com/gazebosim/ros_gz/issues/698>`_)
+* Contributors: Dyst-0
+
 2.1.4 (2025-02-12)
 ------------------
 * Minor optimization to avoid dynamic casting in Gazebo callbacks (`#692 <https://github.com/gazebosim/ros_gz/issues/692>`_)
