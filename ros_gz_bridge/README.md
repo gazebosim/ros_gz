@@ -373,6 +373,45 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 ROS 2 Parameters:
 
- * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
- * `config_file` - YAML file to be loaded as the bridge configuration
- * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
+* `subscription_heartbeat`
+    * type: double
+    * default: 1000
+    * description: Period (ms) at which the node checks for new subscribers for
+      lazy bridges.
+* `config_file`
+    * type: string
+    * default: ""
+    * description: YAML file to be loaded as the bridge configuration
+* `expand_gz_topic_names`
+    * type: bool
+    * default: false
+    * description: Enable or disable ROS namespace applied on GZ topics.
+* `override_timestamps_with_wall_time`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Override the header.stamp field of outgoing messages with
+      wall time.
+* `publish_optical_frame`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Apply x-forward to z-forward transformation to outgoing
+      messages. A new frame with a `_optical` suffix will be broadcasted.
+ * `override_frame_id_string`
+    * type: string
+    * default: ""
+    * direction: GZ to ROS
+    * description: Override the `header.frame_id` field with a new string value.
+ * `override_frame_transform`
+    * type: double array
+    * default: {}
+    * direction: GZ to ROS
+    * description: Publish messages under a new frame which has the specified
+      transformation from the original frame. This is done by broadcasting a
+      tf with the `frame_id` set to the frame id in the original message, and
+      the `child_frame_id` set to the new frame id in the updated outgoing
+      message. The new frame id of the outgoing messages must be set via the
+      `override_frame_id_string` parameter. The array of doubles are:
+      `[x, y, z, roll, pitch, yaw]`, where the translational components are
+      in meters and the rotational components are in radians.

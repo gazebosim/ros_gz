@@ -71,7 +71,6 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   const auto gz_topic_name = getValue(kGzTopicName);
   const auto gz_type_name = getValue(kGzTypeName);
   const auto direction = getValue(kDirection);
-  const auto publish_optical_frame = getValue(kPublishOpticalFrame);
 
   if (!topic_name.empty() && !ros_topic_name.empty()) {
     RCLCPP_ERROR(
@@ -144,6 +143,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     ret.is_lazy = yaml_node[kLazy].as<bool>();
   }
 
+  bool publish_optical_frame = yaml_node[kPublishOpticalFrame].as<bool>();
   if (publish_optical_frame) {
     if (direction == kGzToRos) {
       ret.publish_optical_frame = publish_optical_frame;
@@ -152,7 +152,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       RCLCPP_ERROR(
         logger,
         "The %s parameter is only applicable to the [%s] direction",
-        kPublishOpticalFrame.c_str(), direction.c_str());
+        kPublishOpticalFrame, direction.c_str());
       return {};
     }
   }

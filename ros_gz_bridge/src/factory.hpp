@@ -28,8 +28,6 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription_options.hpp>
 
-
-#include <tf2/LinearMath/Quaternion.h>
 #include <tf2_ros/static_transform_broadcaster.h>
 
 #include "factory_interface.hpp"
@@ -177,37 +175,37 @@ protected:
         ros_msg.header.stamp.sec = ns / 1e9;
         ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
       }
-      if (gz_to_ros_parameters.publish_optical_frame) {
-        const std::string optical_frame_id =  ros_msg.header.frame_id + "_optical";
-        // \todo(iche033) publish only once?
-        publish_optical_tf(ros_node, ros_msg.header.frame_id, optical_frame_id);
-        ros_msg.header.frame_id = optical_frame_id;
+      std::string original_frame_id = ros_msg.header.frame_id;
+      if (!gz_to_ros_parameters.override_frame_id_string.empty()) {
+         ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id_string;
+      }
+      else if (!gz_to_ros_parameters.override_frame_id_suffix_string.empty()) {
+         ros_msg.header.frame_id = ros_msg.header.frame_id + "_" +
+             gz_to_ros_parameters.override_frame_id_suffix_string;
+      }
+      if (!gz_to_ros_parameters.override_frame_transform.has_value()) {
+        // \todo(iche033) broadcast only once?
+        broadcast_tf(ros_node, original_frame_id, ros_msg.header.frame_id,
+                   gz_to_ros_parameters.override_frame_transform.value());
       }
     }
     ros_pub->publish(ros_msg);
   }
 
   static
-  void publish_optical_tf(
+  void broadcast_tf(
     rclcpp::Node::SharedPtr ros_node,
-    const std::string & frame,
-    const std::string & child_frame)
+    const std::string& frame,
+    const std::string& child_frame,
+    const geometry_msgs::msg::Transform& transform)
   {
     // std::cerr << " frame id " << frame << std::endl;
     // std::cerr << "  --  child frame id " << child_frame << std::endl;
     geometry_msgs::msg::TransformStamped tf_stamped;
     tf_stamped.header.frame_id = frame;
     tf_stamped.child_frame_id = child_frame;
-    tf_stamped.transform.translation.x = 0.0;
-    tf_stamped.transform.translation.y = 0.0;
-    tf_stamped.transform.translation.z = 0.0;
-    tf2::Quaternion q;
-    // converts x forward to z forward
-    q.setRPY(-M_PI / 2.0, 0, -M_PI / 2.0);
-    tf_stamped.transform.rotation.x = q.x();
-    tf_stamped.transform.rotation.y = q.y();
-    tf_stamped.transform.rotation.z = q.z();
-    tf_stamped.transform.rotation.w = q.w();
+    tf_stamped.transform =  transform;
+
     auto tf_static_broadcaster =
         std::make_shared<tf2_ros::StaticTransformBroadcaster>(*ros_node.get());
     tf_static_broadcaster->sendTransform(tf_stamped);

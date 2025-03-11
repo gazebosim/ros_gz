@@ -16,6 +16,8 @@
 
 #include "bridge_handle_gz_to_ros.hpp"
 
+#include <tf2/LinearMath/Quaternion.h>
+
 namespace ros_gz_bridge
 {
 
@@ -25,13 +27,56 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   const BridgeConfig & config)
   : BridgeHandle(ros_node, gz_node, config)
 {
+  ros_node_->declare_parameter<bool>("override_timestamps_with_wall_time", false);
+  ros_node_->declare_parameter<bool>("publish_optical_frame", false);
+  ros_node_->declare_parameter<std::string>("override_frame_id_string", "");
+  // The array of doubles are [x, y, z, roll, pitch, yaw]
+  ros_node_->declare_parameter<std::vector<double>>("override_frame_transform",
+      std::vector<double>{});
+
   ros_node_->get_parameter("override_timestamps_with_wall_time",
     gz_to_ros_parameters_.override_timestamps_with_wall_time);
-  ros_node_->get_parameter("publish_optical_frame",
-    gz_to_ros_parameters_.publish_optical_frame);
-  gz_to_ros_parameters_.publish_optical_frame |= config.publish_optical_frame;
-}
 
+  // Publish_optical_optical_frame is a convenient ROS parameter that will
+  // populates the override_frame_transform and override_frame_id_string
+  // params with default values for converting x-forward to z-forward optical
+  // frame. Note that they can still be overridden by the user if they decide
+  // to set these params individually.
+  bool publish_optical_frame = false;
+  ros_node_->get_parameter("publish_optical_frame",
+      publish_optical_frame);
+  publish_optical_frame |= config.publish_optical_frame;
+  std::vector<double> frame_tf;
+  if (publish_optical_frame) {
+    frame_tf = {0, 0, 0, -M_PI / 2.0, 0, -M_PI / 2.0};
+    gz_to_ros_parameters_.override_frame_id_suffix_string = "optical";
+  }
+  ros_node_->get_parameter("override_frame_transform", frame_tf);
+  if (!frame_tf.empty()) {
+    geometry_msgs::msg::Transform transform;
+    transform.translation.x = 0.0;
+    transform.translation.y = 0.0;
+    transform.translation.z = 0.0;
+    tf2::Quaternion q;
+    q.setRPY(-M_PI / 2.0, 0, -M_PI / 2.0);
+    transform.rotation.x = q.x();
+    transform.rotation.y = q.y();
+    transform.rotation.z = q.z();
+    transform.rotation.w = q.w();
+    gz_to_ros_parameters_.override_frame_transform = transform;
+  }
+  ros_node_->get_parameter("override_frame_id_string",
+      gz_to_ros_parameters_.override_frame_id_string);
+
+  if (gz_to_ros_parameters_.override_frame_transform &&
+      (gz_to_ros_parameters_.override_frame_id_string.empty() ||
+      (gz_to_ros_parameters_.override_frame_id_suffix_string.empty()) {
+    std::cerr << "The 'override_frame_id_string' parameter cannot be empty "
+              << "when 'override_frame_transform' is set. Disabling "
+              << "'override_frame_transform'." << std::endl;
+    gz_to_ros_parameters_.override_frame_transform = false;
+  }
+}
 
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
 
