@@ -16,6 +16,8 @@
 #define BRIDGE_HANDLE_GZ_TO_ROS_PARAMETERS_HPP_
 
 #include <optional>
+#include <string>
+
 #include <geometry_msgs/msg/transform.hpp>
 
 namespace ros_gz_bridge

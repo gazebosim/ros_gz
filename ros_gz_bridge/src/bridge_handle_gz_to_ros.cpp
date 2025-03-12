@@ -13,6 +13,8 @@
 // limitations under the License.
 //
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "bridge_handle_gz_to_ros.hpp"
 

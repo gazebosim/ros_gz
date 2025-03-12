@@ -105,6 +105,8 @@ target_link_libraries(${bridge_lib}
     gz-msgs::core
     gz-transport::core
   PRIVATE
+    tf2::tf2
+    tf2_ros::tf2_ros
     yaml-cpp::yaml-cpp
 )
 
@@ -112,8 +114,6 @@ ament_target_dependencies(${bridge_lib}
   PUBLIC
     rclcpp
     rclcpp_components
-    tf2
-    tf2_ros
     ${BRIDGE_MESSAGE_TYPES}
 )
 
