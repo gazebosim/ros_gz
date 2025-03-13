@@ -32,11 +32,11 @@ namespace ros_gz_bridge
 class BridgeHandleGzToRos : public BridgeHandle
 {
 public:
-
   /// \brief Constructor
-  BridgeHandleGzToRos(rclcpp::Node::SharedPtr ros_node,
-                      std::shared_ptr<gz::transport::Node> gz_node,
-                      const BridgeConfig & config);
+  BridgeHandleGzToRos(
+    rclcpp::Node::SharedPtr ros_node,
+    std::shared_ptr<gz::transport::Node> gz_node,
+    const BridgeConfig & config);
 
   /// \brief Destructor
   ~BridgeHandleGzToRos() override;

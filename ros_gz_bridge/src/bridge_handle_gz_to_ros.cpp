@@ -12,13 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
+#include <tf2/LinearMath/Quaternion.h>
+
 #include <memory>
 #include <string>
 #include <vector>
 
 #include "bridge_handle_gz_to_ros.hpp"
-
-#include <tf2/LinearMath/Quaternion.h>
 
 namespace ros_gz_bridge
 {
@@ -27,15 +28,8 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   rclcpp::Node::SharedPtr ros_node,
   std::shared_ptr<gz::transport::Node> gz_node,
   const BridgeConfig & config)
-  : BridgeHandle(ros_node, gz_node, config)
+: BridgeHandle(ros_node, gz_node, config)
 {
-  ros_node_->declare_parameter<bool>("override_timestamps_with_wall_time", false);
-  ros_node_->declare_parameter<bool>("publish_optical_frame", false);
-  ros_node_->declare_parameter<std::string>("override_frame_id_string", "");
-  // The array of doubles are [x, y, z, roll, pitch, yaw]
-  ros_node_->declare_parameter<std::vector<double>>("override_frame_transform",
-      std::vector<double>{});
-
   ros_node_->get_parameter("override_timestamps_with_wall_time",
     gz_to_ros_parameters_.override_timestamps_with_wall_time);
 
@@ -64,8 +58,9 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   std::vector<double> optical_frame_tf{0, 0, 0, -M_PI / 2.0, 0, -M_PI / 2.0};
   if (publish_optical_frame) {
     gz_to_ros_parameters_.override_frame_id_suffix_string = "optical";
-    if (frame_tf.empty())
+    if (frame_tf.empty()) {
       frame_tf = optical_frame_tf;
+    }
   }
 
   if (!frame_tf.empty()) {
@@ -83,8 +78,9 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   }
 
   if (gz_to_ros_parameters_.override_frame_transform.has_value() &&
-      gz_to_ros_parameters_.override_frame_id_string.empty() &&
-      gz_to_ros_parameters_.override_frame_id_suffix_string.empty()) {
+    gz_to_ros_parameters_.override_frame_id_string.empty() &&
+    gz_to_ros_parameters_.override_frame_id_suffix_string.empty())
+  {
     RCLCPP_ERROR(
       ros_node_->get_logger(),
       "The 'override_frame_id_string' parameter cannot be empty "

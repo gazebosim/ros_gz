@@ -15,11 +15,14 @@
 #ifndef FACTORY_HPP_
 #define FACTORY_HPP_
 
+#include <tf2_ros/static_transform_broadcaster.h>
+
 #include <chrono>
 #include <functional>
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <unordered_map>
 
 #include <gz/transport/Node.hh>
 #include <gz/transport/SubscribeOptions.hh>
@@ -27,8 +30,6 @@
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription_options.hpp>
-
-#include <tf2_ros/static_transform_broadcaster.h>
 
 #include "factory_interface.hpp"
 
@@ -180,7 +181,7 @@ protected:
         ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id_string;
       } else if (!gz_to_ros_parameters.override_frame_id_suffix_string.empty()) {
         ros_msg.header.frame_id = ros_msg.header.frame_id + "_" +
-            gz_to_ros_parameters.override_frame_id_suffix_string;
+          gz_to_ros_parameters.override_frame_id_suffix_string;
       }
       if (gz_to_ros_parameters.override_frame_transform.has_value()) {
         // Broadcast tf at fixed rate
@@ -197,27 +198,28 @@ protected:
   static
   void broadcast_tf_throttled(
     rclcpp::Node::SharedPtr ros_node,
-    const std::string& frame,
-    const std::string& child_frame,
-    const geometry_msgs::msg::Transform& transform,
+    const std::string & frame,
+    const std::string & child_frame,
+    const geometry_msgs::msg::Transform & transform,
     std::chrono::duration<double> period)
   {
     // A map of child frame id to the previous tf broadcast time.
     static std::unordered_map<std::string,
-        std::chrono::steady_clock::time_point> child_frame_ids_pub_time;
+      std::chrono::steady_clock::time_point> child_frame_ids_pub_time;
     auto now = std::chrono::steady_clock::now();
     auto frame_id_it = child_frame_ids_pub_time.find(child_frame);
     if (frame_id_it == child_frame_ids_pub_time.end() ||
-        (now - frame_id_it->second > period)) {
+      (now - frame_id_it->second > period))
+    {
       child_frame_ids_pub_time[child_frame] = now;
 
       geometry_msgs::msg::TransformStamped tf_stamped;
       tf_stamped.header.frame_id = frame;
       tf_stamped.child_frame_id = child_frame;
-      tf_stamped.transform =  transform;
+      tf_stamped.transform = transform;
 
       auto tf_static_broadcaster =
-          std::make_shared<tf2_ros::StaticTransformBroadcaster>(
+        std::make_shared<tf2_ros::StaticTransformBroadcaster>(
           *ros_node.get());
       tf_static_broadcaster->sendTransform(tf_stamped);
     }

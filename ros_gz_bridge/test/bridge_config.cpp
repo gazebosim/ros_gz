@@ -282,3 +282,68 @@ TEST_F(BridgeConfig, EmptyYAML)
     "Could not parse config: file empty [test/config/empty.yaml]",
     g_last_log_event.message);
 }
+
+TEST_F(BridgeConfig, ParsePublishOpticalFrame)
+{
+  // Check that publish_optical frame values
+
+  // publish_optical_frame unspecified, should default to false
+  {
+    auto yaml =
+      R"(
+  - topic_name: foo
+    ros_type_name: sensor_msgs/msg/Image
+    gz_type_name: sensor.msgs.Image
+    direction: GZ_TO_ROS
+    )";
+
+    auto results = ros_gz_bridge::readFromYamlString(yaml);
+    EXPECT_FALSE(results[0].publish_optical_frame);
+  }
+
+  // publish_optical_frame specified to false
+  {
+    auto yaml =
+      R"(
+  - topic_name: foo
+    ros_type_name: sensor_msgs/msg/Image
+    gz_type_name: ignition.msgs.Image
+    direction: GZ_TO_ROS
+    publish_optical_frame: false
+    )";
+
+    auto results = ros_gz_bridge::readFromYamlString(yaml);
+    EXPECT_FALSE(results[0].publish_optical_frame);
+  }
+
+  // publish_optical_frame specified to true
+  {
+    auto yaml =
+      R"(
+  - topic_name: foo
+    ros_type_name: sensor_msgs/msg/Image
+    gz_type_name: ignition.msgs.Image
+    direction: GZ_TO_ROS
+    publish_optical_frame: true
+    )";
+
+    auto results = ros_gz_bridge::readFromYamlString(yaml);
+    EXPECT_TRUE(results[0].publish_optical_frame);
+  }
+
+  // publish_optical_frame specified to true but it is not applicable to
+  // the ROS_TO_GZ direction
+  {
+    auto yaml =
+      R"(
+  - topic_name: foo
+    ros_type_name: sensor_msgs/msg/Image
+    gz_type_name: ignition.msgs.Image
+    direction: ROS_TO_GZ
+    publish_optical_frame: true
+    )";
+
+    auto results = ros_gz_bridge::readFromYamlString(yaml);
+    EXPECT_FALSE(results[0].publish_optical_frame);
+  }
+}

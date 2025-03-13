@@ -143,17 +143,18 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     ret.is_lazy = yaml_node[kLazy].as<bool>();
   }
 
-  bool publish_optical_frame = yaml_node[kPublishOpticalFrame].as<bool>();
-  if (publish_optical_frame) {
-    if (direction == kGzToRos) {
-      ret.publish_optical_frame = publish_optical_frame;
-    }
-    else {
-      RCLCPP_ERROR(
-        logger,
-        "The %s parameter is only applicable to the [%s] direction",
-        kPublishOpticalFrame, direction.c_str());
-      return {};
+  if (yaml_node[kPublishOpticalFrame]) {
+    bool publish_optical_frame = yaml_node[kPublishOpticalFrame].as<bool>();
+    if (publish_optical_frame) {
+      if (direction == kGzToRos) {
+        ret.publish_optical_frame = publish_optical_frame;
+      } else {
+        RCLCPP_ERROR(
+          logger,
+          "The %s parameter is only applicable to the [%s] direction",
+          kPublishOpticalFrame, direction.c_str());
+        return {};
+      }
     }
   }
 
