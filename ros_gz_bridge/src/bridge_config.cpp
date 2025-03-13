@@ -153,7 +153,6 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
           logger,
           "The %s parameter is only applicable to the [%s] direction",
           kPublishOpticalFrame, direction.c_str());
-        return {};
       }
     }
   }

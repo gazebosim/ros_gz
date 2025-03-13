@@ -291,7 +291,7 @@ TEST_F(BridgeConfig, ParsePublishOpticalFrame)
       R"(
   - topic_name: foo
     ros_type_name: sensor_msgs/msg/Image
-    gz_type_name: sensor.msgs.Image
+    gz_type_name: ignition.msgs.Image
     direction: GZ_TO_ROS
     )";
 
