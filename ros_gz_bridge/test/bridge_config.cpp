@@ -285,8 +285,6 @@ TEST_F(BridgeConfig, EmptyYAML)
 
 TEST_F(BridgeConfig, ParsePublishOpticalFrame)
 {
-  // Check that publish_optical frame values
-
   // publish_optical_frame unspecified, should default to false
   {
     auto yaml =
