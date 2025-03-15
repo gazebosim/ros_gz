@@ -30,6 +30,7 @@
 #include <gz/msgs/empty.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_wrench.pb.h>
 #include <gz/msgs/dataframe.pb.h>
 #include <gz/msgs/float.pb.h>
 #include <gz/msgs/fluid_pressure.pb.h>
@@ -43,6 +44,7 @@
 #include <gz/msgs/joy.pb.h>
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
+#include <gz/msgs/logical_camera_image.pb.h>
 #include <gz/msgs/magnetometer.pb.h>
 #include <gz/msgs/material_color.pb.h>
 #include <gz/msgs/model.pb.h>
@@ -303,6 +305,14 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::EntityFactory> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::EntityWrench & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::EntityWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(gz::msgs::Contact & _msg);
 
 /// \brief Compare a message with the populated for testing.
@@ -540,6 +550,14 @@ void createTestMsg(gz::msgs::AnnotatedOriented3DBox_V & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::LogicalCameraImage & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogicalCameraImage> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

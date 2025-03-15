@@ -2,6 +2,117 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.5 (2025-02-24)
+------------------
+
+2.1.4 (2025-02-12)
+------------------
+
+2.1.3 (2025-01-14)
+------------------
+* Refactor triggered_camera demo (`#645 <https://github.com/gazebosim/ros_gz/issues/645>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Refactor rgbd_camera_bridge demo (`#643 <https://github.com/gazebosim/ros_gz/issues/643>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Refactor diff_drive demo (`#635 <https://github.com/gazebosim/ros_gz/issues/635>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Refactor gpu_lidar_bridge demo (`#636 <https://github.com/gazebosim/ros_gz/issues/636>`_)
+  * Refactor gpu_lidar_bridge demo
+* Refactor camera demo (`#634 <https://github.com/gazebosim/ros_gz/issues/634>`_)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Refactor battery demo (`#633 <https://github.com/gazebosim/ros_gz/issues/633>`_)
+* Refactor tf_bridge demo (`#644 <https://github.com/gazebosim/ros_gz/issues/644>`_)
+* Refactor magnetometer demo (`#638 <https://github.com/gazebosim/ros_gz/issues/638>`_)
+* Refactor imu demo (`#637 <https://github.com/gazebosim/ros_gz/issues/637>`_)
+  * Refactor imu demo
+* Refactor navsat_gpxfix demo (`#642 <https://github.com/gazebosim/ros_gz/issues/642>`_)
+  * Refactor navsat_gpxfix demo
+* Refactor navsat demo (`#639 <https://github.com/gazebosim/ros_gz/issues/639>`_)
+  * Refactor navsat demo
+* Refactor air pressure demo (`#632 <https://github.com/gazebosim/ros_gz/issues/632>`_)
+  * Refactor air pressure demo
+  Co-authored-by: Addisu Z. Taddese <addisu@openrobotics.org>
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: Carlos Agüero
+
+2.1.2 (2024-10-31)
+------------------
+
+2.1.1 (2024-10-14)
+------------------
+
+2.1.0 (2024-09-12)
+------------------
+
+2.0.1 (2024-08-29)
+------------------
+
+2.0.0 (2024-07-22)
+------------------
+
+1.0.1 (2024-07-03)
+------------------
+* Prepare for 1.0.0 Release (`#495 <https://github.com/gazebosim/ros_gz//issues/495>`_)
+* Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz//issues/531>`_)
+* [backport Humble] Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_) (`#538 <https://github.com/gazebosim/ros_gz//issues/538>`_)
+  Co-authored-by: Rousseau Vincent <vincentrou@gmail.com>
+* [backport Iron] Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_) (`#537 <https://github.com/gazebosim/ros_gz//issues/537>`_)
+  Co-authored-by: Rousseau Vincent <vincentrou@gmail.com>
+* 0.244.14
+* Changelog
+* 0.244.13
+* Changelog
+* Remove deprecations using ros_gz_sim_create (`#476 <https://github.com/gazebosim/ros_gz//issues/476>`_)
+* 0.244.12
+* Changelog
+* 0.246.0
+* Update changelogs
+* Added more topic to the bridge (`#422 <https://github.com/gazebosim/ros_gz//issues/422>`_)
+* Fix incorrect subscription on demo (`#405 <https://github.com/gazebosim/ros_gz//issues/405>`_) (`#408 <https://github.com/gazebosim/ros_gz//issues/408>`_)
+  This PR fixes an incorrect subscription on one of the demos. Running
+  ```
+  ros2 launch ros_gz_sim_demos gpu_lidar_bridge.launch.py
+  ```
+  causes rviz2 to crash and exit with the error:
+  ```
+  rviz2-3]
+  [rviz2-3] >>> [rcutils|error_handling.c:108] rcutils_set_error_state()
+  [rviz2-3] This error state is being overwritten:
+  [rviz2-3]
+  [rviz2-3]   'create_subscription() called for existing topic name rt/lidar with incompatible type sensor_msgs::msg::dds\_::PointCloud2\_, at ./src/subscription.cpp:146, at ./src/rcl/subscription.c:108'
+  [rviz2-3]
+  [rviz2-3] with this new error message:
+  [rviz2-3]
+  [rviz2-3]   'invalid allocator, at ./src/rcl/subscription.c:218'
+  [rviz2-3]
+  [rviz2-3] rcutils_reset_error() should be called after error handling to avoid this.
+  ```
+  This is due to an incorrect subscription on the part of the demo. This
+  PR fixes it by getting a subscription to the right topic for the
+  pointcloud display. (`lidar/points` instead of `lidar`). Was tested on
+  garden + humble.
+  Co-authored-by: Arjo Chakravarty <arjoc@intrinsic.ai>
+* Port: humble to ros2 (`#386 <https://github.com/gazebosim/ros_gz//issues/386>`_)
+* Merge branch 'humble' into mjcarroll/humble_to_ros2
+* Update maintainers (`#376 <https://github.com/gazebosim/ros_gz//issues/376>`_)
+* Rename 'ign gazebo' to 'gz sim' (`#343 <https://github.com/gazebosim/ros_gz//issues/343>`_)
+* Create bridge for GPSFix msg (`#316 <https://github.com/gazebosim/ros_gz//issues/316>`_)
+* Humble ➡️ ROS2 (`#323 <https://github.com/gazebosim/ros_gz//issues/323>`_)
+  Humble ➡️ ROS2
+* Merge branch 'humble' into ports/humble_to_ros2
+* Fixed ros_gz_sim_demos launch files (`#319 <https://github.com/gazebosim/ros_gz//issues/319>`_)
+* 0.245.0
+* Changelog
+* humble to ros2 (`#311 <https://github.com/gazebosim/ros_gz//issues/311>`_)
+  Co-authored-by: Michael Carroll <michael@openrobotics.org>
+* Merge remote-tracking branch 'origin/humble' into ahcorde/humble_to_ros2
+* Remove all ignition references on ROS 2 branch (`#302 <https://github.com/gazebosim/ros_gz//issues/302>`_)
+  * Remove all shims
+  * Update CMakeLists and package.xml for garden
+  * Complete garden gz renaming
+  * Drop fortress CI
+* Contributors: Addisu Z. Taddese, Aditya Pande, Alejandro Hernández Cordero, Clyde McQueen, Jose Luis Rivero, Michael Carroll, Rousseau Vincent, ahcorde
+
 1.0.0 (2024-04-24)
 ------------------
 * Use gz_vendor packages (`#531 <https://github.com/gazebosim/ros_gz/issues/531>`_)

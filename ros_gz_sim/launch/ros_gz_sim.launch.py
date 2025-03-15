@@ -15,32 +15,32 @@
 """Launch gzsim + ros_gz_bridge in a component container."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
-from launch_ros.substitutions import FindPackageShare
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration, TextSubstitution
+from ros_gz_bridge.actions import RosGzBridge
+from ros_gz_sim.actions import GzServer
 
 
 def generate_launch_description():
 
-    config_file = LaunchConfiguration('config_file')
-    container_name = LaunchConfiguration('container_name')
-    namespace = LaunchConfiguration('namespace')
-    use_composition = LaunchConfiguration('use_composition')
-    use_respawn = LaunchConfiguration('use_respawn')
-    bridge_log_level = LaunchConfiguration('bridge_log_level')
-
-    world_sdf_file = LaunchConfiguration('world_sdf_file')
-    world_sdf_string = LaunchConfiguration('world_sdf_string')
+    declare_bridge_name_cmd = DeclareLaunchArgument(
+        'bridge_name', description='Name of the bridge'
+    )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', default_value='', description='YAML config file'
+        'config_file', description='YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
         'container_name',
         default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',
+    )
+
+    declare_create_own_container_cmd = DeclareLaunchArgument(
+        'create_own_container',
+        default_value='False',
+        description='Whether we should start a ROS container when using composition.',
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -61,6 +61,10 @@ def generate_launch_description():
         'bridge_log_level', default_value='info', description='Bridge log level'
     )
 
+    declare_bridge_params_cmd = DeclareLaunchArgument(
+        'bridge_params', default_value='', description='Extra parameters to pass to the bridge.'
+    )
+
     declare_world_sdf_file_cmd = DeclareLaunchArgument(
         'world_sdf_file', default_value=TextSubstitution(text=''),
         description='Path to the SDF world file'
@@ -71,41 +75,43 @@ def generate_launch_description():
         description='SDF world string'
     )
 
-    bridge_description = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [PathJoinSubstitution([FindPackageShare('ros_gz_bridge'),
-                                   'launch',
-                                   'ros_gz_bridge.launch.py'])]),
-        launch_arguments=[('config_file', config_file),
-                          ('container_name', container_name),
-                          ('namespace', namespace),
-                          ('use_composition', use_composition),
-                          ('use_respawn', use_respawn),
-                          ('bridge_log_level', bridge_log_level)])
+    gz_server_action = GzServer(
+        world_sdf_file=LaunchConfiguration('world_sdf_file'),
+        world_sdf_string=LaunchConfiguration('world_sdf_string'),
+        container_name=LaunchConfiguration('container_name'),
+        create_own_container=LaunchConfiguration('create_own_container'),
+        use_composition=LaunchConfiguration('use_composition'),
+    )
 
-    gz_server_description = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
-                                   'launch',
-                                   'gz_server.launch.py'])]),
-        launch_arguments=[('world_sdf_file', world_sdf_file),
-                          ('world_sdf_string', world_sdf_string),
-                          ('use_composition', use_composition), ])
+    ros_gz_bridge_action = RosGzBridge(
+        bridge_name=LaunchConfiguration('bridge_name'),
+        config_file=LaunchConfiguration('config_file'),
+        container_name=LaunchConfiguration('container_name'),
+        create_own_container=str(False),
+        namespace=LaunchConfiguration('namespace'),
+        use_composition=LaunchConfiguration('use_composition'),
+        use_respawn=LaunchConfiguration('use_respawn'),
+        log_level=LaunchConfiguration('bridge_log_level'),
+        bridge_params=LaunchConfiguration('bridge_params'),
+    )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
+    ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_bridge_log_level_cmd)
+    ld.add_action(declare_bridge_params_cmd)
     ld.add_action(declare_world_sdf_file_cmd)
     ld.add_action(declare_world_sdf_string_cmd)
     # Add the actions to launch all of the bridge + gz_server nodes
-    ld.add_action(bridge_description)
-    ld.add_action(gz_server_description)
+    ld.add_action(gz_server_action)
+    ld.add_action(ros_gz_bridge_action)
 
     return ld

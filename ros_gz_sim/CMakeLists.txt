@@ -13,6 +13,7 @@ endif()
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(rcpputils REQUIRED)
 find_package(std_msgs REQUIRED)
 
 find_package(gz_math_vendor REQUIRED)
@@ -47,8 +48,19 @@ target_link_libraries(create
   gz-math::core
   gz-msgs::core
   gz-transport::core
+  rcpputils::rcpputils
 )
-ament_target_dependencies(create std_msgs)
+
+add_executable(remove src/remove.cpp)
+ament_target_dependencies(remove
+  rclcpp
+  std_msgs
+)
+
+target_link_libraries(remove
+  gz-msgs::core
+  gz-transport::core
+)
 
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 ament_target_dependencies(${PROJECT_NAME}
@@ -81,6 +93,11 @@ rclcpp_components_register_node(
   EXECUTABLE gzserver
 )
 
+target_include_directories(gzserver_component PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+)
+
 configure_file(
   launch/gz_sim.launch.py.in
   launch/gz_sim.launch.py.configured
@@ -104,13 +121,16 @@ install(FILES
   "launch/ros_gz_sim.launch"
   "launch/ros_gz_sim.launch.py"
   "launch/ros_gz_spawn_model.launch.py"
+  "launch/gz_remove_model.launch.py"
   DESTINATION share/${PROJECT_NAME}/launch
 )
 
 install(TARGETS
   create
+  remove
   DESTINATION lib/${PROJECT_NAME}
 )
+
 install(TARGETS
   gzserver
   DESTINATION lib/${PROJECT_NAME}
@@ -151,6 +171,10 @@ if(BUILD_TESTING)
     test/test_create.cpp
   )
 
+  ament_add_gtest_executable(test_remove
+    test/test_remove.cpp
+  )
+
   ament_target_dependencies(test_stopwatch rclcpp)
 
   target_include_directories(test_stopwatch PUBLIC
@@ -165,12 +189,17 @@ if(BUILD_TESTING)
     gz-transport::core
   )
 
+  target_link_libraries(test_remove
+    gz-transport::core
+  )
+
   install(
-    TARGETS test_stopwatch test_create
+    TARGETS test_stopwatch test_create test_remove
     DESTINATION lib/${PROJECT_NAME}
   )
   ament_add_gtest_test(test_stopwatch)
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
+  add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
 endif()
 
 ament_package()

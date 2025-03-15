@@ -34,10 +34,12 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Contacts                 | gz.msgs.Contacts                    |
 | ros_gz_interfaces/msg/Dataframe                | gz.msgs.Dataframe                   |
 | ros_gz_interfaces/msg/Entity                   | gz.msgs.Entity                      |
+| ros_gz_interfaces/msg/EntityWrench             | gz.msgs.EntityWrench                |
 | ros_gz_interfaces/msg/Float32Array             | gz.msgs.Float_V                     |
 | ros_gz_interfaces/msg/GuiCamera                | gz.msgs.GUICamera                   |
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
+| ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
@@ -88,6 +90,9 @@ You should create an unidirectional `/clock` bridge:
 ```bash
 ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
 ```
+
+An alternative set-up can be using the bridge with the `override_timestamps_with_wall_time` ros parameter set to `true` (default=`false`). In this set-up,
+all header timestamps of the outgoing messages will be stamped with the wall time. This can be useful when the simulator has to communicate with an external system that requires wall times.
 
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 

@@ -55,7 +55,7 @@ convert_gz_to_ros(
   ros_msg.track = atan2(gz_msg.velocity_north(), gz_msg.velocity_east());
   ros_msg.climb = gz_msg.velocity_up();
 
-  // position_covariance is not supported in Ignition::Msgs::NavSat.
+  // position_covariance is not supported in gz::msgs::NavSat.
   ros_msg.position_covariance_type = gps_msgs::msg::GPSFix::COVARIANCE_TYPE_UNKNOWN;
   ros_msg.status.status = gps_msgs::msg::GPSStatus::STATUS_GBAS_FIX;
 }

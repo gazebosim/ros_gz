@@ -2,27 +2,26 @@
 
 ROS 2 version | Gazebo version | Branch | Binaries hosted at
 -- | -- | -- | --
-Foxy | Citadel | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | https://packages.ros.org
-Foxy | Edifice | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | only from source
-Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | https://packages.ros.org
+Foxy | Citadel | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | https://packages.ros.org [^2]
+Foxy | Edifice | [foxy](https://github.com/gazebosim/ros_gz/tree/foxy) | only from source [^2]
+Galactic | Edifice | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | https://packages.ros.org [^2]
 Galactic | Fortress | [galactic](https://github.com/gazebosim/ros_gz/tree/galactic) | only from source
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
-Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
-Iron | Fortress | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
-Iron | Garden | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
-Iron | Harmonic | [iron](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
-Jazzy* | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | only from source
-Jazzy* | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
-Jazzy* | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
-Rolling | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org
-Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+Humble | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | [gazebo packages](https://gazebosim.org/docs/latest/ros_installation#gazebo-garden-with-ros-2-humble-iron-or-rolling-use-with-caution-)[^1] [^2]
+Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | [gazebo packages](https://gazebosim.org/docs/harmonic/ros_installation#-gazebo-harmonic-with-ros-2-humble-iron-or-rolling-use-with-caution-)[^1]
+Iron | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | https://packages.ros.org
+Iron | Garden | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | only from source [^2]
+Iron | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/iron) | only from source
+Jazzy | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
+Jazzy | Harmonic | [jazzy](https://github.com/gazebosim/ros_gz/tree/jazzy) | https://packages.ros.org
+Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
 Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
+Rolling | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 
-* ROS 2 Jazzy Jalisco is slated for release on May 23rd, 2024. [Full ROS 2 release information is available in REP-2000.]
+[^1]: Binaries for these pairings are provided from the packages.osrfoundation.org repository. Refer to https://gazebosim.org/docs/latest/ros_installation for installation instructions.
+[^2]: Note that the Gazebo version on this row has reached end-of-life.
 
 For information on ROS(1) and Gazebo compatibility, refer to the [noetic branch README](https://github.com/gazebosim/ros_gz/tree/noetic)
-
-> Please [ticket an issue](https://github.com/gazebosim/ros_gz/issues/) if you'd like support to be added for some combination.
 
 [Details about the renaming process](README_RENAME.md) from `ign` to `gz` .
 
@@ -81,23 +80,23 @@ They are hosted at https://packages.ros.org.
 #### ROS
 
 Be sure you've installed
-[ROS Rolling](https://index.ros.org/doc/ros2/Installation/)
+[ROS Rolling](https://docs.ros.org/en/rolling/index.html)
 (at least ROS-Base). More ROS dependencies will be installed below.
 
 #### Gazebo
 
-Install either [Edifice, Fortress, or Garden](https://gazebosim.org/docs).
+Install either [Fortress, Harmonic or Ionic](https://gazebosim.org/docs).
 
 Set the `GZ_VERSION` environment variable to the Gazebo version you'd
 like to compile against. For example:
 
-    export GZ_VERSION=edifice
+    export GZ_VERSION=harmonic # IMPORTANT: Replace with correct version
 
 > You only need to set this variable when compiling, not when running.
 
 #### Compile ros_gz
 
-The following steps are for Linux and OSX.
+The following steps are for Linux and macOS.
 
 1. Create a colcon workspace:
 
@@ -114,7 +113,7 @@ The following steps are for Linux and OSX.
 
     ```
     cd ~/ws
-    rosdep install -r --from-paths src -i -y --rosdistro humble
+    rosdep install -r --from-paths src -i -y --rosdistro rolling
     ```
 
     > If `rosdep` fails to install Gazebo libraries and you have not installed them before, please follow [Gazebo installation instructions](https://gazebosim.org/docs/latest/install).

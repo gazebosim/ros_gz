@@ -15,35 +15,34 @@
 """Launch ros_gz bridge in a component container."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, GroupAction
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration, PythonExpression
-from launch_ros.actions import LoadComposableNodes, Node
-from launch_ros.descriptions import ComposableNode
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
+from ros_gz_bridge.actions import RosGzBridge
 
 
 def generate_launch_description():
 
-    name = LaunchConfiguration('name')
-    config_file = LaunchConfiguration('config_file')
-    container_name = LaunchConfiguration('container_name')
-    namespace = LaunchConfiguration('namespace')
-    use_composition = LaunchConfiguration('use_composition')
-    use_respawn = LaunchConfiguration('use_respawn')
-    log_level = LaunchConfiguration('log_level')
-
-    declare_name_cmd = DeclareLaunchArgument(
-        'name', description='Name of ros_gz_bridge node'
+    declare_bridge_name_cmd = DeclareLaunchArgument(
+        'bridge_name', description='Name of ros_gz_bridge node'
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', default_value='', description='YAML config file'
+        'config_file', description='YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
         'container_name',
         default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',
+    )
+
+    declare_create_own_container_cmd = DeclareLaunchArgument(
+        'create_own_container',
+        default_value='False',
+        description='Whether the bridge should start its own ROS container when using composition \
+          (not recommended). This option should only be set to true if you plan to put your ROS \
+          node in the container created by the bridge. This is not needed if you want Gazebo and \
+          the bridge to be in the same ROS container.',
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -64,51 +63,35 @@ def generate_launch_description():
         'log_level', default_value='info', description='log level'
     )
 
-    load_nodes = GroupAction(
-        condition=IfCondition(PythonExpression(['not ', use_composition])),
-        actions=[
-            Node(
-                package='ros_gz_bridge',
-                executable='bridge_node',
-                name=name,
-                namespace=namespace,
-                output='screen',
-                respawn=use_respawn,
-                respawn_delay=2.0,
-                parameters=[{'config_file': config_file}],
-                arguments=['--ros-args', '--log-level', log_level],
-            ),
-        ],
+    declare_bridge_params_cmd = DeclareLaunchArgument(
+        'bridge_params', default_value='', description='Extra parameters to pass to the bridge.'
     )
 
-    load_composable_nodes = LoadComposableNodes(
-        condition=IfCondition(use_composition),
-        target_container=container_name,
-        composable_node_descriptions=[
-            ComposableNode(
-                package='ros_gz_bridge',
-                plugin='ros_gz_bridge::RosGzBridge',
-                name=name,
-                namespace=namespace,
-                parameters=[{'config_file': config_file}],
-                extra_arguments=[{'use_intra_process_comms': True}],
-            ),
-        ],
+    ros_gz_bridge_action = RosGzBridge(
+        bridge_name=LaunchConfiguration('bridge_name'),
+        config_file=LaunchConfiguration('config_file'),
+        container_name=LaunchConfiguration('container_name'),
+        create_own_container=LaunchConfiguration('create_own_container'),
+        namespace=LaunchConfiguration('namespace'),
+        use_composition=LaunchConfiguration('use_composition'),
+        use_respawn=LaunchConfiguration('use_respawn'),
+        log_level=LaunchConfiguration('log_level'),
+        bridge_params=LaunchConfiguration('bridge_params')
     )
 
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(declare_name_cmd)
+    ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_namespace_cmd)
     ld.add_action(declare_use_composition_cmd)
     ld.add_action(declare_use_respawn_cmd)
     ld.add_action(declare_log_level_cmd)
-    # Add the actions to launch all of the bridge nodes
-    ld.add_action(load_nodes)
-    ld.add_action(load_composable_nodes)
-
+    ld.add_action(declare_bridge_params_cmd)
+    # Add the ros_gz_bridge action
+    ld.add_action(ros_gz_bridge_action)
     return ld

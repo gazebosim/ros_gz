@@ -36,9 +36,9 @@ class GzSpawnModel(Action):
         *,
         world: Optional[SomeSubstitutionsType] = None,
         file: Optional[SomeSubstitutionsType] = None,
-        xml_string: Optional[SomeSubstitutionsType] = None,
+        model_string: Optional[SomeSubstitutionsType] = None,
         topic: Optional[SomeSubstitutionsType] = None,
-        name: Optional[SomeSubstitutionsType] = None,
+        entity_name: Optional[SomeSubstitutionsType] = None,
         allow_renaming: Optional[SomeSubstitutionsType] = None,
         x: Optional[SomeSubstitutionsType] = None,
         y: Optional[SomeSubstitutionsType] = None,
@@ -56,9 +56,9 @@ class GzSpawnModel(Action):
 
         :param: world World name.
         :param: file SDF filename.
-        :param: xml_string XML string.
+        :param: model_string XML(SDF) string.
         :param: topic Get XML from this topic.
-        :param: name Name of the entity.
+        :param: entity_name Name of the entity.
         :param: allow_renaming Whether the entity allows renaming or not.
         :param: x X coordinate.
         :param: y Y coordinate.
@@ -70,9 +70,9 @@ class GzSpawnModel(Action):
         super().__init__(**kwargs)
         self.__world = world
         self.__file = file
-        self.__xml_string = xml_string
+        self.__model_string = model_string
         self.__topic = topic
-        self.__name = name
+        self.__entity_name = entity_name
         self.__allow_renaming = allow_renaming
         self.__x = x
         self.__y = y
@@ -94,16 +94,16 @@ class GzSpawnModel(Action):
             'file', data_type=str,
             optional=True)
 
-        xml_string = entity.get_attr(
-            'xml_string', data_type=str,
+        model_string = entity.get_attr(
+            'model_string', data_type=str,
             optional=True)
 
         topic = entity.get_attr(
             'topic', data_type=str,
             optional=True)
 
-        name = entity.get_attr(
-            'name', data_type=str,
+        entity_name = entity.get_attr(
+            'entity_name', data_type=str,
             optional=True)
 
         allow_renaming = entity.get_attr(
@@ -142,17 +142,17 @@ class GzSpawnModel(Action):
             file = parser.parse_substitution(file)
             kwargs['file'] = file
 
-        if isinstance(xml_string, str):
-            xml_string = parser.parse_substitution(xml_string)
-            kwargs['xml_string'] = xml_string
+        if isinstance(model_string, str):
+            model_string = parser.parse_substitution(model_string)
+            kwargs['model_string'] = model_string
 
         if isinstance(topic, str):
             topic = parser.parse_substitution(topic)
             kwargs['topic'] = topic
 
-        if isinstance(name, str):
-            name = parser.parse_substitution(name)
-            kwargs['name'] = name
+        if isinstance(entity_name, str):
+            entity_name = parser.parse_substitution(entity_name)
+            kwargs['entity_name'] = entity_name
 
         if isinstance(allow_renaming, str):
             allow_renaming = parser.parse_substitution(allow_renaming)
@@ -193,9 +193,9 @@ class GzSpawnModel(Action):
                                        'gz_spawn_model.launch.py'])]),
             launch_arguments=[('world', self.__world),
                               ('file', self.__file),
-                              ('xml_string',   self.__xml_string),
+                              ('model_string',   self.__model_string),
                               ('topic',  self.__topic),
-                              ('name', self.__name),
+                              ('entity_name', self.__entity_name),
                               ('allow_renaming', self.__allow_renaming),
                               ('x',   self.__x),
                               ('y',  self.__y),

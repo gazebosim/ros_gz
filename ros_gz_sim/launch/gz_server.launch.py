@@ -16,10 +16,8 @@
 
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch.conditions import IfCondition
-from launch.substitutions import LaunchConfiguration, PythonExpression, TextSubstitution
-from launch_ros.actions import ComposableNodeContainer, Node
-from launch_ros.descriptions import ComposableNode
+from launch.substitutions import LaunchConfiguration, TextSubstitution
+from ros_gz_sim.actions import GzServer
 
 
 def generate_launch_description():
@@ -33,36 +31,19 @@ def generate_launch_description():
     declare_container_name_cmd = DeclareLaunchArgument(
         'container_name', default_value='ros_gz_container',
         description='Name of container that nodes will load in if use composition',)
+    declare_create_own_container_cmd = DeclareLaunchArgument(
+        'create_own_container', default_value='False',
+        description='Whether we should start our own ROS container when using composition.',)
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition', default_value='False',
         description='Use composed bringup if True')
 
-    load_nodes = Node(
-        condition=IfCondition(PythonExpression(['not ', LaunchConfiguration('use_composition')])),
-        package='ros_gz_sim',
-        executable='gzserver',
-        output='screen',
-        parameters=[{'world_sdf_file': LaunchConfiguration('world_sdf_file'),
-                     'world_sdf_string': LaunchConfiguration('world_sdf_string')}],
-    )
-
-    load_composable_nodes = ComposableNodeContainer(
-        condition=IfCondition(LaunchConfiguration('use_composition')),
-        name=LaunchConfiguration('container_name'),
-        namespace='',
-        package='rclcpp_components',
-        executable='component_container',
-        composable_node_descriptions=[
-            ComposableNode(
-                package='ros_gz_sim',
-                plugin='ros_gz_sim::GzServer',
-                name='gz_server',
-                parameters=[{'world_sdf_file': LaunchConfiguration('world_sdf_file'),
-                             'world_sdf_string': LaunchConfiguration('world_sdf_string')}],
-                extra_arguments=[{'use_intra_process_comms': True}],
-            ),
-        ],
-        output='screen',
+    gz_server_action = GzServer(
+        world_sdf_file=LaunchConfiguration('world_sdf_file'),
+        world_sdf_string=LaunchConfiguration('world_sdf_string'),
+        container_name=LaunchConfiguration('container_name'),
+        create_own_container=LaunchConfiguration('create_own_container'),
+        use_composition=LaunchConfiguration('use_composition'),
     )
 
     # Create the launch description and populate
@@ -72,9 +53,9 @@ def generate_launch_description():
     ld.add_action(declare_world_sdf_file_cmd)
     ld.add_action(declare_world_sdf_string_cmd)
     ld.add_action(declare_container_name_cmd)
+    ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_use_composition_cmd)
-    # Add the actions to launch all of the gz_server nodes
-    ld.add_action(load_nodes)
-    ld.add_action(load_composable_nodes)
+    # Add the gz_server action
+    ld.add_action(gz_server_action)
 
     return ld

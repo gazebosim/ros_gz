@@ -45,7 +45,7 @@ int main(int /*argc*/, char **/*argv*/)
   gz::transport::Node node;
 
   // gz::msgs::Image.
-  auto image_pub = node.Advertise<ignition::msgs::Image>("image");
+  auto image_pub = node.Advertise<gz::msgs::Image>("image");
   gz::msgs::Image image_msg;
   ros_gz_image::testing::createTestMsg(image_msg);
 
