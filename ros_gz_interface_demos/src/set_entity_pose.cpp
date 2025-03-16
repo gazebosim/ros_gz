@@ -91,7 +91,7 @@ public:
     } else {
       // In this case, qx=roll, qy=pitch, qz=yaw (in radians)
       pose.orientation = euler_to_quaternion(qx, qy, qz);
-      qw = pose.orientation.w;  // For logging
+      qw = pose.orientation.w;  
     }
     
     request->pose = pose;
