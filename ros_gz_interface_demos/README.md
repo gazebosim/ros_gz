@@ -1,152 +1,188 @@
-# Gazebo Entity Manager Documentation
+# ROS-Gazebo Interface Demos
 
-This documentation provides setup and usage instructions for the Gazebo Entity Manager package (`ros_gz_interface_demos`), which allows you to spawn, position, and delete entities in Gazebo simulations through ROS 2.
+A ROS 2 package for managing entities in Gazebo simulations through the ROS-Gazebo bridge.
+
 
 ## Overview
 
-The Gazebo Entity Manager is a C++ package that provides a set of ROS 2 utilities for managing entities (models, lights, links, etc.) in a Gazebo simulation. These utilities allow you to:
+The `ros_gz_interface_demos` package provides a set of utilities for managing entities (models, lights, links, etc.) in Gazebo simulations through ROS 2. This package enables seamless communication between ROS 2 and Gazebo, allowing you to:
 
-1. Spawn new entities into the simulation
-2. Modify the pose (position and orientation) of existing entities
-3. Delete entities from the simulation
+- **Spawn entities**: Add new models and objects to a running Gazebo simulation
+- **Set entity poses**: Dynamically adjust the position and orientation of existing entities
+- **Delete entities**: Remove entities from the simulation environment
+
+These utilities are particularly useful for dynamic simulation scenarios, testing robotics algorithms, and creating complex simulation environments programmatically.
+
+## Features
+
+- C++ implementation for high performance and integration with ROS 2 ecosystem
+- Command-line utilities with intuitive syntax
+- Support for various entity types (models, lights, links, visuals, etc.)
+- Position specification using both quaternions and Euler angles
+- Comprehensive error reporting
 
 ## Prerequisites
 
-- ROS 2 (tested with Rolling/Humble)
+- ROS 2 (Jazzy or Rolling)
 - Gazebo Harmonic/Ionic
 - ROS-Gazebo bridge package (`ros_gz_bridge`)
 
 ## Installation
 
-1. Create a ROS 2 workspace if you don't have one:
-   ```bash
-   mkdir -p ~/gz_ws/src
-   cd ~/gz_ws/src
-   ```
+### From Source
 
-2. Clone the package into your workspace:
-   ```bash
-   git clone https://github.com/khaledgabr77/gz_entity_manager_cpp.git
-   ```
+1. Create a ROS 2 workspace (if you don't have one):
 
-3. Build the workspace:
-   ```bash
-   cd ~/gz_ws
-   colcon build --symlink-install
-   ```
+```bash
+mkdir -p ~/ros_gz_ws/src
+cd ~/ros_gz_ws/src
+```
 
-4. Source the workspace:
-   ```bash
-   source ~/gz_ws/install/setup.bash
-   ```
+2. Clone the repository:
+
+```bash
+git clone https://github.com/gazebosim/ros_gz
+```
+
+3. Install dependencies:
+
+```bash
+cd ~/ros_gz_ws
+rosdep install --from-paths src --ignore-src -r -y
+```
+
+4. Build the package:
+
+```bash
+colcon build --symlink-install
+```
+
+5. Source the workspace:
+
+```bash
+source ~/ros_gz_ws/install/setup.bash
+```
 
 ## Usage
 
-The package provides three main executables:
-- `spawn_entity`: Creates new entities in the Gazebo simulation
-- `set_entity_pose`: Modifies the position and orientation of existing entities
-- `delete_entity`: Removes entities from the simulation
+### Launching Gazebo
+
+Before using the utilities, you need to start Gazebo with your desired world:
+
+```bash
+gz sim -v 4 ~/ros_gz_ws/src/ros_gz_interface_demos/worlds/default.sdf
+```
 
 ### 1. Spawning Entities
 
-To spawn an entity into the simulation:
+Spawn new entities into the simulation:
 
-1. Launch Gazebo with your world file:
-   ```bash
-   gz sim /path/to/your/world.sdf
-   ```
+1. Run the ROS-Gazebo bridge for the spawn service:
 
-2. Run the ROS-Gazebo bridge for the spawn service:
-   ```bash
-   ros2 run ros_gz_bridge parameter_bridge /world/default/create@ros_gz_interfaces/srv/SpawnEntity
-   ```
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/create@ros_gz_interfaces/srv/SpawnEntity
+```
 
-3. Spawn your entity using the `spawn_entity` executable:
-   ```bash
-   ros2 run ros_gz_interface_demos spawn_entity <model_name> <path_to_model_sdf>
-   ```
+2. Spawn your entity:
 
-   Example:
-   ```bash
-   ros2 run ros_gz_interface_demos spawn_entity cardboard_box /home/gz_ws/src/ros_gz_interface_demos/models/cardboard_box/model.sdf
-   ```
+```bash
+ros2 run ros_gz_interface_demos spawn_entity --name <model_name> --sdf_filename <path_to_sdf_file> [--pos x y z] [--quat x y z w | --euler roll pitch yaw]
+```
 
-### 2. Setting Entity Pose
+**Example:**
 
-To modify the pose (position and orientation) of an existing entity:
+```bash
+ros2 run ros_gz_interface_demos spawn_entity --name cardboard_box --sdf_filename $(ros2 pkg prefix ros_gz_interface_demos)/share/ros_gz_interface_demos/models/cardboard_box/model.sdf --pos 1.0 2.0 0.5 --euler 0.0 0.0 1.57
 
-1. Launch Gazebo with your world file:
-   ```bash
-   gz sim /path/to/your/world.sdf
-   ```
+```
 
-2. Run the ROS-Gazebo bridge for the set pose service:
-   ```bash
-   ros2 run ros_gz_bridge parameter_bridge /world/default/set_pose@ros_gz_interfaces/srv/SetEntityPose
-   ```
+or
 
-3. Modify the entity's pose using the `set_entity_pose` executable:
-   ```bash
-   ros2 run ros_gz_interface_demos set_entity_pose [--name NAME | --id ID] [--type TYPE] [--pos X Y Z] [--quat X Y Z W | --euler ROLL PITCH YAW]
-   ```
+```bash
+ros2 run ros_gz_interface_demos spawn_entity --name cardboard_box --sdf_filename /full/path/to/ros_gz_ws/src/ros_gz_interface_demos/models/cardboard_box/model.sdf --pos 1.0 2.0 0.5 --euler 0.0 0.0 1.57
+```
 
-   Example (using entity name and Euler angles for rotation):
-   ```bash
-   ros2 run ros_gz_interface_demos set_entity_pose --name cardboard_box --pos 1.0 2.0 3.0 --euler 0.0 0.0 1.57
-   ```
+![spawn_entity](resources/spawn.gif)
 
-   Example (using entity ID and quaternion for rotation):
-   ```bash
-   ros2 run ros_gz_interface_demos set_entity_pose --id 8 --pos 1.0 2.0 3.0 --quat 0.0 0.0 0.0 1.0
-   ```
+### 2. Setting Entity Poses
+
+Dynamically adjust the position and orientation of existing entities:
+
+1. Run the ROS-Gazebo bridge for the set pose service:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/set_pose@ros_gz_interfaces/srv/SetEntityPose
+```
+
+2. Set the entity's pose:
+
+```bash
+ros2 run ros_gz_interface_demos set_entity_pose [--name NAME | --id ID] [--type TYPE] [--pos X Y Z] [--quat X Y Z W | --euler ROLL PITCH YAW]
+```
+
+**Examples:**
+
+Using entity name with Euler angles for rotation:
+```bash
+ros2 run ros_gz_interface_demos set_entity_pose --name cardboard_box --pos 3.0 4.0 1.0 --euler 0.0 0.0 1.57
+```
+
+Using entity ID with quaternion for rotation:
+```bash
+ros2 run ros_gz_interface_demos set_entity_pose --id 8 --pos 3.0 4.0 1.0 --quat 0.0 0.0 0.7071 0.7071
+```
+
+![set_entity](resources/set_entity.gif)
 
 ### 3. Deleting Entities
 
-To delete an entity from the simulation:
+Remove entities from the simulation:
 
-1. Launch Gazebo with your world file:
-   ```bash
-   gz sim /path/to/your/world.sdf
-   ```
+1. Run the ROS-Gazebo bridge for the delete service:
 
-2. Run the ROS-Gazebo bridge for the delete service:
-   ```bash
-   ros2 run ros_gz_bridge parameter_bridge /world/default/remove@ros_gz_interfaces/srv/DeleteEntity
-   ```
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/remove@ros_gz_interfaces/srv/DeleteEntity
+```
 
-3. Delete the entity using the `delete_entity` executable:
-   ```bash
-   ros2 run ros_gz_interface_demos delete_entity [--name NAME | --id ID] [--type TYPE]
-   ```
+2. Delete the entity:
 
-   Example (using entity name):
-   ```bash
-   ros2 run ros_gz_interface_demos delete_entity --name cardboard_box
-   ```
+```bash
+ros2 run ros_gz_interface_demos delete_entity [--name NAME | --id ID] [--type TYPE]
+```
 
-   Example (using entity ID):
-   ```bash
-   ros2 run ros_gz_interface_demos delete_entity --id 8
-   ```
+**Examples:**
 
-   Example (specifying entity type - in this case, a LINK):
-   ```bash
-   ros2 run ros_gz_interface_demos delete_entity --name cardboard_box --type 2
-   ```
+Using entity name:
+```bash
+ros2 run ros_gz_interface_demos delete_entity --name cardboard_box
+```
+
+Using entity ID:
+```bash
+ros2 run ros_gz_interface_demos delete_entity --id 8
+```
+
+Using a specific entity type:
+```bash
+ros2 run ros_gz_interface_demos delete_entity --name cardboard_box --type 2
+```
+
+![delete_entity](resources/delete_entity.gif)
 
 ## Entity Type Reference
 
 When using the `set_entity_pose` and `delete_entity` commands, you can specify the entity type using the `--type` flag. The following type values are available:
 
-| Value | Type       |
-|-------|------------|
-| 0     | NONE       |
-| 1     | LIGHT      |
-| 2     | LINK       |
-| 3     | VISUAL     |
-| 4     | COLLISION  |
-| 5     | SENSOR     |
+| Value | Entity Type |
+|-------|-------------|
+| 0     | NONE        |
+| 1     | LIGHT       |
+| 2     | LINK        |
+| 3     | VISUAL      |
+| 4     | COLLISION   |
+| 5     | SENSOR      |
 | 6     | MODEL (default) |
+
 
 ## Troubleshooting
 
@@ -161,23 +197,3 @@ When using the `set_entity_pose` and `delete_entity` commands, you can specify t
    - The SDF file path is valid (for spawn_entity)
 
 3. **File not found errors**: Ensure you're using absolute paths or properly referenced relative paths for model SDF files.
-
-## Advanced Usage
-
-### Launching Complete Simulation
-
-For convenience, you can create launch files that start Gazebo, the ROS-Gazebo bridges, and your desired entity management commands together. Example launch files are provided in the `launch` directory of the package.
-
-### Integration with ROS 2 Applications
-
-You can use these utilities as part of larger ROS 2 applications by either:
-- Calling the executables from your own launch files or scripts
-- Using the provided C++ classes (EntitySpawner, EntityPoseSetter, EntityDeleter) in your own nodes
-
-## License
-
-This package is licensed under the Apache License 2.0.
-
-## Contact
-
-For questions or issues, please contact Khaled Gabr at khaledgabr77@email.com.
