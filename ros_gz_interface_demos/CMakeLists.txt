@@ -54,12 +54,6 @@ install(TARGETS
   DESTINATION lib/${PROJECT_NAME}
 )
 
-# Install header files
-install(
-  DIRECTORY include/
-  DESTINATION include
-)
-
 # Install launch files
 install(
   DIRECTORY worlds models

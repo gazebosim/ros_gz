@@ -232,6 +232,15 @@ int main(int argc, char ** argv)
     return 1;
   }
 
+  // Add the validation statements here
+  if (!pos_set) {
+    std::cout << "Warning: No position specified, using default (0,0,0)" << std::endl;
+  }
+
+  if (!orientation_set) {
+    std::cout << "Note: No orientation specified, using default (0,0,0,1)" << std::endl;
+  }
+
   auto pose_setter = std::make_shared<EntityPoseSetter>();
   bool result = pose_setter->set_entity_pose(
     entity_name, entity_id, entity_type,
