@@ -79,7 +79,7 @@ void print_usage()
   std::cout << "Examples:" << std::endl;
   std::cout << "  delete_entity --name cardboard_box" << std::endl;
   std::cout << "  delete_entity --id 8" << std::endl;
-  std::cout << "  delete_entity --name cardboard_box --type 6" << std::endl;
+  std::cout << "  delete_entity --name cardboard_box --type 2" << std::endl;
   std::cout << std::endl;
   std::cout << "Entity type values:" << std::endl;
   std::cout << "  0: NONE" << std::endl;
