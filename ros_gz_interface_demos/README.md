@@ -2,7 +2,6 @@
 
 A ROS 2 package for managing entities in Gazebo simulations through the ROS-Gazebo bridge.
 
-
 ## Overview
 
 The `ros_gz_interface_demos` package provides a set of utilities for managing entities (models, lights, links, etc.) in Gazebo simulations through ROS 2. This package enables seamless communication between ROS 2 and Gazebo, allowing you to:
@@ -15,8 +14,6 @@ These utilities are particularly useful for dynamic simulation scenarios, testin
 
 ## Features
 
-- C++ implementation for high performance and integration with ROS 2 ecosystem
-- Command-line utilities with intuitive syntax
 - Support for various entity types (models, lights, links, visuals, etc.)
 - Position specification using both quaternions and Euler angles
 - Comprehensive error reporting
