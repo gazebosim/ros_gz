@@ -28,7 +28,7 @@
 void usage()
 {
   std::cout << "Bridge a collection of ROS2 and Gazebo Transport topics and services.\n\n" <<
-    "  parameter_bridge [<topic@ROS2_type@Ign_type> ..] " <<
+    "  parameter_bridge [<topic@ROS2_type@Ign_type@gz_topic> ..] " <<
     " [<service@ROS2_srv_type[@Ign_req_type@Ign_rep_type]> ..]\n\n" <<
     "Topics: The first @ symbol delimits the topic name from the message types.\n" <<
     "Following the first @ symbol is the ROS message type.\n" <<
@@ -54,6 +54,9 @@ void usage()
     "A bridge from ROS to Gazebo example:\n" <<
     "    parameter_bridge /chatter@std_msgs/String]ignition.msgs" <<
     ".StringMsg\n" <<
+    "A bidirectional bridge example with gz_topic name:\n" <<
+    "    parameter_bridge /ros/chatter@std_msgs/String@gz.msgs@/gz/chatter" <<
+    ".StringMsg\n\n" <<
     "A service bridge:\n" <<
     "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld\n" <<
     "Or equivalently:\n" <<
@@ -106,13 +109,13 @@ int main(int argc, char * argv[])
     //   @ == bidirectional, or
     //   [ == only from GZ to ROS, or
     //   ] == only from ROS to GZ.
-    delimPos = arg.find(delim);
-    config.direction = BridgeDirection::BIDIRECTIONAL;
+    delimPos = arg.find(delimROSToGz);
+    config.direction = BridgeDirection::ROS_TO_GZ;
 
     if (delimPos == std::string::npos || delimPos == 0) {
       delimPos = arg.find(delimGzToROS);
       if (delimPos == std::string::npos || delimPos == 0) {
-        delimPos = arg.find(delimROSToGz);
+        delimPos = arg.find(delim);
         if (delimPos == 0) {
           usage();
           return -1;
@@ -120,7 +123,7 @@ int main(int argc, char * argv[])
           // Fall through, to parse for services
           config.direction = BridgeDirection::NONE;
         } else {
-          config.direction = BridgeDirection::ROS_TO_GZ;
+          config.direction = BridgeDirection::BIDIRECTIONAL;
         }
       } else {
         config.direction = BridgeDirection::GZ_TO_ROS;
@@ -158,6 +161,13 @@ int main(int argc, char * argv[])
         std::cerr << e.what() << std::endl;
       }
       continue;
+    }
+
+    // Get the GZ Topic type name if available
+    delimPos = arg.find(delim);
+    if (delimPos != std::string::npos && delimPos != 0) {
+      config.gz_topic_name = arg.substr(delimPos+1, arg.size());
+      arg.erase(delimPos, arg.size());
     }
 
     delimPos = arg.find(delim);
