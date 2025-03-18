@@ -18,6 +18,7 @@
 // Gazebo Msgs
 #include <gz/msgs/altimeter.pb.h>
 #include <gz/msgs/entity.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/entity_wrench.pb.h>
 #include <gz/msgs/joint_wrench.pb.h>
 #include <gz/msgs/contact.pb.h>
@@ -39,6 +40,7 @@
 // ROS 2 messages
 #include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/msg/entity_factory.hpp>
 #include <ros_gz_interfaces/msg/entity_wrench.hpp>
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
@@ -95,9 +97,28 @@ convert_ros_to_gz(
 
 template<>
 void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Entity & ros_msg,
+  gz::msgs::Pose & gz_msg);
+
+template<>
+void
 convert_gz_to_ros(
   const gz::msgs::Entity & gz_msg,
   ros_gz_interfaces::msg::Entity & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::EntityFactory & ros_msg,
+  gz::msgs::EntityFactory & gz_msg);
+
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::EntityFactory & gz_msg,
+  ros_gz_interfaces::msg::EntityFactory & ros_msg);
 
 template<>
 void
