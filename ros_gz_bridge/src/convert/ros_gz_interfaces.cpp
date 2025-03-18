@@ -154,8 +154,8 @@ template<>
 void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::EntityFactory & ros_msg,
-  gz::msgs::EntityFactory & gz_msg) {
-  
+  gz::msgs::EntityFactory & gz_msg)
+{
   gz_msg.set_name(ros_msg.name);
   gz_msg.set_allow_renaming(ros_msg.allow_renaming);
   gz_msg.set_relative_to(ros_msg.relative_to);
@@ -164,11 +164,14 @@ convert_ros_to_gz(
   bool has_sdf_filename = !ros_msg.sdf_filename.empty();
   bool has_clone_name = !ros_msg.clone_name.empty();
 
-  bool provided_two = has_sdf ? (has_sdf_filename || has_clone_name) : (has_sdf_filename && has_clone_name);
+  bool provided_two = has_sdf ? (has_sdf_filename || has_clone_name) : (has_sdf_filename &&
+    has_clone_name);
 
-  if (provided_two)
-    std::cout << "Warning: You should only provide ONE of sdf, sdf_filname, or clone_name" << std::endl;
-  
+  if (provided_two) {
+    std::cout << "Warning: You should only provide ONE of sdf, sdf_filname, or clone_name" <<
+      std::endl;
+  }
+
   if(has_sdf) {
     gz_msg.set_sdf(ros_msg.sdf);
   } else if(has_sdf_filename) {

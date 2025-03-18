@@ -127,7 +127,6 @@ convert_ros_to_gz(
   const ros_gz_interfaces::srv::SetEntityPose::Request & ros_req,
   gz::msgs::Pose & gz_req)
 {
-
   convert_ros_to_gz(ros_req.entity, gz_req);
   convert_ros_to_gz(ros_req.pose, gz_req);
 }
