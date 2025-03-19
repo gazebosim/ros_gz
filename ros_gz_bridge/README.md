@@ -39,6 +39,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/GuiCamera                | gz.msgs.GUICamera                   |
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
+| ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |

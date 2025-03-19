@@ -867,6 +867,19 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Entity> & _msg
   EXPECT_EQ(expected_msg.type, _msg->type);
 }
 
+void createTestMsg(ros_gz_interfaces::msg::EntityFactory & _msg)
+{
+  _msg.name = "entity";
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::EntityFactory> & _msg)
+{
+  ros_gz_interfaces::msg::EntityFactory expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.name, _msg->name);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::EntityWrench & _msg)
 {
   createTestMsg(_msg.header);
@@ -1602,6 +1615,39 @@ void compareTestMsg(const std::shared_ptr<vision_msgs::msg::Detection3DArray> & 
   EXPECT_EQ(expected_msg.detections.size(), _msg->detections.size());
   for (size_t i = 0; i < _msg->detections.size(); i++) {
     compareTestMsg(std::make_shared<vision_msgs::msg::Detection3D>(_msg->detections[i]));
+  }
+}
+
+void createTestMsg(ros_gz_interfaces::msg::LogicalCameraImage & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.header = header_msg;
+
+  geometry_msgs::msg::Pose pose_msg;
+  createTestMsg(pose_msg);
+  _msg.pose = pose_msg;
+
+  for (int i = 0; i < 4; ++i) {
+    ros_gz_interfaces::msg::LogicalCameraImageModel model;
+    model.name = "model_" + std::to_string(i);
+    model.pose = pose_msg;
+    _msg.model.push_back(model);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraImage> & _msg)
+{
+  ros_gz_interfaces::msg::LogicalCameraImage expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->pose));
+
+  ASSERT_EQ(expected_msg.model.size(), _msg->model.size());
+  for (size_t i = 0; i < _msg->model.size(); ++i) {
+    EXPECT_EQ(expected_msg.model[i].name, _msg->model[i].name);
+    compareTestMsg(std::make_shared<geometry_msgs::msg::Pose>(_msg->model[i].pose));
   }
 }
 
