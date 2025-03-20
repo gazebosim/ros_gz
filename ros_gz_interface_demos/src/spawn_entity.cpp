@@ -1,12 +1,31 @@
+/*
+ * Copyright 2025 Open Source Robotics Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+
 #include <memory>
 #include <string>
 #include <iostream>
 #include <chrono>
 #include <cmath>
+#include <vector>
 
 #include "rclcpp/rclcpp.hpp"
 #include "ros_gz_interfaces/srv/spawn_entity.hpp"
 #include "geometry_msgs/msg/pose.hpp"
+#include <CLI/CLI.hpp>
 
 using namespace std::chrono_literals;
 
@@ -92,21 +111,34 @@ private:
   rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client_;
 };
 
-void print_usage() {
-  std::cerr << "Usage: spawn_entity --name NAME --sdf_filename SDF_PATH [--pos X Y Z] [--quat X Y Z W | --euler ROLL PITCH YAW]" << std::endl;
-  std::cerr << "Example: spawn_entity --name cardboard_box --sdf_filename /path/to/models/cardboard_box/model.sdf --pos 1.0 2.0 3.0 --euler 0.0 0.0 1.57" << std::endl;
-}
-
 int main(int argc, char ** argv)
 {
+  // Initialize ROS
   rclcpp::init(argc, argv);
   
-  // Default values
-  std::string model_name = "";
-  std::string sdf_filename = "";
-  geometry_msgs::msg::Pose pose;
+  // Setup CLI11 app
+  CLI::App app{"Spawn entity in Gazebo simulation"};
   
-  // Default pose
+  // Required parameters
+  std::string model_name;
+  std::string sdf_filename;
+  app.add_option("--name", model_name, "Name of the model")->required();
+  app.add_option("--sdf_filename", sdf_filename, "Path to the SDF file")->required();
+  
+  // Position parameters (optional)
+  std::vector<double> position;
+  app.add_option("--pos", position, "Position as X Y Z")->expected(3);
+  
+  // Orientation parameters (optional, mutually exclusive)
+  std::vector<double> quaternion;
+  std::vector<double> euler;
+  auto quat_option = app.add_option("--quat", quaternion, "Orientation as quaternion X Y Z W")->expected(4);
+  auto euler_option = app.add_option("--euler", euler, "Orientation as Euler angles ROLL PITCH YAW (in radians)")->expected(3);
+  quat_option->excludes(euler_option);
+  euler_option->excludes(quat_option);
+  
+  // Set up geometry_msgs::msg::Pose with default values
+  geometry_msgs::msg::Pose pose;
   pose.position.x = 0.0;
   pose.position.y = 0.0;
   pose.position.z = 0.0;
@@ -115,51 +147,36 @@ int main(int argc, char ** argv)
   pose.orientation.z = 0.0;
   pose.orientation.w = 1.0;
   
-  // Parse command line arguments
-  for (int i = 1; i < argc; ++i) {
-    std::string arg = argv[i];
-    
-    if (arg == "--name" && i + 1 < argc) {
-      model_name = argv[++i];
-    } else if (arg == "--sdf_filename" && i + 1 < argc) {
-      sdf_filename = argv[++i];
-    } else if (arg == "--pos" && i + 3 < argc) {
-      pose.position.x = std::stod(argv[i+1]);
-      pose.position.y = std::stod(argv[i+2]);
-      pose.position.z = std::stod(argv[i+3]);
-      i += 3;
-    } else if (arg == "--quat" && i + 4 < argc) {
-      pose.orientation.x = std::stod(argv[i+1]);
-      pose.orientation.y = std::stod(argv[i+2]);
-      pose.orientation.z = std::stod(argv[i+3]);
-      pose.orientation.w = std::stod(argv[i+4]);
-      i += 4;
-    } else if (arg == "--euler" && i + 3 < argc) {
-      double roll = std::stod(argv[i+1]);
-      double pitch = std::stod(argv[i+2]);
-      double yaw = std::stod(argv[i+3]);
-      
-      double qx, qy, qz, qw;
-      euler_to_quaternion(roll, pitch, yaw, qx, qy, qz, qw);
-      pose.orientation.x = qx;
-      pose.orientation.y = qy;
-      pose.orientation.z = qz;
-      pose.orientation.w = qw;
-      
-      i += 3;
-    } else if (arg == "--help") {
-      print_usage();
-      return 0;
-    }
+  // Parse and catch any CLI errors
+  try {
+    app.parse(argc, argv);
+  } catch (const CLI::ParseError &e) {
+    return app.exit(e);
   }
   
-  // Check if required arguments are provided
-  if (model_name.empty() || sdf_filename.empty()) {
-    std::cerr << "Error: Model name and SDF filename are required." << std::endl;
-    print_usage();
-    return 1;
+  // Apply position if provided
+  if (!position.empty()) {
+    pose.position.x = position[0];
+    pose.position.y = position[1];
+    pose.position.z = position[2];
   }
-
+  
+  // Apply orientation if provided
+  if (!quaternion.empty()) {
+    pose.orientation.x = quaternion[0];
+    pose.orientation.y = quaternion[1];
+    pose.orientation.z = quaternion[2];
+    pose.orientation.w = quaternion[3];
+  } else if (!euler.empty()) {
+    double qx, qy, qz, qw;
+    euler_to_quaternion(euler[0], euler[1], euler[2], qx, qy, qz, qw);
+    pose.orientation.x = qx;
+    pose.orientation.y = qy;
+    pose.orientation.z = qz;
+    pose.orientation.w = qw;
+  }
+  
+  // Create spawner and call service
   auto spawner = std::make_shared<EntitySpawner>();
   bool result = spawner->spawn_entity(model_name, sdf_filename, pose);
 

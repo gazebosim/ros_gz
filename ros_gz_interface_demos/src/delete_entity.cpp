@@ -1,3 +1,20 @@
+/*
+ * Copyright 2025 Open Source Robotics Foundation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+*/
+
 #include <memory>
 #include <string>
 #include <iostream>
@@ -6,6 +23,7 @@
 #include "rclcpp/rclcpp.hpp"
 #include "ros_gz_interfaces/srv/delete_entity.hpp"
 #include "ros_gz_interfaces/msg/entity.hpp"
+#include <CLI/CLI.hpp>
 
 using namespace std::chrono_literals;
 
@@ -73,70 +91,42 @@ private:
   rclcpp::Client<ros_gz_interfaces::srv::DeleteEntity>::SharedPtr client_;
 };
 
-void print_usage()
-{
-  std::cout << "Usage: delete_entity [--name NAME | --id ID] [--type TYPE]" << std::endl;
-  std::cout << "Examples:" << std::endl;
-  std::cout << "  delete_entity --name cardboard_box" << std::endl;
-  std::cout << "  delete_entity --id 8" << std::endl;
-  std::cout << "  delete_entity --name cardboard_box --type 2" << std::endl;
-  std::cout << std::endl;
-  std::cout << "Entity type values:" << std::endl;
-  std::cout << "  0: NONE" << std::endl;
-  std::cout << "  1: LIGHT" << std::endl;
-  std::cout << "  2: LINK" << std::endl;
-  std::cout << "  3: VISUAL" << std::endl;
-  std::cout << "  4: COLLISION" << std::endl;
-  std::cout << "  5: SENSOR" << std::endl;
-  std::cout << "  6: MODEL (default)" << std::endl;
-}
-
 int main(int argc, char ** argv)
 {
+  // Initialize ROS
   rclcpp::init(argc, argv);
 
-  if (argc < 2) {
-    print_usage();
-    return 1;
-  }
-
-  // Parse command line arguments
-  std::string entity_name = "";
+  // Setup CLI11 app with description
+  CLI::App app{"Delete entity from Gazebo simulation"};
+  
+  // Entity identification options (mutually exclusive)
+  std::string entity_name;
   int entity_id = 0;
+  auto name_option = app.add_option("--name", entity_name, "Name of the entity to delete");
+  auto id_option = app.add_option("--id", entity_id, "ID of the entity to delete");
+  name_option->excludes(id_option);
+  id_option->excludes(name_option);
+  
+  // Entity type option
   int entity_type = 6;  // Default to MODEL type
-
-  for (int i = 1; i < argc; i++) {
-    std::string arg = argv[i];
-    
-    if (arg == "--name" && i + 1 < argc) {
-      entity_name = argv[++i];
-    } else if (arg == "--id" && i + 1 < argc) {
-      try {
-        entity_id = std::stoi(argv[++i]);
-      } catch (const std::exception & e) {
-        std::cerr << "Error: ID must be an integer" << std::endl;
-        return 1;
-      }
-    } else if (arg == "--type" && i + 1 < argc) {
-      try {
-        entity_type = std::stoi(argv[++i]);
-      } catch (const std::exception & e) {
-        std::cerr << "Error: Type must be an integer" << std::endl;
-        return 1;
-      }
-    } else {
-      std::cerr << "Unknown argument: " << arg << std::endl;
-      print_usage();
-      return 1;
-    }
+  app.add_option("--type", entity_type, "Entity type: 0=NONE, 1=LIGHT, 2=LINK, 3=VISUAL, 4=COLLISION, 5=SENSOR, 6=MODEL(default)");
+  
+  // Add validators and requirements
+  // Parse and catch any CLI errors
+  try {
+    app.parse(argc, argv);
+  } catch (const CLI::ParseError &e) {
+    return app.exit(e);
   }
-
-  if (entity_name.empty() && entity_id == 0) {
+  
+  // Manual validation: Ensure either name or ID is provided
+  if (entity_name.empty() && entity_id <= 0) {
     std::cerr << "Error: Either --name or --id must be provided" << std::endl;
-    print_usage();
+    std::cout << app.help() << std::endl;
     return 1;
   }
-
+  
+  // Create deleter and call service
   auto deleter = std::make_shared<EntityDeleter>();
   bool result = deleter->delete_entity(entity_name, entity_id, entity_type);
 
