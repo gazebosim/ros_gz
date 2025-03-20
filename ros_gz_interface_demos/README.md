@@ -4,7 +4,8 @@ A ROS 2 package for managing entities in Gazebo simulations through the ROS-Gaze
 
 ## Overview
 
-The `ros_gz_interface_demos` package provides a set of utilities for managing entities (models, lights, links, etc.) in Gazebo simulations through ROS 2. This package enables seamless communication between ROS 2 and Gazebo, allowing you to:
+The `ros_gz_interface_demos` package provides a set of utilities for managing entities (models, lights, links, etc.) in Gazebo simulations through ROS 2.
+This package enables seamless communication between ROS 2 and Gazebo, allowing you to:
 
 - **Spawn entities**: Add new models and objects to a running Gazebo simulation
 - **Set entity poses**: Dynamically adjust the position and orientation of existing entities
@@ -20,8 +21,8 @@ These utilities are particularly useful for dynamic simulation scenarios, testin
 
 ## Prerequisites
 
-- ROS 2 (Jazzy or Rolling)
-- Gazebo Harmonic/Ionic
+- ROS 2
+- Gazebo 
 - ROS-Gazebo bridge package (`ros_gz_bridge`)
 
 ## Installation
@@ -90,7 +91,6 @@ ros2 run ros_gz_interface_demos spawn_entity --name <model_name> --sdf_filename 
 
 ```bash
 ros2 run ros_gz_interface_demos spawn_entity --name cardboard_box --sdf_filename $(ros2 pkg prefix ros_gz_interface_demos)/share/ros_gz_interface_demos/models/cardboard_box/model.sdf --pos 1.0 2.0 0.5 --euler 0.0 0.0 1.57
-
 ```
 
 or
@@ -120,11 +120,13 @@ ros2 run ros_gz_interface_demos set_entity_pose [--name NAME | --id ID] [--type 
 **Examples:**
 
 Using entity name with Euler angles for rotation:
+
 ```bash
 ros2 run ros_gz_interface_demos set_entity_pose --name cardboard_box --pos 3.0 4.0 1.0 --euler 0.0 0.0 1.57
 ```
 
 Using entity ID with quaternion for rotation:
+
 ```bash
 ros2 run ros_gz_interface_demos set_entity_pose --id 8 --pos 3.0 4.0 1.0 --quat 0.0 0.0 0.7071 0.7071
 ```
@@ -150,16 +152,19 @@ ros2 run ros_gz_interface_demos delete_entity [--name NAME | --id ID] [--type TY
 **Examples:**
 
 Using entity name:
+
 ```bash
 ros2 run ros_gz_interface_demos delete_entity --name cardboard_box
 ```
 
 Using entity ID:
+
 ```bash
 ros2 run ros_gz_interface_demos delete_entity --id 8
 ```
 
 Using a specific entity type:
+
 ```bash
 ros2 run ros_gz_interface_demos delete_entity --name cardboard_box --type 2
 ```
@@ -179,7 +184,6 @@ When using the `set_entity_pose` and `delete_entity` commands, you can specify t
 | 4     | COLLISION   |
 | 5     | SENSOR      |
 | 6     | MODEL (default) |
-
 
 ## Troubleshooting
 
