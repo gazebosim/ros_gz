@@ -2,8 +2,8 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+2.1.6 (2025-03-21)
+------------------
 * make linters happy (`#709 <https://github.com/gazebosim/ros_gz/issues/709>`_)
 * Add SpawnEntity, DeleteEntity, & SetEntityPose Support (`#380 <https://github.com/gazebosim/ros_gz/issues/380>`_)
 * Contributors: Afereti Pama, Alejandro Hernández Cordero
