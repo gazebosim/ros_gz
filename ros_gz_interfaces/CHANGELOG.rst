@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.6 (2025-03-21)
+------------------
+
 2.1.5 (2025-02-24)
 ------------------
 * Add LogicalCameraImage support (`#698 <https://github.com/gazebosim/ros_gz/issues/698>`_)
