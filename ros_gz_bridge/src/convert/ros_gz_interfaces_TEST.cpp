@@ -192,7 +192,7 @@ TEST_F(GzToRosTest, ChildParameters)
   //  ]
 
   {
-    // One parameter in root namesapce
+    // One parameter in root namespace
     Any param;
     param.set_type(Any_ValueType::Any_ValueType_NONE);
     (*root_params)[kParamNotSetName] = param;
