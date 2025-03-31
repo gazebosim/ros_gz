@@ -8,4 +8,3 @@ For compressed images, install
 [compressed_image_transport](http://wiki.ros.org/compressed_image_transport)
 and the bridge will publish `/compressed` images. The same goes for other
 `image_transport` plugins.
-
