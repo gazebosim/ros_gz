@@ -39,5 +39,3 @@ float64 dynamic_bias_stddev
 # A typical value, when used, would be on the order of
 # 3600 seconds (1 hour).
 float64 dynamic_bias_correlation_time
-
-

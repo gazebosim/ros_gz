@@ -21,7 +21,7 @@ import sys
 ros_gz_bridge_root = os.path.join(os.path.dirname(__file__), '..')
 sys.path.insert(0, os.path.abspath(ros_gz_bridge_root))
 
-from ros_gz_bridge import mappings 
+from ros_gz_bridge import mappings
 
 def main(argv=sys.argv[1:]):
     parser = argparse.ArgumentParser(

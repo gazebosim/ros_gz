@@ -12,8 +12,13 @@ jobs:
       - name: Add ticket to inbox
         uses: technote-space/create-project-card-action@v1
         with:
+<<<<<<< HEAD
           PROJECT: Core development
           COLUMN: Inbox
           GITHUB_TOKEN: ${{ secrets.TRIAGE_TOKEN }}
           CHECK_ORG_PROJECT: true
 
+=======
+          project-url: https://github.com/orgs/gazebosim/projects/7
+          github-token: ${{ secrets.TRIAGE_TOKEN }}
+>>>>>>> 6776f56 (Add pre commit (#718))
