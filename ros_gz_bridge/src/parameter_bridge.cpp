@@ -42,7 +42,7 @@ void usage()
     "Following the first @ symbol is the ROS service type.\n" <<
     "Optionally, you can include the Gazebo request and response type\n" <<
     "separated by the @ symbol.\n" <<
-    "It is only supported to expose Gazebo servces as ROS services, i.e.\n"
+    "It is only supported to expose Gazebo services as ROS services, i.e.\n"
     "the ROS service will forward request to the Gazebo service and then forward\n"
     "the response back to the ROS client.\n\n"
     "A bidirectional bridge example:\n" <<
@@ -72,7 +72,7 @@ int main(int argc, char * argv[])
     usage();
     return -1;
   }
-  // skip the process name in argument procesing
+  // skip the process name in argument processing
   ++argv;
   --argc;
   auto filteredArgs = rclcpp::init_and_remove_ros_arguments(argc, argv);
@@ -102,7 +102,7 @@ int main(int argc, char * argv[])
     config.gz_topic_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
 
-    // Get the direction delimeter, which should be one of:
+    // Get the direction delimiter, which should be one of:
     //   @ == bidirectional, or
     //   [ == only from GZ to ROS, or
     //   ] == only from ROS to GZ.
