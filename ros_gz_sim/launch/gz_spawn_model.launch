@@ -11,7 +11,7 @@
   <arg name="roll" default="" />
   <arg name="pitch" default="" />
   <arg name="yaw" default="" />
-  <gz_spawn_model 
+  <gz_spawn_model
     world="$(var world)"
     file="$(var file)"
     model_string="$(var model_string)"
