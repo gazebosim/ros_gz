@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <rclcpp/time.hpp>
+
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
 
 namespace ros_gz_bridge
@@ -223,6 +225,37 @@ convert_gz_to_ros(
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);
   convert_gz_to_ros(gz_msg.wrench(), ros_msg.wrench);
+}
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Clock & ros_msg,
+  gz::msgs::Clock & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+
+  gz_msg.mutable_system()->set_sec(ros_msg.system.sec);
+  gz_msg.mutable_system()->set_nsec(ros_msg.system.nanosec);
+
+  gz_msg.mutable_real()->set_sec(ros_msg.real.sec);
+  gz_msg.mutable_real()->set_nsec(ros_msg.real.nanosec);
+
+  gz_msg.mutable_sim()->set_sec(ros_msg.sim.sec);
+  gz_msg.mutable_sim()->set_nsec(ros_msg.sim.nanosec);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Clock & gz_msg,
+  ros_gz_interfaces::msg::Clock & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+
+  ros_msg.system = rclcpp::Time(gz_msg.system().sec(), gz_msg.system().nsec());
+  ros_msg.real = rclcpp::Time(gz_msg.real().sec(), gz_msg.real().nsec());
+  ros_msg.sim = rclcpp::Time(gz_msg.sim().sec(), gz_msg.sim().nsec());
 }
 
 template<>

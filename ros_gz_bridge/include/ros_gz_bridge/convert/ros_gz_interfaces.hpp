@@ -21,6 +21,7 @@
 #include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/entity_wrench.pb.h>
 #include <gz/msgs/joint_wrench.pb.h>
+#include <gz/msgs/clock.pb.h>
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
 #include <gz/msgs/dataframe.pb.h>
@@ -43,6 +44,7 @@
 #include <ros_gz_interfaces/msg/entity_factory.hpp>
 #include <ros_gz_interfaces/msg/entity_wrench.hpp>
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
+#include <ros_gz_interfaces/msg/clock.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
 #include <ros_gz_interfaces/msg/dataframe.hpp>
@@ -131,6 +133,18 @@ void
 convert_gz_to_ros(
   const gz::msgs::EntityWrench & gz_msg,
   ros_gz_interfaces::msg::EntityWrench & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::Clock & ros_msg,
+  gz::msgs::Clock & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::Clock & gz_msg,
+  ros_gz_interfaces::msg::Clock & ros_msg);
 
 template<>
 void

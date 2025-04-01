@@ -18,6 +18,7 @@ find_package(rosidl_default_generators REQUIRED)
 
 set(msg_files
   "msg/Altimeter.msg"
+  "msg/Clock.msg"
   "msg/Contact.msg"
   "msg/Contacts.msg"
   "msg/Dataframe.msg"

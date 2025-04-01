@@ -897,6 +897,24 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::EntityWrench> 
   compareTestMsg(std::make_shared<geometry_msgs::msg::Wrench>(_msg->wrench));
 }
 
+
+void createTestMsg(ros_gz_interfaces::msg::Clock & _msg) {
+  createTestMsg(_msg.header);
+  createTestMsg(_msg.system);
+  createTestMsg(_msg.real);
+  createTestMsg(_msg.sim);
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Clock> & _msg) {
+  ros_gz_interfaces::msg::Clock expected_clock;
+  createTestMsg(expected_clock);
+
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->system));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->real));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Contact & _msg)
 {
   createTestMsg(_msg.collision1);

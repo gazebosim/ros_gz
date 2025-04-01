@@ -78,6 +78,7 @@ MAPPINGS = {
         Mapping('StringVec', 'StringMsg_V'),
         Mapping('TrackVisual', 'TrackVisual'),
         Mapping('VideoRecord', 'VideoRecord'),
+        Mapping('Clock', 'Clock'),
     ],
     'rosgraph_msgs': [
         Mapping('Clock', 'Clock'),
