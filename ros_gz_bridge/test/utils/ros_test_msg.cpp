@@ -912,7 +912,7 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Clock> & _msg)
   compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->system));
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->real));
-  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim);
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim));
 }
 
 void createTestMsg(ros_gz_interfaces::msg::Contact & _msg)
