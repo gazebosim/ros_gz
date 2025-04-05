@@ -650,7 +650,7 @@ convert_ros_to_gz(
   // first entry of the parameter vector
   // \TODO(mjcarroll) Make this work fully round trip
   // To do round trip, we must parse the parameter names and insert them
-  // into the correct indicies in the parameter vector
+  // into the correct indices in the parameter vector
 
   auto entry = gz_msg.mutable_param()->Add();
   convert_ros_to_gz(ros_msg, *entry);

@@ -2,7 +2,7 @@
 
 @###############################################
 @#
-@# Methods for determing mappings between
+@# Methods for determining mappings between
 @# Gazebo and ROS interfaces
 @#
 @# EmPy template for generating get_mappings.cpp

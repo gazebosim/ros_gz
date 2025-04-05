@@ -33,7 +33,7 @@
     bridge_params="$(var bridge_params)">
   </ros_gz_bridge>
 
-  <gz_spawn_model 
+  <gz_spawn_model
     world="$(var world)"
     file="$(var file)"
     model_string="$(var model_string)"

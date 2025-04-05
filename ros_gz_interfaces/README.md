@@ -4,7 +4,7 @@ This package currently contains some Gazebo-specific ROS message and service dat
 
 ## Messages (.msg)
 
-* [Contact](msg/Contact.msg): related to [ignition::msgs::Contact](https://github.com/gazebosim/gz-msgs/blob/ign-msgs7/proto/ignition/msgs/contact.proto). Contant info bewteen collisions in Gazebo Sim.
+* [Contact](msg/Contact.msg): related to [ignition::msgs::Contact](https://github.com/gazebosim/gz-msgs/blob/ign-msgs7/proto/ignition/msgs/contact.proto). Contact info between collisions in Gazebo Sim.
 * [Contacts](msg/Contacts.msg): related to [ignition::msgs::Contacts](https://github.com/gazebosim/gz-msgs/blob/ign-msgs7/proto/ignition/msgs/contacts.proto). A list of contacts.
 * [Entity](msg/Entity.msg): related to [ignition::msgs::Entity](https://github.com/gazebosim/gz-msgs/blob/ign-msgs7/proto/ignition/msgs/entity.proto). Entity of Gazebo Sim.
 * [EntityFactory](msg/EntityFactory.msg): related to [ignition::msgs::EntityFactory](https://github.com/gazebosim/gz-msgs/blob/ign-msgs7/proto/ignition/msgs/entity_factory.proto). Message to create a new entity.
