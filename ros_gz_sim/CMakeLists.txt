@@ -15,6 +15,10 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(builtin_interfaces REQUIRED)
+find_package(CLI11 REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(ros_gz_interfaces REQUIRED)
 
 find_package(gz_math_vendor REQUIRED)
 find_package(gz-math REQUIRED)
@@ -55,6 +59,33 @@ add_executable(remove src/remove.cpp)
 ament_target_dependencies(remove
   rclcpp
   std_msgs
+)
+
+# Spawn Entity executable
+add_executable(spawn_entity src/spawn_entity.cpp)
+ament_target_dependencies(spawn_entity
+  builtin_interfaces
+  geometry_msgs
+  rclcpp
+  ros_gz_interfaces
+)
+
+# Delete Entity executable
+add_executable(delete_entity src/delete_entity.cpp)
+ament_target_dependencies(delete_entity
+  builtin_interfaces
+  geometry_msgs
+  rclcpp
+  ros_gz_interfaces
+)
+
+# Set Entity Pose executable
+add_executable(set_entity_pose src/set_entity_pose.cpp)
+ament_target_dependencies(set_entity_pose
+  builtin_interfaces
+  geometry_msgs
+  rclcpp
+  ros_gz_interfaces
 )
 
 target_link_libraries(remove
@@ -128,6 +159,12 @@ install(FILES
 install(TARGETS
   create
   remove
+  DESTINATION lib/${PROJECT_NAME}
+)
+install(TARGETS
+  spawn_entity
+  delete_entity
+  set_entity_pose
   DESTINATION lib/${PROJECT_NAME}
 )
 

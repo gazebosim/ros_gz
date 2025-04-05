@@ -25,6 +25,9 @@
   <depend>rclcpp_components</depend>
   <depend>rcpputils</depend>
   <depend>std_msgs</depend>
+  <depend>builtin_interfaces</depend>
+  <depend>geometry_msgs</depend>
+  <depend>ros_gz_interfaces</depend>
 
   <depend>gz_math_vendor</depend>
   <depend>gz_msgs_vendor</depend>
