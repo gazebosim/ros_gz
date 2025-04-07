@@ -69,6 +69,7 @@ ament_target_dependencies(spawn_entity
   rclcpp
   ros_gz_interfaces
 )
+target_include_directories(spawn_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
 # Delete Entity executable
 add_executable(delete_entity src/delete_entity.cpp)
@@ -78,6 +79,7 @@ ament_target_dependencies(delete_entity
   rclcpp
   ros_gz_interfaces
 )
+target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
 # Set Entity Pose executable
 add_executable(set_entity_pose src/set_entity_pose.cpp)
@@ -87,6 +89,8 @@ ament_target_dependencies(set_entity_pose
   rclcpp
   ros_gz_interfaces
 )
+target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
+
 
 target_link_libraries(remove
   gz-msgs::core
