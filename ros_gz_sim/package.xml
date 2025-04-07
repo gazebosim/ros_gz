@@ -28,6 +28,7 @@
   <depend>builtin_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>ros_gz_interfaces</depend>
+  <depend>libcli11-dev</depend>
 
   <depend>gz_math_vendor</depend>
   <depend>gz_msgs_vendor</depend>
