@@ -30,8 +30,10 @@
 using namespace std::chrono_literals;
 
 // Helper function to convert Euler angles to quaternion components
-void euler_to_quaternion(double roll, double pitch, double yaw, double &qx,
-                         double &qy, double &qz, double &qw) {
+void euler_to_quaternion(
+  double roll, double pitch, double yaw,
+  double &qx, double &qy, double &qz, double &qw)
+  {
   // Calculate quaternion components from Euler angles (ZYX convention)
   // Implementation based on standard rotation matrix to quaternion conversion
 
@@ -50,14 +52,18 @@ void euler_to_quaternion(double roll, double pitch, double yaw, double &qx,
 
 class EntitySpawner : public rclcpp::Node {
 public:
-  EntitySpawner() : Node("entity_spawner") {
+  EntitySpawner()
+  : Node("entity_spawner")
+  {
     client_ = create_client<ros_gz_interfaces::srv::SpawnEntity>(
         "/world/default/create");
   }
 
-  bool spawn_entity(const std::string &model_name,
-                    const std::string &sdf_filename,
-                    const geometry_msgs::msg::Pose &pose) {
+  bool spawn_entity(
+    const std::string &model_name,
+    const std::string &sdf_filename,
+    const geometry_msgs::msg::Pose &pose)
+    {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -70,7 +76,7 @@ public:
 
     // Create the request
     auto request =
-        std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
+      std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
     request->entity_factory.name = model_name;
     request->entity_factory.sdf_filename = sdf_filename;
     request->entity_factory.pose = pose;
@@ -89,7 +95,7 @@ public:
     // Wait for the result
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
-        rclcpp::FutureReturnCode::SUCCESS) {
+      rclcpp::FutureReturnCode::SUCCESS) {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -109,7 +115,8 @@ private:
   rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client_;
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   // Initialize ROS
   rclcpp::init(argc, argv);
 
@@ -121,7 +128,7 @@ int main(int argc, char **argv) {
   std::string sdf_filename;
   app.add_option("--name", model_name, "Name of the model")->required();
   app.add_option("--sdf_filename", sdf_filename, "Path to the SDF file")
-      ->required();
+    ->required();
 
   // Position parameters (optional)
   std::vector<double> position;
@@ -131,12 +138,12 @@ int main(int argc, char **argv) {
   std::vector<double> quaternion;
   std::vector<double> euler;
   auto quat_option =
-      app.add_option("--quat", quaternion, "Orientation as quaternion X Y Z W")
-          ->expected(4);
+    app.add_option("--quat", quaternion, "Orientation as quaternion X Y Z W")
+    ->expected(4);
   auto euler_option =
-      app.add_option("--euler", euler,
+    app.add_option("--euler", euler,
                      "Orientation as Euler angles ROLL PITCH YAW (in radians)")
-          ->expected(3);
+    ->expected(3);
   quat_option->excludes(euler_option);
   euler_option->excludes(quat_option);
 
@@ -153,7 +160,7 @@ int main(int argc, char **argv) {
   // Parse and catch any CLI errors
   try {
     app.parse(argc, argv);
-  } catch (const CLI::ParseError &e) {
+  } catch (const CLI::ParseError & e) {
     return app.exit(e);
   }
 
@@ -185,4 +192,4 @@ int main(int argc, char **argv) {
 
   rclcpp::shutdown();
   return result ? 0 : 1;
-}
+ }

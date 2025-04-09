@@ -33,8 +33,9 @@
 using namespace std::chrono_literals;
 
 // Utility function to convert Euler angles to Quaternion
-geometry_msgs::msg::Quaternion euler_to_quaternion(double roll, double pitch,
-                                                   double yaw) {
+geometry_msgs::msg::Quaternion euler_to_quaternion(
+  double roll, double pitch, double yaw)
+  {
   geometry_msgs::msg::Quaternion q;
 
   double cy = cos(yaw * 0.5);
@@ -54,15 +55,19 @@ geometry_msgs::msg::Quaternion euler_to_quaternion(double roll, double pitch,
 
 class EntityPoseSetter : public rclcpp::Node {
 public:
-  EntityPoseSetter() : Node("entity_pose_setter") {
+  EntityPoseSetter()
+  : Node("entity_pose_setter")
+  {
     client_ = create_client<ros_gz_interfaces::srv::SetEntityPose>(
         "/world/default/set_pose");
   }
 
-  bool set_entity_pose(const std::string &entity_name, int entity_id,
-                       int entity_type, double x, double y, double z, double qx,
-                       double qy, double qz, double qw,
-                       bool use_quaternion = true) {
+  bool set_entity_pose(
+    const std::string &entity_name, int entity_id,
+    int entity_type, double x, double y, double z, double qx,
+    double qy, double qz, double qw,
+    bool use_quaternion = true)
+    {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -75,7 +80,7 @@ public:
 
     // Create the request
     auto request =
-        std::make_shared<ros_gz_interfaces::srv::SetEntityPose::Request>();
+      std::make_shared<ros_gz_interfaces::srv::SetEntityPose::Request>();
     auto entity = ros_gz_interfaces::msg::Entity();
 
     // Set entity identification (name or ID)
@@ -129,7 +134,8 @@ public:
     // Wait for the result
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
-        rclcpp::FutureReturnCode::SUCCESS) {
+      rclcpp::FutureReturnCode::SUCCESS)
+      {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -149,7 +155,8 @@ private:
   rclcpp::Client<ros_gz_interfaces::srv::SetEntityPose>::SharedPtr client_;
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   // Initialize ROS
   rclcpp::init(argc, argv);
 
@@ -160,13 +167,13 @@ int main(int argc, char **argv) {
   std::string entity_name;
   int entity_id = 0;
   auto name_option =
-      app.add_option("--name", entity_name, "Name of the entity");
+    app.add_option("--name", entity_name, "Name of the entity");
   auto id_option = app.add_option("--id", entity_id, "ID of the entity");
   name_option->excludes(id_option);
   id_option->excludes(name_option);
 
   // Entity type option
-  int entity_type = 6; // Default to MODEL type
+  int entity_type = 6;    // Default to MODEL type
   app.add_option("--type", entity_type,
                  "Entity type: 0=NONE, 1=LIGHT, 2=LINK, 3=VISUAL, 4=COLLISION, "
                  "5=SENSOR, 6=MODEL(default)");
@@ -179,12 +186,12 @@ int main(int argc, char **argv) {
   std::vector<double> quaternion;
   std::vector<double> euler;
   auto quat_option =
-      app.add_option("--quat", quaternion, "Orientation as quaternion X Y Z W")
-          ->expected(4);
+    app.add_option("--quat", quaternion, "Orientation as quaternion X Y Z W")
+    ->expected(4);
   auto euler_option =
-      app.add_option("--euler", euler,
+    app.add_option("--euler", euler,
                      "Orientation as Euler angles ROLL PITCH YAW (in radians)")
-          ->expected(3);
+    ->expected(3);
   quat_option->excludes(euler_option);
   euler_option->excludes(quat_option);
 
@@ -192,7 +199,7 @@ int main(int argc, char **argv) {
   // Parse and catch any CLI errors
   try {
     app.parse(argc, argv);
-  } catch (const CLI::ParseError &e) {
+  } catch (const CLI::ParseError & e) {
     return app.exit(e);
   }
 
@@ -223,18 +230,18 @@ int main(int argc, char **argv) {
     qw = quaternion[3];
     use_quaternion = true;
   } else if (!euler.empty()) {
-    qx = euler[0]; // roll
-    qy = euler[1]; // pitch
-    qz = euler[2]; // yaw
+    qx = euler[0];    // roll
+    qy = euler[1];    // pitch
+    qz = euler[2];    // yaw
     use_quaternion = false;
   }
 
   // Create pose setter and call service
   auto pose_setter = std::make_shared<EntityPoseSetter>();
   bool result =
-      pose_setter->set_entity_pose(entity_name, entity_id, entity_type, x, y, z,
+    pose_setter->set_entity_pose(entity_name, entity_id, entity_type, x, y, z,
                                    qx, qy, qz, qw, use_quaternion);
 
   rclcpp::shutdown();
   return result ? 0 : 1;
-}
+ }

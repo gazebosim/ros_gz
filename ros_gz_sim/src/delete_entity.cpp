@@ -29,13 +29,17 @@ using namespace std::chrono_literals;
 
 class EntityDeleter : public rclcpp::Node {
 public:
-  EntityDeleter() : Node("entity_deleter") {
+  EntityDeleter()
+  : Node("entity_deleter")
+  {
     client_ = create_client<ros_gz_interfaces::srv::DeleteEntity>(
         "/world/default/remove");
   }
 
-  bool delete_entity(const std::string &entity_name, int entity_id,
-                     int entity_type) {
+  bool delete_entity(
+    const std::string &entity_name, int entity_id,
+    int entity_type)
+    {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -48,7 +52,7 @@ public:
 
     // Create the request
     auto request =
-        std::make_shared<ros_gz_interfaces::srv::DeleteEntity::Request>();
+      std::make_shared<ros_gz_interfaces::srv::DeleteEntity::Request>();
     auto entity = ros_gz_interfaces::msg::Entity();
 
     // Set entity identification (name or ID)
@@ -74,7 +78,8 @@ public:
     // Wait for the result
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
-        rclcpp::FutureReturnCode::SUCCESS) {
+      rclcpp::FutureReturnCode::SUCCESS)
+      {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -94,7 +99,8 @@ private:
   rclcpp::Client<ros_gz_interfaces::srv::DeleteEntity>::SharedPtr client_;
 };
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   // Initialize ROS
   rclcpp::init(argc, argv);
 
@@ -105,14 +111,14 @@ int main(int argc, char **argv) {
   std::string entity_name;
   int entity_id = 0;
   auto name_option =
-      app.add_option("--name", entity_name, "Name of the entity to delete");
+    app.add_option("--name", entity_name, "Name of the entity to delete");
   auto id_option =
-      app.add_option("--id", entity_id, "ID of the entity to delete");
+    app.add_option("--id", entity_id, "ID of the entity to delete");
   name_option->excludes(id_option);
   id_option->excludes(name_option);
 
   // Entity type option
-  int entity_type = 6; // Default to MODEL type
+  int entity_type = 6;    // Default to MODEL type
   app.add_option("--type", entity_type,
                  "Entity type: 0=NONE, 1=LIGHT, 2=LINK, 3=VISUAL, 4=COLLISION, "
                  "5=SENSOR, 6=MODEL(default)");
@@ -121,7 +127,7 @@ int main(int argc, char **argv) {
   // Parse and catch any CLI errors
   try {
     app.parse(argc, argv);
-  } catch (const CLI::ParseError &e) {
+  } catch (const CLI::ParseError & e) {
     return app.exit(e);
   }
 
@@ -138,4 +144,4 @@ int main(int argc, char **argv) {
 
   rclcpp::shutdown();
   return result ? 0 : 1;
-}
+ }
