@@ -35,7 +35,7 @@ using namespace std::chrono_literals;
 // Utility function to convert Euler angles to Quaternion
 geometry_msgs::msg::Quaternion euler_to_quaternion(
   double roll, double pitch, double yaw)
-  {
+{
   geometry_msgs::msg::Quaternion q;
 
   double cy = cos(yaw * 0.5);
@@ -63,11 +63,11 @@ public:
   }
 
   bool set_entity_pose(
-    const std::string &entity_name, int entity_id,
+    const std::string & entity_name, int entity_id,
     int entity_type, double x, double y, double z, double qx,
     double qy, double qz, double qw,
     bool use_quaternion = true)
-    {
+  {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -135,7 +135,7 @@ public:
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
       rclcpp::FutureReturnCode::SUCCESS)
-      {
+    {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -244,4 +244,4 @@ int main(int argc, char **argv)
 
   rclcpp::shutdown();
   return result ? 0 : 1;
- }
+}

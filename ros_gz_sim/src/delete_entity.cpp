@@ -37,9 +37,9 @@ public:
   }
 
   bool delete_entity(
-    const std::string &entity_name, int entity_id,
+    const std::string & entity_name, int entity_id,
     int entity_type)
-    {
+  {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -79,7 +79,7 @@ public:
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
       rclcpp::FutureReturnCode::SUCCESS)
-      {
+    {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -144,4 +144,4 @@ int main(int argc, char **argv)
 
   rclcpp::shutdown();
   return result ? 0 : 1;
- }
+}

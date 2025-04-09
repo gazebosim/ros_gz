@@ -32,8 +32,8 @@ using namespace std::chrono_literals;
 // Helper function to convert Euler angles to quaternion components
 void euler_to_quaternion(
   double roll, double pitch, double yaw,
-  double &qx, double &qy, double &qz, double &qw)
-  {
+  double & qx, double & qy, double & qz, double & qw)
+{
   // Calculate quaternion components from Euler angles (ZYX convention)
   // Implementation based on standard rotation matrix to quaternion conversion
 
@@ -60,10 +60,10 @@ public:
   }
 
   bool spawn_entity(
-    const std::string &model_name,
-    const std::string &sdf_filename,
-    const geometry_msgs::msg::Pose &pose)
-    {
+    const std::string & model_name,
+    const std::string & sdf_filename,
+    const geometry_msgs::msg::Pose & pose)
+  {
     // Wait for the service to be available
     while (!client_->wait_for_service(1s)) {
       if (!rclcpp::ok()) {
@@ -95,7 +95,8 @@ public:
     // Wait for the result
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
-      rclcpp::FutureReturnCode::SUCCESS) {
+      rclcpp::FutureReturnCode::SUCCESS)
+      {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
@@ -128,7 +129,7 @@ int main(int argc, char **argv)
   std::string sdf_filename;
   app.add_option("--name", model_name, "Name of the model")->required();
   app.add_option("--sdf_filename", sdf_filename, "Path to the SDF file")
-    ->required();
+  ->required();
 
   // Position parameters (optional)
   std::vector<double> position;
@@ -192,4 +193,4 @@ int main(int argc, char **argv)
 
   rclcpp::shutdown();
   return result ? 0 : 1;
- }
+}
