@@ -144,6 +144,5 @@
         <falloff>0</falloff>
       </spot>
     </light>
-
   </world>
 </sdf>
