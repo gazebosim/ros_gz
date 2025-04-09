@@ -96,7 +96,7 @@ public:
     if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
                                            future) ==
       rclcpp::FutureReturnCode::SUCCESS)
-      {
+    {
       auto response = future.get();
       RCLCPP_INFO(this->get_logger(), "Result: %s",
                   response->success ? "true" : "false");
