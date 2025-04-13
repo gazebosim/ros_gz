@@ -76,6 +76,22 @@ target_include_directories(gzserver_component PUBLIC
   $<INSTALL_INTERFACE:include>
 )
 
+# spawn_entity library
+add_library(${PROJECT_NAME}_spawn_entity SHARED
+  src/spawn_entity.cpp
+)
+ament_target_dependencies(${PROJECT_NAME}_spawn_entity
+  builtin_interfaces
+  geometry_msgs
+  rclcpp
+  ros_gz_interfaces
+)
+target_include_directories(${PROJECT_NAME}_spawn_entity PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+  ${CLI11_INCLUDE_DIRS}
+)
+
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 ament_target_dependencies(${PROJECT_NAME} rclcpp)
@@ -102,18 +118,11 @@ ament_target_dependencies(set_entity_pose
 )
 target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
 
-# spawn_entity
+# spawn_entity executable
 add_executable(spawn_entity src/spawn_entity.cpp)
-ament_target_dependencies(spawn_entity
-  builtin_interfaces
-  geometry_msgs
-  rclcpp
-  ros_gz_interfaces
+target_link_libraries(spawn_entity
+  ${PROJECT_NAME}_spawn_entity
 )
-target_include_directories(spawn_entity PUBLIC
-  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include>
-  ${CLI11_INCLUDE_DIRS})
 
 # Headers
 install(DIRECTORY include/${PROJECT_NAME}/
@@ -172,7 +181,7 @@ install(TARGETS gzserver_component
 )
 
 install(
-  TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}
+  TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_spawn_entity EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin
@@ -191,26 +200,41 @@ if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake  REQUIRED)
   ament_find_gtest()
 
-  ament_add_gtest_executable(test_create     test/test_create.cpp)
-  ament_add_gtest_executable(test_remove     test/test_remove.cpp)
-  ament_add_gtest_executable(test_stopwatch  test/test_stopwatch.cpp)
+  ament_add_gtest_executable(test_create        test/test_create.cpp)
+  ament_add_gtest_executable(test_remove        test/test_remove.cpp)
+  ament_add_gtest_executable(test_spawn_entity  test/test_spawn_entity.cpp)
+  ament_add_gtest_executable(test_stopwatch     test/test_stopwatch.cpp)
 
   ament_target_dependencies(test_stopwatch rclcpp)
+  ament_target_dependencies(test_spawn_entity
+    builtin_interfaces
+    geometry_msgs
+    rclcpp
+    ros_gz_interfaces
+  )
 
   target_include_directories(test_stopwatch PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
+  target_include_directories(test_spawn_entity PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
+  
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create   gz-transport::core)
   target_link_libraries(test_remove   gz-transport::core)
+  target_link_libraries(test_spawn_entity   ${PROJECT_NAME}_spawn_entity)
 
   install(
-    TARGETS test_create test_remove test_stopwatch
+    TARGETS test_create test_remove test_spawn_entity test_stopwatch
     DESTINATION lib/${PROJECT_NAME}
   )
 
   ament_add_gtest_test(test_stopwatch)
+  ament_add_gtest_test(test_spawn_entity)
+  
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
 endif()
