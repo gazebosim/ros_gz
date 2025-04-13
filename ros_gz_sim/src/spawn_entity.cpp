@@ -35,10 +35,8 @@
 /// \param[out] qy Y component of quaternion.
 /// \param[out] qz Z component of quaternion.
 /// \param[out] qw W component of quaternion.
-void euler_to_quaternion(
-  double roll, double pitch, double yaw,
-  double & qx, double & qy, double & qz, double & qw)
-{
+void euler_to_quaternion(double roll, double pitch, double yaw, double &qx,
+                         double &qy, double &qz, double &qw) {
   // Calculate quaternion components from Euler angles (ZYX convention)
   double cy = cos(yaw * 0.5);
   double sy = sin(yaw * 0.5);
@@ -60,73 +58,77 @@ void euler_to_quaternion(
 /// \throws std::runtime_error if argument parsing fails.
 CommandLineArgs parse_arguments(int argc, char **argv) {
   CommandLineArgs args;
-  
+
   // Setup CLI11 app
   CLI::App app{"Spawn entity in Gazebo simulation"};
 
   // Required parameters
   app.add_option("--name", args.model_name, "Name of the model")->required();
-  app.add_option("--sdf_filename", args.sdf_filename, "Path to the SDF file")->required();
+  app.add_option("--sdf_filename", args.sdf_filename, "Path to the SDF file")
+      ->required();
 
   // Position parameters (optional)
   app.add_option("--pos", args.position, "Position as X Y Z")->expected(3);
 
   // Orientation parameters (optional, mutually exclusive)
-  auto quat_option =
-    app.add_option("--quat", args.quaternion, "Orientation as quaternion X Y Z W")->expected(4);
+  auto quat_option = app.add_option("--quat", args.quaternion,
+                                    "Orientation as quaternion X Y Z W")
+                         ->expected(4);
   auto euler_option =
-    app.add_option("--euler", args.euler, 
-                  "Orientation as Euler angles ROLL PITCH YAW (in radians)")->expected(3);
+      app.add_option("--euler", args.euler,
+                     "Orientation as Euler angles ROLL PITCH YAW (in radians)")
+          ->expected(3);
   quat_option->excludes(euler_option);
   euler_option->excludes(quat_option);
 
   // Parse and catch any CLI errors
   try {
     app.parse(argc, argv);
-  } catch (const CLI::ParseError & e) {
+  } catch (const CLI::ParseError &e) {
     app.exit(e);
     throw std::runtime_error("Failed to parse command line arguments");
   }
-  
+
   return args;
 }
 
 /// \brief Default constructor.
-/// \details Initializes the node and creates a spawn entity service client for Gazebo.
-EntitySpawner::EntitySpawner()
-: Node("entity_spawner") {
-  client_ = create_client<ros_gz_interfaces::srv::SpawnEntity>("/world/default/create");
+/// \details Initializes the node and creates a spawn entity service client for
+/// Gazebo.
+EntitySpawner::EntitySpawner() : Node("entity_spawner") {
+  client_ = create_client<ros_gz_interfaces::srv::SpawnEntity>(
+      "/world/default/create");
 }
 
 /// \brief Constructor with external service client.
-/// \param[in] client External spawn entity service client for dependency injection/testing.
+/// \param[in] client External spawn entity service client for dependency
+/// injection/testing.
 EntitySpawner::EntitySpawner(
-  rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client)
-: Node("entity_spawner"), client_(client) {
-}
+    rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client)
+    : Node("entity_spawner"), client_(client) {}
 
 /// \brief Calls the `/world/default/create` service to spawn a model in Gazebo.
 /// \param[in] model_name Name of the entity.
 /// \param[in] sdf_filename Path to the SDF file to load.
 /// \param[in] pose Initial pose of the entity in the world frame.
-/// \return True if the service call was successful and the entity was spawned; otherwise, false.
-bool EntitySpawner::spawn_entity(
-  const std::string & model_name,
-  const std::string & sdf_filename,
-  const geometry_msgs::msg::Pose & pose)
-{
+/// \return True if the service call was successful and the entity was spawned;
+/// otherwise, false.
+bool EntitySpawner::spawn_entity(const std::string &model_name,
+                                 const std::string &sdf_filename,
+                                 const geometry_msgs::msg::Pose &pose) {
   // Wait for the service to be available
   while (!client_->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(this->get_logger(),
-                  "Interrupted while waiting for the service. Exiting.");
+                   "Interrupted while waiting for the service. Exiting.");
       return false;
     }
     RCLCPP_INFO(this->get_logger(), "Service not available, waiting...");
   }
 
   // Create the request
-  auto request = std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
+  auto request =
+      std::make_shared<ros_gz_interfaces::srv::SpawnEntity::Request>();
   request->entity_factory.name = model_name;
   request->entity_factory.sdf_filename = sdf_filename;
   request->entity_factory.pose = pose;
@@ -143,9 +145,9 @@ bool EntitySpawner::spawn_entity(
   auto future = client_->async_send_request(request);
 
   // Wait for the result
-  if (rclcpp::spin_until_future_complete(this->get_node_base_interface(), future) ==
-    rclcpp::FutureReturnCode::SUCCESS)
-  {
+  if (rclcpp::spin_until_future_complete(this->get_node_base_interface(),
+                                         future) ==
+      rclcpp::FutureReturnCode::SUCCESS) {
     auto response = future.get();
     RCLCPP_INFO(this->get_logger(), "Result: %s",
                 response->success ? "true" : "false");
@@ -173,7 +175,6 @@ int main(int argc, char **argv) {
   try {
     // Parse command line arguments
     CommandLineArgs args = parse_arguments(argc, argv);
-    
     // Set up geometry_msgs::msg::Pose with default values
     geometry_msgs::msg::Pose pose;
     pose.position.x = 0.0;
@@ -199,7 +200,8 @@ int main(int argc, char **argv) {
       pose.orientation.w = args.quaternion[3];
     } else if (!args.euler.empty()) {
       double qx, qy, qz, qw;
-      euler_to_quaternion(args.euler[0], args.euler[1], args.euler[2], qx, qy, qz, qw);
+      euler_to_quaternion(args.euler[0], args.euler[1], args.euler[2], qx, qy,
+                          qz, qw);
       pose.orientation.x = qx;
       pose.orientation.y = qy;
       pose.orientation.z = qz;
@@ -208,11 +210,12 @@ int main(int argc, char **argv) {
 
     // Create spawner and call service
     auto spawner = std::make_shared<EntitySpawner>();
-    bool result = spawner->spawn_entity(args.model_name, args.sdf_filename, pose);
+    bool result =
+        spawner->spawn_entity(args.model_name, args.sdf_filename, pose);
 
     rclcpp::shutdown();
     return result ? 0 : 1;
-  } catch (const std::exception & e) {
+  } catch (const std::exception &e) {
     std::cerr << "Error: " << e.what() << std::endl;
     rclcpp::shutdown();
     return 1;

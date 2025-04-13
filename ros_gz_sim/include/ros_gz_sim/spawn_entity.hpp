@@ -16,7 +16,8 @@
  */
 
 /// \file spawn_entity.hpp
-/// \brief Defines utilities and a ROS 2 node for spawning entities in a Gazebo simulation.
+/// \brief Defines utilities and a ROS 2 node for spawning entities in a Gazebo
+/// simulation.
 
 #ifndef ROS_GZ_SIM__SPAWN_ENTITY_HPP_
 #define ROS_GZ_SIM__SPAWN_ENTITY_HPP_
@@ -32,26 +33,22 @@
 
 using namespace std::chrono_literals;
 
-/// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion representation.
-/// \param[in] roll Roll angle in radians.
-/// \param[in] pitch Pitch angle in radians.
-/// \param[in] yaw Yaw angle in radians.
-/// \param[out] qx Quaternion x component.
-/// \param[out] qy Quaternion y component.
-/// \param[out] qz Quaternion z component.
-/// \param[out] qw Quaternion w component.
-void euler_to_quaternion(
-  double roll, double pitch, double yaw,
-  double & qx, double & qy, double & qz, double & qw);
+/// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion
+/// representation. \param[in] roll Roll angle in radians. \param[in] pitch
+/// Pitch angle in radians. \param[in] yaw Yaw angle in radians. \param[out] qx
+/// Quaternion x component. \param[out] qy Quaternion y component. \param[out]
+/// qz Quaternion z component. \param[out] qw Quaternion w component.
+void euler_to_quaternion(double roll, double pitch, double yaw, double &qx,
+                         double &qy, double &qz, double &qw);
 
-/// \brief Struct representing parsed command-line arguments for entity spawning.
-struct CommandLineArgs
-{
-  std::string model_name;       ///< Model name to be used in Gazebo.
-  std::string sdf_filename;     ///< Path to the SDF model file.
-  std::vector<double> position; ///< XYZ position of the model.
-  std::vector<double> quaternion; ///< Orientation as quaternion [x, y, z, w].
-  std::vector<double> euler;    ///< Orientation as Euler angles [roll, pitch, yaw].
+/// \brief Struct representing parsed command-line arguments for entity
+/// spawning.
+struct CommandLineArgs {
+  std::string model_name;           ///< Model name to be used in Gazebo.
+  std::string sdf_filename;         ///< Path to the SDF model file.
+  std::vector<double> position;     ///< XYZ position of the model.
+  std::vector<double> quaternion;   ///< Orientation as quaternion [x, y, z, w].
+  std::vector<double> euler;        ///< Orientation as Euler angles [roll, pitch, yaw].
 };
 
 /// \brief Parses command-line arguments for spawning an entity.
@@ -61,28 +58,27 @@ struct CommandLineArgs
 CommandLineArgs parse_arguments(int argc, char **argv);
 
 /// \brief A ROS 2 node for spawning entities into a Gazebo simulation.
-class EntitySpawner : public rclcpp::Node
-{
-public:
+class EntitySpawner : public rclcpp::Node {
+ public:
   /// \brief Default constructor. Initializes the node and spawn client.
   EntitySpawner();
 
-  /// \brief Constructor that accepts an external spawn service client (for testing).
-  /// \param[in] client Shared pointer to the spawn entity service client.
+  /// \brief Constructor that accepts an external spawn service client (for
+  /// testing). \param[in] client Shared pointer to the spawn entity service
+  /// client.
   explicit EntitySpawner(
-    rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client);
+      rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client);
 
   /// \brief Spawns a model entity in the simulation.
   /// \param[in] model_name Name of the model.
   /// \param[in] sdf_filename Path to the SDF file.
   /// \param[in] pose Initial pose of the model.
   /// \return True if the model was spawned successfully, false otherwise.
-  bool spawn_entity(
-    const std::string & model_name,
-    const std::string & sdf_filename,
-    const geometry_msgs::msg::Pose & pose);
+  bool spawn_entity(const std::string &model_name,
+                    const std::string &sdf_filename,
+                    const geometry_msgs::msg::Pose &pose);
 
-protected:
+ protected:
   /// \brief Client used to call the spawn entity service.
   rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client_;
 };
