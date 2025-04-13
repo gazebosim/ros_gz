@@ -110,7 +110,10 @@ ament_target_dependencies(spawn_entity
   rclcpp
   ros_gz_interfaces
 )
-target_include_directories(spawn_entity PUBLIC ${CLI11_INCLUDE_DIRS})
+target_include_directories(spawn_entity PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>
+  ${CLI11_INCLUDE_DIRS})
 
 # Headers
 install(DIRECTORY include/${PROJECT_NAME}/
