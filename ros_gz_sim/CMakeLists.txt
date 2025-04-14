@@ -221,7 +221,7 @@ if(BUILD_TESTING)
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
-  
+
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create   gz-transport::core)
   target_link_libraries(test_remove   gz-transport::core)
@@ -234,7 +234,7 @@ if(BUILD_TESTING)
 
   ament_add_gtest_test(test_stopwatch)
   ament_add_gtest_test(test_spawn_entity)
-  
+
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
 endif()
