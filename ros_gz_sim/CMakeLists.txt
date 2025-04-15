@@ -57,8 +57,9 @@ rclcpp_components_register_node(gzserver_component PLUGIN
                                 "ros_gz_sim::GzServer" EXECUTABLE gzserver)
 target_include_directories(
   gzserver_component
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include>)
+  PUBLIC 
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
 
 # spawn_entity library
 add_library(${PROJECT_NAME}_spawn_entity SHARED src/spawn_entity.cpp)
@@ -66,15 +67,17 @@ ament_target_dependencies(${PROJECT_NAME}_spawn_entity builtin_interfaces
                           geometry_msgs rclcpp ros_gz_interfaces)
 target_include_directories(
   ${PROJECT_NAME}_spawn_entity
-  PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-         $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+  PUBLIC 
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
 
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 ament_target_dependencies(${PROJECT_NAME} rclcpp)
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-                         $<INSTALL_INTERFACE:include>)
+  ${PROJECT_NAME} PUBLIC 
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
 
 # remove
 add_executable(remove src/remove.cpp)
@@ -96,7 +99,7 @@ install(DIRECTORY include/${PROJECT_NAME}/ DESTINATION include/${PROJECT_NAME})
 
 # Launch files
 configure_file(launch/gz_sim.launch.py.in launch/gz_sim.launch.py.configured
-               @ONLY)
+  @ONLY)
 file(
   GENERATE
   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py"
@@ -165,7 +168,7 @@ if(BUILD_TESTING)
   target_include_directories(
     test_spawn_entity
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-           $<INSTALL_INTERFACE:include>)
+    $<INSTALL_INTERFACE:include>)
 
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create gz-transport::core)
