@@ -20,9 +20,9 @@
 #include <memory>
 #include <string>
 
-#include "rclcpp/rclcpp.hpp"
-#include "ros_gz_interfaces/msg/entity.hpp"
-#include "ros_gz_interfaces/srv/delete_entity.hpp"
+#include <rclcpp/rclcpp.hpp>
+#include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/srv/delete_entity.hpp>
 #include <CLI/CLI.hpp>
 
 using namespace std::chrono_literals;

@@ -27,15 +27,19 @@
 #include <string>
 #include <vector>
 
-#include "geometry_msgs/msg/pose.hpp"
-#include "rclcpp/rclcpp.hpp"
-#include "ros_gz_interfaces/srv/spawn_entity.hpp"
+#include <geometry_msgs/msg/pose.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <ros_gz_interfaces/srv/spawn_entity.hpp>
 
 /// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion
-/// representation. \param[in] roll Roll angle in radians. \param[in] pitch
-/// Pitch angle in radians. \param[in] yaw Yaw angle in radians. \param[out] qx
-/// Quaternion x component. \param[out] qy Quaternion y component. \param[out]
-/// qz Quaternion z component. \param[out] qw Quaternion w component.
+/// representation.
+/// \param[in] roll Roll angle in radians.
+/// \param[in] pitch Pitch angle in radians.
+/// \param[in] yaw Yaw angle in radians.
+/// \param[out] qx Quaternion x component.
+/// \param[out] qy Quaternion y component.
+/// \param[out] qz Quaternion z component.
+/// \param[out] qw Quaternion w component.
 void euler_to_quaternion(
   double roll, double pitch, double yaw, double & qx,
   double & qy, double & qz, double & qw);
