@@ -57,7 +57,7 @@ rclcpp_components_register_node(gzserver_component PLUGIN
                                 "ros_gz_sim::GzServer" EXECUTABLE gzserver)
 target_include_directories(
   gzserver_component
-  PUBLIC 
+  PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
@@ -67,7 +67,17 @@ ament_target_dependencies(${PROJECT_NAME}_spawn_entity builtin_interfaces
                           geometry_msgs rclcpp ros_gz_interfaces)
 target_include_directories(
   ${PROJECT_NAME}_spawn_entity
-  PUBLIC 
+  PUBLIC
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+
+# set_entity_pose library
+add_library(${PROJECT_NAME}_set_entity_pose SHARED src/set_entity_pose.cpp)
+ament_target_dependencies(${PROJECT_NAME}_set_entity_pose builtin_interfaces
+                          geometry_msgs rclcpp ros_gz_interfaces)
+target_include_directories(
+  ${PROJECT_NAME}_set_entity_pose
+  PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
 
@@ -75,7 +85,7 @@ target_include_directories(
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 ament_target_dependencies(${PROJECT_NAME} rclcpp)
 target_include_directories(
-  ${PROJECT_NAME} PUBLIC 
+  ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
@@ -89,6 +99,7 @@ add_executable(set_entity_pose src/set_entity_pose.cpp)
 ament_target_dependencies(set_entity_pose builtin_interfaces geometry_msgs
                           rclcpp ros_gz_interfaces)
 target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
+target_link_libraries(set_entity_pose ${PROJECT_NAME}_set_entity_pose)
 
 # spawn_entity executable
 add_executable(spawn_entity src/spawn_entity.cpp)
@@ -134,7 +145,9 @@ install(
   RUNTIME DESTINATION bin)
 
 install(
-  TARGETS ${PROJECT_NAME} ${PROJECT_NAME}_spawn_entity
+  TARGETS ${PROJECT_NAME}
+  ${PROJECT_NAME}_spawn_entity
+  ${PROJECT_NAME}_set_entity_pose
   EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -156,10 +169,13 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_create test/test_create.cpp)
   ament_add_gtest_executable(test_remove test/test_remove.cpp)
   ament_add_gtest_executable(test_spawn_entity test/test_spawn_entity.cpp)
+  ament_add_gtest_executable(test_set_entity_pose test/test_set_entity_pose.cpp)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
 
   ament_target_dependencies(test_stopwatch rclcpp)
   ament_target_dependencies(test_spawn_entity builtin_interfaces geometry_msgs
+                            rclcpp ros_gz_interfaces)
+  ament_target_dependencies(test_set_entity_pose builtin_interfaces geometry_msgs
                             rclcpp ros_gz_interfaces)
 
   target_include_directories(
@@ -169,17 +185,23 @@ if(BUILD_TESTING)
     test_spawn_entity
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
+  target_include_directories(
+    test_set_entity_pose
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create gz-transport::core)
   target_link_libraries(test_remove gz-transport::core)
   target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity)
+  target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose)
 
-  install(TARGETS test_create test_remove test_spawn_entity test_stopwatch
+  install(TARGETS test_create test_remove test_spawn_entity test_set_entity_pose test_stopwatch
           DESTINATION lib/${PROJECT_NAME})
 
   ament_add_gtest_test(test_stopwatch)
   ament_add_gtest_test(test_spawn_entity)
+  ament_add_gtest_test(test_set_entity_pose)
 
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)

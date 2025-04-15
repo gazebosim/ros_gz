@@ -16,8 +16,7 @@
  */
 
 /// \file spawn_entity.hpp
-/// \brief Defines utilities and a ROS 2 node for spawning entities in a Gazebo
-/// simulation.
+/// \brief Defines utilities and a ROS 2 node for spawning entities in a Gazebo simulation.
 
 #ifndef ROS_GZ_SIM__SPAWN_ENTITY_HPP_
 #define ROS_GZ_SIM__SPAWN_ENTITY_HPP_
