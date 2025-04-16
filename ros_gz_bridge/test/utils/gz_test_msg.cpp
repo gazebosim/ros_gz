@@ -959,12 +959,12 @@ void createTestMsg(gz::msgs::LaserScan & _msg)
   gz::msgs::Header header_msg;
   createTestMsg(header_msg);
 
-  const unsigned int num_readings = 100u;
+  const unsigned int num_readings = 1u;
   _msg.mutable_header()->CopyFrom(header_msg);
   _msg.set_frame("frame_id_value");
-  _msg.set_angle_min(-1.57);
-  _msg.set_angle_max(1.57);
-  _msg.set_angle_step(3.14 / num_readings);
+  _msg.set_angle_min(-0.01);
+  _msg.set_angle_max(0.01);
+  _msg.set_angle_step(0.02 / num_readings);
   _msg.set_range_min(1);
   _msg.set_range_max(2);
   _msg.set_count(num_readings);
@@ -974,7 +974,7 @@ void createTestMsg(gz::msgs::LaserScan & _msg)
   _msg.set_vertical_count(0);
 
   for (auto i = 0u; i < _msg.count(); ++i) {
-    _msg.add_ranges(0);
+    _msg.add_ranges(1.5);
     _msg.add_intensities(1);
   }
 }

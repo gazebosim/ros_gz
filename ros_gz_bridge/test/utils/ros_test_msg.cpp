@@ -1216,19 +1216,19 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Joy> & _msg)
 
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
-  const unsigned int num_readings = 100u;
+  const unsigned int num_readings = 1u;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
 
   _msg.header = header_msg;
-  _msg.angle_min = -1.57;
-  _msg.angle_max = 1.57;
-  _msg.angle_increment = 3.14 / num_readings;
+  _msg.angle_min = -0.01;
+  _msg.angle_max = 0.01;
+  _msg.angle_increment = 0.02 / num_readings;
   _msg.scan_time = 0;
   _msg.range_min = 1;
   _msg.range_max = 2;
-  _msg.ranges.resize(num_readings, 0);
+  _msg.ranges.resize(num_readings, 1.5);
   _msg.intensities.resize(num_readings, 1);
 }
 
@@ -1251,6 +1251,32 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg)
     EXPECT_FLOAT_EQ(expected_msg.ranges[i], _msg->ranges[i]);
     EXPECT_FLOAT_EQ(expected_msg.intensities[i], _msg->intensities[i]);
   }
+}
+
+void createTestMsg(sensor_msgs::msg::Range & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.radiation_type = 1;
+  _msg.field_of_view = 0.02;
+  _msg.min_range = 1.0;
+  _msg.max_range = 2.0;
+  _msg.range = 1.5;
+}
+
+void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg)
+{
+  sensor_msgs::msg::Range expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.radiation_type, _msg->radiation_type);
+  EXPECT_FLOAT_EQ(expected_msg.field_of_view, _msg->field_of_view);
+  EXPECT_FLOAT_EQ(expected_msg.min_range, _msg->min_range);
+  EXPECT_FLOAT_EQ(expected_msg.max_range, _msg->max_range);
+  EXPECT_FLOAT_EQ(expected_msg.range, _msg->range);
 }
 
 void createTestMsg(sensor_msgs::msg::MagneticField & _msg)
