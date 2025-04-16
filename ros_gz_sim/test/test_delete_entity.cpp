@@ -29,7 +29,7 @@
 using namespace std::chrono_literals;
 
 // Test fixture for the EntityDeleter
-class EntityDeleterTest : public ::testing::Test 
+class EntityDeleterTest : public ::testing::Test
 {
 protected:
   void SetUp() override

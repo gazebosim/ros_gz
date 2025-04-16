@@ -33,13 +33,13 @@ using namespace std::chrono_literals;
 EntityDeleter::EntityDeleter()
 : Node("entity_deleter")
 {
-client_ = create_client<ros_gz_interfaces::srv::DeleteEntity>(
+  client_ = create_client<ros_gz_interfaces::srv::DeleteEntity>(
     "/world/default/remove");
 }
 
 // Constructor with external client for testing
 EntityDeleter::EntityDeleter(
-rclcpp::Client<ros_gz_interfaces::srv::DeleteEntity>::SharedPtr client)
+  rclcpp::Client<ros_gz_interfaces::srv::DeleteEntity>::SharedPtr client)
 : Node("entity_deleter"), client_(client) {}
 
 // Implementation of the delete_entity method
