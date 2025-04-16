@@ -39,32 +39,28 @@ find_package(std_msgs REQUIRED)
 ament_python_install_package(${PROJECT_NAME})
 
 add_executable(create src/create.cpp)
-ament_target_dependencies(create
-  rclcpp
-  std_msgs
-)
 target_link_libraries(create
   gflags
   gz-math::core
   gz-msgs::core
   gz-transport::core
+  rclcpp::rclcpp
   rcpputils::rcpputils
+  ${std_msgs_TARGETS}
 )
 
 add_executable(remove src/remove.cpp)
-ament_target_dependencies(remove
-  rclcpp
-  std_msgs
-)
 
 target_link_libraries(remove
   gz-msgs::core
   gz-transport::core
+  rclcpp::rclcpp
+  ${std_msgs_TARGETS}
 )
 
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
-ament_target_dependencies(${PROJECT_NAME}
-  rclcpp
+target_link_libraries(${PROJECT_NAME}
+  rclcpp::rclcpp
 )
 
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -78,15 +74,14 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 add_library(gzserver_component SHARED src/gzserver.cpp)
 rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
-ament_target_dependencies(gzserver_component
-  rclcpp
-  rclcpp_components
-  std_msgs
-)
-target_link_libraries(gzserver_component
+target_link_libraries(gzserver_component PUBLIC
+  ${std_msgs_TARGETS}
   gz-sim::core
+  rclcpp::rclcpp
+  rclcpp_components::component
+  rclcpp_components::component_manager
 )
-ament_target_dependencies(gzserver_component std_msgs)
+
 rclcpp_components_register_node(
   gzserver_component
   PLUGIN "ros_gz_sim::GzServer"
@@ -175,8 +170,6 @@ if(BUILD_TESTING)
     test/test_remove.cpp
   )
 
-  ament_target_dependencies(test_stopwatch rclcpp)
-
   target_include_directories(test_stopwatch PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
@@ -184,6 +177,7 @@ if(BUILD_TESTING)
 
   target_link_libraries(test_stopwatch
     ${PROJECT_NAME}
+    rclcpp::rclcpp
   )
   target_link_libraries(test_create
     gz-transport::core
