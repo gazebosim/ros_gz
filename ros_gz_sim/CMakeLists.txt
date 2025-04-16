@@ -52,7 +52,7 @@ target_include_directories(
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
-          
+
 # delete_entity
 add_executable(delete_entity src/delete_entity.cpp)
 ament_target_dependencies(delete_entity builtin_interfaces geometry_msgs rclcpp
