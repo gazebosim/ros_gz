@@ -59,9 +59,10 @@ public:
   /// \param[in] qx First orientation parameter (quaternion X component or roll angle).
   /// \param[in] qy Second orientation parameter (quaternion Y component or pitch angle).
   /// \param[in] qz Third orientation parameter (quaternion Z component or yaw angle).
-  /// \param[in] qw Fourth orientation parameter (quaternion W component, ignored for Euler angles).
-  /// \param[in] use_quaternion If true, orientation parameters are interpreted as quaternion components.
-  ///            If false, they are interpreted as Euler angles (roll, pitch, yaw).
+  /// \param[in] qw Fourth orientation parameter (quaternion W component, ignored for ]
+  ///            Euler angles).
+  /// \param[in] use_quaternion If true, orientation parameters are interpreted as quaternion
+  ///            components. If false, they are interpreted as Euler angles (roll, pitch, yaw).
   /// \return True if the entity pose was set successfully, false otherwise.
   bool set_entity_pose(
     const std::string & entity_name, int entity_id,

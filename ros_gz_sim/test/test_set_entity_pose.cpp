@@ -30,7 +30,7 @@
 using namespace std::chrono_literals;
 
 // Test fixture for the EntityPoseSetter
-class EntityPoseSetterTest : public ::testing::Test 
+class EntityPoseSetterTest : public ::testing::Test
 {
 protected:
   void SetUp() override
@@ -45,7 +45,7 @@ protected:
 };
 
 // Test for the euler_to_quaternion function
-TEST(SetEntityPoseTest, EulerToQuaternionConversion) 
+TEST(SetEntityPoseTest, EulerToQuaternionConversion)
 {
   // Test case 1: Zero angles should result in identity quaternion
   auto q = euler_to_quaternion(0.0, 0.0, 0.0);
