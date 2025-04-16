@@ -43,11 +43,22 @@ ament_target_dependencies(create rclcpp std_msgs)
 target_link_libraries(create gflags gz-math::core gz-msgs::core
                       gz-transport::core rcpputils::rcpputils)
 
+# delete_entity library
+add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
+ament_target_dependencies(${PROJECT_NAME}_delete_entity builtin_interfaces
+                          rclcpp ros_gz_interfaces)
+target_include_directories(
+  ${PROJECT_NAME}_delete_entity
+  PUBLIC 
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+                      
 # delete_entity
 add_executable(delete_entity src/delete_entity.cpp)
 ament_target_dependencies(delete_entity builtin_interfaces geometry_msgs rclcpp
                           ros_gz_interfaces)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
+target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity)
 
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp)
@@ -148,6 +159,7 @@ install(
   TARGETS ${PROJECT_NAME}
   ${PROJECT_NAME}_spawn_entity
   ${PROJECT_NAME}_set_entity_pose
+  ${PROJECT_NAME}_delete_entity
   EXPORT ${PROJECT_NAME}
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
@@ -170,12 +182,15 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_remove test/test_remove.cpp)
   ament_add_gtest_executable(test_spawn_entity test/test_spawn_entity.cpp)
   ament_add_gtest_executable(test_set_entity_pose test/test_set_entity_pose.cpp)
+  ament_add_gtest_executable(test_delete_entity test/test_delete_entity.cpp)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
 
   ament_target_dependencies(test_stopwatch rclcpp)
   ament_target_dependencies(test_spawn_entity builtin_interfaces geometry_msgs
                             rclcpp ros_gz_interfaces)
   ament_target_dependencies(test_set_entity_pose builtin_interfaces geometry_msgs
+                            rclcpp ros_gz_interfaces)
+  ament_target_dependencies(test_delete_entity builtin_interfaces
                             rclcpp ros_gz_interfaces)
 
   target_include_directories(
@@ -189,19 +204,25 @@ if(BUILD_TESTING)
     test_set_entity_pose
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
+  target_include_directories(
+    test_delete_entity
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>)
 
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create gz-transport::core)
   target_link_libraries(test_remove gz-transport::core)
   target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity)
   target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose)
+  target_link_libraries(test_delete_entity ${PROJECT_NAME}_delete_entity)
 
-  install(TARGETS test_create test_remove test_spawn_entity test_set_entity_pose test_stopwatch
+  install(TARGETS test_create test_remove test_spawn_entity test_set_entity_pose test_delete_entity test_stopwatch
           DESTINATION lib/${PROJECT_NAME})
 
   ament_add_gtest_test(test_stopwatch)
   ament_add_gtest_test(test_spawn_entity)
   ament_add_gtest_test(test_set_entity_pose)
+  ament_add_gtest_test(test_delete_entity)
 
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
