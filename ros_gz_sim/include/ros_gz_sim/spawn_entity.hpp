@@ -29,6 +29,8 @@
 #include <geometry_msgs/msg/pose.hpp>
 #include <rclcpp/rclcpp.hpp>
 #include <ros_gz_interfaces/srv/spawn_entity.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Matrix3x3.h>
 
 /// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion
 /// representation.

@@ -25,6 +25,8 @@
 #include <vector>
 
 #include <CLI/CLI.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Matrix3x3.h>
 
 /// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion.
 /// \details Uses the standard ZYX rotation order for conversion.
@@ -39,18 +41,16 @@ void euler_to_quaternion(
   double roll, double pitch, double yaw, double & qx,
   double & qy, double & qz, double & qw)
 {
-  // Calculate quaternion components from Euler angles (ZYX convention)
-  double cy = cos(yaw * 0.5);
-  double sy = sin(yaw * 0.5);
-  double cp = cos(pitch * 0.5);
-  double sp = sin(pitch * 0.5);
-  double cr = cos(roll * 0.5);
-  double sr = sin(roll * 0.5);
+  tf2::Quaternion tf2_quat;
 
-  qw = cr * cp * cy + sr * sp * sy;
-  qx = sr * cp * cy - cr * sp * sy;
-  qy = cr * sp * cy + sr * cp * sy;
-  qz = cr * cp * sy - sr * sp * cy;
+  // Set the quaternion from roll, pitch, yaw
+  tf2_quat.setRPY(roll, pitch, yaw);
+
+  // Copy to output parameters
+  qx = tf2_quat.x();
+  qy = tf2_quat.y();
+  qz = tf2_quat.z();
+  qw = tf2_quat.w();
 }
 
 /// \brief Parses command-line arguments using CLI11.

@@ -12,22 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
- #include "ros_gz_sim/set_entity_pose.hpp"
+#include "ros_gz_sim/set_entity_pose.hpp"
 
- #include <chrono>
- #include <cmath>
- #include <iostream>
- #include <memory>
- #include <string>
- #include <vector>
+#include <chrono>
+#include <cmath>
+#include <iostream>
+#include <memory>
+#include <string>
+#include <vector>
 
- #include <CLI/CLI.hpp>
- #include <geometry_msgs/msg/point.hpp>
- #include <geometry_msgs/msg/pose.hpp>
- #include <geometry_msgs/msg/quaternion.hpp>
- #include <rclcpp/rclcpp.hpp>
- #include <ros_gz_interfaces/msg/entity.hpp>
- #include <ros_gz_interfaces/srv/set_entity_pose.hpp>
+#include <CLI/CLI.hpp>
+#include <geometry_msgs/msg/point.hpp>
+#include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
+#include <rclcpp/rclcpp.hpp>
+#include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/srv/set_entity_pose.hpp>
+#include <tf2/LinearMath/Quaternion.h>
+#include <tf2/LinearMath/Matrix3x3.h>
 
 using namespace std::chrono_literals;
 
@@ -36,18 +38,16 @@ geometry_msgs::msg::Quaternion euler_to_quaternion(
   double roll, double pitch, double yaw)
 {
   geometry_msgs::msg::Quaternion q;
+  tf2::Quaternion tf_quat;
 
-  double cy = cos(yaw * 0.5);
-  double sy = sin(yaw * 0.5);
-  double cp = cos(pitch * 0.5);
-  double sp = sin(pitch * 0.5);
-  double cr = cos(roll * 0.5);
-  double sr = sin(roll * 0.5);
-
-  q.w = cr * cp * cy + sr * sp * sy;
-  q.x = sr * cp * cy - cr * sp * sy;
-  q.y = cr * sp * cy + sr * cp * sy;
-  q.z = cr * cp * sy - sr * sp * cy;
+  // Set the quaternion from roll, pitch, yaw
+  tf_quat.setRPY(roll, pitch, yaw);
+  
+  // Convert to geometry_msgs quaternion
+  q.x = tf_quat.x();
+  q.y = tf_quat.y();
+  q.z = tf_quat.z();
+  q.w = tf_quat.w();
 
   return q;
 }

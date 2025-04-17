@@ -51,7 +51,7 @@ bool EntityDeleter::delete_entity(
   while (!client_->wait_for_service(1s)) {
     if (!rclcpp::ok()) {
       RCLCPP_ERROR(this->get_logger(),
-                    "Interrupted while waiting for the service. Exiting.");
+                  "Interrupted while waiting for the service. Exiting.");
       return false;
     }
     RCLCPP_INFO(this->get_logger(), "Service not available, waiting...");

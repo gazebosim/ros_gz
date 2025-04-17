@@ -28,6 +28,8 @@ find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(ros_gz_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
 
 # Needed in launch/gz_sim.launch.py.in
 set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
@@ -45,8 +47,10 @@ target_link_libraries(create gflags gz-math::core gz-msgs::core
 
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
-ament_target_dependencies(${PROJECT_NAME}_delete_entity builtin_interfaces
-                          rclcpp ros_gz_interfaces)
+target_link_libraries(${PROJECT_NAME}_delete_entity
+                      ${builtin_interfaces_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp)
 target_include_directories(
   ${PROJECT_NAME}_delete_entity
   PUBLIC
@@ -55,8 +59,11 @@ target_include_directories(
 
 # delete_entity
 add_executable(delete_entity src/delete_entity.cpp)
-ament_target_dependencies(delete_entity builtin_interfaces geometry_msgs rclcpp
-                          ros_gz_interfaces)
+target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
+                      ${builtin_interfaces_TARGETS}
+                      ${geometry_msgs_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity)
 
@@ -74,8 +81,13 @@ target_include_directories(
 
 # spawn_entity library
 add_library(${PROJECT_NAME}_spawn_entity SHARED src/spawn_entity.cpp)
-ament_target_dependencies(${PROJECT_NAME}_spawn_entity builtin_interfaces
-                          geometry_msgs rclcpp ros_gz_interfaces)
+target_link_libraries(${PROJECT_NAME}_spawn_entity
+                      ${builtin_interfaces_TARGETS}
+                      ${geometry_msgs_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp
+                      tf2::tf2
+                      tf2_ros::tf2_ros)
 target_include_directories(
   ${PROJECT_NAME}_spawn_entity
   PUBLIC
@@ -84,8 +96,13 @@ target_include_directories(
 
 # set_entity_pose library
 add_library(${PROJECT_NAME}_set_entity_pose SHARED src/set_entity_pose.cpp)
-ament_target_dependencies(${PROJECT_NAME}_set_entity_pose builtin_interfaces
-                          geometry_msgs rclcpp ros_gz_interfaces)
+target_link_libraries(${PROJECT_NAME}_set_entity_pose
+                      ${builtin_interfaces_TARGETS}
+                      ${geometry_msgs_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp
+                      tf2::tf2
+                      tf2_ros::tf2_ros)
 target_include_directories(
   ${PROJECT_NAME}_set_entity_pose
   PUBLIC
@@ -107,14 +124,24 @@ target_link_libraries(remove gz-msgs::core gz-transport::core)
 
 # set_entity_pose
 add_executable(set_entity_pose src/set_entity_pose.cpp)
-ament_target_dependencies(set_entity_pose builtin_interfaces geometry_msgs
-                          rclcpp ros_gz_interfaces)
 target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
-target_link_libraries(set_entity_pose ${PROJECT_NAME}_set_entity_pose)
+target_link_libraries(set_entity_pose ${PROJECT_NAME}_set_entity_pose
+                      ${builtin_interfaces_TARGETS}
+                      ${geometry_msgs_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp
+                      tf2::tf2
+                      tf2_ros::tf2_ros)
 
 # spawn_entity executable
 add_executable(spawn_entity src/spawn_entity.cpp)
-target_link_libraries(spawn_entity ${PROJECT_NAME}_spawn_entity)
+target_link_libraries(spawn_entity ${PROJECT_NAME}_spawn_entity
+                      ${builtin_interfaces_TARGETS}
+                      ${geometry_msgs_TARGETS}
+                      ${ros_gz_interfaces_TARGETS}
+                      rclcpp::rclcpp
+                      tf2::tf2
+                      tf2_ros::tf2_ros)
 
 # Headers
 install(DIRECTORY include/${PROJECT_NAME}/ DESTINATION include/${PROJECT_NAME})
@@ -166,7 +193,7 @@ install(
   RUNTIME DESTINATION bin)
 
 ament_export_targets(${PROJECT_NAME})
-ament_export_dependencies(rclcpp)
+ament_export_dependencies(rclcpp tf2 tf2_ros)
 
 # Tests
 if(BUILD_TESTING)
@@ -186,12 +213,6 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
 
   ament_target_dependencies(test_stopwatch rclcpp)
-  ament_target_dependencies(test_spawn_entity builtin_interfaces geometry_msgs
-                            rclcpp ros_gz_interfaces)
-  ament_target_dependencies(test_set_entity_pose builtin_interfaces geometry_msgs
-                            rclcpp ros_gz_interfaces)
-  ament_target_dependencies(test_delete_entity builtin_interfaces
-                            rclcpp ros_gz_interfaces)
 
   target_include_directories(
     test_stopwatch PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -212,9 +233,24 @@ if(BUILD_TESTING)
   target_link_libraries(test_stopwatch ${PROJECT_NAME})
   target_link_libraries(test_create gz-transport::core)
   target_link_libraries(test_remove gz-transport::core)
-  target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity)
-  target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose)
-  target_link_libraries(test_delete_entity ${PROJECT_NAME}_delete_entity)
+  target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity
+                        ${builtin_interfaces_TARGETS}
+                        ${geometry_msgs_TARGETS}
+                        ${ros_gz_interfaces_TARGETS}
+                        rclcpp::rclcpp
+                        tf2::tf2
+                        tf2_ros::tf2_ros)
+  target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose
+                        ${builtin_interfaces_TARGETS}
+                        ${geometry_msgs_TARGETS}
+                        ${ros_gz_interfaces_TARGETS}
+                        rclcpp::rclcpp
+                        tf2::tf2
+                        tf2_ros::tf2_ros)
+  target_link_libraries(test_delete_entity ${PROJECT_NAME}_delete_entity
+                        ${builtin_interfaces_TARGETS}
+                        ${ros_gz_interfaces_TARGETS}
+                        rclcpp::rclcpp)
 
   install(TARGETS test_create test_remove test_spawn_entity test_set_entity_pose test_delete_entity test_stopwatch
           DESTINATION lib/${PROJECT_NAME})
