@@ -28,8 +28,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
 #include <ros_gz_interfaces/srv/set_entity_pose.hpp>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Quaternion.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
 
 using namespace std::chrono_literals;
 
@@ -42,7 +42,7 @@ geometry_msgs::msg::Quaternion euler_to_quaternion(
 
   // Set the quaternion from roll, pitch, yaw
   tf_quat.setRPY(roll, pitch, yaw);
-  
+
   // Convert to geometry_msgs quaternion
   q.x = tf_quat.x();
   q.y = tf_quat.y();

@@ -25,8 +25,8 @@
 #include <vector>
 
 #include <CLI/CLI.hpp>
-#include <tf2/LinearMath/Quaternion.h>
-#include <tf2/LinearMath/Matrix3x3.h>
+#include <tf2/LinearMath/Quaternion.hpp>
+#include <tf2/LinearMath/Matrix3x3.hpp>
 
 /// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion.
 /// \details Uses the standard ZYX rotation order for conversion.
