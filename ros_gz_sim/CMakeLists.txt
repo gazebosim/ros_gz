@@ -41,9 +41,14 @@ ament_python_install_package(${PROJECT_NAME})
 
 # create
 add_executable(create src/create.cpp)
-ament_target_dependencies(create rclcpp std_msgs)
-target_link_libraries(create gflags gz-math::core gz-msgs::core
-                      gz-transport::core rcpputils::rcpputils)
+target_link_libraries(create
+                      gflags
+                      gz-math::core
+                      gz-msgs::core
+                      gz-transport::core
+                      rclcpp::rclcpp
+                      rcpputils::rcpputils
+                      ${std_msgs_TARGETS})
 
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
@@ -65,14 +70,17 @@ target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
                       ${ros_gz_interfaces_TARGETS}
                       rclcpp::rclcpp)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
-target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity)
 
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp)
-ament_target_dependencies(gzserver_component rclcpp rclcpp_components std_msgs)
-target_link_libraries(gzserver_component gz-sim::core)
 rclcpp_components_register_node(gzserver_component PLUGIN
                                 "ros_gz_sim::GzServer" EXECUTABLE gzserver)
+target_link_libraries(gzserver_component PUBLIC
+                      ${std_msgs_TARGETS}
+                      gz-sim::core
+                      rclcpp::rclcpp
+                      rclcpp_components::component
+                      rclcpp_components::component_manager)
 target_include_directories(
   gzserver_component
   PUBLIC
@@ -111,7 +119,8 @@ target_include_directories(
 
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
-ament_target_dependencies(${PROJECT_NAME} rclcpp)
+target_link_libraries(${PROJECT_NAME}
+                      rclcpp::rclcpp)
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -119,8 +128,11 @@ target_include_directories(
 
 # remove
 add_executable(remove src/remove.cpp)
-ament_target_dependencies(remove rclcpp std_msgs)
-target_link_libraries(remove gz-msgs::core gz-transport::core)
+target_link_libraries(remove
+                      gz-msgs::core
+                      gz-transport::core
+                      rclcpp::rclcpp
+                      ${std_msgs_TARGETS})
 
 # set_entity_pose
 add_executable(set_entity_pose src/set_entity_pose.cpp)
@@ -212,8 +224,6 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_delete_entity test/test_delete_entity.cpp)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
 
-  ament_target_dependencies(test_stopwatch rclcpp)
-
   target_include_directories(
     test_stopwatch PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
                           $<INSTALL_INTERFACE:include>)
@@ -230,7 +240,7 @@ if(BUILD_TESTING)
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
-  target_link_libraries(test_stopwatch ${PROJECT_NAME})
+  target_link_libraries(test_stopwatch ${PROJECT_NAME} rclcpp::rclcpp)
   target_link_libraries(test_create gz-transport::core)
   target_link_libraries(test_remove gz-transport::core)
   target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity
