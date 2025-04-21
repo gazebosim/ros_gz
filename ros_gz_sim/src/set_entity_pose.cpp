@@ -33,25 +33,6 @@
 
 using namespace std::chrono_literals;
 
- // Implementation of the utility function to convert Euler angles to Quaternion
-geometry_msgs::msg::Quaternion euler_to_quaternion(
-  double roll, double pitch, double yaw)
-{
-  geometry_msgs::msg::Quaternion q;
-  tf2::Quaternion tf_quat;
-
-  // Set the quaternion from roll, pitch, yaw
-  tf_quat.setRPY(roll, pitch, yaw);
-
-  // Convert to geometry_msgs quaternion
-  q.x = tf_quat.x();
-  q.y = tf_quat.y();
-  q.z = tf_quat.z();
-  q.w = tf_quat.w();
-
-  return q;
-}
-
 // Default constructor
 EntityPoseSetter::EntityPoseSetter()
 : Node("entity_pose_setter")
@@ -119,7 +100,17 @@ bool EntityPoseSetter::set_entity_pose(
     pose.orientation.w = qw;
   } else {
     // In this case, qx=roll, qy=pitch, qz=yaw (in radians)
-    pose.orientation = euler_to_quaternion(qx, qy, qz);
+    // Use tf2 to convert Euler angles to quaternion
+    tf2::Quaternion tf2_quat;
+    tf2_quat.setRPY(qx, qy, qz);
+
+    // Convert to geometry_msgs quaternion
+    pose.orientation.x = tf2_quat.x();
+    pose.orientation.y = tf2_quat.y();
+    pose.orientation.z = tf2_quat.z();
+    pose.orientation.w = tf2_quat.w();
+
+    // Update qw for logging
     qw = pose.orientation.w;
   }
 
@@ -202,7 +193,7 @@ int main(int argc, char **argv)
     return app.exit(e);
   }
 
-  // Manual validation: Ensure either name or ID is provided
+  // Ensure either name or ID is provided
   if (entity_name.empty() && entity_id <= 0) {
     std::cerr << "Error: Either --name or --id must be provided" << std::endl;
     std::cout << app.help() << std::endl;

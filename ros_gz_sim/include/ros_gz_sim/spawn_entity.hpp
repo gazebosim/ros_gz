@@ -32,19 +32,6 @@
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2/LinearMath/Matrix3x3.hpp>
 
-/// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion
-/// representation.
-/// \param[in] roll Roll angle in radians.
-/// \param[in] pitch Pitch angle in radians.
-/// \param[in] yaw Yaw angle in radians.
-/// \param[out] qx Quaternion x component.
-/// \param[out] qy Quaternion y component.
-/// \param[out] qz Quaternion z component.
-/// \param[out] qw Quaternion w component.
-void euler_to_quaternion(
-  double roll, double pitch, double yaw, double & qx,
-  double & qy, double & qz, double & qw);
-
 /// \brief Struct representing parsed command-line arguments for entity
 /// spawning.
 struct CommandLineArgs
@@ -68,8 +55,8 @@ public:
   /// \brief Default constructor. Initializes the node and spawn client.
   EntitySpawner();
 
-  /// \brief Constructor that accepts an external spawn service client (for
-  /// testing). \param[in] client Shared pointer to the spawn entity service
+  /// \brief Constructor that accepts an external spawn service client.
+  /// \param[in] client Shared pointer to the spawn entity service
   /// client.
   explicit EntitySpawner(
     rclcpp::Client<ros_gz_interfaces::srv::SpawnEntity>::SharedPtr client);

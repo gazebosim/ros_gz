@@ -22,6 +22,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <geometry_msgs/msg/pose.hpp>
+#include <geometry_msgs/msg/quaternion.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
 #include <ros_gz_interfaces/srv/set_entity_pose.hpp>
 #include <tf2/LinearMath/Quaternion.hpp>
@@ -45,38 +46,6 @@ protected:
     rclcpp::shutdown();
   }
 };
-
-// Test for the euler_to_quaternion function
-TEST(SetEntityPoseTest, EulerToQuaternionConversion)
-{
-  // Test case 1: Zero angles should result in identity quaternion
-  auto q = euler_to_quaternion(0.0, 0.0, 0.0);
-  EXPECT_NEAR(q.x, 0.0, 1e-6);
-  EXPECT_NEAR(q.y, 0.0, 1e-6);
-  EXPECT_NEAR(q.z, 0.0, 1e-6);
-  EXPECT_NEAR(q.w, 1.0, 1e-6);
-
-  // Test case 2: 90-degree rotation around X
-  q = euler_to_quaternion(M_PI / 2, 0.0, 0.0);
-  EXPECT_NEAR(q.x, 0.7071068, 1e-6);
-  EXPECT_NEAR(q.y, 0.0, 1e-6);
-  EXPECT_NEAR(q.z, 0.0, 1e-6);
-  EXPECT_NEAR(q.w, 0.7071068, 1e-6);
-
-  // Test case 3: 90-degree rotation around Y
-  q = euler_to_quaternion(0.0, M_PI / 2, 0.0);
-  EXPECT_NEAR(q.x, 0.0, 1e-6);
-  EXPECT_NEAR(q.y, 0.7071068, 1e-6);
-  EXPECT_NEAR(q.z, 0.0, 1e-6);
-  EXPECT_NEAR(q.w, 0.7071068, 1e-6);
-
-  // Test case 4: 90-degree rotation around Z
-  q = euler_to_quaternion(0.0, 0.0, M_PI / 2);
-  EXPECT_NEAR(q.x, 0.0, 1e-6);
-  EXPECT_NEAR(q.y, 0.0, 1e-6);
-  EXPECT_NEAR(q.z, 0.7071068, 1e-6);
-  EXPECT_NEAR(q.w, 0.7071068, 1e-6);
-}
 
 // Simple implementation of the set entity pose service for testing
 class TestSetEntityPoseService : public rclcpp::Node
@@ -174,7 +143,8 @@ TEST(SetEntityPoseTest, SetEntityPoseIntegration) {
       entity_name, entity_id, entity_type, x, y, z, roll, pitch, yaw, 0.0, use_quaternion);
 
     // Calculate expected quaternion for verification
-    auto expected_quat = euler_to_quaternion(roll, pitch, yaw);
+    tf2::Quaternion expected_quat;
+    expected_quat.setRPY(roll, pitch, yaw);
 
     // Verify the result and the request received by the service
     EXPECT_TRUE(result);
@@ -185,10 +155,10 @@ TEST(SetEntityPoseTest, SetEntityPoseIntegration) {
     EXPECT_DOUBLE_EQ(last_request.pose.position.x, x);
     EXPECT_DOUBLE_EQ(last_request.pose.position.y, y);
     EXPECT_DOUBLE_EQ(last_request.pose.position.z, z);
-    EXPECT_DOUBLE_EQ(last_request.pose.orientation.x, expected_quat.x);
-    EXPECT_DOUBLE_EQ(last_request.pose.orientation.y, expected_quat.y);
-    EXPECT_DOUBLE_EQ(last_request.pose.orientation.z, expected_quat.z);
-    EXPECT_DOUBLE_EQ(last_request.pose.orientation.w, expected_quat.w);
+    EXPECT_DOUBLE_EQ(last_request.pose.orientation.x, expected_quat.x());
+    EXPECT_DOUBLE_EQ(last_request.pose.orientation.y, expected_quat.y());
+    EXPECT_DOUBLE_EQ(last_request.pose.orientation.z, expected_quat.z());
+    EXPECT_DOUBLE_EQ(last_request.pose.orientation.w, expected_quat.w());
   }
 
   // Test case 3: Test failure response

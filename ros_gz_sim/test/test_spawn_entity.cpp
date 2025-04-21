@@ -28,39 +28,6 @@
 
 using namespace std::chrono_literals;
 
-// Test for the euler_to_quaternion function
-TEST(SpawnEntityTest, EulerToQuaternionConversion) {
-  double qx, qy, qz, qw;
-
-  // Test case 1: Zero angles should result in identity quaternion
-  euler_to_quaternion(0.0, 0.0, 0.0, qx, qy, qz, qw);
-  EXPECT_NEAR(qx, 0.0, 1e-6);
-  EXPECT_NEAR(qy, 0.0, 1e-6);
-  EXPECT_NEAR(qz, 0.0, 1e-6);
-  EXPECT_NEAR(qw, 1.0, 1e-6);
-
-  // Test case 2: 90-degree rotation around X
-  euler_to_quaternion(M_PI / 2, 0.0, 0.0, qx, qy, qz, qw);
-  EXPECT_NEAR(qx, 0.7071068, 1e-6);
-  EXPECT_NEAR(qy, 0.0, 1e-6);
-  EXPECT_NEAR(qz, 0.0, 1e-6);
-  EXPECT_NEAR(qw, 0.7071068, 1e-6);
-
-  // Test case 3: 90-degree rotation around Y
-  euler_to_quaternion(0.0, M_PI / 2, 0.0, qx, qy, qz, qw);
-  EXPECT_NEAR(qx, 0.0, 1e-6);
-  EXPECT_NEAR(qy, 0.7071068, 1e-6);
-  EXPECT_NEAR(qz, 0.0, 1e-6);
-  EXPECT_NEAR(qw, 0.7071068, 1e-6);
-
-  // Test case 4: 90-degree rotation around Z
-  euler_to_quaternion(0.0, 0.0, M_PI / 2, qx, qy, qz, qw);
-  EXPECT_NEAR(qx, 0.0, 1e-6);
-  EXPECT_NEAR(qy, 0.0, 1e-6);
-  EXPECT_NEAR(qz, 0.7071068, 1e-6);
-  EXPECT_NEAR(qw, 0.7071068, 1e-6);
-}
-
 // Test fixture for command line arguments parsing
 TEST(SpawnEntityTest, ArgumentParsing) {
   const char * argv[] = {

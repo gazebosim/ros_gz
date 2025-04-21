@@ -31,15 +31,6 @@
 #include <tf2/LinearMath/Quaternion.hpp>
 #include <tf2/LinearMath/Matrix3x3.hpp>
 
-/// \brief Converts Euler angles (roll, pitch, yaw) to a quaternion
-/// representation.
-/// \param[in] roll Roll angle in radians.
-/// \param[in] pitch Pitch angle in radians.
-/// \param[in] yaw Yaw angle in radians.
-/// \return Quaternion corresponding to the Euler angles.
-geometry_msgs::msg::Quaternion euler_to_quaternion(
-  double roll, double pitch, double yaw);
-
 /// \brief A ROS 2 node for setting entity poses in a Gazebo simulation.
 class EntityPoseSetter : public rclcpp::Node {
 public:
