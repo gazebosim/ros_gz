@@ -32,9 +32,15 @@ fi
 echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-testing.list
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
+<<<<<<< HEAD
 apt-get install -y $GZ_DEPS \
                        python3-colcon-common-extensions \
                        python3-rosdep
+=======
+apt-get install -y python3-colcon-common-extensions \
+                   python3-rosdep \
+                   libcli11-dev
+>>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
 
 rosdep init
 rosdep update

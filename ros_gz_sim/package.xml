@@ -1,23 +1,59 @@
 <?xml version="1.0"?>
-<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd"
+            schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_sim</name>
   <version>0.244.16</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
+<<<<<<< HEAD
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
 
   <license>Apache 2.0</license>
 
+=======
+
+  <!-- Maintainers -->
+  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
+  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez</maintainer>
+
+  <license>Apache 2.0</license>
+
+  <!-- Authors -->
+  <author email="addisuzt@intrinsic.ai">Addisu Taddese</author>
+  <author email="caguero@openrobotics.org">Carlos Agüero</author>
+>>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
   <author>Alejandro Hernandez</author>
 
+  <!-- Build‑tool dependencies -->
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>pkg-config</buildtool_depend>
 
+  <!-- Run‑time dependencies -->
   <depend>ament_index_python</depend>
+<<<<<<< HEAD
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
+=======
+  <depend>builtin_interfaces</depend>
+  <depend>cli11</depend>
+  <depend>geometry_msgs</depend>
+  <depend>gz_math_vendor</depend>
+  <depend>gz_msgs_vendor</depend>
+  <depend>gz_sim_vendor</depend>
+  <depend>gz_transport_vendor</depend>
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>libgflags-dev</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>rcpputils</depend>
+  <depend>ros_gz_interfaces</depend>
+>>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
   <depend>std_msgs</depend>
+  <depend>tf2</depend>
+  <depend>tf2_ros</depend>
 
+<<<<<<< HEAD
   <!-- Harmonic -->
   <depend condition="$GZ_VERSION == harmonic">gz-math7</depend>
   <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
@@ -37,6 +73,14 @@
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+=======
+  <!-- Test dependencies -->
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+  <test_depend>launch_ros</test_depend>
+  <test_depend>launch_testing</test_depend>
+  <test_depend>launch_testing_ament_cmake</test_depend>
+>>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
 
   <export>
     <build_type>ament_cmake</build_type>
