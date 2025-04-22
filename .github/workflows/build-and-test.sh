@@ -18,7 +18,8 @@ echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > 
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
 apt-get install -y python3-colcon-common-extensions \
-                   python3-rosdep
+                   python3-rosdep \
+                   libcli11-dev
 
 rosdep init
 rosdep update
