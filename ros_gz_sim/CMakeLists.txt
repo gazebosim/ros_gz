@@ -42,13 +42,14 @@ ament_python_install_package(${PROJECT_NAME})
 # create
 add_executable(create src/create.cpp)
 target_link_libraries(create
-                      gflags
-                      gz-math::core
-                      gz-msgs::core
-                      gz-transport::core
-                      rclcpp::rclcpp
-                      rcpputils::rcpputils
-                      ${std_msgs_TARGETS})
+  gflags
+  gz-math::core
+  gz-msgs::core
+  gz-transport::core
+  rclcpp::rclcpp
+  rcpputils::rcpputils
+  ${std_msgs_TARGETS}
+)
 
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
@@ -73,14 +74,19 @@ target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp)
-rclcpp_components_register_node(gzserver_component PLUGIN
-                                "ros_gz_sim::GzServer" EXECUTABLE gzserver)
+rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
 target_link_libraries(gzserver_component PUBLIC
-                      ${std_msgs_TARGETS}
-                      gz-sim::core
-                      rclcpp::rclcpp
-                      rclcpp_components::component
-                      rclcpp_components::component_manager)
+  ${std_msgs_TARGETS}
+  gz-sim::core
+  rclcpp::rclcpp
+  rclcpp_components::component
+  rclcpp_components::component_manager
+)
+rclcpp_components_register_node(
+  gzserver_component
+  PLUGIN "ros_gz_sim::GzServer"
+  EXECUTABLE gzserver
+)
 target_include_directories(
   gzserver_component
   PUBLIC
@@ -120,7 +126,8 @@ target_include_directories(
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 target_link_libraries(${PROJECT_NAME}
-                      rclcpp::rclcpp)
+  rclcpp::rclcpp
+)
 target_include_directories(
   ${PROJECT_NAME} PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -129,10 +136,11 @@ target_include_directories(
 # remove
 add_executable(remove src/remove.cpp)
 target_link_libraries(remove
-                      gz-msgs::core
-                      gz-transport::core
-                      rclcpp::rclcpp
-                      ${std_msgs_TARGETS})
+  gz-msgs::core
+  gz-transport::core
+  rclcpp::rclcpp
+  ${std_msgs_TARGETS}
+)
 
 # set_entity_pose
 add_executable(set_entity_pose src/set_entity_pose.cpp)
