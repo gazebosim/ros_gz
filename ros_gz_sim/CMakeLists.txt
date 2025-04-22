@@ -189,13 +189,13 @@ install(
   DESTINATION share/${PROJECT_NAME}/launch)
 
 # Install targets
-install(TARGETS 
-    create 
-    delete_entity 
-    remove 
-    set_entity_pose 
+install(TARGETS
+    create
+    delete_entity
+    remove
+    set_entity_pose
     spawn_entity
-  DESTINATION 
+  DESTINATION
     lib/${PROJECT_NAME})
 
 install(TARGETS gzserver DESTINATION lib/${PROJECT_NAME})
@@ -276,12 +276,12 @@ if(BUILD_TESTING)
                         ${ros_gz_interfaces_TARGETS}
                         rclcpp::rclcpp)
 
-  install(TARGETS 
-      test_create 
-      test_remove 
+  install(TARGETS
+      test_create
+      test_remove
       test_spawn_entity
-      test_set_entity_pose 
-      test_delete_entity 
+      test_set_entity_pose
+      test_delete_entity
       test_stopwatch
     DESTINATION
       lib/${PROJECT_NAME})
