@@ -41,7 +41,7 @@ Changelog for package ros_ign_interfaces
   * Adding rssi field to ros_ign_interfaces/Dataframe.msg
 * [galactic] Backport GuiCamera, StringVec, TrackVisual, VideoRecord (`#241 <https://github.com/gazebosim/ros_gz/issues/241>`_)
   * [ros_ign_interfaces] Add more interface definitions.
-  * Add converion functions for the added messages
+  * Add conversion functions for the added messages
   * Update the factory factory function with the new messages
   * Add new messages to docs
   * Add test cases for the new messages conversions
