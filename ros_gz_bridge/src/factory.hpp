@@ -121,7 +121,7 @@ public:
     std::function<void(const GZ_T &,
       const gz::transport::MessageInfo &)> subCb =
       [this, ros_pub, override_timestamps_with_wall_time](const GZ_T & _msg,
-      const gz::transport::MessageInfo & _info)
+        const gz::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
         if (!_info.IntraProcess()) {
