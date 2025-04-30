@@ -1216,19 +1216,19 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Joy> & _msg)
 
 void createTestMsg(sensor_msgs::msg::LaserScan & _msg)
 {
-  const unsigned int num_readings = 1u;
+  const unsigned int num_readings = 100u;
 
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
 
   _msg.header = header_msg;
-  _msg.angle_min = -0.01;
-  _msg.angle_max = 0.01;
-  _msg.angle_increment = 0.02 / num_readings;
+  _msg.angle_min = -1.57;
+  _msg.angle_max = 1.57;
+  _msg.angle_increment = 3.14 / num_readings;
   _msg.scan_time = 0;
   _msg.range_min = 1;
   _msg.range_max = 2;
-  _msg.ranges.resize(num_readings, 1.5);
+  _msg.ranges.resize(num_readings, 0);
   _msg.intensities.resize(num_readings, 1);
 }
 
@@ -1259,11 +1259,11 @@ void createTestMsg(sensor_msgs::msg::Range & _msg)
   createTestMsg(header_msg);
 
   _msg.header = header_msg;
-  _msg.radiation_type = 1;
-  _msg.field_of_view = 0.02;
+  _msg.radiation_type = sensor_msgs::msg::Range::INFRARED;
+  _msg.field_of_view = 3.14;
   _msg.min_range = 1.0;
   _msg.max_range = 2.0;
-  _msg.range = 1.5;
+  _msg.range = 0.0;
 }
 
 void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg)

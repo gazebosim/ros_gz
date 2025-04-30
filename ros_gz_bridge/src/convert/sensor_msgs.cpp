@@ -474,6 +474,7 @@ convert_ros_to_gz(
   const sensor_msgs::msg::Range & ros_msg,
   gz::msgs::LaserScan & gz_msg)
 {
+  const unsigned int num_readings = 1u;
   const float half_fov = ros_msg.field_of_view / 2.0;
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
@@ -485,13 +486,13 @@ convert_ros_to_gz(
   // Not supported in sensor_msgs::msg::Range.
   gz_msg.set_angle_min(-half_fov);
   gz_msg.set_angle_max(half_fov);
-  gz_msg.set_angle_step(ros_msg.field_of_view);
-  gz_msg.set_count(1u);
+  gz_msg.set_angle_step(ros_msg.field_of_view / num_readings);
+  gz_msg.set_count(num_readings);
 
-  gz_msg.set_vertical_angle_min(0);
-  gz_msg.set_vertical_angle_max(0);
-  gz_msg.set_vertical_angle_step(0);
-  gz_msg.set_vertical_count(0);
+  gz_msg.set_vertical_angle_min(-half_fov);
+  gz_msg.set_vertical_angle_max(half_fov);
+  gz_msg.set_vertical_angle_step(ros_msg.field_of_view / num_readings);
+  gz_msg.set_vertical_count(num_readings);
 
   gz_msg.add_intensities(1.0);
 }
@@ -514,10 +515,10 @@ convert_gz_to_ros(
   ros_msg.min_range = gz_msg.range_min();
   ros_msg.max_range = gz_msg.range_max();
 
-  // Set range to the minimum of the ray ranges
-  // For single rays, this will just be the range of the ray
   ros_msg.range = ros_msg.max_range + 1.0;
 
+  // Set range to the minimum of the ray ranges
+  // For single rays, this will just be the range of the ray
   for (double range : gz_msg.ranges()) {
     if (range < ros_msg.range) {
       ros_msg.range = range;
