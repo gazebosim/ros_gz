@@ -14,8 +14,10 @@
 
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 
+#include <cstddef>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
