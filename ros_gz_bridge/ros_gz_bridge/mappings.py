@@ -64,6 +64,7 @@ MAPPINGS = {
         Mapping('Contacts', 'Contacts'),
         Mapping('Dataframe', 'Dataframe'),
         Mapping('Entity', 'Entity'),
+        Mapping('EntityFactory', 'EntityFactory'),
         Mapping('EntityWrench', 'EntityWrench'),
         Mapping('Float32Array', 'Float_V'),
         Mapping('GuiCamera', 'GUICamera'),

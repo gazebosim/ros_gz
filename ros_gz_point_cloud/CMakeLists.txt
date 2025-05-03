@@ -55,7 +55,7 @@ install(
 # TODO(CH3): Install symlink to deprecated library name. Remove on tock.
 string(REPLACE "RosGz" "RosIgn" plugin_name_ign ${plugin_name})
 if(WIN32)
-  # symlinks on Windows require admin priviledges, fallback to copy
+  # symlinks on Windows require admin privileges, fallback to copy
   ADD_CUSTOM_COMMAND(TARGET ${plugin_name} POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy
       "$<TARGET_FILE:${plugin_name}>"
