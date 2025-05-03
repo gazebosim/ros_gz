@@ -184,44 +184,32 @@ protected:
           gz_to_ros_parameters.override_frame_id_suffix_string;
       }
       if (gz_to_ros_parameters.override_frame_transform.has_value()) {
-        // Broadcast tf at fixed rate
-        // todo(iche033) consider making the broadcast period configurable
-        broadcast_tf_throttled(ros_node, original_frame_id,
+        broadcast_tf(ros_node, original_frame_id,
             ros_msg.header.frame_id,
-            gz_to_ros_parameters.override_frame_transform.value(),
-            std::chrono::milliseconds(1000));
+            gz_to_ros_parameters.override_frame_transform.value());
       }
     }
     ros_pub->publish(ros_msg);
   }
 
   static
-  void broadcast_tf_throttled(
+  void broadcast_tf(
     rclcpp::Node::SharedPtr ros_node,
     const std::string & frame,
     const std::string & child_frame,
-    const geometry_msgs::msg::Transform & transform,
-    std::chrono::duration<double> period)
+    const geometry_msgs::msg::Transform & transform)
   {
-    // A map of child frame id to the previous tf broadcast time.
-    static std::unordered_map<std::string,
-      std::chrono::steady_clock::time_point> child_frame_ids_pub_time;
-    auto now = std::chrono::steady_clock::now();
-    auto frame_id_it = child_frame_ids_pub_time.find(child_frame);
-    if (frame_id_it == child_frame_ids_pub_time.end() ||
-      (now - frame_id_it->second > period))
+    static std::unordered_set<std::string> child_frame_ids;
+    if (child_frame_ids.insert(child_frame).second)
     {
-      child_frame_ids_pub_time[child_frame] = now;
-
       geometry_msgs::msg::TransformStamped tf_stamped;
       tf_stamped.header.frame_id = frame;
       tf_stamped.child_frame_id = child_frame;
       tf_stamped.transform = transform;
 
-      auto tf_static_broadcaster =
-        std::make_shared<tf2_ros::StaticTransformBroadcaster>(
-          *ros_node.get());
-      tf_static_broadcaster->sendTransform(tf_stamped);
+      static tf2_ros::StaticTransformBroadcaster tf_static_broadcaster =
+          tf2_ros::StaticTransformBroadcaster(*ros_node.get());
+      tf_static_broadcaster.sendTransform(tf_stamped);
     }
   }
 
