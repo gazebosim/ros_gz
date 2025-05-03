@@ -104,7 +104,7 @@ Visualization Manager:
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: rgbd_camera
+    Fixed Frame: rgbd_camera/link/rgbd_camera
     Frame Rate: 30
   Name: root
   Tools:
