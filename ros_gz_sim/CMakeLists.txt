@@ -41,37 +41,16 @@ ament_python_install_package(${PROJECT_NAME})
 
 # create
 add_executable(create src/create.cpp)
-ament_target_dependencies(create
-  rclcpp
-  std_msgs
-)
 target_link_libraries(create
   gflags
   gz-math::core
   gz-msgs::core
   gz-transport::core
+  rclcpp::rclcpp
   rcpputils::rcpputils
+  ${std_msgs_TARGETS}
 )
 
-<<<<<<< HEAD
-add_executable(remove src/remove.cpp)
-ament_target_dependencies(remove
-  rclcpp
-  std_msgs
-)
-
-target_link_libraries(remove
-  gz-msgs::core
-  gz-transport::core
-)
-
-add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
-ament_target_dependencies(${PROJECT_NAME}
-  rclcpp
-)
-
-target_include_directories(${PROJECT_NAME} PUBLIC
-=======
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
 target_link_libraries(${PROJECT_NAME}_delete_entity
@@ -81,7 +60,6 @@ target_link_libraries(${PROJECT_NAME}_delete_entity
 target_include_directories(
   ${PROJECT_NAME}_delete_entity
   PUBLIC
->>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
 
@@ -97,32 +75,18 @@ target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp)
 rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
-ament_target_dependencies(gzserver_component
-  rclcpp
-  rclcpp_components
-  std_msgs
-)
-<<<<<<< HEAD
-target_link_libraries(gzserver_component
+target_link_libraries(gzserver_component PUBLIC
+  ${std_msgs_TARGETS}
   gz-sim::core
+  rclcpp::rclcpp
+  rclcpp_components::component
+  rclcpp_components::component_manager
 )
-ament_target_dependencies(gzserver_component std_msgs)
-=======
->>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
 rclcpp_components_register_node(
   gzserver_component
   PLUGIN "ros_gz_sim::GzServer"
   EXECUTABLE gzserver
 )
-<<<<<<< HEAD
-
-configure_file(
-  launch/gz_sim.launch.py.in
-  launch/gz_sim.launch.py.configured
-  @ONLY
-)
-file(GENERATE
-=======
 target_include_directories(
   gzserver_component
   PUBLIC
@@ -207,7 +171,6 @@ configure_file(launch/gz_sim.launch.py.in launch/gz_sim.launch.py.configured
   @ONLY)
 file(
   GENERATE
->>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
   OUTPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py"
   INPUT "${CMAKE_CURRENT_BINARY_DIR}/launch/gz_sim.launch.py.configured")
 
@@ -291,21 +254,6 @@ if(BUILD_TESTING)
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
-<<<<<<< HEAD
-  ament_target_dependencies(test_stopwatch rclcpp)
-
-  target_include_directories(test_stopwatch PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-  )
-
-  target_link_libraries(test_stopwatch
-    ${PROJECT_NAME}
-  )
-  target_link_libraries(test_create
-    gz-transport::core
-  )
-=======
   target_link_libraries(test_stopwatch ${PROJECT_NAME} rclcpp::rclcpp)
   target_link_libraries(test_create gz-transport::core)
   target_link_libraries(test_remove gz-transport::core)
@@ -337,7 +285,6 @@ if(BUILD_TESTING)
       test_stopwatch
     DESTINATION
       lib/${PROJECT_NAME})
->>>>>>> 388d931 (Spawn, set pose and delete entities using ROS 2 (#705))
 
   ament_add_gtest_test(test_stopwatch)
   ament_add_gtest_test(test_spawn_entity)
