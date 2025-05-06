@@ -2,6 +2,14 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.0 (2025-05-06)
+------------------
+* Spawn, set pose and delete entities using ROS 2 (`#705 <https://github.com/gazebosim/ros_gz/issues/705>`_)
+* use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Alejandro Hernández Cordero, Khaled Gabr, Leander Stephen D'Souza
+
 2.1.6 (2025-03-21)
 ------------------
 
