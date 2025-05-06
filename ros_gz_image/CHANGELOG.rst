@@ -2,6 +2,11 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.12 (2025-05-06)
+-------------------
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#722 <https://github.com/gazebosim/ros_gz/issues/722>`_)
+* Contributors: mergify[bot]
+
 1.0.11 (2025-03-21)
 -------------------
 

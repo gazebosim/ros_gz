@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.12 (2025-05-06)
+-------------------
+* Added LaserScan-Range bridge (backport `#736 <https://github.com/gazebosim/ros_gz/issues/736>`_) (`#739 <https://github.com/gazebosim/ros_gz/issues/739>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#722 <https://github.com/gazebosim/ros_gz/issues/722>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_) (`#719 <https://github.com/gazebosim/ros_gz/issues/719>`_)
+* Contributors: mergify[bot]
+
 1.0.11 (2025-03-21)
 -------------------
 * Add SpawnEntity, DeleteEntity, & SetEntityPose Support (backport `#380 <https://github.com/gazebosim/ros_gz/issues/380>`_) (`#712 <https://github.com/gazebosim/ros_gz/issues/712>`_)
