@@ -2,6 +2,16 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.17 (2025-05-06)
+---------------------
+* Added LaserScan-Range bridge (`#736 <https://github.com/gazebosim/ros_gz/issues/736>`_)
+* Backported override_timestamps_with_wall_time to humble (`#731 <https://github.com/gazebosim/ros_gz/issues/731>`_)
+* Added codespell pre-commit hook. (backport `#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#723 <https://github.com/gazebosim/ros_gz/issues/723>`_)
+* Add pre commit (backport `#718 <https://github.com/gazebosim/ros_gz/issues/718>`_) (`#720 <https://github.com/gazebosim/ros_gz/issues/720>`_)
+* Fix missing child_frame_id in TF2 message conversion (`#710 <https://github.com/gazebosim/ros_gz/issues/710>`_)
+* Add SpawnEntity, DeleteEntity, & SetEntityPose Support (backport `#380 <https://github.com/gazebosim/ros_gz/issues/380>`_) (`#713 <https://github.com/gazebosim/ros_gz/issues/713>`_)
+* Contributors: Noa Thouard, chcaya, mergify[bot]
+
 0.244.16 (2024-07-22)
 ---------------------
 * Add support for gz.msgs.EntityWrench (base branch: ros2) (backport `#573 <https://github.com/gazebosim/ros_gz/issues/573>`_) (`#575 <https://github.com/gazebosim/ros_gz/issues/575>`_)

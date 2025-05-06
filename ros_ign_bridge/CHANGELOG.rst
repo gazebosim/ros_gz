@@ -2,6 +2,11 @@
 Changelog for package ros_ign_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.17 (2025-05-06)
+---------------------
+* Added codespell pre-commit hook. (backport `#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#723 <https://github.com/gazebosim/ros_gz/issues/723>`_)
+* Contributors: mergify[bot]
+
 0.244.16 (2024-07-22)
 ---------------------
 
