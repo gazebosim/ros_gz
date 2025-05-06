@@ -1261,6 +1261,32 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg)
   }
 }
 
+void createTestMsg(sensor_msgs::msg::Range & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+
+  _msg.header = header_msg;
+  _msg.radiation_type = sensor_msgs::msg::Range::INFRARED;
+  _msg.field_of_view = 3.14;
+  _msg.min_range = 1.0;
+  _msg.max_range = 2.0;
+  _msg.range = 0.0;
+}
+
+void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg)
+{
+  sensor_msgs::msg::Range expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.radiation_type, _msg->radiation_type);
+  EXPECT_FLOAT_EQ(expected_msg.field_of_view, _msg->field_of_view);
+  EXPECT_FLOAT_EQ(expected_msg.min_range, _msg->min_range);
+  EXPECT_FLOAT_EQ(expected_msg.max_range, _msg->max_range);
+  EXPECT_FLOAT_EQ(expected_msg.range, _msg->range);
+}
+
 void createTestMsg(sensor_msgs::msg::MagneticField & _msg)
 {
   std_msgs::msg::Header header_msg;
