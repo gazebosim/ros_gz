@@ -2,6 +2,20 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.0 (2025-05-06)
+------------------
+* Added LaserScan-Range bridge (backport `#736 <https://github.com/gazebosim/ros_gz/issues/736>`_) (`#740 <https://github.com/gazebosim/ros_gz/issues/740>`_)
+* use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Alejandro Hernández Cordero, Leander Stephen D'Souza, mergify[bot]
+
+2.1.6 (2025-03-21)
+------------------
+* make linters happy (`#709 <https://github.com/gazebosim/ros_gz/issues/709>`_)
+* Add SpawnEntity, DeleteEntity, & SetEntityPose Support (`#380 <https://github.com/gazebosim/ros_gz/issues/380>`_)
+* Contributors: Afereti Pama, Alejandro Hernández Cordero
+
 2.1.5 (2025-02-24)
 ------------------
 * Add LogicalCameraImage support (`#698 <https://github.com/gazebosim/ros_gz/issues/698>`_)
@@ -330,7 +344,7 @@ Changelog for package ros_gz_bridge
 --------------------
 * Support bridging services (`#211 <https://github.com/gazebosim/ros_gz/issues/211>`_)
 * Added reminder to hit play to receive images. (`#237 <https://github.com/gazebosim/ros_gz/issues/237>`_)
-* Updated `ign topic` commnds on README (`#221 <https://github.com/gazebosim/ros_gz/issues/221>`_)
+* Updated `ign topic` commands on README (`#221 <https://github.com/gazebosim/ros_gz/issues/221>`_)
 * Add conversions for ros_gz_interfaces/WorldControl and builtin_interfaces/Time (`#216 <https://github.com/gazebosim/ros_gz/issues/216>`_)
 * [ros_gz_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/gazebosim/ros_gz/issues/214>`_)
 * Break apart ros_subscriber test translation unit (`#212 <https://github.com/gazebosim/ros_gz/issues/212>`_)

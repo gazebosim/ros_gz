@@ -23,7 +23,7 @@
 #include <gz/transport/Node.hh>
 
 // Simple application that provides a `/remove` service and prints out the
-// request's entity name. This works in conjuction with
+// request's entity name. This works in conjunction with
 // test_remove_node.launch.py
 int main()
 {

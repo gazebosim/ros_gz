@@ -2,6 +2,15 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.0 (2025-05-06)
+------------------
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Leander Stephen D'Souza
+
+2.1.6 (2025-03-21)
+------------------
+
 2.1.5 (2025-02-24)
 ------------------
 * Add LogicalCameraImage support (`#698 <https://github.com/gazebosim/ros_gz/issues/698>`_)
@@ -147,7 +156,7 @@ Changelog for package ros_gz_interfaces
 --------------------
 * [ros_gz_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/gazebosim/ros_gz/issues/214>`_)
   * [ros_gz_interfaces] Add more interface definitions.
-  * Add converion functions for the added messages
+  * Add conversion functions for the added messages
   * Update the factory factory function with the new messages
   * Add new messages to docs
   * Add test cases for the new messages conversions
