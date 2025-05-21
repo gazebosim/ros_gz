@@ -14,7 +14,7 @@ There's a convenient launch file, try for example:
 
 Publishes fluid pressure readings.
 
-    ros2 launch ros_gz_sim_demos air_pressure.launch.py
+    ros2 launch ros_gz_sim_demos air_pressure.launch.xml
 
 This demo also shows the use of custom QoS parameters. The sensor data is
 published as as "best-effort", so trying to subscribe to "reliable" data won't
@@ -28,6 +28,18 @@ And
 
 ![](images/air_pressure_demo.png)
 
+## Battery
+
+Get the current state of a battery.
+
+    ros2 launch ros_gz_sim_demos battery.launch.py
+
+Then send a command so the vehicle moves and drains the battery.
+
+    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
+
+![](images/battery_demo.png)
+
 ## Camera
 
 Publishes RGB camera image and info.
@@ -40,11 +52,11 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 
 Using the regular bridge:
 
-    ros2 launch ros_gz_sim_demos camera.launch.py
+    ros2 launch ros_gz_sim_demos camera.launch.xml
 
 To use a camera that only publishes information when triggered:
 
-    ros2 launch ros_gz_sim_demos triggered_camera.launch.py
+    ros2 launch ros_gz_sim_demos triggered_camera.launch.xml
 
 Trigger the camera:
 
@@ -56,9 +68,9 @@ Trigger the camera:
 
 Send commands to a differential drive vehicle and listen to its odometry.
 
-    ros2 launch ros_gz_sim_demos diff_drive.launch.py
+    ros2 launch ros_gz_sim_demos diff_drive.launch.xml
 
-Then unpause and send a command
+Then send a command
 
     ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
 
@@ -102,7 +114,7 @@ GPU lidar data can be obtained as:
 
 Using the bridge:
 
-    ros2 launch ros_gz_sim_demos gpu_lidar_bridge.launch.py
+    ros2 launch ros_gz_sim_demos gpu_lidar_bridge.launch.xml
 
 *TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
@@ -116,7 +128,7 @@ Using Gazebo Sim plugin:
 
 Publishes IMU readings.
 
-    ros2 launch ros_gz_sim_demos imu.launch.py
+    ros2 launch ros_gz_sim_demos imu.launch.xml
 
 ![](images/imu_demo.png)
 
@@ -126,7 +138,7 @@ Publishes IMU readings.
 
 Publishes magnetic field readings.
 
-    ros2 launch ros_gz_sim_demos magnetometer.launch.py
+    ros2 launch ros_gz_sim_demos magnetometer.launch.xml
 
 ![](images/magnetometer_demo.png)
 
@@ -134,7 +146,12 @@ Publishes magnetic field readings.
 
 Publishes satellite navigation readings, only available in Fortress on.
 
-    ros2 launch ros_gz_sim_demos navsat.launch.py
+GNSS information can be obtained as:
+
+    # sensor_msgs/msg/NavSatFix
+    ros2 launch ros_gz_sim_demos navsat.launch.xml
+    # gps_msgs/msg/GPSFix
+    ros2 launch ros_gz_sim_demos navsat_gpsfix.launch.xml
 
 ![](images/navsat_demo.png)
 
@@ -154,7 +171,7 @@ Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.o
 
 Using the regular bridge:
 
-    ros2 launch ros_gz_sim_demos rgbd_camera_bridge.launch.py
+    ros2 launch ros_gz_sim_demos rgbd_camera_bridge.launch.xml
 
 *TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
 
@@ -163,18 +180,6 @@ Using Gazebo Sim plugin:
     ros2 launch ros_gz_sim_demos rgbd_camera.launch.py
 
 ![](images/rgbd_camera_demo.png)
-
-## Battery
-
-Get the current state of a battery.
-
-    ros2 launch ros_gz_sim_demos battery.launch.py
-
-Then send a command so the vehicle moves and drains the battery
-
-    ros2 topic pub /model/vehicle_blue/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0}, angular: {z: 0.5}}"
-
-![](images/battery_demo.png)
 
 ## Robot description publisher
 
@@ -203,6 +208,135 @@ and transforms of a robot in rviz.
 
 To try the demo launch:
 
-    ros2 launch ros_gz_sim_demos tf_bridge.launch.py
+    ros2 launch ros_gz_sim_demos tf_bridge.launch.xml
 
 ![](images/tf_bridge.gif)
+
+## Managing Entities
+
+The `ros_gz_sim` package provides a set of utilities for managing entities (models, lights, links, etc.) in Gazebo simulations through ROS 2.
+This package enables seamless communication between ROS 2 and Gazebo, allowing you to:
+
+- **Spawn entities**: Add new models and objects to a running Gazebo simulation
+- **Set entity poses**: Dynamically adjust the position and orientation of existing entities
+- **Delete entities**: Remove entities from the simulation environment
+
+### Launching Gazebo
+
+```bash
+gz sim -v 4 ~/ros2_ws/src/ros_gz/ros_gz_sim_demos/worlds/default.sdf
+```
+
+### 1. Spawning Entities
+
+Spawn new entities into the simulation:
+
+1. Run the ROS-Gazebo bridge for the spawn service:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/create@ros_gz_interfaces/srv/SpawnEntity
+```
+
+2. Spawn your entity:
+
+```bash
+ros2 run ros_gz_sim spawn_entity --name <model_name> --sdf_filename <path_to_sdf_file> [--pos x y z] [--quat x y z w | --euler roll pitch yaw]
+```
+
+**Example:**
+
+```bash
+ros2 run ros_gz_sim spawn_entity --name cardboard_box --sdf_filename $(ros2 pkg prefix ros_gz_sim_demos)/share/ros_gz_sim_demos/models/cardboard_box/model.sdf --pos 1.0 2.0 0.5 --euler 0.0 0.0 1.57
+```
+
+or
+
+```bash
+ros2 run ros_gz_sim spawn_entity --name cardboard_box --sdf_filename /full/path/to/ros_gz_ws/src/ros_gz_sim_demos/models/cardboard_box/model.sdf --pos 1.0 2.0 0.5 --euler 0.0 0.0 1.57
+```
+
+![spawn_entity](resources/spawn.gif)
+
+### 2. Setting Entity Poses
+
+Dynamically adjust the position and orientation of existing entities:
+
+1. Run the ROS-Gazebo bridge for the set pose service:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/set_pose@ros_gz_interfaces/srv/SetEntityPose
+```
+
+2. Set the entity's pose:
+
+```bash
+ros2 run ros_gz_sim set_entity_pose [--name NAME | --id ID] [--type TYPE] [--pos X Y Z] [--quat X Y Z W | --euler ROLL PITCH YAW]
+```
+
+**Examples:**
+
+Using entity name with Euler angles for rotation:
+
+```bash
+ros2 run ros_gz_sim set_entity_pose --name cardboard_box --pos 3.0 4.0 1.0 --euler 0.0 0.0 1.57
+```
+
+Using entity ID with quaternion for rotation:
+
+```bash
+ros2 run ros_gz_sim set_entity_pose --id 8 --pos 3.0 4.0 1.0 --quat 0.0 0.0 0.7071 0.7071
+```
+
+![set_entity](resources/set_entity.gif)
+
+### 3. Deleting Entities
+
+Remove entities from the simulation:
+
+1. Run the ROS-Gazebo bridge for the delete service:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge /world/default/remove@ros_gz_interfaces/srv/DeleteEntity
+```
+
+2. Delete the entity:
+
+```bash
+ros2 run ros_gz_sim delete_entity [--name NAME | --id ID] [--type TYPE]
+```
+
+**Examples:**
+
+Using entity name:
+
+```bash
+ros2 run ros_gz_sim delete_entity --name cardboard_box
+```
+
+Using entity ID:
+
+```bash
+ros2 run ros_gz_sim delete_entity --id 8
+```
+
+Using a specific entity type:
+
+```bash
+ros2 run ros_gz_sim delete_entity --name cardboard_box --type 2
+```
+
+![delete_entity](resources/delete_entity.gif)
+
+### Entity Type Reference
+
+When using the `set_entity_pose` and `delete_entity` commands, you can specify the entity type using the `--type` flag. The following type values are available:
+
+| Value | Entity Type |
+|-------|-------------|
+| 0     | NONE        |
+| 1     | LIGHT       |
+| 2     | LINK        |
+| 3     | VISUAL      |
+| 4     | COLLISION   |
+| 5     | SENSOR      |
+| 6     | MODEL (default) |

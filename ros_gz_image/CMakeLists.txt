@@ -33,15 +33,12 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
+  ${std_msgs_TARGETS}
+  image_transport::image_transport
+  ros_gz_bridge::ros_gz_bridge
+  rclcpp::rclcpp
   gz-msgs::core
   gz-transport::core
-)
-
-ament_target_dependencies(${executable}
-  "image_transport"
-  "ros_gz_bridge"
-  "rclcpp"
-  "sensor_msgs"
 )
 
 install(TARGETS ${executable}

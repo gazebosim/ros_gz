@@ -101,15 +101,23 @@ target_link_libraries(${bridge_lib}
   PUBLIC
     gz-msgs::core
     gz-transport::core
+    rclcpp::rclcpp
+    rclcpp_components::component
+    ${builtin_interfaces_TARGETS}
+    ${actuator_msgs_TARGETS}
+    ${geometry_msgs_TARGETS}
+    ${gps_msgs_TARGETS}
+    ${nav_msgs_TARGETS}
+    ${rcl_interfaces_TARGETS}
+    ${ros_gz_interfaces_TARGETS}
+    ${rosgraph_msgs_TARGETS}
+    ${sensor_msgs_TARGETS}
+    ${std_msgs_TARGETS}
+    ${tf2_msgs_TARGETS}
+    ${trajectory_msgs_TARGETS}
+    ${vision_msgs_TARGETS}
   PRIVATE
     yaml-cpp::yaml-cpp
-)
-
-ament_target_dependencies(${bridge_lib}
-  PUBLIC
-    rclcpp
-    rclcpp_components
-    ${BRIDGE_MESSAGE_TYPES}
 )
 
 target_include_directories(${bridge_lib}
@@ -153,10 +161,7 @@ foreach(bridge ${bridge_executables})
   )
   target_link_libraries(${bridge}
     ${bridge_lib}
-  )
-  ament_target_dependencies(${bridge}
-    "rclcpp"
-    ${BRIDGE_MESSAGE_TYPES}
+    rclcpp::rclcpp
   )
   install(TARGETS ${bridge}
     RUNTIME DESTINATION lib/${PROJECT_NAME}
@@ -213,17 +218,20 @@ if(BUILD_TESTING)
     ${GTEST_LIBRARIES}
     gz-msgs::core
     gz-transport::core
-  )
-  ament_target_dependencies(test_utils
-    rclcpp
-    ${BRIDGE_MESSAGE_TYPES}
-    ros_gz_interfaces
-    rosgraph_msgs
-    sensor_msgs
-    std_msgs
-    tf2_msgs
-    trajectory_msgs
-    vision_msgs
+    rclcpp::rclcpp
+    ${builtin_interfaces_TARGETS}
+    ${actuator_msgs_TARGETS}
+    ${geometry_msgs_TARGETS}
+    ${gps_msgs_TARGETS}
+    ${nav_msgs_TARGETS}
+    ${rcl_interfaces_TARGETS}
+    ${ros_gz_interfaces_TARGETS}
+    ${rosgraph_msgs_TARGETS}
+    ${sensor_msgs_TARGETS}
+    ${std_msgs_TARGETS}
+    ${tf2_msgs_TARGETS}
+    ${trajectory_msgs_TARGETS}
+    ${vision_msgs_TARGETS}
   )
 
   set(generated_path "${CMAKE_BINARY_DIR}/generated/test")
@@ -309,9 +317,7 @@ if(BUILD_TESTING)
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
-  ament_target_dependencies(${PROJECT_NAME}_bridge_config rclcpp)
-  target_link_libraries(${PROJECT_NAME}_bridge_config ${bridge_lib})
-
+  target_link_libraries(${PROJECT_NAME}_bridge_config rclcpp::rclcpp ${bridge_lib})
 endif()
 
 # Export old-style CMake variables

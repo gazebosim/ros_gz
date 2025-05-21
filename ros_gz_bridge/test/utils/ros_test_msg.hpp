@@ -50,6 +50,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/msg/entity_factory.hpp>
 #include <ros_gz_interfaces/msg/entity_wrench.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/joint_wrench.hpp>
@@ -58,6 +59,7 @@
 #include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/logical_camera_image.hpp>
 #include <ros_gz_interfaces/msg/material_color.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
@@ -77,6 +79,7 @@
 #include <sensor_msgs/msg/nav_sat_fix.hpp>
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/msg/point_field.hpp>
+#include <sensor_msgs/msg/range.hpp>
 #include <tf2_msgs/msg/tf_message.hpp>
 #include <trajectory_msgs/msg/joint_trajectory.hpp>
 #include <rcl_interfaces/msg/parameter_value.hpp>
@@ -428,6 +431,14 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::Entity> & _msg
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::EntityFactory & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::EntityFactory> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(ros_gz_interfaces::msg::EntityWrench & _msg);
 
 /// \brief Compare a message with the populated for testing.
@@ -574,6 +585,14 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::LaserScan> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
+void createTestMsg(sensor_msgs::msg::Range & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(sensor_msgs::msg::MagneticField & _msg);
 
 /// \brief Compare a message with the populated for testing.
@@ -661,6 +680,14 @@ void createTestMsg(vision_msgs::msg::Detection3D & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<vision_msgs::msg::Detection3D> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::LogicalCameraImage & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraImage> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

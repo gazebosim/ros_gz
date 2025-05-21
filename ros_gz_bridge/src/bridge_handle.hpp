@@ -58,7 +58,7 @@ public:
   /// Not necessary if the Bridge isn't lazy
   void Spin();
 
-  /// \brief Inidicate if this is a "lazy" bridge
+  /// \brief Indicate if this is a "lazy" bridge
   ///
   /// A lazy bridge will always create the output side of the bridge, but
   /// will only create the input side of the bridge when downstream consumers

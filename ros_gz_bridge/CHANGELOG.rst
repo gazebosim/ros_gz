@@ -2,6 +2,59 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.0 (2025-05-06)
+------------------
+* Added LaserScan-Range bridge (backport `#736 <https://github.com/gazebosim/ros_gz/issues/736>`_) (`#740 <https://github.com/gazebosim/ros_gz/issues/740>`_)
+* use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Alejandro Hernández Cordero, Leander Stephen D'Souza, mergify[bot]
+
+2.1.6 (2025-03-21)
+------------------
+* make linters happy (`#709 <https://github.com/gazebosim/ros_gz/issues/709>`_)
+* Add SpawnEntity, DeleteEntity, & SetEntityPose Support (`#380 <https://github.com/gazebosim/ros_gz/issues/380>`_)
+* Contributors: Afereti Pama, Alejandro Hernández Cordero
+
+2.1.5 (2025-02-24)
+------------------
+* Add LogicalCameraImage support (`#698 <https://github.com/gazebosim/ros_gz/issues/698>`_)
+* Contributors: Dyst-0
+
+2.1.4 (2025-02-12)
+------------------
+* Minor optimization to avoid dynamic casting in Gazebo callbacks (`#692 <https://github.com/gazebosim/ros_gz/issues/692>`_)
+* Contributors: Addisu Z. Taddese
+
+2.1.3 (2025-01-14)
+------------------
+* Use both ROS package and message name for unique mappings (`#656 <https://github.com/gazebosim/ros_gz/issues/656>`_)
+  Co-authored-by: Addisu Z. Taddese <addisu@openrobotics.org>
+* Merge pull request `#664 <https://github.com/gazebosim/ros_gz/issues/664>`_ from azeey/improve_parameter_handling
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Merge pull request `#663 <https://github.com/gazebosim/ros_gz/issues/663>`_ from azeey/improve_arg_parsing
+  The `RosGzBridge` and `GzServer` now support different spellings for
+  boolean arguments (`True`, `true`). This also simplifies how
+  conditionals are used to create composable nodes by evaluating the
+  conditionals and using them as regular Python booleans instead of
+  relying on `PythonExpression`. It was actually the `PythonExpression`
+  that was preventing support of boolean arguments spelled `true`/`false`.
+* Improve parameter handling for RosGzBridge
+* Fix linter errors
+* Improve argument parsing in Actions
+  The `RosGzBridge` and `GzServer` now support different spellings for
+  boolean arguments (`True`, `true`). This also simplifies how
+  conditionals are used to create composable nodes by evaluating the
+  conditionals and using them as regular Python booleans instead of
+  relying on `PythonExpression`. It was actually the `PythonExpression`
+  that was preventing support of boolean arguments spelled `true`/`false`.
+* Fix use_respawn argument causing errors (`#651 <https://github.com/gazebosim/ros_gz/issues/651>`_)
+* Add a way to pass extra parameters to ros_gz_bridge (`#628 <https://github.com/gazebosim/ros_gz/issues/628>`_)
+  * Add bridge_params argument to ros_gz_bridge
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+  Co-authored-by: Wiktor Bajor <69388767+Wiktor-99@users.noreply.github.com>
+* Contributors: Aarav Gupta, Addisu Z. Taddese, Alejandro Hernández Cordero, Øystein Sture
+
 2.1.2 (2024-10-31)
 ------------------
 
@@ -291,7 +344,7 @@ Changelog for package ros_gz_bridge
 --------------------
 * Support bridging services (`#211 <https://github.com/gazebosim/ros_gz/issues/211>`_)
 * Added reminder to hit play to receive images. (`#237 <https://github.com/gazebosim/ros_gz/issues/237>`_)
-* Updated `ign topic` commnds on README (`#221 <https://github.com/gazebosim/ros_gz/issues/221>`_)
+* Updated `ign topic` commands on README (`#221 <https://github.com/gazebosim/ros_gz/issues/221>`_)
 * Add conversions for ros_gz_interfaces/WorldControl and builtin_interfaces/Time (`#216 <https://github.com/gazebosim/ros_gz/issues/216>`_)
 * [ros_gz_interfaces] Add GuiCamera, StringVec, TrackVisual, VideoRecord (`#214 <https://github.com/gazebosim/ros_gz/issues/214>`_)
 * Break apart ros_subscriber test translation unit (`#212 <https://github.com/gazebosim/ros_gz/issues/212>`_)

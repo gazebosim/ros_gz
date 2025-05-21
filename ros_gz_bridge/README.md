@@ -39,6 +39,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/GuiCamera                | gz.msgs.GUICamera                   |
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
+| ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
@@ -57,6 +58,7 @@ The following message types can be bridged for topics:
 | sensor_msgs/msg/MagneticField                  | gz.msgs.Magnetometer                |
 | sensor_msgs/msg/NavSatFix                      | gz.msgs.NavSat                      |
 | sensor_msgs/msg/PointCloud2                    | gz.msgs.PointCloudPacked            |
+| sensor_msgs/msg/Range                          | gz.msgs.LaserScan                   |
 | std_msgs/msg/Bool                              | gz.msgs.Boolean                     |
 | std_msgs/msg/ColorRGBA                         | gz.msgs.Color                       |
 | std_msgs/msg/Empty                             | gz.msgs.Empty                       |
