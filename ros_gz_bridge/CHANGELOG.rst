@@ -2,6 +2,9 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.18 (2025-05-23)
+---------------------
+
 0.244.17 (2025-05-06)
 ---------------------
 * Added LaserScan-Range bridge (`#736 <https://github.com/gazebosim/ros_gz/issues/736>`_)

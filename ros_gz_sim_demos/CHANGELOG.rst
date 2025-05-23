@@ -2,6 +2,9 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.18 (2025-05-23)
+---------------------
+
 0.244.17 (2025-05-06)
 ---------------------
 * Add pre commit (backport `#718 <https://github.com/gazebosim/ros_gz/issues/718>`_) (`#720 <https://github.com/gazebosim/ros_gz/issues/720>`_)

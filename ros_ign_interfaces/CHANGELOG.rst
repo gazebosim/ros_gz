@@ -2,6 +2,9 @@
 Changelog for package ros_ign_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.18 (2025-05-23)
+---------------------
+
 0.244.17 (2025-05-06)
 ---------------------
 * Added codespell pre-commit hook. (backport `#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#723 <https://github.com/gazebosim/ros_gz/issues/723>`_)
