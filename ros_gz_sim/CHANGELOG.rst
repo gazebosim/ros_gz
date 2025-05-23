@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.13 (2025-05-23)
+-------------------
+* Log environment variables with which gazebo was launched (`#680 <https://github.com/gazebosim/ros_gz/issues/680>`_) (`#744 <https://github.com/gazebosim/ros_gz/issues/744>`_)
+* Contributors: mergify[bot]
+
 1.0.12 (2025-05-06)
 -------------------
 * Spawn, set pose and delete entities using ROS 2 (backport `#705 <https://github.com/gazebosim/ros_gz/issues/705>`_) (`#733 <https://github.com/gazebosim/ros_gz/issues/733>`_)

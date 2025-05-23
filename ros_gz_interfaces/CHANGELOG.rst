@@ -2,6 +2,9 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.13 (2025-05-23)
+-------------------
+
 1.0.12 (2025-05-06)
 -------------------
 * Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_) (`#722 <https://github.com/gazebosim/ros_gz/issues/722>`_)
