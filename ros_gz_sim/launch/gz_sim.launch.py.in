@@ -141,19 +141,8 @@ def launch_gz(context, *args, **kwargs):
     else:
         on_exit = None
 
-<<<<<<< HEAD
-    return [ExecuteProcess(
-            cmd=[exec, exec_args, '--force-version', gz_version],
-            output='screen',
-            additional_env=env,
-            shell=True,
-            prefix=debug_prefix,
-            on_exit=on_exit
-        )]
-=======
     ld = [ExecuteProcess(
                 cmd=[exec, exec_args, '--force-version', gz_version],
-                name='gazebo',
                 output='screen',
                 additional_env=env,
                 shell=True,
@@ -163,7 +152,6 @@ def launch_gz(context, *args, **kwargs):
     ]
     if debug_env == 'true':
         ld.insert(0, LogInfo(f"Launching gazebo with the environment variables: {env}"))
->>>>>>> eb0967b (Log environment variables with which gazebo was launched (#680))
 
     return ld
 
