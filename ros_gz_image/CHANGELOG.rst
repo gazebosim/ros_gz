@@ -2,6 +2,9 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.8 (2025-05-26)
+------------------
+
 2.1.7 (2025-05-06)
 ------------------
 * use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
