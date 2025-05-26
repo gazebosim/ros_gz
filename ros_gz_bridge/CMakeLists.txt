@@ -282,7 +282,13 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
+  add_executable(test_launch_action_subscriber test/subscribers/launch_action_subscriber.cpp)
+  target_link_libraries(test_launch_action_subscriber test_utils)
+  target_include_directories(test_launch_action_subscriber
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
+
   install(TARGETS
+    test_launch_action_subscriber
     test_ros_publisher
     test_ros_subscriber
     test_gz_publisher
@@ -303,6 +309,10 @@ if(BUILD_TESTING)
   )
 
   add_launch_test(test/launch/test_gz_server.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_launch_action.launch.py
     TIMEOUT 200
   )
 
