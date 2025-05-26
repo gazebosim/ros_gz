@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.19 (2025-05-26)
+---------------------
+* Fix debug_env (`#747 <https://github.com/gazebosim/ros_gz/issues/747>`_) (`#750 <https://github.com/gazebosim/ros_gz/issues/750>`_)
+* Contributors: mergify[bot]
+
 0.244.18 (2025-05-23)
 ---------------------
 * Log environment variables with which gazebo was launched (backport `#680 <https://github.com/gazebosim/ros_gz/issues/680>`_) (`#745 <https://github.com/gazebosim/ros_gz/issues/745>`_)
