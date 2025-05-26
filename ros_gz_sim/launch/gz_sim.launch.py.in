@@ -177,6 +177,9 @@ def generate_launch_description():
             'debugger', default_value='false',
             description='Run in Debugger'),
         DeclareLaunchArgument(
+            'debug_env', default_value='false',
+            description='Debug environment variables'),
+        DeclareLaunchArgument(
             'on_exit_shutdown', default_value='false',
             description='Shutdown on gz-sim exit'),
         OpaqueFunction(function = launch_gz),
