@@ -44,12 +44,21 @@ public:
     }
   }
 
+<<<<<<< HEAD
 public:
   /// \brief Run the gz sim server.
   void OnStart()
   {
     auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
     auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
+=======
+void GzServer::OnStart()
+{
+  auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
+  auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
+  auto initial_sim_time = this->declare_parameter("initial_sim_time", 0.0);
+
+>>>>>>> 5aeea4f (ros_gz_sim: Added support for passing initial_sim_time to Gazebo. (#756))
 
     gz::common::Console::SetVerbosity(4);
     gz::sim::ServerConfig server_config;
@@ -70,6 +79,7 @@ public:
     server.Run(true /*blocking*/, 0, false /*paused*/);
     rclcpp::shutdown();
   }
+  server_config.SetInitialSimTime(initial_sim_time);
 
 private:
   /// \brief We don't want to block the ROS thread.
