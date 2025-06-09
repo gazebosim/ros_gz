@@ -42,6 +42,7 @@ class RosGzBridge(Action):
         use_respawn: Union[bool, SomeSubstitutionsType] = False,
         log_level: SomeSubstitutionsType = 'info',
         bridge_params: SomeSubstitutionsType = '',
+        extra_bridge_params: SomeSubstitutionsType = '',
         **kwargs
     ) -> None:
         """
@@ -56,6 +57,7 @@ class RosGzBridge(Action):
         :param: use_respawn Whether to respawn if a node crashes (when composition is disabled).
         :param: log_level Log level.
         :param: bridge_params Extra parameters to pass to the bridge.
+        :param: extra_bridge_params Parameters to pass to the bridge parsed from launch action.
         """
         super().__init__(**kwargs)
 
@@ -90,6 +92,7 @@ class RosGzBridge(Action):
         self.__use_respawn = normalize_typed_substitution(use_respawn, bool)
         self.__log_level = log_level
         self.__bridge_params = bridge_params
+        self.__extra_bridge_params = extra_bridge_params
 
     @classmethod
     def parse(cls, entity: Entity, parser: Parser):
@@ -169,8 +172,8 @@ class RosGzBridge(Action):
             bridge_params = parser.parse_substitution(bridge_params)
             kwargs['bridge_params'] = bridge_params
 
-        if 'bridge_params' not in kwargs:
-            kwargs['bridge_params'] = []
+        if 'extra_bridge_params' not in kwargs:
+            kwargs['extra_bridge_params'] = []
 
         bridges = {}
 
@@ -215,7 +218,7 @@ class RosGzBridge(Action):
             bridges['bridge_{}'.format(len(bridges))] = bridge
 
         if len(bridges) > 0:
-            kwargs['bridge_params'].append({
+            kwargs['extra_bridge_params'].append({
                 'bridges': bridges,
                 'bridge_names': sorted(bridges.keys()),
             })
@@ -240,6 +243,7 @@ class RosGzBridge(Action):
         if simplified_bridge_params:
             bridge_params_pairs = simplified_bridge_params.split(',')
             parsed_bridge_params = dict(pair.split(':') for pair in bridge_params_pairs)
+        parsed_bridge_params.update(self.__extra_bridge_params[0])
 
         use_composition_eval = perform_typed_substitution(
             context, self.__use_composition, bool
