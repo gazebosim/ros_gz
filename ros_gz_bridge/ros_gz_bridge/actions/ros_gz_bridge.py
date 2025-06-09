@@ -34,7 +34,7 @@ class RosGzBridge(Action):
         self,
         *,
         bridge_name: SomeSubstitutionsType,
-        config_file: SomeSubstitutionsType,
+        config_file: SomeSubstitutionsType = '',
         container_name: SomeSubstitutionsType = 'ros_gz_container',
         create_own_container: Union[bool, SomeSubstitutionsType] = False,
         namespace: SomeSubstitutionsType = '',
@@ -42,6 +42,7 @@ class RosGzBridge(Action):
         use_respawn: Union[bool, SomeSubstitutionsType] = False,
         log_level: SomeSubstitutionsType = 'info',
         bridge_params: SomeSubstitutionsType = '',
+        extra_bridge_params: SomeSubstitutionsType = '',
         **kwargs
     ) -> None:
         """
@@ -56,6 +57,7 @@ class RosGzBridge(Action):
         :param: use_respawn Whether to respawn if a node crashes (when composition is disabled).
         :param: log_level Log level.
         :param: bridge_params Extra parameters to pass to the bridge.
+        :param: extra_bridge_params Parameters to pass to the bridge parsed from launch action.
         """
         super().__init__(**kwargs)
 
@@ -90,6 +92,7 @@ class RosGzBridge(Action):
         self.__use_respawn = normalize_typed_substitution(use_respawn, bool)
         self.__log_level = log_level
         self.__bridge_params = bridge_params
+        self.__extra_bridge_params = extra_bridge_params
 
     @classmethod
     def parse(cls, entity: Entity, parser: Parser):
@@ -102,7 +105,7 @@ class RosGzBridge(Action):
 
         config_file = entity.get_attr(
             'config_file', data_type=str,
-            optional=False)
+            optional=True)
 
         container_name = entity.get_attr(
             'container_name', data_type=str,
@@ -169,6 +172,57 @@ class RosGzBridge(Action):
             bridge_params = parser.parse_substitution(bridge_params)
             kwargs['bridge_params'] = bridge_params
 
+        if 'extra_bridge_params' not in kwargs:
+            kwargs['extra_bridge_params'] = []
+
+        bridges = {}
+
+        for child in (entity.get_attr('topic', data_type=List[Entity], optional=True) or {}):
+            bridge = {}
+
+            required_params = (
+                'ros_topic_name',
+                'ros_type_name',
+                'gz_topic_name',
+                'gz_type_name',
+            )
+            for param in required_params:
+                bridge[param] = parser.parse_substitution(child.get_attr(param, data_type=str,
+                                                                         optional=False))
+
+            optional_params = (
+                ('direction', str),
+                ('lazy', str),
+                ('publisher_queue', int),
+                ('subscriber_queue', int),
+            )
+            for param, param_type in optional_params:
+                p = child.get_attr(param, data_type=param_type, optional=True)
+                if isinstance(p, param_type):
+                    bridge[param] = parser.parse_substitution(p)
+            bridges['bridge_{}'.format(len(bridges))] = bridge
+
+        for child in (entity.get_attr('service', data_type=List[Entity], optional=True) or {}):
+            bridge = {}
+
+            required_params = (
+                'service_name',
+                'ros_type_name',
+                'gz_req_type_name',
+                'gz_rep_type_name',
+            )
+            for param in required_params:
+                bridge[param] = parser.parse_substitution(child.get_attr(param, data_type=str,
+                                                                         optional=False))
+
+            bridges['bridge_{}'.format(len(bridges))] = bridge
+
+        if len(bridges) > 0:
+            kwargs['extra_bridge_params'].append({
+                'bridges': bridges,
+                'bridge_names': sorted(bridges.keys()),
+            })
+
         return cls, kwargs
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
@@ -189,6 +243,7 @@ class RosGzBridge(Action):
         if simplified_bridge_params:
             bridge_params_pairs = simplified_bridge_params.split(',')
             parsed_bridge_params = dict(pair.split(':') for pair in bridge_params_pairs)
+        parsed_bridge_params.update(self.__extra_bridge_params[0])
 
         use_composition_eval = perform_typed_substitution(
             context, self.__use_composition, bool
