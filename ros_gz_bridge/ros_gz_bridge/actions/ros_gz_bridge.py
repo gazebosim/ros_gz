@@ -36,7 +36,7 @@ class RosGzBridge(Action):
         self,
         *,
         bridge_name: SomeSubstitutionsType,
-        config_file: SomeSubstitutionsType,
+        config_file: SomeSubstitutionsType = '',
         container_name: SomeSubstitutionsType = 'ros_gz_container',
         create_own_container: Union[bool, SomeSubstitutionsType] = False,
         namespace: SomeSubstitutionsType = '',
@@ -110,7 +110,7 @@ class RosGzBridge(Action):
 
         config_file = entity.get_attr(
             'config_file', data_type=str,
-            optional=False)
+            optional=True)
 
         container_name = entity.get_attr(
             'container_name', data_type=str,
@@ -173,6 +173,57 @@ class RosGzBridge(Action):
 
         if parameters is not None:
             kwargs['bridge_params'] = Node.parse_nested_parameters(parameters, parser)
+
+        if 'bridge_params' not in kwargs:
+            kwargs['bridge_params'] = []
+
+        bridges = {}
+
+        for child in (entity.get_attr('topic', data_type=List[Entity], optional=True) or {}):
+            bridge = {}
+
+            required_params = (
+                'ros_topic_name',
+                'ros_type_name',
+                'gz_topic_name',
+                'gz_type_name',
+            )
+            for param in required_params:
+                bridge[param] = parser.parse_substitution(child.get_attr(param, data_type=str,
+                                                                         optional=False))
+
+            optional_params = (
+                ('direction', str),
+                ('lazy', str),
+                ('publisher_queue', int),
+                ('subscriber_queue', int),
+            )
+            for param, param_type in optional_params:
+                p = child.get_attr(param, data_type=param_type, optional=True)
+                if isinstance(p, param_type):
+                    bridge[param] = parser.parse_substitution(p)
+            bridges['bridge_{}'.format(len(bridges))] = bridge
+
+        for child in (entity.get_attr('service', data_type=List[Entity], optional=True) or {}):
+            bridge = {}
+
+            required_params = (
+                'service_name',
+                'ros_type_name',
+                'gz_req_type_name',
+                'gz_rep_type_name',
+            )
+            for param in required_params:
+                bridge[param] = parser.parse_substitution(child.get_attr(param, data_type=str,
+                                                                         optional=False))
+
+            bridges['bridge_{}'.format(len(bridges))] = bridge
+
+        if len(bridges) > 0:
+            kwargs['bridge_params'].append({
+                'bridges': bridges,
+                'bridge_names': sorted(bridges.keys()),
+            })
 
         return cls, kwargs
 
