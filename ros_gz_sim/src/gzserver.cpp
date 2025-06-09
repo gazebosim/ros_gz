@@ -67,11 +67,11 @@ public:
       return;
     }
 
+    server_config.SetInitialSimTime(initial_sim_time);
     gz::sim::Server server(server_config);
     server.Run(true /*blocking*/, 0, false /*paused*/);
     rclcpp::shutdown();
   }
-  server_config.SetInitialSimTime(initial_sim_time);
 
 private:
   /// \brief We don't want to block the ROS thread.
