@@ -53,6 +53,8 @@ void GzServer::OnStart()
 {
   auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
   auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
+  auto initial_sim_time = this->declare_parameter("initial_sim_time", 0.0);
+
 
   gz::common::Console::SetVerbosity(4);
   gz::sim::ServerConfig server_config;
@@ -68,6 +70,7 @@ void GzServer::OnStart()
     rclcpp::shutdown();
     return;
   }
+  server_config.SetInitialSimTime(initial_sim_time);
 
   gz::sim::Server server(server_config);
   server.Run(true /*blocking*/, 0, false /*paused*/);
