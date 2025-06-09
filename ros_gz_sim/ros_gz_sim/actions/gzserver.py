@@ -95,6 +95,7 @@ class GzServer(Action):
         container_name: SomeSubstitutionsType = 'ros_gz_container',
         create_own_container: Union[bool, SomeSubstitutionsType] = False,
         use_composition: Union[bool, SomeSubstitutionsType] = False,
+        initial_sim_time: Union[float, SomeSubstitutionsType] = 0.0,
         **kwargs
     ) -> None:
         """
@@ -132,6 +133,13 @@ class GzServer(Action):
         else:
             self.__use_composition = normalize_typed_substitution(use_composition, bool)
 
+        if isinstance(initial_sim_time, str):
+            self.__initial_sim_time = normalize_typed_substitution(
+                TextSubstitution(text=initial_sim_time), float
+            )
+        else:
+            self.__initial_sim_time = normalize_typed_substitution(initial_sim_time, float)
+
     @classmethod
     def parse(cls, entity: Entity, parser: Parser):
         """Parse gz_server."""
@@ -157,6 +165,10 @@ class GzServer(Action):
             'use_composition', data_type=str,
             optional=True)
 
+        initial_sim_time = entity.get_attr(
+            'initial_sim_time', data_type=str,
+            optional=True)
+
         if isinstance(world_sdf_file, str):
             world_sdf_file = parser.parse_substitution(world_sdf_file)
             kwargs['world_sdf_file'] = world_sdf_file
@@ -177,6 +189,10 @@ class GzServer(Action):
         if isinstance(use_composition, str):
             use_composition = parser.parse_substitution(use_composition)
             kwargs['use_composition'] = use_composition
+
+        if isinstance(initial_sim_time, str):
+            initial_sim_time = parser.parse_substitution(initial_sim_time)
+            kwargs['initial_sim_time'] = initial_sim_time
 
         return cls, kwargs
 
@@ -212,7 +228,8 @@ class GzServer(Action):
                 executable='gzserver',
                 output='screen',
                 parameters=[{'world_sdf_file': self.__world_sdf_file,
-                             'world_sdf_string': self.__world_sdf_string}],
+                             'world_sdf_string': self.__world_sdf_string,
+                             'initial_sim_time': self.__initial_sim_time}],
                 ))
 
         # Composable node with container configuration
@@ -228,7 +245,8 @@ class GzServer(Action):
                         plugin='ros_gz_sim::GzServer',
                         name='gz_server',
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
-                                     'world_sdf_string': self.__world_sdf_string}],
+                                     'world_sdf_string': self.__world_sdf_string,
+                                     'initial_sim_time': self.__initial_sim_time}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),
                     ],
@@ -245,7 +263,8 @@ class GzServer(Action):
                         plugin='ros_gz_sim::GzServer',
                         name='gz_server',
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
-                                     'world_sdf_string': self.__world_sdf_string}],
+                                     'world_sdf_string': self.__world_sdf_string,
+                                     'initial_sim_time': self.__initial_sim_time}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),
                     ],
