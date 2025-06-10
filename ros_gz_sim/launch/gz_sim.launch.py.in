@@ -78,10 +78,11 @@ class GazeboRosPaths:
 
         return gazebo_model_path, gazebo_plugin_path
 
-
 def get_executable_path(command):
-    return os.path.splitext(shutil.which(command))[0]
-
+    path = shutil.which(command)
+    if path.lower().endswith('.bat'):
+        return os.path.splitext(path)[0]
+    return path
 
 def launch_gz(context, *args, **kwargs):
     model_paths, plugin_paths = GazeboRosPaths.get_paths()
