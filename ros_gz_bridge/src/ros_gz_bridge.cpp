@@ -82,9 +82,12 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
         continue;
       }
       this->declare_parameter(prefix + "direction", "BIDIRECTIONAL");
-      this->declare_parameter(prefix + "publisher_queue", 10);
-      this->declare_parameter(prefix + "subscriber_queue", 10);
+      // Queue sizes default to 10 if qos_profile is not set.
+      // If it is defined, they are applied only if they are non-negative.
+      this->declare_parameter(prefix + "publisher_queue", -1);
+      this->declare_parameter(prefix + "subscriber_queue", -1);
       this->declare_parameter(prefix + "lazy", false);
+      this->declare_parameter(prefix + "qos_profile", "");
     } else {
       const auto gz_req_type = this->declare_parameter(prefix + "gz_req_type_name",
         PARAMETER_STRING);
@@ -157,15 +160,46 @@ void RosGzBridge::spin()
           continue;
         }
 
+        const auto qos_profile_str = this->get_parameter(prefix + "qos_profile").as_string();
+        std::optional<rclcpp::QoS> qos_profile;
+        if (!qos_profile_str.empty()) {
+          try {
+            qos_profile = parseQoS(qos_profile_str);
+          } catch (const std::invalid_argument & e) {
+            RCLCPP_ERROR(
+              this->get_logger(),
+              "Bridge %s defines unknown QoS profile %s.",
+              name.c_str(), qos_profile_str.c_str());
+            continue;
+          }
+        }
+
+        const auto pub_queue_size_int = this->get_parameter(prefix + "publisher_queue").as_int();
+        std::optional<size_t> pub_queue_size;
+        if (pub_queue_size_int >= 0) {
+          pub_queue_size = pub_queue_size_int;
+        } else if (!qos_profile.has_value()) {
+          pub_queue_size = kDefaultPublisherQueue;
+        }
+
+        const auto sub_queue_size_int = this->get_parameter(prefix + "subscriber_queue").as_int();
+        std::optional<size_t> sub_queue_size;
+        if (sub_queue_size_int >= 0) {
+          sub_queue_size = sub_queue_size_int;
+        } else if (!qos_profile.has_value()) {
+          sub_queue_size = kDefaultSubscriberQueue;
+        }
+
         BridgeConfig config {
           this->get_parameter(prefix + "ros_type_name").as_string(),
           this->get_parameter(prefix + "ros_topic_name").as_string(),
           this->get_parameter(prefix + "gz_type_name").as_string(),
           this->get_parameter(prefix + "gz_topic_name").as_string(),
           direction,
-          static_cast<size_t>(this->get_parameter(prefix + "publisher_queue").as_int()),
-          static_cast<size_t>(this->get_parameter(prefix + "subscriber_queue").as_int()),
+          pub_queue_size,
+          sub_queue_size,
           this->get_parameter(prefix + "lazy").as_bool(),
+          qos_profile,
         };
         if (expand_names) {
           config.gz_topic_name = rclcpp::expand_topic_or_service_name(

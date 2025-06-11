@@ -54,7 +54,7 @@ void BridgeHandleGzToRos::StartPublisher()
   this->ros_publisher_ = this->factory_->create_ros_publisher(
     this->ros_node_,
     this->config_.ros_topic_name,
-    this->config_.publisher_queue_size);
+    this->config_.PublisherQoS());
 }
 
 bool BridgeHandleGzToRos::HasSubscriber() const
@@ -69,7 +69,7 @@ void BridgeHandleGzToRos::StartSubscriber()
   this->factory_->create_gz_subscriber(
     this->gz_node_,
     this->config_.gz_topic_name,
-    this->config_.subscriber_queue_size,
+    this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
     override_timestamps_with_wall_time_);
 
