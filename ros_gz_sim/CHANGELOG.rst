@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.20 (2025-06-12)
+---------------------
+* OS agnostic 'which' command (`#762 <https://github.com/gazebosim/ros_gz/issues/762>`_) (`#764 <https://github.com/gazebosim/ros_gz/issues/764>`_)
+* Contributors: mergify[bot]
+
 0.244.19 (2025-05-26)
 ---------------------
 * Fix debug_env (`#747 <https://github.com/gazebosim/ros_gz/issues/747>`_) (`#750 <https://github.com/gazebosim/ros_gz/issues/750>`_)
