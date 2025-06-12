@@ -24,7 +24,7 @@ jobs:
       matrix:
         include:
           - docker-image: "ubuntu:24.04"
-            gz-version: "harmonic"
+            gz-version: "ionic"
             ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}
