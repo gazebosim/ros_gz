@@ -23,6 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
+<<<<<<< HEAD
           - docker-image: "ubuntu:22.04"
             gz-version: "fortress"
             ros-distro: "humble"
@@ -32,6 +33,11 @@ jobs:
           - docker-image: "ubuntu:22.04"
             gz-version: "harmonic"
             ros-distro: "humble"
+=======
+          - docker-image: "ubuntu:24.04"
+            gz-version: "ionic"
+            ros-distro: "rolling"
+>>>>>>> 7f19b09 (Update README: remove EOLs and add Kilted (#766))
     container:
       image: ${{ matrix.docker-image }}
     steps:
