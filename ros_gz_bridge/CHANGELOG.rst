@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.9 (2025-06-12)
+------------------
+* Added easy way to configure bridge from XML launch files. (`#735 <https://github.com/gazebosim/ros_gz/issues/735>`_) (`#753 <https://github.com/gazebosim/ros_gz/issues/753>`_)
+* Contributors: mergify[bot]
+
 2.1.8 (2025-05-26)
 ------------------
 
