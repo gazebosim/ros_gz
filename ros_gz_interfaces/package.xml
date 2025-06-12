@@ -1,6 +1,6 @@
 <package format="3">
   <name>ros_gz_interfaces</name>
-  <version>0.244.19</version>
+  <version>0.244.20</version>
   <description>Message and service data structures for interacting with Gazebo from ROS2.</description>
   <license>Apache 2.0</license>
   <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>

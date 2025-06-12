@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="2">
   <name>ros_ign</name>
-  <version>0.244.19</version>
+  <version>0.244.20</version>
   <description>Shim meta-package to redirect to <a href="https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz">ros_gz</a>.</description>
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
   <license>Apache 2.0</license>
