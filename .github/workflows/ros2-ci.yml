@@ -24,8 +24,13 @@ jobs:
       matrix:
         include:
           - docker-image: "ubuntu:24.04"
+<<<<<<< HEAD
             gz-version: "harmonic"
             ros-distro: "jazzy"
+=======
+            gz-version: "ionic"
+            ros-distro: "rolling"
+>>>>>>> 7f19b09 (Update README: remove EOLs and add Kilted (#766))
     container:
       image: ${{ matrix.docker-image }}
     steps:
