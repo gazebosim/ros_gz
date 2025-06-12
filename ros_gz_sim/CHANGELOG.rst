@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.2 (2025-06-12)
+------------------
+* OS agnostic 'which' command (`#762 <https://github.com/gazebosim/ros_gz/issues/762>`_) (`#765 <https://github.com/gazebosim/ros_gz/issues/765>`_)
+* ros_gz_sim: Added support for passing initial_sim_time to Gazebo. (`#756 <https://github.com/gazebosim/ros_gz/issues/756>`_)
+* Contributors: Alejandro Hernandez Cordero, Martin Pecka, mergify[bot]
+
 3.0.1 (2025-05-26)
 ------------------
 * Fix debug_env (`#747 <https://github.com/gazebosim/ros_gz/issues/747>`_)
