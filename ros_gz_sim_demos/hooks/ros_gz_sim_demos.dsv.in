@@ -1,1 +1,1 @@
-prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;share/@PROJECT_NAME@/models
+prepend-non-duplicate;GZ_SIM_RESOURCE_PATH;@CMAKE_INSTALL_PREFIX@/share
