@@ -24,6 +24,7 @@ from launch.substitutions import TextSubstitution
 from launch.utilities.type_utils import normalize_typed_substitution, perform_typed_substitution
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
+from launch_ros.parameters_type import ParametersDict
 
 
 @expose_action('ros_gz_bridge')
@@ -42,7 +43,7 @@ class RosGzBridge(Action):
         use_respawn: Union[bool, SomeSubstitutionsType] = False,
         log_level: SomeSubstitutionsType = 'info',
         bridge_params: SomeSubstitutionsType = '',
-        extra_bridge_params: SomeSubstitutionsType = '',
+        extra_bridge_params: Optional[ParametersDict] = None,
         **kwargs
     ) -> None:
         """
@@ -173,7 +174,7 @@ class RosGzBridge(Action):
             kwargs['bridge_params'] = bridge_params
 
         if 'extra_bridge_params' not in kwargs:
-            kwargs['extra_bridge_params'] = []
+            kwargs['extra_bridge_params'] = None
 
         bridges = {}
 
@@ -218,10 +219,10 @@ class RosGzBridge(Action):
             bridges['bridge_{}'.format(len(bridges))] = bridge
 
         if len(bridges) > 0:
-            kwargs['extra_bridge_params'].append({
+            kwargs['extra_bridge_params'] = {
                 'bridges': bridges,
                 'bridge_names': sorted(bridges.keys()),
-            })
+            }
 
         return cls, kwargs
 
@@ -243,7 +244,9 @@ class RosGzBridge(Action):
         if simplified_bridge_params:
             bridge_params_pairs = simplified_bridge_params.split(',')
             parsed_bridge_params = dict(pair.split(':') for pair in bridge_params_pairs)
-        parsed_bridge_params.update(self.__extra_bridge_params[0])
+
+        if self.__extra_bridge_params is not None and len(self.__extra_bridge_params) > 0:
+            parsed_bridge_params.update(self.__extra_bridge_params)
 
         use_composition_eval = perform_typed_substitution(
             context, self.__use_composition, bool
