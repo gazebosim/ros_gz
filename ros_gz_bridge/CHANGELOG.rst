@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.16 (2025-07-02)
+-------------------
+* Fix crash on old bridge definition (`#775 <https://github.com/gazebosim/ros_gz/issues/775>`_)
+* Contributors: Jasper van Brakel
+
 1.0.15 (2025-06-12)
 -------------------
 * Added easy way to configure bridge from XML launch files. (backport `#735 <https://github.com/gazebosim/ros_gz/issues/735>`_) (`#754 <https://github.com/gazebosim/ros_gz/issues/754>`_)

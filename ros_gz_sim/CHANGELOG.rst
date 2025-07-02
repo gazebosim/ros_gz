@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.16 (2025-07-02)
+-------------------
+
 1.0.15 (2025-06-12)
 -------------------
 * OS agnostic 'which' command (`#762 <https://github.com/gazebosim/ros_gz/issues/762>`_)
