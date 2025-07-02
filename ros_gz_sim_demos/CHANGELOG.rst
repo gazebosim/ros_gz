@@ -2,6 +2,11 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.10 (2025-07-02)
+-------------------
+* Correct gz sim resource path in ros_gz_sim_demos (`#771 <https://github.com/gazebosim/ros_gz/issues/771>`_) (`#772 <https://github.com/gazebosim/ros_gz/issues/772>`_)
+* Contributors: mergify[bot]
+
 2.1.9 (2025-06-12)
 ------------------
 
