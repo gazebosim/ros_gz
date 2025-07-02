@@ -2,6 +2,9 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.3 (2025-07-02)
+------------------
+
 3.0.2 (2025-06-12)
 ------------------
 * ros_gz_bridge: Allow setting QoS profile from YAML files and launch action. (`#761 <https://github.com/gazebosim/ros_gz/issues/761>`_)
