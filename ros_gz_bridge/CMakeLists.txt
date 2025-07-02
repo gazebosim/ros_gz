@@ -316,6 +316,10 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 
+  add_launch_test(test/launch/test_launch_action_classic.launch.py
+    TIMEOUT 200
+  )
+
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)

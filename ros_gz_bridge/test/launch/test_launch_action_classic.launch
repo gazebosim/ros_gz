@@ -16,5 +16,5 @@ limitations under the License.
 -->
 
 <launch>
-    <ros_gz_bridge bridge_name="test_bridge" config_file="$(dir-name)/../config/minimal.yaml"/>
+    <ros_gz_bridge bridge_name="test_bridge" config_file="$(dirname)/../config/test-config.yaml"/>
 </launch>
