@@ -324,7 +324,29 @@ as shown in this example. YAML config does not support any substitutions.
 You can even combine this approach and YAML config. Just add config file to `<ros_gz_bridge config_file="PATH/to/yaml">`.
 Bridges from both the YAML file and the XML launch tags will be added.
 
-## Example 7: Using ROS namespace with the Bridge
+## Example 7: Configuring the Bridge via Python Launch file
+
+Similarly, bridges can be configured in Python launch files by listing the different bridge names under the bridge_names parameter,
+and configuring the settings for the bridge under the set of parameters using the bridge.bridge_name.setting naming convention:
+
+```Python
+Node(
+    package="ros_gz_bridge",
+    executable="parameter_bridge",
+    parameters=[
+        {"bridge_names": ["clock_bridge"]},
+        {"bridges.clock_bridge.ros_topic_name": "/clock"},
+        {"bridges.clock_bridge.gz_topic_name": "/clock"},
+        {"bridges.clock_bridge.ros_type_name": "rosgraph_msgs/msg/Clock"},
+        {"bridges.clock_bridge.gz_type_name": "gz.msgs.Clock"},
+        {"bridges.clock_bridge.direction": "GZ_TO_ROS"},
+        {"bridges.clock_bridge.lazy": "False"},
+        {"bridges.clock_bridge.qos_profile": "CLOCK"},
+    ],
+)
+```
+
+## Example 8: Using ROS namespace with the Bridge
 
 When spawning multiple robots inside the same ROS environment, it is convenient to use namespaces to avoid overlapping topic names.
 There are three main types of namespaces: relative, global (`/`) and private (`~/`). For more information, refer to ROS documentation.
