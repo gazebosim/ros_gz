@@ -168,6 +168,14 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(20u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
   }
+
+  {
+    auto config = results[2];
+    EXPECT_EQ("/gz_ros/test/serviceclient/world_control", config.service_name);
+    EXPECT_EQ("ros_gz_interfaces/srv/ControlWorld", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.WorldControl", config.gz_req_type_name);
+    EXPECT_EQ("gz.msgs.Boolean", config.gz_rep_type_name);
+  }
 }
 
 TEST_F(BridgeConfig, QoSFullGz)
@@ -205,14 +213,6 @@ TEST_F(BridgeConfig, QoSFullGz)
     EXPECT_EQ(rclcpp::ClockQoS(), *config.qos_profile);
     EXPECT_EQ(rclcpp::ClockQoS().keep_last(20u), config.PublisherQoS());
     EXPECT_EQ(rclcpp::ClockQoS(), config.SubscriberQoS());
-  }
-
-  {
-    auto config = results[2];
-    EXPECT_EQ("/gz_ros/test/serviceclient/world_control", config.service_name);
-    EXPECT_EQ("ros_gz_interfaces/srv/ControlWorld", config.ros_type_name);
-    EXPECT_EQ("gz.msgs.WorldControl", config.gz_req_type_name);
-    EXPECT_EQ("gz.msgs.Boolean", config.gz_rep_type_name);
   }
 }
 

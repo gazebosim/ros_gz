@@ -87,7 +87,7 @@ struct BridgeConfig
 
   /// \brief Get the resolved QoS for subscribers. It does not reflect QoS overrides.
   rclcpp::QoS SubscriberQoS() const;
-  
+
   /// \brief The ROS service type (eg std_msgs/srv/Empty)
   std::string service_name;
 
