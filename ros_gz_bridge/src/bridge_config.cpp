@@ -26,6 +26,7 @@ namespace ros_gz_bridge
 {
 
 // YAML tag string constants
+constexpr const char kServiceName[] = "service_name";
 constexpr const char kTopicName[] = "topic_name";
 constexpr const char kRosTopicName[] = "ros_topic_name";
 constexpr const char kGzTopicName[] = "gz_topic_name";
@@ -35,6 +36,8 @@ constexpr const char kDirection[] = "direction";
 constexpr const char kPublisherQueue[] = "publisher_queue";
 constexpr const char kSubscriberQueue[] = "subscriber_queue";
 constexpr const char kLazy[] = "lazy";
+constexpr const char kGzReqTypeName[] = "gz_req_type_name";
+constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -64,6 +67,9 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       }
     };
 
+  const auto service_name = getValue(kServiceName);
+  const auto gz_req_type_name = getValue(kGzReqTypeName);
+  const auto gz_rep_type_name = getValue(kGzRepTypeName);
   const auto topic_name = getValue(kTopicName);
   const auto ros_topic_name = getValue(kRosTopicName);
   const auto ros_type_name = getValue(kRosTypeName);
@@ -85,11 +91,20 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
-  if (ros_type_name.empty() || gz_type_name.empty()) {
-    RCLCPP_ERROR(
-      logger,
-      "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
-    return {};
+  if (service_name.empty()) {
+    if (ros_type_name.empty() || gz_type_name.empty()) {
+      RCLCPP_ERROR(
+        logger,
+        "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
+      return {};
+    }
+  } else {
+    if (gz_req_type_name.empty() || gz_rep_type_name.empty()) {
+      RCLCPP_ERROR(
+        logger,
+        "Could not parse entry: both %s and %s must be set", kGzReqTypeName, kGzRepTypeName);
+      return {};
+    }
   }
 
   BridgeConfig ret;
@@ -111,35 +126,42 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     }
   }
 
-  if (!topic_name.empty()) {
-    // Only "topic_name" is set
-    ret.gz_topic_name = topic_name;
-    ret.ros_topic_name = topic_name;
-  } else if (!ros_topic_name.empty() && gz_topic_name.empty()) {
-    // Only "ros_topic_name" is set
-    ret.gz_topic_name = ros_topic_name;
-    ret.ros_topic_name = ros_topic_name;
-  } else if (!gz_topic_name.empty() && ros_topic_name.empty()) {
-    // Only kGzTopicName is set
-    ret.gz_topic_name = gz_topic_name;
-    ret.ros_topic_name = gz_topic_name;
+  if (service_name.empty()) {
+    if (!topic_name.empty()) {
+      // Only "topic_name" is set
+      ret.gz_topic_name = topic_name;
+      ret.ros_topic_name = topic_name;
+    } else if (!ros_topic_name.empty() && gz_topic_name.empty()) {
+      // Only "ros_topic_name" is set
+      ret.gz_topic_name = ros_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    } else if (!gz_topic_name.empty() && ros_topic_name.empty()) {
+      // Only kGzTopicName is set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = gz_topic_name;
+    } else {
+      // Both are set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    }
+
+    ret.gz_type_name = gz_type_name;
+    ret.ros_type_name = ros_type_name;
+
+    if (yaml_node[kPublisherQueue]) {
+      ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
+    }
+    if (yaml_node[kSubscriberQueue]) {
+      ret.subscriber_queue_size = yaml_node[kSubscriberQueue].as<size_t>();
+    }
+    if (yaml_node[kLazy]) {
+      ret.is_lazy = yaml_node[kLazy].as<bool>();
+    }
   } else {
-    // Both are set
-    ret.gz_topic_name = gz_topic_name;
-    ret.ros_topic_name = ros_topic_name;
-  }
-
-  ret.gz_type_name = gz_type_name;
-  ret.ros_type_name = ros_type_name;
-
-  if (yaml_node[kPublisherQueue]) {
-    ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
-  }
-  if (yaml_node[kSubscriberQueue]) {
-    ret.subscriber_queue_size = yaml_node[kSubscriberQueue].as<size_t>();
-  }
-  if (yaml_node[kLazy]) {
-    ret.is_lazy = yaml_node[kLazy].as<bool>();
+    ret.service_name = service_name;
+    ret.gz_rep_type_name = gz_rep_type_name;
+    ret.gz_req_type_name = gz_req_type_name;
+    ret.ros_type_name = ros_type_name;
   }
 
   return ret;
