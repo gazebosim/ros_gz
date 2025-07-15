@@ -71,7 +71,7 @@ public:
 TEST_F(BridgeConfig, Minimum)
 {
   auto results = ros_gz_bridge::readFromYamlFile("test/config/minimum.yaml");
-  EXPECT_EQ(4u, results.size());
+  EXPECT_EQ(5u, results.size());
 
   {
     auto config = results[0];
@@ -113,12 +113,19 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
   }
+  {
+    auto config = results[4];
+    EXPECT_EQ("/gz_ros/test/serviceclient/world_control", config.service_name);
+    EXPECT_EQ("ros_gz_interfaces/srv/ControlWorld", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.WorldControl", config.gz_req_type_name);
+    EXPECT_EQ("gz.msgs.Boolean", config.gz_rep_type_name);
+  }
 }
 
 TEST_F(BridgeConfig, FullGz)
 {
   auto results = ros_gz_bridge::readFromYamlFile("test/config/full.yaml");
-  EXPECT_EQ(2u, results.size());
+  EXPECT_EQ(3u, results.size());
 
   {
     auto config = results[0];
@@ -142,6 +149,14 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+  }
+
+  {
+    auto config = results[2];
+    EXPECT_EQ("/gz_ros/test/serviceclient/world_control", config.service_name);
+    EXPECT_EQ("ros_gz_interfaces/srv/ControlWorld", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.WorldControl", config.gz_req_type_name);
+    EXPECT_EQ("gz.msgs.Boolean", config.gz_rep_type_name);
   }
 }
 
