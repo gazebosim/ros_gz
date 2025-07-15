@@ -133,7 +133,15 @@ void RosGzBridge::spin()
           entry.gz_topic_name = rclcpp::expand_topic_or_service_name(
             entry.gz_topic_name, ros_node_name, ros_ns, false);
         }
-        this->add_bridge(entry);
+        if (entry.service_name.empty()) {
+          this->add_bridge(entry);
+        } else {
+          this->add_service_bridge(
+            entry.ros_type_name,
+            entry.gz_req_type_name,
+            entry.gz_rep_type_name,
+            entry.service_name);
+        }
       }
     }
 
@@ -199,7 +207,13 @@ void RosGzBridge::spin()
           pub_queue_size,
           sub_queue_size,
           this->get_parameter(prefix + "lazy").as_bool(),
+<<<<<<< HEAD
           qos_profile,
+=======
+          {},
+          {},
+          {}
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
         };
         if (expand_names) {
           config.gz_topic_name = rclcpp::expand_topic_or_service_name(
