@@ -78,7 +78,6 @@ struct BridgeConfig
   /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy = kDefaultLazy;
 
-<<<<<<< HEAD
   /// \brief QoS profile (unresolved, might have wrong depth).
   /// \note Use PublisherQoS() and SubscriberQoS() to get the final QoS.
   std::optional<rclcpp::QoS> qos_profile;
@@ -88,7 +87,7 @@ struct BridgeConfig
 
   /// \brief Get the resolved QoS for subscribers. It does not reflect QoS overrides.
   rclcpp::QoS SubscriberQoS() const;
-=======
+
   /// \brief The ROS service name (eg ~/get_parameters)
   std::string service_name;
 
@@ -97,7 +96,6 @@ struct BridgeConfig
 
   /// \brief The ROS service type response.
   std::string gz_rep_type_name;
->>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
 };
 
 /// \brief Generate a group of BridgeConfigs from a YAML String

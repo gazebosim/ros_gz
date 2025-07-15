@@ -207,13 +207,10 @@ void RosGzBridge::spin()
           pub_queue_size,
           sub_queue_size,
           this->get_parameter(prefix + "lazy").as_bool(),
-<<<<<<< HEAD
           qos_profile,
-=======
           {},
           {},
           {}
->>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
         };
         if (expand_names) {
           config.gz_topic_name = rclcpp::expand_topic_or_service_name(

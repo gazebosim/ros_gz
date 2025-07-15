@@ -171,60 +171,42 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     ret.gz_type_name = gz_type_name;
     ret.ros_type_name = ros_type_name;
 
+
+    if (yaml_node[kQosProfile]) {
+      const auto qos_profile_str = getValue(kQosProfile);
+      if (!qos_profile_str.empty()) {
+        try {
+          ret.qos_profile = parseQoS(qos_profile_str);
+        } catch (const std::invalid_argument & e) {
+          RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+          return {};
+        }
+      }
+    }
     if (yaml_node[kPublisherQueue]) {
-      ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
+      const auto queue_size_int = yaml_node[kPublisherQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.publisher_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.publisher_queue_size = kDefaultPublisherQueue;
+      }
     }
     if (yaml_node[kSubscriberQueue]) {
-      ret.subscriber_queue_size = yaml_node[kSubscriberQueue].as<size_t>();
+      const auto queue_size_int = yaml_node[kSubscriberQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.subscriber_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.subscriber_queue_size = kDefaultSubscriberQueue;
+      }
     }
     if (yaml_node[kLazy]) {
       ret.is_lazy = yaml_node[kLazy].as<bool>();
     }
   } else {
-<<<<<<< HEAD
-    // Both are set
-    ret.gz_topic_name = gz_topic_name;
-    ret.ros_topic_name = ros_topic_name;
-  }
-
-  ret.gz_type_name = gz_type_name;
-  ret.ros_type_name = ros_type_name;
-
-  if (yaml_node[kQosProfile]) {
-    const auto qos_profile_str = getValue(kQosProfile);
-    if (!qos_profile_str.empty()) {
-      try {
-        ret.qos_profile = parseQoS(qos_profile_str);
-      } catch (const std::invalid_argument & e) {
-        RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
-        return {};
-      }
-    }
-  }
-  if (yaml_node[kPublisherQueue]) {
-    const auto queue_size_int = yaml_node[kPublisherQueue].as<int64_t>();
-    if (queue_size_int >= 0) {
-      ret.publisher_queue_size = static_cast<size_t>(queue_size_int);
-    } else if (!ret.qos_profile.has_value()) {
-      ret.publisher_queue_size = kDefaultPublisherQueue;
-    }
-  }
-  if (yaml_node[kSubscriberQueue]) {
-    const auto queue_size_int = yaml_node[kSubscriberQueue].as<int64_t>();
-    if (queue_size_int >= 0) {
-      ret.subscriber_queue_size = static_cast<size_t>(queue_size_int);
-    } else if (!ret.qos_profile.has_value()) {
-      ret.subscriber_queue_size = kDefaultSubscriberQueue;
-    }
-  }
-  if (yaml_node[kLazy]) {
-    ret.is_lazy = yaml_node[kLazy].as<bool>();
-=======
     ret.service_name = service_name;
     ret.gz_rep_type_name = gz_rep_type_name;
     ret.gz_req_type_name = gz_req_type_name;
     ret.ros_type_name = ros_type_name;
->>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
   }
 
   return ret;
