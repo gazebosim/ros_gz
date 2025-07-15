@@ -69,7 +69,7 @@ struct BridgeConfig
   /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy = kDefaultLazy;
 
-  /// \brief The ROS service type (eg std_msgs/srv/Empty)
+  /// \brief The ROS service name (eg ~/get_parameters)
   std::string service_name;
 
   /// \brief The ROS service type request.
