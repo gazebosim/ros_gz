@@ -58,9 +58,71 @@ void RosGzBridge::spin()
           entry.gz_topic_name = rclcpp::expand_topic_or_service_name(
             entry.gz_topic_name, ros_node_name, ros_ns, false);
         }
-        this->add_bridge(entry);
+        if (entry.service_name.empty()) {
+          this->add_bridge(entry);
+        } else {
+          this->add_service_bridge(
+            entry.ros_type_name,
+            entry.gz_req_type_name,
+            entry.gz_rep_type_name,
+            entry.service_name);
+        }
       }
     }
+<<<<<<< HEAD
+=======
+
+    // Add bridges from parameters
+    const auto names = this->get_parameter("bridge_names").as_string_array();
+    for (const auto & name : names) {
+      const auto prefix = "bridges." + name + ".";
+      if (!this->get_parameter(prefix + "ros_topic_name").as_string().empty()) {
+        const auto directionStr = this->get_parameter(prefix + "direction").as_string();
+        BridgeDirection direction {BridgeDirection::NONE};
+        if (directionStr == "NONE") {
+          direction = BridgeDirection::NONE;
+        } else if (directionStr == "BIDIRECTIONAL") {
+          direction = BridgeDirection::BIDIRECTIONAL;
+        } else if (directionStr == "GZ_TO_ROS") {
+          direction = BridgeDirection::GZ_TO_ROS;
+        } else if (directionStr == "ROS_TO_GZ") {
+          direction = BridgeDirection::ROS_TO_GZ;
+        } else {
+          RCLCPP_ERROR(
+            this->get_logger(),
+            "Bridge %s defines unknown direction %s.",
+            name.c_str(), directionStr.c_str());
+          continue;
+        }
+
+        BridgeConfig config {
+          this->get_parameter(prefix + "ros_type_name").as_string(),
+          this->get_parameter(prefix + "ros_topic_name").as_string(),
+          this->get_parameter(prefix + "gz_type_name").as_string(),
+          this->get_parameter(prefix + "gz_topic_name").as_string(),
+          direction,
+          static_cast<size_t>(this->get_parameter(prefix + "publisher_queue").as_int()),
+          static_cast<size_t>(this->get_parameter(prefix + "subscriber_queue").as_int()),
+          this->get_parameter(prefix + "lazy").as_bool(),
+          {},
+          {},
+          {}
+        };
+        if (expand_names) {
+          config.gz_topic_name = rclcpp::expand_topic_or_service_name(
+            config.gz_topic_name, ros_node_name, ros_ns, false);
+        }
+
+        this->add_bridge(config);
+      } else {
+        this->add_service_bridge(
+          this->get_parameter(prefix + "ros_type_name").as_string(),
+          this->get_parameter(prefix + "gz_req_type_name").as_string(),
+          this->get_parameter(prefix + "gz_rep_type_name").as_string(),
+          this->get_parameter(prefix + "service_name").as_string());
+      }
+    }
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
   }
   for (auto & bridge : handles_) {
     bridge->Spin();

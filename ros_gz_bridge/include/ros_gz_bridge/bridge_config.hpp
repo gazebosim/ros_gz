@@ -68,6 +68,15 @@ struct BridgeConfig
 
   /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy = kDefaultLazy;
+
+  /// \brief The ROS service name (eg ~/get_parameters)
+  std::string service_name;
+
+  /// \brief The ROS service type request.
+  std::string gz_req_type_name;
+
+  /// \brief The ROS service type response.
+  std::string gz_rep_type_name;
 };
 
 /// \brief Generate a group of BridgeConfigs from a YAML String

@@ -343,6 +343,17 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 
+<<<<<<< HEAD
+=======
+  add_launch_test(test/launch/test_launch_action.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_launch_action_classic.launch.py
+    TIMEOUT 200
+  )
+
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)

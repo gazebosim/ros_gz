@@ -25,6 +25,7 @@ namespace ros_gz_bridge
 {
 
 // YAML tag string constants
+constexpr const char kServiceName[] = "service_name";
 constexpr const char kTopicName[] = "topic_name";
 constexpr const char kRosTopicName[] = "ros_topic_name";
 constexpr const char kGzTopicName[] = "gz_topic_name";
@@ -34,6 +35,8 @@ constexpr const char kDirection[] = "direction";
 constexpr const char kPublisherQueue[] = "publisher_queue";
 constexpr const char kSubscriberQueue[] = "subscriber_queue";
 constexpr const char kLazy[] = "lazy";
+constexpr const char kGzReqTypeName[] = "gz_req_type_name";
+constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -71,6 +74,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     gz_type_name = yaml_node[kGzTypeName].as<std::string>();
   }
 
+<<<<<<< HEAD
   /// \TODO(mjcarroll) Remove gz_topic_name logic in releases past Humble
   std::string gz_topic_name = "";
   if (yaml_node[kIgnTopicName] && !yaml_node[kGzTopicName]) {
@@ -81,6 +85,17 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   } else if (yaml_node[kGzTopicName]) {
     gz_topic_name = yaml_node[kGzTopicName].as<std::string>();
   }
+=======
+  const auto service_name = getValue(kServiceName);
+  const auto gz_req_type_name = getValue(kGzReqTypeName);
+  const auto gz_rep_type_name = getValue(kGzRepTypeName);
+  const auto topic_name = getValue(kTopicName);
+  const auto ros_topic_name = getValue(kRosTopicName);
+  const auto ros_type_name = getValue(kRosTypeName);
+  const auto gz_topic_name = getValue(kGzTopicName);
+  const auto gz_type_name = getValue(kGzTypeName);
+  const auto direction = getValue(kDirection);
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
 
   if (yaml_node[kTopicName] && yaml_node[kRosTopicName]) {
     RCLCPP_ERROR(
@@ -96,11 +111,28 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
+<<<<<<< HEAD
   if (!yaml_node[kRosTypeName] || gz_type_name.empty()) {
     RCLCPP_ERROR(
       logger,
       "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
     return {};
+=======
+  if (service_name.empty()) {
+    if (ros_type_name.empty() || gz_type_name.empty()) {
+      RCLCPP_ERROR(
+        logger,
+        "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
+      return {};
+    }
+  } else {
+    if (gz_req_type_name.empty() || gz_rep_type_name.empty()) {
+      RCLCPP_ERROR(
+        logger,
+        "Could not parse entry: both %s and %s must be set", kGzReqTypeName, kGzRepTypeName);
+      return {};
+    }
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
   }
 
   BridgeConfig ret;
@@ -134,6 +166,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     }
   }
 
+<<<<<<< HEAD
   if (yaml_node[kTopicName]) {
     // Only "topic_name" is set
     ret.gz_topic_name = yaml_node[kTopicName].as<std::string>();
@@ -163,6 +196,44 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
   }
   if (yaml_node[kLazy]) {
     ret.is_lazy = yaml_node[kLazy].as<bool>();
+=======
+  if (service_name.empty()) {
+    if (!topic_name.empty()) {
+      // Only "topic_name" is set
+      ret.gz_topic_name = topic_name;
+      ret.ros_topic_name = topic_name;
+    } else if (!ros_topic_name.empty() && gz_topic_name.empty()) {
+      // Only "ros_topic_name" is set
+      ret.gz_topic_name = ros_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    } else if (!gz_topic_name.empty() && ros_topic_name.empty()) {
+      // Only kGzTopicName is set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = gz_topic_name;
+    } else {
+      // Both are set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    }
+
+    ret.gz_type_name = gz_type_name;
+    ret.ros_type_name = ros_type_name;
+
+    if (yaml_node[kPublisherQueue]) {
+      ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
+    }
+    if (yaml_node[kSubscriberQueue]) {
+      ret.subscriber_queue_size = yaml_node[kSubscriberQueue].as<size_t>();
+    }
+    if (yaml_node[kLazy]) {
+      ret.is_lazy = yaml_node[kLazy].as<bool>();
+    }
+  } else {
+    ret.service_name = service_name;
+    ret.gz_rep_type_name = gz_rep_type_name;
+    ret.gz_req_type_name = gz_req_type_name;
+    ret.ros_type_name = ros_type_name;
+>>>>>>> f69a10d (Added missing test and parse service name from YAML (#776))
   }
 
   return ret;
