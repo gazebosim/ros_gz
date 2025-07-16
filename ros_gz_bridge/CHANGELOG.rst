@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.17 (2025-07-16)
+-------------------
+* Added missing test and parse service name from YAML (`#776 <https://github.com/gazebosim/ros_gz/issues/776>`_)
+* Contributors: Alejandro Hernández Cordero
+
 1.0.16 (2025-07-02)
 -------------------
 * Fix crash on old bridge definition (`#775 <https://github.com/gazebosim/ros_gz/issues/775>`_)
