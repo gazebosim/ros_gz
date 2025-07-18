@@ -76,6 +76,19 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg)
   EXPECT_EQ(expected_msg.a(), _msg->a());
 }
 
+
+void createTestMsg(gz::msgs::DVLVelocityTracking & _msg)
+{
+
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg)
+{
+  gz::msgs::DVLVelocityTracking expected_msg;
+  createTestMsg(expected_msg);
+
+}
+
 void createTestMsg(gz::msgs::Empty &)
 {
 }

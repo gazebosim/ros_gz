@@ -565,6 +565,17 @@ void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
   }
 }
 
+void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
+{
+
+}
+
+void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg)
+{
+  marine_acoustic_msgs::msg::Dvl expected_msg;
+  createTestMsg(expected_msg);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Light & _msg)
 {
   createTestMsg(_msg.header);
