@@ -12,6 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cmath>
 #include "gz/math/Vector3.hh"
 #include "gz/msgs/convert/Vector3.hh"
 #include "convert/utils.hpp"
@@ -28,16 +29,63 @@ convert_ros_to_gz(
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
-  // for (auto i = 0u; i < ros_msg.position.size(); ++i) {
-  //   gz_msg.add_position(ros_msg.position[i]);
-  // }
+  if (ros_msg.dvl_type == marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PISTON)
+    gz_msg.set_type(gz::msgs::DVLVelocityTracking::DVL_TYPE_PISTON);
+  else if (ros_msg.dvl_type == marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PHASED_ARRAY)
+    gz_msg.set_type(gz::msgs::DVLVelocityTracking::DVL_TYPE_PHASED_ARRAY);
+  else
+    gz_msg.set_type(gz::msgs::DVLVelocityTracking::DVL_TYPE_UNSPECIFIED);
 
-  // for (auto i = 0u; i < ros_msg.velocity.size(); ++i) {
-  //   gz_msg.add_velocity(ros_msg.velocity[i]);
-  // }
-  // for (auto i = 0u; i < ros_msg.normalized.size(); ++i) {
-  //   gz_msg.add_normalized(ros_msg.normalized[i]);
-  // }
+  // gz_msg.set_mutable_target->
+
+  // Beams
+  uint8_t beamId = 1u;
+  for (auto i = 0; i < ros_msg.num_good_beams; ++i)
+  {
+    gz::msgs::DVLBeamState *beam = gz_msg.add_beams();
+    beam->set_id(beamId++);
+
+    beam->mutable_velocity()->set_reference(
+      gz::msgs::DVLKinematicEstimate::DVL_REFERENCE_SHIP);
+
+    auto beam_unit = ros_msg.beam_unit_vec[i];
+    auto beam_velocity = ros_msg.beam_velocity[i];
+    beam->mutable_velocity()->mutable_mean()->set_x(beam_unit.x * beam_velocity);
+    beam->mutable_velocity()->mutable_mean()->set_y(beam_unit.y * beam_velocity);
+    beam->mutable_velocity()->mutable_mean()->set_z(beam_unit.z * beam_velocity);
+
+    // Unsupported.
+    for (auto j = 0; j < 9; ++j)
+      beam->mutable_velocity()->add_covariance(0);
+
+    beam->mutable_range()->set_mean(ros_msg.range[i]);
+    beam->mutable_range()->set_variance(ros_msg.range_covar[i]);
+
+    // rssi not supported in ROS.
+    // nsd not supported in ROS.
+
+    beam->set_locked(true);
+  }
+
+  // Velocity.
+  gz_msg.mutable_velocity()->set_reference(
+    gz::msgs::DVLKinematicEstimate::DVL_REFERENCE_SHIP);
+  convert_ros_to_gz(ros_msg.velocity,
+                    (*gz_msg.mutable_velocity()->mutable_mean()));
+  for (auto i = 0; i < 9; ++i)
+    gz_msg.mutable_velocity()->add_covariance(ros_msg.velocity_covar[i]);
+
+  // Target.
+  if (ros_msg.velocity_mode == marine_acoustic_msgs::msg::Dvl::DVL_MODE_BOTTOM)
+    gz_msg.mutable_target()->set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_BOTTOM);
+  else if (ros_msg.velocity_mode == marine_acoustic_msgs::msg::Dvl::DVL_MODE_WATER)
+    gz_msg.mutable_target()->set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_WATER_MASS);
+  else
+    gz_msg.mutable_target()->set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_UNSPECIFIED);
+
+  // Range and position Unavailable.
+
+  gz_msg.set_status(0);
 }
 
 template<>
@@ -63,11 +111,11 @@ convert_gz_to_ros(
   for (auto i = 0; i < 9; ++i)
     ros_msg.velocity_covar[i] = gz_msg.velocity().covariance()[i];
 
-  // ros_msg.altitude =
-  // ros_msg.corse_gnd =
-  // ros_msg.speed_gnd =
-
-  ros_msg.num_good_beams = gz_msg.beams_size();
+  ros_msg.altitude = - 1;
+  ros_msg.course_gnd = std::atan2(ros_msg.velocity.x, ros_msg.velocity.y);
+  ros_msg.speed_gnd = std::sqrt(
+    ros_msg.velocity.x * ros_msg.velocity.x +
+    ros_msg.velocity.y * ros_msg.velocity.y);
 
   // Unsupported in Gazebo.
   ros_msg.sound_speed = 0;
@@ -76,18 +124,27 @@ convert_gz_to_ros(
   ros_msg.beam_velocities_valid = true;
 
   // Crop num beams if needed.
+  uint8_t numGoodBeams = 0u;
   auto numBeams = std::min(gz_msg.beams_size(), 4);
 
   for (auto i = 0; i < numBeams; ++i)
   {
+    if (!gz_msg.beams()[i].locked())
+      continue;
+
+    // beam_unit_vec is unssuported.
     // ros_msg.beam_unit_vec = ;
-    ros_msg.range[i] = gz_msg.beams()[i].range().mean();
-    ros_msg.range_covar[i] = gz_msg.beams()[i].range().variance();
-    ros_msg.beam_quality[i] = gz_msg.beams()[i].rssi();
+    ros_msg.range[numGoodBeams] = gz_msg.beams()[i].range().mean();
+    ros_msg.range_covar[numGoodBeams] = gz_msg.beams()[i].range().variance();
+    ros_msg.beam_quality[numGoodBeams] = gz_msg.beams()[i].rssi();
     gz::math::Vector3d v = gz::msgs::Convert(gz_msg.beams()[i].velocity().mean());
-    ros_msg.beam_velocity[i] = v.Length();
-    ros_msg.beam_velocity_covar[i] = -1;
+    ros_msg.beam_velocity[numGoodBeams] = v.Length();
+    ros_msg.beam_velocity_covar[numGoodBeams] = -1;
+
+    ++numGoodBeams;
   }
+
+  ros_msg.num_good_beams = numGoodBeams;
 }
 
 }  // namespace ros_gz_bridge
