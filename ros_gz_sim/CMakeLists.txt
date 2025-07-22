@@ -29,6 +29,7 @@ find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(ros_gz_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
+find_package(simulation_interfaces REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 
@@ -70,14 +71,16 @@ target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
+                      ${simulation_intefaces_TARGETS}
                       rclcpp::rclcpp)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
 # gzserver_component
-add_library(gzserver_component SHARED src/gzserver.cpp)
+add_library(gzserver_component SHARED src/gzserver.cpp src/simulation_interfaces.cpp)
 rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
 target_link_libraries(gzserver_component PUBLIC
   ${std_msgs_TARGETS}
+  ${simulation_interfaces_TARGETS}
   gz-sim::core
   rclcpp::rclcpp
   rclcpp_components::component

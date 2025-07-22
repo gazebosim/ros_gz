@@ -38,6 +38,7 @@
   <depend>rclcpp_components</depend>
   <depend>rcpputils</depend>
   <depend>ros_gz_interfaces</depend>
+  <depend>simulation_interfaces</depend>
   <depend>std_msgs</depend>
   <depend>tf2</depend>
   <depend>tf2_ros</depend>
