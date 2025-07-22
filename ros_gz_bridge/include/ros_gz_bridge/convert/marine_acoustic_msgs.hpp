@@ -25,7 +25,7 @@
 
 namespace ros_gz_bridge
 {
-// actuator_msgs
+// marince_acoustic_msgs
 template<>
 void
 convert_ros_to_gz(
