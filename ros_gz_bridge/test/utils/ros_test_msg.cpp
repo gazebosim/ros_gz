@@ -567,13 +567,68 @@ void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
 
 void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
 {
+  createTestMsg(_msg.header);
+  _msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_WATER;
+  _msg.dvl_type = marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PISTON;
 
+  createTestMsg(_msg.velocity);
+  for (auto i = 0; i < 9; ++i) {
+    _msg.velocity_covar[i] = i;
+  }
+
+  _msg.altitude = -1;
+  _msg.course_gnd = std::atan2(_msg.velocity.x, _msg.velocity.y);
+  _msg.speed_gnd = std::sqrt(_msg.velocity.x * _msg.velocity.x + _msg.velocity.y *
+      _msg.velocity.y);
+
+  _msg.num_good_beams = 4;
+  _msg.sound_speed = -1;
+  _msg.beam_ranges_valid = true;
+  _msg.beam_velocities_valid = true;
+
+  for (auto i = 0; i < _msg.num_good_beams; ++i) {
+    _msg.beam_unit_vec[i].x = -1;
+    _msg.beam_unit_vec[i].y = -1;
+    _msg.beam_unit_vec[i].z = -1;
+    _msg.range[i] = 10;
+    _msg.range_covar[i] = 11;
+    _msg.beam_quality[i] = 100;
+    _msg.beam_velocity[i] = sqrt(1 * 1 + 2 * 2 + 3 * 3);
+    _msg.beam_velocity_covar[i] = -1;
+  }
 }
 
 void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg)
 {
   marine_acoustic_msgs::msg::Dvl expected_msg;
   createTestMsg(expected_msg);
+
+  compareTestMsg(_msg->header);
+  EXPECT_EQ(expected_msg.velocity_mode, _msg->velocity_mode);
+  EXPECT_EQ(expected_msg.dvl_type, _msg->dvl_type);
+
+  compareTestMsg(std::make_shared<geometry_msgs::msg::Vector3>(_msg->velocity));
+  for (auto i = 0; i < 9; ++i) {
+    EXPECT_DOUBLE_EQ(expected_msg.velocity_covar[i], _msg->velocity_covar[i]);
+  }
+
+  EXPECT_DOUBLE_EQ(expected_msg.altitude, _msg->altitude);
+  EXPECT_DOUBLE_EQ(expected_msg.course_gnd, _msg->course_gnd);
+  EXPECT_DOUBLE_EQ(expected_msg.speed_gnd, _msg->speed_gnd);
+
+  ASSERT_EQ(expected_msg.num_good_beams, _msg->num_good_beams);
+  ASSERT_DOUBLE_EQ(expected_msg.sound_speed, _msg->sound_speed);
+  EXPECT_EQ(expected_msg.beam_ranges_valid, _msg->beam_ranges_valid);
+  EXPECT_EQ(expected_msg.beam_velocities_valid, _msg->beam_velocities_valid);
+
+  for (auto i = 0; i < _msg->num_good_beams; ++i) {
+    EXPECT_EQ(expected_msg.beam_unit_vec[i], _msg->beam_unit_vec[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.range[i], _msg->range[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.range_covar[i], _msg->range_covar[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.beam_quality[i], _msg->beam_quality[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.beam_velocity[i], _msg->beam_velocity[i]);
+    EXPECT_DOUBLE_EQ(expected_msg.beam_velocity_covar[i], _msg->beam_velocity_covar[i]);
+  }
 }
 
 void createTestMsg(ros_gz_interfaces::msg::Light & _msg)

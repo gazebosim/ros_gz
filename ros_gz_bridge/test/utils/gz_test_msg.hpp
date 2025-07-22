@@ -106,6 +106,38 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLBeamState & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLBeamState> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLKinematicEstimate & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLKinematicEstimate> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLRangeEstimate & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLRangeEstimate> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLTrackingTarget & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLTrackingTarget> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
 void createTestMsg(gz::msgs::DVLVelocityTracking & _msg);
 
 /// \brief Compare a message with the populated for testing.

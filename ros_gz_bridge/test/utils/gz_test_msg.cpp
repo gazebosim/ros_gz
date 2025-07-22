@@ -76,10 +76,96 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg)
   EXPECT_EQ(expected_msg.a(), _msg->a());
 }
 
+void createTestMsg(gz::msgs::DVLBeamState & _msg)
+{
+  _msg.set_id(1.0);
+  createTestMsg(*_msg.mutable_velocity());
+  createTestMsg(*_msg.mutable_range());
+  _msg.set_rssi(100.0);
+  _msg.set_nsd(200.0);
+  _msg.set_locked(true);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLBeamState> & _msg)
+{
+  gz::msgs::DVLBeamState expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.id(), _msg->id());
+  compareTestMsg(std::make_shared<gz::msgs::DVLKinematicEstimate>(_msg->velocity()));
+  compareTestMsg(std::make_shared<gz::msgs::DVLRangeEstimate>(_msg->range()));
+  EXPECT_DOUBLE_EQ(expected_msg.rssi(), _msg->rssi());
+  EXPECT_DOUBLE_EQ(expected_msg.nsd(), _msg->nsd());
+  EXPECT_EQ(expected_msg.locked(), _msg->locked());
+}
+
+void createTestMsg(gz::msgs::DVLKinematicEstimate & _msg)
+{
+  _msg.set_reference(gz::msgs::DVLKinematicEstimate::DVL_REFERENCE_SHIP);
+  createTestMsg(*_msg.mutable_mean());
+  for (auto i = 0; i < 9; ++i) {
+    _msg.add_covariance(i);
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLKinematicEstimate> & _msg)
+{
+  gz::msgs::DVLKinematicEstimate expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.reference(), _msg->reference());
+  compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->mean()));
+  ASSERT_EQ(expected_msg.covariance_size(), _msg->covariance_size());
+  for (auto i = 0; i < _msg->covariance_size(); ++i) {
+    EXPECT_DOUBLE_EQ(expected_msg.covariance(i), _msg->covariance(i));
+  }
+}
+
+void createTestMsg(gz::msgs::DVLRangeEstimate & _msg)
+{
+  _msg.set_mean(10.0);
+  _msg.set_variance(11.0);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLRangeEstimate> & _msg)
+{
+  gz::msgs::DVLRangeEstimate expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_DOUBLE_EQ(expected_msg.mean(), _msg->mean());
+  EXPECT_DOUBLE_EQ(expected_msg.variance(), _msg->variance());
+}
+
+void createTestMsg(gz::msgs::DVLTrackingTarget & _msg)
+{
+  _msg.set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_WATER_MASS);
+  createTestMsg(*_msg.mutable_range());
+  createTestMsg(*_msg.mutable_position());
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLTrackingTarget> & _msg)
+{
+  gz::msgs::DVLTrackingTarget expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+  compareTestMsg(std::make_shared<gz::msgs::DVLRangeEstimate>(_msg->range()));
+  compareTestMsg(std::make_shared<gz::msgs::DVLKinematicEstimate>(_msg->position()));
+}
 
 void createTestMsg(gz::msgs::DVLVelocityTracking & _msg)
 {
+  createTestMsg(*_msg.mutable_header());
 
+  _msg.set_type(gz::msgs::DVLVelocityTracking::DVL_TYPE_PISTON);
+  createTestMsg(*_msg.mutable_target());
+  createTestMsg(*_msg.mutable_velocity());
+  uint8_t numBeams = 4u;
+  for (auto i = 0; i < numBeams; ++i) {
+    createTestMsg(*_msg.add_beams());
+  }
+
+  _msg.set_status(0);
 }
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg)
@@ -87,6 +173,17 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg)
   gz::msgs::DVLVelocityTracking expected_msg;
   createTestMsg(expected_msg);
 
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  EXPECT_EQ(expected_msg.type(), _msg->type());
+  // compareTestMsg(std::make_shared<gz::msgs::DVLTrackingTarget>(_msg->target()));
+  // compareTestMsg(std::make_shared<gz::msgs::DVLKinematicEstimate>(_msg->velocity()));
+
+  ASSERT_EQ(expected_msg.beams_size(), _msg->beams_size());
+  // for (auto i = 0; i < _msg->beams_size(); ++i) {
+  //   compareTestMsg(std::make_shared<gz::msgs::DVLBeamState>(_msg->beams(i)));
+  // }
+
+  EXPECT_EQ(expected_msg.status(), _msg->status());
 }
 
 void createTestMsg(gz::msgs::Empty &)
