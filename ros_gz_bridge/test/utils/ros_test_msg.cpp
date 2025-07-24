@@ -577,7 +577,7 @@ void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
   }
 
   _msg.altitude = -1;
-  _msg.course_gnd = std::atan2(_msg.velocity.x, _msg.velocity.y);
+  _msg.course_gnd = std::atan2(_msg.velocity.y, _msg.velocity.x);
   _msg.speed_gnd = std::sqrt(_msg.velocity.x * _msg.velocity.x + _msg.velocity.y *
       _msg.velocity.y);
 

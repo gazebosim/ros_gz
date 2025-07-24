@@ -115,15 +115,15 @@ convert_gz_to_ros(
   }
 
   ros_msg.altitude = -1;
-  ros_msg.course_gnd = std::atan2(ros_msg.velocity.x, ros_msg.velocity.y);
+  ros_msg.course_gnd = std::atan2(ros_msg.velocity.y, ros_msg.velocity.x);
   ros_msg.speed_gnd = std::sqrt(ros_msg.velocity.x * ros_msg.velocity.x + ros_msg.velocity.y *
       ros_msg.velocity.y);
 
   // Unsupported in Gazebo.
   ros_msg.sound_speed = -1;
 
-  ros_msg.beam_ranges_valid = true;
-  ros_msg.beam_velocities_valid = true;
+  ros_msg.beam_ranges_valid = false;
+  ros_msg.beam_velocities_valid = false;
 
   // Crop num beams if needed.
   uint8_t numGoodBeams = 0u;
@@ -133,6 +133,9 @@ convert_gz_to_ros(
     if (!gz_msg.beams()[i].locked()) {
       continue;
     }
+
+    ros_msg.beam_ranges_valid = true;
+    ros_msg.beam_velocities_valid = true;
 
     // beam_unit_vec is unsupported.
     ros_msg.beam_unit_vec[numGoodBeams].x = -1;
