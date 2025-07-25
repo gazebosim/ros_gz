@@ -33,11 +33,13 @@
 
 #include "simulation_interfaces/msg/result.hpp"
 #include "simulation_interfaces/msg/simulation_state.hpp"
+#include "simulation_interfaces/msg/simulator_features.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
 #include "simulation_interfaces/srv/get_entities.hpp"
 #include "simulation_interfaces/srv/get_entities_states.hpp"
 #include "simulation_interfaces/srv/get_entity_state.hpp"
 #include "simulation_interfaces/srv/get_simulation_state.hpp"
+#include "simulation_interfaces/srv/get_simulator_features.hpp"
 
 namespace components = gz::sim::components;
 
@@ -52,6 +54,7 @@ public:
   using GetEntityState = simulation_interfaces::srv::GetEntityState;
   using GetEntitiesStates = simulation_interfaces::srv::GetEntitiesStates;
   using GetSimulationState = simulation_interfaces::srv::GetSimulationState;
+  using GetSimulatorFeatures = simulation_interfaces::srv::GetSimulatorFeatures;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -74,9 +77,12 @@ public:
   void GetSimulationStateCb(
     GetSimulationState::Request::ConstSharedPtr request,
     GetSimulationState::Response::SharedPtr response);
+  void GetSimulatorFeaturesCb(
+    GetSimulatorFeatures::Request::ConstSharedPtr request,
+    GetSimulatorFeatures::Response::SharedPtr response);
 
   // Service helpers
-  bool SetStateOfEntity(
+  bool PopulateStateFromEcm(
     const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state,
     simulation_interfaces::msg::Result & result);
 
@@ -156,6 +162,8 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
     node, "get_entities_states", &Implementation::GetEntitiesStatesCb);
   this->AddService<GetSimulationState>(
     node, "get_simulation_state", &Implementation::GetSimulationStateCb);
+  this->AddService<GetSimulatorFeatures>(
+    node, "get_simulator_features", &Implementation::GetSimulatorFeaturesCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -228,7 +236,7 @@ void SimulationInterfaces::Implementation::GetEntityStateCb(
   // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the matched entity is a model.
   auto entity = this->ecm_.EntityByName(request->entity);
   if (entity) {
-    this->SetStateOfEntity(*entity, response->state, response->result);
+    this->PopulateStateFromEcm(*entity, response->state, response->result);
   } else {
     response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
     response->result.error_message = "Requested entity not found";
@@ -243,14 +251,14 @@ void SimulationInterfaces::Implementation::GetEntitiesStatesCb(
     [&](const gz::sim::Entity & entity, const components::Name * name, const components::Model *) {
       response->entities.push_back(name->Data());
       auto & state = response->states.emplace_back();
-      this->SetStateOfEntity(entity, state, response->result);
+      this->PopulateStateFromEcm(entity, state, response->result);
 
       // TODO(azeey) Implement error checking and setting error message
       return true;
     });
 }
 
-bool SimulationInterfaces::Implementation::SetStateOfEntity(
+bool SimulationInterfaces::Implementation::PopulateStateFromEcm(
   const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state,
   simulation_interfaces::msg::Result &)
 {
@@ -286,6 +294,38 @@ void SimulationInterfaces::Implementation::GetSimulationStateCb(
   }
 }
 
+
+void SimulationInterfaces::Implementation::GetSimulatorFeaturesCb(
+  GetSimulatorFeatures::Request::ConstSharedPtr, GetSimulatorFeatures::Response::SharedPtr response)
+{
+  using SimulatorFeatures = simulation_interfaces::msg::SimulatorFeatures;
+  response->features.features.assign({
+    SimulatorFeatures::SPAWNING,
+    SimulatorFeatures::DELETING,
+    // SimulatorFeatures::ENTITY_TAGS, // TODO(azeey)
+    // SimulatorFeatures::ENTITY_BOUNDS, // TODO(azeey)
+    // SimulatorFeatures::ENTITY_BOUNDS_BOX, // TODO(azeey)
+    // SimulatorFeatures::ENTITY_CATEGORIES, // TODO(azeey)
+    SimulatorFeatures::SPAWNING_RESOURCE_STRING,
+    SimulatorFeatures::ENTITY_STATE_GETTING,
+    // SimulatorFeatures::ENTITY_STATE_SETTING, // TODO(azeey)
+    // SimulatorFeatures::ENTITY_INFO_GETTING, // TODO(azeey)
+    SimulatorFeatures::SIMULATION_RESET,
+    SimulatorFeatures::SIMULATION_RESET_TIME,
+    SimulatorFeatures::SIMULATION_RESET_STATE,
+    SimulatorFeatures::SIMULATION_RESET_SPAWNED,
+    SimulatorFeatures::SIMULATION_STATE_GETTING,
+    // SimulatorFeatures::SIMULATION_STATE_SETTING, // TODO(azeey)
+    SimulatorFeatures::SIMULATION_STATE_PAUSE,
+    SimulatorFeatures::STEP_SIMULATION_SINGLE,
+    SimulatorFeatures::STEP_SIMULATION_MULTIPLE,
+    SimulatorFeatures::STEP_SIMULATION_ACTION,
+    //
+  });
+
+  response->features.spawn_formats.assign({"sdf", "urdf"});
+  // TODO(azeey) Fill in custom_info
+}
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
