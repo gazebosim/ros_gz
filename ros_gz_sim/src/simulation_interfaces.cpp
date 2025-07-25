@@ -33,6 +33,7 @@
 #include "simulation_interfaces/msg/result.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
 #include "simulation_interfaces/srv/get_entities.hpp"
+#include "simulation_interfaces/srv/get_entities_states.hpp"
 #include "simulation_interfaces/srv/get_entity_state.hpp"
 
 namespace components = gz::sim::components;
@@ -46,6 +47,7 @@ public:
   using DeleteEntity = simulation_interfaces::srv::DeleteEntity;
   using GetEntities = simulation_interfaces::srv::GetEntities;
   using GetEntityState = simulation_interfaces::srv::GetEntityState;
+  using GetEntitiesStates = simulation_interfaces::srv::GetEntitiesStates;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -62,6 +64,9 @@ public:
     GetEntities::Request::ConstSharedPtr request, GetEntities::Response::SharedPtr response);
   void GetEntityStateCb(
     GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response);
+  void GetEntitiesStatesCb(
+    GetEntitiesStates::Request::ConstSharedPtr request,
+    GetEntitiesStates::Response::SharedPtr response);
 
 private:
   gz::transport::Node gz_node_;
@@ -130,6 +135,8 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
   this->AddService<DeleteEntity>(node, "delete_entity", &Implementation::DeleteEntityCb);
   this->AddService<GetEntities>(node, "get_entities", &Implementation::GetEntitiesCb);
   this->AddService<GetEntityState>(node, "get_entity_state", &Implementation::GetEntityStateCb);
+  this->AddService<GetEntitiesStates>(
+    node, "get_entities_states", &Implementation::GetEntitiesStatesCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -198,8 +205,8 @@ void SimulationInterfaces::Implementation::GetEntitiesCb(
 void SimulationInterfaces::Implementation::GetEntityStateCb(
   GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response)
 {
-
   std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the matched entity is a model.
   auto entity = this->ecm_.EntityByName(request->entity);
   if (entity) {
     auto pose = gz::sim::worldPose(*entity, this->ecm_);
@@ -221,7 +228,31 @@ void SimulationInterfaces::Implementation::GetEntityStateCb(
   }
 }
 
+void SimulationInterfaces::Implementation::GetEntitiesStatesCb(
+  GetEntitiesStates::Request::ConstSharedPtr, GetEntitiesStates::Response::SharedPtr response)
+{
+  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  this->ecm_.Each<components::Name, components::Model>(
+    [&](const gz::sim::Entity & entity, const components::Name * name, const components::Model *) {
+      response->entities.push_back(name->Data());
 
+      auto pose = gz::sim::worldPose(entity, this->ecm_);
+
+      auto & state = response->states.emplace_back();
+      // TODO(azeey) Fill in header
+      state.pose.position.x = pose.X();
+      state.pose.position.y = pose.Y();
+      state.pose.position.z = pose.Z();
+
+      state.pose.orientation.x = pose.Rot().X();
+      state.pose.orientation.y = pose.Rot().Y();
+      state.pose.orientation.z = pose.Rot().Z();
+      state.pose.orientation.w = pose.Rot().W();
+
+      return true;
+    });
+  // TODO(azeey) Add support for twists and accelerations
+}
 
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
