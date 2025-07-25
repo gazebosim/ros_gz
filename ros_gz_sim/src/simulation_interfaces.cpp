@@ -30,6 +30,7 @@
 #include <gz/sim/components/Name.hh>
 #include <gz/transport/Node.hh>
 #include <iostream>
+#include <limits>
 #include <memory>
 #include <mutex>
 
@@ -45,6 +46,7 @@
 #include "simulation_interfaces/srv/reset_simulation.hpp"
 #include "simulation_interfaces/srv/set_simulation_state.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
+#include "simulation_interfaces/srv/step_simulation.hpp"
 
 namespace components = gz::sim::components;
 
@@ -63,6 +65,7 @@ public:
   using ResetSimulation = simulation_interfaces::srv::ResetSimulation;
   using SetSimulationState = simulation_interfaces::srv::SetSimulationState;
   using SpawnEntity = simulation_interfaces::srv::SpawnEntity;
+  using StepSimulation = simulation_interfaces::srv::StepSimulation;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -96,6 +99,8 @@ public:
     SetSimulationState::Response::SharedPtr response);
   void SpawnEntityCb(
     SpawnEntity::Request::ConstSharedPtr request, SpawnEntity::Response::SharedPtr response);
+  void StepSimulationCb(
+    StepSimulation::Request::ConstSharedPtr request, StepSimulation::Response::SharedPtr response);
 
   // Service helpers
   bool PopulateStateFromEcm(
@@ -122,8 +127,9 @@ void SimulationInterfaces::Implementation::Run(rclcpp::Node & node)
     }
 
     // TODO(azeey) Consider adding the UserCommands system if not already present.
-    // TODO(azeey) Wait for critical services to be available (e.g. /world/*/create, /world/*/control)
-    // Request the initial state of the world. This will block until Gazebo is initialized
+    // TODO(azeey) Wait for critical services to be available (e.g. /world/*/create,
+    // /world/*/control) Request the initial state of the world. This will block until Gazebo is
+    // initialized
     gz::msgs::SerializedStepMap reply;
     bool result;
     if (!this->gz_node_.Request(this->PrefixTopic("state"), 30000, reply, result)) {
@@ -171,7 +177,8 @@ void SimulationInterfaces::Implementation::UpdateStateFromMsg(
   this->ecm_.ProcessRemoveEntityRequests();
   this->world_stats_ = msg.stats();
 
-  // TODO(azeey) Consider using a condition variable to notify services that there is new data so as to avoid using stale data
+  // TODO(azeey) Consider using a condition variable to notify services that there is new data so as
+  // to avoid using stale data
 }
 
 void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
@@ -190,6 +197,7 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
   this->AddService<SetSimulationState>(
     node, "set_simulation_state", &Implementation::SetSimulationStateCb);
   this->AddService<SpawnEntity>(node, "spawn_entity", &Implementation::SpawnEntityCb);
+  this->AddService<StepSimulation>(node, "step_simulation", &Implementation::StepSimulationCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -231,7 +239,8 @@ void SimulationInterfaces::Implementation::DeleteEntityCb(
       return;
     }
   }
-  // TODO(azeey) Add specific error codes depending on what went wrong and add more thorough error messages.
+  // TODO(azeey) Add specific error codes depending on what went wrong and add more thorough error
+  // messages.
   response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
   response->result.error_message = "Error while trying to remove entity";
 }
@@ -259,7 +268,8 @@ void SimulationInterfaces::Implementation::GetEntityStateCb(
   GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response)
 {
   std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-  // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the matched entity is a model.
+  // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the
+  // matched entity is a model.
   auto entity = this->ecm_.EntityByName(request->entity);
   if (entity) {
     this->PopulateStateFromEcm(*entity, response->state, response->result);
@@ -312,7 +322,8 @@ void SimulationInterfaces::Implementation::GetSimulationStateCb(
   if (this->world_stats_.paused()) {
     response->state.state = simulation_interfaces::msg::SimulationState::STATE_PAUSED;
     if (this->world_stats_.iterations() == 0) {
-      // The simulation is in its initial state after loading a world or being reset, which will assign to the STATE_STOPPED state
+      // The simulation is in its initial state after loading a world or being reset, which will
+      // assign to the STATE_STOPPED state
       response->state.state = simulation_interfaces::msg::SimulationState::STATE_STOPPED;
     }
   } else {
@@ -477,12 +488,55 @@ void SimulationInterfaces::Implementation::SpawnEntityCb(
     // We'd have to make sure that the ECM has been updated at least once after the `create` request
     response->entity_name = request->name;
   } else {
-    // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative error messages.
-    // However, the `create` service in UserCommands only returns a boolean.
+    // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative error
+    // messages. However, the `create` service in UserCommands only returns a boolean.
     response->result.result = Result::RESULT_OPERATION_FAILED;
     response->result.error_message = "Unknown error while tryint to reset simulation";
   }
 }
+
+void SimulationInterfaces::Implementation::StepSimulationCb(
+  StepSimulation::Request::ConstSharedPtr request, StepSimulation::Response::SharedPtr response)
+{
+  using Result = simulation_interfaces::msg::Result;
+  bool sim_paused;
+  {
+    std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+    sim_paused = this->world_stats_.paused();
+  }
+  if (!sim_paused) {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Simulation has to be paused before stepping";
+    return;
+  }
+
+  // The spec uses a uint64, but the service provided by Gazebo uses a uint32 so we bail out if the
+  // requested number of steps cannot be represented properly.
+  if (request->steps > std::numeric_limits<uint32_t>::max()) {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "The requested number of steps exceeds the maximum supported value (max uint32)";
+    return;
+  }
+
+  gz::msgs::WorldControl gz_request;
+  gz_request.set_pause(true);
+  gz_request.set_step(true);
+  gz_request.set_multi_step(request->steps);
+  bool result;
+  gz::msgs::Boolean reply;
+  bool executed =
+    this->gz_node_.Request(this->PrefixTopic("control"), gz_request, 30000, reply, result);
+  if (!executed) {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Timed out while trying to reset simulation";
+  } else if (result && reply.data()) {
+    response->result.result = Result::RESULT_OK;
+  } else {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Unknown error while trying to reset simulation";
+  }
+}
+
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
