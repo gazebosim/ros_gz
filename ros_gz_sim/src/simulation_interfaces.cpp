@@ -42,6 +42,7 @@
 #include "simulation_interfaces/srv/get_simulation_state.hpp"
 #include "simulation_interfaces/srv/get_simulator_features.hpp"
 #include "simulation_interfaces/srv/reset_simulation.hpp"
+#include "simulation_interfaces/srv/set_simulation_state.hpp"
 
 namespace components = gz::sim::components;
 
@@ -58,6 +59,7 @@ public:
   using GetSimulationState = simulation_interfaces::srv::GetSimulationState;
   using GetSimulatorFeatures = simulation_interfaces::srv::GetSimulatorFeatures;
   using ResetSimulation = simulation_interfaces::srv::ResetSimulation;
+  using SetSimulationState = simulation_interfaces::srv::SetSimulationState;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -86,6 +88,9 @@ public:
   void ResetSimulationCb(
     ResetSimulation::Request::ConstSharedPtr request,
     ResetSimulation::Response::SharedPtr response);
+  void SetSimulationStateCb(
+    SetSimulationState::Request::ConstSharedPtr request,
+    SetSimulationState::Response::SharedPtr response);
 
   // Service helpers
   bool PopulateStateFromEcm(
@@ -171,6 +176,8 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
   this->AddService<GetSimulatorFeatures>(
     node, "get_simulator_features", &Implementation::GetSimulatorFeaturesCb);
   this->AddService<ResetSimulation>(node, "reset_simulation", &Implementation::ResetSimulationCb);
+  this->AddService<SetSimulationState>(
+    node, "set_simulation_state", &Implementation::SetSimulationStateCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -305,13 +312,15 @@ void SimulationInterfaces::Implementation::GetSimulatorFeaturesCb(
   GetSimulatorFeatures::Request::ConstSharedPtr, GetSimulatorFeatures::Response::SharedPtr response)
 {
   using SimulatorFeatures = simulation_interfaces::msg::SimulatorFeatures;
+  // clang-format off
   response->features.features.assign({
     SimulatorFeatures::SPAWNING, SimulatorFeatures::DELETING,
     // SimulatorFeatures::ENTITY_TAGS, // TODO(azeey)
     // SimulatorFeatures::ENTITY_BOUNDS, // TODO(azeey)
     // SimulatorFeatures::ENTITY_BOUNDS_BOX, // TODO(azeey)
     // SimulatorFeatures::ENTITY_CATEGORIES, // TODO(azeey)
-    SimulatorFeatures::SPAWNING_RESOURCE_STRING, SimulatorFeatures::ENTITY_STATE_GETTING,
+    SimulatorFeatures::SPAWNING_RESOURCE_STRING,
+    SimulatorFeatures::ENTITY_STATE_GETTING,
     // SimulatorFeatures::ENTITY_STATE_SETTING, // TODO(azeey)
     // SimulatorFeatures::ENTITY_INFO_GETTING, // TODO(azeey)
     SimulatorFeatures::SIMULATION_RESET,
@@ -320,9 +329,12 @@ void SimulationInterfaces::Implementation::GetSimulatorFeaturesCb(
     // SimulatorFeatures::SIMULATION_RESET_SPAWNED, // TODO(azeey)
     SimulatorFeatures::SIMULATION_STATE_GETTING,
     // SimulatorFeatures::SIMULATION_STATE_SETTING, // TODO(azeey)
-    SimulatorFeatures::SIMULATION_STATE_PAUSE, SimulatorFeatures::STEP_SIMULATION_SINGLE,
-    SimulatorFeatures::STEP_SIMULATION_MULTIPLE, SimulatorFeatures::STEP_SIMULATION_ACTION,
-    //
+    SimulatorFeatures::SIMULATION_STATE_PAUSE,
+    SimulatorFeatures::STEP_SIMULATION_SINGLE,
+    SimulatorFeatures::STEP_SIMULATION_MULTIPLE,
+    SimulatorFeatures::STEP_SIMULATION_ACTION,
+
+    // clang-format on
   });
 
   response->features.spawn_formats.assign({"sdf", "urdf"});
@@ -333,8 +345,9 @@ void SimulationInterfaces::Implementation::ResetSimulationCb(
   ResetSimulation::Request::ConstSharedPtr request, ResetSimulation::Response::SharedPtr response)
 {
   using Result = simulation_interfaces::msg::Result;
-  if (request->scope != request->SCOPE_DEFAULT && request->scope != request->SCOPE_ALL)
-  {
+  if (
+    request->scope != ResetSimulation::Request::SCOPE_DEFAULT &&
+    request->scope != ResetSimulation::Request::SCOPE_ALL) {
     response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
     response->result.error_message = "Only reset scopes SCOPE_DEFAULT and SCOPE_ALL are supported";
     return;
@@ -355,6 +368,47 @@ void SimulationInterfaces::Implementation::ResetSimulationCb(
   if (!executed) {
     response->result.result = Result::RESULT_OPERATION_FAILED;
     response->result.error_message = "Timed out while trying to reset simulation";
+  } else if (result && reply.data()) {
+    response->result.result = Result::RESULT_OK;
+  } else {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Unknown error while tryint to reset simulation";
+  }
+}
+
+void SimulationInterfaces::Implementation::SetSimulationStateCb(
+  SetSimulationState::Request::ConstSharedPtr request,
+  SetSimulationState::Response::SharedPtr response)
+{
+  using Result = simulation_interfaces::msg::Result;
+  using SimulationState = simulation_interfaces::msg::SimulationState;
+
+  gz::msgs::WorldControl gz_request;
+  switch (request->state.state) {
+    case SimulationState::STATE_STOPPED:
+      gz_request.set_pause(true);
+      gz_request.mutable_reset()->set_all(true);
+      break;
+    case SimulationState::STATE_PAUSED:
+      gz_request.set_pause(true);
+      break;
+    case SimulationState::STATE_PLAYING:
+      gz_request.set_pause(false);
+      break;
+    default:
+      response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+      response->result.error_message =
+        "Only the states [STATE_STOPPED, STATE_PAUSED, STATE_PLAYING] are supported";
+      return;
+  }
+
+  bool result;
+  gz::msgs::Boolean reply;
+  bool executed =
+    this->gz_node_.Request(this->PrefixTopic("control"), gz_request, 30000, reply, result);
+  if (!executed) {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Timed out while trying to set simulation state";
   } else if (result && reply.data()) {
     response->result.result = Result::RESULT_OK;
   } else {
