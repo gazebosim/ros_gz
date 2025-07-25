@@ -35,6 +35,7 @@
   <depend>launch_ros</depend>
   <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
+  <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>
   <depend>rcpputils</depend>
   <depend>ros_gz_interfaces</depend>

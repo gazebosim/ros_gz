@@ -25,6 +25,7 @@ find_package(gz-sim REQUIRED)
 find_package(gz_transport_vendor REQUIRED)
 find_package(gz-transport REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(ros_gz_interfaces REQUIRED)
@@ -83,6 +84,7 @@ target_link_libraries(gzserver_component PUBLIC
   ${simulation_interfaces_TARGETS}
   gz-sim::core
   rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
   rclcpp_components::component
   rclcpp_components::component_manager
 )

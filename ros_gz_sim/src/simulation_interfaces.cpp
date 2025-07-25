@@ -22,6 +22,7 @@
 #include <gz/msgs/world_control.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 
+#include <cstdint>
 #include <functional>
 #include <gz/math/Pose3.hh>
 #include <gz/sim/EntityComponentManager.hh>
@@ -33,7 +34,13 @@
 #include <limits>
 #include <memory>
 #include <mutex>
+#include <rclcpp/rclcpp.hpp>
+#include <rclcpp/utilities.hpp>
+#include <rclcpp_action/rclcpp_action.hpp>
+#include <rclcpp_action/server.hpp>
 
+#include "simulation_interfaces/action//simulate_steps.hpp"
+#include "simulation_interfaces/action/simulate_steps.hpp"
 #include "simulation_interfaces/msg/result.hpp"
 #include "simulation_interfaces/msg/simulation_state.hpp"
 #include "simulation_interfaces/msg/simulator_features.hpp"
@@ -56,6 +63,7 @@ namespace ros_gz_sim
 class SimulationInterfaces::Implementation
 {
 public:
+  // Services
   using DeleteEntity = simulation_interfaces::srv::DeleteEntity;
   using GetEntities = simulation_interfaces::srv::GetEntities;
   using GetEntityState = simulation_interfaces::srv::GetEntityState;
@@ -67,12 +75,23 @@ public:
   using SpawnEntity = simulation_interfaces::srv::SpawnEntity;
   using StepSimulation = simulation_interfaces::srv::StepSimulation;
 
+  // Actions
+  using SimulateSteps = simulation_interfaces::action::SimulateSteps;
+  using GoalHandleSimulateSteps = rclcpp_action::ServerGoalHandle<SimulateSteps>;
+
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
   void CreateServices(rclcpp::Node & node);
   template <typename Service, typename HandlerFunc>
   void AddService(rclcpp::Node & node, const char * service_name, HandlerFunc && callback);
+  template <
+    typename Action, typename GoalHandlerFunc, typename CancelHandlerFunc,
+    typename AcceptedHandlerFunc>
+  void AddAction(
+    rclcpp::Node & node, const char * service_name, GoalHandlerFunc && goal_callback,
+    CancelHandlerFunc && cancel_handler, AcceptedHandlerFunc && accepted_handler);
+
   bool InitializeGazeboParameters();
 
   // Service handlers
@@ -102,12 +121,20 @@ public:
   void StepSimulationCb(
     StepSimulation::Request::ConstSharedPtr request, StepSimulation::Response::SharedPtr response);
 
+  // Action handlers
+  rclcpp_action::GoalResponse SimulateStepsGoalCb(
+    const rclcpp_action::GoalUUID & uuid, std::shared_ptr<const SimulateSteps::Goal> goal);
+  rclcpp_action::CancelResponse SimulateStepsCancelCb(
+    const std::shared_ptr<GoalHandleSimulateSteps> goal_handle);
+  void SimulateStepsAcceptedCb(const std::shared_ptr<GoalHandleSimulateSteps> goal_handle);
+
   // Service helpers
   bool PopulateStateFromEcm(
     const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state,
     simulation_interfaces::msg::Result & result);
 
 private:
+  // TODO(azeey) Consider storing the ROS node
   gz::transport::Node gz_node_;
   const unsigned int kTimeout_{5000};
   std::string world_name_;
@@ -116,6 +143,7 @@ private:
   gz::msgs::WorldStatistics world_stats_;
 
   std::vector<std::shared_ptr<rclcpp::ServiceBase>> services_handles_;
+  std::vector<std::shared_ptr<rclcpp_action::ServerBase>> action_handles_;
 };
 
 void SimulationInterfaces::Implementation::Run(rclcpp::Node & node)
@@ -198,6 +226,10 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
     node, "set_simulation_state", &Implementation::SetSimulationStateCb);
   this->AddService<SpawnEntity>(node, "spawn_entity", &Implementation::SpawnEntityCb);
   this->AddService<StepSimulation>(node, "step_simulation", &Implementation::StepSimulationCb);
+
+  this->AddAction<SimulateSteps>(
+    node, "simulate_steps", &Implementation::SimulateStepsGoalCb,
+    &Implementation::SimulateStepsCancelCb, &Implementation::SimulateStepsAcceptedCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -208,6 +240,23 @@ void SimulationInterfaces::Implementation::AddService(
     service_name, std::bind(callback, this, std::placeholders::_1, std::placeholders::_2)));
 
   RCLCPP_INFO_STREAM(node.get_logger(), "Created service " << service_name);
+}
+
+template <
+  typename Action, typename GoalHandlerFunc, typename CancelHandlerFunc,
+  typename AcceptedHandlerFunc>
+void SimulationInterfaces::Implementation::AddAction(
+  rclcpp::Node & node, const char * action_name, GoalHandlerFunc && goal_callback,
+  CancelHandlerFunc && cancel_callback, AcceptedHandlerFunc && accepted_callback)
+{
+  this->action_handles_.push_back(
+    rclcpp_action::create_server<Action>(
+      &node, action_name,
+      std::bind(goal_callback, this, std::placeholders::_1, std::placeholders::_2),
+      std::bind(cancel_callback, this, std::placeholders::_1),
+      std::bind(accepted_callback, this, std::placeholders::_1)));
+
+  RCLCPP_INFO_STREAM(node.get_logger(), "Created action " << action_name);
 }
 
 bool SimulationInterfaces::Implementation::InitializeGazeboParameters()
@@ -514,7 +563,8 @@ void SimulationInterfaces::Implementation::StepSimulationCb(
   // requested number of steps cannot be represented properly.
   if (request->steps > std::numeric_limits<uint32_t>::max()) {
     response->result.result = Result::RESULT_OPERATION_FAILED;
-    response->result.error_message = "The requested number of steps exceeds the maximum supported value (max uint32)";
+    response->result.error_message =
+      "The requested number of steps exceeds the maximum supported value (max uint32)";
     return;
   }
 
@@ -535,6 +585,117 @@ void SimulationInterfaces::Implementation::StepSimulationCb(
     response->result.result = Result::RESULT_OPERATION_FAILED;
     response->result.error_message = "Unknown error while trying to reset simulation";
   }
+}
+
+rclcpp_action::GoalResponse SimulationInterfaces::Implementation::SimulateStepsGoalCb(
+  const rclcpp_action::GoalUUID &, std::shared_ptr<const SimulateSteps::Goal>)
+{
+  // TODO(azeey) Add console message that we've received the goal
+  return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
+}
+
+rclcpp_action::CancelResponse SimulationInterfaces::Implementation::SimulateStepsCancelCb(
+  const std::shared_ptr<GoalHandleSimulateSteps>)
+{
+  // TODO(azeey) Add console message that we've received the cancellation
+  return rclcpp_action::CancelResponse::ACCEPT;
+}
+
+void SimulationInterfaces::Implementation::SimulateStepsAcceptedCb(
+  const std::shared_ptr<GoalHandleSimulateSteps> goal_handle)
+{
+  // Note that this is not the same as SimulateSteps::Result, which is the typename associated with
+  // the Result of the action, which in turn contains a simulation_interfaces::msg::Result
+  using Result = simulation_interfaces::msg::Result;
+
+  // Execute the task in a separate thread and return immediately.
+  auto thread = std::thread([this, goal_handle] {
+    gz::transport::Node action_gz_node;
+    const auto goal = goal_handle->get_goal();
+    auto action_result = std::make_shared<SimulateSteps::Result>();
+
+    if (goal->steps > std::numeric_limits<uint32_t>::max()) {
+      action_result->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+      action_result->result.error_message =
+        "The requested number of steps exceeds the maximum supported value (max uint32)";
+      goal_handle->abort(action_result);
+      return;
+    }
+
+    bool sim_paused;
+    {
+      std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+      sim_paused = this->world_stats_.paused();
+    }
+    if (!sim_paused) {
+      action_result->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+      action_result->result.error_message = "Simulation has to be paused before stepping";
+      goal_handle->abort(action_result);
+      return;
+    }
+
+    uint64_t num_iters_start = 0;
+    {
+      std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+      num_iters_start = this->world_stats_.iterations();
+    }
+
+    // TODO(azeey) Refactor this code since it's also used in the StepSimulation service.
+    gz::msgs::WorldControl gz_request;
+    gz_request.set_pause(true);
+    gz_request.set_step(true);
+    gz_request.set_multi_step(goal->steps);
+    bool gz_result;
+    gz::msgs::Boolean reply;
+    bool executed =
+      action_gz_node.Request(this->PrefixTopic("control"), gz_request, 30000, reply, gz_result);
+    if (!executed) {
+      action_result->result.result = Result::RESULT_OPERATION_FAILED;
+      action_result->result.error_message = "Timed out while trying to reset simulation";
+      goal_handle->abort(action_result);
+    } else if (action_result && reply.data()) {
+      // The request has succeeded, so now we listen to the stats and provide feedback.
+      action_result->result.result = Result::RESULT_OK;
+      auto feedback = std::make_shared<SimulateSteps::Feedback>();
+
+      while (rclcpp::ok()) {
+        std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+        auto iterations = this->world_stats_.iterations();
+        feedback->completed_steps = iterations - num_iters_start;
+        feedback->remaining_steps = goal->steps - feedback->completed_steps;
+        goal_handle->publish_feedback(feedback);
+        // TODO(azeey) There is a bug in Gazebo where the stepping field is set to true only once
+        // immediately after the request to step instead of being true for the whole duration of
+        // steps. So we can't use this right now to determine if we need to break out early
+        // if (!this->world_stats_.stepping()) {
+        //   break;
+        // }
+        if (feedback->remaining_steps == 0) {
+          break;
+        }
+
+        if (goal_handle->is_canceling()) {
+          goal_handle->canceled(action_result);
+          return;
+        }
+      }
+
+      if (rclcpp::ok()) {
+        if (feedback->remaining_steps == 0) {
+          goal_handle->succeed(action_result);
+        } else {
+          action_result->result.result = Result::RESULT_OPERATION_FAILED;
+          action_result->result.error_message = "SimulateSteps was interrupted";
+          goal_handle->abort(action_result);
+        }
+      }
+    } else {
+      action_result->result.result = Result::RESULT_OPERATION_FAILED;
+      action_result->result.error_message = "Unknown error while trying to reset simulation";
+      goal_handle->abort(action_result);
+    }
+  });
+  thread.detach();
 }
 
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
