@@ -18,6 +18,7 @@
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
 #include <functional>
 #include <gz/math/Pose3.hh>
@@ -31,10 +32,12 @@
 #include <mutex>
 
 #include "simulation_interfaces/msg/result.hpp"
+#include "simulation_interfaces/msg/simulation_state.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
 #include "simulation_interfaces/srv/get_entities.hpp"
 #include "simulation_interfaces/srv/get_entities_states.hpp"
 #include "simulation_interfaces/srv/get_entity_state.hpp"
+#include "simulation_interfaces/srv/get_simulation_state.hpp"
 
 namespace components = gz::sim::components;
 
@@ -48,6 +51,7 @@ public:
   using GetEntities = simulation_interfaces::srv::GetEntities;
   using GetEntityState = simulation_interfaces::srv::GetEntityState;
   using GetEntitiesStates = simulation_interfaces::srv::GetEntitiesStates;
+  using GetSimulationState = simulation_interfaces::srv::GetSimulationState;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -68,12 +72,17 @@ public:
     GetEntitiesStates::Request::ConstSharedPtr request,
     GetEntitiesStates::Response::SharedPtr response);
 
+  void GetSimulationStateCb(
+    GetSimulationState::Request::ConstSharedPtr request,
+    GetSimulationState::Response::SharedPtr response);
+
 private:
   gz::transport::Node gz_node_;
   const unsigned int kTimeout_{5000};
   std::string world_name_;
-  std::mutex ecmMutex_;
+  std::mutex stateSyncMutex_;
   gz::sim::EntityComponentManager ecm_;
+  gz::msgs::WorldStatistics world_stats_;
 
   std::vector<std::shared_ptr<rclcpp::ServiceBase>> services_handles_;
 };
@@ -126,9 +135,13 @@ void SimulationInterfaces::Implementation::UpdateStateFromMsg(
   const gz::msgs::SerializedStepMap & msg)
 {
   // TODO(azeey) `msg` also contains stats
-  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
   this->ecm_.SetState(msg.state());
+  this->world_stats_ = msg.stats();
+
+  // TODO(azeey) Consider using a condition variable to notify services that there is new data so as to avoid using stale data
 }
+
 void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
 {
   RCLCPP_INFO_STREAM(node.get_logger(), "Creating services on " << node.get_name());
@@ -137,6 +150,8 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
   this->AddService<GetEntityState>(node, "get_entity_state", &Implementation::GetEntityStateCb);
   this->AddService<GetEntitiesStates>(
     node, "get_entities_states", &Implementation::GetEntitiesStatesCb);
+  this->AddService<GetSimulationState>(
+    node, "get_simulation_state", &Implementation::GetSimulationStateCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -187,7 +202,7 @@ void SimulationInterfaces::Implementation::GetEntitiesCb(
   GetEntities::Request::ConstSharedPtr, GetEntities::Response::SharedPtr response)
 {
   {
-    std::lock_guard<std::mutex> lk(this->ecmMutex_);
+    std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
     this->ecm_.Each<components::Name, components::Model>(
       [&](const gz::sim::Entity &, const components::Name * name, const components::Model *) {
         response->entities.push_back(name->Data());
@@ -205,7 +220,7 @@ void SimulationInterfaces::Implementation::GetEntitiesCb(
 void SimulationInterfaces::Implementation::GetEntityStateCb(
   GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response)
 {
-  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
   // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the matched entity is a model.
   auto entity = this->ecm_.EntityByName(request->entity);
   if (entity) {
@@ -231,7 +246,7 @@ void SimulationInterfaces::Implementation::GetEntityStateCb(
 void SimulationInterfaces::Implementation::GetEntitiesStatesCb(
   GetEntitiesStates::Request::ConstSharedPtr, GetEntitiesStates::Response::SharedPtr response)
 {
-  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
   this->ecm_.Each<components::Name, components::Model>(
     [&](const gz::sim::Entity & entity, const components::Name * name, const components::Model *) {
       response->entities.push_back(name->Data());
@@ -252,6 +267,21 @@ void SimulationInterfaces::Implementation::GetEntitiesStatesCb(
       return true;
     });
   // TODO(azeey) Add support for twists and accelerations
+}
+
+void SimulationInterfaces::Implementation::GetSimulationStateCb(
+  GetSimulationState::Request::ConstSharedPtr, GetSimulationState::Response::SharedPtr response)
+{
+  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  if (this->world_stats_.paused()) {
+    response->state.state = simulation_interfaces::msg::SimulationState::STATE_PAUSED;
+    if (this->world_stats_.iterations() == 0) {
+      // The simulation is in its initial state after loading a world or being reset, which will assign to the STATE_STOPPED state
+      response->state.state = simulation_interfaces::msg::SimulationState::STATE_STOPPED;
+    }
+  } else {
+    response->state.state = simulation_interfaces::msg::SimulationState::STATE_PLAYING;
+  }
 }
 
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
