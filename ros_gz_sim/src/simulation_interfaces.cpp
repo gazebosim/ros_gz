@@ -16,6 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/world_control.pb.h>
@@ -43,6 +44,7 @@
 #include "simulation_interfaces/srv/get_simulator_features.hpp"
 #include "simulation_interfaces/srv/reset_simulation.hpp"
 #include "simulation_interfaces/srv/set_simulation_state.hpp"
+#include "simulation_interfaces/srv/spawn_entity.hpp"
 
 namespace components = gz::sim::components;
 
@@ -60,6 +62,7 @@ public:
   using GetSimulatorFeatures = simulation_interfaces::srv::GetSimulatorFeatures;
   using ResetSimulation = simulation_interfaces::srv::ResetSimulation;
   using SetSimulationState = simulation_interfaces::srv::SetSimulationState;
+  using SpawnEntity = simulation_interfaces::srv::SpawnEntity;
 
   void Run(rclcpp::Node & node);
   std::string PrefixTopic(const char * topic);
@@ -91,6 +94,8 @@ public:
   void SetSimulationStateCb(
     SetSimulationState::Request::ConstSharedPtr request,
     SetSimulationState::Response::SharedPtr response);
+  void SpawnEntityCb(
+    SpawnEntity::Request::ConstSharedPtr request, SpawnEntity::Response::SharedPtr response);
 
   // Service helpers
   bool PopulateStateFromEcm(
@@ -115,6 +120,9 @@ void SimulationInterfaces::Implementation::Run(rclcpp::Node & node)
       // TODO(azeey) Log error
       return;
     }
+
+    // TODO(azeey) Consider adding the UserCommands system if not already present.
+    // TODO(azeey) Wait for critical services to be available (e.g. /world/*/create, /world/*/control)
     // Request the initial state of the world. This will block until Gazebo is initialized
     gz::msgs::SerializedStepMap reply;
     bool result;
@@ -158,6 +166,9 @@ void SimulationInterfaces::Implementation::UpdateStateFromMsg(
   // TODO(azeey) `msg` also contains stats
   std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
   this->ecm_.SetState(msg.state());
+  this->ecm_.ClearRemovedComponents();
+  this->ecm_.ClearNewlyCreatedEntities();
+  this->ecm_.ProcessRemoveEntityRequests();
   this->world_stats_ = msg.stats();
 
   // TODO(azeey) Consider using a condition variable to notify services that there is new data so as to avoid using stale data
@@ -178,6 +189,7 @@ void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
   this->AddService<ResetSimulation>(node, "reset_simulation", &Implementation::ResetSimulationCb);
   this->AddService<SetSimulationState>(
     node, "set_simulation_state", &Implementation::SetSimulationStateCb);
+  this->AddService<SpawnEntity>(node, "spawn_entity", &Implementation::SpawnEntityCb);
 }
 
 template <typename Service, typename HandlerFunc>
@@ -417,6 +429,60 @@ void SimulationInterfaces::Implementation::SetSimulationStateCb(
   }
 }
 
+void SimulationInterfaces::Implementation::SpawnEntityCb(
+  SpawnEntity::Request::ConstSharedPtr request, SpawnEntity::Response::SharedPtr response)
+{
+  using Result = simulation_interfaces::msg::Result;
+  gz::msgs::EntityFactory gz_request;
+  if (!request->name.empty()) {
+    gz_request.set_name(request->name);
+  }
+  gz_request.set_allow_renaming(request->allow_renaming);
+
+  if (!request->uri.empty()) {
+    // TODO(azeey) The `sdf_filename` field requires absolute paths to the file.
+    // Consider resolving the uri using the `/gazebo/resource_paths/resolve`
+    gz_request.set_sdf_filename(request->uri);
+  } else if (!request->resource_string.empty()) {
+    gz_request.set_sdf(request->resource_string);
+  } else {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message =
+      "One of the fields [uri] or [resource_string] must be specified";
+    return;
+  }
+
+  // TODO(azeey) Add support for entity_namespace
+  // TODO(azeey) Reuse code in ros_gz_bridge/convert/geometry_msgs
+  auto * pose = gz_request.mutable_pose();
+  pose->mutable_position()->set_x(request->initial_pose.pose.position.x);
+  pose->mutable_position()->set_y(request->initial_pose.pose.position.y);
+  pose->mutable_position()->set_z(request->initial_pose.pose.position.z);
+
+  pose->mutable_orientation()->set_x(request->initial_pose.pose.orientation.x);
+  pose->mutable_orientation()->set_y(request->initial_pose.pose.orientation.y);
+  pose->mutable_orientation()->set_z(request->initial_pose.pose.orientation.z);
+  pose->mutable_orientation()->set_w(request->initial_pose.pose.orientation.w);
+
+  bool result;
+  gz::msgs::Boolean reply;
+  bool executed =
+    this->gz_node_.Request(this->PrefixTopic("create"), gz_request, 30000, reply, result);
+  if (!executed) {
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Timed out while trying to set simulation state";
+  } else if (result && reply.data()) {
+    response->result.result = Result::RESULT_OK;
+    // TODO(azeey) Fetch the new name of the entity from our local ECM using `EachNew`.
+    // We'd have to make sure that the ECM has been updated at least once after the `create` request
+    response->entity_name = request->name;
+  } else {
+    // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative error messages.
+    // However, the `create` service in UserCommands only returns a boolean.
+    response->result.result = Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Unknown error while tryint to reset simulation";
+  }
+}
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
