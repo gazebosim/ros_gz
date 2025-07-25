@@ -16,8 +16,8 @@
 
 #include <gz/msgs/details/boolean.pb.h>
 #include <gz/msgs/details/entity.pb.h>
-#include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/entity.pb.h>
+#include <gz/msgs/stringmsg_v.pb.h>
 
 #include <functional>
 #include <gz/transport/Node.hh>
@@ -33,52 +33,12 @@ class SimulationInterfaces::Implementation
 {
 public:
   using DeleteEntity = simulation_interfaces::srv::DeleteEntity;
-  void CreateServices(rclcpp::Node & node)
-  {
-    if (!this->InitializeGazeboParameters()) {
-      // TODO(azeey) Log error
-      return;
-    }
-    std::cout << "Creating services on " << node.get_name() << std::endl;
-    this->delete_entity_service_ = node.create_service<DeleteEntity>(
-      "delete_entity",
-      std::bind(
-        &Implementation::DeleteEntityCb, this, std::placeholders::_1, std::placeholders::_2));
-  }
+  void CreateServices(rclcpp::Node & node);
 
-  bool InitializeGazeboParameters()
-  {
-    gz::msgs::StringMsg_V worlds_msg;
-    bool result;
-    if (this->node_.Request("gazebo/worlds", this->kTimeout_, worlds_msg, result))
-    {
-      if (result && !worlds_msg.data().empty()) {
-        this->world_name_ = worlds_msg.data(0);
-        return true;
-      }
-    }
-    return false;
-  }
+  bool InitializeGazeboParameters();
 
   void DeleteEntityCb(
-    DeleteEntity::Request::ConstSharedPtr request, DeleteEntity::Response::SharedPtr response)
-  {
-    std::string topic = "world/" + this->world_name_ + "/remove";
-    gz::msgs::Entity gz_request;
-    gz_request.set_name(request->entity);
-    gz_request.set_type(gz::msgs::Entity::MODEL);
-    gz::msgs::Boolean gz_reply;
-    bool result;
-    if (node_.Request(topic, gz_request, this->kTimeout_, gz_reply, result))
-    {
-      if (result && gz_reply.data()) {
-        response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
-        return;
-      }    }
-    // TODO(azeey) Add specific error codes depending on what went wrong and add more thorough error messages.
-    response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
-    response->result.error_message = "Error while trying to remove entity";
-  }
+    DeleteEntity::Request::ConstSharedPtr request, DeleteEntity::Response::SharedPtr response);
 
 private:
   rclcpp::Service<DeleteEntity>::SharedPtr delete_entity_service_;
@@ -86,6 +46,51 @@ private:
   const unsigned int kTimeout_{5000};
   std::string world_name_;
 };
+
+void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
+{
+  if (!this->InitializeGazeboParameters()) {
+    // TODO(azeey) Log error
+    return;
+  }
+  std::cout << "Creating services on " << node.get_name() << std::endl;
+  this->delete_entity_service_ = node.create_service<DeleteEntity>(
+    "delete_entity",
+    std::bind(&Implementation::DeleteEntityCb, this, std::placeholders::_1, std::placeholders::_2));
+}
+
+bool SimulationInterfaces::Implementation::InitializeGazeboParameters()
+{
+  gz::msgs::StringMsg_V worlds_msg;
+  bool result;
+  if (this->node_.Request("gazebo/worlds", this->kTimeout_, worlds_msg, result)) {
+    if (result && !worlds_msg.data().empty()) {
+      this->world_name_ = worlds_msg.data(0);
+      return true;
+    }
+  }
+  return false;
+}
+
+void SimulationInterfaces::Implementation::DeleteEntityCb(
+  DeleteEntity::Request::ConstSharedPtr request, DeleteEntity::Response::SharedPtr response)
+{
+  std::string topic = "world/" + this->world_name_ + "/remove";
+  gz::msgs::Entity gz_request;
+  gz_request.set_name(request->entity);
+  gz_request.set_type(gz::msgs::Entity::MODEL);
+  gz::msgs::Boolean gz_reply;
+  bool result;
+  if (node_.Request(topic, gz_request, this->kTimeout_, gz_reply, result)) {
+    if (result && gz_reply.data()) {
+      response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
+      return;
+    }
+  }
+  // TODO(azeey) Add specific error codes depending on what went wrong and add more thorough error messages.
+  response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+  response->result.error_message = "Error while trying to remove entity";
+}
 
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
