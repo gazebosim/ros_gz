@@ -71,10 +71,14 @@ public:
   void GetEntitiesStatesCb(
     GetEntitiesStates::Request::ConstSharedPtr request,
     GetEntitiesStates::Response::SharedPtr response);
-
   void GetSimulationStateCb(
     GetSimulationState::Request::ConstSharedPtr request,
     GetSimulationState::Response::SharedPtr response);
+
+  // Service helpers
+  bool SetStateOfEntity(
+    const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state,
+    simulation_interfaces::msg::Result & result);
 
 private:
   gz::transport::Node gz_node_;
@@ -224,19 +228,7 @@ void SimulationInterfaces::Implementation::GetEntityStateCb(
   // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the matched entity is a model.
   auto entity = this->ecm_.EntityByName(request->entity);
   if (entity) {
-    auto pose = gz::sim::worldPose(*entity, this->ecm_);
-
-    // TODO(azeey) Fill in header
-    response->state.pose.position.x = pose.X();
-    response->state.pose.position.y = pose.Y();
-    response->state.pose.position.z = pose.Z();
-
-    response->state.pose.orientation.x = pose.Rot().X();
-    response->state.pose.orientation.y = pose.Rot().Y();
-    response->state.pose.orientation.z = pose.Rot().Z();
-    response->state.pose.orientation.w = pose.Rot().W();
-
-    // TODO(azeey) Add support for twists and accelerations
+    this->SetStateOfEntity(*entity, response->state, response->result);
   } else {
     response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
     response->result.error_message = "Requested entity not found";
@@ -250,23 +242,33 @@ void SimulationInterfaces::Implementation::GetEntitiesStatesCb(
   this->ecm_.Each<components::Name, components::Model>(
     [&](const gz::sim::Entity & entity, const components::Name * name, const components::Model *) {
       response->entities.push_back(name->Data());
-
-      auto pose = gz::sim::worldPose(entity, this->ecm_);
-
       auto & state = response->states.emplace_back();
-      // TODO(azeey) Fill in header
-      state.pose.position.x = pose.X();
-      state.pose.position.y = pose.Y();
-      state.pose.position.z = pose.Z();
+      this->SetStateOfEntity(entity, state, response->result);
 
-      state.pose.orientation.x = pose.Rot().X();
-      state.pose.orientation.y = pose.Rot().Y();
-      state.pose.orientation.z = pose.Rot().Z();
-      state.pose.orientation.w = pose.Rot().W();
-
+      // TODO(azeey) Implement error checking and setting error message
       return true;
     });
+}
+
+bool SimulationInterfaces::Implementation::SetStateOfEntity(
+  const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state,
+  simulation_interfaces::msg::Result &)
+{
+  auto pose = gz::sim::worldPose(entity, this->ecm_);
+
+  // TODO(azeey) Fill in header
+  state.pose.position.x = pose.X();
+  state.pose.position.y = pose.Y();
+  state.pose.position.z = pose.Z();
+
+  state.pose.orientation.x = pose.Rot().X();
+  state.pose.orientation.y = pose.Rot().Y();
+  state.pose.orientation.z = pose.Rot().Z();
+  state.pose.orientation.w = pose.Rot().W();
+
   // TODO(azeey) Add support for twists and accelerations
+  // TODO(azeey) Implement error checking and setting error message
+  return true;
 }
 
 void SimulationInterfaces::Implementation::GetSimulationStateCb(
