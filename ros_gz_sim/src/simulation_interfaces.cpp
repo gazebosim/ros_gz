@@ -14,17 +14,28 @@
 
 #include "ros_gz_sim/simulation_interfaces.hpp"
 
-#include <gz/msgs/details/boolean.pb.h>
-#include <gz/msgs/details/entity.pb.h>
+#include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
+#include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
 #include <functional>
+#include <gz/math/Pose3.hh>
+#include <gz/sim/EntityComponentManager.hh>
+#include <gz/sim/Util.hh>
+#include <gz/sim/components/Model.hh>
+#include <gz/sim/components/Name.hh>
 #include <gz/transport/Node.hh>
 #include <iostream>
+#include <memory>
+#include <mutex>
 
 #include "simulation_interfaces/msg/result.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
+#include "simulation_interfaces/srv/get_entities.hpp"
+#include "simulation_interfaces/srv/get_entity_state.hpp"
+
+namespace components = gz::sim::components;
 
 namespace ros_gz_sim
 {
@@ -33,37 +44,109 @@ class SimulationInterfaces::Implementation
 {
 public:
   using DeleteEntity = simulation_interfaces::srv::DeleteEntity;
-  void CreateServices(rclcpp::Node & node);
+  using GetEntities = simulation_interfaces::srv::GetEntities;
+  using GetEntityState = simulation_interfaces::srv::GetEntityState;
 
+  void Run(rclcpp::Node & node);
+  std::string PrefixTopic(const char * topic);
+  void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
+  void CreateServices(rclcpp::Node & node);
+  template <typename Service, typename HandlerFunc>
+  void AddService(rclcpp::Node & node, const char * service_name, HandlerFunc && callback);
   bool InitializeGazeboParameters();
 
+  // Service handlers
   void DeleteEntityCb(
     DeleteEntity::Request::ConstSharedPtr request, DeleteEntity::Response::SharedPtr response);
+  void GetEntitiesCb(
+    GetEntities::Request::ConstSharedPtr request, GetEntities::Response::SharedPtr response);
+  void GetEntityStateCb(
+    GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response);
 
 private:
-  rclcpp::Service<DeleteEntity>::SharedPtr delete_entity_service_;
-  gz::transport::Node node_;
+  gz::transport::Node gz_node_;
   const unsigned int kTimeout_{5000};
   std::string world_name_;
+  std::mutex ecmMutex_;
+  gz::sim::EntityComponentManager ecm_;
+
+  std::vector<std::shared_ptr<rclcpp::ServiceBase>> services_handles_;
 };
 
+void SimulationInterfaces::Implementation::Run(rclcpp::Node & node)
+{
+  auto thread = std::thread([&] {
+    if (!this->InitializeGazeboParameters()) {
+      // TODO(azeey) Log error
+      return;
+    }
+    // Request the initial state of the world. This will block until Gazebo is initialized
+    gz::msgs::SerializedStepMap reply;
+    bool result;
+    if (!this->gz_node_.Request(this->PrefixTopic("state"), 30000, reply, result)) {
+      RCLCPP_ERROR(
+        node.get_logger(), "Simulation interface timed out while waiting for Gazebo to initialize");
+      return;
+    } else {
+      if (!result) {
+        RCLCPP_ERROR(
+          node.get_logger(),
+          "Simulation interface encountered an error while synchronizing state with Gazebo");
+        return;
+      } else {
+        this->UpdateStateFromMsg(reply);
+
+        std::cout << "Subscribe to " << this->PrefixTopic("state") << "\n";
+        // Listen to the "state" topic to get periodic updates.
+        if (!this->gz_node_.Subscribe(
+              this->PrefixTopic("state"), &SimulationInterfaces::Implementation::UpdateStateFromMsg,
+              this)) {
+          RCLCPP_ERROR(node.get_logger(), "Subscribing to continues state updates failed");
+        }
+
+        this->CreateServices(node);
+      }
+    }
+  });
+
+  thread.detach();
+}
+
+std::string SimulationInterfaces::Implementation::PrefixTopic(const char * topic)
+{
+  return "world/" + this->world_name_ + "/" + topic;
+}
+
+void SimulationInterfaces::Implementation::UpdateStateFromMsg(
+  const gz::msgs::SerializedStepMap & msg)
+{
+  // TODO(azeey) `msg` also contains stats
+  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  this->ecm_.SetState(msg.state());
+}
 void SimulationInterfaces::Implementation::CreateServices(rclcpp::Node & node)
 {
-  if (!this->InitializeGazeboParameters()) {
-    // TODO(azeey) Log error
-    return;
-  }
-  std::cout << "Creating services on " << node.get_name() << std::endl;
-  this->delete_entity_service_ = node.create_service<DeleteEntity>(
-    "delete_entity",
-    std::bind(&Implementation::DeleteEntityCb, this, std::placeholders::_1, std::placeholders::_2));
+  RCLCPP_INFO_STREAM(node.get_logger(), "Creating services on " << node.get_name());
+  this->AddService<DeleteEntity>(node, "delete_entity", &Implementation::DeleteEntityCb);
+  this->AddService<GetEntities>(node, "get_entities", &Implementation::GetEntitiesCb);
+  this->AddService<GetEntityState>(node, "get_entity_state", &Implementation::GetEntityStateCb);
+}
+
+template <typename Service, typename HandlerFunc>
+void SimulationInterfaces::Implementation::AddService(
+  rclcpp::Node & node, const char * service_name, HandlerFunc && callback)
+{
+  this->services_handles_.push_back(node.create_service<Service>(
+    service_name, std::bind(callback, this, std::placeholders::_1, std::placeholders::_2)));
+
+  RCLCPP_INFO_STREAM(node.get_logger(), "Created service " << service_name);
 }
 
 bool SimulationInterfaces::Implementation::InitializeGazeboParameters()
 {
   gz::msgs::StringMsg_V worlds_msg;
   bool result;
-  if (this->node_.Request("gazebo/worlds", this->kTimeout_, worlds_msg, result)) {
+  if (this->gz_node_.Request("gazebo/worlds", this->kTimeout_, worlds_msg, result)) {
     if (result && !worlds_msg.data().empty()) {
       this->world_name_ = worlds_msg.data(0);
       return true;
@@ -75,13 +158,14 @@ bool SimulationInterfaces::Implementation::InitializeGazeboParameters()
 void SimulationInterfaces::Implementation::DeleteEntityCb(
   DeleteEntity::Request::ConstSharedPtr request, DeleteEntity::Response::SharedPtr response)
 {
-  std::string topic = "world/" + this->world_name_ + "/remove";
+  std::cout << "DeleteEntityCb called" << std::endl;
   gz::msgs::Entity gz_request;
   gz_request.set_name(request->entity);
   gz_request.set_type(gz::msgs::Entity::MODEL);
   gz::msgs::Boolean gz_reply;
   bool result;
-  if (node_.Request(topic, gz_request, this->kTimeout_, gz_reply, result)) {
+  if (gz_node_.Request(
+        this->PrefixTopic("remove"), gz_request, this->kTimeout_, gz_reply, result)) {
     if (result && gz_reply.data()) {
       response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
       return;
@@ -92,9 +176,56 @@ void SimulationInterfaces::Implementation::DeleteEntityCb(
   response->result.error_message = "Error while trying to remove entity";
 }
 
+void SimulationInterfaces::Implementation::GetEntitiesCb(
+  GetEntities::Request::ConstSharedPtr, GetEntities::Response::SharedPtr response)
+{
+  {
+    std::lock_guard<std::mutex> lk(this->ecmMutex_);
+    this->ecm_.Each<components::Name, components::Model>(
+      [&](const gz::sim::Entity &, const components::Name * name, const components::Model *) {
+        response->entities.push_back(name->Data());
+        return true;
+      });
+
+    // TODO(azeey) Ensure that entities listed are top level models
+    // TODO(azeey) Implement filtering by name
+    // TODO(azeey) Implement filtering by category
+    // TODO(azeey) Implement filtering by bounds
+    // TODO(azeey) Implement error checking and setting error message
+  }
+}
+
+void SimulationInterfaces::Implementation::GetEntityStateCb(
+  GetEntityState::Request::ConstSharedPtr request, GetEntityState::Response::SharedPtr response)
+{
+
+  std::lock_guard<std::mutex> lk(this->ecmMutex_);
+  auto entity = this->ecm_.EntityByName(request->entity);
+  if (entity) {
+    auto pose = gz::sim::worldPose(*entity, this->ecm_);
+
+    // TODO(azeey) Fill in header
+    response->state.pose.position.x = pose.X();
+    response->state.pose.position.y = pose.Y();
+    response->state.pose.position.z = pose.Z();
+
+    response->state.pose.orientation.x = pose.Rot().X();
+    response->state.pose.orientation.y = pose.Rot().Y();
+    response->state.pose.orientation.z = pose.Rot().Z();
+    response->state.pose.orientation.w = pose.Rot().W();
+
+    // TODO(azeey) Add support for twists and accelerations
+  } else {
+    response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+    response->result.error_message = "Requested entity not found";
+  }
+}
+
+
+
 SimulationInterfaces::SimulationInterfaces(rclcpp::Node & node)
 : dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
-  this->dataPtr->CreateServices(node);
+  this->dataPtr->Run(node);
 }
 }  // namespace ros_gz_sim
