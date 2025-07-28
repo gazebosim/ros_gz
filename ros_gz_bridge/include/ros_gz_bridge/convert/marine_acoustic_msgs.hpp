@@ -37,7 +37,6 @@ void
 convert_gz_to_ros(
   const gz::msgs::DVLVelocityTracking & gz_msg,
   marine_acoustic_msgs::msg::Dvl & ros_msg);
-
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__MARINE_ACOUSTIC_MSGS_HPP_
