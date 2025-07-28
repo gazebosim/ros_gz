@@ -13,8 +13,11 @@
 // limitations under the License.
 
 #include <cmath>
+#include <cstdint>
 #include "gz/math/Vector3.hh"
 #include "gz/msgs/convert/Vector3.hh"
+#include <gz/msgs/dvl_velocity_tracking.pb.h>
+#include <marine_acoustic_msgs/msg/dvl.hpp>
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/marine_acoustic_msgs.hpp"
 

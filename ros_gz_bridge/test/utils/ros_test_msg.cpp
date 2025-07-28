@@ -20,6 +20,8 @@
 #include <string>
 #include <cstddef>
 
+#include <marine_acoustic_msgs/msg/dvl.hpp>
+
 #include "gz/msgs/config.hh"
 
 #if GZ_MSGS_MAJOR_VERSION >= 10

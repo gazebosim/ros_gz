@@ -20,6 +20,12 @@
 #include <string>
 #include <cstddef>
 
+#include <gz/msgs/dvl_beam_state.pb.h>
+#include <gz/msgs/dvl_kinematic_estimate.pb.h>
+#include <gz/msgs/dvl_range_estimate.pb.h>
+#include <gz/msgs/dvl_tracking_target.pb.h>
+#include <gz/msgs/dvl_velocity_tracking.pb.h>
+
 #if GZ_MSGS_MAJOR_VERSION >= 10
 #define GZ_MSGS_IMU_HAS_COVARIANCE
 #endif
