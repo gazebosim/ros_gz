@@ -10,7 +10,7 @@ export ROS_PYTHON_VERSION=3
 apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
-echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-nightly `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-nightly.list
 wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
 
 # Dependencies.
@@ -19,7 +19,8 @@ curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key
 apt-get update -qq
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
-                   libcli11-dev
+                   libcli11-dev \
+                   gz-jetty
 
 rosdep init
 rosdep update

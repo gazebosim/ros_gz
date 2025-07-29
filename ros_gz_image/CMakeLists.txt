@@ -16,10 +16,10 @@ find_package(ros_gz_bridge REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
-find_package(gz_transport_vendor REQUIRED)
+# find_package(gz_transport_vendor REQUIRED)
 find_package(gz-transport REQUIRED)
 
-find_package(gz_msgs_vendor REQUIRED)
+# find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
 include_directories(include)
