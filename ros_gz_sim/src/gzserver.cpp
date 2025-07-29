@@ -24,7 +24,7 @@
 #include <rclcpp_components/register_node_macro.hpp>
 #include <thread>
 
-#include "ros_gz_sim/simulation_interfaces.hpp"
+#include "ros_gz_sim/gz_simulation_interfaces.hpp"
 
 namespace ros_gz_sim
 {
@@ -35,7 +35,7 @@ class GzServer::Implementation
 
 public:
   std::thread thread;
-  std::unique_ptr<SimulationInterfaces> sim_interfaces;
+  std::unique_ptr<gz_simulation_interfaces::GzSimulationInterfaces> sim_interfaces;
 };
 
 GzServer::GzServer(const rclcpp::NodeOptions & options)
@@ -76,7 +76,8 @@ void GzServer::OnStart()
   // TODO(azeey) Think about whether it makes sense to RunOnce paused here or wait for some
   // critical services from Gazebo to become available before starting the ROS services
   server.RunOnce(true);
-  this->dataPtr->sim_interfaces = std::make_unique<SimulationInterfaces>(*this);
+  this->dataPtr->sim_interfaces =
+    std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(this->shared_from_this());
   server.Run(true /*blocking*/, 0, false /*paused*/);
   rclcpp::shutdown();
 }

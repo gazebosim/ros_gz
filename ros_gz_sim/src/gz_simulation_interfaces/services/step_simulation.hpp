@@ -1,4 +1,4 @@
-// Copyright 2025 Open Source Robotics Foundation
+// Coyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,23 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES
+#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_STEP_SIMULATION_SERVICE_HPP_
+#define ROS_GZ_SIM__SIMULATION_INTERFACES_STEP_SIMULATION_SERVICE_HPP_
 
-#include <gz/utils/ImplPtr.hh>
+#include <memory>
 #include <rclcpp/node.hpp>
+#include <rclcpp/service.hpp>
+
+#include "../handler_base.hpp"
 
 namespace ros_gz_sim
 {
-class SimulationInterfaces
+namespace gz_simulation_interfaces
+{
+
+class GazeboState;
+
+namespace services
+{
+// TODO(azeey) Add documentation
+class StepSimulation : public HandlerBase
 {
 public:
-  // Class constructor.
-  explicit SimulationInterfaces(rclcpp::Node & node);
-
-private:
-  /// \internal
-  /// \brief Private data pointer.
-  GZ_UTILS_UNIQUE_IMPL_PTR(dataPtr)
+  StepSimulation(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboState> gz_state);
 };
+}  // namespace services
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif  // !ROS_GZ_SIM__SIMULATION_INTERFACES
+#endif

@@ -76,9 +76,28 @@ target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
                       rclcpp::rclcpp)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
+set(gz_simulation_interfaces_sources
+  src/gz_simulation_interfaces/gz_simulation_interfaces.cpp
+  src/gz_simulation_interfaces/utils.cpp
+
+  # Actions
+  src/gz_simulation_interfaces/actions/simulate_steps.cpp
+
+  # Services
+  src/gz_simulation_interfaces/services/delete_entity.cpp
+  src/gz_simulation_interfaces/services/get_entities.cpp
+  src/gz_simulation_interfaces/services/get_entity_state.cpp
+  src/gz_simulation_interfaces/services/get_entities_states.cpp
+  src/gz_simulation_interfaces/services/get_simulation_state.cpp
+  src/gz_simulation_interfaces/services/get_simulator_features.cpp
+  src/gz_simulation_interfaces/services/reset_simulation.cpp
+  src/gz_simulation_interfaces/services/set_simulation_state.cpp
+  src/gz_simulation_interfaces/services/step_simulation.cpp
+  src/gz_simulation_interfaces/services/spawn_entity.cpp
+)
+
 # gzserver_component
-add_library(gzserver_component SHARED src/gzserver.cpp src/simulation_interfaces.cpp)
-rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
+add_library(gzserver_component SHARED src/gzserver.cpp ${gz_simulation_interfaces_sources})
 target_link_libraries(gzserver_component PUBLIC
   ${std_msgs_TARGETS}
   ${simulation_interfaces_TARGETS}
