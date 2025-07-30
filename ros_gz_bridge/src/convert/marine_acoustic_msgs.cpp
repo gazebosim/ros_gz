@@ -115,7 +115,11 @@ convert_gz_to_ros(
   convert_gz_to_ros(gz_msg.velocity().mean(), ros_msg.velocity);
 
   for (auto i = 0; i < 9; ++i) {
-    ros_msg.velocity_covar[i] = gz_msg.velocity().covariance()[i];
+    if (gz_msg.velocity().covariance_size() > i) {
+      ros_msg.velocity_covar[i] = gz_msg.velocity().covariance()[i];
+    } else {
+      ros_msg.velocity_covar[i] = -1;
+    }
   }
 
   ros_msg.altitude = -1;
