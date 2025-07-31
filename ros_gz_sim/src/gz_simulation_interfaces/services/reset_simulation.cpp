@@ -17,7 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/reset_simulation.hpp"
 
 namespace ros_gz_sim
@@ -31,8 +31,8 @@ using RequestPtr = ResetSimulationSrv::Request::ConstSharedPtr;
 using ResponsePtr = ResetSimulationSrv::Response::SharedPtr;
 
 ResetSimulation::ResetSimulation(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<ResetSimulationSrv>(
     "reset_simulation", [this](RequestPtr request, ResponsePtr response) {
@@ -47,14 +47,14 @@ ResetSimulation::ResetSimulation(
       }
 
       gz::msgs::WorldControl gz_request;
-      gz_request.set_pause(this->gz_state_->Paused());
+      gz_request.set_pause(this->gz_proxy_->Paused());
       gz_request.mutable_reset()->set_all(true);
       // TODO(azeey) Reseting only the time, state or spawned models is not supported yet in Gazebo
 
       bool result;
       gz::msgs::Boolean reply;
-      bool executed = this->gz_state_->GzNode()->Request(
-        this->gz_state_->PrefixTopic("control"), gz_request, 30000, reply, result);
+      bool executed = this->gz_proxy_->GzNode()->Request(
+        this->gz_proxy_->PrefixTopic("control"), gz_request, 30000, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to reset simulation";

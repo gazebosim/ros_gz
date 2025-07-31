@@ -17,7 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/set_simulation_state.hpp"
 
 namespace ros_gz_sim
@@ -31,8 +31,8 @@ using RequestPtr = SetSimulationStateSrv::Request::ConstSharedPtr;
 using ResponsePtr = SetSimulationStateSrv::Response::SharedPtr;
 
 SetSimulationState::SetSimulationState(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<SetSimulationStateSrv>(
     "set_simulation_state", [this](RequestPtr request, ResponsePtr response) {
@@ -60,8 +60,8 @@ SetSimulationState::SetSimulationState(
 
       bool result;
       gz::msgs::Boolean reply;
-      bool executed = this->gz_state_->GzNode()->Request(
-        this->gz_state_->PrefixTopic("control"), gz_request, 30000, reply, result);
+      bool executed = this->gz_proxy_->GzNode()->Request(
+        this->gz_proxy_->PrefixTopic("control"), gz_request, 30000, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to set simulation state";

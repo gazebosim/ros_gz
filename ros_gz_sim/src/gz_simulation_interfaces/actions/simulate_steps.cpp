@@ -17,7 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/action/simulate_steps.hpp"
 
 namespace ros_gz_sim
@@ -30,8 +30,8 @@ using SimulateStepsAction = simulation_interfaces::action::SimulateSteps;
 using GoalHandleSimulateSteps = rclcpp_action::ServerGoalHandle<SimulateStepsAction>;
 
 SimulateSteps::SimulateSteps(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   auto goal_callback =
     [](const rclcpp_action::GoalUUID &, std::shared_ptr<const SimulateStepsAction ::Goal>) {
@@ -63,14 +63,14 @@ SimulateSteps::SimulateSteps(
         return;
       }
 
-      if (!this->gz_state_->Paused()) {
+      if (!this->gz_proxy_->Paused()) {
         action_result->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
         action_result->result.error_message = "Simulation has to be paused before stepping";
         goal_handle->abort(action_result);
         return;
       }
 
-      uint64_t num_iters_start = this->gz_state_->Iterations();
+      uint64_t num_iters_start = this->gz_proxy_->Iterations();
 
       // TODO(azeey) Refactor this code since it's also used in the StepSimulation service.
       gz::msgs::WorldControl gz_request;
@@ -79,8 +79,8 @@ SimulateSteps::SimulateSteps(
       gz_request.set_multi_step(goal->steps);
       bool gz_result;
       gz::msgs::Boolean reply;
-      bool executed = this->gz_state_->GzNode()->Request(
-        this->gz_state_->PrefixTopic("control"), gz_request, 30000, reply, gz_result);
+      bool executed = this->gz_proxy_->GzNode()->Request(
+        this->gz_proxy_->PrefixTopic("control"), gz_request, 30000, reply, gz_result);
       if (!executed) {
         action_result->result.result = Result::RESULT_OPERATION_FAILED;
         action_result->result.error_message = "Timed out while trying to reset simulation";
@@ -91,7 +91,7 @@ SimulateSteps::SimulateSteps(
         auto feedback = std::make_shared<SimulateStepsAction::Feedback>();
 
         while (rclcpp::ok()) {
-          auto iterations = this->gz_state_->Iterations();
+          auto iterations = this->gz_proxy_->Iterations();
           feedback->completed_steps = iterations - num_iters_start;
           feedback->remaining_steps = goal->steps - feedback->completed_steps;
           goal_handle->publish_feedback(feedback);

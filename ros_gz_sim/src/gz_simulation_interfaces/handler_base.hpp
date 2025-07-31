@@ -1,4 +1,4 @@
-// Coyright 2025 Open Source Robotics Foundation, Inc.
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,20 +24,20 @@ namespace ros_gz_sim
 namespace gz_simulation_interfaces
 {
 
-class GazeboState;
+class GazeboProxy;
 
 // TODO(azeey) Add documentation
 class HandlerBase
 {
 public:
-  HandlerBase(std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-  : ros_node_(ros_node), gz_state_(gz_state)
+  HandlerBase(std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+  : ros_node_(ros_node), gz_proxy_(gz_proxy)
   {
   }
 
 protected:
   std::shared_ptr<rclcpp::Node> ros_node_;
-  std::shared_ptr<GazeboState> gz_state_;
+  std::shared_ptr<GazeboProxy> gz_proxy_;
   std::shared_ptr<rclcpp::ServiceBase> services_handle_;
 };
 }  // namespace gz_simulation_interfaces

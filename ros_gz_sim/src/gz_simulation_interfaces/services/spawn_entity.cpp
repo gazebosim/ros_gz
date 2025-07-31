@@ -17,7 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
 
 namespace ros_gz_sim
@@ -31,8 +31,8 @@ using RequestPtr = SpawnEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = SpawnEntitySrv::Response::SharedPtr;
 
 SpawnEntity::SpawnEntity(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<SpawnEntitySrv>(
     "spawn_entity", [this](RequestPtr request, ResponsePtr response) {
@@ -70,8 +70,8 @@ SpawnEntity::SpawnEntity(
 
       bool result;
       gz::msgs::Boolean reply;
-      bool executed = this->gz_state_->GzNode()->Request(
-        this->gz_state_->PrefixTopic("create"), gz_request, 30000, reply, result);
+      bool executed = this->gz_proxy_->GzNode()->Request(
+        this->gz_proxy_->PrefixTopic("create"), gz_request, 30000, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to set simulation state";

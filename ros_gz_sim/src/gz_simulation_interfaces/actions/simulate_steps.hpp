@@ -1,4 +1,4 @@
-// Coyright 2025 Open Source Robotics Foundation, Inc.
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ namespace ros_gz_sim
 
 namespace gz_simulation_interfaces
 {
-class GazeboState;
+class GazeboProxy;
 namespace actions
 {
 
@@ -34,7 +34,7 @@ namespace actions
 class SimulateSteps : public HandlerBase
 {
 public:
-  SimulateSteps(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboState> gz_state);
+  SimulateSteps(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 
 private:
   // TODO(azeey) Refactor into base class

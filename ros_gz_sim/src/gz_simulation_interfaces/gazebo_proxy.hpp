@@ -1,3 +1,17 @@
+// Copyright 2025 Open Source Robotics Foundation, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
 
@@ -18,7 +32,7 @@ namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
 {
-class GazeboState
+class GazeboProxy
 {
 public:
   struct State
@@ -28,7 +42,7 @@ public:
     gz::math::Vector3d angular_velocity;
   };
 
-  GazeboState(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node)
+  GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node)
   : world_name_(world_name), ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
   {
     if (!this->InitializeGazeboConnection()) {
@@ -58,7 +72,7 @@ public:
         std::cout << "Subscribe to " << this->PrefixTopic("state") << "\n";
         // Listen to the "state" topic to get periodic updates.
         if (!this->gz_node_->Subscribe(
-              this->PrefixTopic("state"), &GazeboState::UpdateStateFromMsg, this)) {
+              this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this)) {
           RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to continues state updates failed");
         }
       }
@@ -70,7 +84,7 @@ public:
     gz::msgs::StringMsg_V worlds_msg;
     bool result;
     if (this->gz_node_->Request(
-          "gazebo/worlds", GazeboState::kGzServiceTimeout, worlds_msg, result)) {
+          "gazebo/worlds", GazeboProxy::kGzServiceTimeout, worlds_msg, result)) {
       if (result && !worlds_msg.data().empty()) {
         this->world_name_ = worlds_msg.data(0);
         return true;

@@ -16,7 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_simulation_state.hpp"
 
 namespace ros_gz_sim
@@ -30,14 +30,14 @@ using RequestPtr = GetSimulationStateSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetSimulationStateSrv::Response::SharedPtr;
 
 GetSimulationState::GetSimulationState(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<GetSimulationStateSrv>(
     "get_simulation_state", [this](RequestPtr, ResponsePtr response) {
-      if (this->gz_state_->Paused()) {
+      if (this->gz_proxy_->Paused()) {
         response->state.state = simulation_interfaces::msg::SimulationState::STATE_PAUSED;
-        if (this->gz_state_->Iterations() == 0) {
+        if (this->gz_proxy_->Iterations() == 0) {
           // The simulation is in its initial state after loading a world or being reset, which will
           // assign to the STATE_STOPPED state
           response->state.state = simulation_interfaces::msg::SimulationState::STATE_STOPPED;

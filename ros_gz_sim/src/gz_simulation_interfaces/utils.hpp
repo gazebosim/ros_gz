@@ -1,4 +1,4 @@
-// Coyright 2025 Open Source Robotics Foundation, Inc.
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 
-#include "gazebo_state.hpp"
+#include "gazebo_proxy.hpp"
 #include <simulation_interfaces/msg/entity_state.hpp>
 
 namespace ros_gz_sim
@@ -23,7 +23,7 @@ namespace ros_gz_sim
 namespace gz_simulation_interfaces
 {
 bool ConvertState(
-  const GazeboState::State & gz_state, simulation_interfaces::msg::EntityState & state);
+  const GazeboProxy::State & gz_state, simulation_interfaces::msg::EntityState & state);
 }
 }  // namespace ros_gz_sim
 #endif

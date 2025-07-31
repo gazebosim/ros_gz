@@ -1,3 +1,4 @@
+// Copyright 2025 Open Source Robotics Foundation, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,7 +32,7 @@
 #include <rclcpp_action/server.hpp>
 
 #include "actions/simulate_steps.hpp"
-#include "gazebo_state.hpp"
+#include "gazebo_proxy.hpp"
 #include "handler_base.hpp"
 #include "services/delete_entity.hpp"
 #include "services/get_entities.hpp"
@@ -54,7 +55,7 @@ namespace gz_simulation_interfaces
 class GzSimulationInterfaces::Implementation
 {
 public:
-  Implementation(std::shared_ptr<rclcpp::Node> node);
+  explicit Implementation(std::shared_ptr<rclcpp::Node> node);
 
   void Run();
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
@@ -76,7 +77,7 @@ private:
   // TODO(azeey) Consider storing the ROS node
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::string world_name_;
-  std::shared_ptr<GazeboState> gz_state_;
+  std::shared_ptr<GazeboProxy> gz_proxy_;
   std::vector<std::unique_ptr<HandlerBase>> sim_interface_handles_;
 };
 
@@ -89,8 +90,8 @@ void GzSimulationInterfaces::Implementation::Run()
 {
   auto thread = std::thread([&] {
     try {
-      this->gz_state_ =
-        std::make_shared<GazeboState>(this->world_name_, this->ros_node_);
+      this->gz_proxy_ =
+        std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
       this->CreateInterfaces();
     } catch (const std::exception & e) {
       RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
@@ -122,7 +123,7 @@ template <typename Interface>
 void GzSimulationInterfaces::Implementation::AddInterface()
 {
   this->sim_interface_handles_.push_back(
-    std::make_unique<Interface>(this->ros_node_, this->gz_state_));
+    std::make_unique<Interface>(this->ros_node_, this->gz_proxy_));
 }
 
 GzSimulationInterfaces::GzSimulationInterfaces(std::shared_ptr<rclcpp::Node> node)
@@ -130,5 +131,5 @@ GzSimulationInterfaces::GzSimulationInterfaces(std::shared_ptr<rclcpp::Node> nod
 {
   this->dataPtr->Run();
 }
-}
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

@@ -16,7 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
 
 namespace ros_gz_sim
@@ -30,8 +30,8 @@ using RequestPtr = DeleteEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = DeleteEntitySrv::Response::SharedPtr;
 
 DeleteEntity::DeleteEntity(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<DeleteEntitySrv>(
     "delete_entity", [this](RequestPtr request, ResponsePtr response) {
@@ -41,8 +41,8 @@ DeleteEntity::DeleteEntity(
       gz_request.set_type(gz::msgs::Entity::MODEL);
       gz::msgs::Boolean gz_reply;
       bool result;
-      if (this->gz_state_->GzNode()->Request(
-            this->gz_state_->PrefixTopic("remove"), gz_request, GazeboState::kGzServiceTimeout,
+      if (this->gz_proxy_->GzNode()->Request(
+            this->gz_proxy_->PrefixTopic("remove"), gz_request, GazeboProxy::kGzServiceTimeout,
             gz_reply, result)) {
         if (result && gz_reply.data()) {
           response->result.result = simulation_interfaces::msg::Result::RESULT_OK;

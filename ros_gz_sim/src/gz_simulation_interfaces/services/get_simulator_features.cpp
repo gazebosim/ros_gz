@@ -16,7 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_simulator_features.hpp"
 
 namespace ros_gz_sim
@@ -30,8 +30,8 @@ using RequestPtr = GetSimulatorFeaturesSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetSimulatorFeaturesSrv::Response::SharedPtr;
 
 GetSimulatorFeatures::GetSimulatorFeatures(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<GetSimulatorFeaturesSrv>(
     "get_simulator_features", [](RequestPtr, ResponsePtr response) {

@@ -16,7 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 
-#include "../gazebo_state.hpp"
+#include "../gazebo_proxy.hpp"
 #include "../utils.hpp"
 #include "simulation_interfaces/srv/get_entity_state.hpp"
 
@@ -31,12 +31,12 @@ using RequestPtr = GetEntityStateSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetEntityStateSrv::Response::SharedPtr;
 
 GetEntityState::GetEntityState(
-  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboState> gz_state)
-: HandlerBase(ros_node, gz_state)
+  std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
+: HandlerBase(ros_node, gz_proxy)
 {
   this->services_handle_ = ros_node->create_service<GetEntityStateSrv>(
     "get_entity_state", [this](RequestPtr request, ResponsePtr response) {
-      auto gz_state = this->gz_state_->GetEntityState(request->entity);
+      auto gz_state = this->gz_proxy_->GetEntityState(request->entity);
       if (gz_state) {
         ConvertState(*gz_state, response->state);
       } else {

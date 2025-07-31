@@ -19,7 +19,7 @@ namespace ros_gz_sim
 namespace gz_simulation_interfaces
 {
 bool ConvertState(
-  const GazeboState::State & gz_state, simulation_interfaces::msg::EntityState & state)
+  const GazeboProxy::State & gz_state, simulation_interfaces::msg::EntityState & state)
 {
   // TODO(azeey) Fill in header
   state.pose.position.x = gz_state.pose.X();
