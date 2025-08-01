@@ -16,8 +16,10 @@
 
 #include <gz/msgs/boolean.pb.h>
 
+#include <gz/sim/Server.hh>
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/components/Name.hh>
+#include <memory>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_entities.hpp"
@@ -38,9 +40,9 @@ GetEntities::GetEntities(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  this->services_handle_ = ros_node->create_service<GetEntitiesSrv>(
-    "get_entities", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->Each<components::Name, components::Model>(
+  auto service_cb = [this](RequestPtr request, ResponsePtr response) {
+    this->gz_proxy_->WithLockedState([&](const gz::sim::EntityComponentManager & ecm, auto) {
+      ecm.Each<components::Name, components::Model>(
         [&](const gz::sim::Entity &, const components::Name * name, const components::Model *) {
           response->entities.push_back(name->Data());
           return true;
@@ -52,6 +54,9 @@ GetEntities::GetEntities(
       // TODO(azeey) Implement filtering by bounds
       // TODO(azeey) Implement error checking and setting error message
     });
+  };
+
+  this->services_handle_ = ros_node->create_service<GetEntitiesSrv>("get_entities", service_cb);
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_entities");
 }

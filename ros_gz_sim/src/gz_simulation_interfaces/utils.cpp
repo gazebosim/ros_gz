@@ -14,6 +14,10 @@
 
 #include "utils.hpp"
 
+#include <gz/math/Pose3.hh>
+
+#include "geometry_msgs/msg/pose.hpp"
+
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
@@ -34,6 +38,18 @@ bool ConvertState(
   // TODO(azeey) Add support for twists and accelerations
   // TODO(azeey) Implement error checking and setting error message
   return true;
+}
+
+void ConvertPose(const gz::math::Pose3d & gz_pose, geometry_msgs::msg::Pose & ros_pose)
+{
+  ros_pose.position.x = gz_pose.X();
+  ros_pose.position.y = gz_pose.Y();
+  ros_pose.position.z = gz_pose.Z();
+
+  ros_pose.orientation.x = gz_pose.Rot().X();
+  ros_pose.orientation.y = gz_pose.Rot().Y();
+  ros_pose.orientation.z = gz_pose.Rot().Z();
+  ros_pose.orientation.w = gz_pose.Rot().W();
 }
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

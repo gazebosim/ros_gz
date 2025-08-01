@@ -15,8 +15,11 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 
-#include "gazebo_proxy.hpp"
+#include <gz/math/Pose3.hh>
 #include <simulation_interfaces/msg/entity_state.hpp>
+
+#include "gazebo_proxy.hpp"
+#include "geometry_msgs/msg/pose.hpp"
 
 namespace ros_gz_sim
 {
@@ -24,6 +27,7 @@ namespace gz_simulation_interfaces
 {
 bool ConvertState(
   const GazeboProxy::State & gz_proxy, simulation_interfaces::msg::EntityState & state);
-}
+void ConvertPose(const gz::math::Pose3d & gz_pose, geometry_msgs::msg::Pose & ros_pose);
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

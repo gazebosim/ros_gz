@@ -20,7 +20,7 @@
 #include <gz/sim/components/Name.hh>
 
 #include "../gazebo_proxy.hpp"
-#include "../utils.hpp"
+#include "get_entity_state.hpp"
 #include "simulation_interfaces/srv/get_entities_states.hpp"
 
 namespace components = gz::sim::components;
@@ -36,27 +36,30 @@ using GetEntitiesStatesSrv = simulation_interfaces::srv::GetEntitiesStates;
 using RequestPtr = GetEntitiesStatesSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetEntitiesStatesSrv::Response::SharedPtr;
 
+using simulation_interfaces::msg::Result;
+
 GetEntitiesStates::GetEntitiesStates(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  this->services_handle_ = ros_node->create_service<GetEntitiesStatesSrv>(
-    "get_entities_states", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->Each<components::Name, components::Model>([&](
-                                                                   const gz::sim::Entity & entity,
-                                                                   const components::Name * name,
-                                                                   const components::Model *) {
+  auto service_cb = [this](RequestPtr request, ResponsePtr response) {
+    this->gz_proxy_->WithLockedState([&](const gz::sim::EntityComponentManager & ecm, auto) {
+      ecm.Each<components::Name, components::Model>([&](
+                                                      const gz::sim::Entity & entity,
+                                                      const components::Name * name,
+                                                      const components::Model *) {
         response->entities.push_back(name->Data());
         auto & state = response->states.emplace_back();
-        auto gz_state = this->gz_proxy_->GetEntityState(entity);
-        if (gz_state) {
-          ConvertState(*gz_state, state);
-        }
-
-        // TODO(azeey) Implement error checking and setting error message
-        return true;
+        auto result = GetEntityState::FromEcm(ecm, entity, state);
+        response->set__result(result);
+        // Continue the Each loop only if the result from previous run is okay.
+        return (result.result == Result::RESULT_OK);
       });
     });
+  };
+
+  this->services_handle_ =
+    ros_node->create_service<GetEntitiesStatesSrv>("get_entities_states", service_cb);
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_entities_states");
 }

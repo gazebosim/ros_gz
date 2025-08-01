@@ -15,6 +15,7 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
 
+#include <gz/msgs/details/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
@@ -117,52 +118,12 @@ public:
     return this->world_stats_.paused();
   }
 
-  template <class T>
-  struct type_identity
-  {
-    using type = T;
-  };
-
-  template <typename... ComponentTypeTs>
-  void Each(
-    typename type_identity<
-      std::function<bool(const gz::sim::Entity & _entity, const ComponentTypeTs *...)>>::type _f)
-    const
-  {
-    std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-    this->ecm_.Each<ComponentTypeTs...>(_f);
-  }
-
-  template <typename Func>
-  void WithLockedState(Func && f) const
+  void WithLockedState(
+    std::function<void(const gz::sim::EntityComponentManager &, const gz::msgs::WorldStatistics &)>
+      f) const
   {
     std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
     f(this->ecm_, this->world_stats_);
-  }
-
-  std::optional<State> GetEntityState(const std::string & name)
-  {
-    // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the
-    // matched entity is a model.
-    std::optional<gz::sim::Entity> entity;
-    {
-      std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-      entity = this->ecm_.EntityByName(name);
-    }
-
-    if (entity) {
-      return this->GetEntityState(*entity);
-    } else {
-      return std::nullopt;
-    }
-  }
-
-  std::optional<State> GetEntityState(const gz::sim::Entity & entity)
-  {
-    std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-    State state;
-    state.pose = gz::sim::worldPose(entity, this->ecm_);
-    return state;
   }
 
   std::shared_ptr<gz::transport::Node> GzNode() { return this->gz_node_; }
