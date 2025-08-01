@@ -133,6 +133,13 @@ public:
     this->ecm_.Each<ComponentTypeTs...>(_f);
   }
 
+  template <typename Func>
+  void WithLockedState(Func && f) const
+  {
+    std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+    f(this->ecm_, this->world_stats_);
+  }
+
   std::optional<State> GetEntityState(const std::string & name)
   {
     // TODO (azeey) Since the name might not be unique across Gazebo entity types, ensure that the

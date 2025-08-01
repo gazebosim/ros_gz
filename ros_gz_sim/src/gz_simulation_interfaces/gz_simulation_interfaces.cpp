@@ -37,6 +37,7 @@
 #include "services/delete_entity.hpp"
 #include "services/get_entities.hpp"
 #include "services/get_entities_states.hpp"
+#include "services/get_entity_info.hpp"
 #include "services/get_entity_state.hpp"
 #include "services/get_simulation_state.hpp"
 #include "services/get_simulator_features.hpp"
@@ -90,8 +91,7 @@ void GzSimulationInterfaces::Implementation::Run()
 {
   auto thread = std::thread([&] {
     try {
-      this->gz_proxy_ =
-        std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
+      this->gz_proxy_ = std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
       this->CreateInterfaces();
     } catch (const std::exception & e) {
       RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
@@ -108,6 +108,7 @@ void GzSimulationInterfaces::Implementation::CreateInterfaces()
 
   this->AddInterface<services::DeleteEntity>();
   this->AddInterface<services::GetEntities>();
+  this->AddInterface<services::GetEntityInfo>();
   this->AddInterface<services::GetEntityState>();
   this->AddInterface<services::GetEntitiesStates>();
   this->AddInterface<services::GetSimulationState>();

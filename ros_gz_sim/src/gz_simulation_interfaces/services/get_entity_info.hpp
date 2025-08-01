@@ -12,18 +12,31 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
-#define ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
+#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_INFO_SERVICE_HPP_
+#define ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_INFO_SERVICE_HPP_
 
-#include "gazebo_proxy.hpp"
-#include <simulation_interfaces/msg/entity_state.hpp>
+#include <memory>
+#include <rclcpp/node.hpp>
+#include <rclcpp/service.hpp>
+
+#include "../handler_base.hpp"
 
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
 {
-bool ConvertState(
-  const GazeboProxy::State & gz_proxy, simulation_interfaces::msg::EntityState & state);
-}
+
+class GazeboProxy;
+
+namespace services
+{
+// TODO(azeey) Add documentation
+class GetEntityInfo : public HandlerBase
+{
+public:
+  GetEntityInfo(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
+};
+}  // namespace services
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif
