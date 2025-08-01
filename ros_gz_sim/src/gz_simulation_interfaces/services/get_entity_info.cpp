@@ -21,7 +21,7 @@
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/SemanticCategory.hh>
 #include <gz/sim/components/SemanticDescription.hh>
-#include <gz/sim/components/SemanticTag.hh>
+#include <gz/sim/components/SemanticTags.hh>
 #include <memory>
 
 #include "../gazebo_proxy.hpp"
@@ -60,7 +60,7 @@ GetEntityInfo::GetEntityInfo(
               response->info.description = *description;
             }
 
-            auto tags = ecm.ComponentData<components::SemanticTag>(*entity);
+            auto tags = ecm.ComponentData<components::SemanticTags>(*entity);
             if (tags) {
               response->info.tags = *tags;
             }
