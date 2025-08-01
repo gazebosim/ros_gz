@@ -15,8 +15,8 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_STATE_SERVICE_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_STATE_SERVICE_HPP_
 
-#include <memory>
 #include <gz/sim/EntityComponentManager.hh>
+#include <memory>
 #include <rclcpp/node.hpp>
 #include <rclcpp/service.hpp>
 #include <simulation_interfaces/msg/entity_state.hpp>

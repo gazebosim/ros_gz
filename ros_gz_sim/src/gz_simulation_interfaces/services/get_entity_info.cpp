@@ -45,8 +45,8 @@ GetEntityInfo::GetEntityInfo(
 {
   this->services_handle_ = ros_node->create_service<GetEntityInfoSrv>(
     "get_entity_info", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->WithLockedState(
-        [request, response](const gz::sim::EntityComponentManager & ecm, auto) {
+      this->gz_proxy_->WithLockedEcm(
+        [request, response](const gz::sim::EntityComponentManager & ecm) {
           auto entity = ecm.EntityByName(request->entity);
           if (entity) {
             auto category = ecm.ComponentData<components::SemanticCategory>(*entity);

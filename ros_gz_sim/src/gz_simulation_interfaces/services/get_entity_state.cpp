@@ -41,7 +41,7 @@ GetEntityState::GetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    this->gz_proxy_->WithLockedState([&](const auto & ecm, auto) {
+    this->gz_proxy_->WithLockedEcm([&](const auto & ecm) {
       GetEntityState::FromEcm(ecm, request->entity, response->state);
     });
   };

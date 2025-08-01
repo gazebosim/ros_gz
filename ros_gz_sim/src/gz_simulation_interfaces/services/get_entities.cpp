@@ -41,7 +41,7 @@ GetEntities::GetEntities(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    this->gz_proxy_->WithLockedState([&](const gz::sim::EntityComponentManager & ecm, auto) {
+    this->gz_proxy_->WithLockedEcm([&](const gz::sim::EntityComponentManager & ecm) {
       ecm.Each<components::Name, components::Model>(
         [&](const gz::sim::Entity &, const components::Name * name, const components::Model *) {
           response->entities.push_back(name->Data());

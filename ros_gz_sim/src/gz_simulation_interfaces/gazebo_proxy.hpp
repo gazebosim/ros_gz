@@ -118,12 +118,10 @@ public:
     return this->world_stats_.paused();
   }
 
-  void WithLockedState(
-    std::function<void(const gz::sim::EntityComponentManager &, const gz::msgs::WorldStatistics &)>
-      f) const
+  void WithLockedEcm(std::function<void(const gz::sim::EntityComponentManager &)> f) const
   {
     std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-    f(this->ecm_, this->world_stats_);
+    f(this->ecm_);
   }
 
   std::shared_ptr<gz::transport::Node> GzNode() { return this->gz_node_; }
