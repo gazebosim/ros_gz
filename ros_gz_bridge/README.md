@@ -26,7 +26,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/Wrench                       | gz.msgs.Wrench                      |
 | geometry_msgs/msg/WrenchStamped                | gz.msgs.Wrench                      |
 | gps_msgs/msg/GPSFix                            | gz.msgs.NavSat                      |
-| marine_acoustic_msgs/msg/Dvl                    | gz.msgs.DVLVelocityTracking         |
+| marine_acoustic_msgs/msg/Dvl                   | gz.msgs.DVLVelocityTracking         |
 | nav_msgs/msg/Odometry                          | gz.msgs.Odometry                    |
 | nav_msgs/msg/Odometry                          | gz.msgs.OdometryWithCovariance      |
 | rcl_interfaces/msg/ParameterValue              | gz.msgs.Any                         |
