@@ -93,6 +93,7 @@ set(gz_simulation_interfaces_sources
   src/gz_simulation_interfaces/services/get_simulator_features.cpp
   src/gz_simulation_interfaces/services/reset_simulation.cpp
   src/gz_simulation_interfaces/services/set_simulation_state.cpp
+  src/gz_simulation_interfaces/services/set_entity_state.cpp
   src/gz_simulation_interfaces/services/step_simulation.cpp
   src/gz_simulation_interfaces/services/spawn_entity.cpp
 )

@@ -12,26 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
-#define ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
+#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_SET_ENTITY_STATE_SERVICE_HPP_
+#define ROS_GZ_SIM__SIMULATION_INTERFACES_SET_ENTITY_STATE_SERVICE_HPP_
 
-#include <gz/math/Pose3.hh>
+#include <gz/sim/EntityComponentManager.hh>
+#include <memory>
+#include <rclcpp/node.hpp>
+#include <rclcpp/service.hpp>
 #include <simulation_interfaces/msg/entity_state.hpp>
+#include <simulation_interfaces/msg/result.hpp>
+#include <string>
 
-#include "gazebo_proxy.hpp"
-#include "geometry_msgs/msg/pose.hpp"
+#include "../handler_base.hpp"
 
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
 {
-bool ConvertState(
-  const GazeboProxy::State & gz_proxy, simulation_interfaces::msg::EntityState & state);
-void ConvertPose(const gz::math::Pose3d & gz_pose, geometry_msgs::msg::Pose & ros_pose);
-geometry_msgs::msg::Pose ConvertPose(const gz::math::Pose3d & gz_pose);
 
-void ConvertPose(const geometry_msgs::msg::Pose & ros_pose, gz::math::Pose3d & gz_pose);
-gz::math::Pose3d  ConvertPose(const geometry_msgs::msg::Pose & ros_pose);
+class GazeboProxy;
+
+namespace services
+{
+// TODO(azeey) Add documentation
+class SetEntityState : public HandlerBase
+{
+public:
+  SetEntityState(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
+};
+}  // namespace services
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

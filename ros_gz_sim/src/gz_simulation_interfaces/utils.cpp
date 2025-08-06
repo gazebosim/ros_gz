@@ -51,5 +51,29 @@ void ConvertPose(const gz::math::Pose3d & gz_pose, geometry_msgs::msg::Pose & ro
   ros_pose.orientation.z = gz_pose.Rot().Z();
   ros_pose.orientation.w = gz_pose.Rot().W();
 }
+
+geometry_msgs::msg::Pose ConvertPose(const gz::math::Pose3d & gz_pose)
+{
+  geometry_msgs::msg::Pose ros_pose;
+  ConvertPose(gz_pose, ros_pose);
+  return ros_pose;
+}
+
+void ConvertPose(const geometry_msgs::msg::Pose & ros_pose, gz::math::Pose3d & gz_pose){
+  gz_pose.Pos().X() = ros_pose.position.x;
+  gz_pose.Pos().Y() = ros_pose.position.y;
+  gz_pose.Pos().Z() = ros_pose.position.z;
+
+  gz_pose.Rot().X() = ros_pose.orientation.x;
+  gz_pose.Rot().Y() = ros_pose.orientation.y;
+  gz_pose.Rot().Z() = ros_pose.orientation.z;
+  gz_pose.Rot().W() = ros_pose.orientation.w;
+}
+
+gz::math::Pose3d  ConvertPose(const geometry_msgs::msg::Pose & ros_pose) {
+  gz::math::Pose3d gz_pose;
+  ConvertPose(ros_pose, gz_pose);
+  return gz_pose;
+}
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

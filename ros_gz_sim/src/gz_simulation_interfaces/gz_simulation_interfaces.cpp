@@ -43,6 +43,7 @@
 #include "services/get_simulator_features.hpp"
 #include "services/reset_simulation.hpp"
 #include "services/set_simulation_state.hpp"
+#include "services/set_entity_state.hpp"
 #include "services/spawn_entity.hpp"
 #include "services/step_simulation.hpp"
 
@@ -114,6 +115,7 @@ void GzSimulationInterfaces::Implementation::CreateInterfaces()
   this->AddInterface<services::GetSimulationState>();
   this->AddInterface<services::GetSimulatorFeatures>();
   this->AddInterface<services::ResetSimulation>();
+  this->AddInterface<services::SetEntityState>();
   this->AddInterface<services::SetSimulationState>();
   this->AddInterface<services::SpawnEntity>();
   this->AddInterface<services::StepSimulation>();

@@ -40,14 +40,14 @@ GetSimulatorFeatures::GetSimulatorFeatures(
       response->features.features.assign({
         SimulatorFeatures::SPAWNING,
         SimulatorFeatures::DELETING,
-        // SimulatorFeatures::ENTITY_TAGS, // TODO(azeey)
+        SimulatorFeatures::ENTITY_TAGS,
         // SimulatorFeatures::ENTITY_BOUNDS, // TODO(azeey)
         // SimulatorFeatures::ENTITY_BOUNDS_BOX, // TODO(azeey)
-        // SimulatorFeatures::ENTITY_CATEGORIES, // TODO(azeey)
+        SimulatorFeatures::ENTITY_CATEGORIES,
         SimulatorFeatures::SPAWNING_RESOURCE_STRING,
         SimulatorFeatures::ENTITY_STATE_GETTING,
         // SimulatorFeatures::ENTITY_STATE_SETTING, // TODO(azeey)
-        // SimulatorFeatures::ENTITY_INFO_GETTING, // TODO(azeey)
+        SimulatorFeatures::ENTITY_INFO_GETTING,
         SimulatorFeatures::SIMULATION_RESET,
         // SimulatorFeatures::SIMULATION_RESET_TIME, // TODO(azeey)
         // SimulatorFeatures::SIMULATION_RESET_STATE, // TODO(azeey)

@@ -15,6 +15,8 @@
 #include "get_entity_info.hpp"
 
 #include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/serialized_map.pb.h>
+#include <gz/msgs/world_control_state.pb.h>
 
 #include <gz/sim/Server.hh>
 #include <gz/sim/components/Model.hh>
@@ -45,8 +47,8 @@ GetEntityInfo::GetEntityInfo(
 {
   this->services_handle_ = ros_node->create_service<GetEntityInfoSrv>(
     "get_entity_info", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->WithLockedEcm(
-        [request, response](const gz::sim::EntityComponentManager & ecm) {
+      this->gz_proxy_->WithEcm(
+        [this, request, response](gz::sim::EntityComponentManager & ecm) {
           auto entity = ecm.EntityByName(request->entity);
           if (entity) {
             auto category = ecm.ComponentData<components::SemanticCategory>(*entity);

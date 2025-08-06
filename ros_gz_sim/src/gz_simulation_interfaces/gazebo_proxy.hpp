@@ -98,9 +98,9 @@ public:
   {
     std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
     this->ecm_.SetState(msg.state());
-    // this->ecm_.ClearRemovedComponents();
-    // this->ecm_.ClearNewlyCreatedEntities();
-    // this->ecm_.ProcessRemoveEntityRequests();
+    this->ecm_.ClearRemovedComponents();
+    this->ecm_.ClearNewlyCreatedEntities();
+    this->ecm_.ProcessRemoveEntityRequests();
     this->world_stats_ = msg.stats();
 
     // TODO(azeey) Consider using a condition variable to notify services that there is new data so
@@ -118,7 +118,7 @@ public:
     return this->world_stats_.paused();
   }
 
-  void WithLockedEcm(std::function<void(const gz::sim::EntityComponentManager &)> f) const
+  void WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f)
   {
     std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
     f(this->ecm_);

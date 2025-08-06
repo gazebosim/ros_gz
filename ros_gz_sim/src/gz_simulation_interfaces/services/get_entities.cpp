@@ -74,7 +74,7 @@ GetEntities::GetEntities(
       return;
     }
 
-    this->gz_proxy_->WithLockedEcm([&](const gz::sim::EntityComponentManager & ecm) {
+    this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       ecm.Each<components::Name, components::Model, components::ParentEntity>(
         [&](
           const gz::sim::Entity & entity, const components::Name * name, const components::Model *,
