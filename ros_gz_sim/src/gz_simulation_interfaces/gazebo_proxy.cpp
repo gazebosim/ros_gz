@@ -14,6 +14,9 @@
 
 #include "gazebo_proxy.hpp"
 
+#include <memory>
+#include <string>
+
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
@@ -46,7 +49,6 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
     } else {
       this->UpdateStateFromMsg(reply);
 
-      std::cout << "Subscribe to " << this->PrefixTopic("state") << "\n";
       // Listen to the "state" topic to get periodic updates.
       if (!this->gz_node_->Subscribe(
             this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this)) {

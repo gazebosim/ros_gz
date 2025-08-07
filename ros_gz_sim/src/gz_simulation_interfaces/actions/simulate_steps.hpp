@@ -16,6 +16,7 @@
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_SIMULATE_STEPS_SERVICE_HPP_
 
 #include <memory>
+
 #include <rclcpp/node.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 

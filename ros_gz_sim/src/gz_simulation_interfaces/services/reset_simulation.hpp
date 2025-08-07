@@ -16,6 +16,7 @@
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_RESET_SIMULATION_SERVICE_HPP_
 
 #include <memory>
+
 #include <rclcpp/node.hpp>
 #include <rclcpp/service.hpp>
 

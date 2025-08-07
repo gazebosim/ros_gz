@@ -16,6 +16,8 @@
 
 #include <gz/msgs/boolean.pb.h>
 
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_simulator_features.hpp"
 
@@ -68,6 +70,6 @@ GetSimulatorFeatures::GetSimulatorFeatures(
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_simulator_features");
 }
-}
-}
+}  // namespace services
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

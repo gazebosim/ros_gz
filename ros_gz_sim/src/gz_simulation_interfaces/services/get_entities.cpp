@@ -18,6 +18,10 @@
 
 #include <algorithm>
 #include <cstdint>
+#include <memory>
+#include <regex>
+#include <vector>
+
 #include <gz/sim/Entity.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/components/Model.hh>
@@ -25,9 +29,6 @@
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/SemanticCategory.hh>
 #include <gz/sim/components/SemanticTags.hh>
-#include <memory>
-#include <regex>
-#include <vector>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/msg/entity_category.hpp"

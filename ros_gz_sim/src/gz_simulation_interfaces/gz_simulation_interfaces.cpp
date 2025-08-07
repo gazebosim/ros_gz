@@ -20,12 +20,13 @@
 #include <gz/msgs/world_control.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 
+#include <memory>
+
 #include <gz/math/Pose3.hh>
 #include <gz/sim/Util.hh>
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/transport/Node.hh>
-#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/utilities.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
@@ -42,8 +43,8 @@
 #include "services/get_simulation_state.hpp"
 #include "services/get_simulator_features.hpp"
 #include "services/reset_simulation.hpp"
-#include "services/set_simulation_state.hpp"
 #include "services/set_entity_state.hpp"
+#include "services/set_simulation_state.hpp"
 #include "services/spawn_entity.hpp"
 #include "services/step_simulation.hpp"
 

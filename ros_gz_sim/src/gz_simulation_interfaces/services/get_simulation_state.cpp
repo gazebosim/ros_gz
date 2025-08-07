@@ -49,6 +49,6 @@ GetSimulationState::GetSimulationState(
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_simulation_state");
 }
-}
-}
+}  // namespace services
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

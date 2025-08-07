@@ -16,9 +16,10 @@
 
 #include <gz/msgs/boolean.pb.h>
 
-#include <gz/sim/Util.hh>
 #include <memory>
 #include <string>
+
+#include <gz/sim/Util.hh>
 
 #include "../gazebo_proxy.hpp"
 #include "../utils.hpp"
@@ -41,9 +42,8 @@ GetEntityState::GetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    this->gz_proxy_->WithEcm([&](const auto & ecm) {
-      GetEntityState::FromEcm(ecm, request->entity, response->state);
-    });
+    this->gz_proxy_->WithEcm(
+      [&](const auto & ecm) { GetEntityState::FromEcm(ecm, request->entity, response->state); });
   };
   this->services_handle_ =
     ros_node->create_service<GetEntityStateSrv>("get_entity_state", service_cb);

@@ -15,13 +15,14 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_SET_ENTITY_STATE_SERVICE_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_SET_ENTITY_STATE_SERVICE_HPP_
 
-#include <gz/sim/EntityComponentManager.hh>
 #include <memory>
+#include <string>
+
+#include <gz/sim/EntityComponentManager.hh>
 #include <rclcpp/node.hpp>
 #include <rclcpp/service.hpp>
 #include <simulation_interfaces/msg/entity_state.hpp>
 #include <simulation_interfaces/msg/result.hpp>
-#include <string>
 
 #include "../handler_base.hpp"
 

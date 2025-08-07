@@ -18,13 +18,14 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
+#include <memory>
+
 #include <gz/sim/Server.hh>
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/SemanticCategory.hh>
 #include <gz/sim/components/SemanticDescription.hh>
 #include <gz/sim/components/SemanticTags.hh>
-#include <memory>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_entity_info.hpp"
@@ -47,32 +48,31 @@ GetEntityInfo::GetEntityInfo(
 {
   this->services_handle_ = ros_node->create_service<GetEntityInfoSrv>(
     "get_entity_info", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->WithEcm(
-        [this, request, response](gz::sim::EntityComponentManager & ecm) {
-          auto entity = ecm.EntityByName(request->entity);
-          if (entity) {
-            auto category = ecm.ComponentData<components::SemanticCategory>(*entity);
-            if (category) {
-              response->info.category.set__category(*category);
-            }
-
-            auto description = ecm.ComponentData<components::SemanticDescription>(*entity);
-
-            if (description){
-              response->info.description = *description;
-            }
-
-            auto tags = ecm.ComponentData<components::SemanticTags>(*entity);
-            if (tags) {
-              response->info.tags = *tags;
-            }
-
-            response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
-          } else {
-            response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
-            response->result.error_message = "Specified entity was not found";
+      this->gz_proxy_->WithEcm([this, request, response](gz::sim::EntityComponentManager & ecm) {
+        auto entity = ecm.EntityByName(request->entity);
+        if (entity) {
+          auto category = ecm.ComponentData<components::SemanticCategory>(*entity);
+          if (category) {
+            response->info.category.set__category(*category);
           }
-        });
+
+          auto description = ecm.ComponentData<components::SemanticDescription>(*entity);
+
+          if (description) {
+            response->info.description = *description;
+          }
+
+          auto tags = ecm.ComponentData<components::SemanticTags>(*entity);
+          if (tags) {
+            response->info.tags = *tags;
+          }
+
+          response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
+        } else {
+          response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+          response->result.error_message = "Specified entity was not found";
+        }
+      });
     });
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_entity_info");

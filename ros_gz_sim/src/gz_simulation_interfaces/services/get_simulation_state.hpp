@@ -16,6 +16,7 @@
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_GET_SIMULATION_STATE_SERVICE_HPP_
 
 #include <memory>
+
 #include <rclcpp/node.hpp>
 #include <rclcpp/service.hpp>
 
@@ -36,7 +37,7 @@ class GetSimulationState : public HandlerBase
 public:
   GetSimulationState(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
-}
-}
+}  // namespace services
+}  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

@@ -18,13 +18,14 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
+#include <memory>
+#include <string>
+
 #include <gz/sim/Server.hh>
 #include <gz/sim/Util.hh>
 #include <gz/sim/components/AngularVelocityCmd.hh>
 #include <gz/sim/components/LinearVelocityCmd.hh>
 #include <gz/sim/components/PoseCmd.hh>
-#include <memory>
-#include <string>
 
 #include "../gazebo_proxy.hpp"
 #include "../utils.hpp"
@@ -79,7 +80,7 @@ SetEntityState::SetEntityState(
 
       bool result;
       gz::msgs::Boolean reply;
-      std::cout << "Sending: " << control_msg.DebugString() << std::endl;
+      // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
       this->gz_proxy_->GzNode()->Request(
         this->gz_proxy_->PrefixTopic("control/state"), control_msg, 3000, reply, result);
       // TODO(azeey) Handle Error
