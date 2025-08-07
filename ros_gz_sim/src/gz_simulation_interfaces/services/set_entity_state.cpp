@@ -18,9 +18,11 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
-#include <gz/sim/components/PoseCmd.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/Util.hh>
+#include <gz/sim/components/AngularVelocityCmd.hh>
+#include <gz/sim/components/LinearVelocityCmd.hh>
+#include <gz/sim/components/PoseCmd.hh>
 #include <memory>
 #include <string>
 
@@ -49,18 +51,37 @@ SetEntityState::SetEntityState(
     this->gz_proxy_->WithEcm([&](gz::sim::EntityComponentManager & ecm) {
       const auto entity = ecm.EntityByName(request->entity);
 
+      // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world frame.
+
+      // Note that since there is no way to tell if a field has been set by the user, there's no
+      // setting just the pose or just the twist. They will both be set according to what's in the
+      // message. If not set by the user, the default values will be used.
       if (entity) {
         ecm.SetComponentData<components::WorldPoseCmd>(*entity, ConvertPose(request->state.pose));
+
+        // Velocity components are expected to be in the body frame, so we'll need to transform
+        // them.
+        auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
+        auto linearVelCmdBody =
+          entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.linear));
+        auto angularVelCmdBody =
+          entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.angular));
+
+        ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
+        ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
       } else {
         // TODO(azeey) Error
       }
       gz::msgs::WorldControlState control_msg;
-      control_msg.mutable_state()->CopyFrom(ecm.State({*entity}, {components::WorldPoseCmd::typeId}));
+      control_msg.mutable_state()->CopyFrom(ecm.State(
+        {*entity}, {components::WorldPoseCmd::typeId, components::LinearVelocityCmd::typeId,
+                    components::AngularVelocityCmd::typeId}));
 
       bool result;
       gz::msgs::Boolean reply;
       std::cout << "Sending: " << control_msg.DebugString() << std::endl;
-      this->gz_proxy_->GzNode()->Request(this->gz_proxy_->PrefixTopic("control/state"), control_msg, 3000, reply, result);
+      this->gz_proxy_->GzNode()->Request(
+        this->gz_proxy_->PrefixTopic("control/state"), control_msg, 3000, reply, result);
       // TODO(azeey) Handle Error
       response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
       // TODO(azeey) Wait for result?

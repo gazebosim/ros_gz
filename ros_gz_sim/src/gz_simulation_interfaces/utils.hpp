@@ -20,6 +20,7 @@
 
 #include "gazebo_proxy.hpp"
 #include "geometry_msgs/msg/pose.hpp"
+#include "geometry_msgs/msg/vector3.hpp"
 
 namespace ros_gz_sim
 {
@@ -27,11 +28,15 @@ namespace gz_simulation_interfaces
 {
 bool ConvertState(
   const GazeboProxy::State & gz_proxy, simulation_interfaces::msg::EntityState & state);
+
 void ConvertPose(const gz::math::Pose3d & gz_pose, geometry_msgs::msg::Pose & ros_pose);
 geometry_msgs::msg::Pose ConvertPose(const gz::math::Pose3d & gz_pose);
 
 void ConvertPose(const geometry_msgs::msg::Pose & ros_pose, gz::math::Pose3d & gz_pose);
 gz::math::Pose3d  ConvertPose(const geometry_msgs::msg::Pose & ros_pose);
+
+void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v);
+gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v);
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

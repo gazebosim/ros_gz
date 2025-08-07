@@ -15,8 +15,10 @@
 #include "utils.hpp"
 
 #include <gz/math/Pose3.hh>
+#include <gz/math/Vector3.hh>
 
 #include "geometry_msgs/msg/pose.hpp"
+#include "geometry_msgs/msg/vector3.hpp"
 
 namespace ros_gz_sim
 {
@@ -75,5 +77,19 @@ gz::math::Pose3d  ConvertPose(const geometry_msgs::msg::Pose & ros_pose) {
   ConvertPose(ros_pose, gz_pose);
   return gz_pose;
 }
+
+
+void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v) {
+  gz_v.X() = ros_v.x;
+  gz_v.Y() = ros_v.y;
+  gz_v.Z() = ros_v.z;
+}
+
+gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v) {
+  gz::math::Vector3d gz_v;
+  ConvertVector3(ros_v, gz_v);
+  return gz_v;
+}
+
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

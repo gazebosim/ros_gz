@@ -46,8 +46,9 @@ GetSimulatorFeatures::GetSimulatorFeatures(
         SimulatorFeatures::ENTITY_CATEGORIES,
         SimulatorFeatures::SPAWNING_RESOURCE_STRING,
         SimulatorFeatures::ENTITY_STATE_GETTING,
-        // SimulatorFeatures::ENTITY_STATE_SETTING, // TODO(azeey)
+        SimulatorFeatures::ENTITY_STATE_SETTING,
         SimulatorFeatures::ENTITY_INFO_GETTING,
+        // SimulatorFeatures::ENTITY_INFO_SETTING, // TODO(azeey)
         SimulatorFeatures::SIMULATION_RESET,
         // SimulatorFeatures::SIMULATION_RESET_TIME, // TODO(azeey)
         // SimulatorFeatures::SIMULATION_RESET_STATE, // TODO(azeey)
