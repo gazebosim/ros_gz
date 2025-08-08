@@ -16,6 +16,8 @@
 
 #include <gz/msgs/boolean.pb.h>
 
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/delete_entity.hpp"
 
@@ -35,7 +37,6 @@ DeleteEntity::DeleteEntity(
 {
   this->services_handle_ = ros_node->create_service<DeleteEntitySrv>(
     "delete_entity", [this](RequestPtr request, ResponsePtr response) {
-      std::cout << "DeleteEntityCb called" << std::endl;
       gz::msgs::Entity gz_request;
       gz_request.set_name(request->entity);
       gz_request.set_type(gz::msgs::Entity::MODEL);

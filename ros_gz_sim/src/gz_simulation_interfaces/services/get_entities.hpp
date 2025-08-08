@@ -17,8 +17,11 @@
 
 #include <memory>
 
+#include <gz/sim/Server.hh>
 #include <rclcpp/node.hpp>
 #include <rclcpp/service.hpp>
+#include <simulation_interfaces/msg/entity_filters.hpp>
+#include <simulation_interfaces/msg/result.hpp>
 
 #include "../handler_base.hpp"
 

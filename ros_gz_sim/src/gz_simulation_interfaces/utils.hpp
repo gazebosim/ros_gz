@@ -33,6 +33,7 @@ gz::math::Pose3d ConvertPose(const geometry_msgs::msg::Pose & ros_pose);
 
 void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v);
 gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v);
+
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

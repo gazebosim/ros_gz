@@ -16,12 +16,15 @@
 
 #include <gz/msgs/boolean.pb.h>
 
+#include <memory>
+
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/components/Name.hh>
+#include <simulation_interfaces/srv/get_entities_states.hpp>
 
 #include "../gazebo_proxy.hpp"
+#include "../gz_entity_filters.hpp"
 #include "get_entity_state.hpp"
-#include "simulation_interfaces/srv/get_entities_states.hpp"
 
 namespace components = gz::sim::components;
 
@@ -45,17 +48,46 @@ GetEntitiesStates::GetEntitiesStates(
   // TODO(azeey) Support EntityFilter
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
-      ecm.Each<components::Name, components::Model>([&](
-                                                      const gz::sim::Entity & entity,
-                                                      const components::Name * name,
-                                                      const components::Model *) {
-        response->entities.push_back(name->Data());
-        auto & state = response->states.emplace_back();
-        auto result = GetEntityState::FromEcm(ecm, entity, state);
-        response->set__result(result);
-        // Continue the Each loop only if the result from previous run is okay.
-        return (result.result == Result::RESULT_OK);
-      });
+      try {
+        GzEntityFilters filters(request->filters, ecm);
+        ecm.Each<components::Name, components::Model, components::ParentEntity>(
+          [&](
+            const gz::sim::Entity & entity, const components::Name * name,
+            const components::Model *, const components::ParentEntity * parent) {
+            // Check that this is a top level model
+            if (ecm.Component<components::Model>(parent->Data())) {
+              // This is a nested model which should not be included in the list of entities to
+              // return.
+              // TODO(azeey) It might be useful to allow nested models here when we enable setting
+              // their poses in Gazebo.
+              return true;
+            }
+            auto [isIncluded, filter_result] = filters.ApplyFilter(entity, name->Data());
+
+            if (filter_result.result != Result::RESULT_OK) {
+              response->result = filter_result;
+              return false;
+            }
+
+            if (!isIncluded) {
+              return true;
+            }
+
+            response->entities.push_back(name->Data());
+            auto & state = response->states.emplace_back();
+            auto state_result = GetEntityState::FromEcm(ecm, entity, state);
+
+            if (state_result.result != Result::RESULT_OK) {
+              response->result = state_result;
+              return false;
+            }
+
+            return true;
+          });
+      } catch (const std::exception & e) {
+        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.error_message = e.what();
+      }
     });
   };
 
