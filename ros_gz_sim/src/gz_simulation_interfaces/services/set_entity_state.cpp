@@ -62,6 +62,7 @@ SetEntityState::SetEntityState(
 
         // Velocity components are expected to be in the body frame, so we'll need to transform
         // them.
+        // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
         auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
         auto linearVelCmdBody =
           entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.linear));

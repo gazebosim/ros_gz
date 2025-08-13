@@ -14,13 +14,24 @@
 
 #include "gazebo_proxy.hpp"
 
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/details/boolean.pb.h>
+#include <gz/msgs/world_control_state.pb.h>
+
 #include <memory>
 #include <string>
+#include <unordered_set>
+
+#include <gz/sim/components/AngularVelocity.hh>
+#include <gz/sim/components/CanonicalLink.hh>
+#include <gz/sim/components/LinearVelocity.hh>
+#include <gz/sim/components/Pose.hh>
 
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
 {
+namespace components = gz::sim::components;
 
 GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node)
 : world_name_(world_name), ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
@@ -35,7 +46,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
   // initialized
   gz::msgs::SerializedStepMap reply;
   bool result;
-  if (!this->gz_node_->Request(this->PrefixTopic("state"), 30000, reply, result)) {
+  if (!this->gz_node_->Request(this->PrefixTopic("state"), kGzServiceTimeout, reply, result)) {
     RCLCPP_ERROR(
       ros_node->get_logger(),
       "Simulation interface timed out while waiting for Gazebo to initialize");
@@ -56,6 +67,44 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       }
     }
   }
+
+  // Before creating the services, we need to add the `[Angular/Linear]Velocity` components to all
+  // the entities available. Currently, we're treating entities are models, but Gazebo doesn't
+  // update velocity components of models. Therefore, we have to set the component on the canonical
+  // link and compute the velocity of the model entity manually here.
+  //
+  // TODO(azeey) Handle newly added entities
+  // TODO(azeey) Computing velocities at every timestep might have a performance impact
+  gz::msgs::WorldControlState control_msg;
+  this->WithEcm([&](gz::sim::EntityComponentManager & ecm) {
+    auto canonicalLinks = ecm.EntitiesByComponents(components::CanonicalLink());
+    for (const auto & link : canonicalLinks) {
+      ecm.CreateComponent(link, components::WorldPose());
+      ecm.CreateComponent(link, components::WorldLinearVelocity());
+      ecm.CreateComponent(link, components::WorldAngularVelocity());
+    }
+
+    std::unordered_set<gz::sim::Entity> canonicalLinkEntities(
+      canonicalLinks.begin(), canonicalLinks.end());
+
+    control_msg.mutable_state()->CopyFrom(ecm.State(
+      canonicalLinkEntities,
+      {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
+       components::WorldAngularVelocity::typeId}));
+  });
+
+  // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
+  gz::msgs::Boolean controlReply;
+  this->gz_node_->Request(
+    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout,
+    controlReply, result);
+  if (!result || !controlReply.data()) {
+    RCLCPP_ERROR(
+      ros_node->get_logger(),
+      "Simulation interface encountered an error while synchronizing state with Gazebo");
+    return;
+  }
+  // TODO(azeey) Handle errors
 }
 
 bool GazeboProxy::InitializeGazeboConnection()

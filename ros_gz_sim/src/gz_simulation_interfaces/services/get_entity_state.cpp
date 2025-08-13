@@ -17,9 +17,19 @@
 #include <gz/msgs/boolean.pb.h>
 
 #include <memory>
+#include <optional>
 #include <string>
 
+#include <gz/sim/Entity.hh>
+#include <gz/sim/Link.hh>
+#include <gz/sim/Model.hh>
+#include <gz/sim/Server.hh>
 #include <gz/sim/Util.hh>
+#include <gz/sim/components/AngularVelocity.hh>
+#include <gz/sim/components/CanonicalLink.hh>
+#include <gz/sim/components/LinearVelocity.hh>
+#include <gz/sim/components/ParentEntity.hh>
+#include <gz/sim/components/Pose.hh>
 
 #include "../gazebo_proxy.hpp"
 #include "../utils.hpp"
@@ -36,6 +46,7 @@ using RequestPtr = GetEntityStateSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetEntityStateSrv::Response::SharedPtr;
 
 using simulation_interfaces::msg::Result;
+namespace components = gz::sim::components;
 
 GetEntityState::GetEntityState(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -71,9 +82,47 @@ simulation_interfaces::msg::Result GetEntityState::FromEcm(
   simulation_interfaces::msg::EntityState & state)
 {
   Result result;
-  auto gz_pose = gz::sim::worldPose(entity, ecm);
-  ConvertPose(gz_pose, state.pose);
-  result.result = simulation_interfaces::msg::Result::RESULT_OK;
+  // If the entity is a static model, we will only fill in the pose
+  gz::sim::Model model(entity);
+  if (model.Static(ecm)) {
+    auto pose = gz::sim::worldPose(entity, ecm);
+    ConvertPose(pose, state.pose);
+    result.result = simulation_interfaces::msg::Result::RESULT_OK;
+    // TODO(azeey) Set header
+    return result;
+  }
+  // Find the canonical link that corresponds to this model
+  auto canonicalLinkEntity = model.CanonicalLink(ecm);
+  if (canonicalLinkEntity == gz::sim::kNullEntity) {
+    // TODO(azeey) Handle this error condition. Maybe a static model
+    result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+    result.error_message = "Could not find canonical link";
+    return result;
+  }
+  gz::sim::Link canonicalLink(canonicalLinkEntity);
+  // See https://drake.mit.edu/doxygen_cxx/group__multibody__quantities.html for notations
+  std::optional<gz::math::Pose3d> X_WL = canonicalLink.WorldPose(ecm);
+  auto X_LM = ecm.ComponentData<components::Pose>(canonicalLinkEntity)->Inverse();
+  std::optional<gz::math::Vector3d> v_WM = canonicalLink.WorldLinearVelocity(ecm, X_LM.Pos());
+  std::optional<gz::math::Vector3d> w_WL = canonicalLink.WorldAngularVelocity(ecm);
+
+  if (X_WL && v_WM && w_WL) {
+    // TODO(azeey) Add comments
+    // Find the pose of the model based on the pose of the pose of the canonical link.
+    // X_ML: pose of the canonical link w.r.t the model
+    auto X_WM = (*X_WL) * X_LM;
+    ConvertPose(X_WM, state.pose);
+
+    // TODO(azeey) Add tests to verify this
+    ConvertVector3(*v_WM, state.twist.linear);
+    ConvertVector3(*w_WL, state.twist.angular);
+    result.result = simulation_interfaces::msg::Result::RESULT_OK;
+    // TODO(azeey) Set header
+  } else {
+    result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+    // TODO(azeey) Fix error message
+    result.error_message = "WorldPose component not set on entity";
+  }
   return result;
 }
 }  // namespace services

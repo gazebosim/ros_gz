@@ -31,6 +31,9 @@ geometry_msgs::msg::Pose ConvertPose(const gz::math::Pose3d & gz_pose);
 void ConvertPose(const geometry_msgs::msg::Pose & ros_pose, gz::math::Pose3d & gz_pose);
 gz::math::Pose3d ConvertPose(const geometry_msgs::msg::Pose & ros_pose);
 
+void ConvertVector3(const gz::math::Vector3d & gz_v, geometry_msgs::msg::Vector3 & ros_v);
+geometry_msgs::msg::Vector3  ConvertVector3(const gz::math::Vector3d& gz_v);
+
 void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v);
 gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v);
 

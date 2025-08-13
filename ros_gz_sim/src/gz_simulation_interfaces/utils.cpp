@@ -63,6 +63,19 @@ gz::math::Pose3d ConvertPose(const geometry_msgs::msg::Pose & ros_pose)
   return gz_pose;
 }
 
+void ConvertVector3(const gz::math::Vector3d & gz_v, geometry_msgs::msg::Vector3 & ros_v) {
+  ros_v.x = gz_v.X();
+  ros_v.y = gz_v.Y();
+  ros_v.z = gz_v.Z();
+}
+
+geometry_msgs::msg::Vector3 ConvertVector3(const gz::math::Vector3d & gz_v)
+{
+  geometry_msgs::msg::Vector3 ros_v;
+  ConvertVector3(gz_v, ros_v);
+  return ros_v;
+}
+
 void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v)
 {
   gz_v.X() = ros_v.x;
