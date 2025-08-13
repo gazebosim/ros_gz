@@ -21,6 +21,7 @@
 #include <memory>
 #include <string>
 
+#include <gz/sim/Model.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/Util.hh>
 #include <gz/sim/components/AngularVelocityCmd.hh>
@@ -58,19 +59,21 @@ SetEntityState::SetEntityState(
       // setting just the pose or just the twist. They will both be set according to what's in the
       // message. If not set by the user, the default values will be used.
       if (entity) {
-        ecm.SetComponentData<components::WorldPoseCmd>(*entity, ConvertPose(request->state.pose));
+        gz::sim::Model model(*entity);
+        model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
+        if (!model.Static(ecm)) {
+          // Velocity components are expected to be in the body frame, so we'll need to transform
+          // them.
+          // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
+          auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
+          auto linearVelCmdBody =
+            entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.linear));
+          auto angularVelCmdBody =
+            entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.angular));
 
-        // Velocity components are expected to be in the body frame, so we'll need to transform
-        // them.
-        // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
-        auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
-        auto linearVelCmdBody =
-          entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.linear));
-        auto angularVelCmdBody =
-          entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.angular));
-
-        ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
-        ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
+          ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
+          ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
+        }
       } else {
         // TODO(azeey) Error
       }
@@ -83,7 +86,8 @@ SetEntityState::SetEntityState(
       gz::msgs::Boolean reply;
       // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
       this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("control/state"), control_msg, 3000, reply, result);
+        this->gz_proxy_->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout,
+        reply, result);
       // TODO(azeey) Handle Error
       response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
       // TODO(azeey) Wait for result?
