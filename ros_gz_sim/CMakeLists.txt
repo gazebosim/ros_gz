@@ -321,6 +321,7 @@ if(BUILD_TESTING)
 
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
+  add_launch_test(test/test_gz_simulation_interfaces.launch.py TIMEOUT 300)
 endif()
 
 ament_package()

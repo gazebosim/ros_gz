@@ -45,7 +45,6 @@ GetEntitiesStates::GetEntitiesStates(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  // TODO(azeey) Support EntityFilter
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       try {
