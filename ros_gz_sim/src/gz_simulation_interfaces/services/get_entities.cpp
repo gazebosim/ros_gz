@@ -81,6 +81,8 @@ GetEntities::GetEntities(
             }
             return true;
           });
+
+        response->result.result = Result::RESULT_OK;
       } catch (const std::exception & e) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = e.what();

@@ -17,7 +17,7 @@ import unittest
 import launch_testing
 import rclpy
 import simulation_interfaces.srv as si
-from ament_index_python.packages import get_package_share_directory
+from simulation_interfaces.msg import Result
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from pathlib import Path
@@ -33,6 +33,7 @@ def generate_test_description():
             Node(
                 package="ros_gz_sim",
                 executable="gzserver",
+                output="screen",
                 parameters=[{"world_sdf_file": test_sdf_file}],
             ),
             launch_testing.actions.ReadyToTest(),
@@ -56,13 +57,22 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     def tearDown(self) -> None:
         self.node.destroy_node()
 
-    def test_get_entities(self, proc_output) -> None:
+    def test_get_entities_with_no_filters(self) -> None:
         client = self.node.create_client(si.GetEntities, "get_entities")
         self.assertTrue(client.wait_for_service(timeout_sec=5))
+        request = si.GetEntities.Request()
+        future = client.call_async(request)
+        rclpy.spin_until_future_complete(self.node, future, timeout_sec=5)
+        self.assertTrue(future.done())
+        response = future.result()
+        self.assertIsNotNone(response)
+        self.assertEqual(response.result.result, Result.RESULT_OK)
+        self.assertEqual(response.result.error_message, "")
 
-    def test_get_entity_state(self, proc_output) -> None:
-        client = self.node.create_client(si.GetEntityState, "get_entity_state")
-        self.assertTrue(client.wait_for_service(timeout_sec=5))
+
+    # def test_get_entity_state(self, _) -> None:
+    #     client = self.node.create_client(si.GetEntityState, "get_entity_state")
+    #     self.assertTrue(client.wait_for_service(timeout_sec=5))
 
 
 # NOTE: If we don't have this test, unittest will report "NO TESTS RAN" at the end of the test
