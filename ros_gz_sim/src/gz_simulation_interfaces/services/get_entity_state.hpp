@@ -15,6 +15,8 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_STATE_SERVICE_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_GET_ENTITY_STATE_SERVICE_HPP_
 
+#include <gz/msgs/details/world_stats.pb.h>
+
 #include <memory>
 #include <string>
 
@@ -42,12 +44,12 @@ public:
   GetEntityState(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 
   static simulation_interfaces::msg::Result FromEcm(
-    const gz::sim::EntityComponentManager & ecm, const std::string & name,
-    simulation_interfaces::msg::EntityState & state);
+    const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
+    const std::string & name, simulation_interfaces::msg::EntityState & state);
 
   static simulation_interfaces::msg::Result FromEcm(
-    const gz::sim::EntityComponentManager & ecm, const gz::sim::Entity & entity,
-    simulation_interfaces::msg::EntityState & state);
+    const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
+    const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state);
 };
 }  // namespace services
 }  // namespace gz_simulation_interfaces

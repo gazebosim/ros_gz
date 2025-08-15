@@ -53,8 +53,10 @@ GetEntityState::GetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    this->gz_proxy_->WithEcm(
-      [&](const auto & ecm) { GetEntityState::FromEcm(ecm, request->entity, response->state); });
+    this->gz_proxy_->WithEcm([&](const auto & ecm) {
+      GetEntityState::FromEcm(
+        ecm, this->gz_proxy_->Stats(), request->entity, response->state);
+    });
   };
   this->services_handle_ =
     ros_node->create_service<GetEntityStateSrv>("get_entity_state", service_cb);
@@ -63,13 +65,13 @@ GetEntityState::GetEntityState(
 }
 
 Result GetEntityState::FromEcm(
-  const gz::sim::EntityComponentManager & ecm, const std::string & name,
-  simulation_interfaces::msg::EntityState & state)
+  const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
+  const std::string & name, simulation_interfaces::msg::EntityState & state)
 {
   Result result;
   auto entity = ecm.EntityByName(name);
   if (entity) {
-    return GetEntityState::FromEcm(ecm, *entity, state);
+    return GetEntityState::FromEcm(ecm, stats, *entity, state);
   } else {
     result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
     result.error_message = "Requested entity not found";
@@ -78,17 +80,18 @@ Result GetEntityState::FromEcm(
 }
 
 simulation_interfaces::msg::Result GetEntityState::FromEcm(
-  const gz::sim::EntityComponentManager & ecm, const gz::sim::Entity & entity,
-  simulation_interfaces::msg::EntityState & state)
+  const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
+  const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state)
 {
   Result result;
+  state.header.frame_id = "world";
+  state.header.stamp = ConvertTime(stats.sim_time());
   // If the entity is a static model, we will only fill in the pose
   gz::sim::Model model(entity);
   if (model.Static(ecm)) {
     auto pose = gz::sim::worldPose(entity, ecm);
     ConvertPose(pose, state.pose);
     result.result = simulation_interfaces::msg::Result::RESULT_OK;
-    // TODO(azeey) Set header
     return result;
   }
   // Find the canonical link that corresponds to this model

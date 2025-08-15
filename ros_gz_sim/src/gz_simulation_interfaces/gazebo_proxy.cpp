@@ -16,6 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/details/boolean.pb.h>
+#include <gz/msgs/details/world_stats.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
 #include <memory>
@@ -96,8 +97,8 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
   // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
   gz::msgs::Boolean controlReply;
   this->gz_node_->Request(
-    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout,
-    controlReply, result);
+    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout, controlReply,
+    result);
   if (!result || !controlReply.data()) {
     RCLCPP_ERROR(
       ros_node->get_logger(),
@@ -141,6 +142,11 @@ uint64_t GazeboProxy::Iterations() const
 {
   std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
   return this->world_stats_.iterations();
+}
+gz::msgs::WorldStatistics GazeboProxy::Stats() const
+{
+  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  return this->world_stats_;
 }
 bool GazeboProxy::Paused() const
 {

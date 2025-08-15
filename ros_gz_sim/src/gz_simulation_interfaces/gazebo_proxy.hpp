@@ -43,8 +43,11 @@ public:
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
 
   uint64_t Iterations() const;
-
   bool Paused() const;
+
+  /// \brief Get a copy of the World statistics message. 
+  gz::msgs::WorldStatistics Stats() const;
+
 
   void WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f);
 

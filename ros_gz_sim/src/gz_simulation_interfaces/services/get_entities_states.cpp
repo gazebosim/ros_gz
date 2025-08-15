@@ -50,6 +50,7 @@ GetEntitiesStates::GetEntitiesStates(
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       try {
         GzEntityFilters filters(request->filters, ecm);
+        const auto stats = this->gz_proxy_->Stats();
         ecm.Each<components::Name, components::Model, components::ParentEntity>(
           [&](
             const gz::sim::Entity & entity, const components::Name * name,
@@ -75,7 +76,7 @@ GetEntitiesStates::GetEntitiesStates(
 
             response->entities.push_back(name->Data());
             auto & state = response->states.emplace_back();
-            auto state_result = GetEntityState::FromEcm(ecm, entity, state);
+            auto state_result = GetEntityState::FromEcm(ecm, stats, entity, state);
 
             if (state_result.result != Result::RESULT_OK) {
               response->result = state_result;

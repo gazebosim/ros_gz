@@ -15,9 +15,12 @@
 #ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 #define ROS_GZ_SIM__SIMULATION_INTERFACES_UTILS_HPP_
 
+#include <gz/msgs/time.pb.h>
+
 #include <gz/math/Pose3.hh>
 #include <simulation_interfaces/msg/entity_state.hpp>
 
+#include "builtin_interfaces/msg/time.hpp"
 #include "geometry_msgs/msg/pose.hpp"
 #include "geometry_msgs/msg/vector3.hpp"
 
@@ -32,11 +35,12 @@ void ConvertPose(const geometry_msgs::msg::Pose & ros_pose, gz::math::Pose3d & g
 gz::math::Pose3d ConvertPose(const geometry_msgs::msg::Pose & ros_pose);
 
 void ConvertVector3(const gz::math::Vector3d & gz_v, geometry_msgs::msg::Vector3 & ros_v);
-geometry_msgs::msg::Vector3  ConvertVector3(const gz::math::Vector3d& gz_v);
+geometry_msgs::msg::Vector3 ConvertVector3(const gz::math::Vector3d & gz_v);
 
 void ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v, gz::math::Vector3d & gz_v);
 gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v);
 
+builtin_interfaces::msg::Time ConvertTime(const gz::msgs::Time gz_time);
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
 #endif

@@ -63,7 +63,8 @@ gz::math::Pose3d ConvertPose(const geometry_msgs::msg::Pose & ros_pose)
   return gz_pose;
 }
 
-void ConvertVector3(const gz::math::Vector3d & gz_v, geometry_msgs::msg::Vector3 & ros_v) {
+void ConvertVector3(const gz::math::Vector3d & gz_v, geometry_msgs::msg::Vector3 & ros_v)
+{
   ros_v.x = gz_v.X();
   ros_v.y = gz_v.Y();
   ros_v.z = gz_v.Z();
@@ -90,5 +91,12 @@ gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v)
   return gz_v;
 }
 
+builtin_interfaces::msg::Time ConvertTime(const gz::msgs::Time gz_time)
+{
+  builtin_interfaces::msg::Time ros_time;
+  ros_time.sec = gz_time.sec();
+  ros_time.nanosec = gz_time.nsec();
+  return ros_time;
+}
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
