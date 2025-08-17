@@ -15,8 +15,8 @@
 #include "gazebo_proxy.hpp"
 
 #include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/details/boolean.pb.h>
-#include <gz/msgs/details/world_stats.pb.h>
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
 #include <memory>

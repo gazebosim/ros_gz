@@ -54,8 +54,9 @@ GetEntityState::GetEntityState(
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
     this->gz_proxy_->WithEcm([&](const auto & ecm) {
-      GetEntityState::FromEcm(
-        ecm, this->gz_proxy_->Stats(), request->entity, response->state);
+      auto stats = this->gz_proxy_->Stats();
+      response->result =
+        GetEntityState::FromEcm(ecm, stats, request->entity, response->state);
     });
   };
   this->services_handle_ =
@@ -116,11 +117,9 @@ simulation_interfaces::msg::Result GetEntityState::FromEcm(
     auto X_WM = (*X_WL) * X_LM;
     ConvertPose(X_WM, state.pose);
 
-    // TODO(azeey) Add tests to verify this
     ConvertVector3(*v_WM, state.twist.linear);
     ConvertVector3(*w_WL, state.twist.angular);
     result.result = simulation_interfaces::msg::Result::RESULT_OK;
-    // TODO(azeey) Set header
   } else {
     result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
     // TODO(azeey) Fix error message
