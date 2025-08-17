@@ -77,7 +77,6 @@ public:
   bool InitializeGazeboParameters();
 
 private:
-  // TODO(azeey) Consider storing the ROS node
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::string world_name_;
   std::shared_ptr<GazeboProxy> gz_proxy_;

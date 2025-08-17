@@ -46,10 +46,11 @@ GetEntitiesStates::GetEntitiesStates(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
+    this->gz_proxy_->WaitForUpdatedState();
+    const auto stats = this->gz_proxy_->Stats();
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       try {
         GzEntityFilters filters(request->filters, ecm);
-        const auto stats = this->gz_proxy_->Stats();
         ecm.Each<components::Name, components::Model, components::ParentEntity>(
           [&](
             const gz::sim::Entity & entity, const components::Name * name,

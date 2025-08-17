@@ -15,10 +15,10 @@
 #include "gazebo_proxy.hpp"
 
 #include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
+#include <chrono>
 #include <memory>
 #include <string>
 #include <unordered_set>
@@ -60,6 +60,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       return;
     } else {
       this->UpdateStateFromMsg(reply);
+      this->state_intialized_ = true;
 
       // Listen to the "state" topic to get periodic updates.
       if (!this->gz_node_->Subscribe(
@@ -127,12 +128,16 @@ std::string GazeboProxy::PrefixTopic(const char * topic) const
 }
 void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 {
-  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
-  this->ecm_.SetState(msg.state());
-  this->ecm_.ClearRemovedComponents();
-  this->ecm_.ClearNewlyCreatedEntities();
-  this->ecm_.ProcessRemoveEntityRequests();
-  this->world_stats_ = msg.stats();
+  {
+    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+    this->ecm_.SetState(msg.state());
+    this->ecm_.ClearRemovedComponents();
+    this->ecm_.ClearNewlyCreatedEntities();
+    this->ecm_.ProcessRemoveEntityRequests();
+    this->world_stats_ = msg.stats();
+    this->state_updated_ = true;
+  }
+  this->state_cv_.notify_all();
 
   // TODO(azeey) Consider using a condition variable to notify services that there is new data so
   // as to avoid using stale data
@@ -140,26 +145,38 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 
 uint64_t GazeboProxy::Iterations() const
 {
-  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
   return this->world_stats_.iterations();
 }
 gz::msgs::WorldStatistics GazeboProxy::Stats() const
 {
-  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
   return this->world_stats_;
 }
 bool GazeboProxy::Paused() const
 {
-  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
   return this->world_stats_.paused();
 }
 
 void GazeboProxy::WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f)
 {
-  std::lock_guard<std::mutex> lk(this->stateSyncMutex_);
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
   f(this->ecm_);
 }
 
 std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() { return this->gz_node_; }
+
+bool GazeboProxy::WaitForUpdatedState()
+{
+  // If the state has not been initialized, it will not be continuously updated, so return early.
+  if (!state_intialized_) {
+    return false;
+  }
+  std::unique_lock lk(this->state_sync_mutex_);
+  this->state_updated_ = false;
+  using namespace std::chrono_literals;  // NOLINT
+  return this->state_cv_.wait_for(lk, 1s, [this] { return this->state_updated_; });
+}
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

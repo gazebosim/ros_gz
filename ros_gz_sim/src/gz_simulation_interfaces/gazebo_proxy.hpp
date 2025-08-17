@@ -19,6 +19,7 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
+#include <condition_variable>
 #include <memory>
 #include <string>
 
@@ -45,13 +46,14 @@ public:
   uint64_t Iterations() const;
   bool Paused() const;
 
-  /// \brief Get a copy of the World statistics message. 
+  /// \brief Get a copy of the World statistics message.
   gz::msgs::WorldStatistics Stats() const;
-
 
   void WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f);
 
   std::shared_ptr<gz::transport::Node> GzNode();
+
+  bool WaitForUpdatedState();
 
   static constexpr unsigned int kGzServiceTimeout{5000};
 
@@ -59,9 +61,12 @@ private:
   std::string world_name_;
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::shared_ptr<gz::transport::Node> gz_node_;
-  mutable std::mutex stateSyncMutex_;
+  mutable std::mutex state_sync_mutex_;
   gz::sim::EntityComponentManager ecm_;
   gz::msgs::WorldStatistics world_stats_;
+  bool state_intialized_{false};
+  bool state_updated_{false};
+  std::condition_variable state_cv_;
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
