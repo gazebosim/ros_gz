@@ -27,6 +27,7 @@
 #include <gz/sim/components/CanonicalLink.hh>
 #include <gz/sim/components/LinearVelocity.hh>
 #include <gz/sim/components/Pose.hh>
+#include <rclcpp/logging.hpp>
 
 namespace ros_gz_sim
 {
@@ -102,7 +103,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
     result);
   if (!result || !controlReply.data()) {
     RCLCPP_ERROR(
-      ros_node->get_logger(),
+      this->ros_node_->get_logger(),
       "Simulation interface encountered an error while synchronizing state with Gazebo");
     return;
   }
@@ -131,6 +132,8 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
   {
     std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
     this->ecm_.SetState(msg.state());
+
+    this->HandleNewEntities();
     this->ecm_.ClearRemovedComponents();
     this->ecm_.ClearNewlyCreatedEntities();
     this->ecm_.ProcessRemoveEntityRequests();
@@ -177,6 +180,44 @@ bool GazeboProxy::WaitForUpdatedState()
   this->state_updated_ = false;
   using namespace std::chrono_literals;  // NOLINT
   return this->state_cv_.wait_for(lk, 1s, [this] { return this->state_updated_; });
+}
+void GazeboProxy::HandleNewEntities()
+{
+  std::unordered_set<gz::sim::Entity> canonicalLinkEntities;
+  this->ecm_.EachNew<components::CanonicalLink>(
+    [&canonicalLinkEntities](const gz::sim::Entity & entity, const components::CanonicalLink *) {
+      canonicalLinkEntities.insert(entity);
+
+      return true;
+    });
+
+    for (const auto & link : canonicalLinkEntities) {
+     this->ecm_.CreateComponent(link, components::WorldPose());
+     this->ecm_.CreateComponent(link, components::WorldLinearVelocity());
+     this->ecm_.CreateComponent(link, components::WorldAngularVelocity());
+    }
+
+  if (canonicalLinkEntities.empty()){
+    return;
+  }
+
+  gz::msgs::WorldControlState control_msg;
+  control_msg.mutable_state()->CopyFrom(this->ecm_.State(
+    canonicalLinkEntities,
+    {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
+      components::WorldAngularVelocity::typeId}));
+
+  bool result;
+  gz::msgs::Boolean controlReply;
+  this->gz_node_->Request(
+    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout, controlReply,
+    result);
+  if (!result || !controlReply.data()) {
+    RCLCPP_ERROR_THROTTLE(
+      this->ros_node_->get_logger(), *this->ros_node_->get_clock(), 1000,
+      "Simulation interface encountered an error while handling newly created entities");
+    return;
+  }
 }
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

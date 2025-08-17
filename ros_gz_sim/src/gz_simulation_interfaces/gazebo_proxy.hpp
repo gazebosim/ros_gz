@@ -41,7 +41,6 @@ public:
   bool InitializeGazeboConnection();
 
   std::string PrefixTopic(const char * topic) const;
-  void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
 
   uint64_t Iterations() const;
   bool Paused() const;
@@ -56,6 +55,9 @@ public:
   bool WaitForUpdatedState();
 
   static constexpr unsigned int kGzServiceTimeout{5000};
+private:
+  void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
+  void HandleNewEntities();
 
 private:
   std::string world_name_;
