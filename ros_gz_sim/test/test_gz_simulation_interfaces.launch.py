@@ -12,18 +12,17 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from typing import Optional
+from typing import Any
 import unittest
 
-from geometry_msgs import msg
 import launch_testing
+from launch_testing.actions import ReadyToTest
+from launch_testing.asserts import assertExitCodes
 import rclpy
-from rclpy.task import T
 import simulation_interfaces.srv as si
 from simulation_interfaces.msg import Result
 from launch import LaunchDescription
 from launch_ros.actions import Node
-from launch_testing_ros import WaitForTopics
 from pathlib import Path
 from geometry_msgs.msg import Twist
 import time
@@ -67,7 +66,7 @@ def generate_test_description():
             [
                 server_node,
                 bridge_node,
-                launch_testing.actions.ReadyToTest(),
+                ReadyToTest(),
             ]
         ),
         locals(),
@@ -95,7 +94,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertTrue(client.wait_for_service(timeout_sec=5))
         return client, srv_type.Request()
 
-    def call_and_spin(self, client, request, timeout_sec=5) -> Optional[T]:
+    def call_and_spin(self, client, request, timeout_sec=5) -> Any:
         future = client.call_async(request)
         rclpy.spin_until_future_complete(self.node, future, timeout_sec=timeout_sec)
         self.assertTrue(future.done())
@@ -128,20 +127,18 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         msg = Twist()
         msg.linear.x = 0.25
         pattern = re.compile("Passing message.*geometry_msgs/msg/Twist")
-        for i in range(10):
+        for _ in range(10):
             publisher.publish(msg)
             if proc_output.waitFor(pattern, process=bridge_node, timeout=1):
                 break
             rclpy.spin_once(self.node)
 
-        # TODO(azeey): Not sure why we need to sleep this long. It could be that we are not synchronizing
-        # the state frequently enough or we might be retrieving stale data.
         time.sleep(2)
         state = self.get_entity_state("vehicle").state
         self.assertAlmostEqual(state.twist.linear.x, 0.25, delta=1e-2)
 
 
-    def test_get_entity_state_on_spawned_entity(self, proc_output, bridge_node) -> None:
+    def test_get_entity_state_on_spawned_entity(self) -> None:
 
         sdf_string = """
             <sdf version='1.12'>
@@ -183,4 +180,4 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 class TestGzserverShutdown(unittest.TestCase):
 
     def test_exit_codes(self, proc_info):
-        launch_testing.asserts.assertExitCodes(proc_info)
+        assertExitCodes(proc_info)
