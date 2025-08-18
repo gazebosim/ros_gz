@@ -21,6 +21,7 @@
 #include <gz/sim/SystemLoader.hh>
 #include <memory>
 #include <rclcpp/rclcpp.hpp>
+#include <rclcpp/utilities.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
 #include <thread>
 
@@ -41,6 +42,7 @@ public:
 GzServer::GzServer(const rclcpp::NodeOptions & options)
 : Node("gzserver", options), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
 {
+  rclcpp::uninstall_signal_handlers();
   this->dataPtr->thread = std::thread(std::bind(&GzServer::OnStart, this));
 }
 
@@ -72,14 +74,16 @@ void GzServer::OnStart()
   }
   server_config.SetInitialSimTime(initial_sim_time);
 
-  gz::sim::Server server(server_config);
+  auto server = std::make_unique<gz::sim::Server>(server_config);
   // TODO(azeey) Think about whether it makes sense to RunOnce paused here or wait for some
   // critical services from Gazebo to become available before starting the ROS services
-  server.RunOnce(true);
+  server->RunOnce(true);
   // TODO(azeey) Allow disabling simulation interfaces
   this->dataPtr->sim_interfaces =
     std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(this->shared_from_this());
-  server.Run(true /*blocking*/, 0, false /*paused*/);
+  server->Run(true /*blocking*/, 0, false /*paused*/);
+  server.reset();
+  this->dataPtr->sim_interfaces.reset();
   rclcpp::shutdown();
 }
 
