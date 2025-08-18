@@ -22,6 +22,7 @@
 #include <memory>
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 #include <gz/sim/components/AngularVelocity.hh>
 #include <gz/sim/components/CanonicalLink.hh>
@@ -75,39 +76,12 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
   // the entities available. Currently, we're treating entities are models, but Gazebo doesn't
   // update velocity components of models. Therefore, we have to set the component on the canonical
   // link and compute the velocity of the model entity manually here.
-  //
-  // TODO(azeey) Handle newly added entities
-  // TODO(azeey) Computing velocities at every timestep might have a performance impact
-  gz::msgs::WorldControlState control_msg;
-  this->WithEcm([&](gz::sim::EntityComponentManager & ecm) {
-    auto canonicalLinks = ecm.EntitiesByComponents(components::CanonicalLink());
-    for (const auto & link : canonicalLinks) {
-      ecm.CreateComponent(link, components::WorldPose());
-      ecm.CreateComponent(link, components::WorldLinearVelocity());
-      ecm.CreateComponent(link, components::WorldAngularVelocity());
-    }
-
-    std::unordered_set<gz::sim::Entity> canonicalLinkEntities(
-      canonicalLinks.begin(), canonicalLinks.end());
-
-    control_msg.mutable_state()->CopyFrom(ecm.State(
-      canonicalLinkEntities,
-      {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
-       components::WorldAngularVelocity::typeId}));
-  });
-
-  // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
-  gz::msgs::Boolean controlReply;
-  this->gz_node_->Request(
-    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout, controlReply,
-    result);
-  if (!result || !controlReply.data()) {
-    RCLCPP_ERROR(
-      this->ros_node_->get_logger(),
-      "Simulation interface encountered an error while synchronizing state with Gazebo");
-    return;
+  std::vector<gz::sim::Entity> c_links;
+  {
+    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+    c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
   }
-  // TODO(azeey) Handle errors
+  this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
 }
 
 bool GazeboProxy::InitializeGazeboConnection()
@@ -187,25 +161,30 @@ void GazeboProxy::HandleNewEntities()
   this->ecm_.EachNew<components::CanonicalLink>(
     [&canonicalLinkEntities](const gz::sim::Entity & entity, const components::CanonicalLink *) {
       canonicalLinkEntities.insert(entity);
-
       return true;
     });
 
-    for (const auto & link : canonicalLinkEntities) {
-     this->ecm_.CreateComponent(link, components::WorldPose());
-     this->ecm_.CreateComponent(link, components::WorldLinearVelocity());
-     this->ecm_.CreateComponent(link, components::WorldAngularVelocity());
-    }
-
-  if (canonicalLinkEntities.empty()){
+  if (canonicalLinkEntities.empty()) {
     return;
+  }
+
+  this->InitializeCanonicalLinks(canonicalLinkEntities);
+}
+
+void GazeboProxy::InitializeCanonicalLinks(
+  const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities)
+{
+  // TODO(azeey) Computing velocities at every timestep might have a performance impact
+  for (const auto & link : canonicalLinkEntities) {
+    this->ecm_.CreateComponent(link, components::WorldPose());
+    this->ecm_.CreateComponent(link, components::WorldLinearVelocity());
+    this->ecm_.CreateComponent(link, components::WorldAngularVelocity());
   }
 
   gz::msgs::WorldControlState control_msg;
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
-    canonicalLinkEntities,
-    {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
-      components::WorldAngularVelocity::typeId}));
+    canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
+                            components::WorldAngularVelocity::typeId}));
 
   bool result;
   gz::msgs::Boolean controlReply;

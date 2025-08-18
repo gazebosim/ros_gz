@@ -22,8 +22,10 @@
 #include <condition_variable>
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 #include <gz/math/Pose3.hh>
+#include <gz/sim/Entity.hh>
 #include <gz/sim/EntityComponentManager.hh>
 #include <gz/sim/Util.hh>
 #include <gz/transport/Node.hh>
@@ -55,9 +57,11 @@ public:
   bool WaitForUpdatedState();
 
   static constexpr unsigned int kGzServiceTimeout{5000};
+
 private:
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
   void HandleNewEntities();
+  void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
 
 private:
   std::string world_name_;
