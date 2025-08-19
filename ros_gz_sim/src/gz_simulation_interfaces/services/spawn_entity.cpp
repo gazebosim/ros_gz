@@ -37,7 +37,7 @@ SpawnEntity::SpawnEntity(
 : HandlerBase(ros_node, gz_proxy)
 {
   const auto create_service = this->gz_proxy_->PrefixTopic("create/blocking");
-  if (!this->gz_proxy_->WaitForService(create_service)) {
+  if (!this->gz_proxy_->WaitForGzService(create_service)) {
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
       "Gazebo service [" << create_service << "] is not available. "

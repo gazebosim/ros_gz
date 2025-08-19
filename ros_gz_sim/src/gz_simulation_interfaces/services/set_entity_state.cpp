@@ -50,7 +50,7 @@ SetEntityState::SetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   const auto control_state_service = this->gz_proxy_->PrefixTopic("control/state");
-  if (!this->gz_proxy_->WaitForService(control_state_service)) {
+  if (!this->gz_proxy_->WaitForGzService(control_state_service)) {
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
       "Gazebo service [" << control_state_service << "] is not available. "

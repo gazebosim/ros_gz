@@ -96,7 +96,7 @@ std::string GazeboProxy::PrefixTopic(const char * topic) const
   return "world/" + this->world_name_ + "/" + topic;
 }
 
-bool GazeboProxy::WaitForService(
+bool GazeboProxy::WaitForGzService(
   const std::string & service, const std::chrono::milliseconds & timeout)
 {
   std::vector<gz::transport::ServicePublisher> publishers;
@@ -192,7 +192,7 @@ bool GazeboProxy::WaitForCriticalServices()
   // Check that services from SceneBroadacaster are available
   {
     const auto state_service = this->PrefixTopic("state");
-    if (!this->WaitForService(state_service)) {
+    if (!this->WaitForGzService(state_service)) {
       RCLCPP_ERROR_STREAM(
         this->ros_node_->get_logger(),
         "Required Gazebo service ["
@@ -204,7 +204,7 @@ bool GazeboProxy::WaitForCriticalServices()
 
   {
     const auto control_service = this->PrefixTopic("control/state");
-    if (!this->WaitForService(control_service)) {
+    if (!this->WaitForGzService(control_service)) {
       RCLCPP_ERROR_STREAM(
         this->ros_node_->get_logger(),
         "Gazebo service ["

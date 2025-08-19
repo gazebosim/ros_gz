@@ -37,7 +37,7 @@ SimulateSteps::SimulateSteps(
 : HandlerBase(ros_node, gz_proxy)
 {
   const auto control_service = this->gz_proxy_->PrefixTopic("control");
-  if (!this->gz_proxy_->WaitForService(control_service)) {
+  if (!this->gz_proxy_->WaitForGzService(control_service)) {
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
       "Gazebo service [" << control_service << "] is not available. "
