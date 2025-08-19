@@ -31,10 +31,12 @@ class GazeboProxy;
 namespace actions
 {
 
-// TODO(azeey) Add documentation
+/// \class SimulateSteps
+/// \brief Implements the `simulation_interfaces/SimulateSteps` interface.
 class SimulateSteps : public HandlerBase
 {
 public:
+  // Documentation inherited
   SimulateSteps(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 
 private:

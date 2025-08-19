@@ -37,16 +37,28 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class GetEntityState
+/// \brief Implements the `simulation_interfaces/GetEntityState` interface.
 class GetEntityState : public HandlerBase
 {
 public:
+  // Documentation inherited
   GetEntityState(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 
+  /// \brief Populate an EntityState object based on our internal state (ECM, WorldStatistics).
+  /// \param[in] ecm Reference to the EntityComponentManager.
+  /// \param[in] stats Reference to the local copy of the WorldStatistics message.
+  /// \param[in] name Name of the entity
+  /// \param[out] state State object to be populated.
   static simulation_interfaces::msg::Result FromEcm(
     const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
     const std::string & name, simulation_interfaces::msg::EntityState & state);
 
+  /// \brief Populate an EntityState object based on our internal state (ECM, WorldStatistics).
+  /// \param[in] ecm Reference to the EntityComponentManager.
+  /// \param[in] stats Reference to the local copy of the WorldStatistics message.
+  /// \param[in] entity Entity ID of the entity whose state is fetched.
+  /// \param[out] state State object to be populated.
   static simulation_interfaces::msg::Result FromEcm(
     const gz::sim::EntityComponentManager & ecm, const gz::msgs::WorldStatistics & stats,
     const gz::sim::Entity & entity, simulation_interfaces::msg::EntityState & state);

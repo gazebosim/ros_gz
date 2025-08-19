@@ -31,10 +31,12 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class DeleteEntity
+/// \brief Implements the `simulation_interfaces/DeleteEntity` interface.
 class DeleteEntity : public HandlerBase
 {
 public:
+  // Documentation inherited
   DeleteEntity(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services

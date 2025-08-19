@@ -27,18 +27,30 @@ namespace gz_simulation_interfaces
 
 class GazeboProxy;
 
-// TODO(azeey) Add documentation
+
+/// \class HandlerBase
+/// \brief Base class for Service Interface handlers
+///
+/// This just holds the ROS and Gazebo nodes as well as the service handles
 class HandlerBase
 {
 public:
+  /// \brief Constructor
+  /// \param[in] ros_node ROS Node
+  /// \param[in] gz_proxy Gazebo Node
   HandlerBase(std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
   : ros_node_(ros_node), gz_proxy_(gz_proxy)
   {
   }
 
 protected:
+  /// \brief ROS Node
   std::shared_ptr<rclcpp::Node> ros_node_;
+
+  /// \brief Gazebo Node
   std::shared_ptr<GazeboProxy> gz_proxy_;
+
+  /// \brief ROS Service handle for the service provided by the derived class.
   std::shared_ptr<rclcpp::ServiceBase> services_handle_;
 };
 }  // namespace gz_simulation_interfaces

@@ -31,10 +31,13 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class SpawnEntity
+/// \brief Implements the `simulation_interfaces/SpawnEntity` interface.
+/// Supports spawning entities from a given URI or string.
 class SpawnEntity : public HandlerBase
 {
 public:
+  // Documentation inherited
   SpawnEntity(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services

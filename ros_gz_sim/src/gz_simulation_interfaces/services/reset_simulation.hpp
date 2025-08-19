@@ -31,10 +31,12 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class ResetSimulation
+/// \brief Implements the `simulation_interfaces/ResetSimulation` interface.
 class ResetSimulation : public HandlerBase
 {
 public:
+  // Documentation inherited
   ResetSimulation(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services

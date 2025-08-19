@@ -32,19 +32,34 @@ namespace ros_gz_sim
 namespace gz_simulation_interfaces
 {
 
+/// \class GzEntityFilters
+/// \brief Implements the various ways in which entities can be filtered in services such as
+/// `GetEntities`.
 class GzEntityFilters
 {
 public:
+  /// \brief Constructor.
+  /// \param[in] filters Filters to apply.
+  /// \param[in] ecm Reference to the EntityComponentManager.
   GzEntityFilters(
     const simulation_interfaces::msg::EntityFilters & filters,
     const gz::sim::EntityComponentManager & ecm);
 
+  /// \brief Checks whether the given entity matches the filter.
+  /// \param[in] entity ID of the entity in the EntityComponentManager.
+  /// \param[in] entity_name Name of the entity.
+  ///
+  /// \note The fact that both `entity` and `entity_name` are needed is an optimization. Having both
+  /// avoid duplicate calls to fetch the ID or name.
   std::tuple<bool, simulation_interfaces::msg::Result> ApplyFilter(
     const gz::sim::Entity & entity, const std::string entity_name);
 
 private:
+  /// \brief Filters to apply.
   simulation_interfaces::msg::EntityFilters filters_;
+  /// \brief Reference to the EntityComponentManager.
   const gz::sim::EntityComponentManager & ecm_;
+  /// \brief Regular expression object created from the contents of `filters_`.
   std::regex regex_filter_;
 };
 }  // namespace gz_simulation_interfaces

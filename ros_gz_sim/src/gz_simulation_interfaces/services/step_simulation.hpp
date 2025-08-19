@@ -31,10 +31,12 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class StepSimulation
+/// \brief Implements the `simulation_interfaces/StepSimulation` interface.
 class StepSimulation : public HandlerBase
 {
 public:
+  // Documentation inherited
   StepSimulation(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services

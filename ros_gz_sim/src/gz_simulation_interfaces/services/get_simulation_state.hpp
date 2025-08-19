@@ -31,10 +31,12 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class GetSimulationState
+/// \brief Implements the `simulation_interfaces/GetSimulationState` interface.
 class GetSimulationState : public HandlerBase
 {
 public:
+  // Documentation inherited
   GetSimulationState(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services

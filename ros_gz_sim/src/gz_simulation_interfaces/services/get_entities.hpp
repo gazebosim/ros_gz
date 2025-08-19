@@ -34,10 +34,14 @@ class GazeboProxy;
 
 namespace services
 {
-// TODO(azeey) Add documentation
+/// \class GetEntities
+/// \brief Implements the `simulation_interfaces/GetEntities` interface.
+///
+/// Supports EntityFilters where entities can be filtered by name, category, or tags.
 class GetEntities : public HandlerBase
 {
 public:
+  // Documentation inherited
   GetEntities(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
 };
 }  // namespace services
