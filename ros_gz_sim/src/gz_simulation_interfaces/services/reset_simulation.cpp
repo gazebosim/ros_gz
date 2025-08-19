@@ -47,10 +47,11 @@ ResetSimulation::ResetSimulation(
       using Result = simulation_interfaces::msg::Result;
       if (
         request->scope != ResetSimulationSrv::Request::SCOPE_DEFAULT &&
-        request->scope != ResetSimulationSrv::Request::SCOPE_ALL) {
+        request->scope != ResetSimulationSrv::Request::SCOPE_ALL)
+      {
         response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
         response->result.error_message =
-          "Only reset scopes SCOPE_DEFAULT and SCOPE_ALL are supported";
+        "Only reset scopes SCOPE_DEFAULT and SCOPE_ALL are supported";
         return;
       }
 

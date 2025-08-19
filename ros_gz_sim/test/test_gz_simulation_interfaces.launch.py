@@ -12,49 +12,48 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from pathlib import Path
+import re
+import time
 from typing import Any
 import unittest
 
+from geometry_msgs.msg import Twist
+from launch import LaunchDescription
+from launch_ros.actions import Node
 import launch_testing
 from launch_testing.actions import ReadyToTest
 from launch_testing.asserts import assertExitCodes
 import rclpy
-import simulation_interfaces.srv as si
 from simulation_interfaces.msg import Result
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from pathlib import Path
-from geometry_msgs.msg import Twist
-import time
-import re
+import simulation_interfaces.srv as si
 
 
 def generate_test_description():
-
     test_dir = Path(__file__).parent
-    test_sdf_file = str(test_dir / "sdf" / "gz_simulation_interfaces.sdf")
+    test_sdf_file = str(test_dir / 'sdf' / 'gz_simulation_interfaces.sdf')
 
     server_node = Node(
-        package="ros_gz_sim",
-        executable="gzserver",
-        output="screen",
-        parameters=[{"world_sdf_file": test_sdf_file}],
+        package='ros_gz_sim',
+        executable='gzserver',
+        output='screen',
+        parameters=[{'world_sdf_file': test_sdf_file}],
     )
 
     bridge_node = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
         emulate_tty=True,
         parameters=[
-            {"bridge_names": ["cmd_vel"]},
+            {'bridge_names': ['cmd_vel']},
             {
-                "bridges": {
-                    "cmd_vel": {
-                        "ros_topic_name": "/cmd_vel",
-                        "gz_topic_name": "/model/vehicle/cmd_vel",
-                        "ros_type_name": "geometry_msgs/msg/Twist",
-                        "gz_type_name": "gz.msgs.Twist",
-                        "direction": "ROS_TO_GZ",
+                'bridges': {
+                    'cmd_vel': {
+                        'ros_topic_name': '/cmd_vel',
+                        'gz_topic_name': '/model/vehicle/cmd_vel',
+                        'ros_type_name': 'geometry_msgs/msg/Twist',
+                        'gz_type_name': 'gz.msgs.Twist',
+                        'direction': 'ROS_TO_GZ',
                     }
                 }
             },
@@ -84,7 +83,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         rclpy.shutdown()
 
     def setUp(self) -> None:
-        self.node = rclpy.create_node("test_interfaces")
+        self.node = rclpy.create_node('test_interfaces')
 
     def tearDown(self) -> None:
         self.node.destroy_node()
@@ -101,32 +100,30 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         return future.result()
 
     def test_get_entities_with_no_filters(self) -> None:
-        get_entities, request = self.setup_client(si.GetEntities, "get_entities")
+        get_entities, request = self.setup_client(si.GetEntities, 'get_entities')
         response = self.call_and_spin(get_entities, request)
         self.assertIsNotNone(response)
         self.assertEqual(response.result.result, Result.RESULT_OK)
-        self.assertEqual(response.result.error_message, "")
+        self.assertEqual(response.result.error_message, '')
 
     def get_entity_state(self, entity_name) -> si.GetEntityState.Response:
-        get_entity_state, request = self.setup_client(
-            si.GetEntityState, "get_entity_state"
-        )
+        get_entity_state, request = self.setup_client(si.GetEntityState, 'get_entity_state')
         request.entity = entity_name
         response = self.call_and_spin(get_entity_state, request)
         self.assertIsNotNone(response)
         self.assertEqual(response.result.result, Result.RESULT_OK)
-        self.assertEqual(response.result.error_message, "")
+        self.assertEqual(response.result.error_message, '')
         return response
 
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
-        state = self.get_entity_state("vehicle").state
+        state = self.get_entity_state('vehicle').state
         self.assertAlmostEqual(state.twist.linear.x, 0, delta=1e-4)
 
         # Send a velocity command to vehicle
-        publisher = self.node.create_publisher(Twist, "cmd_vel", 10)
+        publisher = self.node.create_publisher(Twist, 'cmd_vel', 10)
         msg = Twist()
         msg.linear.x = 0.25
-        pattern = re.compile("Passing message.*geometry_msgs/msg/Twist")
+        pattern = re.compile('Passing message.*geometry_msgs/msg/Twist')
         for _ in range(10):
             publisher.publish(msg)
             if proc_output.waitFor(pattern, process=bridge_node, timeout=1):
@@ -134,12 +131,10 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             rclpy.spin_once(self.node)
 
         time.sleep(2)
-        state = self.get_entity_state("vehicle").state
+        state = self.get_entity_state('vehicle').state
         self.assertAlmostEqual(state.twist.linear.x, 0.25, delta=1e-2)
 
-
     def test_get_entity_state_on_spawned_entity(self) -> None:
-
         sdf_string = """
             <sdf version='1.12'>
                 <model name="sphere">
@@ -159,20 +154,20 @@ class TestGzSimulationInterfaces(unittest.TestCase):
                 </model>
             </sdf>
             """
-        spawn_entity, request = self.setup_client(
-            si.SpawnEntity, "spawn_entity"
-        )
-        request.name = "test_sphere"
+        spawn_entity, request = self.setup_client(si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_sphere'
         request.entity_resource.resource_string = sdf_string
-        # spawn at 4, -20, 2 so that when the ball falls on the incline and start rolling without any external commands
+        # spawn at 4, -20, 2 so that when the ball falls on the incline and start
+        # rolling without any external commands
         request.initial_pose.pose.position.x = 4.0
         request.initial_pose.pose.position.y = -20.0
         request.initial_pose.pose.position.z = 4.0
 
         self.assertTrue(self.call_and_spin(spawn_entity, request))
         time.sleep(2)
-        state = self.get_entity_state("test_sphere").state
+        state = self.get_entity_state('test_sphere').state
         self.assertGreater(state.twist.linear.x, 0.1)
+
 
 # NOTE: If we don't have this test, unittest will report "NO TESTS RAN" at the end of the test
 # See https://github.com/colcon/colcon-core/issues/678

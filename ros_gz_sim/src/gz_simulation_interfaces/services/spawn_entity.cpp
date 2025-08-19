@@ -63,7 +63,7 @@ SpawnEntity::SpawnEntity(
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message =
-          "One of the fields [uri] or [resource_string] must be specified";
+        "One of the fields [uri] or [resource_string] must be specified";
         return;
       }
 
@@ -81,8 +81,8 @@ SpawnEntity::SpawnEntity(
 
       bool result;
       gz::msgs::Boolean reply;
-      bool executed =
-        this->gz_proxy_->GzNode()->Request(create_service, gz_request, 30000, reply, result);
+      bool executed = this->gz_proxy_->GzNode()->Request(
+        create_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to set simulation state";

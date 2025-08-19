@@ -53,14 +53,14 @@ GetEntityState::GetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
-      return;
-    }
-    auto stats = this->gz_proxy_->Stats();
-    this->gz_proxy_->WithEcm([&](const auto & ecm) {
-      response->result = GetEntityState::FromEcm(ecm, stats, request->entity, response->state);
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+      auto stats = this->gz_proxy_->Stats();
+      this->gz_proxy_->WithEcm([&](const auto & ecm) {
+          response->result = GetEntityState::FromEcm(ecm, stats, request->entity, response->state);
     });
-  };
+    };
   this->services_handle_ =
     ros_node->create_service<GetEntityStateSrv>("get_entity_state", service_cb);
 

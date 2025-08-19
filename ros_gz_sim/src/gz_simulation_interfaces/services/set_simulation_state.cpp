@@ -63,7 +63,7 @@ SetSimulationState::SetSimulationState(
         default:
           response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
           response->result.error_message =
-            "Only the states [STATE_STOPPED, STATE_PAUSED, STATE_PLAYING] are supported";
+          "Only the states [STATE_STOPPED, STATE_PAUSED, STATE_PLAYING] are supported";
           return;
       }
 

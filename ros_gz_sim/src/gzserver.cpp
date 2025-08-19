@@ -15,15 +15,16 @@
 #include "ros_gz_sim/gzserver.hpp"
 
 #include <functional>
+#include <memory>
+#include <thread>
+
 #include <gz/common/Console.hh>
 #include <gz/sim/Server.hh>
 #include <gz/sim/ServerConfig.hh>
 #include <gz/sim/SystemLoader.hh>
-#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/utilities.hpp>
 #include <rclcpp_components/register_node_macro.hpp>
-#include <thread>
 
 #include "ros_gz_sim/gz_simulation_interfaces.hpp"
 

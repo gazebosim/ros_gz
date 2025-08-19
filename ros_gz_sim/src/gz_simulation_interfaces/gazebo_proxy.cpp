@@ -72,7 +72,8 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
 
       // Listen to the "state" topic to get periodic updates.
       if (!this->gz_node_->Subscribe(
-            this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this)) {
+            this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this))
+      {
         RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to continues state updates failed");
       }
     }
@@ -108,7 +109,7 @@ bool GazeboProxy::WaitForService(
       break;
     }
     const auto now = std::chrono::system_clock::now();
-    if (now > start_time + timeout) break;
+    if (now > start_time + timeout) {break;}
 
     using namespace std::chrono_literals;  // NOLINT
     std::this_thread::sleep_for(500ms);
@@ -139,9 +140,9 @@ void GazeboProxy::WithEcm(std::function<void(gz::sim::EntityComponentManager &)>
   f(this->ecm_);
 }
 
-std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() { return this->gz_node_; }
+std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() {return this->gz_node_;}
 
-bool GazeboProxy::StateInitialized() const { return this->state_intialized_; }
+bool GazeboProxy::StateInitialized() const {return this->state_intialized_;}
 
 bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
 {
@@ -151,7 +152,7 @@ bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
   }
   std::unique_lock lk(this->state_sync_mutex_);
   this->state_updated_ = false;
-  return this->state_cv_.wait_for(lk, timeout, [this] { return this->state_updated_; });
+  return this->state_cv_.wait_for(lk, timeout, [this] {return this->state_updated_;});
 }
 
 bool GazeboProxy::AssertUpdatedState(simulation_interfaces::msg::Result & result)
@@ -175,7 +176,8 @@ bool GazeboProxy::InitializeGazeboConnection()
   gz::msgs::StringMsg_V worlds_msg;
   bool result;
   if (this->gz_node_->Request(
-        "gazebo/worlds", GazeboProxy::kGzServiceTimeoutMs, worlds_msg, result)) {
+        "gazebo/worlds", GazeboProxy::kGzServiceTimeoutMs, worlds_msg, result))
+  {
     if (result && !worlds_msg.data().empty()) {
       this->world_name_ = worlds_msg.data(0);
       return true;
@@ -192,10 +194,10 @@ bool GazeboProxy::WaitForCriticalServices()
     const auto state_service = this->PrefixTopic("state");
     if (!this->WaitForService(state_service)) {
       RCLCPP_ERROR_STREAM(
-        this->ros_node_->get_logger(), "Required Gazebo service ["
-                                         << state_service
-                                         << "] is not available. Make sure the [SceneBroadacaster] "
-                                            "system is loaded in your Gazebo world");
+        this->ros_node_->get_logger(),
+        "Required Gazebo service ["
+          << state_service << "] is not available. "
+          << "Make sure the [SceneBroadacaster] system is loaded in your Gazebo world");
       have_all_services = false;
     }
   }
@@ -204,10 +206,10 @@ bool GazeboProxy::WaitForCriticalServices()
     const auto control_service = this->PrefixTopic("control/state");
     if (!this->WaitForService(control_service)) {
       RCLCPP_ERROR_STREAM(
-        this->ros_node_->get_logger(), "Gazebo service ["
-                                         << control_service << "] is not available "
-                                         << "] is not available. Make sure the [SceneBroadacaster] "
-                                            "system is loaded in your Gazebo world");
+        this->ros_node_->get_logger(),
+        "Gazebo service ["
+          << control_service << "] is not available. "
+          << "Make sure the [SceneBroadacaster] system is loaded in your Gazebo world");
 
       have_all_services = false;
     }
@@ -263,7 +265,7 @@ void GazeboProxy::InitializeCanonicalLinks(
   gz::msgs::WorldControlState control_msg;
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
-                            components::WorldAngularVelocity::typeId}));
+        components::WorldAngularVelocity::typeId}));
 
   bool result;
   gz::msgs::Boolean controlReply;

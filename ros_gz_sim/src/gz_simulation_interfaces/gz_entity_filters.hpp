@@ -51,13 +51,16 @@ public:
     const auto & tags_filter_mode = filters_.tags.filter_mode;
     if (
       tags_filter_mode != TagsFilter::FILTER_MODE_ANY &&
-      tags_filter_mode != TagsFilter::FILTER_MODE_ALL) {
+      tags_filter_mode != TagsFilter::FILTER_MODE_ALL)
+    {
       throw std::runtime_error(
         "The tag filter mode needs to be one of [FILTER_MODE_ANY, FILTER_MODE_ALL]");
     }
   }
 
-  std::tuple<bool, Result> ApplyFilter(const gz::sim::Entity & entity, const std::string entity_name)
+  std::tuple<bool, Result> ApplyFilter(
+    const gz::sim::Entity & entity,
+    const std::string entity_name)
   {
     namespace components = gz::sim::components;
     Result result;
@@ -74,7 +77,8 @@ public:
         EntityCategory::CATEGORY_OBJECT);
       if (
         std::find(test_categories.begin(), test_categories.end(), entity_category) ==
-        test_categories.end()) {
+        test_categories.end())
+      {
         return {false, result};
       }
     }
@@ -83,8 +87,8 @@ public:
       const auto entity_tags = ecm_.ComponentData<components::SemanticTags>(entity).value_or(
         components::SemanticTags::Type{});
       auto are_in_entity_tags = [&entity_tags](auto tag) {
-        return std::find(entity_tags.begin(), entity_tags.end(), tag) != entity_tags.end();
-      };
+          return std::find(entity_tags.begin(), entity_tags.end(), tag) != entity_tags.end();
+        };
 
       if (filters_.tags.filter_mode == TagsFilter::FILTER_MODE_ANY) {
         if (!std::any_of(test_tags.begin(), test_tags.end(), are_in_entity_tags)) {

@@ -40,27 +40,27 @@ GetSimulatorFeatures::GetSimulatorFeatures(
       using SimulatorFeatures = simulation_interfaces::msg::SimulatorFeatures;
       // clang-format off
       response->features.features.assign({
-        SimulatorFeatures::SPAWNING,
-        SimulatorFeatures::DELETING,
-        SimulatorFeatures::ENTITY_TAGS,
-        // SimulatorFeatures::ENTITY_BOUNDS, // TODO(azeey)
-        // SimulatorFeatures::ENTITY_BOUNDS_BOX, // TODO(azeey)
-        SimulatorFeatures::ENTITY_CATEGORIES,
-        SimulatorFeatures::SPAWNING_RESOURCE_STRING,
-        SimulatorFeatures::ENTITY_STATE_GETTING,
-        SimulatorFeatures::ENTITY_STATE_SETTING,
-        SimulatorFeatures::ENTITY_INFO_GETTING,
-        // SimulatorFeatures::ENTITY_INFO_SETTING, // TODO(azeey)
-        SimulatorFeatures::SIMULATION_RESET,
-        // SimulatorFeatures::SIMULATION_RESET_TIME, // TODO(azeey)
-        // SimulatorFeatures::SIMULATION_RESET_STATE, // TODO(azeey)
-        // SimulatorFeatures::SIMULATION_RESET_SPAWNED, // TODO(azeey)
-        SimulatorFeatures::SIMULATION_STATE_GETTING,
-        SimulatorFeatures::SIMULATION_STATE_SETTING,
-        SimulatorFeatures::SIMULATION_STATE_PAUSE,
-        SimulatorFeatures::STEP_SIMULATION_SINGLE,
-        SimulatorFeatures::STEP_SIMULATION_MULTIPLE,
-        SimulatorFeatures::STEP_SIMULATION_ACTION,
+            SimulatorFeatures::SPAWNING,
+            SimulatorFeatures::DELETING,
+            SimulatorFeatures::ENTITY_TAGS,
+            // SimulatorFeatures::ENTITY_BOUNDS, // TODO(azeey)
+            // SimulatorFeatures::ENTITY_BOUNDS_BOX, // TODO(azeey)
+            SimulatorFeatures::ENTITY_CATEGORIES,
+            SimulatorFeatures::SPAWNING_RESOURCE_STRING,
+            SimulatorFeatures::ENTITY_STATE_GETTING,
+            SimulatorFeatures::ENTITY_STATE_SETTING,
+            SimulatorFeatures::ENTITY_INFO_GETTING,
+            // SimulatorFeatures::ENTITY_INFO_SETTING, // TODO(azeey)
+            SimulatorFeatures::SIMULATION_RESET,
+            // SimulatorFeatures::SIMULATION_RESET_TIME, // TODO(azeey)
+            // SimulatorFeatures::SIMULATION_RESET_STATE, // TODO(azeey)
+            // SimulatorFeatures::SIMULATION_RESET_SPAWNED, // TODO(azeey)
+            SimulatorFeatures::SIMULATION_STATE_GETTING,
+            SimulatorFeatures::SIMULATION_STATE_SETTING,
+            SimulatorFeatures::SIMULATION_STATE_PAUSE,
+            SimulatorFeatures::STEP_SIMULATION_SINGLE,
+            SimulatorFeatures::STEP_SIMULATION_MULTIPLE,
+            SimulatorFeatures::STEP_SIMULATION_ACTION,
         // clang-format on
       });
 

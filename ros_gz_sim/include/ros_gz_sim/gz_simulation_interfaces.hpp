@@ -15,6 +15,8 @@
 #ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_HPP_
 #define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_HPP_
 
+#include <memory>
+
 #include <gz/utils/ImplPtr.hh>
 #include <rclcpp/node.hpp>
 

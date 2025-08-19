@@ -62,7 +62,7 @@ public:
 
   bool WaitForUpdatedState(
     const std::chrono::milliseconds & timeout =
-      std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
+    std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
 
   bool AssertUpdatedState(simulation_interfaces::msg::Result & result);
 

@@ -54,7 +54,7 @@ StepSimulation::StepSimulation(
       if (request->steps > std::numeric_limits<uint32_t>::max()) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message =
-          "The requested number of steps exceeds the maximum supported value (max uint32)";
+        "The requested number of steps exceeds the maximum supported value (max uint32)";
         return;
       }
 

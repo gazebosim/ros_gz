@@ -46,53 +46,53 @@ GetEntitiesStates::GetEntitiesStates(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
-      return;
-    }
-    const auto stats = this->gz_proxy_->Stats();
-    this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
-      try {
-        GzEntityFilters filters(request->filters, ecm);
-        ecm.Each<components::Name, components::Model, components::ParentEntity>(
-          [&](
-            const gz::sim::Entity & entity, const components::Name * name,
-            const components::Model *, const components::ParentEntity * parent) {
-            // Check that this is a top level model
-            if (ecm.Component<components::Model>(parent->Data())) {
-              // This is a nested model which should not be included in the list of entities to
-              // return.
-              // TODO(azeey) It might be useful to allow nested models here when we enable setting
-              // their poses in Gazebo.
-              return true;
-            }
-            auto [isIncluded, filter_result] = filters.ApplyFilter(entity, name->Data());
-
-            if (filter_result.result != Result::RESULT_OK) {
-              response->result = filter_result;
-              return false;
-            }
-
-            if (!isIncluded) {
-              return true;
-            }
-
-            response->entities.push_back(name->Data());
-            auto & state = response->states.emplace_back();
-            auto state_result = GetEntityState::FromEcm(ecm, stats, entity, state);
-
-            if (state_result.result != Result::RESULT_OK) {
-              response->result = state_result;
-              return false;
-            }
-
-            return true;
-          });
-      } catch (const std::exception & e) {
-        response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = e.what();
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
       }
+      const auto stats = this->gz_proxy_->Stats();
+      this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+          try {
+            GzEntityFilters filters(request->filters, ecm);
+            ecm.Each<components::Name, components::Model, components::ParentEntity>(
+              [&](
+                const gz::sim::Entity & entity, const components::Name * name,
+                const components::Model *, const components::ParentEntity * parent) {
+                // Check that this is a top level model
+                if (ecm.Component<components::Model>(parent->Data())) {
+                  // This is a nested model which should not be included in the list of entities to
+                  // return.
+                  // TODO(azeey) It might be useful to allow nested models here when we enable setting
+                  // their poses in Gazebo.
+                  return true;
+                }
+                auto [isIncluded, filter_result] = filters.ApplyFilter(entity, name->Data());
+
+                if (filter_result.result != Result::RESULT_OK) {
+                  response->result = filter_result;
+                  return false;
+                }
+
+                if (!isIncluded) {
+                  return true;
+                }
+
+                response->entities.push_back(name->Data());
+                auto & state = response->states.emplace_back();
+                auto state_result = GetEntityState::FromEcm(ecm, stats, entity, state);
+
+                if (state_result.result != Result::RESULT_OK) {
+                  response->result = state_result;
+                  return false;
+                }
+
+                return true;
+          });
+          } catch (const std::exception & e) {
+            response->result.result = Result::RESULT_OPERATION_FAILED;
+            response->result.error_message = e.what();
+          }
     });
-  };
+    };
 
   this->services_handle_ =
     ros_node->create_service<GetEntitiesStatesSrv>("get_entities_states", service_cb);

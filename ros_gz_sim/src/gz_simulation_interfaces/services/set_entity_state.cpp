@@ -49,53 +49,61 @@ SetEntityState::SetEntityState(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
-      return;
-    }
-    this->gz_proxy_->WithEcm([&](gz::sim::EntityComponentManager & ecm) {
-      const auto entity = ecm.EntityByName(request->entity);
-
-      // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world frame.
-
-      // Note that since there is no way to tell if a field has been set by the user, there's no
-      // setting just the pose or just the twist. They will both be set according to what's in the
-      // message. If not set by the user, the default values will be used.
-      if (entity) {
-        gz::sim::Model model(*entity);
-        model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
-        if (!model.Static(ecm)) {
-          // Velocity components are expected to be in the body frame, so we'll need to transform
-          // them.
-          // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
-          auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
-          auto linearVelCmdBody =
-            entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.linear));
-          auto angularVelCmdBody =
-            entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(request->state.twist.angular));
-
-          ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
-          ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
-        }
-      } else {
-        // TODO(azeey) Error
+  const auto control_state_service = this->gz_proxy_->PrefixTopic("control/state");
+  if (!this->gz_proxy_->WaitForService(control_state_service)) {
+    RCLCPP_ERROR_STREAM(
+      this->ros_node_->get_logger(),
+      "Gazebo service [" << control_state_service << "] is not available. "
+                         << "The [ResetSimulation] interface will not function properly.");
+  }
+  auto service_cb = [this, control_state_service](RequestPtr request, ResponsePtr response) {
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
       }
-      gz::msgs::WorldControlState control_msg;
-      control_msg.mutable_state()->CopyFrom(ecm.State(
-        {*entity}, {components::WorldPoseCmd::typeId, components::LinearVelocityCmd::typeId,
-                    components::AngularVelocityCmd::typeId}));
+      this->gz_proxy_->WithEcm(
+        [&](gz::sim::EntityComponentManager & ecm) {
+          const auto entity = ecm.EntityByName(request->entity);
 
-      bool result;
-      gz::msgs::Boolean reply;
-      // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
-      this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeoutMs,
-        reply, result);
-      // TODO(azeey) Handle Error
-      response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
-      // TODO(azeey) Wait for result?
-    });
-  };
+          // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world frame.
+
+          // Note that since there is no way to tell if a field has been set by the user, there's no
+          // setting just the pose or just the twist. They will both be set according to what's in the
+          // message. If not set by the user, the default values will be used.
+          if (entity) {
+            gz::sim::Model model(*entity);
+            model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
+            if (!model.Static(ecm)) {
+              // Velocity components are expected to be in the body frame, so we'll need to transform
+              // them.
+              // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
+              auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
+              auto linearVelCmdBody =
+              entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(
+                  request->state.twist.linear));
+              auto angularVelCmdBody =
+              entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(
+                  request->state.twist.angular));
+
+              ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
+              ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
+            }
+          } else {
+            // TODO(azeey) Error
+          }
+          gz::msgs::WorldControlState control_msg;
+          control_msg.mutable_state()->CopyFrom(ecm.State(
+            {*entity}, {components::WorldPoseCmd::typeId, components::LinearVelocityCmd::typeId,
+              components::AngularVelocityCmd::typeId}));
+
+          bool result;
+          gz::msgs::Boolean reply;
+          this->gz_proxy_->GzNode()->Request(control_state_service, control_msg,
+              GazeboProxy::kGzServiceTimeoutMs, reply, result);
+          // TODO(azeey) Handle Error
+          response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
+          // TODO(azeey) Wait for result?
+        });
+    };
   this->services_handle_ =
     ros_node->create_service<SetEntityStateSrv>("set_entity_state", service_cb);
 

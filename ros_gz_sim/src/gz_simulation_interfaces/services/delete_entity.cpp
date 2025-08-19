@@ -52,7 +52,8 @@ DeleteEntity::DeleteEntity(
       gz::msgs::Boolean gz_reply;
       bool result;
       if (this->gz_proxy_->GzNode()->Request(
-            remove_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, gz_reply, result)) {
+            remove_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, gz_reply, result))
+      {
         if (result && gz_reply.data()) {
           response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
           return;
