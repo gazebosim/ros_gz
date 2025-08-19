@@ -27,10 +27,13 @@
   <depend>builtin_interfaces</depend>
   <depend>cli11</depend>
   <depend>geometry_msgs</depend>
+  <!-- Temporarily disable vendor packages and depend on upstream packages -->
   <!-- <depend>gz_math_vendor</depend> -->
   <!-- <depend>gz_msgs_vendor</depend> -->
   <!-- <depend>gz_sim_vendor</depend> -->
   <!-- <depend>gz_transport_vendor</depend> -->
+  <depend>gz-sim</depend>
+
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>libgflags-dev</depend>
