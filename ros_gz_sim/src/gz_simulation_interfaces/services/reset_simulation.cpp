@@ -17,9 +17,10 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/reset_simulation.hpp"
-
 namespace ros_gz_sim
 {
 namespace gz_simulation_interfaces
@@ -34,8 +35,15 @@ ResetSimulation::ResetSimulation(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
+  const auto control_service = this->gz_proxy_->PrefixTopic("control");
+  if (!this->gz_proxy_->WaitForService(control_service)) {
+    RCLCPP_ERROR_STREAM(
+      this->ros_node_->get_logger(),
+      "Gazebo service [" << control_service << "] is not available. "
+                         << "The [ResetSimulation] interface will not function properly.");
+  }
   this->services_handle_ = ros_node->create_service<ResetSimulationSrv>(
-    "reset_simulation", [this](RequestPtr request, ResponsePtr response) {
+    "reset_simulation", [this, control_service](RequestPtr request, ResponsePtr response) {
       using Result = simulation_interfaces::msg::Result;
       if (
         request->scope != ResetSimulationSrv::Request::SCOPE_DEFAULT &&
@@ -49,12 +57,12 @@ ResetSimulation::ResetSimulation(
       gz::msgs::WorldControl gz_request;
       gz_request.set_pause(this->gz_proxy_->Paused());
       gz_request.mutable_reset()->set_all(true);
-      // TODO(azeey) Reseting only the time, state or spawned models is not supported yet in Gazebo
+      // TODO(azeey) Resetting only the time, state or spawned models is not supported yet in Gazebo
 
       bool result;
       gz::msgs::Boolean reply;
       bool executed = this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("control"), gz_request, 30000, reply, result);
+        control_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to reset simulation";

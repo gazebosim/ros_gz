@@ -41,6 +41,7 @@ namespace services
 using GetEntityInfoSrv = simulation_interfaces::srv::GetEntityInfo;
 using RequestPtr = GetEntityInfoSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetEntityInfoSrv::Response::SharedPtr;
+using simulation_interfaces::msg::Result;
 
 GetEntityInfo::GetEntityInfo(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -48,7 +49,10 @@ GetEntityInfo::GetEntityInfo(
 {
   this->services_handle_ = ros_node->create_service<GetEntityInfoSrv>(
     "get_entity_info", [this](RequestPtr request, ResponsePtr response) {
-      this->gz_proxy_->WithEcm([this, request, response](gz::sim::EntityComponentManager & ecm) {
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+      this->gz_proxy_->WithEcm([request, response](gz::sim::EntityComponentManager & ecm) {
         auto entity = ecm.EntityByName(request->entity);
         if (entity) {
           auto category = ecm.ComponentData<components::SemanticCategory>(*entity);
@@ -67,9 +71,9 @@ GetEntityInfo::GetEntityInfo(
             response->info.tags = *tags;
           }
 
-          response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
+          response->result.result = Result::RESULT_OK;
         } else {
-          response->result.result = simulation_interfaces::msg::Result::RESULT_OPERATION_FAILED;
+          response->result.result = Result::RESULT_OPERATION_FAILED;
           response->result.error_message = "Specified entity was not found";
         }
       });

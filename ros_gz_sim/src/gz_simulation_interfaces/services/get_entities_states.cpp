@@ -46,7 +46,9 @@ GetEntitiesStates::GetEntitiesStates(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
-    this->gz_proxy_->WaitForUpdatedState();
+    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+      return;
+    }
     const auto stats = this->gz_proxy_->Stats();
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       try {

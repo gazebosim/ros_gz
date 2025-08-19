@@ -19,6 +19,7 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
+#include <chrono>
 #include <condition_variable>
 #include <memory>
 #include <string>
@@ -30,6 +31,7 @@
 #include <gz/sim/Util.hh>
 #include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
+#include <simulation_interfaces/msg/result.hpp>
 
 namespace ros_gz_sim
 {
@@ -40,9 +42,11 @@ class GazeboProxy
 public:
   GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node);
 
-  bool InitializeGazeboConnection();
-
   std::string PrefixTopic(const char * topic) const;
+
+  bool WaitForService(
+    const std::string & service,
+    const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
 
   uint64_t Iterations() const;
   bool Paused() const;
@@ -54,11 +58,20 @@ public:
 
   std::shared_ptr<gz::transport::Node> GzNode();
 
-  bool WaitForUpdatedState();
+  bool StateInitialized() const;
 
-  static constexpr unsigned int kGzServiceTimeout{5000};
+  bool WaitForUpdatedState(
+    const std::chrono::milliseconds & timeout =
+      std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
+
+  bool AssertUpdatedState(simulation_interfaces::msg::Result & result);
+
+  static constexpr unsigned int kGzServiceTimeoutMs{5000};
+  static constexpr unsigned int kGzStateUpdatedTimeoutMs{1000};
 
 private:
+  bool InitializeGazeboConnection();
+  bool WaitForCriticalServices();
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
   void HandleNewEntities();
   void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);

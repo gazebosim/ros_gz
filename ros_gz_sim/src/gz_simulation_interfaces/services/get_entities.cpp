@@ -55,6 +55,9 @@ GetEntities::GetEntities(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
+    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+      return;
+    }
     this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
       try {
         GzEntityFilters filters(request->filters, ecm);

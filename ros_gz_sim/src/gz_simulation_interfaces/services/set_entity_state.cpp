@@ -50,6 +50,9 @@ SetEntityState::SetEntityState(
 : HandlerBase(ros_node, gz_proxy)
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
+    if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+      return;
+    }
     this->gz_proxy_->WithEcm([&](gz::sim::EntityComponentManager & ecm) {
       const auto entity = ecm.EntityByName(request->entity);
 
@@ -86,7 +89,7 @@ SetEntityState::SetEntityState(
       gz::msgs::Boolean reply;
       // std::cout << "Sending: " << control_msg.DebugString() << std::endl;
       this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout,
+        this->gz_proxy_->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeoutMs,
         reply, result);
       // TODO(azeey) Handle Error
       response->result.result = simulation_interfaces::msg::Result::RESULT_OK;

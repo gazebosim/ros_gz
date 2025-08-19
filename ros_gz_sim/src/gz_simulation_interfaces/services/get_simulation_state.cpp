@@ -16,6 +16,8 @@
 
 #include <gz/msgs/boolean.pb.h>
 
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/get_simulation_state.hpp"
 
@@ -28,6 +30,7 @@ namespace services
 using GetSimulationStateSrv = simulation_interfaces::srv::GetSimulationState;
 using RequestPtr = GetSimulationStateSrv::Request::ConstSharedPtr;
 using ResponsePtr = GetSimulationStateSrv::Response::SharedPtr;
+using simulation_interfaces::msg::Result;
 
 GetSimulationState::GetSimulationState(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -35,6 +38,9 @@ GetSimulationState::GetSimulationState(
 {
   this->services_handle_ = ros_node->create_service<GetSimulationStateSrv>(
     "get_simulation_state", [this](RequestPtr, ResponsePtr response) {
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
       if (this->gz_proxy_->Paused()) {
         response->state.state = simulation_interfaces::msg::SimulationState::STATE_PAUSED;
         if (this->gz_proxy_->Iterations() == 0) {
@@ -45,6 +51,8 @@ GetSimulationState::GetSimulationState(
       } else {
         response->state.state = simulation_interfaces::msg::SimulationState::STATE_PLAYING;
       }
+
+      response->result.result = Result::RESULT_OK;
     });
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_simulation_state");

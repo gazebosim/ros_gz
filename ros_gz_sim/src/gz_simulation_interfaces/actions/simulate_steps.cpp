@@ -17,6 +17,9 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
+#include <limits>
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/action/simulate_steps.hpp"
 
@@ -33,8 +36,15 @@ SimulateSteps::SimulateSteps(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
+  const auto control_service = this->gz_proxy_->PrefixTopic("control");
+  if (!this->gz_proxy_->WaitForService(control_service)) {
+    RCLCPP_ERROR_STREAM(
+      this->ros_node_->get_logger(),
+      "Gazebo service [" << control_service << "] is not available. "
+                         << "The [SimulateSteps] interface will not function properly.");
+  }
   auto goal_callback =
-    [](const rclcpp_action::GoalUUID &, std::shared_ptr<const SimulateStepsAction ::Goal>) {
+    [](const rclcpp_action::GoalUUID &, std::shared_ptr<const SimulateStepsAction::Goal>) {
       // TODO(azeey) Add console message that we've received the goal
       return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
     };
@@ -44,14 +54,15 @@ SimulateSteps::SimulateSteps(
     return rclcpp_action::CancelResponse::ACCEPT;
   };
 
-  auto accept_cb = [this](const std::shared_ptr<GoalHandleSimulateSteps> goal_handle) {
+  auto accept_cb = [this,
+                    control_service](const std::shared_ptr<GoalHandleSimulateSteps> goal_handle) {
     // Note that this is not the same as SimulateStepsAction::Result, which is the typename
     // associated with the Result of the action, which in turn contains a
     // simulation_interfaces::msg::Result
     using Result = simulation_interfaces::msg::Result;
 
     // Execute the task in a separate thread and return immediately.
-    auto thread = std::thread([this, goal_handle] {
+    auto thread = std::thread([this, goal_handle, control_service] {
       const auto goal = goal_handle->get_goal();
       auto action_result = std::make_shared<SimulateStepsAction::Result>();
 
@@ -80,7 +91,7 @@ SimulateSteps::SimulateSteps(
       bool gz_result;
       gz::msgs::Boolean reply;
       bool executed = this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("control"), gz_request, 30000, reply, gz_result);
+        control_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, reply, gz_result);
       if (!executed) {
         action_result->result.result = Result::RESULT_OPERATION_FAILED;
         action_result->result.error_message = "Timed out while trying to reset simulation";

@@ -17,6 +17,8 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
 
+#include <memory>
+
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
 
@@ -34,15 +36,23 @@ SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
+  const auto create_service = this->gz_proxy_->PrefixTopic("create/blocking");
+  if (!this->gz_proxy_->WaitForService(create_service)) {
+    RCLCPP_ERROR_STREAM(
+      this->ros_node_->get_logger(),
+      "Gazebo service [" << create_service << "] is not available. "
+                         << "The [SpawnEntity] interface will not function properly. To fix this, "
+                            "make sure the [UserCommands] system is loaded in your Gazebo world");
+  }
   this->services_handle_ = ros_node->create_service<SpawnEntitySrv>(
-    "spawn_entity", [this](RequestPtr request, ResponsePtr response) {
+    "spawn_entity", [this, create_service](RequestPtr request, ResponsePtr response) {
       using Result = simulation_interfaces::msg::Result;
       gz::msgs::EntityFactory gz_request;
       if (!request->name.empty()) {
         gz_request.set_name(request->name);
       }
       gz_request.set_allow_renaming(request->allow_renaming);
-      const auto &resource = request->entity_resource;
+      const auto & resource = request->entity_resource;
 
       if (!resource.uri.empty()) {
         // TODO(azeey) The `sdf_filename` field requires absolute paths to the file.
@@ -71,8 +81,8 @@ SpawnEntity::SpawnEntity(
 
       bool result;
       gz::msgs::Boolean reply;
-      bool executed = this->gz_proxy_->GzNode()->Request(
-        this->gz_proxy_->PrefixTopic("create"), gz_request, 30000, reply, result);
+      bool executed =
+        this->gz_proxy_->GzNode()->Request(create_service, gz_request, 30000, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to set simulation state";

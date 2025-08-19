@@ -35,16 +35,24 @@ DeleteEntity::DeleteEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
+  const auto remove_service = this->gz_proxy_->PrefixTopic("remove/blocking");
+  if (!this->gz_proxy_->WaitForService(remove_service)) {
+    RCLCPP_ERROR_STREAM(
+      this->ros_node_->get_logger(),
+      "Gazebo service ["
+        << remove_service << "] is not available. "
+        << "The [DeleteEntity] interface will not function properly. To fix this, make "
+           "sure the [UserCommands] system is loaded in your Gazebo world");
+  }
   this->services_handle_ = ros_node->create_service<DeleteEntitySrv>(
-    "delete_entity", [this](RequestPtr request, ResponsePtr response) {
+    "delete_entity", [this, remove_service](RequestPtr request, ResponsePtr response) {
       gz::msgs::Entity gz_request;
       gz_request.set_name(request->entity);
       gz_request.set_type(gz::msgs::Entity::MODEL);
       gz::msgs::Boolean gz_reply;
       bool result;
       if (this->gz_proxy_->GzNode()->Request(
-            this->gz_proxy_->PrefixTopic("remove"), gz_request, GazeboProxy::kGzServiceTimeout,
-            gz_reply, result)) {
+            remove_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, gz_reply, result)) {
         if (result && gz_reply.data()) {
           response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
           return;

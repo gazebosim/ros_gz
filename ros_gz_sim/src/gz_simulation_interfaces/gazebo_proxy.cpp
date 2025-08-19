@@ -43,13 +43,19 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
     throw std::runtime_error("Could not initialize Gazebo connection");
   }
 
+  if (!this->WaitForCriticalServices()) {
+    RCLCPP_ERROR(
+      ros_node->get_logger(),
+      "Critical services from Gazebo are not available. ROS Simulation Interfaces will not "
+      "function properly.");
+  }
   // TODO(azeey) Consider adding the UserCommands system if not already present.
   // TODO(azeey) Wait for critical services to be available (e.g. /world/*/create,
   // /world/*/control) Request the initial state of the world. This will block until Gazebo is
   // initialized
   gz::msgs::SerializedStepMap reply;
   bool result;
-  if (!this->gz_node_->Request(this->PrefixTopic("state"), kGzServiceTimeout, reply, result)) {
+  if (!this->gz_node_->Request(this->PrefixTopic("state"), kGzServiceTimeoutMs, reply, result)) {
     RCLCPP_ERROR(
       ros_node->get_logger(),
       "Simulation interface timed out while waiting for Gazebo to initialize");
@@ -84,12 +90,92 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
   this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
 }
 
+std::string GazeboProxy::PrefixTopic(const char * topic) const
+{
+  return "world/" + this->world_name_ + "/" + topic;
+}
+
+bool GazeboProxy::WaitForService(
+  const std::string & service, const std::chrono::milliseconds & timeout)
+{
+  std::vector<gz::transport::ServicePublisher> publishers;
+  const auto start_time = std::chrono::system_clock::now();
+  bool found_service = false;
+  while (true) {
+    this->GzNode()->ServiceInfo(service, publishers);
+    if (!publishers.empty()) {
+      found_service = true;
+      break;
+    }
+    const auto now = std::chrono::system_clock::now();
+    if (now > start_time + timeout) break;
+
+    using namespace std::chrono_literals;  // NOLINT
+    std::this_thread::sleep_for(500ms);
+  }
+  return found_service;
+}
+uint64_t GazeboProxy::Iterations() const
+{
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  return this->world_stats_.iterations();
+}
+
+bool GazeboProxy::Paused() const
+{
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  return this->world_stats_.paused();
+}
+
+gz::msgs::WorldStatistics GazeboProxy::Stats() const
+{
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  return this->world_stats_;
+}
+
+void GazeboProxy::WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f)
+{
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  f(this->ecm_);
+}
+
+std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() { return this->gz_node_; }
+
+bool GazeboProxy::StateInitialized() const { return this->state_intialized_; }
+
+bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
+{
+  // If the state has not been initialized, it will not be continuously updated, so return early.
+  if (!state_intialized_) {
+    return false;
+  }
+  std::unique_lock lk(this->state_sync_mutex_);
+  this->state_updated_ = false;
+  return this->state_cv_.wait_for(lk, timeout, [this] { return this->state_updated_; });
+}
+
+bool GazeboProxy::AssertUpdatedState(simulation_interfaces::msg::Result & result)
+{
+  using simulation_interfaces::msg::Result;
+  if (!this->StateInitialized()) {
+    result.result = Result::RESULT_OPERATION_FAILED;
+    result.error_message = "Required Gazebo system is missing";
+    return false;
+  }
+  if (!this->WaitForUpdatedState()) {
+    result.result = Result::RESULT_OPERATION_FAILED;
+    result.error_message = "Timed out while waiting for updated Gazebo state";
+    return false;
+  }
+  return true;
+}
+
 bool GazeboProxy::InitializeGazeboConnection()
 {
   gz::msgs::StringMsg_V worlds_msg;
   bool result;
   if (this->gz_node_->Request(
-        "gazebo/worlds", GazeboProxy::kGzServiceTimeout, worlds_msg, result)) {
+        "gazebo/worlds", GazeboProxy::kGzServiceTimeoutMs, worlds_msg, result)) {
     if (result && !worlds_msg.data().empty()) {
       this->world_name_ = worlds_msg.data(0);
       return true;
@@ -97,10 +183,39 @@ bool GazeboProxy::InitializeGazeboConnection()
   }
   return false;
 }
-std::string GazeboProxy::PrefixTopic(const char * topic) const
+
+bool GazeboProxy::WaitForCriticalServices()
 {
-  return "world/" + this->world_name_ + "/" + topic;
+  bool have_all_services = true;
+  // Check that services from SceneBroadacaster are available
+  {
+    const auto state_service = this->PrefixTopic("state");
+    if (!this->WaitForService(state_service)) {
+      RCLCPP_ERROR_STREAM(
+        this->ros_node_->get_logger(), "Required Gazebo service ["
+                                         << state_service
+                                         << "] is not available. Make sure the [SceneBroadacaster] "
+                                            "system is loaded in your Gazebo world");
+      have_all_services = false;
+    }
+  }
+
+  {
+    const auto control_service = this->PrefixTopic("control/state");
+    if (!this->WaitForService(control_service)) {
+      RCLCPP_ERROR_STREAM(
+        this->ros_node_->get_logger(), "Gazebo service ["
+                                         << control_service << "] is not available "
+                                         << "] is not available. Make sure the [SceneBroadacaster] "
+                                            "system is loaded in your Gazebo world");
+
+      have_all_services = false;
+    }
+  }
+
+  return have_all_services;
 }
+
 void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 {
   {
@@ -118,42 +233,6 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 
   // TODO(azeey) Consider using a condition variable to notify services that there is new data so
   // as to avoid using stale data
-}
-
-uint64_t GazeboProxy::Iterations() const
-{
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-  return this->world_stats_.iterations();
-}
-gz::msgs::WorldStatistics GazeboProxy::Stats() const
-{
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-  return this->world_stats_;
-}
-bool GazeboProxy::Paused() const
-{
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-  return this->world_stats_.paused();
-}
-
-void GazeboProxy::WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f)
-{
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-  f(this->ecm_);
-}
-
-std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() { return this->gz_node_; }
-
-bool GazeboProxy::WaitForUpdatedState()
-{
-  // If the state has not been initialized, it will not be continuously updated, so return early.
-  if (!state_intialized_) {
-    return false;
-  }
-  std::unique_lock lk(this->state_sync_mutex_);
-  this->state_updated_ = false;
-  using namespace std::chrono_literals;  // NOLINT
-  return this->state_cv_.wait_for(lk, 1s, [this] { return this->state_updated_; });
 }
 void GazeboProxy::HandleNewEntities()
 {
@@ -189,7 +268,7 @@ void GazeboProxy::InitializeCanonicalLinks(
   bool result;
   gz::msgs::Boolean controlReply;
   this->gz_node_->Request(
-    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeout, controlReply,
+    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeoutMs, controlReply,
     result);
   if (!result || !controlReply.data()) {
     RCLCPP_ERROR_THROTTLE(
