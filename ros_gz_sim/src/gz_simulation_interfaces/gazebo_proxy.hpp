@@ -134,7 +134,7 @@ private:
   /// \return True if the state was updated before a timeout occurred.
   bool WaitForUpdatedState(
     const std::chrono::milliseconds & timeout =
-      std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
+    std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
 
   /// \brief Callback for receiving SerializedStepMap
   ///

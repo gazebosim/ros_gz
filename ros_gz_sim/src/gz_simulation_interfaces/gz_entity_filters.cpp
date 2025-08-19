@@ -45,9 +45,9 @@ GzEntityFilters::GzEntityFilters(
 : filters_(filters), ecm_(ecm), regex_filter_(filters.filter, std::regex::extended)
 {
   const auto & tags_filter_mode = filters_.tags.filter_mode;
-  if (
-    tags_filter_mode != TagsFilter::FILTER_MODE_ANY &&
-    tags_filter_mode != TagsFilter::FILTER_MODE_ALL) {
+  if (tags_filter_mode != TagsFilter::FILTER_MODE_ANY &&
+    tags_filter_mode != TagsFilter::FILTER_MODE_ALL)
+  {
     throw std::runtime_error(
       "The tag filter mode needs to be one of [FILTER_MODE_ANY, FILTER_MODE_ALL]");
   }
@@ -69,9 +69,8 @@ std::tuple<bool, Result> GzEntityFilters::ApplyFilter(
     EntityCategory entity_category;
     entity_category.category = ecm_.ComponentData<components::SemanticCategory>(entity).value_or(
       EntityCategory::CATEGORY_OBJECT);
-    if (
-      std::find(test_categories.begin(), test_categories.end(), entity_category) ==
-      test_categories.end()) {
+    auto it = std::find(test_categories.begin(), test_categories.end(), entity_category);
+    if (it == test_categories.end()) {
       return {false, result};
     }
   }
@@ -79,9 +78,10 @@ std::tuple<bool, Result> GzEntityFilters::ApplyFilter(
   if (!test_tags.empty()) {
     const auto entity_tags = ecm_.ComponentData<components::SemanticTags>(entity).value_or(
       components::SemanticTags::Type{});
-    auto are_in_entity_tags = [&entity_tags](auto tag) {
-      return std::find(entity_tags.begin(), entity_tags.end(), tag) != entity_tags.end();
-    };
+    auto are_in_entity_tags =
+      [&entity_tags](auto tag) {
+        return std::find(entity_tags.begin(), entity_tags.end(), tag) != entity_tags.end();
+      };
 
     if (filters_.tags.filter_mode == TagsFilter::FILTER_MODE_ANY) {
       if (!std::any_of(test_tags.begin(), test_tags.end(), are_in_entity_tags)) {
