@@ -227,7 +227,6 @@ class GzServer(Action):
                 package='ros_gz_sim',
                 executable='gzserver',
                 output='screen',
-                emulate_tty=True,
                 parameters=[{'world_sdf_file': self.__world_sdf_file,
                              'world_sdf_string': self.__world_sdf_string,
                              'initial_sim_time': self.__initial_sim_time}],

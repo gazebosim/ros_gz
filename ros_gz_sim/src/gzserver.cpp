@@ -16,6 +16,7 @@
 
 #include <functional>
 #include <memory>
+#include <string>
 #include <thread>
 
 #include <gz/common/Console.hh>
@@ -80,8 +81,10 @@ void GzServer::OnStart()
   // critical services from Gazebo to become available before starting the ROS services
   server->RunOnce(true);
   // TODO(azeey) Allow disabling simulation interfaces
+
   this->dataPtr->sim_interfaces =
-    std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(this->shared_from_this());
+    std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(
+      this->create_sub_node(std::string(this->get_name()) + "/simulation_interfaces"));
   server->Run(true /*blocking*/, 0, false /*paused*/);
   server.reset();
   this->dataPtr->sim_interfaces.reset();
