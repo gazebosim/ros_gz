@@ -79,6 +79,7 @@ target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 set(gz_simulation_interfaces_sources
   src/gz_simulation_interfaces/gz_simulation_interfaces.cpp
   src/gz_simulation_interfaces/gazebo_proxy.cpp
+  src/gz_simulation_interfaces/gz_entity_filters.cpp
   src/gz_simulation_interfaces/utils.cpp
 
   # Actions
