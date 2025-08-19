@@ -98,6 +98,22 @@ convert_ros_to_gz(
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::R_FLOAT32);
     num_channels = 1;
     octets_per_channel = 4u;
+  } else if (ros_msg.encoding == "bayer_rggb8") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_RGGB8);
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (ros_msg.encoding == "bayer_bggr8") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_BGGR8);
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (ros_msg.encoding == "bayer_gbrg8") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GBRG8);
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (ros_msg.encoding == "bayer_grbg8") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GRBG8);
+    num_channels = 1;
+    octets_per_channel = 1u;
   } else {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
     std::cerr << "Unsupported pixel format [" << ros_msg.encoding << "]" << std::endl;
@@ -159,6 +175,22 @@ convert_gz_to_ros(
     ros_msg.encoding = "32FC1";
     num_channels = 1;
     octets_per_channel = 4u;
+  } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_RGGB8) {
+    ros_msg.encoding = "bayer_rggb8";
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_BGGR8) {
+    ros_msg.encoding = "bayer_bggr8";
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GBRG8) {
+    ros_msg.encoding = "bayer_gbrg8";
+    num_channels = 1;
+    octets_per_channel = 1u;
+  } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GRBG8) {
+    ros_msg.encoding = "bayer_grbg8";
+    num_channels = 1;
+    octets_per_channel = 1u;
   } else {
     std::cerr << "Unsupported pixel format [" << gz_msg.pixel_format_type() << "]" << std::endl;
     return;
