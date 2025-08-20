@@ -24,7 +24,6 @@ jobs:
       matrix:
         include:
           - docker-image: "ubuntu:24.04"
-            gz-version: "ionic"
             ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}
@@ -35,5 +34,4 @@ jobs:
         run: .github/workflows/build-and-test.sh
         env:
           DOCKER_IMAGE: ${{ matrix.docker-image }}
-          GZ_VERSION: ${{ matrix.gz-version  }}
           ROS_DISTRO: ${{ matrix.ros-distro }}
