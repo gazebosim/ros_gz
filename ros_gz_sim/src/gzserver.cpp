@@ -84,7 +84,7 @@ void GzServer::OnStart()
 
   this->dataPtr->sim_interfaces =
     std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(
-      this->create_sub_node(std::string(this->get_name()) + "/simulation_interfaces"));
+      this->create_sub_node(this->get_name()));
   server->Run(true /*blocking*/, 0, false /*paused*/);
   server.reset();
   this->dataPtr->sim_interfaces.reset();

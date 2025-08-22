@@ -30,7 +30,6 @@ import simulation_interfaces.srv as si
 
 # Match name used in launch files
 GZ_SERVER_NODE_NAME = 'gz_server'
-GZ_SIM_INTERFACE_PREFIX = 'simulation_interfaces'
 
 
 def generate_test_description():
@@ -96,7 +95,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     def setup_client(self, srv_type, srv_name):
         client = self.node.create_client(
             srv_type,
-            f'{GZ_SERVER_NODE_NAME}/{GZ_SIM_INTERFACE_PREFIX}/{srv_name}',
+            f'{GZ_SERVER_NODE_NAME}/{srv_name}',
         )
         self.assertTrue(client.wait_for_service(timeout_sec=5))
         return client, srv_type.Request()
