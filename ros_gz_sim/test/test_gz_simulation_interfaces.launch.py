@@ -33,7 +33,6 @@ import simulation_interfaces.srv as si
 
 # Match name used in launch files
 GZ_SERVER_NODE_NAME = 'gz_server'
-GZ_SIM_INTERFACE_PREFIX = 'simulation_interfaces'
 
 
 def generate_test_description():
@@ -202,6 +201,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertTrue(self.call_and_spin(spawn_entity, request))
         time.sleep(2)
 
+        # Try to spawn the same entity again
         result = self.call_and_spin(spawn_entity, request).result.result
         self.assertTrue(result, Result.RESULT_OPERATION_FAILED)
 
@@ -274,11 +274,13 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         final_state = self.get_simulation_state().state.state
         self.assertEqual(final_state, target_state)
 
+        # Return the simulation to its intial state
         self.set_simulation_state(initial_state)
         restored_state = self.get_simulation_state().state.state
         self.assertEqual(restored_state, initial_state)
 
     def test_playing_when_already_playing(self) -> None:
+        # Try to set it to the same state twice
         self.set_simulation_state(SimulationState.STATE_PLAYING)
         self.set_simulation_state(SimulationState.STATE_PLAYING)
 
@@ -332,7 +334,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.filters.filter = 'vehicle'
 
         response = self.call_and_spin(get_entities_state, request)
-        # self.assert_result_ok(response)
+        self.assert_result_ok(response)
 
         self.assertEqual(len(response.entities), 1)
         self.assertEqual(response.entities[0], 'vehicle')
@@ -368,9 +370,11 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             SimulatorFeatures.STEP_SIMULATION_ACTION
         ]
 
+        # Check if each feature exists in the response
         for feature in existing_features:
             self.assertIn(feature, returned_features)
 
+        # Check sizes of both feature lists
         self.assertEqual(len(returned_features), len(existing_features))
 
 
