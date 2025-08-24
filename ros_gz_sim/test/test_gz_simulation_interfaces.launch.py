@@ -112,8 +112,10 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def assert_result_ok(self, response) -> None:
         self.assertIsNotNone(response)
-        self.assertEqual(response.result.result, Result.RESULT_OK,
-                         msg=response.result.error_message)
+        self.assertEqual(
+            response.result.result,
+            Result.RESULT_OK,
+            msg=response.result.error_message)
         self.assertEqual(response.result.error_message, '')
 
     def test_get_entities_with_no_filters(self) -> None:
@@ -380,7 +382,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
 # NOTE: If we don't have this test, unittest will report "NO TESTS RAN" at the end of the test
 # See https://github.com/colcon/colcon-core/issues/678
-@ launch_testing.post_shutdown_test()
+@launch_testing.post_shutdown_test()
 class TestGzserverShutdown(unittest.TestCase):
 
     def test_exit_codes(self, proc_info):
