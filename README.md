@@ -79,14 +79,7 @@ Be sure you've installed
 
 #### Gazebo
 
-Install either [Fortress, Harmonic or Ionic](https://gazebosim.org/docs).
-
-Set the `GZ_VERSION` environment variable to the Gazebo version you'd
-like to compile against. For example:
-
-    export GZ_VERSION=harmonic # IMPORTANT: Replace with correct version
-
-> You only need to set this variable when compiling, not when running.
+The version of Gazebo paired with Rolling will automatically be installed when running `rosdep` below.
 
 #### Compile ros_gz
 
