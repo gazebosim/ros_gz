@@ -17,10 +17,10 @@ find_package(rclcpp_components REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
 find_package(yaml-cpp REQUIRED)
 
-# find_package(gz_transport_vendor REQUIRED)
+find_package(gz_transport_vendor REQUIRED)
 find_package(gz-transport REQUIRED)
 
-# find_package(gz_msgs_vendor REQUIRED)
+find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
 # Install the python module for this package
@@ -349,9 +349,9 @@ ament_export_targets(export_${PROJECT_NAME})
 # specific order: dependents before dependencies
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(rclcpp_components)
-# ament_export_dependencies(gz_msgs_vendor)
+ament_export_dependencies(gz_msgs_vendor)
 ament_export_dependencies(gz-msgs)
-# ament_export_dependencies(gz_transport_vendor)
+ament_export_dependencies(gz_transport_vendor)
 ament_export_dependencies(gz-transport)
 ament_export_dependencies(${BRIDGE_MESSAGE_TYPES})
 

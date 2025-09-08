@@ -10,7 +10,7 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <!-- <depend>gz_sim_vendor</depend> -->
+  <depend>gz_sim_vendor</depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
