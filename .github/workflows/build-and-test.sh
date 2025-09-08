@@ -15,10 +15,14 @@ echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > 
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
 apt-get install -y python3-colcon-common-extensions \
-                   python3-rosdep
+                   python3-rosdep \
+                   python3-vcstool
 
 rosdep init
 rosdep update
+# Build Jetty vendor packages from source until they are released
+vcs import --input https://raw.githubusercontent.com/gazebo-tooling/gz_vendor/refs/heads/main/gz_vendor.repos
+
 rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
 # Build.
