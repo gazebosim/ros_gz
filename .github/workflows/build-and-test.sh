@@ -16,7 +16,8 @@ curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key
 apt-get update -qq
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
-                   python3-vcstool
+                   python3-vcstool \
+                   git
 
 rosdep init
 rosdep update
