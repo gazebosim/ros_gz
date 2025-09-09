@@ -27,8 +27,7 @@ from launch_testing.asserts import assertExitCodes
 import rclpy
 import rclpy.action
 from simulation_interfaces.action import SimulateSteps
-from simulation_interfaces.msg import Result, SimulationState
-from simulation_interfaces.msg import EntityCategory, SimulatorFeatures
+from simulation_interfaces.msg import EntityCategory, Result, SimulationState, SimulatorFeatures
 import simulation_interfaces.srv as si
 
 # Match name used in launch files
@@ -276,7 +275,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         final_state = self.get_simulation_state().state.state
         self.assertEqual(final_state, target_state)
 
-        # Return the simulation to its intial state
+        # Return the simulation to its initial state
         self.set_simulation_state(initial_state)
         restored_state = self.get_simulation_state().state.state
         self.assertEqual(restored_state, initial_state)
@@ -309,7 +308,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         action_client = rclpy.action.ActionClient(
             self.node,
             SimulateSteps,
-            f'simulate_steps')
+            'simulate_steps')
         self.assertTrue(action_client.wait_for_server(timeout_sec=30))
 
         goal_msg = SimulateSteps.Goal()
