@@ -23,6 +23,8 @@ rosdep init
 rosdep update
 # Build Jetty vendor packages from source until they are released
 vcs import --input https://raw.githubusercontent.com/gazebo-tooling/gz_vendor/refs/heads/main/gz_vendor.repos
+# Install dartsim and ogre-next from binaries as they haven't changed for Jetty
+rm -rf gz_dartsim_vendor gz_ogre_next_vendor
 
 rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
