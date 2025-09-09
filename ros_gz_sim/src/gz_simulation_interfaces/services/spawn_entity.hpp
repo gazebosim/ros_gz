@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__SIMULATION_INTERFACES_SPAWN_ENTITY_SERVICE_HPP_
-#define ROS_GZ_SIM__SIMULATION_INTERFACES_SPAWN_ENTITY_SERVICE_HPP_
+#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_SERVICES_SPAWN_ENTITY_HPP_
+#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_SERVICES_SPAWN_ENTITY_HPP_
 
 #include <memory>
 
