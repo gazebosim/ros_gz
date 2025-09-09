@@ -14,6 +14,7 @@
 
 #include "gz_entity_filters.hpp"
 
+#include <algorithm>
 #include <optional>
 #include <regex>
 #include <stdexcept>

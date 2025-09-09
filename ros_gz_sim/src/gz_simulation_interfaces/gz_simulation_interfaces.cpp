@@ -21,6 +21,9 @@
 #include <gz/msgs/world_stats.pb.h>
 
 #include <memory>
+#include <string>
+#include <thread>
+#include <vector>
 
 #include <gz/math/Pose3.hh>
 #include <gz/sim/Util.hh>
@@ -64,15 +67,8 @@ public:
   void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
   void CreateInterfaces();
 
-  template<typename Handler>
+  template <typename Handler>
   void AddInterface();
-
-  template<
-    typename Action, typename GoalHandlerFunc, typename CancelHandlerFunc,
-    typename AcceptedHandlerFunc>
-  void AddAction(
-    const char * service_name, GoalHandlerFunc && goal_callback,
-    CancelHandlerFunc && cancel_handler, AcceptedHandlerFunc && accepted_handler);
 
   bool InitializeGazeboParameters();
 
@@ -91,12 +87,12 @@ GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::N
 void GzSimulationInterfaces::Implementation::Run()
 {
   auto thread = std::thread([&] {
-        try {
-          this->gz_proxy_ = std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
-          this->CreateInterfaces();
-        } catch (const std::exception & e) {
-          RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
-        }
+    try {
+      this->gz_proxy_ = std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
+      this->CreateInterfaces();
+    } catch (const std::exception & e) {
+      RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
+    }
   });
 
   thread.detach();
@@ -122,7 +118,7 @@ void GzSimulationInterfaces::Implementation::CreateInterfaces()
   this->AddInterface<actions::SimulateSteps>();
 }
 
-template<typename Interface>
+template <typename Interface>
 void GzSimulationInterfaces::Implementation::AddInterface()
 {
   this->sim_interface_handles_.push_back(
