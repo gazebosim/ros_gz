@@ -85,7 +85,7 @@ SpawnEntity::SpawnEntity(
         create_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = "Timed out while trying to set simulation state";
+        response->result.error_message = "Timed out while trying to spawn entity";
       } else if (result && reply.data()) {
         response->result.result = Result::RESULT_OK;
         // TODO(azeey) Fetch the new name of the entity from our local ECM using `EachNew`.
@@ -96,7 +96,7 @@ SpawnEntity::SpawnEntity(
         // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative
         // error messages. However, the `create` service in UserCommands only returns a boolean.
         response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = "Unknown error while tryint to reset simulation";
+        response->result.error_message = "Unknown error while trying to spawn entity";
       }
     });
 

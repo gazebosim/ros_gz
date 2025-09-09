@@ -207,9 +207,7 @@ bool GazeboProxy::WaitForCriticalServices()
     if (!this->WaitForGzService(control_service)) {
       RCLCPP_ERROR_STREAM(
         this->ros_node_->get_logger(),
-        "Gazebo service ["
-          << control_service << "] is not available. "
-          << "Make sure the [SceneBroadacaster] system is loaded in your Gazebo world");
+        "Gazebo service [" << control_service << "] is not available.");
 
       have_all_services = false;
     }

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_STATE_HPP_
+#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_PROXY_HPP_
+#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_PROXY_HPP_
 
 #include <gz/msgs/details/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
@@ -105,8 +105,9 @@ public:
   ///
   /// This waits until a new state message is received with a short timeout period
   /// (kGzServiceTimeoutMs)
-  /// \param[in] result Populates the result object with an error code and message if a timeout occurred.
-  /// \return True if the state has been before a timeout occurred.
+  /// \param[in] result Populates the result object with an error code and message if a timeout
+  /// occurred.
+  /// \return True if the state has been updated before a timeout occurred.
   bool AssertUpdatedState(simulation_interfaces::msg::Result & result);
 
   /// \brief Amount of time to wait for a Gazebo service to become available.

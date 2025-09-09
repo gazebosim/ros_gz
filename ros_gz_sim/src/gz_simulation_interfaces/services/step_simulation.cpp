@@ -68,12 +68,12 @@ StepSimulation::StepSimulation(
         control_service, gz_request, GazeboProxy::kGzServiceTimeoutMs, reply, result);
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = "Timed out while trying to reset simulation";
+        response->result.error_message = "Timed out while trying to step simulation";
       } else if (result && reply.data()) {
         response->result.result = Result::RESULT_OK;
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = "Unknown error while trying to reset simulation";
+        response->result.error_message = "Unknown error while trying to step simulation";
       }
     });
 
