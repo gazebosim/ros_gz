@@ -52,6 +52,10 @@ GetEntitiesStates::GetEntitiesStates(
       const auto stats = this->gz_proxy_->Stats();
       this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
           try {
+            // Since we will be entering the `Each` loop, we start with RESULT_OK and override it
+            // with any non-okay result in the loop. The loop breaks by return false if any result
+            // other than RESULT_OK is encountered.
+            response->result.result = Result::RESULT_OK;
             GzEntityFilters filters(request->filters, ecm);
             ecm.Each<components::Name, components::Model, components::ParentEntity>(
               [&](
@@ -86,7 +90,7 @@ GetEntitiesStates::GetEntitiesStates(
                 }
 
                 return true;
-          });
+            });
           } catch (const std::exception & e) {
             response->result.result = Result::RESULT_OPERATION_FAILED;
             response->result.error_message = e.what();
