@@ -77,9 +77,9 @@ target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
 set(gz_simulation_interfaces_sources
-  src/gz_simulation_interfaces/gz_simulation_interfaces.cpp
   src/gz_simulation_interfaces/gazebo_proxy.cpp
   src/gz_simulation_interfaces/gz_entity_filters.cpp
+  src/gz_simulation_interfaces/gz_simulation_interfaces.cpp
   src/gz_simulation_interfaces/utils.cpp
 
   # Actions
@@ -88,16 +88,16 @@ set(gz_simulation_interfaces_sources
   # Services
   src/gz_simulation_interfaces/services/delete_entity.cpp
   src/gz_simulation_interfaces/services/get_entities.cpp
-  src/gz_simulation_interfaces/services/get_entity_state.cpp
-  src/gz_simulation_interfaces/services/get_entity_info.cpp
   src/gz_simulation_interfaces/services/get_entities_states.cpp
+  src/gz_simulation_interfaces/services/get_entity_info.cpp
+  src/gz_simulation_interfaces/services/get_entity_state.cpp
   src/gz_simulation_interfaces/services/get_simulation_state.cpp
   src/gz_simulation_interfaces/services/get_simulator_features.cpp
   src/gz_simulation_interfaces/services/reset_simulation.cpp
-  src/gz_simulation_interfaces/services/set_simulation_state.cpp
   src/gz_simulation_interfaces/services/set_entity_state.cpp
-  src/gz_simulation_interfaces/services/step_simulation.cpp
+  src/gz_simulation_interfaces/services/set_simulation_state.cpp
   src/gz_simulation_interfaces/services/spawn_entity.cpp
+  src/gz_simulation_interfaces/services/step_simulation.cpp
 )
 
 # gzserver_component

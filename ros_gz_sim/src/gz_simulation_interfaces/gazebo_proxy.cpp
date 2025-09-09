@@ -19,8 +19,11 @@
 #include <gz/msgs/world_stats.pb.h>
 
 #include <chrono>
+#include <functional>
 #include <memory>
+#include <mutex>
 #include <string>
+#include <thread>
 #include <unordered_set>
 #include <vector>
 
