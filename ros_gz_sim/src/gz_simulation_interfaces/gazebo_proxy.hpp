@@ -65,8 +65,8 @@ public:
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the service was found before a timeout occurred.
   bool WaitForGzService(
-  const std::string & service,
-  const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
+    const std::string & service,
+    const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
 
   /// \brief Get the number of iterations so far.
   /// \return Number of iterations executed by Gazebo.
@@ -136,7 +136,8 @@ private:
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the state was updated before a timeout occurred.
   bool WaitForUpdatedState(
-  const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
+    const std::chrono::milliseconds & timeout = std::chrono::milliseconds(
+      kGzStateUpdatedTimeoutMs));
 
   /// \brief Callback for receiving SerializedStepMap
   ///
