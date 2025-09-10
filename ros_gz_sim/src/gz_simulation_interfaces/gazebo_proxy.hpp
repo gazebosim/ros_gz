@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_PROXY_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GAZEBO_PROXY_HPP_
+#ifndef GZ_SIMULATION_INTERFACES__GAZEBO_PROXY_HPP_
+#define GZ_SIMULATION_INTERFACES__GAZEBO_PROXY_HPP_
 
 #include <gz/msgs/details/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
@@ -65,8 +65,8 @@ public:
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the service was found before a timeout occurred.
   bool WaitForGzService(
-    const std::string & service,
-    const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
+  const std::string & service,
+  const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
 
   /// \brief Get the number of iterations so far.
   /// \return Number of iterations executed by Gazebo.
@@ -128,15 +128,15 @@ private:
   bool InitializeGazeboConnection();
 
   /// \brief Wait for critical Gazebo services to become available.
-  /// \return True if all the required Gazebo services become available before the service timeout occurred.
+  /// \return True if all the required Gazebo services become available before the service timeout
+  /// occurred.
   bool WaitForCriticalServices();
 
   /// \brief Wait for updated state (ECM, WorldStatistics).
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the state was updated before a timeout occurred.
   bool WaitForUpdatedState(
-    const std::chrono::milliseconds & timeout =
-    std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
+  const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzStateUpdatedTimeoutMs));
 
   /// \brief Callback for receiving SerializedStepMap
   ///
@@ -182,4 +182,4 @@ private:
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif
+#endif  // GZ_SIMULATION_INTERFACES__GAZEBO_PROXY_HPP_

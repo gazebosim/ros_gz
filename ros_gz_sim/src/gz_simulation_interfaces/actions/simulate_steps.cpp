@@ -109,9 +109,10 @@ SimulateSteps::SimulateSteps(
               feedback->completed_steps = iterations - num_iters_start;
               feedback->remaining_steps = goal->steps - feedback->completed_steps;
               goal_handle->publish_feedback(feedback);
-              // TODO(azeey) There is a bug in Gazebo where the stepping field is set to true only once
-              // immediately after the request to step instead of being true for the whole duration of
-              // steps. So we can't use this right now to determine if we need to break out early
+              // TODO(azeey) There is a bug in Gazebo where the stepping field is set to true only
+              // once immediately after the request to step instead of being true for the whole
+              // duration of steps. So we can't use this right now to determine if we need to break
+              // out early
               // if (!this->world_stats_.stepping()) {
               //   break;
               // }

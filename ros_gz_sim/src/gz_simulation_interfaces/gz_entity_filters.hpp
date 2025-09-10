@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GZ_ENTITY_FILTERS_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_GZ_ENTITY_FILTERS_HPP_
+#ifndef GZ_SIMULATION_INTERFACES__GZ_ENTITY_FILTERS_HPP_
+#define GZ_SIMULATION_INTERFACES__GZ_ENTITY_FILTERS_HPP_
 
 #include <regex>
 #include <string>
@@ -64,4 +64,4 @@ private:
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif
+#endif  // GZ_SIMULATION_INTERFACES__GZ_ENTITY_FILTERS_HPP_

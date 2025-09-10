@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_ACTIONS_SIMULATE_STEPS_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_ACTIONS_SIMULATE_STEPS_HPP_
+#ifndef GZ_SIMULATION_INTERFACES__ACTIONS__SIMULATE_STEPS_HPP_
+#define GZ_SIMULATION_INTERFACES__ACTIONS__SIMULATE_STEPS_HPP_
 
 #include <memory>
 
@@ -46,4 +46,4 @@ private:
 }  // namespace actions
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif
+#endif  // GZ_SIMULATION_INTERFACES__ACTIONS__SIMULATE_STEPS_HPP_

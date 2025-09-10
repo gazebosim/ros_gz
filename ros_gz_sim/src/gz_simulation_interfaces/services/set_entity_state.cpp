@@ -64,17 +64,18 @@ SetEntityState::SetEntityState(
         [&](gz::sim::EntityComponentManager & ecm) {
           const auto entity = ecm.EntityByName(request->entity);
 
-          // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world frame.
+          // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world
+          // frame.
 
           // Note that since there is no way to tell if a field has been set by the user, there's no
-          // setting just the pose or just the twist. They will both be set according to what's in the
-          // message. If not set by the user, the default values will be used.
+          // setting just the pose or just the twist. They will both be set according to what's in
+          // the message. If not set by the user, the default values will be used.
           if (entity) {
             gz::sim::Model model(*entity);
             model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
             if (!model.Static(ecm)) {
-              // Velocity components are expected to be in the body frame, so we'll need to transform
-              // them.
+              // Velocity components are expected to be in the body frame, so we'll need to
+              // transform them.
               // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
               auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
               auto linearVelCmdBody =

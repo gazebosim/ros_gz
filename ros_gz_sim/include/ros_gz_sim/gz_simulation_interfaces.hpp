@@ -37,4 +37,4 @@ private:
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif  // !ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_HPP_
+#endif  // ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_HPP_

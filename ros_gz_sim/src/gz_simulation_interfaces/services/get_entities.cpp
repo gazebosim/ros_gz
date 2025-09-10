@@ -69,8 +69,8 @@ GetEntities::GetEntities(
                 if (ecm.Component<components::Model>(parent->Data())) {
                   // This is a nested model which should not be included in the list of entities to
                   // return.
-                  // TODO(azeey) It might be useful to allow nested models here when we enable setting
-                  // their poses in Gazebo.
+                  // TODO(azeey) It might be useful to allow nested models here when we enable
+                  // setting their poses in Gazebo.
                   return true;
                 }
                 auto [isIncluded, filter_result] = filters.ApplyFilter(entity, name->Data());

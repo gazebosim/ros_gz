@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_SERVICES_GET_ENTITIES_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_SERVICES_GET_ENTITIES_HPP_
+#ifndef GZ_SIMULATION_INTERFACES__SERVICES__GET_ENTITIES_HPP_
+#define GZ_SIMULATION_INTERFACES__SERVICES__GET_ENTITIES_HPP_
 
 #include <memory>
 
@@ -47,4 +47,4 @@ public:
 }  // namespace services
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif
+#endif  // GZ_SIMULATION_INTERFACES__SERVICES__GET_ENTITIES_HPP_

@@ -12,8 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_UTILS_HPP_
-#define ROS_GZ_SIM__GZ_SIMULATION_INTERFACES_UTILS_HPP_
+#ifndef GZ_SIMULATION_INTERFACES__UTILS_HPP_
+#define GZ_SIMULATION_INTERFACES__UTILS_HPP_
 
 #include <gz/msgs/time.pb.h>
 
@@ -74,4 +74,4 @@ gz::math::Vector3d ConvertVector3(const geometry_msgs::msg::Vector3 & ros_v);
 builtin_interfaces::msg::Time ConvertTime(const gz::msgs::Time gz_time);
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
-#endif
+#endif  // GZ_SIMULATION_INTERFACES__UTILS_HPP_
