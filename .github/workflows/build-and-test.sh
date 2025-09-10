@@ -10,22 +10,19 @@ export ROS_PYTHON_VERSION=3
 apt update -qq
 apt install -qq -y lsb-release wget curl build-essential
 
+echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
+wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+
 # Dependencies.
 echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-testing.list
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
 apt-get update -qq
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
-                   python3-vcstool \
-                   git
+                   libcli11-dev
 
 rosdep init
 rosdep update
-# Build Jetty vendor packages from source until they are released
-vcs import --input https://raw.githubusercontent.com/gazebo-tooling/gz_vendor/refs/heads/main/gz_vendor.repos
-# Install dartsim and ogre-next from binaries as they haven't changed for Jetty
-rm -rf gz_dartsim_vendor gz_ogre_next_vendor
-
 rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
 # Build.
