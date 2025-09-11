@@ -20,8 +20,8 @@ import unittest
 
 from geometry_msgs.msg import Twist
 from launch import LaunchDescription
-from launch_ros.actions import Node
 from launch.actions import SetEnvironmentVariable
+from launch_ros.actions import Node
 import launch_testing
 from launch_testing.actions import ReadyToTest
 from launch_testing.asserts import assertExitCodes
@@ -71,7 +71,7 @@ def generate_test_description():
         LaunchDescription(
             [
                 # Keep gz-transport contained to localhost to make the test more deterministic
-                SetEnvironmentVariable(name='GZ_IP', value="127.0.0.1"),
+                SetEnvironmentVariable(name='GZ_IP', value='127.0.0.1'),
                 server_node,
                 bridge_node,
                 ReadyToTest(),
@@ -100,7 +100,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def setup_client(self, srv_type, srv_name):
         import os
-        self.assertEqual(os.environ["GZ_IP"], "127.0.0.1")
+        self.assertEqual(os.environ['GZ_IP'], '127.0.0.1')
         client = self.node.create_client(
             srv_type,
             f'{GZ_SERVER_NODE_NAME}/{srv_name}')
