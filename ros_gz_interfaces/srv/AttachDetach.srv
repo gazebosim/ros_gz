@@ -1,0 +1,6 @@
+string child_model_name  # Message to create a new entity
+string child_link_name 
+string command 
+---
+bool success                                     # Return true if spawned successfully.
+string message

@@ -16,6 +16,7 @@
 #include <gz/msgs/world_control.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/dynamic_detachable_joint.pb.h>
 #include <gz/msgs/pose.pb.h>
 
 #include <memory>
@@ -26,6 +27,7 @@
 #include "ros_gz_interfaces/srv/delete_entity.hpp"
 #include "ros_gz_interfaces/srv/spawn_entity.hpp"
 #include "ros_gz_interfaces/srv/set_entity_pose.hpp"
+#include "ros_gz_interfaces/srv/attach_detach.hpp"
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
 
 #include "service_factory.hpp"
@@ -91,6 +93,19 @@ get_service_factory__ros_gz_interfaces(
     >(ros_type_name, "gz.msgs.Pose", "gz.msgs.Boolean");
   }
 
+  if (
+    ros_type_name == "ros_gz_interfaces/srv/AttachDetach" &&
+    (gz_req_type_name.empty() || gz_req_type_name == "gz.msgs.AttachDetachRequest") &&
+    (gz_rep_type_name.empty() || gz_rep_type_name == "gz.msgs.AttachDetachResponse"))
+  {
+    return std::make_shared<
+      ServiceFactory<
+        ros_gz_interfaces::srv::AttachDetach,
+        gz::msgs::AttachDetachRequest,
+        gz::msgs::AttachDetachResponse>
+    >(ros_type_name, "gz.msgs.AttachDetachRequest", "gz.msgs.AttachDetachResponse");
+  }
+
   return nullptr;
 }
 
@@ -133,6 +148,17 @@ convert_ros_to_gz(
 
 template<>
 void
+convert_ros_to_gz(
+  const ros_gz_interfaces::srv::AttachDetach::Request & ros_req,
+  gz::msgs::AttachDetachRequest & gz_req)
+{
+  gz_req.set_child_model_name(ros_req.child_model_name);
+  gz_req.set_child_link_name(ros_req.child_link_name);
+  gz_req.set_command(ros_req.command);
+}
+
+template<>
+void
 convert_gz_to_ros(
   const gz::msgs::Boolean & gz_rep,
   ros_gz_interfaces::srv::ControlWorld::Response & ros_res)
@@ -165,6 +191,16 @@ convert_gz_to_ros(
   ros_gz_interfaces::srv::SetEntityPose::Response & ros_res)
 {
   ros_res.success = gz_rep.data();
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::AttachDetachResponse & gz_rep,
+  ros_gz_interfaces::srv::AttachDetach::Response & ros_res)
+{
+  ros_res.success = gz_rep.success();
+  ros_res.message = gz_rep.message();
 }
 
 template<>
@@ -204,6 +240,15 @@ send_response_on_error(ros_gz_interfaces::srv::SetEntityPose::Response & ros_res
   // TODO(now): Is it worth it to have a different field to encode Gazebo request errors?
   //  Currently we're reusing the success field, which seems fine for this case.
   ros_res.success = false;
+  return true;
+}
+
+template<>
+bool
+send_response_on_error(ros_gz_interfaces::srv::AttachDetach::Response & ros_res)
+{
+  ros_res.success = false;
+  ros_res.message = "Gazebo bridge error";
   return true;
 }
 }  // namespace ros_gz_bridge
