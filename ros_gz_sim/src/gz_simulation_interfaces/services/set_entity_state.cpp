@@ -54,7 +54,7 @@ SetEntityState::SetEntityState(
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
       "Gazebo service [" << control_state_service << "] is not available. "
-                         << "The [ResetSimulation] interface will not function properly.");
+                         << "The [SetEntityState] interface will not function properly.");
   }
   auto service_cb = [this, control_state_service](RequestPtr request, ResponsePtr response) {
       if (!this->gz_proxy_->AssertUpdatedState(response->result)) {

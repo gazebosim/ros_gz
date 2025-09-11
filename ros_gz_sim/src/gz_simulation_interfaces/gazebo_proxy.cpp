@@ -78,7 +78,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       if (!this->gz_node_->Subscribe(
             this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this))
       {
-        RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to continues state updates failed");
+        RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to periodic state updates failed");
       }
     }
   }

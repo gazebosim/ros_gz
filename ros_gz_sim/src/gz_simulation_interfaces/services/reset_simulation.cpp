@@ -71,7 +71,7 @@ ResetSimulation::ResetSimulation(
         response->result.result = Result::RESULT_OK;
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
-        response->result.error_message = "Unknown error while tryint to reset simulation";
+        response->result.error_message = "Unknown error while trying to reset simulation";
       }
     });
 
