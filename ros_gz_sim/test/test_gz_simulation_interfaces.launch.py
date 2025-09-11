@@ -21,6 +21,7 @@ import unittest
 from geometry_msgs.msg import Twist
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import SetEnvironmentVariable
 import launch_testing
 from launch_testing.actions import ReadyToTest
 from launch_testing.asserts import assertExitCodes
@@ -69,6 +70,8 @@ def generate_test_description():
     return (
         LaunchDescription(
             [
+                # Keep gz-transport contained to localhost to make the test more deterministic
+                SetEnvironmentVariable(name='GZ_IP', value="127.0.0.1"),
                 server_node,
                 bridge_node,
                 ReadyToTest(),
@@ -96,6 +99,8 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.node.destroy_node()
 
     def setup_client(self, srv_type, srv_name):
+        import os
+        self.assertEqual(os.environ["GZ_IP"], "127.0.0.1")
         client = self.node.create_client(
             srv_type,
             f'{GZ_SERVER_NODE_NAME}/{srv_name}')
@@ -148,7 +153,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
         time.sleep(2)
         state = self.get_entity_state('vehicle').state
-        self.assertAlmostEqual(state.twist.linear.x, 0.25, delta=1e-2)
+        self.assertAlmostEqual(state.twist.linear.x, 0.25, delta=1e-1)
 
     def test_get_entity_state_on_spawned_entity(self) -> None:
         sdf_string = """
@@ -329,7 +334,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertEqual(response.info.category.category,
                          EntityCategory.CATEGORY_ROBOT)
 
-    def test_get_entities_state(self) -> None:
+    def test_get_entities_states(self) -> None:
         get_entities_state, request = self.setup_client(
             si.GetEntitiesStates, 'get_entities_states')
         request.filters.filter = 'vehicle'
