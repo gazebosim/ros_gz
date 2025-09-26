@@ -13,6 +13,7 @@
 # limitations under the License.
 
 from pathlib import Path
+import os
 import re
 import time
 from typing import Any
@@ -85,6 +86,10 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        expected_gz_ip = '127.0.0.1'
+        gz_ip = os.environ['GZ_IP']
+        if gz_ip != expected_gz_ip:
+            raise RuntimeError(f'GZ_IP is expected to be {expected_gz_ip}, but is set to {gz_ip}')
         rclpy.init()
 
     @classmethod
@@ -101,8 +106,6 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     ################### helpers ###############################
 
     def setup_client(self, srv_type, srv_name):
-        import os
-        self.assertEqual(os.environ['GZ_IP'], '127.0.0.1')
         client = self.node.create_client(
             srv_type,
             f'{GZ_SERVER_NODE_NAME}/{srv_name}')
@@ -230,7 +233,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.entity = test_entity
         request.state.pose.position.z = 100.0
         request.state.twist.linear.x = 5.0
-        self.assertTrue(self.call_and_spin(set_entity_state, request))
+        self.assert_result_ok(self.call_and_spin(set_entity_state, request))
         state = self.get_entity_state(test_entity).state
         print(f"z {state.pose.position.z} vel x: {state.twist.linear.x}")
         self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
@@ -243,7 +246,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         for test_state in [SimulationState.STATE_PLAYING, SimulationState.STATE_PAUSED]:
             self.set_simulation_state(test_state)
             self.assertEqual(self.get_simulation_state().state.state, test_state)
-            self.assertTrue(self.call_and_spin(set_entity_state, request))
+            self.assert_result_ok(self.call_and_spin(set_entity_state, request))
             self.assertEqual(self.get_simulation_state().state.state, test_state)
 
     def test_spawn_entity_duplicate_name(self) -> None:
@@ -260,7 +263,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.name = 'test_duplicate'
         request.entity_resource.resource_string = sdf_string
 
-        self.assertTrue(self.call_and_spin(spawn_entity, request))
+        self.assert_result_ok(self.call_and_spin(spawn_entity, request))
         time.sleep(2)
 
         # Try to spawn the same entity again
@@ -284,7 +287,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.name = 'test_empty'
         request.entity_resource.resource_string = sdf_string
 
-        self.assertTrue(self.call_and_spin(spawn_entity, request))
+        self.assert_result_ok(self.call_and_spin(spawn_entity, request))
         time.sleep(2)
 
         self.delete_entity('test_empty')
@@ -338,16 +341,16 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             feedback = feedback_msg.feedback
             self.assert_result_ok(feedback.result)
 
-
-
         simulation_state = self.get_simulation_state().state.state
         if simulation_state != SimulationState.STATE_PAUSED:
             self.set_simulation_state(SimulationState.STATE_PAUSED)
 
+        # Create a new node for testing the action. A warning is printed when the existing node (self.node) is used.
+        test_node = rclpy.create_node("test_action")
         action_client = rclpy.action.ActionClient(
-            self.node,
+            test_node,
             SimulateSteps,
-            'simulate_steps')
+            f'{GZ_SERVER_NODE_NAME}/simulate_steps')
         self.assertTrue(action_client.wait_for_server(timeout_sec=30))
 
         goal_msg = SimulateSteps.Goal()
