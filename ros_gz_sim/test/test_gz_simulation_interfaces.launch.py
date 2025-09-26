@@ -12,8 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from pathlib import Path
 import os
+from pathlib import Path
 import re
 import time
 from typing import Any
@@ -103,7 +103,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     def tearDown(self) -> None:
         self.node.destroy_node()
 
-    ################### helpers ###############################
+    # helpers
 
     def setup_client(self, srv_type, srv_name):
         client = self.node.create_client(
@@ -162,7 +162,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.scope = si.ResetSimulation.Request.SCOPE_DEFAULT
         return self.call_and_spin(reset_simulation, request)
 
-    ################### tests ###############################
+    # tests
 
     def test_get_entities_with_no_filters(self) -> None:
         get_entities, request = self.setup_client(
@@ -229,19 +229,18 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         set_entity_state, request = self.setup_client(
             si.SetEntityState, 'set_entity_state')
         self.set_simulation_state(SimulationState.STATE_PLAYING)
-        test_entity = "sphere"
+        test_entity = 'sphere'
         request.entity = test_entity
         request.state.pose.position.z = 100.0
         request.state.twist.linear.x = 5.0
         self.assert_result_ok(self.call_and_spin(set_entity_state, request))
         state = self.get_entity_state(test_entity).state
-        print(f"z {state.pose.position.z} vel x: {state.twist.linear.x}")
         self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
 
     def test_set_entity_state_preserves_sim_state(self) -> None:
         set_entity_state, request = self.setup_client(
             si.SetEntityState, 'set_entity_state')
-        request.entity = "sphere"
+        request.entity = 'sphere'
         request.state.pose.position.z = 10.0
         for test_state in [SimulationState.STATE_PLAYING, SimulationState.STATE_PAUSED]:
             self.set_simulation_state(test_state)
@@ -345,8 +344,9 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         if simulation_state != SimulationState.STATE_PAUSED:
             self.set_simulation_state(SimulationState.STATE_PAUSED)
 
-        # Create a new node for testing the action. A warning is printed when the existing node (self.node) is used.
-        test_node = rclpy.create_node("test_action")
+        # Create a new node for testing the action.
+        # A warning is printed when the existing node is used.
+        test_node = rclpy.create_node('test_action')
         action_client = rclpy.action.ActionClient(
             test_node,
             SimulateSteps,
