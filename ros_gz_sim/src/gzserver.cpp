@@ -87,8 +87,10 @@ void GzServer::OnStart()
       this->create_sub_node(this->get_name()));
   server->Run(true /*blocking*/, 0, false /*paused*/);
   server.reset();
-  this->dataPtr->sim_interfaces.reset();
+  // Call shutdown before resetting sim_interfaces so that threads in sim_interfaces can gracefully
+  // exit before being destructed.
   rclcpp::shutdown();
+  this->dataPtr->sim_interfaces.reset();
 }
 
 }  // namespace ros_gz_sim
