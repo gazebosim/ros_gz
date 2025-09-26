@@ -18,6 +18,8 @@
 #include <gz/msgs/world_control.pb.h>
 
 #include <cstdint>
+#include <exception>
+#include <future>
 #include <limits>
 #include <memory>
 #include <string>
@@ -64,8 +66,16 @@ SimulateSteps::SimulateSteps(
       // simulation_interfaces::msg::Result
       using Result = simulation_interfaces::msg::Result;
 
+      if (this->worker_future_.valid()) {
+        auto action_result = std::make_shared<SimulateStepsAction::Result>();
+        action_result->result.result = Result::RESULT_OPERATION_FAILED;
+        action_result->result.error_message = "Another goal is already running";
+        goal_handle->abort(action_result);
+        return;
+      }
+
       // Execute the task in a separate thread and return immediately.
-      auto thread = std::thread(
+      this->worker_future_ = std::async(std::launch::async,
         [this, goal_handle, control_service] {
           const auto goal = goal_handle->get_goal();
           auto action_result = std::make_shared<SimulateStepsAction::Result>();
@@ -127,7 +137,7 @@ SimulateSteps::SimulateSteps(
               }
             }
 
-            if (rclcpp::ok()) {
+            if (rclcpp::ok() && goal_handle->is_active()) {
               if (feedback->remaining_steps == 0) {
                 goal_handle->succeed(action_result);
               } else {
@@ -142,15 +152,21 @@ SimulateSteps::SimulateSteps(
             goal_handle->abort(action_result);
           }
         });
-      thread.detach();
     };
 
   // For some reason, create_server doesn't respect the sub_namespace of the node.
   const auto action_name = ros_node->get_effective_namespace() + "/simulate_steps";
-  this->action_handles_ = rclcpp_action::create_server<SimulateStepsAction>(
+  this->action_handle_ = rclcpp_action::create_server<SimulateStepsAction>(
     ros_node, action_name, goal_callback, cancel_cb, accept_cb);
 
   RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created action " << action_name);
+}
+
+SimulateSteps::~SimulateSteps()
+{
+  if (this->worker_future_.valid()) {
+    this->worker_future_.wait();
+  }
 }
 }  // namespace actions
 }  // namespace gz_simulation_interfaces

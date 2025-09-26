@@ -15,6 +15,7 @@
 #ifndef GZ_SIMULATION_INTERFACES__ACTIONS__SIMULATE_STEPS_HPP_
 #define GZ_SIMULATION_INTERFACES__ACTIONS__SIMULATE_STEPS_HPP_
 
+#include <future>
 #include <memory>
 
 #include <rclcpp/node.hpp>
@@ -38,10 +39,12 @@ class SimulateSteps : public HandlerBase
 public:
   // Documentation inherited
   SimulateSteps(std::shared_ptr<rclcpp::Node> node, std::shared_ptr<GazeboProxy> gz_proxy);
+  ~SimulateSteps();
 
 private:
   // TODO(azeey) Refactor into base class
-  std::shared_ptr<rclcpp_action::ServerBase> action_handles_;
+  std::shared_ptr<rclcpp_action::ServerBase> action_handle_;
+  std::future<void> worker_future_;
 };
 }  // namespace actions
 }  // namespace gz_simulation_interfaces
