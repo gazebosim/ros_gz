@@ -15,7 +15,7 @@
 #ifndef GZ_SIMULATION_INTERFACES__GAZEBO_PROXY_HPP_
 #define GZ_SIMULATION_INTERFACES__GAZEBO_PROXY_HPP_
 
-#include <gz/msgs/details/world_stats.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
@@ -70,10 +70,12 @@ public:
 
   /// \brief Get the number of iterations so far.
   /// \return Number of iterations executed by Gazebo.
+  /// \WARNING Calling this function within a callback of the WithEcm will cause a deadlock.
   uint64_t Iterations() const;
 
   /// \brief Get whether simulation is in a paused state.
   /// \return Paused state.
+  /// \WARNING Calling this function within a callback of the WithEcm will cause a deadlock.
   bool Paused() const;
 
   /// \brief Get a copy of the World statistics message.
@@ -150,6 +152,9 @@ private:
   /// entities, so that the Physics system can populate them.
   void HandleNewEntities();
 
+  /// \brief Initialize all canonical link entities by creating necessary ECM components on them.
+  void InitializeAllCanonicalLinks();
+
   /// \brief Initialize canonical link entities by creating necessary ECM components on them.
   /// \param[in] canonicalLinkEntities A set of canonical links to initialize.
   void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
@@ -180,6 +185,9 @@ private:
 
   /// \brief Records whether the state has been initialized when this class was first instantiated.
   bool state_intialized_{false};
+
+  /// \brief Holds the future returned by a std::async call made when a sim reset occurs.
+  std::future<void> initialize_canonical_links_;
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim

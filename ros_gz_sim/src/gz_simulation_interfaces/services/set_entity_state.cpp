@@ -60,6 +60,9 @@ SetEntityState::SetEntityState(
       if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
         return;
       }
+
+      gz::msgs::WorldControlState control_msg;
+
       this->gz_proxy_->WithEcm(
         [&](gz::sim::EntityComponentManager & ecm) {
           const auto entity = ecm.EntityByName(request->entity);
@@ -91,19 +94,19 @@ SetEntityState::SetEntityState(
           } else {
             // TODO(azeey) Error
           }
-          gz::msgs::WorldControlState control_msg;
           control_msg.mutable_state()->CopyFrom(ecm.State(
             {*entity}, {components::WorldPoseCmd::typeId, components::LinearVelocityCmd::typeId,
               components::AngularVelocityCmd::typeId}));
-
-          bool result;
-          gz::msgs::Boolean reply;
-          this->gz_proxy_->GzNode()->Request(control_state_service, control_msg,
-              GazeboProxy::kGzServiceTimeoutMs, reply, result);
-          // TODO(azeey) Handle Error
-          response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
-          // TODO(azeey) Wait for result?
         });
+
+      control_msg.mutable_world_control()->set_pause(this->gz_proxy_->Paused());
+      bool result;
+      gz::msgs::Boolean reply;
+      this->gz_proxy_->GzNode()->Request(control_state_service, control_msg,
+          GazeboProxy::kGzServiceTimeoutMs, reply, result);
+      // TODO(azeey) Handle Error
+      response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
+      // TODO(azeey) Wait for result?
     };
   this->services_handle_ =
     ros_node->create_service<SetEntityStateSrv>("set_entity_state", service_cb);

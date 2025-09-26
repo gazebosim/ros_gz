@@ -17,9 +17,11 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 #include <gz/msgs/world_stats.pb.h>
+#include <gz/msgs/scene.pb.h>
 
 #include <chrono>
 #include <functional>
+#include <future>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -80,6 +82,23 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       {
         RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to periodic state updates failed");
       }
+      // Listen to the "scene/info" to detect a reset
+      // TODO(azeey): This is a hack. We currently don't have a nice way of determining when
+      // simulation has been reset if it's currently paused. Checking if time has been rewound or
+      // the number of iterations was reset back to zero doesn't work if the simulation was started
+      // in the paused state and hasn't been played before it was reset. The SceneBroadacaster
+      // publishes on the scene/info topic every time it's reset. So we'll use that as our signal
+      // until we come up with a better way to communicate this from the server.
+      std::function<void(const gz::msgs::Scene &)> resetHandler = [this](const auto &) {
+          // Use std::async since InitializeAllCanonicalLinks eventually makes a service call, which
+          // we don't want to do from this callback thread.
+          this->initialize_canonical_links_ =
+            std::async(std::launch::async, [this] {this->InitializeAllCanonicalLinks();});
+        };
+
+      if (!this->gz_node_->Subscribe(this->PrefixTopic("scene/info"), resetHandler)) {
+        RCLCPP_ERROR(ros_node->get_logger(), "Subscribing the scene/info topic failed");
+      }
     }
   }
 
@@ -87,12 +106,8 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
   // the entities available. Currently, we're treating entities are models, but Gazebo doesn't
   // update velocity components of models. Therefore, we have to set the component on the canonical
   // link and compute the velocity of the model entity manually here.
-  std::vector<gz::sim::Entity> c_links;
-  {
-    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-    c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
-  }
-  this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
+  // TODO(azeey): Compute model velocities on the Gazebo server.
+  this->InitializeAllCanonicalLinks();
 }
 
 std::string GazeboProxy::PrefixTopic(const char * topic) const
@@ -154,6 +169,12 @@ bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
   if (!state_intialized_) {
     return false;
   }
+  if (this->initialize_canonical_links_.valid()) {
+    // Wait if canonical links need to be initialized. This should only happen on reset.
+    this->initialize_canonical_links_.wait_for(timeout);
+  }
+  // TODO(azeey): Technically we should subtract the amount of time the `wait_for` above used up
+  // from the timeout when we use it for the second `wait_for` below.
   std::unique_lock lk(this->state_sync_mutex_);
   this->state_updated_ = false;
   return this->state_cv_.wait_for(lk, timeout, [this] {return this->state_updated_;});
@@ -234,9 +255,6 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
     this->state_updated_ = true;
   }
   this->state_cv_.notify_all();
-
-  // TODO(azeey) Consider using a condition variable to notify services that there is new data so
-  // as to avoid using stale data
 }
 void GazeboProxy::HandleNewEntities()
 {
@@ -254,6 +272,16 @@ void GazeboProxy::HandleNewEntities()
   this->InitializeCanonicalLinks(canonicalLinkEntities);
 }
 
+void GazeboProxy::InitializeAllCanonicalLinks()
+{
+  std::vector<gz::sim::Entity> c_links;
+  {
+    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+    c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
+  }
+  this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
+}
+
 void GazeboProxy::InitializeCanonicalLinks(
   const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities)
 {
@@ -269,7 +297,7 @@ void GazeboProxy::InitializeCanonicalLinks(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
         components::WorldAngularVelocity::typeId}));
 
-  bool result;
+  bool result{false};
   gz::msgs::Boolean controlReply;
   this->gz_node_->Request(
     this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeoutMs, controlReply,
