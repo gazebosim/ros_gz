@@ -64,7 +64,8 @@ GetEntityState::GetEntityState(
   this->services_handle_ =
     ros_node->create_service<GetEntityStateSrv>("get_entity_state", service_cb);
 
-  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_entity_state");
+  RCLCPP_INFO_STREAM(
+    ros_node->get_logger(), "Created service " << this->services_handle_->get_service_name());
 }
 
 Result GetEntityState::FromEcm(

@@ -100,7 +100,8 @@ SpawnEntity::SpawnEntity(
       }
     });
 
-  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "spawn_entity");
+  RCLCPP_INFO_STREAM(
+    ros_node->get_logger(), "Created service " << this->services_handle_->get_service_name());
 }
 }  // namespace services
 }  // namespace gz_simulation_interfaces

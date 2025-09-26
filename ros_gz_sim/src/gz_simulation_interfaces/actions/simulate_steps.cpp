@@ -20,6 +20,7 @@
 #include <cstdint>
 #include <limits>
 #include <memory>
+#include <string>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/action/simulate_steps.hpp"
@@ -144,10 +145,12 @@ SimulateSteps::SimulateSteps(
       thread.detach();
     };
 
+  // For some reason, create_server doesn't respect the sub_namespace of the node.
+  const auto action_name = ros_node->get_effective_namespace() + "/simulate_steps";
   this->action_handles_ = rclcpp_action::create_server<SimulateStepsAction>(
-    ros_node, "simulate_steps", goal_callback, cancel_cb, accept_cb);
+    ros_node, action_name, goal_callback, cancel_cb, accept_cb);
 
-  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created action " << "simulate_steps");
+  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created action " << action_name);
 }
 }  // namespace actions
 }  // namespace gz_simulation_interfaces

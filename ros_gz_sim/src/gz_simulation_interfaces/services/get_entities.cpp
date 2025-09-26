@@ -95,7 +95,8 @@ GetEntities::GetEntities(
 
   this->services_handle_ = ros_node->create_service<GetEntitiesSrv>("get_entities", service_cb);
 
-  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_entities");
+  RCLCPP_INFO_STREAM(
+    ros_node->get_logger(), "Created service " << this->services_handle_->get_service_name());
 }
 }  // namespace services
 }  // namespace gz_simulation_interfaces

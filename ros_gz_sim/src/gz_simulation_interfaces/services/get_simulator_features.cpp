@@ -68,7 +68,8 @@ GetSimulatorFeatures::GetSimulatorFeatures(
       // TODO(azeey) Fill in custom_info
     });
 
-  RCLCPP_INFO_STREAM(ros_node->get_logger(), "Created service " << "get_simulator_features");
+  RCLCPP_INFO_STREAM(
+    ros_node->get_logger(), "Created service " << this->services_handle_->get_service_name());
 }
 }  // namespace services
 }  // namespace gz_simulation_interfaces
