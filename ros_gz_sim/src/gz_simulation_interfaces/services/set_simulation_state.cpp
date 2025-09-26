@@ -17,6 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
+#include <chrono>
 #include <memory>
 
 #include "../gazebo_proxy.hpp"
@@ -79,6 +80,37 @@ SetSimulationState::SetSimulationState(
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Unknown error while trying to reset simulation";
+      }
+
+      // Since the "control" service is asynchronous, getting results from the service doesn't mean
+      // the request has taken effect. Therefore, we wait here until the desired state is reached or
+      // a timeout occurs.
+      bool state_reached{false};
+      auto t_init = std::chrono::steady_clock::now();
+      auto timeout = std::chrono::milliseconds(GazeboProxy::kGzStateUpdatedTimeoutMs);
+      while (!state_reached && (std::chrono::steady_clock::now() - t_init) < timeout) {
+        this->gz_proxy_->AssertUpdatedState(response->result);
+        switch (request->state.state) {
+          case SimulationState::STATE_STOPPED:
+            if (this->gz_proxy_->Paused() && (this->gz_proxy_->Iterations() == 0)) {
+              state_reached = true;
+            }
+            break;
+          case SimulationState::STATE_PAUSED:
+            if (this->gz_proxy_->Paused()) {
+              state_reached = true;
+            }
+            break;
+          case SimulationState::STATE_PLAYING:
+            if (!this->gz_proxy_->Paused()) {
+              state_reached = true;
+            }
+            break;
+        }
+      }
+      if (!state_reached) {
+        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.error_message = "Timed out while trying to reset simulation";
       }
     });
 

@@ -15,6 +15,7 @@
 #include "gazebo_proxy.hpp"
 
 #include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/details/world_stats.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/scene.pb.h>
@@ -90,15 +91,33 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       // publishes on the scene/info topic every time it's reset. So we'll use that as our signal
       // until we come up with a better way to communicate this from the server.
       std::function<void(const gz::msgs::Scene &)> resetHandler = [this](const auto &) {
+          {
+            std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
+            this->reset_detected_ = true;
+            this->reset_detected_cv_.notify_all();
+          }
           // Use std::async since InitializeAllCanonicalLinks eventually makes a service call, which
           // we don't want to do from this callback thread.
           this->initialize_canonical_links_ =
             std::async(std::launch::async, [this] {this->InitializeAllCanonicalLinks();});
         };
 
-      if (!this->gz_node_->Subscribe(this->PrefixTopic("scene/info"), resetHandler)) {
-        RCLCPP_ERROR(ros_node->get_logger(), "Subscribing the scene/info topic failed");
+      if (auto topic = this->PrefixTopic("scene/info");
+          !this->gz_node_->Subscribe(topic, resetHandler)) {
+        RCLCPP_ERROR_STREAM(ros_node->get_logger(), "Subscribing the " << topic << " topic failed");
       }
+    }
+
+    std::function<void(const gz::msgs::WorldStatistics &)> updateStats =
+      [this](const auto & stats)
+      {
+        std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+        this->world_stats_ = stats;
+      };
+
+    // Listen to the stats topic to get more frequently updates world statistics.
+    if (auto topic = this->PrefixTopic("stats"); !this->gz_node_->Subscribe(topic, updateStats)) {
+      RCLCPP_ERROR_STREAM(ros_node->get_logger(), "Subscribing the " << topic << " topic failed");
     }
   }
 
@@ -196,6 +215,17 @@ bool GazeboProxy::AssertUpdatedState(simulation_interfaces::msg::Result & result
   return true;
 }
 
+bool GazeboProxy::WaitForResetDetected()
+{
+  std::unique_lock lk(this->reset_detected_mutex_);
+  this->reset_detected_ = false;
+  if(!this->reset_detected_cv_.wait_for(
+    lk, std::chrono::milliseconds(kGzServiceTimeoutMs), [this] { return this->reset_detected_; })) {
+    return false;
+  }
+  return this->reset_detected_;
+}
+
 bool GazeboProxy::InitializeGazeboConnection()
 {
   gz::msgs::StringMsg_V worlds_msg;
@@ -251,7 +281,6 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
     this->ecm_.ClearRemovedComponents();
     this->ecm_.ClearNewlyCreatedEntities();
     this->ecm_.ProcessRemoveEntityRequests();
-    this->world_stats_ = msg.stats();
     this->state_updated_ = true;
   }
   this->state_cv_.notify_all();
@@ -274,6 +303,7 @@ void GazeboProxy::HandleNewEntities()
 
 void GazeboProxy::InitializeAllCanonicalLinks()
 {
+  RCLCPP_INFO(this->ros_node_->get_logger(), "InitializeCanonicalLinks");
   std::vector<gz::sim::Entity> c_links;
   {
     std::lock_guard<std::mutex> lk(this->state_sync_mutex_);

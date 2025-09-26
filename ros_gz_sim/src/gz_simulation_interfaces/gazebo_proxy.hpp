@@ -108,10 +108,14 @@ public:
   ///
   /// This waits until a new state message is received with a short timeout period
   /// (kGzServiceTimeoutMs)
-  /// \param[in] result Populates the result object with an error code and message if a timeout
+  /// \param[out] result Populates the result object with an error code and message if a timeout
   /// occurred.
   /// \return True if the state has been updated before a timeout occurred.
   bool AssertUpdatedState(simulation_interfaces::msg::Result & result);
+
+  /// \brief Wait until simulation reset is detected
+  /// \return True if reset was detected.
+  bool WaitForResetDetected();
 
   /// \brief Amount of time to wait for a Gazebo service to become available.
   static constexpr unsigned int kGzServiceTimeoutMs{5000};
@@ -188,6 +192,15 @@ private:
 
   /// \brief Holds the future returned by a std::async call made when a sim reset occurs.
   std::future<void> initialize_canonical_links_;
+
+  /// \brief Whether simulation reset was detected
+  bool reset_detected_{false};
+
+  /// \brief Mutex to synchronize access to reset_detected_
+  mutable std::mutex reset_detected_mutex_;
+
+  /// \brief Conditional variable used for waiting on reset detected.
+  std::condition_variable reset_detected_cv_;
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
