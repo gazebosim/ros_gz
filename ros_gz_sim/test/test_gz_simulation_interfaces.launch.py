@@ -98,6 +98,8 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     def tearDown(self) -> None:
         self.node.destroy_node()
 
+    ################### helpers ###############################
+
     def setup_client(self, srv_type, srv_name):
         import os
         self.assertEqual(os.environ['GZ_IP'], '127.0.0.1')
@@ -122,10 +124,25 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             msg=response.result.error_message)
         self.assertEqual(response.result.error_message, '')
 
-    def test_get_entities_with_no_filters(self) -> None:
-        get_entities, request = self.setup_client(
-            si.GetEntities, 'get_entities')
-        response = self.call_and_spin(get_entities, request)
+    def get_simulation_state(self) -> si.GetSimulationState.Response:
+        get_simulation_state, request = self.setup_client(
+            si.GetSimulationState, 'get_simulation_state')
+        response = self.call_and_spin(get_simulation_state, request)
+        self.assert_result_ok(response)
+        return response
+
+    def set_simulation_state(self, simulation_state) -> None:
+        set_simulation_state, request = self.setup_client(
+            si.SetSimulationState, 'set_simulation_state')
+        request.state.state = simulation_state
+        response = self.call_and_spin(set_simulation_state, request)
+        self.assert_result_ok(response)
+
+    def delete_entity(self, entity_name) -> None:
+        delete_entity, request = self.setup_client(
+            si.DeleteEntity, 'delete_entity')
+        request.entity = entity_name
+        response = self.call_and_spin(delete_entity, request)
         self.assert_result_ok(response)
 
     def get_entity_state(self, entity_name) -> si.GetEntityState.Response:
@@ -135,6 +152,20 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         response = self.call_and_spin(get_entity_state, request)
         self.assert_result_ok(response)
         return response
+
+    def reset_simulation(self) -> si.ResetSimulation.Response:
+        reset_simulation, request = self.setup_client(
+            si.ResetSimulation, 'reset_simulation')
+        request.scope = si.ResetSimulation.Request.SCOPE_DEFAULT
+        return self.call_and_spin(reset_simulation, request)
+
+    ################### tests ###############################
+
+    def test_get_entities_with_no_filters(self) -> None:
+        get_entities, request = self.setup_client(
+            si.GetEntities, 'get_entities')
+        response = self.call_and_spin(get_entities, request)
+        self.assert_result_ok(response)
 
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
         state = self.get_entity_state('vehicle').state
@@ -158,7 +189,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
     def test_get_entity_state_on_spawned_entity(self) -> None:
         sdf_string = """
             <sdf version='1.12'>
-                <model name="sphere">
+                <model name="sphere2">
                     <link name="sphere_link">
                         <inertial auto="true"><mass>1.0</mass></inertial>
                         <collision name="sphere_collision">
@@ -190,6 +221,31 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         state = self.get_entity_state('test_sphere').state
         self.assertGreater(state.twist.linear.x, 0.1)
 
+    def test_set_entity_state(self) -> None:
+        self.assert_result_ok(self.reset_simulation())
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        self.set_simulation_state(SimulationState.STATE_PLAYING)
+        test_entity = "sphere"
+        request.entity = test_entity
+        request.state.pose.position.z = 100.0
+        request.state.twist.linear.x = 5.0
+        self.assertTrue(self.call_and_spin(set_entity_state, request))
+        state = self.get_entity_state(test_entity).state
+        print(f"z {state.pose.position.z} vel x: {state.twist.linear.x}")
+        self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
+
+    def test_set_entity_state_preserves_sim_state(self) -> None:
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = "sphere"
+        request.state.pose.position.z = 10.0
+        for test_state in [SimulationState.STATE_PLAYING, SimulationState.STATE_PAUSED]:
+            self.set_simulation_state(test_state)
+            self.assertEqual(self.get_simulation_state().state.state, test_state)
+            self.assertTrue(self.call_and_spin(set_entity_state, request))
+            self.assertEqual(self.get_simulation_state().state.state, test_state)
+
     def test_spawn_entity_duplicate_name(self) -> None:
         sdf_string = """
             <sdf version='1.12'>
@@ -210,13 +266,6 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         # Try to spawn the same entity again
         result = self.call_and_spin(spawn_entity, request).result.result
         self.assertTrue(result, Result.RESULT_OPERATION_FAILED)
-
-    def delete_entity(self, entity_name) -> None:
-        delete_entity, request = self.setup_client(
-            si.DeleteEntity, 'delete_entity')
-        request.entity = entity_name
-        response = self.call_and_spin(delete_entity, request)
-        self.assert_result_ok(response)
 
     def test_delete_entity(self) -> None:
         self.delete_entity('box')
@@ -248,25 +297,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assert_result_ok(response)
 
     def test_reset_simulation(self) -> None:
-        reset_simulation, request = self.setup_client(
-            si.ResetSimulation, 'reset_simulation')
-        request.scope = si.ResetSimulation.Request.SCOPE_DEFAULT
-        response = self.call_and_spin(reset_simulation, request)
-        self.assert_result_ok(response)
-
-    def get_simulation_state(self) -> si.GetSimulationState.Response:
-        get_simulation_state, request = self.setup_client(
-            si.GetSimulationState, 'get_simulation_state')
-        response = self.call_and_spin(get_simulation_state, request)
-        self.assert_result_ok(response)
-        return response
-
-    def set_simulation_state(self, simulation_state) -> None:
-        set_simulation_state, request = self.setup_client(
-            si.SetSimulationState, 'set_simulation_state')
-        request.state.state = simulation_state
-        response = self.call_and_spin(set_simulation_state, request)
-        self.assert_result_ok(response)
+        self.assert_result_ok(self.reset_simulation())
 
     def test_toggle_simulation_state(self) -> None:
         initial_state = self.get_simulation_state().state.state
@@ -290,22 +321,25 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.set_simulation_state(SimulationState.STATE_PLAYING)
         self.set_simulation_state(SimulationState.STATE_PLAYING)
 
-    def goal_response_cb(self, future) -> None:
-        goal_handle = future.result()
-        self.assertTrue(goal_handle.accepted)
-
-        result_future = goal_handle.get_result_async()
-        result_future.add_done_callback(self.get_result_cb)
-
-    def get_result_cb(self, future) -> None:
-        result = future.result()
-        self.assertEqual(result.completed_steps, 10)
-
-    def feedback_cb(self, feedback_msg) -> None:
-        feedback = feedback_msg.feedback
-        self.assert_result_ok(feedback.result)
-
     def test_simulate_steps_action(self) -> None:
+
+        def goal_response_cb(future) -> None:
+            goal_handle = future.result()
+            self.assertTrue(goal_handle.accepted)
+
+            result_future = goal_handle.get_result_async()
+            result_future.add_done_callback(get_result_cb)
+
+        def get_result_cb(future) -> None:
+            result = future.result()
+            self.assertEqual(result.completed_steps, 10)
+
+        def feedback_cb(feedback_msg) -> None:
+            feedback = feedback_msg.feedback
+            self.assert_result_ok(feedback.result)
+
+
+
         simulation_state = self.get_simulation_state().state.state
         if simulation_state != SimulationState.STATE_PAUSED:
             self.set_simulation_state(SimulationState.STATE_PAUSED)
@@ -320,8 +354,8 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         goal_msg.steps = 10
 
         send_goal_future = action_client.send_goal_async(
-            goal_msg, feedback_callback=self.feedback_cb)
-        send_goal_future.add_done_callback(self.goal_response_cb)
+            goal_msg, feedback_callback=feedback_cb)
+        send_goal_future.add_done_callback(goal_response_cb)
 
     def test_get_entity_info(self) -> None:
         get_entity_info, request = self.setup_client(
