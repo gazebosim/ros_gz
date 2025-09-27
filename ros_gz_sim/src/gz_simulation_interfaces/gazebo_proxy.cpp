@@ -78,11 +78,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       this->state_intialized_ = true;
 
       // Listen to the "state" topic to get periodic updates.
-      if (!this->gz_node_->Subscribe(
-            this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this))
-      {
-        RCLCPP_ERROR(ros_node->get_logger(), "Subscribing to periodic state updates failed");
-      }
+      this->SubscribeToGzTopic(this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this);
       // Listen to the "scene/info" to detect a reset
       // TODO(azeey): This is a hack. We currently don't have a nice way of determining when
       // simulation has been reset if it's currently paused. Checking if time has been rewound or
@@ -102,10 +98,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
             std::async(std::launch::async, [this] {this->InitializeAllCanonicalLinks();});
         };
 
-      if (auto topic = this->PrefixTopic("scene/info");
-          !this->gz_node_->Subscribe(topic, resetHandler)) {
-        RCLCPP_ERROR_STREAM(ros_node->get_logger(), "Subscribing the " << topic << " topic failed");
-      }
+      this->SubscribeToGzTopic(this->PrefixTopic("scene/info"), resetHandler);
     }
 
     std::function<void(const gz::msgs::WorldStatistics &)> updateStats =
@@ -116,9 +109,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       };
 
     // Listen to the stats topic to get more frequently updates world statistics.
-    if (auto topic = this->PrefixTopic("stats"); !this->gz_node_->Subscribe(topic, updateStats)) {
-      RCLCPP_ERROR_STREAM(ros_node->get_logger(), "Subscribing the " << topic << " topic failed");
-    }
+    this->SubscribeToGzTopic(this->PrefixTopic("stats"), updateStats);
   }
 
   // Before creating the services, we need to add the `[Angular/Linear]Velocity` components to all
@@ -220,7 +211,8 @@ bool GazeboProxy::WaitForResetDetected()
   std::unique_lock lk(this->reset_detected_mutex_);
   this->reset_detected_ = false;
   if(!this->reset_detected_cv_.wait_for(
-    lk, std::chrono::milliseconds(kGzServiceTimeoutMs), [this] { return this->reset_detected_; })) {
+    lk, std::chrono::milliseconds(kGzServiceTimeoutMs), [this] {return this->reset_detected_;}))
+  {
     return false;
   }
   return this->reset_detected_;

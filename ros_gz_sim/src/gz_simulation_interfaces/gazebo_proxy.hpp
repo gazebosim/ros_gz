@@ -21,10 +21,12 @@
 
 #include <chrono>
 #include <condition_variable>
+#include <map>
 #include <memory>
 #include <mutex>
 #include <string>
 #include <unordered_set>
+#include <utility>
 
 #include <gz/math/Pose3.hh>
 #include <gz/sim/Entity.hh>
@@ -163,6 +165,22 @@ private:
   /// \param[in] canonicalLinkEntities A set of canonical links to initialize.
   void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
 
+  /// \brief Subscribe to a Gazebo topic and store the subscription handler so that topics are
+  /// automatically unsubscribed during destruction.
+  /// \tparam[in] Args Arguments to be passed to gz::transport::Node::CreateSubscriber
+  /// \param[in] topic Subscription topic
+  template<typename ... Args>
+  void SubscribeToGzTopic(const std::string & topic, Args &&... args)
+  {
+    auto subscription = this->gz_node_->CreateSubscriber(topic, std::forward<Args>(args)...);
+    if (!subscription) {
+      RCLCPP_ERROR_STREAM(
+        this->ros_node_->get_logger(), "Subscribing to the topic [" << topic << "] failed");
+    } else {
+      this->gz_subscribers[topic] = std::move(subscription);
+    }
+  }
+
   /// \brief Name of Gazebo world being simulated
   std::string world_name_;
 
@@ -201,6 +219,11 @@ private:
 
   /// \brief Conditional variable used for waiting on reset detected.
   std::condition_variable reset_detected_cv_;
+
+  /// \brief gz-transport subscription handles
+  /// \TODO(azeey): Using a std::map here instead of a std::vector due to a bug in gz-transport
+  /// See https://github.com/gazebosim/gz-transport/issues/717
+  std::map<std::string, gz::transport::Node::Subscriber> gz_subscribers;
 };
 }  // namespace gz_simulation_interfaces
 }  // namespace ros_gz_sim
