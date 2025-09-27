@@ -45,8 +45,10 @@ ResetSimulation::ResetSimulation(
   }
   this->services_handle_ = ros_node->create_service<ResetSimulationSrv>(
     "reset_simulation", [this, control_service](RequestPtr request, ResponsePtr response) {
-      auto reset_detected_future =
-        std::async(std::launch::async, [this] { return this->gz_proxy_->WaitForResetDetected(); });
+      auto reset_detected_future = std::async(std::launch::async, [this]
+      {
+        return this->gz_proxy_->WaitForResetDetected();
+      });
 
       using Result = simulation_interfaces::msg::Result;
       if (
