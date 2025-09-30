@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.4 (2025-09-30)
+------------------
+* Implement ROS standard simulation interfaces (`#790 <https://github.com/gazebosim/ros_gz/issues/790>`_)
+* Add Windows support for ros_gz_bridge and ros_gz_sim (`#781 <https://github.com/gazebosim/ros_gz/issues/781>`_)
+* Contributors: Addisu Z. Taddese, Silvio Traversaro
+
 3.0.3 (2025-07-02)
 ------------------
 

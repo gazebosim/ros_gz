@@ -2,6 +2,14 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.4 (2025-09-30)
+------------------
+* add bayer image two way convertion  from sensor msgs to gz msgs (`#792 <https://github.com/gazebosim/ros_gz/issues/792>`_)
+* Added missing test and parse service name from YAML (backport `#776 <https://github.com/gazebosim/ros_gz/issues/776>`_) (`#784 <https://github.com/gazebosim/ros_gz/issues/784>`_)
+* Add Windows support for ros_gz_bridge and ros_gz_sim (`#781 <https://github.com/gazebosim/ros_gz/issues/781>`_)
+* Added documentation for python launch file bridge configuration (`#777 <https://github.com/gazebosim/ros_gz/issues/777>`_)
+* Contributors: Alon Nusem, Nizam Gifary, Silvio Traversaro, mergify[bot]
+
 3.0.3 (2025-07-02)
 ------------------
 
