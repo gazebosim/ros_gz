@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.11 (2025-09-30)
+-------------------
+* Added missing test and parse service name from YAML (backport `#776 <https://github.com/gazebosim/ros_gz/issues/776>`_) (`#786 <https://github.com/gazebosim/ros_gz/issues/786>`_)
+* Contributors: mergify[bot]
+
 2.1.10 (2025-07-02)
 -------------------
 
