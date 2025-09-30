@@ -115,6 +115,15 @@ public:
   /// \return True if the state has been updated before a timeout occurred.
   bool AssertUpdatedState(simulation_interfaces::msg::Result & result);
 
+  /// \brief Asserts that the local state (ECM, WorldStatistics) has been updated.
+  ///
+  /// This waits until a new world stats message is received with a short timeout period
+  /// (kGzServiceTimeoutMs)
+  /// \param[out] result Populates the result object with an error code and message if a timeout
+  /// occurred.
+  /// \return True if the world stats has been updated before a timeout occurred.
+  bool AssertUpdatedWorldStats(simulation_interfaces::msg::Result & result);
+
   /// \brief Wait until simulation reset is detected
   /// \return True if reset was detected.
   bool WaitForResetDetected();
@@ -190,7 +199,7 @@ private:
   /// \brief Gazebo Node
   std::shared_ptr<gz::transport::Node> gz_node_;
 
-  /// \brief Mutex used to synchronize access to ecm_, world_stats_, and state_updated_.
+  /// \brief Mutex used to synchronize access to ecm_ and state_updated_.
   mutable std::mutex state_sync_mutex_;
 
   /// \brief Local copy of the EntityComponentManager synchronized with the server.
@@ -199,8 +208,18 @@ private:
   /// \brief Local copy of the latest WorldStatistics message
   gz::msgs::WorldStatistics world_stats_;
 
+  /// \brief Conditional variable used for waiting on the updated world_stats message.
+  std::condition_variable world_stats_cv_;
+
   /// \brief Used as predicate for waiting on the latest state update with a conditional variable.
   bool state_updated_{false};
+
+  /// \brief Mutex used to synchronize access to world_stats_, and world_stats_updated_.
+  mutable std::mutex world_stats_sync_mutex_;
+
+  /// \brief Used as predicate for waiting on the latest world stats update with a conditional
+  /// variable.
+  bool world_stats_updated_{false};
 
   /// \brief Conditional variable used for waiting on the latest state update.
   std::condition_variable state_cv_;

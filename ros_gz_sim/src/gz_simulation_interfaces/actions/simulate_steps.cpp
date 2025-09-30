@@ -17,6 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
+#include <chrono>
 #include <cstdint>
 #include <future>
 #include <limits>
@@ -65,7 +66,11 @@ SimulateSteps::SimulateSteps(
       // simulation_interfaces::msg::Result
       using Result = simulation_interfaces::msg::Result;
 
-      if (this->worker_future_.valid()) {
+      // Adapted from https://github.com/ros-navigation/navigation2/blob/main/nav2_ros_common/include/nav2_ros_common/simple_action_server.hpp#L154
+      if (this->worker_future_.valid() && (
+          this->worker_future_.wait_for(std::chrono::milliseconds(0)) ==
+          std::future_status::timeout))
+      {
         auto action_result = std::make_shared<SimulateStepsAction::Result>();
         action_result->result.result = Result::RESULT_OPERATION_FAILED;
         action_result->result.error_message = "Another goal is already running";
@@ -115,6 +120,10 @@ SimulateSteps::SimulateSteps(
               auto feedback = std::make_shared<SimulateStepsAction::Feedback>();
 
               while (rclcpp::ok()) {
+                if (!this->gz_proxy_->AssertUpdatedWorldStats(action_result->result)) {
+                  goal_handle->abort(action_result);
+                }
+
                 auto iterations = this->gz_proxy_->Iterations();
                 feedback->completed_steps = iterations - num_iters_start;
                 feedback->remaining_steps = goal->steps - feedback->completed_steps;

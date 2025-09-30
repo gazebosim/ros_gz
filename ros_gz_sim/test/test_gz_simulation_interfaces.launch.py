@@ -325,20 +325,15 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_simulate_steps_action(self) -> None:
 
-        def goal_response_cb(future) -> None:
-            goal_handle = future.result()
-            self.assertTrue(goal_handle.accepted)
+        goal_msg = SimulateSteps.Goal()
+        goal_msg.steps = 200
 
-            result_future = goal_handle.get_result_async()
-            result_future.add_done_callback(get_result_cb)
-
-        def get_result_cb(future) -> None:
-            result = future.result()
-            self.assertEqual(result.completed_steps, 10)
+        self.feedback_cb_count = 0
 
         def feedback_cb(feedback_msg) -> None:
+            self.feedback_cb_count += 1
             feedback = feedback_msg.feedback
-            self.assert_result_ok(feedback.result)
+            self.assertGreater(feedback.completed_steps, 0)
 
         simulation_state = self.get_simulation_state().state.state
         if simulation_state != SimulationState.STATE_PAUSED:
@@ -353,12 +348,26 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             f'{GZ_SERVER_NODE_NAME}/simulate_steps')
         self.assertTrue(action_client.wait_for_server(timeout_sec=30))
 
-        goal_msg = SimulateSteps.Goal()
-        goal_msg.steps = 10
+        # TODO(azeey): Need to wait on the result future here so the test is ran to completion.
+        def send_goal_and_check_results():
+            self.feedback_cb_count = 0
+            send_goal_future = action_client.send_goal_async(
+                goal_msg, feedback_callback=feedback_cb)
+            rclpy.spin_until_future_complete(test_node, send_goal_future)
+            goal_handle = send_goal_future.result()
+            assert goal_handle is not None
+            result_future = goal_handle.get_result_async()
+            rclpy.spin_until_future_complete(test_node, result_future)
+            result = result_future.result()
+            assert result is not None
+            self.assert_result_ok(result.result)
 
-        send_goal_future = action_client.send_goal_async(
-            goal_msg, feedback_callback=feedback_cb)
-        send_goal_future.add_done_callback(goal_response_cb)
+        send_goal_and_check_results()
+        # Assert that the feedback callback is called at least once.
+        self.assertGreater(self.feedback_cb_count, 1)
+        # Do it again to make sure subsequent actions are handled properly
+        send_goal_and_check_results()
+        self.assertGreater(self.feedback_cb_count, 1)
 
     def test_get_entity_info(self) -> None:
         get_entity_info, request = self.setup_client(

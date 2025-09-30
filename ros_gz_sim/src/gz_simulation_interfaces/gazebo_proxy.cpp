@@ -104,8 +104,10 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
     std::function<void(const gz::msgs::WorldStatistics &)> updateStats =
       [this](const auto & stats)
       {
-        std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+        std::lock_guard<std::mutex> lk(this->world_stats_sync_mutex_);
         this->world_stats_ = stats;
+        this->world_stats_updated_ = true;
+        this->world_stats_cv_.notify_all();
       };
 
     // Listen to the stats topic to get more frequently updates world statistics.
@@ -147,19 +149,19 @@ bool GazeboProxy::WaitForGzService(
 }
 uint64_t GazeboProxy::Iterations() const
 {
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  std::lock_guard<std::mutex> lk(this->world_stats_sync_mutex_);
   return this->world_stats_.iterations();
 }
 
 bool GazeboProxy::Paused() const
 {
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  std::lock_guard<std::mutex> lk(this->world_stats_sync_mutex_);
   return this->world_stats_.paused();
 }
 
 gz::msgs::WorldStatistics GazeboProxy::Stats() const
 {
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  std::lock_guard<std::mutex> lk(this->world_stats_sync_mutex_);
   return this->world_stats_;
 }
 
@@ -201,6 +203,22 @@ bool GazeboProxy::AssertUpdatedState(simulation_interfaces::msg::Result & result
   if (!this->WaitForUpdatedState()) {
     result.result = Result::RESULT_OPERATION_FAILED;
     result.error_message = "Timed out while waiting for updated Gazebo state";
+    return false;
+  }
+  return true;
+}
+
+bool GazeboProxy::AssertUpdatedWorldStats(simulation_interfaces::msg::Result & result)
+{
+  using simulation_interfaces::msg::Result;
+  std::unique_lock lk(this->world_stats_sync_mutex_);
+  this->world_stats_updated_ = false;
+  auto rc = this->world_stats_cv_.wait_for(
+    lk, std::chrono::milliseconds(kGzStateUpdatedTimeoutMs),
+    [this] {return this->world_stats_updated_;});
+  if (!rc) {
+    result.result = Result::RESULT_OPERATION_FAILED;
+    result.error_message = "Timed out while waiting for updated Gazebo world stats";
     return false;
   }
   return true;
