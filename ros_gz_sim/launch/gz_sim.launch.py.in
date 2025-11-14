@@ -16,6 +16,7 @@
 
 import os
 from os import environ
+import shutil
 
 from ament_index_python.packages import get_package_share_directory
 from catkin_pkg.package import InvalidPackage, PACKAGE_MANIFEST_FILENAME, parse_package
@@ -23,6 +24,7 @@ from ros2pkg.api import get_package_names
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.actions import ExecuteProcess, Shutdown
+from launch.actions import LogInfo
 from launch.substitutions import LaunchConfiguration
 
 # Copied from https://github.com/ros-simulation/gazebo_ros_pkgs/blob/79fd94c6da76781a91499bc0f54b70560b90a9d2/gazebo_ros/scripts/gazebo_ros_paths.py
@@ -76,6 +78,12 @@ class GazeboRosPaths:
 
         return gazebo_model_path, gazebo_plugin_path
 
+def get_executable_path(command):
+    path = shutil.which(command)
+    if path.lower().endswith('.bat'):
+        return os.path.splitext(path)[0]
+    return path
+
 def launch_gz(context, *args, **kwargs):
     model_paths, plugin_paths = GazeboRosPaths.get_paths()
 
@@ -101,6 +109,7 @@ def launch_gz(context, *args, **kwargs):
     ign_version = LaunchConfiguration('ign_version').perform(context)
     debugger = LaunchConfiguration('debugger').perform(context)
     on_exit_shutdown = LaunchConfiguration('on_exit_shutdown').perform(context)
+    debug_env = LaunchConfiguration('debug_env').perform(context)
 
     if not len(gz_args) and len(ign_args):
         print("ign_args is deprecated, migrate to gz_args!")
@@ -109,12 +118,12 @@ def launch_gz(context, *args, **kwargs):
         exec_args = gz_args
 
     if len(ign_version) or (ign_version == '' and int(gz_version) < 7):
-        exec = 'ruby $(which ign) gazebo'
+        exec = 'ruby ' + get_executable_path('ign') + ' gazebo'
 
         if len(ign_version):
             gz_version = ign_version
     else:
-        exec = 'ruby $(which gz) sim'
+        exec = 'ruby ' + get_executable_path('gz') + ' sim'
 
     if debugger != 'false':
         debug_prefix = 'x-terminal-emulator -e gdb -ex run --args'
@@ -126,16 +135,20 @@ def launch_gz(context, *args, **kwargs):
     else:
         on_exit = None
 
-    return [ExecuteProcess(
-            cmd=[exec, exec_args, '--force-version', gz_version],
-            name='gazebo',
-            output='screen',
-            additional_env=env,
-            shell=True,
-            prefix=debug_prefix,
-            on_exit=on_exit
-        )]
+    ld = [ExecuteProcess(
+                cmd=[exec, exec_args, '--force-version', gz_version],
+                name='gazebo',
+                output='screen',
+                additional_env=env,
+                shell=True,
+                prefix=debug_prefix,
+                on_exit=on_exit
+                )
+    ]
+    if debug_env == 'true':
+        ld.insert(0, LogInfo(f"Launching gazebo with the environment variables: {env}"))
 
+    return ld
 
 def generate_launch_description():
     return LaunchDescription([
@@ -158,6 +171,9 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'debugger', default_value='false',
             description='Run in Debugger'),
+        DeclareLaunchArgument(
+            'debug_env', default_value='false',
+            description='Debug environment variables'),
         DeclareLaunchArgument(
             'on_exit_shutdown', default_value='false',
             description='Shutdown on gz-sim exit'),

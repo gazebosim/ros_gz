@@ -94,6 +94,7 @@ MAPPINGS = {
         Mapping('MagneticField', 'Magnetometer'),
         Mapping('NavSatFix', 'NavSat'),
         Mapping('PointCloud2', 'PointCloudPacked'),
+        Mapping('Range', 'LaserScan'),
     ],
     'std_msgs': [
         Mapping('Bool', 'Boolean'),

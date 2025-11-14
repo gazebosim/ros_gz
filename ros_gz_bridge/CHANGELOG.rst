@@ -2,6 +2,34 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.4 (2025-09-30)
+------------------
+* add bayer image two way conversion from sensor msgs to gz msgs (`#792 <https://github.com/gazebosim/ros_gz/issues/792>`_)
+* Added missing test and parse service name from YAML (backport `#776 <https://github.com/gazebosim/ros_gz/issues/776>`_) (`#784 <https://github.com/gazebosim/ros_gz/issues/784>`_)
+* Add Windows support for ros_gz_bridge and ros_gz_sim (`#781 <https://github.com/gazebosim/ros_gz/issues/781>`_)
+* Added documentation for python launch file bridge configuration (`#777 <https://github.com/gazebosim/ros_gz/issues/777>`_)
+* Contributors: Alon Nusem, Nizam Gifary, Silvio Traversaro, mergify[bot]
+
+3.0.3 (2025-07-02)
+------------------
+
+3.0.2 (2025-06-12)
+------------------
+* ros_gz_bridge: Allow setting QoS profile from YAML files and launch action. (`#761 <https://github.com/gazebosim/ros_gz/issues/761>`_)
+* Added easy way to configure bridge from XML launch files. (`#735 <https://github.com/gazebosim/ros_gz/issues/735>`_)
+* Contributors: Martin Pecka
+
+3.0.1 (2025-05-26)
+------------------
+
+3.0.0 (2025-05-06)
+------------------
+* Added LaserScan-Range bridge (backport `#736 <https://github.com/gazebosim/ros_gz/issues/736>`_) (`#740 <https://github.com/gazebosim/ros_gz/issues/740>`_)
+* use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Alejandro Hernández Cordero, Leander Stephen D'Souza, mergify[bot]
+
 2.1.6 (2025-03-21)
 ------------------
 * make linters happy (`#709 <https://github.com/gazebosim/ros_gz/issues/709>`_)

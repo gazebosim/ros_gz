@@ -2,6 +2,35 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.4 (2025-09-30)
+------------------
+* Implement ROS standard simulation interfaces (`#790 <https://github.com/gazebosim/ros_gz/issues/790>`_)
+* Add Windows support for ros_gz_bridge and ros_gz_sim (`#781 <https://github.com/gazebosim/ros_gz/issues/781>`_)
+* Contributors: Addisu Z. Taddese, Silvio Traversaro
+
+3.0.3 (2025-07-02)
+------------------
+
+3.0.2 (2025-06-12)
+------------------
+* OS agnostic 'which' command (`#762 <https://github.com/gazebosim/ros_gz/issues/762>`_) (`#765 <https://github.com/gazebosim/ros_gz/issues/765>`_)
+* ros_gz_sim: Added support for passing initial_sim_time to Gazebo. (`#756 <https://github.com/gazebosim/ros_gz/issues/756>`_)
+* Contributors: Alejandro Hernandez Cordero, Martin Pecka, mergify[bot]
+
+3.0.1 (2025-05-26)
+------------------
+* Fix debug_env (`#747 <https://github.com/gazebosim/ros_gz/issues/747>`_)
+* Log environment variables with which gazebo was launched (`#680 <https://github.com/gazebosim/ros_gz/issues/680>`_)
+* Contributors: Alejandro Hernández Cordero, Arjo Chakravarty
+
+3.0.0 (2025-05-06)
+------------------
+* Spawn, set pose and delete entities using ROS 2 (`#705 <https://github.com/gazebosim/ros_gz/issues/705>`_)
+* use target_link_libraries instead of ament_target_dependencies (`#730 <https://github.com/gazebosim/ros_gz/issues/730>`_)
+* Added codespell pre-commit hook. (`#721 <https://github.com/gazebosim/ros_gz/issues/721>`_)
+* Add pre commit (`#718 <https://github.com/gazebosim/ros_gz/issues/718>`_)
+* Contributors: Alejandro Hernández Cordero, Khaled Gabr, Leander Stephen D'Souza
+
 2.1.6 (2025-03-21)
 ------------------
 

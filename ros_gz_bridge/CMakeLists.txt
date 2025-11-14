@@ -9,6 +9,7 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -133,6 +134,10 @@ target_include_directories(${bridge_lib}
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
 )
+
+if(MSVC)
+  target_compile_options(${bridge_lib} PRIVATE "/bigobj")
+endif()
 
 rclcpp_components_register_node(
   ${bridge_lib}
@@ -295,7 +300,13 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
+  add_executable(test_launch_action_subscriber test/subscribers/launch_action_subscriber.cpp)
+  target_link_libraries(test_launch_action_subscriber test_utils)
+  target_include_directories(test_launch_action_subscriber
+    PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
+
   install(TARGETS
+    test_launch_action_subscriber
     test_ros_publisher
     test_ros_subscriber
     test_gz_publisher
@@ -316,6 +327,14 @@ if(BUILD_TESTING)
   )
 
   add_launch_test(test/launch/test_gz_server.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_launch_action.launch.py
+    TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_launch_action_classic.launch.py
     TIMEOUT 200
   )
 

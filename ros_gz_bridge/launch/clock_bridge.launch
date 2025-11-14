@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+Copyright 2025 Open Source Robotics Foundation, Inc.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+<launch>
+  <arg name="bridge_name" />
+  <arg name="container_name" default="ros_gz_container" />
+  <arg name="create_own_container" default="False" />
+  <arg name="namespace" default="" />
+  <arg name="use_composition" default="False" />
+  <arg name="use_respawn" default="False" />
+  <arg name="log_level" default="info" />
+
+  <ros_gz_bridge
+    bridge_name="$(var bridge_name)"
+    container_name="$(var container_name)"
+    create_own_container="$(var create_own_container)"
+    namespace="$(var namespace)"
+    use_composition="$(var use_composition)"
+    use_respawn="$(var use_respawn)"
+    log_level="$(var log_level)">
+
+    <topic ros_topic_name="/clock" gz_topic_name="/clock"
+           ros_type_name="rosgraph_msgs/msg/Clock" gz_type_name="gz.msgs.Clock"
+           lazy="False" direction="GZ_TO_ROS" qos_profile="CLOCK" />
+
+  </ros_gz_bridge>
+</launch>
