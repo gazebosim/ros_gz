@@ -15,8 +15,6 @@
 #ifndef FACTORY_HPP_
 #define FACTORY_HPP_
 
-#include <tf2_ros/static_transform_broadcaster.h>
-
 #include <chrono>
 #include <functional>
 #include <memory>
@@ -30,6 +28,7 @@
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription_options.hpp>
+#include <tf2_ros/static_transform_broadcaster.hpp>
 
 #include "factory_interface.hpp"
 

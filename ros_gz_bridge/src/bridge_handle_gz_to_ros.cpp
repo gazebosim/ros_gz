@@ -13,11 +13,11 @@
 // limitations under the License.
 //
 
-#include <tf2/LinearMath/Quaternion.h>
-
 #include <memory>
 #include <string>
 #include <vector>
+
+#include <tf2/LinearMath/Quaternion.hpp>
 
 #include "bridge_handle_gz_to_ros.hpp"
 
