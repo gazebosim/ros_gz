@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.5 (2025-11-17)
+------------------
+
 3.0.4 (2025-09-30)
 ------------------
 * Implement ROS standard simulation interfaces (`#790 <https://github.com/gazebosim/ros_gz/issues/790>`_)

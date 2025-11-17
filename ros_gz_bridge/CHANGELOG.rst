@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.5 (2025-11-17)
+------------------
+* make linters happy
+* Contributors: Alejandro Hernandez Cordero
+
 3.0.4 (2025-09-30)
 ------------------
 * add bayer image two way conversion from sensor msgs to gz msgs (`#792 <https://github.com/gazebosim/ros_gz/issues/792>`_)
