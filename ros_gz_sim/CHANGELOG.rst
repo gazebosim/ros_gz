@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.12 (2025-11-17)
+-------------------
+* Implement ROS standard simulation interfaces (`#790 <https://github.com/gazebosim/ros_gz/issues/790>`_) (`#801 <https://github.com/gazebosim/ros_gz/issues/801>`_)
+* Contributors: mergify[bot]
+
 2.1.11 (2025-09-30)
 -------------------
 
