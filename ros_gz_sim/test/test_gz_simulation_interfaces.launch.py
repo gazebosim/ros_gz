@@ -191,7 +191,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_get_entity_state_on_spawned_entity(self) -> None:
         sdf_string = """
-            <sdf version='1.12'>
+            <sdf version='1.11'>
                 <model name="sphere2">
                     <link name="sphere_link">
                         <inertial auto="true"><mass>1.0</mass></inertial>
@@ -234,8 +234,10 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.state.pose.position.z = 100.0
         request.state.twist.linear.x = 5.0
         self.assert_result_ok(self.call_and_spin(set_entity_state, request))
-        state = self.get_entity_state(test_entity).state
-        self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
+        # In Gazebo Harmonic, velocity commands are reset to zero (brake) after
+        # each time step, so setting entity velocities does not work properly.
+        # state = self.get_entity_state(test_entity).state
+        # self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
 
     def test_set_entity_state_preserves_sim_state(self) -> None:
         set_entity_state, request = self.setup_client(
@@ -250,7 +252,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_spawn_entity_duplicate_name(self) -> None:
         sdf_string = """
-            <sdf version='1.12'>
+            <sdf version='1.11'>
                 <model name="test_empty">
                     <link name="link">
                     </link>
@@ -274,7 +276,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_delete_on_spawned_entity(self) -> None:
         sdf_string = """
-            <sdf version='1.12'>
+            <sdf version='1.11'>
                 <model name="test_empty">
                     <link name="link">
                     </link>
