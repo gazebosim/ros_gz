@@ -2,6 +2,13 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.18 (2025-11-21)
+-------------------
+* Implement ROS standard simulation interfaces (backport `#790 <https://github.com/gazebosim/ros_gz/issues/790>`_) (`#802 <https://github.com/gazebosim/ros_gz/issues/802>`_)
+* Use PIMPL pattern in gzserver (`#683 <https://github.com/gazebosim/ros_gz/issues/683>`_)
+* Expose header for `GzServer` (`#681 <https://github.com/gazebosim/ros_gz/issues/681>`_) (`#809 <https://github.com/gazebosim/ros_gz/issues/809>`_)
+* Contributors: Addisu Z. Taddese, mergify[bot]
+
 1.0.17 (2025-07-16)
 -------------------
 
