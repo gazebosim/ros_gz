@@ -39,13 +39,13 @@ public:
     std::shared_ptr<gz::transport::Node> _gz_node)
   {
     // Get QoS profile from parameter
-    rmw_qos_profile_t qos_profile = rmw_qos_profile_default;
+    rclcpp::QoS qos_profile = rclcpp::QoS(10);
     const auto qos_str =
       _node->get_parameter("qos").get_parameter_value().get<std::string>();
     if (qos_str == "system_default") {
-      qos_profile = rmw_qos_profile_system_default;
+      qos_profile = rclcpp::SystemDefaultsQoS();
     } else if (qos_str == "sensor_data") {
-      qos_profile = rmw_qos_profile_sensor_data;
+      qos_profile = rclcpp::SensorDataQoS();
     } else if (qos_str != "default") {
       RCLCPP_ERROR(
         _node->get_logger(),
@@ -55,7 +55,7 @@ public:
 
     // Create publishers and subscribers
     this->ros_pub = image_transport::create_publisher(
-      _node.get(), _topic, qos_profile);
+      *_node, _topic, qos_profile);
 
     _gz_node->Subscribe(_topic, &Handler::OnImage, this);
   }
