@@ -64,11 +64,13 @@ void waitUntilBoolVarAndSpin(
   const std::chrono::duration<Rep, Period> & _sleepEach,
   const int _retries)
 {
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node->get_node_base_interface());
   int i = 0;
   while (!_boolVar && i < _retries && rclcpp::ok()) {
     ++i;
     std::this_thread::sleep_for(_sleepEach);
-    rclcpp::spin_some(node->get_node_base_interface());
+    executor.spin_some();
   }
 }
 
