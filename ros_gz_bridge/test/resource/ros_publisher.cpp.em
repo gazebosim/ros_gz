@@ -22,6 +22,8 @@ int main(int argc, char ** argv)
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("ros_string_publisher");
   rclcpp::Rate loop_rate(100);
+  rclcpp::executors::SingleThreadedExecutor executor;
+  executor.add_node(node);
 
 @[for m in mappings]@
   // @(m.ros2_string()).
@@ -38,7 +40,7 @@ int main(int argc, char ** argv)
     @(m.unique())_pub->publish(@(m.unique())_msg);
 @[end for]@
 
-    rclcpp::spin_some(node);
+    executor.spin_some();
     loop_rate.sleep();
   }
 

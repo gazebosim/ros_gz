@@ -27,8 +27,8 @@ Gazebo version:
 Another factor to take into consideration is which Gazebo version is officially
 supported for each ROS distro according to the following REPS:
 
-* ROS 1: [REP-0003](https://ros.org/reps/rep-0003.html)
-* ROS 2: [REP-2000](https://www.ros.org/reps/rep-2000.html)
+* ROS 1: [REP-0003](https://reps.openrobotics.org/rep-0003/)
+* ROS 2: [REP-2000](https://reps.openrobotics.org/rep-2000/)
 
 These factors determine which ROS + Gazebo combinations are released into each
 repository.

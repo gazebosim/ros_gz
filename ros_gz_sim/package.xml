@@ -3,7 +3,7 @@
             schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_sim</name>
-  <version>3.0.4</version>
+  <version>3.0.5</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
 
   <!-- Maintainers -->
