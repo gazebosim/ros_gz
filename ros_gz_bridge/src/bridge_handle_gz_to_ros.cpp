@@ -46,8 +46,8 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
     frame_tf.clear();
   }
 
-  // Publish_optical_optical_frame is a convenient ROS parameter that will
-  // populates the override_frame_transform and override_frame_id_string
+  // publish_optical_frame is a convenient ROS parameter that will
+  // populate the override_frame_transform and override_frame_id_string
   // params with default values for converting x-forward to z-forward optical
   // frame. Note that they can still be overridden by the user if they decide
   // to set these params individually.
