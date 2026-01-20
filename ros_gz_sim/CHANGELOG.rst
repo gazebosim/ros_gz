@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.19 (2026-01-20)
+-------------------
+* Add dependency to ros2pkg (`#816 <https://github.com/gazebosim/ros_gz/issues/816>`_) (`#818 <https://github.com/gazebosim/ros_gz/issues/818>`_)
+* Contributors: mergify[bot]
+
 1.0.18 (2025-11-21)
 -------------------
 * Implement ROS standard simulation interfaces (backport `#790 <https://github.com/gazebosim/ros_gz/issues/790>`_) (`#802 <https://github.com/gazebosim/ros_gz/issues/802>`_)
