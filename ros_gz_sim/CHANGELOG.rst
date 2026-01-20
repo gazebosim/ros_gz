@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.21 (2026-01-20)
+---------------------
+* Add dependency to ros2pkg (backport `#816 <https://github.com/gazebosim/ros_gz/issues/816>`_) (`#819 <https://github.com/gazebosim/ros_gz/issues/819>`_)
+* Contributors: mergify[bot]
+
 0.244.20 (2025-06-12)
 ---------------------
 * OS agnostic 'which' command (`#762 <https://github.com/gazebosim/ros_gz/issues/762>`_) (`#764 <https://github.com/gazebosim/ros_gz/issues/764>`_)
