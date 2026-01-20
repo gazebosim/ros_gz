@@ -1,6 +1,6 @@
 <package format="3">
   <name>ros_ign_gazebo_demos</name>
-  <version>0.244.20</version>
+  <version>0.244.21</version>
   <description>Shim package to redirect to ros_gz_sim_demos.</description>
   <license>Apache 2.0</license>
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
