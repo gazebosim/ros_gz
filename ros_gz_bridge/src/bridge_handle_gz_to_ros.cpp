@@ -71,7 +71,8 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
-    override_timestamps_with_wall_time_);
+    override_timestamps_with_wall_time_,
+    this->config_.frame_id);
 
   this->gz_subscriber_ = this->gz_node_;
 }

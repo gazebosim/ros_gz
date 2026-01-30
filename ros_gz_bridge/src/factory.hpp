@@ -117,16 +117,17 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time)
+    bool override_timestamps_with_wall_time,
+    const std::string & frame_id = "") override
   {
     auto pub = std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub == nullptr) {
       return;
     }
     std::function<void(const GZ_T &)> subCb =
-      [this, pub, override_timestamps_with_wall_time](const GZ_T & _msg)
+      [this, pub, override_timestamps_with_wall_time, frame_id](const GZ_T & _msg)
       {
-        this->gz_callback(_msg, pub, override_timestamps_with_wall_time);
+        this->gz_callback(_msg, pub, override_timestamps_with_wall_time, frame_id);
       };
 
     // Ignore messages that are published from this bridge.
@@ -157,10 +158,16 @@ protected:
   void gz_callback(
     const GZ_T & gz_msg,
     std::shared_ptr<rclcpp::Publisher<ROS_T>> ros_pub,
-    bool override_timestamps_with_wall_time)
+    bool override_timestamps_with_wall_time,
+    const std::string & frame_id)
   {
     ROS_T ros_msg;
     convert_gz_to_ros(gz_msg, ros_msg);
+    if (!frame_id.empty()) {
+      if constexpr (has_header<ROS_T>::value) {
+        ros_msg.header.frame_id = frame_id;
+      }
+    }
     if constexpr (has_header<ROS_T>::value) {
       if (override_timestamps_with_wall_time) {
         auto now = std::chrono::system_clock::now().time_since_epoch();

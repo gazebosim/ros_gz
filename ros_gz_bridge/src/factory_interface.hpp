@@ -61,7 +61,8 @@ public:
     const std::string & topic_name,
     size_t queue_size,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time) = 0;
+    bool override_timestamps_with_wall_time,
+    const std::string & frame_id = "") = 0;
 };
 
 }  // namespace ros_gz_bridge
