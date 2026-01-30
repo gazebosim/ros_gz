@@ -33,8 +33,8 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   ros_node_->get_parameter("override_timestamps_with_wall_time",
     gz_to_ros_parameters_.override_timestamps_with_wall_time);
 
-  ros_node_->get_parameter("override_frame_id_string",
-      gz_to_ros_parameters_.override_frame_id_string);
+  ros_node_->get_parameter("override_frame_id",
+      gz_to_ros_parameters_.override_frame_id);
 
   std::vector<double> frame_tf;
   ros_node_->get_parameter("override_frame_transform", frame_tf);
@@ -47,7 +47,7 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   }
 
   // publish_optical_frame is a convenient ROS parameter that will
-  // populate the override_frame_transform and override_frame_id_string
+  // populate the override_frame_transform and override_frame_id
   // params with default values for converting x-forward to z-forward optical
   // frame. Note that they can still be overridden by the user if they decide
   // to set these params individually.
@@ -78,12 +78,12 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   }
 
   if (gz_to_ros_parameters_.override_frame_transform.has_value() &&
-    gz_to_ros_parameters_.override_frame_id_string.empty() &&
+    gz_to_ros_parameters_.override_frame_id.empty() &&
     gz_to_ros_parameters_.override_frame_id_suffix_string.empty())
   {
     RCLCPP_ERROR(
       ros_node_->get_logger(),
-      "The 'override_frame_id_string' parameter cannot be empty "
+      "The 'override_frame_id' parameter cannot be empty "
       "when 'override_frame_transform' is set. Disabling "
       "'override_frame_transform'.");
     gz_to_ros_parameters_.override_frame_transform.reset();

@@ -457,7 +457,7 @@ ROS 2 Parameters:
     * direction: GZ to ROS
     * description: Apply x-forward to z-forward transformation to outgoing
       messages. A new frame with a `_optical` suffix will be broadcasted.
- * `override_frame_id_string`
+ * `override_frame_id`
     * type: string
     * default: ""
     * direction: GZ to ROS
@@ -471,6 +471,6 @@ ROS 2 Parameters:
       tf with the `frame_id` set to the frame id in the original message, and
       the `child_frame_id` set to the new frame id in the updated outgoing
       message. The new frame id of the outgoing messages must be set via the
-      `override_frame_id_string` parameter. The array of doubles are:
+      `override_frame_id` parameter. The array of doubles are:
       `[x, y, z, roll, pitch, yaw]`, where the translational components are
       in meters and the rotational components are in radians.

@@ -174,8 +174,8 @@ protected:
         ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
       }
       std::string original_frame_id = ros_msg.header.frame_id;
-      if (!gz_to_ros_parameters.override_frame_id_string.empty()) {
-        ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id_string;
+      if (!gz_to_ros_parameters.override_frame_id.empty()) {
+        ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id;
       } else if (!gz_to_ros_parameters.override_frame_id_suffix_string.empty()) {
         ros_msg.header.frame_id = ros_msg.header.frame_id + "_" +
           gz_to_ros_parameters.override_frame_id_suffix_string;

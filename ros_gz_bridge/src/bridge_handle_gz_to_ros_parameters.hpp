@@ -34,12 +34,12 @@ struct BridgeHandleGzToRosParameters
   /// frame_id set to the frame_id in the original message, and the
   /// child_frame_id set to the new frame id in the updated outgoing message.
   /// The new frame id of the outgoing messages must be set via the
-  /// override_frame_id_string parameter.
+  /// override_frame_id parameter.
   std::optional<geometry_msgs::msg::Transform> override_frame_transform;
 
   /// \brief Override the header.frame_id field of the outgoing messages with
   /// this new frame_id string
-  std::string override_frame_id_string;
+  std::string override_frame_id;
 
   /// \brief Append the header.frame_id field of the outgoing messages with
   /// a suffix string. Used internally for publishing optical frames.
