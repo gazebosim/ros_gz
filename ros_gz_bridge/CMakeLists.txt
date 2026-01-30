@@ -23,6 +23,9 @@ find_package(gz-transport REQUIRED)
 find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
+find_package(tf2 REQUIRED)
+find_package(tf2_ros REQUIRED)
+
 # Install the python module for this package
 ament_python_install_package(${PROJECT_NAME})
 
@@ -118,6 +121,8 @@ target_link_libraries(${bridge_lib}
     ${trajectory_msgs_TARGETS}
     ${vision_msgs_TARGETS}
   PRIVATE
+    tf2::tf2
+    tf2_ros::tf2_ros
     yaml-cpp::yaml-cpp
 )
 

@@ -21,6 +21,7 @@
 #include <rclcpp/subscription_base.hpp>
 
 #include "bridge_handle.hpp"
+#include "bridge_handle_gz_to_ros_parameters.hpp"
 
 namespace ros_gz_bridge
 {
@@ -32,7 +33,10 @@ class BridgeHandleGzToRos : public BridgeHandle
 {
 public:
   /// \brief Constructor
-  using BridgeHandle::BridgeHandle;
+  BridgeHandleGzToRos(
+    rclcpp::Node::SharedPtr ros_node,
+    std::shared_ptr<gz::transport::Node> gz_node,
+    const BridgeConfig & config);
 
   /// \brief Destructor
   ~BridgeHandleGzToRos() override;
@@ -62,6 +66,9 @@ protected:
 
   /// \brief ROS publisher, populated when publisher active
   rclcpp::PublisherBase::SharedPtr ros_publisher_ = {nullptr};
+
+  /// \brief GZ to ROS parameters
+  BridgeHandleGzToRosParameters gz_to_ros_parameters_;
 };
 
 }  // namespace ros_gz_bridge

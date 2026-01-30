@@ -191,6 +191,55 @@ The screenshot shows all the shell windows and their expected content
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
+### GZ to ROS Optical frame conversion
+
+For sensors like cameras, it is commonly expected that ROS image data are in a
+z-forward optical frame, see [REP-0103](https://www.ros.org/reps/rep-0103.html).
+Historically, when bridging GZ to ROS `Image` and `CameraInfo` topics, users
+would typically create a new optical frame with a x to z-forward transformation,
+e.g. by using a static transform publisher. The sensor's frame id in SDF would
+then be set to point to the new optical frame.
+
+The bridge now has a parameter named `publish_optical_frame` to automate
+this process. In the above example for bridging image topics, you can run the
+bridge and pass these extra ROS arguments:
+
+```bash
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image --ros-args -p publish_optical_frame:=true -r /rgbd_camera/image:=/rgbd_camera/optical/image
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/camera_info@sensor_msgs/msg/CameraInfo@gz.msgs.CameraInfo --ros-args -p publish_optical_frame:=true -r /rgbd_camera/camera_info:=/rgbd_camera/optical/camera_info
+```
+
+Each command above sets the `publish_optical_frame` parameter to `true`, and
+it also remaps the original topic to a new name with an `optical` sub-namespace:
+
+```bash
+# Original topics:
+# /rgbd_camera/image
+# /rgbd_camera/camera_info
+# New remapped optical frame topics
+/rgbd_camera/optical/image
+/rgbd_camera/optical/camera_info
+```
+
+The messages from these topics will include a header with its `frame_id` set
+to a new optical frame that contains a `_optical` suffix string. This new
+optical frame is published by the bridge using a static transform broadcaster.
+
+You can introspect the TF tree using `tf2_tools` and viewing the generated pdf:
+
+```bash
+ros2 run tf2_tools view_frames
+evince frames_<timestamp>.pdf
+```
+
+The TF tree should look like:
+
+```bash
+# New TF tree. A new frame with `_optical` suffix is added
+/rgbd_camera/link/rgbd_camera -> /rgbd_camera/link/rgbd_camera_optical
+```
+
 ## Example 3: Static bridge
 
 In this example, we're going to run an executable that starts a bidirectional
@@ -383,6 +432,45 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 ROS 2 Parameters:
 
- * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
- * `config_file` - YAML file to be loaded as the bridge configuration
- * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
+* `subscription_heartbeat`
+    * type: double
+    * default: 1000
+    * description: Period (ms) at which the node checks for new subscribers for
+      lazy bridges.
+* `config_file`
+    * type: string
+    * default: ""
+    * description: YAML file to be loaded as the bridge configuration
+* `expand_gz_topic_names`
+    * type: bool
+    * default: false
+    * description: Enable or disable ROS namespace applied on GZ topics.
+* `override_timestamps_with_wall_time`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Override the header.stamp field of outgoing messages with
+      wall time.
+* `publish_optical_frame`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Apply x-forward to z-forward transformation to outgoing
+      messages. A new frame with a `_optical` suffix will be broadcasted.
+ * `override_frame_id`
+    * type: string
+    * default: ""
+    * direction: GZ to ROS
+    * description: Override the `header.frame_id` field with a new string value.
+ * `override_frame_transform`
+    * type: double array
+    * default: {}
+    * direction: GZ to ROS
+    * description: Publish messages under a new frame which has the specified
+      transformation from the original frame. This is done by broadcasting a
+      tf with the `frame_id` set to the frame id in the original message, and
+      the `child_frame_id` set to the new frame id in the updated outgoing
+      message. The new frame id of the outgoing messages must be set via the
+      `override_frame_id` parameter. The array of doubles are:
+      `[x, y, z, roll, pitch, yaw]`, where the translational components are
+      in meters and the rotational components are in radians.

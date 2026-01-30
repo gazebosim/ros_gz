@@ -12,12 +12,83 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //
+
 #include <memory>
+#include <string>
+#include <vector>
+
+#include <tf2/LinearMath/Quaternion.hpp>
 
 #include "bridge_handle_gz_to_ros.hpp"
 
 namespace ros_gz_bridge
 {
+
+BridgeHandleGzToRos::BridgeHandleGzToRos(
+  rclcpp::Node::SharedPtr ros_node,
+  std::shared_ptr<gz::transport::Node> gz_node,
+  const BridgeConfig & config)
+: BridgeHandle(ros_node, gz_node, config)
+{
+  ros_node_->get_parameter("override_timestamps_with_wall_time",
+    gz_to_ros_parameters_.override_timestamps_with_wall_time);
+
+  ros_node_->get_parameter("override_frame_id",
+      gz_to_ros_parameters_.override_frame_id);
+
+  std::vector<double> frame_tf;
+  ros_node_->get_parameter("override_frame_transform", frame_tf);
+  if (!frame_tf.empty() && frame_tf.size() != 6) {
+    RCLCPP_ERROR(
+      ros_node_->get_logger(),
+      "The 'override_frame_transform' parameter must be an array of 6 "
+      "floating point values: [x, y, z, roll, pitch, yaw].");
+    frame_tf.clear();
+  }
+
+  // publish_optical_frame is a convenient ROS parameter that will
+  // populate the override_frame_transform and override_frame_id
+  // params with default values for converting x-forward to z-forward optical
+  // frame. Note that they can still be overridden by the user if they decide
+  // to set these params individually.
+  bool publish_optical_frame = false;
+  ros_node_->get_parameter("publish_optical_frame",
+      publish_optical_frame);
+  publish_optical_frame |= config.publish_optical_frame;
+  std::vector<double> optical_frame_tf{0, 0, 0, -M_PI / 2.0, 0, -M_PI / 2.0};
+  if (publish_optical_frame) {
+    gz_to_ros_parameters_.override_frame_id_suffix_string = "optical";
+    if (frame_tf.empty()) {
+      frame_tf = optical_frame_tf;
+    }
+  }
+
+  if (!frame_tf.empty()) {
+    geometry_msgs::msg::Transform transform;
+    transform.translation.x = frame_tf[0];
+    transform.translation.y = frame_tf[1];
+    transform.translation.z = frame_tf[2];
+    tf2::Quaternion q;
+    q.setRPY(frame_tf[3], frame_tf[4], frame_tf[5]);
+    transform.rotation.x = q.x();
+    transform.rotation.y = q.y();
+    transform.rotation.z = q.z();
+    transform.rotation.w = q.w();
+    gz_to_ros_parameters_.override_frame_transform = transform;
+  }
+
+  if (gz_to_ros_parameters_.override_frame_transform.has_value() &&
+    gz_to_ros_parameters_.override_frame_id.empty() &&
+    gz_to_ros_parameters_.override_frame_id_suffix_string.empty())
+  {
+    RCLCPP_ERROR(
+      ros_node_->get_logger(),
+      "The 'override_frame_id' parameter cannot be empty "
+      "when 'override_frame_transform' is set. Disabling "
+      "'override_frame_transform'.");
+    gz_to_ros_parameters_.override_frame_transform.reset();
+  }
+}
 
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
 
@@ -71,7 +142,8 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
-    override_timestamps_with_wall_time_);
+    this->ros_node_,
+    gz_to_ros_parameters_);
 
   this->gz_subscriber_ = this->gz_node_;
 }

@@ -20,6 +20,7 @@
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <unordered_map>
 
 #include <gz/transport/Node.hh>
 #include <gz/transport/SubscribeOptions.hh>
@@ -27,6 +28,7 @@
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp/subscription_options.hpp>
+#include <tf2_ros/static_transform_broadcaster.hpp>
 
 #include "factory_interface.hpp"
 
@@ -117,16 +119,17 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time)
+    rclcpp::Node::SharedPtr ros_node,
+    BridgeHandleGzToRosParameters gz_to_ros_parameters)
   {
     auto pub = std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub == nullptr) {
       return;
     }
     std::function<void(const GZ_T &)> subCb =
-      [this, pub, override_timestamps_with_wall_time](const GZ_T & _msg)
+      [this, pub, ros_node, gz_to_ros_parameters](const GZ_T & _msg)
       {
-        this->gz_callback(_msg, pub, override_timestamps_with_wall_time);
+        this->gz_callback(_msg, pub, ros_node, gz_to_ros_parameters);
       };
 
     // Ignore messages that are published from this bridge.
@@ -157,20 +160,54 @@ protected:
   void gz_callback(
     const GZ_T & gz_msg,
     std::shared_ptr<rclcpp::Publisher<ROS_T>> ros_pub,
-    bool override_timestamps_with_wall_time)
+    rclcpp::Node::SharedPtr ros_node,
+    BridgeHandleGzToRosParameters gz_to_ros_parameters)
   {
     ROS_T ros_msg;
     convert_gz_to_ros(gz_msg, ros_msg);
     if constexpr (has_header<ROS_T>::value) {
-      if (override_timestamps_with_wall_time) {
+      if (gz_to_ros_parameters.override_timestamps_with_wall_time) {
         auto now = std::chrono::system_clock::now().time_since_epoch();
         auto ns =
           std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
         ros_msg.header.stamp.sec = ns / 1e9;
         ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
       }
+      std::string original_frame_id = ros_msg.header.frame_id;
+      if (!gz_to_ros_parameters.override_frame_id.empty()) {
+        ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id;
+      } else if (!gz_to_ros_parameters.override_frame_id_suffix_string.empty()) {
+        ros_msg.header.frame_id = ros_msg.header.frame_id + "_" +
+          gz_to_ros_parameters.override_frame_id_suffix_string;
+      }
+      if (gz_to_ros_parameters.override_frame_transform.has_value()) {
+        broadcast_tf(ros_node, original_frame_id,
+            ros_msg.header.frame_id,
+            gz_to_ros_parameters.override_frame_transform.value());
+      }
     }
     ros_pub->publish(ros_msg);
+  }
+
+  static
+  void broadcast_tf(
+    rclcpp::Node::SharedPtr ros_node,
+    const std::string & frame,
+    const std::string & child_frame,
+    const geometry_msgs::msg::Transform & transform)
+  {
+    static std::unordered_set<std::string> child_frame_ids;
+    if (child_frame_ids.insert(child_frame).second)
+    {
+      geometry_msgs::msg::TransformStamped tf_stamped;
+      tf_stamped.header.frame_id = frame;
+      tf_stamped.child_frame_id = child_frame;
+      tf_stamped.transform = transform;
+
+      static tf2_ros::StaticTransformBroadcaster tf_static_broadcaster =
+          tf2_ros::StaticTransformBroadcaster(*ros_node.get());
+      tf_static_broadcaster.sendTransform(tf_stamped);
+    }
   }
 
 public:

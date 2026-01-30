@@ -96,6 +96,9 @@ struct BridgeConfig
 
   /// \brief The ROS service type response.
   std::string gz_rep_type_name;
+
+  /// \brief True to publish message from GZ to ROS in z-forward optical frame.
+  bool publish_optical_frame{false};
 };
 
 /// \brief Generate a group of BridgeConfigs from a YAML String
