@@ -116,16 +116,16 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time)
+    const BridgeHandleGzToRosParameters & gz_to_ros_parameters)
   {
     std::function<void(const GZ_T &,
       const gz::transport::MessageInfo &)> subCb =
-      [this, ros_pub, override_timestamps_with_wall_time](const GZ_T & _msg,
+      [this, ros_pub, gz_to_ros_parameters](const GZ_T & _msg,
         const gz::transport::MessageInfo & _info)
       {
         // Ignore messages that are published from this bridge.
         if (!_info.IntraProcess()) {
-          this->gz_callback(_msg, ros_pub, override_timestamps_with_wall_time);
+          this->gz_callback(_msg, ros_pub, gz_to_ros_parameters);
         }
       };
 
@@ -154,17 +154,20 @@ protected:
   void gz_callback(
     const GZ_T & gz_msg,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time)
+    const BridgeHandleGzToRosParameters & gz_to_ros_parameters)
   {
     ROS_T ros_msg;
     convert_gz_to_ros(gz_msg, ros_msg);
     if constexpr (has_header<ROS_T>::value) {
-      if (override_timestamps_with_wall_time) {
+      if (gz_to_ros_parameters.override_timestamps_with_wall_time) {
         auto now = std::chrono::system_clock::now().time_since_epoch();
         auto ns =
           std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
         ros_msg.header.stamp.sec = ns / 1e9;
         ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
+      }
+      if (!gz_to_ros_parameters.override_frame_id.empty()) {
+        ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id;
       }
     }
     std::shared_ptr<rclcpp::Publisher<ROS_T>> pub =

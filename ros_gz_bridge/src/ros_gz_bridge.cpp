@@ -34,6 +34,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter<std::string>("config_file", "");
   this->declare_parameter<bool>("expand_gz_topic_names", false);
   this->declare_parameter<bool>("override_timestamps_with_wall_time", false);
+  this->declare_parameter<std::string>("override_frame_id", "");
 
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
