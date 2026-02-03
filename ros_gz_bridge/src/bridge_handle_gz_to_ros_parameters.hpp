@@ -15,7 +15,6 @@
 #ifndef BRIDGE_HANDLE_GZ_TO_ROS_PARAMETERS_HPP_
 #define BRIDGE_HANDLE_GZ_TO_ROS_PARAMETERS_HPP_
 
-#include <optional>
 #include <string>
 
 namespace ros_gz_bridge
