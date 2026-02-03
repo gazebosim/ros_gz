@@ -173,6 +173,26 @@ The screenshot shows all the shell windows and their expected content
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
+
+### GZ to ROS frame_id override
+
+The bridge has a parameter named `override_frame_id` that allows users to
+override the `frame_id` of messages when bridging topics.
+
+As an example, for sensors like cameras, it is commonly expected that ROS image
+data are in a z-forward optical frame, see
+[REP-0103](https://www.ros.org/reps/rep-0103.html).
+When bridging GZ to ROS `Image` and `CameraInfo` topics, users
+typically create a new optical frame with an x to z-forward transformation,
+e.g. by using a static transform publisher. Users can then use the
+`override_frame_id` parameter to override the `Image` or `CameraInfo` messages'
+`frame_id` field to point to the optical frame.
+
+```bash
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image --ros-args -p override_frame_id:=my_custom_optical_frame
+```
+
 ## Example 3: Static bridge
 
 In this example, we're going to run an executable that starts a bidirectional
@@ -316,6 +336,27 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 ROS 2 Parameters:
 
- * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
- * `config_file` - YAML file to be loaded as the bridge configuration
- * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
+* `subscription_heartbeat`
+    * type: double
+    * default: 1000
+    * description: Period (ms) at which the node checks for new subscribers for
+      lazy bridges.
+* `config_file`
+    * type: string
+    * default: ""
+    * description: YAML file to be loaded as the bridge configuration
+* `expand_gz_topic_names`
+    * type: bool
+    * default: false
+    * description: Enable or disable ROS namespace applied on GZ topics.
+* `override_timestamps_with_wall_time`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Override the header.stamp field of outgoing messages with
+      wall time.
+ * `override_frame_id`
+    * type: string
+    * default: ""
+    * direction: GZ to ROS
+    * description: Override the `header.frame_id` field with a new string value.
