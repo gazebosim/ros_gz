@@ -24,6 +24,8 @@
 // include ROS 2
 #include <rclcpp/rclcpp.hpp>
 
+#include "bridge_handle_gz_to_ros_parameters.hpp"
+
 namespace ros_gz_bridge
 {
 
@@ -61,7 +63,7 @@ public:
     const std::string & topic_name,
     size_t queue_size,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    bool override_timestamps_with_wall_time) = 0;
+    const BridgeHandleGzToRosParameters & gz_to_ros_parameters) = 0;
 };
 
 }  // namespace ros_gz_bridge
