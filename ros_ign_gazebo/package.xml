@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_ign_gazebo</name>
-  <version>0.244.21</version>
+  <version>0.244.22</version>
   <description>Shim package to redirect to ros_gz_sim.</description>
   <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
 
