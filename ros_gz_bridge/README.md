@@ -311,6 +311,7 @@ bridge may be specified:
                             # "GZ_TO_ROS" - Bridge Gz topic to ROS
                             # "ROS_TO_GZ" - Bridge ROS topic to Gz
   qos_profile: SENSOR_DATA  # Default is a default-constructed QoS with appropriate queue size
+  frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
 To run the bridge node with the above configuration:
