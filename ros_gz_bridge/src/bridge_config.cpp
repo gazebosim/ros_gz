@@ -38,6 +38,7 @@ constexpr const char kSubscriberQueue[] = "subscriber_queue";
 constexpr const char kLazy[] = "lazy";
 constexpr const char kGzReqTypeName[] = "gz_req_type_name";
 constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
+constexpr const char kFrameId[] = "frame_id";
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -148,6 +149,25 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     ret.gz_type_name = gz_type_name;
     ret.ros_type_name = ros_type_name;
 
+<<<<<<< HEAD
+=======
+    if (yaml_node[kFrameId]) {
+      ret.frame_id = yaml_node[kFrameId].as<std::string>();
+    }
+
+
+    if (yaml_node[kQosProfile]) {
+      const auto qos_profile_str = getValue(kQosProfile);
+      if (!qos_profile_str.empty()) {
+        try {
+          ret.qos_profile = parseQoS(qos_profile_str);
+        } catch (const std::invalid_argument & e) {
+          RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+          return {};
+        }
+      }
+    }
+>>>>>>> 71775b4 (Add support for configurable frame_id in Gazebo subscriber (#825))
     if (yaml_node[kPublisherQueue]) {
       ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
     }
