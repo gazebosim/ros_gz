@@ -2,6 +2,19 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.22 (2026-02-04)
+---------------------
+* Add override_frame_id parameter (backport `#826 <https://github.com/gazebosim/ros_gz/issues/826>`_) (`#829 <https://github.com/gazebosim/ros_gz/issues/829>`_)
+  * Add override_frame_id parameter (`#826 <https://github.com/gazebosim/ros_gz/issues/826>`_)
+  (cherry picked from commit b3e8ca29f14a1ac8c7904f8883b8c8f2f08bb077)
+  Co-authored-by: Ian Chen <ichen@openrobotics.org>
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Fix missing timestamp in Pose_V -> PoseArray bridge (`#812 <https://github.com/gazebosim/ros_gz/issues/812>`_) (`#823 <https://github.com/gazebosim/ros_gz/issues/823>`_)
+  (cherry picked from commit d472ca9a0cfaa7015ae5ff5ff8364da25440bb5c)
+  Co-authored-by: Shahazad Abdulla <shahazad.abdulla.engineer@gmail.com>
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
+
 0.244.21 (2026-01-20)
 ---------------------
 
