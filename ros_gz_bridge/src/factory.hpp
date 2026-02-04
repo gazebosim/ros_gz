@@ -116,7 +116,7 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    const BridgeHandleGzToRosParameters & gz_to_ros_parameters)
+    const BridgeHandleGzToRosParameters & gz_to_ros_parameters) override
   {
     std::function<void(const GZ_T &,
       const gz::transport::MessageInfo &)> subCb =

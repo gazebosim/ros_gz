@@ -290,8 +290,15 @@ bridge may be specified:
   publisher_queue: 6        # Default 10
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
+<<<<<<< HEAD
                             # "GZ_TO_ROS" - Bridge Ignition topic to ROS
                             # "ROS_TO_GZ" - Bridge ROS topic to Ignition
+=======
+                            # "GZ_TO_ROS" - Bridge Gz topic to ROS
+                            # "ROS_TO_GZ" - Bridge ROS topic to Gz
+  qos_profile: SENSOR_DATA  # Default is a default-constructed QoS with appropriate queue size
+  frame_id: "map"           # Optional: Override the frame_id in the ROS message header
+>>>>>>> 71775b4 (Add support for configurable frame_id in Gazebo subscriber (#825))
 ```
 
 To run the bridge node with the above configuration:

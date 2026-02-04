@@ -34,6 +34,12 @@ constexpr const char kDirection[] = "direction";
 constexpr const char kPublisherQueue[] = "publisher_queue";
 constexpr const char kSubscriberQueue[] = "subscriber_queue";
 constexpr const char kLazy[] = "lazy";
+<<<<<<< HEAD
+=======
+constexpr const char kGzReqTypeName[] = "gz_req_type_name";
+constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
+constexpr const char kFrameId[] = "frame_id";
+>>>>>>> 71775b4 (Add support for configurable frame_id in Gazebo subscriber (#825))
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -134,6 +140,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     }
   }
 
+<<<<<<< HEAD
   if (yaml_node[kTopicName]) {
     // Only "topic_name" is set
     ret.gz_topic_name = yaml_node[kTopicName].as<std::string>();
@@ -146,6 +153,65 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     // Only kGzTopicName is set
     ret.gz_topic_name = gz_topic_name;
     ret.ros_topic_name = gz_topic_name;
+=======
+  if (service_name.empty()) {
+    if (!topic_name.empty()) {
+      // Only "topic_name" is set
+      ret.gz_topic_name = topic_name;
+      ret.ros_topic_name = topic_name;
+    } else if (!ros_topic_name.empty() && gz_topic_name.empty()) {
+      // Only "ros_topic_name" is set
+      ret.gz_topic_name = ros_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    } else if (!gz_topic_name.empty() && ros_topic_name.empty()) {
+      // Only kGzTopicName is set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = gz_topic_name;
+    } else {
+      // Both are set
+      ret.gz_topic_name = gz_topic_name;
+      ret.ros_topic_name = ros_topic_name;
+    }
+
+    ret.gz_type_name = gz_type_name;
+    ret.ros_type_name = ros_type_name;
+
+    if (yaml_node[kFrameId]) {
+      ret.frame_id = yaml_node[kFrameId].as<std::string>();
+    }
+
+
+    if (yaml_node[kQosProfile]) {
+      const auto qos_profile_str = getValue(kQosProfile);
+      if (!qos_profile_str.empty()) {
+        try {
+          ret.qos_profile = parseQoS(qos_profile_str);
+        } catch (const std::invalid_argument & e) {
+          RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+          return {};
+        }
+      }
+    }
+    if (yaml_node[kPublisherQueue]) {
+      const auto queue_size_int = yaml_node[kPublisherQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.publisher_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.publisher_queue_size = kDefaultPublisherQueue;
+      }
+    }
+    if (yaml_node[kSubscriberQueue]) {
+      const auto queue_size_int = yaml_node[kSubscriberQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.subscriber_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.subscriber_queue_size = kDefaultSubscriberQueue;
+      }
+    }
+    if (yaml_node[kLazy]) {
+      ret.is_lazy = yaml_node[kLazy].as<bool>();
+    }
+>>>>>>> 71775b4 (Add support for configurable frame_id in Gazebo subscriber (#825))
   } else {
     // Both are set
     ret.gz_topic_name = gz_topic_name;

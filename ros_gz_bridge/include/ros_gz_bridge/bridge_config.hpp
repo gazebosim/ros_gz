@@ -68,6 +68,31 @@ struct BridgeConfig
 
   /// \brief Flag to change the "laziness" of the bridge
   bool is_lazy = kDefaultLazy;
+<<<<<<< HEAD
+=======
+
+  /// \brief QoS profile (unresolved, might have wrong depth).
+  /// \note Use PublisherQoS() and SubscriberQoS() to get the final QoS.
+  std::optional<rclcpp::QoS> qos_profile;
+
+  /// \brief Get the resolved QoS for publishers. It does not reflect QoS overrides.
+  rclcpp::QoS PublisherQoS() const;
+
+  /// \brief Get the resolved QoS for subscribers. It does not reflect QoS overrides.
+  rclcpp::QoS SubscriberQoS() const;
+
+  /// \brief The ROS service name (eg ~/get_parameters)
+  std::string service_name;
+
+  /// \brief The ROS service type request.
+  std::string gz_req_type_name;
+
+  /// \brief The ROS service type response.
+  std::string gz_rep_type_name;
+
+  /// \brief The Frame ID to inject into the ROS header.
+  std::string frame_id = "";
+>>>>>>> 71775b4 (Add support for configurable frame_id in Gazebo subscriber (#825))
 };
 
 /// \brief Generate a group of BridgeConfigs from a YAML String
