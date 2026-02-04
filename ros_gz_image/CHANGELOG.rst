@@ -2,6 +2,11 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.6 (2026-02-04)
+------------------
+* Remove image_transport deprecation (`#814 <https://github.com/gazebosim/ros_gz/issues/814>`_)
+* Contributors: Alejandro Hernández Cordero
+
 3.0.5 (2025-11-17)
 ------------------
 

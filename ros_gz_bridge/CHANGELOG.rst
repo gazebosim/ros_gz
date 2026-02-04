@@ -2,6 +2,14 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.6 (2026-02-04)
+------------------
+* Add support for configurable frame_id in Gazebo subscriber (`#825 <https://github.com/gazebosim/ros_gz/issues/825>`_)
+* Add override_frame_id parameter (`#826 <https://github.com/gazebosim/ros_gz/issues/826>`_)
+* Fix missing timestamp in Pose_V -> PoseArray bridge (`#812 <https://github.com/gazebosim/ros_gz/issues/812>`_)
+* get rid of deprecated rclcpp::spin_some() (`#813 <https://github.com/gazebosim/ros_gz/issues/813>`_)
+* Contributors: Alejandro Hernández Cordero, Ian Chen, Shahazad Abdulla
+
 3.0.5 (2025-11-17)
 ------------------
 * make linters happy

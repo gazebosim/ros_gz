@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.6 (2026-02-04)
+------------------
+* Add dependency to ros2pkg (`#816 <https://github.com/gazebosim/ros_gz/issues/816>`_)
+* Contributors: Felix Exner
+
 3.0.5 (2025-11-17)
 ------------------
 
