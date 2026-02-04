@@ -39,6 +39,7 @@ constexpr const char kQosProfile[] = "qos_profile";
 constexpr const char kLazy[] = "lazy";
 constexpr const char kGzReqTypeName[] = "gz_req_type_name";
 constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
+constexpr const char kFrameId[] = "frame_id";
 
 // Comparison strings for bridge directions
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
@@ -170,6 +171,10 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
 
     ret.gz_type_name = gz_type_name;
     ret.ros_type_name = ros_type_name;
+
+    if (yaml_node[kFrameId]) {
+      ret.frame_id = yaml_node[kFrameId].as<std::string>();
+    }
 
 
     if (yaml_node[kQosProfile]) {
