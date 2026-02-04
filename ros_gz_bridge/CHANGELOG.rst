@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.14 (2026-02-04)
+-------------------
+* Add support for configurable frame_id in Gazebo subscriber (backport `#825 <https://github.com/gazebosim/ros_gz/issues/825>`_) (`#830 <https://github.com/gazebosim/ros_gz/issues/830>`_)
+* Add override_frame_id parameter (backport `#826 <https://github.com/gazebosim/ros_gz/issues/826>`_) (`#827 <https://github.com/gazebosim/ros_gz/issues/827>`_)
+* Fix missing timestamp in Pose_V -> PoseArray bridge (`#812 <https://github.com/gazebosim/ros_gz/issues/812>`_) (`#821 <https://github.com/gazebosim/ros_gz/issues/821>`_)
+* Contributors: mergify[bot]
+
 2.1.13 (2026-01-20)
 -------------------
 

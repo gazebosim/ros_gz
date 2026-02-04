@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.14 (2026-02-04)
+-------------------
+
 2.1.13 (2026-01-20)
 -------------------
 * Add dependency to ros2pkg (`#816 <https://github.com/gazebosim/ros_gz/issues/816>`_) (`#817 <https://github.com/gazebosim/ros_gz/issues/817>`_)
