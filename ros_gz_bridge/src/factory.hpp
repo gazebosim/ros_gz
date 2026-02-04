@@ -119,7 +119,7 @@ public:
     const std::string & topic_name,
     size_t /*queue_size*/,
     rclcpp::PublisherBase::SharedPtr ros_pub,
-    const BridgeHandleGzToRosParameters & gz_to_ros_parameters)
+    const BridgeHandleGzToRosParameters & gz_to_ros_parameters) override
   {
     auto pub = std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub == nullptr) {
