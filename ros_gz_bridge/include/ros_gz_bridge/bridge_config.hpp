@@ -77,6 +77,9 @@ struct BridgeConfig
 
   /// \brief The ROS service type response.
   std::string gz_rep_type_name;
+
+  /// \brief The Frame ID to inject into the ROS header.
+  std::string frame_id = "";
 };
 
 /// \brief Generate a group of BridgeConfigs from a YAML String

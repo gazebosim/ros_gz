@@ -310,6 +310,7 @@ bridge may be specified:
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
                             # "GZ_TO_ROS" - Bridge Gz topic to ROS
                             # "ROS_TO_GZ" - Bridge ROS topic to Gz
+  frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
 To run the bridge node with the above configuration:
