@@ -12,13 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Tests for GID-based publisher filtering in the ros_gz_bridge.
-//
-// The bridge uses publisher GID filtering (instead of DDS-level
-// ignore_local_publications) to prevent message loops in bidirectional bridges
-// while still allowing messages from other nodes in the same composed
-// container. See https://github.com/gazebosim/ros_gz/issues/788
-
 #include <gtest/gtest.h>
 
 #include <array>
