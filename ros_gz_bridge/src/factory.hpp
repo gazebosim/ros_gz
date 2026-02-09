@@ -98,7 +98,7 @@ public:
     const rclcpp::QoS & qos,
     gz::transport::Node::Publisher & gz_pub)
   {
-    // Was this published by one of my own publishers? We compare   
+    // Was this published by one of my own publishers? We compare
     // the sender's GID against the GIDs we collected from the bridge node's
     // publishers at subscription creation time. If it matches, we drop the
     // message to prevent a loop.
