@@ -61,8 +61,9 @@ void GzServer::OnStart()
   auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
   auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
   auto initial_sim_time = this->declare_parameter("initial_sim_time", 0.0);
+  const auto verbosity_level = this->declare_parameter("verbosity_level", 4);
 
-  gz::common::Console::SetVerbosity(4);
+  gz::common::Console::SetVerbosity(verbosity_level);
   gz::sim::ServerConfig server_config;
 
   if (!world_sdf_file.empty()) {
