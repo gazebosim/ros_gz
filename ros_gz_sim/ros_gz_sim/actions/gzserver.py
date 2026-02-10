@@ -96,6 +96,7 @@ class GzServer(Action):
         create_own_container: Union[bool, SomeSubstitutionsType] = False,
         use_composition: Union[bool, SomeSubstitutionsType] = False,
         initial_sim_time: Union[float, SomeSubstitutionsType] = 0.0,
+        verbosity_level: Union[int, SomeSubstitutionsType] = 4,
         **kwargs
     ) -> None:
         """
@@ -109,6 +110,8 @@ class GzServer(Action):
         :param: container_name Name of container that nodes will load in if use composition.
         :param: create_own_container Whether to start a ROS container when using composition.
         :param: use_composition Use composed bringup if True.
+        :param: initial_sim_time: The initial simulation time.
+        :param: verbosity_level: The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG).
         """
         super().__init__(**kwargs)
         self.__world_sdf_file = world_sdf_file
@@ -140,6 +143,13 @@ class GzServer(Action):
         else:
             self.__initial_sim_time = normalize_typed_substitution(initial_sim_time, float)
 
+        if isinstance(verbosity_level, str):
+            self.__verbosity_level = normalize_typed_substitution(
+                TextSubstitution(text=verbosity_level), int
+            )
+        else:
+            self.__verbosity_level = normalize_typed_substitution(verbosity_level, int)
+
     @classmethod
     def parse(cls, entity: Entity, parser: Parser):
         """Parse gz_server."""
@@ -169,6 +179,10 @@ class GzServer(Action):
             'initial_sim_time', data_type=str,
             optional=True)
 
+        verbosity_level = entity.get_attr(
+            'verbosity_level', data_type=str,
+            optional=True)
+
         if isinstance(world_sdf_file, str):
             world_sdf_file = parser.parse_substitution(world_sdf_file)
             kwargs['world_sdf_file'] = world_sdf_file
@@ -193,6 +207,10 @@ class GzServer(Action):
         if isinstance(initial_sim_time, str):
             initial_sim_time = parser.parse_substitution(initial_sim_time)
             kwargs['initial_sim_time'] = initial_sim_time
+
+        if isinstance(verbosity_level, str):
+            verbosity_level = parser.parse_substitution(verbosity_level)
+            kwargs['verbosity_level'] = verbosity_level
 
         return cls, kwargs
 
@@ -229,7 +247,8 @@ class GzServer(Action):
                 output='screen',
                 parameters=[{'world_sdf_file': self.__world_sdf_file,
                              'world_sdf_string': self.__world_sdf_string,
-                             'initial_sim_time': self.__initial_sim_time}],
+                             'initial_sim_time': self.__initial_sim_time,
+                             'verbosity_level': self.__verbosity_level}],
                 ))
 
         # Composable node with container configuration
@@ -246,7 +265,8 @@ class GzServer(Action):
                         name='gz_server',
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
                                      'world_sdf_string': self.__world_sdf_string,
-                                     'initial_sim_time': self.__initial_sim_time}],
+                                     'initial_sim_time': self.__initial_sim_time,
+                                     'verbosity_level': self.__verbosity_level}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),
                     ],
@@ -264,7 +284,8 @@ class GzServer(Action):
                         name='gz_server',
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
                                      'world_sdf_string': self.__world_sdf_string,
-                                     'initial_sim_time': self.__initial_sim_time}],
+                                     'initial_sim_time': self.__initial_sim_time,
+                                     'verbosity_level': self.__verbosity_level}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),
                     ],
