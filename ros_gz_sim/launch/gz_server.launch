@@ -1,14 +1,18 @@
 <launch>
-  <arg name="world_sdf_file" default="empty.sdf" />
-  <arg name="world_sdf_string" default="" />
-  <arg name="container_name" default="ros_gz_container" />
-  <arg name="create_own_container" default="False" />
-  <arg name="use_composition" default="False" />
+  <arg name="world_sdf_file" default="empty.sdf" description="Path to the SDF world file" />
+  <arg name="world_sdf_string" default="" description="SDF world string" />
+  <arg name="container_name" default="ros_gz_container" description="Name of container that nodes will load in if use composition" />
+  <arg name="create_own_container" default="False" description="Whether we should start our own ROS container when using composition." />
+  <arg name="use_composition" default="False" description="Use composed bringup if True" />
+  <arg name="initial_sim_time" default="0.0" description="The initial simulation time" />
+  <arg name="verbosity_level" default="4" description="The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG)" />
   <gz_server
     world_sdf_file="$(var world_sdf_file)"
     world_sdf_string="$(var world_sdf_string)"
     container_name="$(var container_name)"
     create_own_container="$(var create_own_container)"
-    use_composition="$(var use_composition)">
+    use_composition="$(var use_composition)"
+    initial_sim_time="$(var initial_sim_time)"
+    verbosity_level="$(var verbosity_level)">
   </gz_server>
 </launch>
