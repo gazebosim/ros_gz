@@ -28,7 +28,7 @@ def generate_launch_description():
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', description='YAML config file'
+        'config_file', description='Bridge YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
@@ -44,7 +44,7 @@ def generate_launch_description():
     )
 
     declare_namespace_cmd = DeclareLaunchArgument(
-        'namespace', default_value='', description='Top-level namespace'
+        'namespace', default_value='', description='Top-level namespace of the bridge'
     )
 
     declare_use_composition_cmd = DeclareLaunchArgument(
@@ -54,7 +54,8 @@ def generate_launch_description():
     declare_use_respawn_cmd = DeclareLaunchArgument(
         'use_respawn',
         default_value='False',
-        description='Whether to respawn if a node crashes. Applied when composition is disabled.',
+        description='Whether to respawn the bridge if it crashes. ' +
+                    'Applied when composition is disabled.',
     )
 
     declare_bridge_log_level_cmd = DeclareLaunchArgument(
@@ -75,12 +76,24 @@ def generate_launch_description():
         description='SDF world string'
     )
 
+    declare_initial_sim_time_cmd = DeclareLaunchArgument(
+        'initial_sim_time', default_value='0.0',
+        description='The initial simulation time'
+    )
+
+    declare_verbosity_level_cmd = DeclareLaunchArgument(
+        'verbosity_level', default_value='4',
+        description='The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG)'
+    )
+
     gz_server_action = GzServer(
         world_sdf_file=LaunchConfiguration('world_sdf_file'),
         world_sdf_string=LaunchConfiguration('world_sdf_string'),
         container_name=LaunchConfiguration('container_name'),
         create_own_container=LaunchConfiguration('create_own_container'),
         use_composition=LaunchConfiguration('use_composition'),
+        initial_sim_time=LaunchConfiguration('initial_sim_time'),
+        verbosity_level=LaunchConfiguration('verbosity_level'),
     )
 
     ros_gz_bridge_action = RosGzBridge(
@@ -110,6 +123,8 @@ def generate_launch_description():
     ld.add_action(declare_bridge_params_cmd)
     ld.add_action(declare_world_sdf_file_cmd)
     ld.add_action(declare_world_sdf_string_cmd)
+    ld.add_action(declare_initial_sim_time_cmd)
+    ld.add_action(declare_verbosity_level_cmd)
     # Add the actions to launch all of the bridge + gz_server nodes
     ld.add_action(gz_server_action)
     ld.add_action(ros_gz_bridge_action)
