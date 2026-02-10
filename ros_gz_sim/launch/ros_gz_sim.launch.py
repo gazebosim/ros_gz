@@ -54,7 +54,8 @@ def generate_launch_description():
     declare_use_respawn_cmd = DeclareLaunchArgument(
         'use_respawn',
         default_value='False',
-        description='Whether to respawn the bridge if it crashes. Applied when composition is disabled.',
+        description='Whether to respawn the bridge if it crashes. ' +
+                    'Applied when composition is disabled.',
     )
 
     declare_bridge_log_level_cmd = DeclareLaunchArgument(
