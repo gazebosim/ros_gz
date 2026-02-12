@@ -1745,28 +1745,29 @@ void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg)
 {
-    ros_gz_interfaces::msg::WorldStatistics expected_msg;
-    createTestMsg(expected_msg);
+  ros_gz_interfaces::msg::WorldStatistics expected_msg;
+  createTestMsg(expected_msg);
 
-    compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
 
-    compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim_time));
-    compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->pause_time));
-    compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->real_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->pause_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->real_time));
 
-    EXPECT_EQ(expected_msg.paused, _msg->paused);
+  EXPECT_EQ(expected_msg.paused, _msg->paused);
 
-    EXPECT_EQ(expected_msg.iterations, _msg->iterations); 
+  EXPECT_EQ(expected_msg.iterations, _msg->iterations);
 
-    EXPECT_EQ(expected_msg.model_count, _msg->model_count);
+  EXPECT_EQ(expected_msg.model_count, _msg->model_count);
 
-    compareTestMsg(std::make_shared<ros_gz_interfaces::msg::LogPlaybackStatistics>(_msg->log_playback_statistics));
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::LogPlaybackStatistics>(
+        _msg->log_playback_statistics));
 
-    EXPECT_FLOAT_EQ(expected_msg.real_time_factor, _msg->real_time_factor);
+  EXPECT_FLOAT_EQ(expected_msg.real_time_factor, _msg->real_time_factor);
 
-    compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->step_size));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->step_size));
 
-    EXPECT_EQ(expected_msg.stepping, _msg->stepping);
+  EXPECT_EQ(expected_msg.stepping, _msg->stepping);
 
 }
 

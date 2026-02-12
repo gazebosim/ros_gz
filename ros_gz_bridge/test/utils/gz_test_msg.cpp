@@ -1818,7 +1818,7 @@ void createTestMsg(gz::msgs::WorldStatistics & _msg)
   _msg.mutable_log_playback_stats()->CopyFrom(log_playback_stats_msg);
 
   _msg.set_real_time_factor(0.75);
-  
+
   gz::msgs::Time step_size;
   createTestMsg(step_size);
   _msg.mutable_step_size()->CopyFrom(step_size);
@@ -1845,7 +1845,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg)
     std::make_shared<gz::msgs::LogPlaybackStatistics>(_msg->log_playback_stats()));
 
   EXPECT_FLOAT_EQ(expected_msg.real_time_factor(), _msg->real_time_factor());
-  
+
   compareTestMsg(
     std::make_shared<gz::msgs::Time>(_msg->step_size()));
 

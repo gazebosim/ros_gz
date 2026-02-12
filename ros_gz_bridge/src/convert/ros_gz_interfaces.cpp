@@ -894,9 +894,9 @@ convert_ros_to_gz(
   const ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg,
   gz::msgs::LogPlaybackStatistics & gz_msg)
 {
-    convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
-    convert_ros_to_gz(ros_msg.start_time, *gz_msg.mutable_start_time());
-    convert_ros_to_gz(ros_msg.end_time, *gz_msg.mutable_end_time());
+  convert_ros_to_gz(ros_msg.header, *gz_msg.mutable_header());
+  convert_ros_to_gz(ros_msg.start_time, *gz_msg.mutable_start_time());
+  convert_ros_to_gz(ros_msg.end_time, *gz_msg.mutable_end_time());
 }
 
 template<>
@@ -905,10 +905,9 @@ convert_gz_to_ros(
   const gz::msgs::LogPlaybackStatistics & gz_msg,
   ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg)
 {
-
-    convert_gz_to_ros(gz_msg.header(), ros_msg.header);
-    convert_gz_to_ros(gz_msg.start_time(), ros_msg.start_time);
-    convert_gz_to_ros(gz_msg.end_time(), ros_msg.end_time);
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  convert_gz_to_ros(gz_msg.start_time(), ros_msg.start_time);
+  convert_gz_to_ros(gz_msg.end_time(), ros_msg.end_time);
 }
 
 }  // namespace ros_gz_bridge
