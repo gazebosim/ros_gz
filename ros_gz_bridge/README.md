@@ -40,12 +40,14 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
 | ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
+| ros_gz_interfaces/msg/LogPlaybackStatistics    | gz.msgs.LogPlaybackStatistics       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
 | ros_gz_interfaces/msg/StringVec                | gz.msgs.StringMsg_V                 |
 | ros_gz_interfaces/msg/TrackVisual              | gz.msgs.TrackVisual                 |
 | ros_gz_interfaces/msg/VideoRecord              | gz.msgs.VideoRecord                 |
+| ros_gz_interfaces/msg/WorldStatistics          | gz.msgs.WorldStatistics             |
 | rosgraph_msgs/msg/Clock                        | gz.msgs.Clock                       |
 | sensor_msgs/msg/BatteryState                   | gz.msgs.BatteryState                |
 | sensor_msgs/msg/CameraInfo                     | gz.msgs.CameraInfo                  |
