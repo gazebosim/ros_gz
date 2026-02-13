@@ -26,7 +26,7 @@ LogPlaybackStatistics log_playback_statistics
 # of simulation time.
 float64 real_time_factor
 
-# Iteration step size. It's zero when paused. 
+# Iteration step size. It's zero when paused.
 builtin_interfaces/Time step_size
 
 # True if the simulator is stepping, as opposed to running. This
