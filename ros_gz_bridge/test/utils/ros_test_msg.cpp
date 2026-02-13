@@ -1736,7 +1736,7 @@ void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
   createTestMsg(step_size);
   _msg.step_size = step_size;
 
-  _msg.stepping = true; // paused is false, hence simulation is stepping
+  _msg.stepping = true;
 }
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg)
