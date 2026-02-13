@@ -4,7 +4,7 @@ std_msgs/Header header
 # Current simulation time
 builtin_interfaces/Time sim_time
 
-# Total time spent paused 
+# Total time spent paused
 builtin_interfaces/Time pause_time
 
 # Current real time
