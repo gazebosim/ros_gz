@@ -1694,19 +1694,16 @@ void createTestMsg(ros_gz_interfaces::msg::LogPlaybackStatistics & _msg)
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogPlaybackStatistics> & _msg)
 {
-
   ros_gz_interfaces::msg::LogPlaybackStatistics expected_msg;
   createTestMsg(expected_msg);
 
   compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->start_time));
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->end_time));
-
 }
 
 void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
 {
-
   std_msgs::msg::Header header_msg;
   createTestMsg(header_msg);
   _msg.header = header_msg;
@@ -1725,22 +1722,21 @@ void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
 
   _msg.paused = false;
 
-  _msg.iterations = 1000;
+  _msg.iterations = 123;
 
-  _msg.model_count = 5;
+  _msg.model_count = 10;
 
   ros_gz_interfaces::msg::LogPlaybackStatistics log_playback_statistics;
   createTestMsg(log_playback_statistics);
   _msg.log_playback_statistics = log_playback_statistics;
 
-  _msg.real_time_factor = 0.78;
+  _msg.real_time_factor = 0.75;
 
   builtin_interfaces::msg::Time step_size;
   createTestMsg(step_size);
   _msg.step_size = step_size;
 
   _msg.stepping = true; // paused is false, hence simulation is stepping
-
 }
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg)
@@ -1768,7 +1764,6 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistic
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->step_size));
 
   EXPECT_EQ(expected_msg.stepping, _msg->stepping);
-
 }
 
 }  // namespace testing

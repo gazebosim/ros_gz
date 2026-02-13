@@ -1824,7 +1824,6 @@ void createTestMsg(gz::msgs::WorldStatistics & _msg)
   _msg.mutable_step_size()->CopyFrom(step_size);
 
   _msg.set_stepping(true);
-
 }
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg)
@@ -1850,7 +1849,6 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg)
     std::make_shared<gz::msgs::Time>(_msg->step_size()));
 
   EXPECT_EQ(expected_msg.stepping(), _msg->stepping());
-
 }
 
 }  // namespace testing
