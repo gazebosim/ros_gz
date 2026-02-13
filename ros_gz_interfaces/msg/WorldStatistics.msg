@@ -22,7 +22,7 @@ int32 model_count
 # Statistics for log playback
 LogPlaybackStatistics log_playback_statistics
 
-# This factor expresses how much real time elapses with each step 
+# This factor expresses how much real time elapses with each step
 # of simulation time.
 float64 real_time_factor
 
