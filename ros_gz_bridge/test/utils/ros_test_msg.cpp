@@ -1713,8 +1713,9 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistic
 
   EXPECT_EQ(expected_msg.model_count, _msg->model_count);
 
-  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::LogPlaybackStatistics>(
-        _msg->log_playback_statistics));
+  compareTestMsg(
+    std::make_shared<ros_gz_interfaces::msg::LogPlaybackStatistics>(
+      _msg->log_playback_statistics));
 
   EXPECT_FLOAT_EQ(expected_msg.real_time_factor, _msg->real_time_factor);
 
