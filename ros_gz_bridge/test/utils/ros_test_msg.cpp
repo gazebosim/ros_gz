@@ -1677,5 +1677,94 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraI
   }
 }
 
+void createTestMsg(ros_gz_interfaces::msg::LogPlaybackStatistics & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.header = header_msg;
+
+  builtin_interfaces::msg::Time start_time;
+  createTestMsg(start_time);
+  _msg.start_time = start_time;
+
+  builtin_interfaces::msg::Time end_time;
+  createTestMsg(end_time);
+  _msg.end_time = end_time;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogPlaybackStatistics> & _msg)
+{
+  ros_gz_interfaces::msg::LogPlaybackStatistics expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->start_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->end_time));
+}
+
+void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
+{
+  std_msgs::msg::Header header_msg;
+  createTestMsg(header_msg);
+  _msg.header = header_msg;
+
+  builtin_interfaces::msg::Time sim_time;
+  createTestMsg(sim_time);
+  _msg.sim_time = sim_time;
+
+  builtin_interfaces::msg::Time pause_time;
+  createTestMsg(pause_time);
+  _msg.pause_time = pause_time;
+
+  builtin_interfaces::msg::Time real_time;
+  createTestMsg(real_time);
+  _msg.real_time = real_time;
+
+  _msg.paused = false;
+
+  _msg.iterations = 123;
+
+  _msg.model_count = 10;
+
+  ros_gz_interfaces::msg::LogPlaybackStatistics log_playback_statistics;
+  createTestMsg(log_playback_statistics);
+  _msg.log_playback_statistics = log_playback_statistics;
+
+  _msg.real_time_factor = 0.75;
+
+  builtin_interfaces::msg::Time step_size;
+  createTestMsg(step_size);
+  _msg.step_size = step_size;
+
+  _msg.stepping = true;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg)
+{
+  ros_gz_interfaces::msg::WorldStatistics expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<std_msgs::msg::Header>(_msg->header));
+
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->sim_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->pause_time));
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->real_time));
+
+  EXPECT_EQ(expected_msg.paused, _msg->paused);
+
+  EXPECT_EQ(expected_msg.iterations, _msg->iterations);
+
+  EXPECT_EQ(expected_msg.model_count, _msg->model_count);
+
+  compareTestMsg(std::make_shared<ros_gz_interfaces::msg::LogPlaybackStatistics>(
+        _msg->log_playback_statistics));
+
+  EXPECT_FLOAT_EQ(expected_msg.real_time_factor, _msg->real_time_factor);
+
+  compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->step_size));
+
+  EXPECT_EQ(expected_msg.stepping, _msg->stepping);
+}
+
 }  // namespace testing
 }  // namespace ros_gz_bridge
