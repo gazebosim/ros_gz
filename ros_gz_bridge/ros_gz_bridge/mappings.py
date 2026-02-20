@@ -68,12 +68,7 @@ MAPPINGS = {
         Mapping('GuiCamera', 'GUICamera'),
         Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
-<<<<<<< HEAD
-=======
-        Mapping('LogicalCameraImage', 'LogicalCameraImage'),
         Mapping('LogPlaybackStatistics', 'LogPlaybackStatistics'),
-        Mapping('MaterialColor', 'MaterialColor'),
->>>>>>> edc4143 (Added WorldStatistics message support for the ros_gz_bridge (#841))
         Mapping('ParamVec', 'Param'),
         Mapping('ParamVec', 'Param_V'),
         Mapping('SensorNoise', 'SensorNoise'),
