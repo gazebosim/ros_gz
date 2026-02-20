@@ -812,7 +812,6 @@ convert_ros_to_gz(
   convert_ros_to_gz(ros_msg.log_playback_statistics, *gz_msg.mutable_log_playback_stats());
   gz_msg.set_real_time_factor(ros_msg.real_time_factor);
   convert_ros_to_gz(ros_msg.step_size, *gz_msg.mutable_step_size());
-  gz_msg.set_stepping(ros_msg.stepping);
 }
 
 template<>
@@ -831,7 +830,6 @@ convert_gz_to_ros(
   convert_gz_to_ros(gz_msg.log_playback_stats(), ros_msg.log_playback_statistics);
   ros_msg.real_time_factor = gz_msg.real_time_factor();
   convert_gz_to_ros(gz_msg.step_size(), ros_msg.step_size);
-  ros_msg.stepping = gz_msg.stepping();
 }
 
 

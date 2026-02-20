@@ -1694,8 +1694,6 @@ void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg)
   builtin_interfaces::msg::Time step_size;
   createTestMsg(step_size);
   _msg.step_size = step_size;
-
-  _msg.stepping = true;
 }
 
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg)
@@ -1721,8 +1719,6 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistic
   EXPECT_FLOAT_EQ(expected_msg.real_time_factor, _msg->real_time_factor);
 
   compareTestMsg(std::make_shared<builtin_interfaces::msg::Time>(_msg->step_size));
-
-  EXPECT_EQ(expected_msg.stepping, _msg->stepping);
 }
 
 }  // namespace testing
