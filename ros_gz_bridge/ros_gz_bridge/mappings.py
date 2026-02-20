@@ -71,6 +71,7 @@ MAPPINGS = {
         Mapping('JointWrench', 'JointWrench'),
         Mapping('Light', 'Light'),
         Mapping('LogicalCameraImage', 'LogicalCameraImage'),
+        Mapping('LogPlaybackStatistics', 'LogPlaybackStatistics'),
         Mapping('MaterialColor', 'MaterialColor'),
         Mapping('ParamVec', 'Param'),
         Mapping('ParamVec', 'Param_V'),
@@ -78,6 +79,7 @@ MAPPINGS = {
         Mapping('StringVec', 'StringMsg_V'),
         Mapping('TrackVisual', 'TrackVisual'),
         Mapping('VideoRecord', 'VideoRecord'),
+        Mapping('WorldStatistics', 'WorldStatistics'),
     ],
     'rosgraph_msgs': [
         Mapping('Clock', 'Clock'),
