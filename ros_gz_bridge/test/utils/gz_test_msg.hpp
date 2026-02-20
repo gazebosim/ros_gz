@@ -44,6 +44,7 @@
 #include <gz/msgs/joy.pb.h>
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
+#include <gz/msgs/log_playback_stats.pb.h>
 #include <gz/msgs/magnetometer.pb.h>
 #include <gz/msgs/model.pb.h>
 #include <gz/msgs/navsat.pb.h>
@@ -68,6 +69,7 @@
 #include <gz/msgs/wrench.pb.h>
 #include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
 #include <gz/msgs/annotated_oriented_3d_box_v.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
 #include <memory>
 
@@ -559,6 +561,22 @@ void createTestMsg(gz::msgs::AnnotatedOriented3DBox_V & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox_V> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::LogPlaybackStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogPlaybackStatistics> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::WorldStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

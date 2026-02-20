@@ -26,6 +26,7 @@
 #include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/gui_camera.pb.h>
 #include <gz/msgs/light.pb.h>
+#include <gz/msgs/log_playback_stats.pb.h>
 #include <gz/msgs/param.pb.h>
 #include <gz/msgs/param_v.pb.h>
 #include <gz/msgs/sensor_noise.pb.h>
@@ -33,6 +34,7 @@
 #include <gz/msgs/track_visual.pb.h>
 #include <gz/msgs/video_record.pb.h>
 #include <gz/msgs/world_control.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
 // ROS 2 messages
 #include <ros_gz_interfaces/msg/altimeter.hpp>
@@ -45,12 +47,14 @@
 #include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
+#include <ros_gz_interfaces/msg/log_playback_statistics.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
 #include <ros_gz_interfaces/msg/track_visual.hpp>
 #include <ros_gz_interfaces/msg/video_record.hpp>
 #include <ros_gz_interfaces/msg/world_control.hpp>
+#include <ros_gz_interfaces/msg/world_statistics.hpp>
 
 // Required for HAVE_DATAFRAME definition
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
@@ -311,6 +315,18 @@ convert_gz_to_ros(
 
 template<>
 void
+convert_gz_to_ros(
+  const gz::msgs::WorldStatistics & gz_msg,
+  ros_gz_interfaces::msg::WorldStatistics & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::WorldStatistics & ros_msg,
+  gz::msgs::WorldStatistics & gz_msg);
+
+template<>
+void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Float32Array & ros_msg,
   gz::msgs::Float_V & gz_msg);
@@ -320,6 +336,19 @@ void
 convert_gz_to_ros(
   const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg);
+
+template<>
+void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg,
+  gz::msgs::LogPlaybackStatistics & gz_msg);
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::LogPlaybackStatistics & gz_msg,
+  ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg);
+
 }  // namespace ros_gz_bridge
 
 #endif  // ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
