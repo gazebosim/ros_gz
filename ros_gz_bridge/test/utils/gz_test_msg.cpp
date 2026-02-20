@@ -1746,5 +1746,116 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox_V> & 
   }
 }
 
+<<<<<<< HEAD
+=======
+void createTestMsg(gz::msgs::LogicalCameraImage & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  createTestMsg(*_msg.mutable_pose());
+
+  for (int i = 0; i < 4; ++i) {
+    auto * model = _msg.add_model();
+    model->set_name("model_" + std::to_string(i));
+    createTestMsg(*model->mutable_pose());
+  }
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogicalCameraImage> & _msg)
+{
+  gz::msgs::LogicalCameraImage expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<gz::msgs::Pose>(_msg->pose()));
+
+  ASSERT_EQ(expected_msg.model_size(), _msg->model_size());
+  for (int i = 0; i < _msg->model_size(); ++i) {
+    EXPECT_EQ(expected_msg.model(i).name(), _msg->model(i).name());
+    compareTestMsg(std::make_shared<gz::msgs::Pose>(_msg->model(i).pose()));
+  }
+}
+
+void createTestMsg(gz::msgs::LogPlaybackStatistics & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+
+  gz::msgs::Time start_time;
+  createTestMsg(start_time);
+  _msg.mutable_start_time()->CopyFrom(start_time);
+
+  gz::msgs::Time end_time;
+  createTestMsg(end_time);
+  _msg.mutable_end_time()->CopyFrom(end_time);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogPlaybackStatistics> & _msg)
+{
+  gz::msgs::LogPlaybackStatistics expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<gz::msgs::Time>(_msg->start_time()));
+  compareTestMsg(std::make_shared<gz::msgs::Time>(_msg->end_time()));
+}
+
+void createTestMsg(gz::msgs::WorldStatistics & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+
+  gz::msgs::Time sim_time;
+  createTestMsg(sim_time);
+  _msg.mutable_sim_time()->CopyFrom(sim_time);
+
+  gz::msgs::Time pause_time;
+  createTestMsg(pause_time);
+  _msg.mutable_pause_time()->CopyFrom(pause_time);
+
+  gz::msgs::Time real_time;
+  createTestMsg(real_time);
+  _msg.mutable_real_time()->CopyFrom(real_time);
+
+  _msg.set_paused(false);
+  _msg.set_iterations(123);
+  _msg.set_model_count(10);
+
+  gz::msgs::LogPlaybackStatistics log_playback_stats_msg;
+  createTestMsg(log_playback_stats_msg);
+  _msg.mutable_log_playback_stats()->CopyFrom(log_playback_stats_msg);
+
+  _msg.set_real_time_factor(0.75);
+
+  gz::msgs::Time step_size;
+  createTestMsg(step_size);
+  _msg.mutable_step_size()->CopyFrom(step_size);
+
+  _msg.set_stepping(true);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg)
+{
+  gz::msgs::WorldStatistics expected_msg;
+  createTestMsg(expected_msg);
+
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+  compareTestMsg(std::make_shared<gz::msgs::Time>(_msg->sim_time()));
+  compareTestMsg(std::make_shared<gz::msgs::Time>(_msg->pause_time()));
+  compareTestMsg(std::make_shared<gz::msgs::Time>(_msg->real_time()));
+
+  EXPECT_EQ(expected_msg.paused(), _msg->paused());
+  EXPECT_EQ(expected_msg.iterations(), _msg->iterations());
+  EXPECT_EQ(expected_msg.model_count(), _msg->model_count());
+
+  compareTestMsg(
+    std::make_shared<gz::msgs::LogPlaybackStatistics>(_msg->log_playback_stats()));
+
+  EXPECT_FLOAT_EQ(expected_msg.real_time_factor(), _msg->real_time_factor());
+
+  compareTestMsg(
+    std::make_shared<gz::msgs::Time>(_msg->step_size()));
+
+  EXPECT_EQ(expected_msg.stepping(), _msg->stepping());
+}
+
+>>>>>>> edc4143 (Added WorldStatistics message support for the ros_gz_bridge (#841))
 }  // namespace testing
 }  // namespace ros_gz_bridge

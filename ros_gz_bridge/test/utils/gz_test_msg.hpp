@@ -44,6 +44,11 @@
 #include <gz/msgs/joy.pb.h>
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
+<<<<<<< HEAD
+=======
+#include <gz/msgs/logical_camera_image.pb.h>
+#include <gz/msgs/log_playback_stats.pb.h>
+>>>>>>> edc4143 (Added WorldStatistics message support for the ros_gz_bridge (#841))
 #include <gz/msgs/magnetometer.pb.h>
 #include <gz/msgs/model.pb.h>
 #include <gz/msgs/navsat.pb.h>
@@ -68,6 +73,7 @@
 #include <gz/msgs/wrench.pb.h>
 #include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
 #include <gz/msgs/annotated_oriented_3d_box_v.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
 #include <memory>
 
@@ -560,6 +566,33 @@ void createTestMsg(gz::msgs::AnnotatedOriented3DBox_V & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::AnnotatedOriented3DBox_V> & _msg);
 
+<<<<<<< HEAD
+=======
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::LogicalCameraImage & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogicalCameraImage> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::LogPlaybackStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogPlaybackStatistics> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::WorldStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg);
+
+>>>>>>> edc4143 (Added WorldStatistics message support for the ros_gz_bridge (#841))
 }  // namespace testing
 }  // namespace ros_gz_bridge
 

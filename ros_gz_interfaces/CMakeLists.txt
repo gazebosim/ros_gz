@@ -28,6 +28,12 @@ set(msg_files
   "msg/GuiCamera.msg"
   "msg/JointWrench.msg"
   "msg/Light.msg"
+<<<<<<< HEAD
+=======
+  "msg/LogicalCameraImage.msg"
+  "msg/LogicalCameraImageModel.msg"
+  "msg/LogPlaybackStatistics.msg"
+>>>>>>> edc4143 (Added WorldStatistics message support for the ros_gz_bridge (#841))
   "msg/MaterialColor.msg"
   "msg/ParamVec.msg"
   "msg/SensorNoise.msg"
@@ -36,6 +42,7 @@ set(msg_files
   "msg/VideoRecord.msg"
   "msg/WorldControl.msg"
   "msg/WorldReset.msg"
+  "msg/WorldStatistics.msg"
 )
 
 set(srv_files
