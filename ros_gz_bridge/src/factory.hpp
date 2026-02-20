@@ -15,11 +15,14 @@
 #ifndef FACTORY_HPP_
 #define FACTORY_HPP_
 
+#include <array>
 #include <chrono>
+#include <cstring>
 #include <functional>
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <vector>
 
 #include <gz/transport/Node.hh>
 #include <gz/transport/SubscribeOptions.hh>
@@ -95,14 +98,38 @@ public:
     const rclcpp::QoS & qos,
     gz::transport::Node::Publisher & gz_pub)
   {
-    std::function<void(std::shared_ptr<const ROS_T>)> fn = std::bind(
-      &Factory<ROS_T, GZ_T>::ros_callback,
-      std::placeholders::_1, gz_pub,
-      ros_type_name_, gz_type_name_,
-      ros_node);
+    // Was this published by one of my own publishers? We compare
+    // the sender's GID against the GIDs we collected from the bridge node's
+    // publishers at subscription creation time. If it matches, we drop the
+    // message to prevent a loop.
+    auto self_pub_gids =
+      std::make_shared<std::vector<std::array<uint8_t, RMW_GID_STORAGE_SIZE>>>();
+    for (const auto & info : ros_node->get_publishers_info_by_topic(topic_name)) {
+      if (info.node_name() == ros_node->get_name() &&
+        info.node_namespace() == ros_node->get_namespace())
+      {
+        self_pub_gids->push_back(info.endpoint_gid());
+      }
+    }
+
+    auto ros_type = ros_type_name_;
+    auto gz_type = gz_type_name_;
+    std::function<void(std::shared_ptr<const ROS_T>, const rclcpp::MessageInfo &)> fn =
+      [self_pub_gids, gz_pub, ros_type, gz_type, ros_node](
+      std::shared_ptr<const ROS_T> ros_msg,
+      const rclcpp::MessageInfo & msg_info) mutable
+      {
+        // Skip messages published by this bridge node to prevent loops.
+        const auto & sender_gid = msg_info.get_rmw_message_info().publisher_gid;
+        for (const auto & gid : *self_pub_gids) {
+          if (std::memcmp(sender_gid.data, gid.data(), RMW_GID_STORAGE_SIZE) == 0) {
+            return;
+          }
+        }
+        ros_callback(ros_msg, gz_pub, ros_type, gz_type, ros_node);
+      };
+
     auto options = rclcpp::SubscriptionOptions();
-    // Ignore messages that are published from this bridge.
-    options.ignore_local_publications = true;
     // Allow QoS overriding
     options.qos_overriding_options =
       rclcpp::QosOverridingOptions::with_default_policies();
