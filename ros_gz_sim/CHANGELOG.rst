@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.15 (2026-02-24)
+-------------------
+* Added descriptions to gz_server and ros_gz_sim launch files (`#838 <https://github.com/gazebosim/ros_gz/issues/838>`_) (`#839 <https://github.com/gazebosim/ros_gz/issues/839>`_)
+* Added verbosity_level parameter. (`#833 <https://github.com/gazebosim/ros_gz/issues/833>`_) (`#835 <https://github.com/gazebosim/ros_gz/issues/835>`_)
+* Contributors: mergify[bot]
+
 2.1.14 (2026-02-04)
 -------------------
 
