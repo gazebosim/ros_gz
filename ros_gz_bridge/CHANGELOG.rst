@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.21 (2026-02-24)
+-------------------
+* Use GID filtering to prevent loops (backport `#834 <https://github.com/gazebosim/ros_gz/issues/834>`_) (`#843 <https://github.com/gazebosim/ros_gz/issues/843>`_)
+* Added WorldStatistics message support for the ros_gz_bridge (`#841 <https://github.com/gazebosim/ros_gz/issues/841>`_) (`#846 <https://github.com/gazebosim/ros_gz/issues/846>`_)
+* Contributors: mergify[bot]
+
 1.0.20 (2026-02-04)
 -------------------
 * Add support for configurable frame_id in Gazebo subscriber (backport `#825 <https://github.com/gazebosim/ros_gz/issues/825>`_) (`#831 <https://github.com/gazebosim/ros_gz/issues/831>`_)
