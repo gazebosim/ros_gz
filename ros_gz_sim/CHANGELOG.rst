@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.7 (2026-02-24)
+------------------
+* Added descriptions to gz_server and ros_gz_sim launch files (`#838 <https://github.com/gazebosim/ros_gz/issues/838>`_)
+* Added verbosity_level parameter. (`#833 <https://github.com/gazebosim/ros_gz/issues/833>`_)
+* Contributors: Martin Pecka
+
 3.0.6 (2026-02-04)
 ------------------
 * Add dependency to ros2pkg (`#816 <https://github.com/gazebosim/ros_gz/issues/816>`_)
