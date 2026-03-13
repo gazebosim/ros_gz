@@ -232,7 +232,7 @@ convert_ros_to_gz(
   gz::msgs::Contact & gz_msg)
 {
   convert_ros_to_gz(ros_msg.collision1, (*gz_msg.mutable_collision1()));
-  convert_ros_to_gz(ros_msg.collision1, (*gz_msg.mutable_collision2()));
+  convert_ros_to_gz(ros_msg.collision2, (*gz_msg.mutable_collision2()));
   gz_msg.clear_position();
   for (auto const & ros_position : ros_msg.positions) {
     auto gz_position = gz_msg.add_position();
@@ -261,19 +261,23 @@ convert_gz_to_ros(
 {
   convert_gz_to_ros(gz_msg.collision1(), ros_msg.collision1);
   convert_gz_to_ros(gz_msg.collision2(), ros_msg.collision2);
+  ros_msg.positions.reserve(gz_msg.position_size());
   for (auto i = 0; i < gz_msg.position_size(); ++i) {
     geometry_msgs::msg::Vector3 ros_position;
     convert_gz_to_ros(gz_msg.position(i), ros_position);
     ros_msg.positions.push_back(ros_position);
   }
+  ros_msg.normals.reserve(gz_msg.normal_size());
   for (auto i = 0; i < gz_msg.normal_size(); ++i) {
     geometry_msgs::msg::Vector3 ros_normal;
     convert_gz_to_ros(gz_msg.normal(i), ros_normal);
     ros_msg.normals.push_back(ros_normal);
   }
+  ros_msg.depths.reserve(gz_msg.depth_size());
   for (auto i = 0; i < gz_msg.depth_size(); ++i) {
     ros_msg.depths.push_back(gz_msg.depth(i));
   }
+  ros_msg.wrenches.reserve(gz_msg.wrench_size());
   for (auto i = 0; i < gz_msg.wrench_size(); ++i) {
     ros_gz_interfaces::msg::JointWrench ros_joint_wrench;
     convert_gz_to_ros(gz_msg.wrench(i), ros_joint_wrench);
@@ -302,6 +306,7 @@ convert_gz_to_ros(
   ros_gz_interfaces::msg::Contacts & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.contacts.reserve(gz_msg.contact_size());
   for (auto i = 0; i < gz_msg.contact_size(); ++i) {
     ros_gz_interfaces::msg::Contact ros_contact;
     convert_gz_to_ros(gz_msg.contact(i), ros_contact);
