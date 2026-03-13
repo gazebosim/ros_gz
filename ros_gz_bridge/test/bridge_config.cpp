@@ -81,7 +81,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_FALSE(config.publisher_queue_size.has_value());
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
@@ -94,7 +94,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_FALSE(config.publisher_queue_size.has_value());
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
@@ -107,7 +107,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_FALSE(config.publisher_queue_size.has_value());
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
@@ -120,7 +120,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_FALSE(config.publisher_queue_size.has_value());
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
@@ -147,7 +147,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(6u, config.publisher_queue_size.value_or(0));
     EXPECT_EQ(5u, config.subscriber_queue_size.value_or(0));
-    EXPECT_EQ(true, config.is_lazy);
+    EXPECT_EQ(std::optional<bool>(true), config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(6u)), config.PublisherQoS());
@@ -162,7 +162,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(20u, config.publisher_queue_size.value_or(0));
     EXPECT_EQ(10u, config.subscriber_queue_size.value_or(0));
-    EXPECT_EQ(false, config.is_lazy);
+    EXPECT_EQ(std::optional<bool>(false), config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(20u)), config.PublisherQoS());
@@ -191,7 +191,7 @@ TEST_F(BridgeConfig, QoSFullGz)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_FALSE(config.publisher_queue_size.has_value());
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(true, config.is_lazy);
+    EXPECT_EQ(std::optional<bool>(true), config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
     ASSERT_TRUE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::SensorDataQoS(), *config.qos_profile);
@@ -207,7 +207,7 @@ TEST_F(BridgeConfig, QoSFullGz)
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
     EXPECT_EQ(20u, config.publisher_queue_size.value_or(0));
     EXPECT_FALSE(config.subscriber_queue_size.has_value());
-    EXPECT_EQ(false, config.is_lazy);
+    EXPECT_EQ(std::optional<bool>(false), config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
     ASSERT_TRUE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::ClockQoS(), *config.qos_profile);

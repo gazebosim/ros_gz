@@ -87,7 +87,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
       // If it is defined, they are applied only if they are non-negative.
       this->declare_parameter(prefix + "publisher_queue", -1);
       this->declare_parameter(prefix + "subscriber_queue", -1);
-      this->declare_parameter(prefix + "lazy", false);
+      this->declare_parameter(prefix + "lazy", this->get_parameter("lazy").as_bool());
       this->declare_parameter(prefix + "qos_profile", "");
     } else {
       const auto gz_req_type = this->declare_parameter(prefix + "gz_req_type_name",
@@ -126,6 +126,9 @@ void RosGzBridge::spin()
     const std::string ros_ns = this->get_namespace();
     const std::string ros_node_name = this->get_name();
 
+    bool lazy;
+    this->get_parameter("lazy", lazy);
+
     // Add bridges from config file
     if (!config_file.empty()) {
       auto entries = readFromYamlFile(config_file);
@@ -134,6 +137,7 @@ void RosGzBridge::spin()
           entry.gz_topic_name = rclcpp::expand_topic_or_service_name(
             entry.gz_topic_name, ros_node_name, ros_ns, false);
         }
+        entry.is_lazy = entry.is_lazy.value_or(lazy);
         if (entry.service_name.empty()) {
           this->add_bridge(entry);
         } else {
@@ -258,7 +262,7 @@ void RosGzBridge::add_bridge(const BridgeConfig & config)
         "Creating GZ->ROS Bridge: [%s (%s) -> %s (%s)] (Lazy %d)",
         config.gz_topic_name.c_str(), config.gz_type_name.c_str(),
         config.ros_topic_name.c_str(), config.ros_type_name.c_str(),
-        config.is_lazy);
+        config.is_lazy.value_or(kDefaultLazy));
       handles_.push_back(
         std::make_unique<ros_gz_bridge::BridgeHandleGzToRos>(
           shared_from_this(), gz_node_,
@@ -273,7 +277,7 @@ void RosGzBridge::add_bridge(const BridgeConfig & config)
         "Creating ROS->GZ Bridge: [%s (%s) -> %s (%s)] (Lazy %d)",
         config.ros_topic_name.c_str(), config.ros_type_name.c_str(),
         config.gz_topic_name.c_str(), config.gz_type_name.c_str(),
-        config.is_lazy);
+        config.is_lazy.value_or(kDefaultLazy));
       handles_.push_back(
         std::make_unique<ros_gz_bridge::BridgeHandleRosToGz>(
           shared_from_this(), gz_node_,

@@ -166,6 +166,7 @@ int main(int argc, char * argv[])
       return -1;
     }
     config.gz_type_name = arg;
+    config.is_lazy = lazy_subscription;
     bridge_node->add_bridge(config);
   }
 
