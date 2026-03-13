@@ -88,11 +88,16 @@ public:
   ///
   /// This function locks a mutex before calling the provided function.
   ///
-  /// \param[in] f Callback function with the EntityComponentManager as the argument.
+  /// \param[in] f Callable with signature `void(gz::sim::EntityComponentManager &)`.
   ///
   /// \note The callback function should not call \ref Stats as that function is also thread
   /// synchronized with the same mutex.
-  void WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f);
+  template<typename F>
+  void WithEcm(F && f)
+  {
+    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+    f(this->ecm_);
+  }
 
   /// \brief Returns the gz::transport Node
   std::shared_ptr<gz::transport::Node> GzNode();
@@ -225,7 +230,7 @@ private:
   std::condition_variable state_cv_;
 
   /// \brief Records whether the state has been initialized when this class was first instantiated.
-  bool state_intialized_{false};
+  bool state_initialized_{false};
 
   /// \brief Holds the future returned by a std::async call made when a sim reset occurs.
   std::future<void> initialize_canonical_links_;

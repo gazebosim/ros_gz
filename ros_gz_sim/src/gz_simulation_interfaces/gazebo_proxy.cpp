@@ -21,7 +21,6 @@
 #include <gz/msgs/scene.pb.h>
 
 #include <chrono>
-#include <functional>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -75,7 +74,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       return;
     } else {
       this->UpdateStateFromMsg(reply);
-      this->state_intialized_ = true;
+      this->state_initialized_ = true;
 
       // Listen to the "state" topic to get periodic updates.
       this->SubscribeToGzTopic(this->PrefixTopic("state"), &GazeboProxy::UpdateStateFromMsg, this);
@@ -83,7 +82,7 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       // TODO(azeey): This is a hack. We currently don't have a nice way of determining when
       // simulation has been reset if it's currently paused. Checking if time has been rewound or
       // the number of iterations was reset back to zero doesn't work if the simulation was started
-      // in the paused state and hasn't been played before it was reset. The SceneBroadacaster
+      // in the paused state and hasn't been played before it was reset. The SceneBroadcaster
       // publishes on the scene/info topic every time it's reset. So we'll use that as our signal
       // until we come up with a better way to communicate this from the server.
       std::function<void(const gz::msgs::Scene &)> resetHandler = [this](const auto &) {
@@ -165,20 +164,15 @@ gz::msgs::WorldStatistics GazeboProxy::Stats() const
   return this->world_stats_;
 }
 
-void GazeboProxy::WithEcm(std::function<void(gz::sim::EntityComponentManager &)> f)
-{
-  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-  f(this->ecm_);
-}
 
 std::shared_ptr<gz::transport::Node> GazeboProxy::GzNode() {return this->gz_node_;}
 
-bool GazeboProxy::StateInitialized() const {return this->state_intialized_;}
+bool GazeboProxy::StateInitialized() const {return this->state_initialized_;}
 
 bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
 {
   // If the state has not been initialized, it will not be continuously updated, so return early.
-  if (!state_intialized_) {
+  if (!state_initialized_) {
     return false;
   }
   if (this->initialize_canonical_links_.valid()) {
@@ -254,7 +248,7 @@ bool GazeboProxy::InitializeGazeboConnection()
 bool GazeboProxy::WaitForCriticalServices()
 {
   bool have_all_services = true;
-  // Check that services from SceneBroadacaster are available
+  // Check that services from SceneBroadcaster are available
   {
     const auto state_service = this->PrefixTopic("state");
     if (!this->WaitForGzService(state_service)) {
@@ -262,7 +256,7 @@ bool GazeboProxy::WaitForCriticalServices()
         this->ros_node_->get_logger(),
         "Required Gazebo service ["
           << state_service << "] is not available. "
-          << "Make sure the [SceneBroadacaster] system is loaded in your Gazebo world");
+          << "Make sure the [SceneBroadcaster] system is loaded in your Gazebo world");
       have_all_services = false;
     }
   }
