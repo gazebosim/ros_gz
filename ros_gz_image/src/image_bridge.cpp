@@ -41,7 +41,6 @@ public:
     std::shared_ptr<gz::transport::Node> _gz_node,
     bool _lazy = false)
   : topic_(_topic),
-    node_(_node),
     gz_node_(_gz_node),
     is_lazy_(_lazy)
   {
@@ -72,7 +71,7 @@ public:
 
   /// \brief Manage Gazebo subscription lifecycle based on ROS subscriber count.
   /// Only active when lazy mode is enabled.
-  void Spin()
+  void CheckSubscribers()
   {
     if (!is_lazy_) {
       return;
@@ -112,9 +111,6 @@ private:
   /// \brief Image topic name
   std::string topic_;
 
-  /// \brief ROS node
-  std::shared_ptr<rclcpp::Node> node_;
-
   /// \brief Gazebo transport node
   std::shared_ptr<gz::transport::Node> gz_node_;
 
@@ -137,7 +133,12 @@ void usage()
   std::cerr << "Bridge a collection of Gazebo Transport image topics to ROS " <<
     "using image_transport.\n\n" <<
     "  image_bridge <topic> <topic> ..\n\n" <<
-    "E.g.: image_bridge /camera/front/image_raw" << std::endl;
+    "Optional ROS parameters:\n" <<
+    "  qos:=<profile>              QoS profile: default, sensor_data, system_default\n" <<
+    "  lazy:=<true|false>          Only subscribe to Gazebo when ROS subscribers are present\n" <<
+    "  subscription_heartbeat:=<ms> Interval (ms) to check ROS subscriber count (default: 1000)\n\n" <<
+    "E.g.: image_bridge /camera/front/image_raw\n" <<
+    "E.g.: image_bridge /camera/front/image_raw --ros-args -p lazy:=true" << std::endl;
 }
 
 //////////////////////////////////////////////////
@@ -181,7 +182,7 @@ int main(int argc, char * argv[])
       std::chrono::milliseconds(heartbeat_ms),
       [&handlers]() {
         for (auto & handler : handlers) {
-          handler->Spin();
+          handler->CheckSubscribers();
         }
       });
   }
