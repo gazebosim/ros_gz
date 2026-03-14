@@ -34,6 +34,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
   this->declare_parameter<int>("subscription_heartbeat", 1000);
   this->declare_parameter<std::string>("config_file", "");
+  this->declare_parameter<bool>("lazy", kDefaultLazy);
   this->declare_parameter<bool>("expand_gz_topic_names", false);
   this->declare_parameter<bool>("override_timestamps_with_wall_time", false);
   this->declare_parameter<std::string>("override_frame_id", "");
@@ -237,8 +238,16 @@ void RosGzBridge::spin()
   }
 }
 
-void RosGzBridge::add_bridge(const BridgeConfig & config)
+void RosGzBridge::add_bridge(const BridgeConfig & input_config)
 {
+  // Resolve the laziness: if the caller left is_lazy as nullopt, inherit the
+  // node-level "lazy" parameter so that the effective value is always explicit.
+  BridgeConfig config = input_config;
+  if (!config.is_lazy.has_value()) {
+    bool node_lazy = kDefaultLazy;
+    this->get_parameter("lazy", node_lazy);
+    config.is_lazy = node_lazy;
+  }
   bool gz_to_ros = false;
   bool ros_to_gz = false;
 

@@ -362,3 +362,26 @@ TEST_F(BridgeConfig, EmptyYAML)
     "Could not parse config: file empty [test/config/empty.yaml]",
     g_last_log_event.message);
 }
+
+// Verify that BridgeHandle::IsLazy() falls back to kDefaultLazy when
+// BridgeConfig::is_lazy is std::nullopt, and returns the explicit value
+// when it is set.
+TEST(BridgeHandleIsLazy, NulloptFallsBackToDefault)
+{
+  ros_gz_bridge::BridgeConfig config;
+  config.is_lazy = std::nullopt;
+  // IsLazy() must return the hard-coded default when no value is set.
+  EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy.value_or(ros_gz_bridge::kDefaultLazy));
+}
+TEST(BridgeHandleIsLazy, ExplicitTrueIsRespected)
+{
+  ros_gz_bridge::BridgeConfig config;
+  config.is_lazy = true;
+  EXPECT_TRUE(config.is_lazy.value_or(ros_gz_bridge::kDefaultLazy));
+}
+TEST(BridgeHandleIsLazy, ExplicitFalseIsRespected)
+{
+  ros_gz_bridge::BridgeConfig config;
+  config.is_lazy = false;
+  EXPECT_FALSE(config.is_lazy.value_or(ros_gz_bridge::kDefaultLazy));
+}
