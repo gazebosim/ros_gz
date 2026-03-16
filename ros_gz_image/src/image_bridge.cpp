@@ -136,7 +136,8 @@ void usage()
     "Optional ROS parameters:\n" <<
     "  qos:=<profile>              QoS profile: default, sensor_data, system_default\n" <<
     "  lazy:=<true|false>          Only subscribe to Gazebo when ROS subscribers are present\n" <<
-    "  subscription_heartbeat:=<ms> Interval (ms) to check ROS subscriber count (default: 1000)\n\n" <<
+    "  subscription_heartbeat:=<ms> Interval (ms) to check ROS subscriber count (default: 1000)\n\n"
+            <<
     "E.g.: image_bridge /camera/front/image_raw\n" <<
     "E.g.: image_bridge /camera/front/image_raw --ros-args -p lazy:=true" << std::endl;
 }
