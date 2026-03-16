@@ -1,5 +1,8 @@
 [![Build Status](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml)
 
+Package Build Status: [![Package Build Status](https://build.ros2.org/buildStatus/icon?job=Rbin_uN64__ros_gz_bridge__ubuntu_noble_amd64__binary)](https://build.ros2.org/job/Rbin_uN64__ros_gz_bridge__ubuntu_noble_amd64__binary/)
+
+
 ROS 2 version | Gazebo version | Branch | Binaries hosted at
 -- | -- | -- | --
 Humble | Fortress | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | https://packages.ros.org

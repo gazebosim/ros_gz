@@ -36,7 +36,7 @@ BridgeHandle::~BridgeHandle() = default;
 
 bool BridgeHandle::IsLazy() const
 {
-  return config_.is_lazy;
+  return config_.is_lazy.value_or(kDefaultLazy);
 }
 
 void BridgeHandle::Start()

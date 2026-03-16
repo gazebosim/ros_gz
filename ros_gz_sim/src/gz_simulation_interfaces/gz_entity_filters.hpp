@@ -52,7 +52,7 @@ public:
   /// \note The fact that both `entity` and `entity_name` are needed is an optimization. Having both
   /// avoid duplicate calls to fetch the ID or name.
   std::tuple<bool, simulation_interfaces::msg::Result> ApplyFilter(
-    const gz::sim::Entity & entity, const std::string entity_name);
+    const gz::sim::Entity & entity, const std::string & entity_name);
 
 private:
   /// \brief Filters to apply.

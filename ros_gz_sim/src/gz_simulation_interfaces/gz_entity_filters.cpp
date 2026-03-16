@@ -55,7 +55,7 @@ GzEntityFilters::GzEntityFilters(
 }
 
 std::tuple<bool, Result> GzEntityFilters::ApplyFilter(
-  const gz::sim::Entity & entity, const std::string entity_name)
+  const gz::sim::Entity & entity, const std::string & entity_name)
 {
   namespace components = gz::sim::components;
   Result result;

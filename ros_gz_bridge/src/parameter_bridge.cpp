@@ -81,7 +81,6 @@ int main(int argc, char * argv[])
 
   // Set lazy subscriber on a global basis
   bool lazy_subscription = false;
-  bridge_node->declare_parameter<bool>("lazy", false);
   bridge_node->get_parameter("lazy", lazy_subscription);
 
   const std::string delim = "@";
@@ -166,6 +165,7 @@ int main(int argc, char * argv[])
       return -1;
     }
     config.gz_type_name = arg;
+    config.is_lazy = lazy_subscription;
     bridge_node->add_bridge(config);
   }
 

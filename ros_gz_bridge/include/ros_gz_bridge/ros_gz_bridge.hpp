@@ -42,9 +42,9 @@ public:
   void add_bridge(const BridgeConfig & config);
 
   /// \brief Create a new ROS-GZ bridge for a service
-  /// \param[in] ros_type_name Name of the ROS service (eg ros_bz_interfaces/srv/ControlWorld)
+  /// \param[in] ros_type_name Name of the ROS service (eg ros_gz_interfaces/srv/ControlWorld)
   /// \param[in] gz_req_type_name Gazebo service request type
-  /// \param[in] gz_req_type_name Gazebo service response type
+  /// \param[in] gz_rep_type_name Gazebo service response type
   /// \param[in] service_name Address of the service to be bridged
   void add_service_bridge(
     const std::string & ros_type_name,
