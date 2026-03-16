@@ -73,6 +73,7 @@ public:
             if (send_response_on_error(ros_res)) {
               srv_handle->send_response(*reqid, ros_res);
             }
+            return;
           }
           convert_gz_to_ros(reply, ros_res);
           srv_handle->send_response(*reqid, ros_res);

@@ -32,7 +32,7 @@ std::string replace_delimiter(
 
   while (last_pos < input.size()) {
     std::size_t pos = input.find(old_delim, last_pos);
-    output += input.substr(last_pos, pos - last_pos);
+    output.append(input, last_pos, pos - last_pos);
     if (pos != std::string::npos) {
       output += new_delim;
       pos += old_delim.size();
