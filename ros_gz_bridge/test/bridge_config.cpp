@@ -85,6 +85,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[1];
@@ -98,6 +99,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[2];
@@ -111,6 +113,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[3];
@@ -124,6 +127,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[4];
@@ -152,6 +156,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(6u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(5u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
 
   {
@@ -167,6 +172,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_FALSE(config.qos_profile.has_value());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(20u)), config.PublisherQoS());
     EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
 
   {
@@ -197,6 +203,7 @@ TEST_F(BridgeConfig, QoSFullGz)
     EXPECT_EQ(rclcpp::SensorDataQoS(), *config.qos_profile);
     EXPECT_EQ(rclcpp::SensorDataQoS(), config.PublisherQoS());
     EXPECT_EQ(rclcpp::SensorDataQoS(), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
   }
 
   {
@@ -213,6 +220,29 @@ TEST_F(BridgeConfig, QoSFullGz)
     EXPECT_EQ(rclcpp::ClockQoS(), *config.qos_profile);
     EXPECT_EQ(rclcpp::ClockQoS().keep_last(20u), config.PublisherQoS());
     EXPECT_EQ(rclcpp::ClockQoS(), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+  }
+}
+
+TEST_F(BridgeConfig, FrameIdGz)
+{
+  auto results = ros_gz_bridge::readFromYamlFile("test/config/frame_id.yaml");
+  EXPECT_EQ(1u, results.size());
+
+  {
+    auto config = results[0];
+    EXPECT_EQ("imu_sensor_msgs_imu", config.ros_topic_name);
+    EXPECT_EQ("imu_sensor_msgs_imu", config.gz_topic_name);
+    EXPECT_EQ("sensor_msgs/msg/Imu", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.IMU", config.gz_type_name);
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("override", config.frame_id);
   }
 }
 
