@@ -14,6 +14,7 @@
 
 #include <rmw/qos_profiles.h>
 
+#include <atomic>
 #include <chrono>
 #include <iostream>
 #include <memory>
@@ -45,13 +46,13 @@ public:
     is_lazy_(_lazy)
   {
     // Get QoS profile from parameter
-    qos_profile_ = rclcpp::QoS(10);
+    rclcpp::QoS qos_profile = rclcpp::QoS(10);
     const auto qos_str =
       _node->get_parameter("qos").get_parameter_value().get<std::string>();
     if (qos_str == "system_default") {
-      qos_profile_ = rclcpp::SystemDefaultsQoS();
+      qos_profile = rclcpp::SystemDefaultsQoS();
     } else if (qos_str == "sensor_data") {
-      qos_profile_ = rclcpp::SensorDataQoS();
+      qos_profile = rclcpp::SensorDataQoS();
     } else if (qos_str != "default") {
       RCLCPP_ERROR(
         _node->get_logger(),
@@ -61,7 +62,7 @@ public:
 
     // Always create the ROS publisher
     this->ros_pub_ = image_transport::create_publisher(
-      *_node, _topic, qos_profile_);
+      *_node, _topic, qos_profile);
 
     // Subscribe to Gazebo immediately unless lazy
     if (!is_lazy_) {
@@ -118,10 +119,7 @@ private:
   bool is_lazy_{false};
 
   /// \brief Whether currently subscribed to Gazebo topic
-  bool has_subscriber_{false};
-
-  /// \brief QoS profile for ROS publisher
-  rclcpp::QoS qos_profile_{10};
+  std::atomic<bool> has_subscriber_{false};
 
   /// \brief ROS image publisher
   image_transport::Publisher ros_pub_;
@@ -161,6 +159,15 @@ int main(int argc, char * argv[])
   const bool lazy = node_->get_parameter("lazy").as_bool();
   const int heartbeat_ms = node_->get_parameter("subscription_heartbeat").as_int();
 
+  if (lazy && heartbeat_ms <= 0) {
+    RCLCPP_ERROR(
+      node_->get_logger(),
+      "subscription_heartbeat must be a positive integer (got %d). Using default of 1000 ms.",
+      heartbeat_ms);
+    rclcpp::shutdown();
+    return -1;
+  }
+
   // Gazebo node
   auto gz_node = std::make_shared<gz::transport::Node>();
 
@@ -172,7 +179,7 @@ int main(int argc, char * argv[])
   auto args = rclcpp::remove_ros_arguments(argc, argv);
 
   // Create publishers (and subscribers if not lazy)
-  for (auto topic : args) {
+  for (const auto & topic : args) {
     handlers.push_back(std::make_shared<Handler>(topic, node_, gz_node, lazy));
   }
 
