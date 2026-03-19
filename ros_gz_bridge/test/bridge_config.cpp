@@ -79,9 +79,19 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+<<<<<<< HEAD
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+=======
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
   {
     auto config = results[1];
@@ -89,9 +99,19 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_ros", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+<<<<<<< HEAD
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+=======
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
   {
     auto config = results[2];
@@ -99,9 +119,19 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+<<<<<<< HEAD
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+=======
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
   {
     auto config = results[3];
@@ -109,9 +139,19 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ("chatter_both_gz", config.gz_topic_name);
     EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
     EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+<<<<<<< HEAD
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+=======
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
   {
     auto config = results[4];
@@ -137,6 +177,13 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
+<<<<<<< HEAD
+=======
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(6u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(5u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
 
   {
@@ -149,6 +196,13 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+<<<<<<< HEAD
+=======
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(20u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
   }
 
   {
@@ -160,6 +214,71 @@ TEST_F(BridgeConfig, FullGz)
   }
 }
 
+<<<<<<< HEAD
+=======
+TEST_F(BridgeConfig, QoSFullGz)
+{
+  auto results = ros_gz_bridge::readFromYamlFile("test/config/qos.yaml");
+  EXPECT_EQ(2u, results.size());
+
+  {
+    auto config = results[0];
+    EXPECT_EQ("ros_chatter", config.ros_topic_name);
+    EXPECT_EQ("gz_chatter", config.gz_topic_name);
+    EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
+    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::optional<bool>(true), config.is_lazy);
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
+    ASSERT_TRUE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::SensorDataQoS(), *config.qos_profile);
+    EXPECT_EQ(rclcpp::SensorDataQoS(), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::SensorDataQoS(), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+  }
+
+  {
+    auto config = results[1];
+    EXPECT_EQ("ros_chatter", config.ros_topic_name);
+    EXPECT_EQ("gz_chatter", config.gz_topic_name);
+    EXPECT_EQ("std_msgs/msg/String", config.ros_type_name);
+    EXPECT_EQ("ignition.msgs.StringMsg", config.gz_type_name);
+    EXPECT_EQ(20u, config.publisher_queue_size.value_or(0));
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(std::optional<bool>(false), config.is_lazy);
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+    ASSERT_TRUE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::ClockQoS(), *config.qos_profile);
+    EXPECT_EQ(rclcpp::ClockQoS().keep_last(20u), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::ClockQoS(), config.SubscriberQoS());
+    EXPECT_EQ("", config.frame_id);
+  }
+}
+
+TEST_F(BridgeConfig, FrameIdGz)
+{
+  auto results = ros_gz_bridge::readFromYamlFile("test/config/frame_id.yaml");
+  EXPECT_EQ(1u, results.size());
+
+  {
+    auto config = results[0];
+    EXPECT_EQ("imu_sensor_msgs_imu", config.ros_topic_name);
+    EXPECT_EQ("imu_sensor_msgs_imu", config.gz_topic_name);
+    EXPECT_EQ("sensor_msgs/msg/Imu", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.IMU", config.gz_type_name);
+    EXPECT_FALSE(config.publisher_queue_size.has_value());
+    EXPECT_FALSE(config.subscriber_queue_size.has_value());
+    EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+    EXPECT_EQ(std::nullopt, config.is_lazy);
+    EXPECT_FALSE(config.qos_profile.has_value());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.PublisherQoS());
+    EXPECT_EQ(rclcpp::QoS(rclcpp::KeepLast(10u)), config.SubscriberQoS());
+    EXPECT_EQ("override", config.frame_id);
+  }
+}
+
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
 TEST_F(BridgeConfig, InvalidSetTwoRos)
 {
   // Cannot set topic_name and ros_topic_name

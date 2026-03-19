@@ -83,9 +83,19 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
         continue;
       }
       this->declare_parameter(prefix + "direction", "BIDIRECTIONAL");
+<<<<<<< HEAD
       this->declare_parameter(prefix + "publisher_queue", 10);
       this->declare_parameter(prefix + "subscriber_queue", 10);
       this->declare_parameter(prefix + "lazy", false);
+=======
+      // Queue sizes default to 10 if qos_profile is not set.
+      // If it is defined, they are applied only if they are non-negative.
+      this->declare_parameter(prefix + "publisher_queue", -1);
+      this->declare_parameter(prefix + "subscriber_queue", -1);
+      this->declare_parameter(prefix + "lazy", this->get_parameter("lazy").as_bool());
+      this->declare_parameter(prefix + "qos_profile", "");
+      this->declare_parameter(prefix + "frame_id", "");
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
     } else {
       const auto gz_req_type = this->declare_parameter(prefix + "gz_req_type_name",
         PARAMETER_STRING);
@@ -177,7 +187,8 @@ void RosGzBridge::spin()
           this->get_parameter(prefix + "lazy").as_bool(),
           {},
           {},
-          {}
+          {},
+          this->get_parameter(prefix + "frame_id").as_string()
         };
         if (expand_names) {
           config.gz_topic_name = rclcpp::expand_topic_or_service_name(
