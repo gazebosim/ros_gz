@@ -82,6 +82,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[1];
@@ -92,6 +93,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[2];
@@ -102,6 +104,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[3];
@@ -112,6 +115,7 @@ TEST_F(BridgeConfig, Minimum)
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
     EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ("", config.frame_id);
   }
   {
     auto config = results[4];
@@ -137,6 +141,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(5u, config.subscriber_queue_size);
     EXPECT_EQ(true, config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::ROS_TO_GZ, config.direction);
+    EXPECT_EQ("", config.frame_id);
   }
 
   {
@@ -149,6 +154,7 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ(10u, config.subscriber_queue_size);
     EXPECT_EQ(false, config.is_lazy);
     EXPECT_EQ(ros_gz_bridge::BridgeDirection::GZ_TO_ROS, config.direction);
+    EXPECT_EQ("", config.frame_id);
   }
 
   {
@@ -157,6 +163,24 @@ TEST_F(BridgeConfig, FullGz)
     EXPECT_EQ("ros_gz_interfaces/srv/ControlWorld", config.ros_type_name);
     EXPECT_EQ("gz.msgs.WorldControl", config.gz_req_type_name);
     EXPECT_EQ("gz.msgs.Boolean", config.gz_rep_type_name);
+  }
+}
+
+TEST_F(BridgeConfig, FrameIdGz)
+{
+  auto results = ros_gz_bridge::readFromYamlFile("test/config/frame_id.yaml");
+  EXPECT_EQ(1u, results.size());
+
+  {
+    auto config = results[0];
+    EXPECT_EQ("imu_sensor_msgs_imu", config.ros_topic_name);
+    EXPECT_EQ("imu_sensor_msgs_imu", config.gz_topic_name);
+    EXPECT_EQ("sensor_msgs/msg/Imu", config.ros_type_name);
+    EXPECT_EQ("gz.msgs.IMU", config.gz_type_name);
+    EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);
+    EXPECT_EQ(ros_gz_bridge::kDefaultSubscriberQueue, config.subscriber_queue_size);
+    EXPECT_EQ(ros_gz_bridge::kDefaultLazy, config.is_lazy);
+    EXPECT_EQ("override", config.frame_id);
   }
 }
 
