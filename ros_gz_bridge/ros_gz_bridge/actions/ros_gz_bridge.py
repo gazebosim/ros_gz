@@ -196,6 +196,11 @@ class RosGzBridge(Action):
                 ('lazy', str),
                 ('publisher_queue', int),
                 ('subscriber_queue', int),
+<<<<<<< HEAD
+=======
+                ('qos_profile', str),
+                ('frame_id', str),
+>>>>>>> e9fc599 (Pass frame_id per-bridge as ROS parameter. (#854))
             )
             for param, param_type in optional_params:
                 p = child.get_attr(param, data_type=param_type, optional=True)
