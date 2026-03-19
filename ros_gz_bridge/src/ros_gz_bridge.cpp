@@ -86,6 +86,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
       this->declare_parameter(prefix + "publisher_queue", 10);
       this->declare_parameter(prefix + "subscriber_queue", 10);
       this->declare_parameter(prefix + "lazy", false);
+      this->declare_parameter(prefix + "frame_id", "");
     } else {
       const auto gz_req_type = this->declare_parameter(prefix + "gz_req_type_name",
         PARAMETER_STRING);
@@ -177,7 +178,8 @@ void RosGzBridge::spin()
           this->get_parameter(prefix + "lazy").as_bool(),
           {},
           {},
-          {}
+          {},
+          this->get_parameter(prefix + "frame_id").as_string()
         };
         if (expand_names) {
           config.gz_topic_name = rclcpp::expand_topic_or_service_name(
