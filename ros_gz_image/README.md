@@ -15,8 +15,28 @@ To run the bridge from the command line:
 ros2 run ros_gz_image image_bridge /topic1 /topic2
 ```
 
-You can also modify the [Quality of Service (QoS) policy](https://docs.ros.org/en/rolling/Concepts/About-Quality-of-Service-Settings.html#qos-policies) used to publish images using an additional `qos` ROS parameter. For example:
+## Parameters
+
+### `qos` (string, default: `"default"`)
+
+Modify the [Quality of Service (QoS) policy](https://docs.ros.org/en/rolling/Concepts/About-Quality-of-Service-Settings.html#qos-policies) used to publish images. Accepted values: `default`, `sensor_data`, `system_default`.
 
 ```shell
-ros2 run ros_gz_image image_bridge /topic1 /topic2 --ros-args qos:=sensor_data
+ros2 run ros_gz_image image_bridge /topic1 /topic2 --ros-args -p qos:=sensor_data
+```
+
+### `lazy` (bool, default: `false`)
+
+When set to `true`, the bridge will only subscribe to the Gazebo topic when there is at least one ROS subscriber. This avoids unnecessary message processing when no one is listening.
+
+```shell
+ros2 run ros_gz_image image_bridge /topic1 /topic2 --ros-args -p lazy:=true
+```
+
+### `subscription_heartbeat` (int, default: `1000`)
+
+Interval in milliseconds at which the bridge checks the ROS subscriber count to start or stop the Gazebo subscription. Only relevant when `lazy:=true`.
+
+```shell
+ros2 run ros_gz_image image_bridge /topic1 /topic2 --ros-args -p lazy:=true -p subscription_heartbeat:=500
 ```
