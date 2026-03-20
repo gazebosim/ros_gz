@@ -52,6 +52,27 @@ public:
     const std::string & gz_rep_type_name,
     const std::string & service_name);
 
+  /// \brief Get Gazebo topic type from topic name
+  /// \param[in] _gz_topic_name Name of the ROS Topic
+  /// \param[in,out] _gz_type_name Name of the ROS Msg type
+  /// \return True if resolved successfully, false otherwise
+  bool get_gazebo_topic_type(
+    const std::string & _gz_topic_name,
+    std::string & _gz_type_name);
+
+  /// \brief Get Ros topic type from topic name
+  /// \param[in] _ros_topic_name Name of the GZ Topic
+  /// \param[in,out] _ros_type_name Name of the GZ Msg type
+  /// \return True if resolved successfully, false otherwise
+  bool get_ros_topic_type(
+    const std::string & _ros_topic_name,
+    std::string & _ros_type_name);
+
+  /// \brief Resolve types for a bridge config
+  /// \param[in,out] config Bridge configuration
+  /// \return True if resolved successfully, false otherwise
+  bool resolve_bridge_types(BridgeConfig & _config);
+
 protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();

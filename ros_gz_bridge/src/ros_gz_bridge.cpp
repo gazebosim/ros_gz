@@ -21,6 +21,7 @@
 
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
+#include "get_mappings.hpp"
 
 #include <rclcpp/expand_topic_or_service_name.hpp>
 
@@ -238,11 +239,56 @@ void RosGzBridge::spin()
   }
 }
 
+bool RosGzBridge::resolve_bridge_types(BridgeConfig & _config)
+{
+  bool ros_missing = (_config.ros_type_name == "ros_type");
+  bool gz_missing = (_config.gz_type_name == "gz_type");
+
+  if(ros_missing && !gz_missing) {
+    if(!ros_gz_bridge::get_gz_to_ros_mapping(_config.gz_type_name, _config.ros_type_name)) {
+      std::cerr << "No ROS mapping for Gazebo type: " << _config.gz_type_name << std::endl;
+      return false;
+    }
+  } else if(!ros_missing && gz_missing) {
+    if(!ros_gz_bridge::get_ros_to_gz_mapping(_config.ros_type_name, _config.gz_type_name)) {
+      std::cerr << "No Gazebo mapping for ROS type: " << _config.ros_type_name << std::endl;
+      return false;
+    }
+  } else if(ros_missing && gz_missing) {
+    bool auto_gz = this->get_gazebo_topic_type(_config.gz_topic_name, _config.gz_type_name);
+    bool auto_ros = this->get_ros_topic_type(_config.ros_topic_name, _config.ros_type_name);
+
+    if(!auto_gz && !auto_ros) {
+      std::cerr << "Automatic type resolution failed!" << std::endl;
+      return false;
+    } else if(!auto_gz && auto_ros) {
+      if(!ros_gz_bridge::get_ros_to_gz_mapping(_config.ros_type_name, _config.gz_type_name)) {
+        std::cerr << "No Gazebo mapping for ROS type: " << _config.ros_type_name << std::endl;
+        return false;
+      }
+    } else if(auto_gz && !auto_ros) {
+      if(!ros_gz_bridge::get_gz_to_ros_mapping(_config.gz_type_name, _config.ros_type_name)) {
+        std::cerr << "No ROS mapping for Gazebo type: " << _config.gz_type_name << std::endl;
+        return false;
+      }
+    }
+  }
+  std::cout << "Resolved types: "
+            << _config.gz_topic_name << " -> " << _config.gz_type_name << ", "
+            << _config.ros_topic_name << " -> " << _config.ros_type_name
+            << std::endl;
+  return true;
+}
+
 void RosGzBridge::add_bridge(const BridgeConfig & input_config)
 {
+  BridgeConfig config = input_config;
+
+  // Automatic type resolution
+  this->resolve_bridge_types(config);
+
   // Resolve the laziness: if the caller left is_lazy as nullopt, inherit the
   // node-level "lazy" parameter so that the effective value is always explicit.
-  BridgeConfig config = input_config;
   if (!config.is_lazy.has_value()) {
     bool node_lazy = kDefaultLazy;
     this->get_parameter("lazy", node_lazy);
@@ -305,6 +351,58 @@ void RosGzBridge::add_bridge(const BridgeConfig & input_config)
       config.gz_type_name.c_str(),
       _e.what());
   }
+}
+
+bool RosGzBridge::get_gazebo_topic_type(
+  const std::string & _gz_topic_name,
+  std::string & _gz_type_name)
+{
+  if(!this->gz_node_) {return false;}
+
+  std::vector<gz::transport::MessagePublisher> publishers;
+  std::vector<gz::transport::MessagePublisher> subscribers;
+  if(this->gz_node_->TopicInfo(_gz_topic_name, publishers, subscribers)) {
+    if(!publishers.empty()) {
+      _gz_type_name = publishers[0].MsgTypeName();
+      return true;
+    } else if(!subscribers.empty()) {
+      for(auto subscriber : subscribers) {
+        if(!(subscriber.MsgTypeName() == "google.protobuf.Message")) {
+          _gz_type_name = subscriber.MsgTypeName();
+          break;
+        }
+      }
+    }
+    return false;
+  }
+  return false;
+}
+
+bool RosGzBridge::get_ros_topic_type(
+  const std::string & _ros_topic_name,
+  std::string & _ros_type_name)
+{
+  // Normalize ROS topic name
+  std::string topic = _ros_topic_name;
+  if(topic[0] != '/') {topic = "/" + topic;}
+  while(topic.size() > 1 && topic.back() == '/') {topic.pop_back();}
+  rclcpp::sleep_for(std::chrono::milliseconds(300));
+  auto graph = this->get_node_graph_interface();
+  auto topics_and_types = graph->get_topic_names_and_types(false);
+
+  auto it = topics_and_types.find(topic);
+  if(it == topics_and_types.end()) {return false;}
+  const auto & types = it->second;
+
+  if(types.empty()) {return false;}
+
+  // if(types.size() > 1)
+  // {
+  //   // Handle this (but posssible)
+  // }
+
+  _ros_type_name = types.front();
+  return true;
 }
 
 void RosGzBridge::add_service_bridge(
