@@ -17,6 +17,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 namespace ros_gz_bridge
 {
@@ -24,8 +25,18 @@ namespace ros_gz_bridge
 bool
 get_gz_to_ros_mapping(const std::string & gz_type_name, std::string & ros_type_name);
 
+bool 
+get_gz_to_ros_mapping(
+  const std::string & gz_type_name,
+  std::vector<std::string> & ros_type_names);
+
 bool
 get_ros_to_gz_mapping(const std::string & ros_type_name, std::string & gz_type_name);
+
+bool
+get_ros_to_gz_mapping(
+  const std::string & ros_type_name,
+  std::vector<std::string> & gz_type_names);
 
 std::multimap<std::string, std::string>
 get_all_message_mappings_ros_to_gz();
