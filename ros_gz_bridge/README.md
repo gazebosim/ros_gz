@@ -213,6 +213,13 @@ e.g. by using a static transform publisher. Users can then use the
 ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image --ros-args -p override_frame_id:=my_custom_optical_frame
 ```
 
+This also works for messages with multiple frames, such as `tf2_msgs/msg/TFMessage`, which contains a vector of `TransformStamped` messages. The `override_frame_id` will be applied to each transform's `header.frame_id`:
+
+```bash
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V --ros-args -p override_frame_id:=world
+```
+
 ## Example 3: Static bridge
 
 In this example, we're going to run an executable that starts a bidirectional

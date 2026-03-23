@@ -395,6 +395,7 @@ void createTestMsg(gz::msgs::Pose_V & _msg)
 {
   createTestMsg(*(_msg.mutable_header()));
   createTestMsg(*(_msg.add_pose()));
+  _msg.mutable_pose(0)->set_name("child_frame_id_value");
 }
 
 void compareTestMsg(const std::shared_ptr<gz::msgs::Pose_V> & _msg)
@@ -404,6 +405,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Pose_V> & _msg)
 
   compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
   compareTestMsg(std::make_shared<gz::msgs::Pose>(_msg->pose(0)));
+  EXPECT_EQ(_msg->pose(0).name(), "child_frame_id_value");
 }
 
 void createTestMsg(gz::msgs::Twist & _msg)
