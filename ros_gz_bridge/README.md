@@ -97,6 +97,12 @@ ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.C
 An alternative set-up can be using the bridge with the `override_timestamps_with_wall_time` ros parameter set to `true` (default=`false`). In this set-up,
 all header timestamps of the outgoing messages will be stamped with the wall time. This can be useful when the simulator has to communicate with an external system that requires wall times.
 
+## Automatic Topic Type Detection
+
+The bridge can automatically infer message types by looking up the topic in the ROS 2 and Gazebo graphs and the Mapping Registry. To enable this, use the placeholders `ros_type` and `gz_type`.
+
+*Note: If you use `ros_type@gz_type`, there must be at least one active publisher or subscriber on either the ROS 2 or Gazebo side so the bridge can "see" the message type being used.*
+
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
 Start the parameter bridge which will watch the specified topics.
@@ -146,6 +152,20 @@ Now we start the ROS talker.
 . /opt/ros/rolling/setup.bash
 ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 ```
+
+## Example 1c: Automatic Type Detection
+
+If you don't want to remember the exact Gazebo message string, you can let the bridge find it for you.
+
+Start the bridge with placeholders:
+```bash
+# Shell A:
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz_type
+```
+The bridge will detect that std_msgs/msg/String maps to gz.msgs.StringMsg and initialize the bridge automatically.
+
+*Note: If multiple mappings exist for a topic, the bridge will default to the first mapping found.*
 
 ## Example 2: Run the bridge and exchange images
 
@@ -280,6 +300,21 @@ An example configuration for 5 bridges is below, showing the various ways that a
 bridge may be specified:
 
 ```yaml
+# Set to automatic Gazebo type detection
+- topic_name: "chatter_auto_gz"
+  ros_type_name: "std_msgs/msg/String"
+  gz_type_name: "gz_type"
+
+# Set to automatic ROS type detection
+- topic_name: "chatter_auto_ros"
+  ros_type_name: "ros_type"
+  gz_type_name: "gz.msgs.StringMsg"
+
+# Set to automatic detection on both sides
+- topic_name: "chatter_auto_both"
+  ros_type_name: "ros_type"
+  gz_type_name: "gz_type"
+
  # Set just topic name, applies to both
 - topic_name: "chatter"
   ros_type_name: "std_msgs/msg/String"

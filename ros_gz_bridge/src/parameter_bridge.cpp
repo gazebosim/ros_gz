@@ -27,7 +27,9 @@
 //////////////////////////////////////////////////
 void usage()
 {
-  std::cout << "Bridge a collection of ROS2 and Gazebo Transport topics and services.\n\n" <<
+  std::cout
+    <<
+    "Bridge a collection of ROS2 and Gazebo Transport topics and services.\n\n" <<
     "  parameter_bridge [<topic@ROS2_type@Ign_type> ..] " <<
     " [<service@ROS2_srv_type[@Ign_req_type@Ign_rep_type]> ..]\n\n" <<
     "Topics: The first @ symbol delimits the topic name from the message types.\n" <<
@@ -38,6 +40,16 @@ void usage()
     "    ]  == a bridge from ROS to Gazebo.\n" <<
     "Following the direction symbol is the Gazebo Transport message " <<
     "type.\n\n" <<
+    "Automatic Topic Type Detection:\n" <<
+    "  Replace a type with a placeholder 'ros_type' or 'gz_type' to enable auto-detection:\n" <<
+    "    /topic@ros_type@gz_type : Attempt detection on both ROS and Gazebo sides.\n" <<
+    "    /topic@ROS_msg_type@gz_type : Infer Gazebo type from the provided ROS type.\n" <<
+    "    /topic@ros_type@Gz_msg_type : Infer ROS type from the provided Gazebo type.\n" <<
+    "Note: If multiple mappings exist or ambiguity arises, the system will fall back" <<
+    " to the first valid type mapping found.\n" <<
+    "Examples:\n" <<
+    "    parameter_bridge /model/robot/pose@ros_type@gz_type\n" <<
+    "    parameter_bridge /lidar@sensor_msgs/msg/LaserScan@gz_type\n\n"
     "Services: The first @ symbol delimits the service name from the types.\n" <<
     "Following the first @ symbol is the ROS service type.\n" <<
     "Optionally, you can include the Gazebo request and response type\n" <<
