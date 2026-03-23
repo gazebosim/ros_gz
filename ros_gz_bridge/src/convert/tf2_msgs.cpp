@@ -28,7 +28,6 @@ convert_ros_to_gz(
   for (auto const & t : ros_msg.transforms) {
     auto p = gz_msg.add_pose();
     convert_ros_to_gz(t, *p);
-    p->set_name(t.child_frame_id);
   }
 
   if (!ros_msg.transforms.empty()) {
@@ -48,9 +47,6 @@ convert_gz_to_ros(
   for (auto const & p : gz_msg.pose()) {
     geometry_msgs::msg::TransformStamped tf;
     convert_gz_to_ros(p, tf);
-    if (!p.name().empty()) {
-      tf.child_frame_id = frame_id_gz_to_ros(p.name());
-    }
     ros_msg.transforms.push_back(tf);
   }
 }
