@@ -6,7 +6,7 @@
 
 # Rewrite frame ID
 - ros_topic_name: "image_sensor_msgs_image"
-  gz_topic_name: "image_sensor_msgs_image"
+  gz_topic_name: "image_image"
   ros_type_name: "sensor_msgs/msg/Image"
   gz_type_name: "gz.msgs.Image"
   frame_id: "override"
