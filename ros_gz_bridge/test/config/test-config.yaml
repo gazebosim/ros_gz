@@ -4,6 +4,13 @@
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
 
+# Rewrite frame ID
+- ros_topic_name: "image_sensor_msgs_image"
+  gz_topic_name: "image_sensor_msgs_image"
+  ros_type_name: "sensor_msgs/msg/Image"
+  gz_type_name: "gz.msgs.Image"
+  frame_id: "override"
+
 # Set just ROS topic name, applies to both
 - ros_topic_name: "boolean_std_msgs_bool"
   gz_topic_name: "boolean_std_msgs_bool"
