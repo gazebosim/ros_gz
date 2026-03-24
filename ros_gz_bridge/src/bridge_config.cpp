@@ -35,6 +35,7 @@ constexpr const char kGzTypeName[] = "gz_type_name";
 constexpr const char kDirection[] = "direction";
 constexpr const char kPublisherQueue[] = "publisher_queue";
 constexpr const char kSubscriberQueue[] = "subscriber_queue";
+constexpr const char kQosProfile[] = "qos_profile";
 constexpr const char kLazy[] = "lazy";
 constexpr const char kGzReqTypeName[] = "gz_req_type_name";
 constexpr const char kGzRepTypeName[] = "gz_rep_type_name";
@@ -44,6 +45,28 @@ constexpr const char kFrameId[] = "frame_id";
 constexpr const char kBidirectional[] = "BIDIRECTIONAL";
 constexpr const char kGzToRos[] = "GZ_TO_ROS";
 constexpr const char kRosToGz[] = "ROS_TO_GZ";
+
+rclcpp::QoS parseQoS(const std::string & qos_profile)
+{
+  if (qos_profile == "CLOCK") {
+    return rclcpp::ClockQoS();
+  } else if (qos_profile == "SENSOR_DATA") {
+    return rclcpp::SensorDataQoS();
+  } else if (qos_profile == "PARAMETERS") {
+    return rclcpp::ParametersQoS();
+  } else if (qos_profile == "SERVICES") {
+    return rclcpp::ServicesQoS();
+  } else if (qos_profile == "PARAMETER_EVENTS") {
+    return rclcpp::ParameterEventsQoS();
+  } else if (qos_profile == "ROSOUT") {
+    return rclcpp::RosoutQoS();
+  } else if (qos_profile == "SYSTEM_DEFAULT") {
+    return rclcpp::SystemDefaultsQoS();
+  } else if (qos_profile == "BEST_AVAILABLE") {
+    return rclcpp::BestAvailableQoS();
+  }
+  throw std::invalid_argument(std::string("Invalid QoS profile '") + qos_profile + "'");
+}
 
 /// \brief Parse a single sequence entry into a BridgeConfig
 /// \param[in] yaml_node A node containing a map of bridge config params
@@ -153,11 +176,32 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       ret.frame_id = yaml_node[kFrameId].as<std::string>();
     }
 
+    if (yaml_node[kQosProfile]) {
+      const auto qos_profile_str = getValue(kQosProfile);
+      if (!qos_profile_str.empty()) {
+        try {
+          ret.qos_profile = parseQoS(qos_profile_str);
+        } catch (const std::invalid_argument & e) {
+          RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+          return {};
+        }
+      }
+    }
     if (yaml_node[kPublisherQueue]) {
-      ret.publisher_queue_size = yaml_node[kPublisherQueue].as<size_t>();
+      const auto queue_size_int = yaml_node[kPublisherQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.publisher_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.publisher_queue_size = kDefaultPublisherQueue;
+      }
     }
     if (yaml_node[kSubscriberQueue]) {
-      ret.subscriber_queue_size = yaml_node[kSubscriberQueue].as<size_t>();
+      const auto queue_size_int = yaml_node[kSubscriberQueue].as<int64_t>();
+      if (queue_size_int >= 0) {
+        ret.subscriber_queue_size = static_cast<size_t>(queue_size_int);
+      } else if (!ret.qos_profile.has_value()) {
+        ret.subscriber_queue_size = kDefaultSubscriberQueue;
+      }
     }
     if (yaml_node[kLazy]) {
       ret.is_lazy = yaml_node[kLazy].as<bool>();
@@ -225,6 +269,34 @@ std::vector<BridgeConfig> readFromYamlFile(const std::string & filename)
 
   in.seekg(0, std::ios::beg);
   return readFromYaml(in);
+}
+
+rclcpp::QoS BridgeConfig::PublisherQoS() const
+{
+  const auto & queue_size = this->publisher_queue_size;
+  if (!this->qos_profile.has_value()) {
+    return rclcpp::QoS(rclcpp::KeepLast(queue_size.value_or(kDefaultPublisherQueue)));
+  }
+
+  auto qos = *this->qos_profile;
+  if (queue_size.has_value() && *queue_size > 0) {
+    qos.keep_last(*queue_size);
+  }
+  return qos;
+}
+
+rclcpp::QoS BridgeConfig::SubscriberQoS() const
+{
+  const auto & queue_size = this->subscriber_queue_size;
+  if (!this->qos_profile.has_value()) {
+    return rclcpp::QoS(rclcpp::KeepLast(queue_size.value_or(kDefaultSubscriberQueue)));
+  }
+
+  auto qos = *this->qos_profile;
+  if (queue_size.has_value() && *queue_size > 0) {
+    qos.keep_last(*queue_size);
+  }
+  return qos;
 }
 
 std::vector<BridgeConfig> readFromYamlString(const std::string & data)

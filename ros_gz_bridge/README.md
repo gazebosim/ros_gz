@@ -306,12 +306,13 @@ bridge may be specified:
   gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
-  subscriber_queue: 5       # Default 10
-  publisher_queue: 6        # Default 10
+  subscriber_queue: 5       # Default 10 if qos_profile is empty, otherwise not set by default
+  publisher_queue: 6        # Default 10 if qos_profile is empty, otherwise not set by default
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
                             # "GZ_TO_ROS" - Bridge Gz topic to ROS
                             # "ROS_TO_GZ" - Bridge ROS topic to Gz
+  qos_profile: SENSOR_DATA  # Default is a default-constructed QoS with appropriate queue size
   frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
@@ -333,7 +334,7 @@ Use tag `<ros_gz_bridge>` and add `<topic>` and `<service>` subelements, one for
   <ros_gz_bridge bridge_name="clock_bridge">
     <topic ros_topic_name="/clock" gz_topic_name="/clock"
            ros_type_name="rosgraph_msgs/msg/Clock" gz_type_name="gz.msgs.Clock"
-           lazy="False" direction="GZ_TO_ROS" />
+           lazy="False" direction="GZ_TO_ROS" qos_profile="CLOCK" />
   </ros_gz_bridge>
   <ros_gz_bridge bridge_name="test_bridge">
     <topic ros_topic_name="/camera/image" gz_topic_name="/world/$(var world_name)/model/$(var robot_name)/camera/sensor/image"
