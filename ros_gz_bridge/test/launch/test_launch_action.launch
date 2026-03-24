@@ -19,7 +19,7 @@ limitations under the License.
     <ros_gz_bridge bridge_name="test_bridge">
         <topic ros_topic_name="/boolean_std_msgs_bool" gz_topic_name="/boolean_std_msgs_bool"
                ros_type_name="std_msgs/msg/Bool" gz_type_name="gz.msgs.Boolean"
-               lazy="False" direction="GZ_TO_ROS" />
+               lazy="False" direction="GZ_TO_ROS" qos_profile="SYSTEM_DEFAULT" />
         <topic ros_topic_name="/imu_sensor_msgs_imu" gz_topic_name="/imu_sensor_msgs_imu"
                ros_type_name="sensor_msgs/msg/Imu" gz_type_name="gz.msgs.IMU"
                lazy="False" direction="GZ_TO_ROS" publisher_queue_size="1" subscriber_queue_size="1" />
