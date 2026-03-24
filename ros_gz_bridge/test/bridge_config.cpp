@@ -174,7 +174,7 @@ TEST_F(BridgeConfig, FrameIdGz)
   {
     auto config = results[0];
     EXPECT_EQ("imu_sensor_msgs_imu", config.ros_topic_name);
-    EXPECT_EQ("imu_sensor_msgs_imu", config.gz_topic_name);
+    EXPECT_EQ("imu_imu", config.gz_topic_name);
     EXPECT_EQ("sensor_msgs/msg/Imu", config.ros_type_name);
     EXPECT_EQ("gz.msgs.IMU", config.gz_type_name);
     EXPECT_EQ(ros_gz_bridge::kDefaultPublisherQueue, config.publisher_queue_size);

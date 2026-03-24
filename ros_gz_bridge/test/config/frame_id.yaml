@@ -1,5 +1,5 @@
 - ros_topic_name: "imu_sensor_msgs_imu"
-  gz_topic_name: "imu_sensor_msgs_imu"
+  gz_topic_name: "imu_imu"
   ros_type_name: "sensor_msgs/msg/Imu"
   gz_type_name: "gz.msgs.IMU"
   direction: GZ_TO_ROS
