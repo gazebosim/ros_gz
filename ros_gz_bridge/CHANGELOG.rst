@@ -2,6 +2,25 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.21 (2026-02-24)
+-------------------
+* Use GID filtering to prevent loops (backport `#834 <https://github.com/gazebosim/ros_gz/issues/834>`_) (`#843 <https://github.com/gazebosim/ros_gz/issues/843>`_)
+* Added WorldStatistics message support for the ros_gz_bridge (`#841 <https://github.com/gazebosim/ros_gz/issues/841>`_) (`#846 <https://github.com/gazebosim/ros_gz/issues/846>`_)
+* Contributors: mergify[bot]
+
+1.0.20 (2026-02-04)
+-------------------
+* Add support for configurable frame_id in Gazebo subscriber (backport `#825 <https://github.com/gazebosim/ros_gz/issues/825>`_) (`#831 <https://github.com/gazebosim/ros_gz/issues/831>`_)
+* Add override_frame_id parameter (backport `#826 <https://github.com/gazebosim/ros_gz/issues/826>`_) (`#828 <https://github.com/gazebosim/ros_gz/issues/828>`_)
+* Fix missing timestamp in Pose_V -> PoseArray bridge (`#812 <https://github.com/gazebosim/ros_gz/issues/812>`_) (`#822 <https://github.com/gazebosim/ros_gz/issues/822>`_)
+* Contributors: mergify[bot]
+
+1.0.19 (2026-01-20)
+-------------------
+
+1.0.18 (2025-11-21)
+-------------------
+
 1.0.17 (2025-07-16)
 -------------------
 * Added missing test and parse service name from YAML (`#776 <https://github.com/gazebosim/ros_gz/issues/776>`_)

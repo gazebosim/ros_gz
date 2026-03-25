@@ -2,6 +2,27 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.21 (2026-02-24)
+-------------------
+* Added descriptions to gz_server and ros_gz_sim launch files (`#838 <https://github.com/gazebosim/ros_gz/issues/838>`_) (`#840 <https://github.com/gazebosim/ros_gz/issues/840>`_)
+* Added verbosity_level parameter. (`#833 <https://github.com/gazebosim/ros_gz/issues/833>`_) (`#836 <https://github.com/gazebosim/ros_gz/issues/836>`_)
+* Contributors: mergify[bot]
+
+1.0.20 (2026-02-04)
+-------------------
+
+1.0.19 (2026-01-20)
+-------------------
+* Add dependency to ros2pkg (`#816 <https://github.com/gazebosim/ros_gz/issues/816>`_) (`#818 <https://github.com/gazebosim/ros_gz/issues/818>`_)
+* Contributors: mergify[bot]
+
+1.0.18 (2025-11-21)
+-------------------
+* Implement ROS standard simulation interfaces (backport `#790 <https://github.com/gazebosim/ros_gz/issues/790>`_) (`#802 <https://github.com/gazebosim/ros_gz/issues/802>`_)
+* Use PIMPL pattern in gzserver (`#683 <https://github.com/gazebosim/ros_gz/issues/683>`_)
+* Expose header for `GzServer` (`#681 <https://github.com/gazebosim/ros_gz/issues/681>`_) (`#809 <https://github.com/gazebosim/ros_gz/issues/809>`_)
+* Contributors: Addisu Z. Taddese, mergify[bot]
+
 1.0.17 (2025-07-16)
 -------------------
 

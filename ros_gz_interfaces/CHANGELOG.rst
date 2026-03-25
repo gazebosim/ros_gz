@@ -2,6 +2,20 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.21 (2026-02-24)
+-------------------
+* Added WorldStatistics message support for the ros_gz_bridge (`#841 <https://github.com/gazebosim/ros_gz/issues/841>`_) (`#846 <https://github.com/gazebosim/ros_gz/issues/846>`_)
+* Contributors: mergify[bot]
+
+1.0.20 (2026-02-04)
+-------------------
+
+1.0.19 (2026-01-20)
+-------------------
+
+1.0.18 (2025-11-21)
+-------------------
+
 1.0.17 (2025-07-16)
 -------------------
 

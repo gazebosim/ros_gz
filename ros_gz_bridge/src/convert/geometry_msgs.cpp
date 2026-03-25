@@ -127,6 +127,11 @@ convert_gz_to_ros(
   geometry_msgs::msg::PoseArray & ros_msg)
 {
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  if (ros_msg.header.stamp.sec == 0 && ros_msg.header.stamp.nanosec == 0) {
+    if (gz_msg.pose_size() > 0 && gz_msg.pose(0).has_header()) {
+      convert_gz_to_ros(gz_msg.pose(0).header(), ros_msg.header);
+    }
+  }
   ros_msg.poses.clear();
   for (auto const & p : gz_msg.pose()) {
     geometry_msgs::msg::Pose pose;

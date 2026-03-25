@@ -24,9 +24,11 @@ find_package(gz-sim REQUIRED)
 find_package(gz_transport_vendor REQUIRED)
 find_package(gz-transport REQUIRED)
 find_package(rclcpp REQUIRED)
+find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(rcpputils REQUIRED)
 find_package(ros_gz_interfaces REQUIRED)
+find_package(simulation_interfaces REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
@@ -69,16 +71,42 @@ target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
+                      ${simulation_intefaces_TARGETS}
                       rclcpp::rclcpp)
 target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
 
+set(gz_simulation_interfaces_sources
+  src/gz_simulation_interfaces/gazebo_proxy.cpp
+  src/gz_simulation_interfaces/gz_entity_filters.cpp
+  src/gz_simulation_interfaces/gz_simulation_interfaces.cpp
+  src/gz_simulation_interfaces/utils.cpp
+
+  # Actions
+  src/gz_simulation_interfaces/actions/simulate_steps.cpp
+
+  # Services
+  src/gz_simulation_interfaces/services/delete_entity.cpp
+  src/gz_simulation_interfaces/services/get_entities.cpp
+  src/gz_simulation_interfaces/services/get_entities_states.cpp
+  src/gz_simulation_interfaces/services/get_entity_info.cpp
+  src/gz_simulation_interfaces/services/get_entity_state.cpp
+  src/gz_simulation_interfaces/services/get_simulation_state.cpp
+  src/gz_simulation_interfaces/services/get_simulator_features.cpp
+  src/gz_simulation_interfaces/services/reset_simulation.cpp
+  src/gz_simulation_interfaces/services/set_entity_state.cpp
+  src/gz_simulation_interfaces/services/set_simulation_state.cpp
+  src/gz_simulation_interfaces/services/spawn_entity.cpp
+  src/gz_simulation_interfaces/services/step_simulation.cpp
+)
+
 # gzserver_component
-add_library(gzserver_component SHARED src/gzserver.cpp)
-rclcpp_components_register_nodes(gzserver_component "ros_gz_sim::GzServer")
+add_library(gzserver_component SHARED src/gzserver.cpp ${gz_simulation_interfaces_sources})
 target_link_libraries(gzserver_component PUBLIC
   ${std_msgs_TARGETS}
+  ${simulation_interfaces_TARGETS}
   gz-sim::core
   rclcpp::rclcpp
+  rclcpp_action::rclcpp_action
   rclcpp_components::component
   rclcpp_components::component_manager
 )
@@ -293,6 +321,7 @@ if(BUILD_TESTING)
 
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
+  add_launch_test(test/test_gz_simulation_interfaces.launch.py TIMEOUT 300)
 endif()
 
 ament_package()
