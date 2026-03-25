@@ -570,7 +570,7 @@ void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
 void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
 {
   createTestMsg(_msg.header);
-  _msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_WATER;
+  _msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_BOTTOM;
   _msg.dvl_type = marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PISTON;
 
   createTestMsg(_msg.velocity);
@@ -578,7 +578,7 @@ void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
     _msg.velocity_covar[i] = i;
   }
 
-  _msg.altitude = -1;
+  _msg.altitude = 10;
   _msg.course_gnd = std::atan2(_msg.velocity.y, _msg.velocity.x);
   _msg.speed_gnd = std::sqrt(_msg.velocity.x * _msg.velocity.x + _msg.velocity.y *
       _msg.velocity.y);
@@ -588,14 +588,16 @@ void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
   _msg.beam_ranges_valid = true;
   _msg.beam_velocities_valid = true;
 
+  double vLen = std::sqrt(1.0 * 1.0 + 2.0 * 2.0 + 3.0 * 3.0);
   for (auto i = 0; i < _msg.num_good_beams; ++i) {
-    _msg.beam_unit_vec[i].x = -1;
-    _msg.beam_unit_vec[i].y = -1;
-    _msg.beam_unit_vec[i].z = -1;
+    // beam_unit_vec = normalized velocity direction (1,2,3)/sqrt(14)
+    _msg.beam_unit_vec[i].x = 1.0 / vLen;
+    _msg.beam_unit_vec[i].y = 2.0 / vLen;
+    _msg.beam_unit_vec[i].z = 3.0 / vLen;
     _msg.range[i] = 10;
     _msg.range_covar[i] = 11;
     _msg.beam_quality[i] = 100;
-    _msg.beam_velocity[i] = sqrt(1 * 1 + 2 * 2 + 3 * 3);
+    _msg.beam_velocity[i] = vLen;
     _msg.beam_velocity_covar[i] = -1;
   }
 }
@@ -624,11 +626,14 @@ void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg
   EXPECT_EQ(expected_msg.beam_velocities_valid, _msg->beam_velocities_valid);
 
   for (auto i = 0; i < _msg->num_good_beams; ++i) {
-    EXPECT_EQ(expected_msg.beam_unit_vec[i], _msg->beam_unit_vec[i]);
+    // Use EXPECT_NEAR for beam_unit_vec due to floating-point normalization.
+    EXPECT_NEAR(expected_msg.beam_unit_vec[i].x, _msg->beam_unit_vec[i].x, 1e-6);
+    EXPECT_NEAR(expected_msg.beam_unit_vec[i].y, _msg->beam_unit_vec[i].y, 1e-6);
+    EXPECT_NEAR(expected_msg.beam_unit_vec[i].z, _msg->beam_unit_vec[i].z, 1e-6);
     EXPECT_DOUBLE_EQ(expected_msg.range[i], _msg->range[i]);
     EXPECT_DOUBLE_EQ(expected_msg.range_covar[i], _msg->range_covar[i]);
     EXPECT_DOUBLE_EQ(expected_msg.beam_quality[i], _msg->beam_quality[i]);
-    EXPECT_DOUBLE_EQ(expected_msg.beam_velocity[i], _msg->beam_velocity[i]);
+    EXPECT_NEAR(expected_msg.beam_velocity[i], _msg->beam_velocity[i], 1e-6);
     EXPECT_DOUBLE_EQ(expected_msg.beam_velocity_covar[i], _msg->beam_velocity_covar[i]);
   }
 }

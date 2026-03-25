@@ -1,4 +1,4 @@
-// Copyright 2025 Honu Robotics
+// Copyright 2026 Honu Robotics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 
 namespace ros_gz_bridge
 {
-// marince_acoustic_msgs
+// marine_acoustic_msgs
 template<>
 void
 convert_ros_to_gz(

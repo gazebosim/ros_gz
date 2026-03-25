@@ -143,7 +143,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::DVLRangeEstimate> & _msg)
 
 void createTestMsg(gz::msgs::DVLTrackingTarget & _msg)
 {
-  _msg.set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_WATER_MASS);
+  _msg.set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_BOTTOM);
   createTestMsg(*_msg.mutable_range());
   createTestMsg(*_msg.mutable_position());
 }
@@ -167,7 +167,9 @@ void createTestMsg(gz::msgs::DVLVelocityTracking & _msg)
   createTestMsg(*_msg.mutable_velocity());
   uint8_t numBeams = 4u;
   for (auto i = 0; i < numBeams; ++i) {
-    createTestMsg(*_msg.add_beams());
+    auto *beam = _msg.add_beams();
+    createTestMsg(*beam);
+    beam->set_id(i + 1);
   }
 
   _msg.set_status(0);
@@ -180,13 +182,49 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg)
 
   compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
   EXPECT_EQ(expected_msg.type(), _msg->type());
-  // compareTestMsg(std::make_shared<gz::msgs::DVLTrackingTarget>(_msg->target()));
-  // compareTestMsg(std::make_shared<gz::msgs::DVLKinematicEstimate>(_msg->velocity()));
 
+  // Target type survives roundtrip.
+  EXPECT_EQ(expected_msg.target().type(), _msg->target().type());
+  // Target range mean survives via altitude mapping for bottom tracking.
+  EXPECT_DOUBLE_EQ(expected_msg.target().range().mean(), _msg->target().range().mean());
+  // target.range.variance and target.position do not survive the roundtrip
+  // because the ROS Dvl message has limited target information.
+
+  // Velocity survives roundtrip.
+  EXPECT_EQ(expected_msg.velocity().reference(), _msg->velocity().reference());
+  compareTestMsg(std::make_shared<gz::msgs::Vector3d>(_msg->velocity().mean()));
+  ASSERT_EQ(expected_msg.velocity().covariance_size(), _msg->velocity().covariance_size());
+  for (auto i = 0; i < _msg->velocity().covariance_size(); ++i) {
+    EXPECT_DOUBLE_EQ(expected_msg.velocity().covariance(i), _msg->velocity().covariance(i));
+  }
+
+  // Beams partially survive roundtrip.
   ASSERT_EQ(expected_msg.beams_size(), _msg->beams_size());
-  // for (auto i = 0; i < _msg->beams_size(); ++i) {
-  //   compareTestMsg(std::make_shared<gz::msgs::DVLBeamState>(_msg->beams(i)));
-  // }
+  for (auto i = 0; i < _msg->beams_size(); ++i) {
+    EXPECT_EQ(expected_msg.beams(i).locked(), _msg->beams(i).locked());
+
+    // Beam velocity mean survives roundtrip (via unit_vec * magnitude).
+    EXPECT_NEAR(
+      expected_msg.beams(i).velocity().mean().x(),
+      _msg->beams(i).velocity().mean().x(), 1e-6);
+    EXPECT_NEAR(
+      expected_msg.beams(i).velocity().mean().y(),
+      _msg->beams(i).velocity().mean().y(), 1e-6);
+    EXPECT_NEAR(
+      expected_msg.beams(i).velocity().mean().z(),
+      _msg->beams(i).velocity().mean().z(), 1e-6);
+
+    // Beam range survives roundtrip.
+    EXPECT_DOUBLE_EQ(
+      expected_msg.beams(i).range().mean(), _msg->beams(i).range().mean());
+    EXPECT_DOUBLE_EQ(
+      expected_msg.beams(i).range().variance(), _msg->beams(i).range().variance());
+
+    // Beam rssi survives roundtrip (via beam_quality mapping).
+    EXPECT_DOUBLE_EQ(expected_msg.beams(i).rssi(), _msg->beams(i).rssi());
+
+    // beam velocity covariance and nsd do not survive the roundtrip.
+  }
 
   EXPECT_EQ(expected_msg.status(), _msg->status());
 }

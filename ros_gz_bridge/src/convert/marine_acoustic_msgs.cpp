@@ -1,4 +1,4 @@
-// Copyright 2025 Honu Robotics
+// Copyright 2026 Honu Robotics
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -56,21 +56,22 @@ convert_ros_to_gz(
     beam->mutable_velocity()->mutable_mean()->set_y(beam_unit.y * beam_velocity);
     beam->mutable_velocity()->mutable_mean()->set_z(beam_unit.z * beam_velocity);
 
-    // Unsupported.
-    for (auto j = 0; j < 9; ++j) {
-      beam->mutable_velocity()->add_covariance(0);
-    }
+    // The ROS beam_velocity_covar is a scalar variance along the beam axis.
+    // It cannot be accurately mapped to a 3x3 covariance without additional
+    // beam geometry information, so the covariance is left empty (unknown).
 
     beam->mutable_range()->set_mean(ros_msg.range[i]);
     beam->mutable_range()->set_variance(ros_msg.range_covar[i]);
 
-    // rssi not supported in ROS.
-    // nsd not supported in ROS.
+    beam->set_rssi(ros_msg.beam_quality[i]);
+    // nsd not available in ROS.
 
     beam->set_locked(true);
   }
 
   // Velocity.
+  // The ROS Dvl message does not specify a velocity reference frame.
+  // Assuming ship-frame (body-frame) velocity, which is the DVL's native output.
   gz_msg.mutable_velocity()->set_reference(
     gz::msgs::DVLKinematicEstimate::DVL_REFERENCE_SHIP);
   convert_ros_to_gz(ros_msg.velocity, (*gz_msg.mutable_velocity()->mutable_mean()));
@@ -87,9 +88,15 @@ convert_ros_to_gz(
     gz_msg.mutable_target()->set_type(gz::msgs::DVLTrackingTarget::DVL_TARGET_UNSPECIFIED);
   }
 
-  // Range and position Unavailable.
+  // Map altitude to target range when available.
+  // For bottom tracking, altitude is the distance to the sea floor.
+  if (ros_msg.altitude >= 0) {
+    gz_msg.mutable_target()->mutable_range()->set_mean(ros_msg.altitude);
+    // target.range.variance defaults to 0 (unknown) in protobuf.
+  }
+  // target.position is not available from the ROS message.
 
-  gz_msg.set_status(0);
+  // ROS Dvl message has no status field; defaults to 0 (OK) in protobuf.
 }
 
 template<>
@@ -104,14 +111,23 @@ convert_gz_to_ros(
     ros_msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_BOTTOM;
   } else if (gz_msg.target().type() == gz::msgs::DVLTrackingTarget::DVL_TARGET_WATER_MASS) {
     ros_msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_WATER;
+  } else {
+    // ROS has no "unspecified" target concept; default to bottom tracking.
+    ros_msg.velocity_mode = marine_acoustic_msgs::msg::Dvl::DVL_MODE_BOTTOM;
   }
 
   if (gz_msg.type() == gz::msgs::DVLVelocityTracking::DVL_TYPE_PISTON) {
     ros_msg.dvl_type = marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PISTON;
   } else if (gz_msg.type() == gz::msgs::DVLVelocityTracking::DVL_TYPE_PHASED_ARRAY) {
     ros_msg.dvl_type = marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PHASED_ARRAY;
+  } else {
+    // ROS has no "unspecified" DVL type; default to piston.
+    ros_msg.dvl_type = marine_acoustic_msgs::msg::Dvl::DVL_TYPE_PISTON;
   }
 
+  // Note: The Gazebo velocity may be in DVL_REFERENCE_EARTH or DVL_REFERENCE_SHIP frame.
+  // The ROS Dvl message does not specify a reference frame convention.
+  // This bridge assumes both sides use the same frame convention (typically body-frame).
   convert_gz_to_ros(gz_msg.velocity().mean(), ros_msg.velocity);
 
   for (auto i = 0; i < 9; ++i) {
@@ -122,7 +138,14 @@ convert_gz_to_ros(
     }
   }
 
-  ros_msg.altitude = -1;
+  // Map altitude from target range when bottom tracking.
+  if (gz_msg.target().type() == gz::msgs::DVLTrackingTarget::DVL_TARGET_BOTTOM &&
+    gz_msg.target().has_range() && gz_msg.target().range().mean() > 0)
+  {
+    ros_msg.altitude = gz_msg.target().range().mean();
+  } else {
+    ros_msg.altitude = -1;
+  }
   ros_msg.course_gnd = std::atan2(ros_msg.velocity.y, ros_msg.velocity.x);
   ros_msg.speed_gnd = std::sqrt(ros_msg.velocity.x * ros_msg.velocity.x + ros_msg.velocity.y *
       ros_msg.velocity.y);
@@ -145,15 +168,26 @@ convert_gz_to_ros(
     ros_msg.beam_ranges_valid = true;
     ros_msg.beam_velocities_valid = true;
 
-    // beam_unit_vec is unsupported.
-    ros_msg.beam_unit_vec[numGoodBeams].x = -1;
-    ros_msg.beam_unit_vec[numGoodBeams].y = -1;
-    ros_msg.beam_unit_vec[numGoodBeams].z = -1;
+    // Compute beam velocity vector once for reuse.
+    gz::math::Vector3d v = gz::msgs::Convert(gz_msg.beams()[i].velocity().mean());
+    double vLen = v.Length();
+
+    // Derive beam unit vector from the normalized beam velocity direction.
+    if (vLen > 0) {
+      gz::math::Vector3d unit = v / vLen;
+      ros_msg.beam_unit_vec[numGoodBeams].x = unit.X();
+      ros_msg.beam_unit_vec[numGoodBeams].y = unit.Y();
+      ros_msg.beam_unit_vec[numGoodBeams].z = unit.Z();
+    } else {
+      ros_msg.beam_unit_vec[numGoodBeams].x = 0;
+      ros_msg.beam_unit_vec[numGoodBeams].y = 0;
+      ros_msg.beam_unit_vec[numGoodBeams].z = 0;
+    }
+
     ros_msg.range[numGoodBeams] = gz_msg.beams()[i].range().mean();
     ros_msg.range_covar[numGoodBeams] = gz_msg.beams()[i].range().variance();
     ros_msg.beam_quality[numGoodBeams] = gz_msg.beams()[i].rssi();
-    gz::math::Vector3d v = gz::msgs::Convert(gz_msg.beams()[i].velocity().mean());
-    ros_msg.beam_velocity[numGoodBeams] = v.Length();
+    ros_msg.beam_velocity[numGoodBeams] = vLen;
     ros_msg.beam_velocity_covar[numGoodBeams] = -1;
 
     ++numGoodBeams;
