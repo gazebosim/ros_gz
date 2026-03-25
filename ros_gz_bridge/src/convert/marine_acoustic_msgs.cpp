@@ -170,7 +170,7 @@ convert_gz_to_ros(
 
     // Compute beam velocity vector once for reuse.
     gz::math::Vector3d v = gz::msgs::Convert(gz_msg.beams()[i].velocity().mean());
-    double vLen = v.Length();
+    const double vLen = v.Length();
 
     // Derive beam unit vector from the normalized beam velocity direction.
     if (vLen > 0) {
