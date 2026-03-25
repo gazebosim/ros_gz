@@ -243,8 +243,8 @@ void RosGzBridge::spin()
 
 bool RosGzBridge::resolve_bridge_types(BridgeConfig & config)
 {
-  bool ros_missing = (config.ros_type_name == "ros_type");
-  bool gz_missing = (config.gz_type_name == "gz_type");
+  bool ros_missing = (config.ros_type_name.empty());
+  bool gz_missing = (config.gz_type_name.empty());
 
   if(ros_missing && !gz_missing) {
     if(!ros_gz_bridge::get_gz_to_ros_mapping(config.gz_type_name, config.ros_type_name)) {
@@ -405,18 +405,24 @@ bool RosGzBridge::get_ros_topic_type(
   std::string topic = ros_topic_name;
   if(topic[0] != '/') {topic = "/" + topic;}
   while(topic.size() > 1 && topic.back() == '/') {topic.pop_back();}
-  rclcpp::sleep_for(std::chrono::milliseconds(300));
+
+  const auto timeout = std::chrono::milliseconds(300);
+  auto event = this->get_graph_event();
+  this->wait_for_graph_change(event, timeout);
   auto graph = this->get_node_graph_interface();
-  auto topics_and_types = graph->get_topic_names_and_types(false);
 
-  auto it = topics_and_types.find(topic);
-  if(it == topics_and_types.end()) {return false;}
-  const auto & types = it->second;
+  auto pub_infos = graph->get_publishers_info_by_topic(topic);
+  if(!pub_infos.empty()) {
+    ros_type_name = pub_infos.front().topic_type();
+    return true;
+  }
 
-  if(types.empty()) {return false;}
-
-  ros_type_name = types.front();
-  return true;
+  auto sub_infos = graph->get_subscriptions_info_by_topic(topic);
+  if(!sub_infos.empty()) {
+    ros_type_name = sub_infos.front().topic_type();
+    return true;
+  }
+  return false;
 }
 
 void RosGzBridge::add_service_bridge(

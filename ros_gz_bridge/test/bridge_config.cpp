@@ -274,20 +274,6 @@ TEST_F(BridgeConfig, InvalidSetTwoGz)
     g_last_log_event.message);
 }
 
-TEST_F(BridgeConfig, InvalidSetTypes)
-{
-  // Both ros_type_name and gz_type_name must be set
-  auto yaml = R"(
-- topic_name: foo
-  ros_type_name: bar)";
-
-  auto results = ros_gz_bridge::readFromYamlString(yaml);
-  EXPECT_EQ(0u, results.size());
-  EXPECT_EQ(
-    "Could not parse entry: both ros_type_name and gz_type_name must be set",
-    g_last_log_event.message);
-}
-
 TEST_F(BridgeConfig, ParseDirection)
 {
   {

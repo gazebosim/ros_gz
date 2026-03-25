@@ -41,15 +41,15 @@ void usage()
     "Following the direction symbol is the Gazebo Transport message " <<
     "type.\n\n" <<
     "Automatic Topic Type Detection:\n" <<
-    "  Replace a type with a placeholder 'ros_type' or 'gz_type' to enable auto-detection:\n" <<
-    "    /topic@ros_type@gz_type : Attempt detection on both ROS and Gazebo sides.\n" <<
-    "    /topic@ROS_msg_type@gz_type : Infer Gazebo type from the provided ROS type.\n" <<
-    "    /topic@ros_type@Gz_msg_type : Infer ROS type from the provided Gazebo type.\n" <<
+    "  Leave the type empty to enable automatic detection:\n" <<
+    "    /topic@@ : Attempt detection on both ROS and Gazebo sides.\n" <<
+    "    /topic@ROS_msg_type@ : Infer Gazebo type from the provided ROS type.\n" <<
+    "    /topic@@Gz_msg_type : Infer ROS type from the provided Gazebo type.\n" <<
     "Note: If multiple mappings exist or ambiguity arises, the system will fall back" <<
     " to the first valid type mapping found.\n" <<
     "Examples:\n" <<
-    "    parameter_bridge /model/robot/pose@ros_type@gz_type\n" <<
-    "    parameter_bridge /lidar@sensor_msgs/msg/LaserScan@gz_type\n\n"
+    "    parameter_bridge /model/robot/pose@@\n" <<
+    "    parameter_bridge /lidar@sensor_msgs/msg/LaserScan@\n\n"
     "Services: The first @ symbol delimits the service name from the types.\n" <<
     "Following the first @ symbol is the ROS service type.\n" <<
     "Optionally, you can include the Gazebo request and response type\n" <<
@@ -120,9 +120,9 @@ int main(int argc, char * argv[])
     delimPos = arg.find(delim);
     config.direction = BridgeDirection::BIDIRECTIONAL;
 
-    if (delimPos == std::string::npos || delimPos == 0) {
+    if (delimPos == std::string::npos) {
       delimPos = arg.find(delimGzToROS);
-      if (delimPos == std::string::npos || delimPos == 0) {
+      if (delimPos == std::string::npos) {
         delimPos = arg.find(delimROSToGz);
         if (delimPos == 0) {
           usage();
@@ -172,7 +172,7 @@ int main(int argc, char * argv[])
     }
 
     delimPos = arg.find(delim);
-    if (delimPos != std::string::npos || arg.empty()) {
+    if (delimPos != std::string::npos) {
       usage();
       return -1;
     }

@@ -99,9 +99,9 @@ all header timestamps of the outgoing messages will be stamped with the wall tim
 
 ## Automatic Topic Type Detection
 
-The bridge can automatically infer message types by looking up the topic in the ROS 2 and Gazebo graphs and the Mapping Registry. To enable this, use the placeholders `ros_type` and `gz_type`.
+The bridge can automatically infer message types by looking up the topic in the ROS 2 and Gazebo graphs and the Mapping Registry. To enable automatic detection, simply leave the type empty on either side.
 
-*Note: If you use `ros_type@gz_type`, there must be at least one active publisher or subscriber on either the ROS 2 or Gazebo side so the bridge can "see" the message type being used.*
+*Note: If you use `/topic_name@@`, there must be at least one active publisher or subscriber on either the ROS 2 or Gazebo side so the bridge can "see" the message type being used.*
 
 ## Example 1a: Gazebo Transport talker and ROS 2 listener
 
@@ -155,15 +155,27 @@ ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'" --once
 
 ## Example 1c: Automatic Type Detection
 
-If you don't want to remember the exact Gazebo message string, you can let the bridge find it for you.
-
-Start the bridge with placeholders:
+Start the ROS talker.
 ```bash
 # Shell A:
-. ~/bridge_ws/install/setup.bash
-ros2 run ros_gz_bridge parameter_bridge /chatter@std_msgs/msg/String@gz_type
+. /opt/ros/rolling/setup.bash
+ros2 topic pub /chatter std_msgs/msg/String "data: 'Hi'"
 ```
-The bridge will detect that std_msgs/msg/String maps to gz.msgs.StringMsg and initialize the bridge automatically.
+
+Now we start the Gazebo Transport listener.
+```bash
+# Shell B:
+gz topic -e -t /chatter
+```
+
+If you don't want to remember the exact Gazebo message string, you can let the bridge find it for you,
+Now we Start the bridge:
+```bash
+# Shell C:
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /chatter@@
+```
+The bridge will automatically detect the message types (`std_msgs/msg/String` in ROS 2 and `gz.msgs.StringMsg` in Gazebo) and initialize the bridge accordingly.
 
 *Note: If multiple mappings exist for a topic, the bridge will default to the first mapping found.*
 
@@ -303,17 +315,13 @@ bridge may be specified:
 # Set to automatic Gazebo type detection
 - topic_name: "chatter_auto_gz"
   ros_type_name: "std_msgs/msg/String"
-  gz_type_name: "gz_type"
 
 # Set to automatic ROS type detection
 - topic_name: "chatter_auto_ros"
-  ros_type_name: "ros_type"
   gz_type_name: "gz.msgs.StringMsg"
 
 # Set to automatic detection on both sides
 - topic_name: "chatter_auto_both"
-  ros_type_name: "ros_type"
-  gz_type_name: "gz_type"
 
  # Set just topic name, applies to both
 - topic_name: "chatter"

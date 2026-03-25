@@ -115,14 +115,7 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     return {};
   }
 
-  if (service_name.empty()) {
-    if (ros_type_name.empty() || gz_type_name.empty()) {
-      RCLCPP_ERROR(
-        logger,
-        "Could not parse entry: both %s and %s must be set", kRosTypeName, kGzTypeName);
-      return {};
-    }
-  } else {
+  if (!service_name.empty()) {
     if (gz_req_type_name.empty() || gz_rep_type_name.empty()) {
       RCLCPP_ERROR(
         logger,
