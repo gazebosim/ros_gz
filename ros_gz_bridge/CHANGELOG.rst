@@ -2,6 +2,14 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.16 (2026-03-26)
+-------------------
+* Bridge DVL messages (backport `#789 <https://github.com/gazebosim/ros_gz/issues/789>`_) (`#869 <https://github.com/gazebosim/ros_gz/issues/869>`_)
+* ros_gz_bridge: Allow setting QoS profile from YAML files and launch action. (`#865 <https://github.com/gazebosim/ros_gz/issues/865>`_)
+* test(ros_gz_bridge): Added tests for per-bridge frame_id setting from launch action. (`#860 <https://github.com/gazebosim/ros_gz/issues/860>`_)
+* feat(ros_gz_bridge): Pass frame_id per-bridge as ROS parameter. (`#854 <https://github.com/gazebosim/ros_gz/issues/854>`_) (`#858 <https://github.com/gazebosim/ros_gz/issues/858>`_)
+* Contributors: Martin Pecka, mergify[bot]
+
 2.1.15 (2026-02-24)
 -------------------
 * Added WorldStatistics message support for the ros_gz_bridge (`#841 <https://github.com/gazebosim/ros_gz/issues/841>`_) (`#845 <https://github.com/gazebosim/ros_gz/issues/845>`_)
