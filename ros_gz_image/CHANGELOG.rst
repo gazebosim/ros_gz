@@ -2,6 +2,11 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.8 (2026-03-26)
+------------------
+* feat: Added lazy subscribe support for GZ image bridge (`#851 <https://github.com/gazebosim/ros_gz/issues/851>`_)
+* Contributors: Gilbert Tanner
+
 3.0.7 (2026-02-24)
 ------------------
 

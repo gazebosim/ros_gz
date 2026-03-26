@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.8 (2026-03-26)
+------------------
+* ros_gz_bridge improvements (`#850 <https://github.com/gazebosim/ros_gz/issues/850>`_)
+* Contributors: Alejandro Hernández Cordero
+
 3.0.7 (2026-02-24)
 ------------------
 * Added descriptions to gz_server and ros_gz_sim launch files (`#838 <https://github.com/gazebosim/ros_gz/issues/838>`_)
