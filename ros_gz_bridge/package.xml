@@ -16,6 +16,12 @@
   <depend>actuator_msgs</depend>
   <depend>geometry_msgs</depend>
   <depend>gps_msgs</depend>
+<<<<<<< HEAD
+=======
+  <depend>launch</depend>
+  <depend>launch_ros</depend>
+  <depend>marine_acoustic_msgs</depend>
+>>>>>>> f5caef3 (Bridge DVL messages (#789))
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
@@ -25,8 +31,8 @@
   <depend>std_msgs</depend>
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
-  <depend>yaml_cpp_vendor</depend>
   <depend>vision_msgs</depend>
+  <depend>yaml_cpp_vendor</depend>
 
   <!-- Harmonic -->
   <depend condition="$GZ_VERSION == harmonic">gz-msgs10</depend>
