@@ -2,6 +2,11 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.22 (2026-03-26)
+-------------------
+* Bridge DVL messages (`#789 <https://github.com/gazebosim/ros_gz/issues/789>`_)
+* Contributors: Carlos Agüero
+
 1.0.21 (2026-02-24)
 -------------------
 

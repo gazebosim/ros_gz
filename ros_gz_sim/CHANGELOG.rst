@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.22 (2026-03-26)
+-------------------
+
 1.0.21 (2026-02-24)
 -------------------
 * Added descriptions to gz_server and ros_gz_sim launch files (`#838 <https://github.com/gazebosim/ros_gz/issues/838>`_) (`#840 <https://github.com/gazebosim/ros_gz/issues/840>`_)

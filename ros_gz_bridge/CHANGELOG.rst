@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.22 (2026-03-26)
+-------------------
+* Bridge DVL messages (`#789 <https://github.com/gazebosim/ros_gz/issues/789>`_)
+* ros_gz_bridge: Allow setting QoS profile from YAML files and launch action. (`#867 <https://github.com/gazebosim/ros_gz/issues/867>`_)
+* test(ros_gz_bridge): Added tests for per-bridge frame_id setting from launch action. (`#863 <https://github.com/gazebosim/ros_gz/issues/863>`_)
+* Contributors: Carlos Agüero, Martin Pecka
+
 1.0.21 (2026-02-24)
 -------------------
 * Use GID filtering to prevent loops (backport `#834 <https://github.com/gazebosim/ros_gz/issues/834>`_) (`#843 <https://github.com/gazebosim/ros_gz/issues/843>`_)
