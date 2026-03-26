@@ -17,15 +17,15 @@
 
 // Gazebo Msgs
 #include <gz/msgs/altimeter.pb.h>
-#include <gz/msgs/entity.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
-#include <gz/msgs/entity_wrench.pb.h>
-#include <gz/msgs/joint_wrench.pb.h>
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
 #include <gz/msgs/dataframe.pb.h>
+#include <gz/msgs/entity.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_wrench.pb.h>
 #include <gz/msgs/float_v.pb.h>
 #include <gz/msgs/gui_camera.pb.h>
+#include <gz/msgs/joint_wrench.pb.h>
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/logical_camera_image.pb.h>
 #include <gz/msgs/log_playback_stats.pb.h>
@@ -41,15 +41,15 @@
 
 // ROS 2 messages
 #include <ros_gz_interfaces/msg/altimeter.hpp>
-#include <ros_gz_interfaces/msg/entity.hpp>
-#include <ros_gz_interfaces/msg/entity_factory.hpp>
-#include <ros_gz_interfaces/msg/entity_wrench.hpp>
-#include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
 #include <ros_gz_interfaces/msg/dataframe.hpp>
+#include <ros_gz_interfaces/msg/entity.hpp>
+#include <ros_gz_interfaces/msg/entity_factory.hpp>
+#include <ros_gz_interfaces/msg/entity_wrench.hpp>
 #include <ros_gz_interfaces/msg/float32_array.hpp>
 #include <ros_gz_interfaces/msg/gui_camera.hpp>
+#include <ros_gz_interfaces/msg/joint_wrench.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/logical_camera_image.hpp>
 #include <ros_gz_interfaces/msg/log_playback_statistics.hpp>
