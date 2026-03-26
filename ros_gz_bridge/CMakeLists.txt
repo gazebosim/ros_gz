@@ -32,6 +32,7 @@ set(BRIDGE_MESSAGE_TYPES
   actuator_msgs
   geometry_msgs
   gps_msgs
+  marine_acoustic_msgs
   nav_msgs
   rcl_interfaces
   ros_gz_interfaces

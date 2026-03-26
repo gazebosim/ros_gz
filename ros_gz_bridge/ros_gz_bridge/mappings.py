@@ -51,6 +51,9 @@ MAPPINGS = {
     'gps_msgs': [
         Mapping('GPSFix', 'NavSat'),
     ],
+    'marine_acoustic_msgs': [
+        Mapping('Dvl', 'DVLVelocityTracking'),
+    ],
     'nav_msgs': [
         Mapping('Odometry', 'Odometry'),
         Mapping('Odometry', 'OdometryWithCovariance'),
