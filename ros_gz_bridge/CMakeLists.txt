@@ -109,6 +109,7 @@ target_link_libraries(${bridge_lib}
     ${actuator_msgs_TARGETS}
     ${geometry_msgs_TARGETS}
     ${gps_msgs_TARGETS}
+    ${marine_acoustic_msgs_TARGETS}
     ${nav_msgs_TARGETS}
     ${rcl_interfaces_TARGETS}
     ${ros_gz_interfaces_TARGETS}
@@ -229,6 +230,7 @@ if(BUILD_TESTING)
     ${actuator_msgs_TARGETS}
     ${geometry_msgs_TARGETS}
     ${gps_msgs_TARGETS}
+    ${marine_acoustic_msgs_TARGETS}
     ${nav_msgs_TARGETS}
     ${rcl_interfaces_TARGETS}
     ${ros_gz_interfaces_TARGETS}
