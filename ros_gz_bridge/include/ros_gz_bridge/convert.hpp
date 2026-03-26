@@ -18,6 +18,7 @@
 #include <ros_gz_bridge/convert/actuator_msgs.hpp>
 #include <ros_gz_bridge/convert/geometry_msgs.hpp>
 #include <ros_gz_bridge/convert/gps_msgs.hpp>
+#include <ros_gz_bridge/convert/marine_acoustic_msgs.hpp>
 #include <ros_gz_bridge/convert/nav_msgs.hpp>
 #include <ros_gz_bridge/convert/ros_gz_interfaces.hpp>
 #include <ros_gz_bridge/convert/rosgraph_msgs.hpp>
