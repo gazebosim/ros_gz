@@ -61,6 +61,7 @@ void GzServer::OnStart()
   auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
   auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
   auto initial_sim_time = this->declare_parameter("initial_sim_time", 0.0);
+  auto start_paused = this->declare_parameter("start_paused", false);
 
   gz::common::Console::SetVerbosity(4);
   gz::sim::ServerConfig server_config;
@@ -85,7 +86,7 @@ void GzServer::OnStart()
   this->dataPtr->sim_interfaces =
     std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(
       this->create_sub_node(this->get_name()));
-  server->Run(true /*blocking*/, 0, false /*paused*/);
+  server->Run(true /*blocking*/, 0, start_paused);
   server.reset();
   // Call shutdown before resetting sim_interfaces so that threads in sim_interfaces can gracefully
   // exit before being destructed.

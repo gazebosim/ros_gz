@@ -74,6 +74,10 @@ def generate_launch_description():
         'world_sdf_string', default_value=TextSubstitution(text=''),
         description='SDF world string'
     )
+    declare_start_paused_cmd = DeclareLaunchArgument(
+        'start_paused', default_value='False',
+        description='Start simulation paused if True'
+    )
 
     gz_server_action = GzServer(
         world_sdf_file=LaunchConfiguration('world_sdf_file'),
@@ -81,6 +85,7 @@ def generate_launch_description():
         container_name=LaunchConfiguration('container_name'),
         create_own_container=LaunchConfiguration('create_own_container'),
         use_composition=LaunchConfiguration('use_composition'),
+        start_paused=LaunchConfiguration('start_paused'),
     )
 
     ros_gz_bridge_action = RosGzBridge(
@@ -110,6 +115,7 @@ def generate_launch_description():
     ld.add_action(declare_bridge_params_cmd)
     ld.add_action(declare_world_sdf_file_cmd)
     ld.add_action(declare_world_sdf_string_cmd)
+    ld.add_action(declare_start_paused_cmd)
     # Add the actions to launch all of the bridge + gz_server nodes
     ld.add_action(gz_server_action)
     ld.add_action(ros_gz_bridge_action)

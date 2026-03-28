@@ -37,6 +37,9 @@ def generate_launch_description():
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition', default_value='False',
         description='Use composed bringup if True')
+    declare_start_paused_cmd = DeclareLaunchArgument(
+        'start_paused', default_value='False',
+        description='Start simulation paused if True')
 
     gz_server_action = GzServer(
         world_sdf_file=LaunchConfiguration('world_sdf_file'),
@@ -44,6 +47,7 @@ def generate_launch_description():
         container_name=LaunchConfiguration('container_name'),
         create_own_container=LaunchConfiguration('create_own_container'),
         use_composition=LaunchConfiguration('use_composition'),
+        start_paused=LaunchConfiguration('start_paused'),
     )
 
     # Create the launch description and populate
@@ -55,6 +59,7 @@ def generate_launch_description():
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_use_composition_cmd)
+    ld.add_action(declare_start_paused_cmd)
     # Add the gz_server action
     ld.add_action(gz_server_action)
 

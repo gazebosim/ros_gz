@@ -10,12 +10,14 @@
   <arg name="bridge_params" default="" />
   <arg name="world_sdf_file" default="empty.sdf" />
   <arg name="world_sdf_string" default="" />
+  <arg name="start_paused" default="False" />
   <gz_server
     world_sdf_file="$(var world_sdf_file)"
     world_sdf_string="$(var world_sdf_string)"
     container_name="$(var container_name)"
     create_own_container="$(var create_own_container)"
-    use_composition="$(var use_composition)">
+    use_composition="$(var use_composition)"
+    start_paused="$(var start_paused)">
   </gz_server>
   <ros_gz_bridge
     bridge_name="$(var bridge_name)"
