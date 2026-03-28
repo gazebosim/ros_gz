@@ -3,7 +3,7 @@
             schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_sim</name>
-  <version>1.0.18</version>
+  <version>1.0.22</version>
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
 
   <!-- Maintainers -->
@@ -38,6 +38,7 @@
   <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>
   <depend>rcpputils</depend>
+  <depend>ros2pkg</depend>
   <depend>ros_gz_interfaces</depend>
   <depend>simulation_interfaces</depend>
   <depend>std_msgs</depend>

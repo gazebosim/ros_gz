@@ -196,6 +196,8 @@ class RosGzBridge(Action):
                 ('lazy', str),
                 ('publisher_queue', int),
                 ('subscriber_queue', int),
+                ('qos_profile', str),
+                ('frame_id', str),
             )
             for param, param_type in optional_params:
                 p = child.get_attr(param, data_type=param_type, optional=True)

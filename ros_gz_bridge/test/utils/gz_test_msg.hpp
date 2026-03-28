@@ -26,6 +26,7 @@
 #include <gz/msgs/color.pb.h>
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
+#include <gz/msgs/dvl_velocity_tracking.pb.h>
 #include <gz/msgs/double.pb.h>
 #include <gz/msgs/empty.pb.h>
 #include <gz/msgs/entity.pb.h>
@@ -45,6 +46,7 @@
 #include <gz/msgs/laserscan.pb.h>
 #include <gz/msgs/light.pb.h>
 #include <gz/msgs/logical_camera_image.pb.h>
+#include <gz/msgs/log_playback_stats.pb.h>
 #include <gz/msgs/magnetometer.pb.h>
 #include <gz/msgs/material_color.pb.h>
 #include <gz/msgs/model.pb.h>
@@ -70,6 +72,7 @@
 #include <gz/msgs/wrench.pb.h>
 #include <gz/msgs/annotated_axis_aligned_2d_box_v.pb.h>
 #include <gz/msgs/annotated_oriented_3d_box_v.pb.h>
+#include <gz/msgs/world_stats.pb.h>
 
 #include <memory>
 
@@ -102,6 +105,46 @@ void createTestMsg(gz::msgs::Color & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLBeamState & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLBeamState> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLKinematicEstimate & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLKinematicEstimate> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLRangeEstimate & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLRangeEstimate> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLTrackingTarget & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLTrackingTarget> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::DVLVelocityTracking & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
@@ -558,6 +601,22 @@ void createTestMsg(gz::msgs::LogicalCameraImage & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::LogicalCameraImage> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::LogPlaybackStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::LogPlaybackStatistics> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::WorldStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::WorldStatistics> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

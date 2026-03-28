@@ -47,6 +47,7 @@
 #include <geometry_msgs/msg/wrench.hpp>
 #include <geometry_msgs/msg/wrench_stamped.hpp>
 #include <gps_msgs/msg/gps_fix.hpp>
+#include <marine_acoustic_msgs/msg/dvl.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
@@ -60,12 +61,14 @@
 #include <ros_gz_interfaces/msg/dataframe.hpp>
 #include <ros_gz_interfaces/msg/light.hpp>
 #include <ros_gz_interfaces/msg/logical_camera_image.hpp>
+#include <ros_gz_interfaces/msg/log_playback_statistics.hpp>
 #include <ros_gz_interfaces/msg/material_color.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
 #include <ros_gz_interfaces/msg/string_vec.hpp>
 #include <ros_gz_interfaces/msg/track_visual.hpp>
 #include <ros_gz_interfaces/msg/video_record.hpp>
+#include <ros_gz_interfaces/msg/world_statistics.hpp>
 #include <rosgraph_msgs/msg/clock.hpp>
 #include <sensor_msgs/msg/battery_state.hpp>
 #include <sensor_msgs/msg/camera_info.hpp>
@@ -366,6 +369,16 @@ void createTestMsg(gps_msgs::msg::GPSFix & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg);
+
+/// marine_acoustic_msgs
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg);
 
 /// tf2_msgs
 
@@ -688,6 +701,22 @@ void createTestMsg(ros_gz_interfaces::msg::LogicalCameraImage & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogicalCameraImage> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::LogPlaybackStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::LogPlaybackStatistics> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::WorldStatistics & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::WorldStatistics> & _msg);
 
 }  // namespace testing
 }  // namespace ros_gz_bridge

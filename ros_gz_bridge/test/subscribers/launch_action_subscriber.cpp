@@ -21,6 +21,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/imu.hpp>
+#include <sensor_msgs/msg/image.hpp>
 #include <std_msgs/msg/bool.hpp>
 #include "ros_subscriber.hpp"
 #include "utils/test_utils.hpp"
@@ -63,6 +64,21 @@ TEST(LaunchActionSubscriberTest, imu_sensors_msgs_imu)
     ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
 
   EXPECT_TRUE(client.callbackExecuted);
+}
+
+/////////////////////////////////////////////////
+TEST(LaunchActionSubscriberTest, image_sensor_msgs_image)
+{
+  ros_subscriber::TestSubOnly<sensor_msgs::msg::Image> client(
+    "image_sensor_msgs_image");
+
+  using namespace std::chrono_literals;
+  ros_gz_bridge::testing::waitUntilBoolVarAndSpin(
+    ros_subscriber::TestNode(), client.callbackExecuted, 10ms, 200);
+
+  EXPECT_TRUE(client.callbackExecuted);
+  ASSERT_NE(nullptr, client.msg);
+  EXPECT_EQ("override", client.msg->header.frame_id);
 }
 
 /////////////////////////////////////////////////

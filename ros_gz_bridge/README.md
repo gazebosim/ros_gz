@@ -26,6 +26,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/Wrench                       | gz.msgs.Wrench                      |
 | geometry_msgs/msg/WrenchStamped                | gz.msgs.Wrench                      |
 | gps_msgs/msg/GPSFix                            | gz.msgs.NavSat                      |
+| marine_acoustic_msgs/msg/Dvl                   | gz.msgs.DVLVelocityTracking         |
 | nav_msgs/msg/Odometry                          | gz.msgs.Odometry                    |
 | nav_msgs/msg/Odometry                          | gz.msgs.OdometryWithCovariance      |
 | rcl_interfaces/msg/ParameterValue              | gz.msgs.Any                         |
@@ -40,12 +41,14 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/JointWrench              | gz.msgs.JointWrench                 |
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
 | ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
+| ros_gz_interfaces/msg/LogPlaybackStatistics    | gz.msgs.LogPlaybackStatistics       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
 | ros_gz_interfaces/msg/StringVec                | gz.msgs.StringMsg_V                 |
 | ros_gz_interfaces/msg/TrackVisual              | gz.msgs.TrackVisual                 |
 | ros_gz_interfaces/msg/VideoRecord              | gz.msgs.VideoRecord                 |
+| ros_gz_interfaces/msg/WorldStatistics          | gz.msgs.WorldStatistics             |
 | rosgraph_msgs/msg/Clock                        | gz.msgs.Clock                       |
 | sensor_msgs/msg/BatteryState                   | gz.msgs.BatteryState                |
 | sensor_msgs/msg/CameraInfo                     | gz.msgs.CameraInfo                  |
@@ -191,6 +194,26 @@ The screenshot shows all the shell windows and their expected content
 
 ![Gazebo Transport images and ROS rqt](images/bridge_image_exchange.png)
 
+
+### GZ to ROS frame_id override
+
+The bridge has a parameter named `override_frame_id` that allows users to
+override the `frame_id` of messages when bridging topics.
+
+As an example, for sensors like cameras, it is commonly expected that ROS image
+data are in a z-forward optical frame, see
+[REP-0103](https://www.ros.org/reps/rep-0103.html).
+When bridging GZ to ROS `Image` and `CameraInfo` topics, users
+typically create a new optical frame with an x to z-forward transformation,
+e.g. by using a static transform publisher. Users can then use the
+`override_frame_id` parameter to override the `Image` or `CameraInfo` messages'
+`frame_id` field to point to the optical frame.
+
+```bash
+. ~/bridge_ws/install/setup.bash
+ros2 run ros_gz_bridge parameter_bridge /rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image --ros-args -p override_frame_id:=my_custom_optical_frame
+```
+
 ## Example 3: Static bridge
 
 In this example, we're going to run an executable that starts a bidirectional
@@ -284,12 +307,14 @@ bridge may be specified:
   gz_topic_name: "gz_chatter"
   ros_type_name: "std_msgs/msg/String"
   gz_type_name: "gz.msgs.StringMsg"
-  subscriber_queue: 5       # Default 10
-  publisher_queue: 6        # Default 10
+  subscriber_queue: 5       # Default 10 if qos_profile is empty, otherwise not set by default
+  publisher_queue: 6        # Default 10 if qos_profile is empty, otherwise not set by default
   lazy: true                # Default "false"
   direction: BIDIRECTIONAL  # Default "BIDIRECTIONAL" - Bridge both directions
                             # "GZ_TO_ROS" - Bridge Gz topic to ROS
                             # "ROS_TO_GZ" - Bridge ROS topic to Gz
+  qos_profile: SENSOR_DATA  # Default is a default-constructed QoS with appropriate queue size
+  frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
 To run the bridge node with the above configuration:
@@ -306,10 +331,16 @@ Use tag `<ros_gz_bridge>` and add `<topic>` and `<service>` subelements, one for
 ```XML
 <launch>
   <arg name="world_name" default="empty" />
+  <arg name="robot_name" default="robot" />
   <ros_gz_bridge bridge_name="clock_bridge">
     <topic ros_topic_name="/clock" gz_topic_name="/clock"
            ros_type_name="rosgraph_msgs/msg/Clock" gz_type_name="gz.msgs.Clock"
-           lazy="False" direction="GZ_TO_ROS" />
+           lazy="False" direction="GZ_TO_ROS" qos_profile="CLOCK" />
+  </ros_gz_bridge>
+  <ros_gz_bridge bridge_name="test_bridge">
+    <topic ros_topic_name="/camera/image" gz_topic_name="/world/$(var world_name)/model/$(var robot_name)/camera/sensor/image"
+           ros_type_name="sensor_msgs/msg/Image" gz_type_name="gz.msgs.Image"
+           lazy="True" direction="GZ_TO_ROS" frame_id="camera_optical_frame" />
     <service service_name="/world/$(var world_name)/control"
              ros_type_name="ros_gz_interfaces/srv/ControlWorld"
              gz_req_type_name="gz.msgs.WorldControl" gz_rep_type_name="gz.msgs.Boolean" />
@@ -360,6 +391,27 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 ROS 2 Parameters:
 
- * `subscription_heartbeat` - Period at which the node checks for new subscribers for lazy bridges.
- * `config_file` - YAML file to be loaded as the bridge configuration
- * `expand_gz_topic_names` - Enable or disable ROS namespace applied on GZ topics.
+* `subscription_heartbeat`
+    * type: double
+    * default: 1000
+    * description: Period (ms) at which the node checks for new subscribers for
+      lazy bridges.
+* `config_file`
+    * type: string
+    * default: ""
+    * description: YAML file to be loaded as the bridge configuration
+* `expand_gz_topic_names`
+    * type: bool
+    * default: false
+    * description: Enable or disable ROS namespace applied on GZ topics.
+* `override_timestamps_with_wall_time`
+    * type: bool
+    * default: false
+    * direction: GZ to ROS
+    * description: Override the header.stamp field of outgoing messages with
+      wall time.
+ * `override_frame_id`
+    * type: string
+    * default: ""
+    * direction: GZ to ROS
+    * description: Override the `header.frame_id` field with a new string value.

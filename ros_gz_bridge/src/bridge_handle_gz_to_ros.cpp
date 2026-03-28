@@ -19,6 +19,19 @@
 namespace ros_gz_bridge
 {
 
+BridgeHandleGzToRos::BridgeHandleGzToRos(
+  rclcpp::Node::SharedPtr ros_node,
+  std::shared_ptr<gz::transport::Node> gz_node,
+  const BridgeConfig & config)
+: BridgeHandle(ros_node, gz_node, config)
+{
+  ros_node_->get_parameter("override_timestamps_with_wall_time",
+      gz_to_ros_parameters_.override_timestamps_with_wall_time);
+
+  ros_node_->get_parameter("override_frame_id",
+      gz_to_ros_parameters_.override_frame_id);
+}
+
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
 
 size_t BridgeHandleGzToRos::NumSubscriptions() const
@@ -54,7 +67,7 @@ void BridgeHandleGzToRos::StartPublisher()
   this->ros_publisher_ = this->factory_->create_ros_publisher(
     this->ros_node_,
     this->config_.ros_topic_name,
-    this->config_.publisher_queue_size);
+    this->config_.PublisherQoS());
 }
 
 bool BridgeHandleGzToRos::HasSubscriber() const
@@ -65,13 +78,16 @@ bool BridgeHandleGzToRos::HasSubscriber() const
 
 void BridgeHandleGzToRos::StartSubscriber()
 {
+  if (!this->config_.frame_id.empty()) {
+    this->gz_to_ros_parameters_.override_frame_id = this->config_.frame_id;
+  }
   // Start Gazebo subscriber
   this->factory_->create_gz_subscriber(
     this->gz_node_,
     this->config_.gz_topic_name,
-    this->config_.subscriber_queue_size,
+    this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
-    override_timestamps_with_wall_time_);
+    this->gz_to_ros_parameters_);
 
   this->gz_subscriber_ = this->gz_node_;
 }
