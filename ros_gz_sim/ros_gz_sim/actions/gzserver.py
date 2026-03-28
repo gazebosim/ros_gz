@@ -151,7 +151,7 @@ class GzServer(Action):
             )
         else:
             self.__start_paused = normalize_typed_substitution(start_paused, bool)
-        
+
         if isinstance(verbosity_level, str):
             self.__verbosity_level = normalize_typed_substitution(
                 TextSubstitution(text=verbosity_level), int
@@ -223,7 +223,7 @@ class GzServer(Action):
         if isinstance(start_paused, str):
             start_paused = parser.parse_substitution(start_paused)
             kwargs['start_paused'] = start_paused
-        
+
         if isinstance(verbosity_level, str):
             verbosity_level = parser.parse_substitution(verbosity_level)
             kwargs['verbosity_level'] = verbosity_level
