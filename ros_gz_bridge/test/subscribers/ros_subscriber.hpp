@@ -63,6 +63,37 @@ private:
   typename rclcpp::Subscription<ROS_T>::SharedPtr sub;
 };
 
+/////////////////////////////////////////////////
+/// \brief A class for testing ROS topic subscription with custom examination
+///        of the test message.
+template<typename ROS_T>
+class TestSubOnly
+{
+public:
+  /// \brief Class constructor.
+  explicit TestSubOnly(const std::string & _topic)
+  {
+    using std::placeholders::_1;
+    this->sub = TestNode()->create_subscription<ROS_T>(
+      _topic, 1,
+      [this](const ROS_T & _msg)
+      {
+        this->callbackExecuted = true;
+        this->msg = std::make_shared<ROS_T>(_msg);
+      });
+  }
+
+  /// \brief Member variables that flag when the actions are executed.
+
+public:
+  bool callbackExecuted = false;
+  typename ROS_T::SharedPtr msg;
+
+private:
+  /// \brief ROS subscriber;
+  typename rclcpp::Subscription<ROS_T>::SharedPtr sub;
+};
+
 
 }  // namespace ros_subscriber
 

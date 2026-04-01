@@ -2,6 +2,16 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.8 (2026-03-26)
+------------------
+* Bridge DVL messages (backport `#789 <https://github.com/gazebosim/ros_gz/issues/789>`_) (`#868 <https://github.com/gazebosim/ros_gz/issues/868>`_)
+* fix(ros_gz_bridge)!: Fixed BridgeConfig initializer args (`#866 <https://github.com/gazebosim/ros_gz/issues/866>`_)
+* test(ros_gz_bridge): Added tests for per-bridge frame_id setting from launch action. (`#864 <https://github.com/gazebosim/ros_gz/issues/864>`_)
+* Pass frame_id per-bridge as ROS parameter. (`#854 <https://github.com/gazebosim/ros_gz/issues/854>`_)
+* fix: Node level lazy parameter fix (`#852 <https://github.com/gazebosim/ros_gz/issues/852>`_)
+* ros_gz_bridge improvements (`#850 <https://github.com/gazebosim/ros_gz/issues/850>`_)
+* Contributors: Alejandro Hernández Cordero, Gilbert Tanner, Martin Pecka, mergify[bot]
+
 3.0.7 (2026-02-24)
 ------------------
 * Use GID filtering to prevent loops (`#834 <https://github.com/gazebosim/ros_gz/issues/834>`_)

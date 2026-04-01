@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>ros_gz_bridge</name>
-  <version>3.0.7</version>
+  <version>3.0.8</version>
   <description>Bridge communication between ROS and Gazebo Transport</description>
   <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
   <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
@@ -23,6 +23,7 @@
   <depend>gps_msgs</depend>
   <depend>launch</depend>
   <depend>launch_ros</depend>
+  <depend>marine_acoustic_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
@@ -32,8 +33,8 @@
   <depend>std_msgs</depend>
   <depend>tf2_msgs</depend>
   <depend>trajectory_msgs</depend>
-  <depend>yaml_cpp_vendor</depend>
   <depend>vision_msgs</depend>
+  <depend>yaml_cpp_vendor</depend>
 
   <depend>gz_msgs_vendor</depend>
   <depend>gz_transport_vendor</depend>

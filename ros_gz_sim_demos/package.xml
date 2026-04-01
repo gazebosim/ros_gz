@@ -1,6 +1,6 @@
 <package format="3">
   <name>ros_gz_sim_demos</name>
-  <version>3.0.7</version>
+  <version>3.0.8</version>
   <description>Demos using Gazebo Sim simulation with ROS.</description>
   <license>Apache 2.0</license>
   <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
@@ -13,6 +13,7 @@
   <depend>gz_sim_vendor</depend>
 
   <exec_depend>image_transport_plugins</exec_depend>
+  <exec_depend>marine_acoustic_msgs</exec_depend>
   <exec_depend>robot_state_publisher</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
   <exec_depend>ros_gz_sim</exec_depend>
