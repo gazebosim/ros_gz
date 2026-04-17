@@ -146,7 +146,7 @@ Implementation guidelines
 - **Units and frames.**  ROS is typically SI with REP-103 frame conventions;
   Gazebo is typically SI with protobuf defaults.  Convert angles, handedness,
   and axis orientation as needed.
-- **Nested messages.**  Re-use the existing conversion functions rather than
+- **Nested messages.**  Reuse the existing conversion functions rather than
   inlining field-by-field copies.  For example, ``Header`` conversion lives in
   ``convert/std_msgs.cpp`` and is called by every stamped message.
 - **Repeated fields.**  Resize the ROS vector and loop over the protobuf
