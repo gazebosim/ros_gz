@@ -18,6 +18,7 @@
 #include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/dynamic_detachable_joint.pb.h>
 #include <gz/msgs/pose.pb.h>
+#include <gz/msgs/result.pb.h>
 
 #include <memory>
 #include <string>
@@ -29,6 +30,7 @@
 #include "ros_gz_interfaces/srv/set_entity_pose.hpp"
 #include "ros_gz_interfaces/srv/attach_detach.hpp"
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
+#include "ros_gz_bridge/convert/std_msgs.hpp"
 
 #include "service_factory.hpp"
 
@@ -96,14 +98,14 @@ get_service_factory__ros_gz_interfaces(
   if (
     ros_type_name == "ros_gz_interfaces/srv/AttachDetach" &&
     (gz_req_type_name.empty() || gz_req_type_name == "gz.msgs.AttachDetachRequest") &&
-    (gz_rep_type_name.empty() || gz_rep_type_name == "gz.msgs.AttachDetachResponse"))
+    (gz_rep_type_name.empty() || gz_rep_type_name == "gz.msgs.Result"))
   {
     return std::make_shared<
       ServiceFactory<
         ros_gz_interfaces::srv::AttachDetach,
         gz::msgs::AttachDetachRequest,
-        gz::msgs::AttachDetachResponse>
-    >(ros_type_name, "gz.msgs.AttachDetachRequest", "gz.msgs.AttachDetachResponse");
+        gz::msgs::Result>
+    >(ros_type_name, "gz.msgs.AttachDetachRequest", "gz.msgs.Result");
   }
 
   return nullptr;
@@ -152,9 +154,22 @@ convert_ros_to_gz(
   const ros_gz_interfaces::srv::AttachDetach::Request & ros_req,
   gz::msgs::AttachDetachRequest & gz_req)
 {
+  convert_ros_to_gz(ros_req.header, *gz_req.mutable_header());
   gz_req.set_child_model_name(ros_req.child_model_name);
   gz_req.set_child_link_name(ros_req.child_link_name);
-  gz_req.set_command(ros_req.command);
+  switch (ros_req.command)
+  {
+    case ros_gz_interfaces::srv::AttachDetach::Request::ATTACH:
+      gz_req.set_command(gz::msgs::AttachDetachRequest::ATTACH);
+      break;
+    case ros_gz_interfaces::srv::AttachDetach::Request::DETACH:
+      gz_req.set_command(gz::msgs::AttachDetachRequest::DETACH);
+      break;
+    case ros_gz_interfaces::srv::AttachDetach::Request::COMMAND_UNSPECIFIED:
+    default:
+      gz_req.set_command(gz::msgs::AttachDetachRequest::COMMAND_UNSPECIFIED);
+      break;
+  }
 }
 
 template<>
@@ -196,10 +211,10 @@ convert_gz_to_ros(
 template<>
 void
 convert_gz_to_ros(
-  const gz::msgs::AttachDetachResponse & gz_rep,
+  const gz::msgs::Result & gz_rep,
   ros_gz_interfaces::srv::AttachDetach::Response & ros_res)
 {
-  ros_res.success = gz_rep.success();
+  ros_res.error_code = gz_rep.error_code();
   ros_res.message = gz_rep.message();
 }
 
@@ -247,7 +262,7 @@ template<>
 bool
 send_response_on_error(ros_gz_interfaces::srv::AttachDetach::Response & ros_res)
 {
-  ros_res.success = false;
+  ros_res.error_code = 1;
   ros_res.message = "Gazebo bridge error";
   return true;
 }

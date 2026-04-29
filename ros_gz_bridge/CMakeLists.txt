@@ -211,6 +211,7 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_gz_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   add_library(test_utils

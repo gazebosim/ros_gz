@@ -1,6 +1,10 @@
-string child_model_name  # Message to create a new entity
-string child_link_name 
-string command 
+std_msgs/Header header
+string child_model_name
+string child_link_name
+uint8 COMMAND_UNSPECIFIED=0
+uint8 ATTACH=1
+uint8 DETACH=2
+uint8 command
 ---
-bool success                                     # Return true if spawned successfully.
+int32 error_code
 string message
