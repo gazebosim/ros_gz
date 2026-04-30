@@ -30,7 +30,6 @@
 #include "ros_gz_interfaces/srv/set_entity_pose.hpp"
 #include "ros_gz_interfaces/srv/attach_detach.hpp"
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
-#include "ros_gz_bridge/convert/std_msgs.hpp"
 
 #include "service_factory.hpp"
 
@@ -154,7 +153,6 @@ convert_ros_to_gz(
   const ros_gz_interfaces::srv::AttachDetach::Request & ros_req,
   gz::msgs::AttachDetachRequest & gz_req)
 {
-  convert_ros_to_gz(ros_req.header, *gz_req.mutable_header());
   gz_req.set_child_model_name(ros_req.child_model_name);
   gz_req.set_child_link_name(ros_req.child_link_name);
   switch (ros_req.command)
