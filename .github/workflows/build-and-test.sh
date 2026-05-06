@@ -21,6 +21,10 @@ apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
                    libcli11-dev
 
+# Ensure the base ROS distro is installed so /opt/ros/$ROS_DISTRO exists
+# before sourcing it below.
+apt-get install -y ros-$ROS_DISTRO-ros-base
+
 rosdep init
 rosdep update
 rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
