@@ -68,16 +68,19 @@ using BridgeConfig = ros_gz_bridge::BridgeConfig;
 //////////////////////////////////////////////////
 int main(int argc, char * argv[])
 {
-  if (argc < 2) {
-    usage();
-    return -1;
-  }
   // skip the process name in argument processing
   ++argv;
   --argc;
   auto filteredArgs = rclcpp::init_and_remove_ros_arguments(argc, argv);
 
   auto bridge_node = std::make_shared<RosGzBridge>(rclcpp::NodeOptions());
+
+  bool create_dynamic_bridges = false;
+  bridge_node->get_parameter("create_dynamic_bridges", create_dynamic_bridges);
+  if (filteredArgs.empty() && !create_dynamic_bridges) {
+    usage();
+    return -1;
+  }
 
   // Set lazy subscriber on a global basis
   bool lazy_subscription = false;

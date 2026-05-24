@@ -16,16 +16,47 @@
 
 #include <cstddef>
 #include <memory>
+#include <set>
+#include <sstream>
 #include <string>
 #include <vector>
 
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
+#include "get_mappings.hpp"
 
 #include <rclcpp/expand_topic_or_service_name.hpp>
 
 namespace ros_gz_bridge
 {
+
+namespace
+{
+std::string bridge_key(const BridgeConfig & config)
+{
+  std::stringstream stream;
+  stream << config.ros_topic_name << '|';
+  stream << config.ros_type_name << '|';
+  stream << config.gz_topic_name << '|';
+  stream << config.gz_type_name << '|';
+  stream << static_cast<int>(config.direction);
+  return stream.str();
+}
+
+BridgeDirection parse_bridge_direction(const std::string & direction)
+{
+  if (direction == "BIDIRECTIONAL") {
+    return BridgeDirection::BIDIRECTIONAL;
+  }
+  if (direction == "GZ_TO_ROS") {
+    return BridgeDirection::GZ_TO_ROS;
+  }
+  if (direction == "ROS_TO_GZ") {
+    return BridgeDirection::ROS_TO_GZ;
+  }
+  return BridgeDirection::NONE;
+}
+}  // namespace
 
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 : rclcpp::Node("ros_gz_bridge", options)
@@ -38,6 +69,8 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter<bool>("expand_gz_topic_names", false);
   this->declare_parameter<bool>("override_timestamps_with_wall_time", false);
   this->declare_parameter<std::string>("override_frame_id", "");
+  this->declare_parameter<bool>("create_dynamic_bridges", false);
+  this->declare_parameter<std::string>("dynamic_bridge_direction", "GZ_TO_ROS");
   this->declare_parameter("bridge_names", std::vector<std::string>());
   const auto names = this->get_parameter("bridge_names").as_string_array();
 
@@ -120,7 +153,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
 void RosGzBridge::spin()
 {
-  if (handles_.empty()) {
+  if (!configured_bridges_created_) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
     bool expand_names;
@@ -158,16 +191,8 @@ void RosGzBridge::spin()
       const auto prefix = "bridges." + name + ".";
       if (!this->get_parameter(prefix + "ros_topic_name").as_string().empty()) {
         const auto directionStr = this->get_parameter(prefix + "direction").as_string();
-        BridgeDirection direction {BridgeDirection::NONE};
-        if (directionStr == "NONE") {
-          direction = BridgeDirection::NONE;
-        } else if (directionStr == "BIDIRECTIONAL") {
-          direction = BridgeDirection::BIDIRECTIONAL;
-        } else if (directionStr == "GZ_TO_ROS") {
-          direction = BridgeDirection::GZ_TO_ROS;
-        } else if (directionStr == "ROS_TO_GZ") {
-          direction = BridgeDirection::ROS_TO_GZ;
-        } else {
+        const auto direction = parse_bridge_direction(directionStr);
+        if (direction == BridgeDirection::NONE && directionStr != "NONE") {
           RCLCPP_ERROR(
             this->get_logger(),
             "Bridge %s defines unknown direction %s.",
@@ -234,9 +259,76 @@ void RosGzBridge::spin()
           this->get_parameter(prefix + "service_name").as_string());
       }
     }
+    configured_bridges_created_ = true;
   }
+
+  bool create_dynamic_bridges = false;
+  this->get_parameter("create_dynamic_bridges", create_dynamic_bridges);
+  if (create_dynamic_bridges) {
+    this->add_dynamic_bridges();
+  }
+
   for (auto & bridge : handles_) {
     bridge->Spin();
+  }
+}
+
+void RosGzBridge::add_dynamic_bridges()
+{
+  std::vector<std::string> gz_topics;
+  gz_node_->TopicList(gz_topics);
+
+  bool lazy;
+  this->get_parameter("lazy", lazy);
+
+  const auto direction_str = this->get_parameter("dynamic_bridge_direction").as_string();
+  const auto direction = parse_bridge_direction(direction_str);
+  if (direction == BridgeDirection::NONE) {
+    RCLCPP_WARN(
+      this->get_logger(),
+      "Ignoring dynamic bridge discovery with invalid direction [%s].",
+      direction_str.c_str());
+    return;
+  }
+
+  for (const auto & gz_topic : gz_topics) {
+    std::vector<gz::transport::MessagePublisher> publishers;
+    std::vector<gz::transport::MessagePublisher> subscribers;
+    if (!gz_node_->TopicInfo(gz_topic, publishers, subscribers)) {
+      continue;
+    }
+
+    std::set<std::string> gz_type_names;
+    for (const auto & publisher : publishers) {
+      const auto gz_type_name = publisher.MsgTypeName();
+      if (!gz_type_name.empty()) {
+        gz_type_names.insert(gz_type_name);
+      }
+    }
+
+    if (gz_type_names.size() > 1) {
+      RCLCPP_WARN(
+        this->get_logger(),
+        "Skipping dynamic bridge for topic [%s] with multiple Gazebo types.",
+        gz_topic.c_str());
+      continue;
+    }
+
+    for (const auto & gz_type_name : gz_type_names) {
+      std::string ros_type_name;
+      if (!get_gz_to_ros_mapping(gz_type_name, ros_type_name)) {
+        continue;
+      }
+
+      BridgeConfig config;
+      config.ros_type_name = ros_type_name;
+      config.ros_topic_name = gz_topic;
+      config.gz_type_name = gz_type_name;
+      config.gz_topic_name = gz_topic;
+      config.direction = direction;
+      config.is_lazy = lazy;
+      this->add_bridge(config);
+    }
   }
 }
 
@@ -264,6 +356,14 @@ void RosGzBridge::add_bridge(const BridgeConfig & input_config)
   if (config.direction == BridgeDirection::BIDIRECTIONAL) {
     ros_to_gz = true;
     gz_to_ros = true;
+  }
+
+  if (!gz_to_ros && !ros_to_gz) {
+    return;
+  }
+
+  if (!bridge_topics_.insert(bridge_key(config)).second) {
+    return;
   }
 
   try {
