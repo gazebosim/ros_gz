@@ -26,37 +26,17 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-arc
   > /etc/apt/sources.list.d/ros2-testing.list
 
 apt-get update -qq
-# Install build dependencies explicitly. On this image `rosdep update` only
-# fetches the base/python/ruby YAMLs and does not pull the rolling
-# distribution.yaml, so ROS-released packages like gz_*_vendor, actuator_msgs,
-# gps_msgs, vision_msgs, etc. silently fail to install.
-#
-# ros-$ROS_DISTRO-desktop covers ros-base, common_interfaces (geometry_msgs,
-# nav_msgs, sensor_msgs, …), image_transport, rviz2, rqt-*,
-# robot_state_publisher, launch_testing_ament_cmake, ament_lint_common.
+# Bootstrap: tools rosdep itself needs, plus `ros-base` so /opt/ros/$ROS_DISTRO
+# exists to source. Every workspace dependency is then resolved by rosdep
+# against the rolling distribution.yaml.
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
                    libcli11-dev \
-                   ros-$ROS_DISTRO-desktop \
-                   ros-$ROS_DISTRO-gz-math-vendor \
-                   ros-$ROS_DISTRO-gz-msgs-vendor \
-                   ros-$ROS_DISTRO-gz-sim-vendor \
-                   ros-$ROS_DISTRO-gz-transport-vendor \
-                   ros-$ROS_DISTRO-yaml-cpp-vendor \
-                   ros-$ROS_DISTRO-actuator-msgs \
-                   ros-$ROS_DISTRO-gps-msgs \
-                   ros-$ROS_DISTRO-marine-acoustic-msgs \
-                   ros-$ROS_DISTRO-vision-msgs \
-                   ros-$ROS_DISTRO-trajectory-msgs \
-                   ros-$ROS_DISTRO-simulation-interfaces \
-                   ros-$ROS_DISTRO-image-transport-plugins \
-                   ros-$ROS_DISTRO-rviz-imu-plugin \
-                   ros-$ROS_DISTRO-sdformat-urdf \
-                   ros-$ROS_DISTRO-xacro
+                   ros-$ROS_DISTRO-ros-base
 
 rosdep init
-rosdep update
-rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
+rosdep update --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash
