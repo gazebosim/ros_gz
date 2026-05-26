@@ -213,7 +213,11 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/include
   )
 
-  add_library(test_utils
+  # Static so the installed test binaries don't need libtest_utils.so on
+  # their runtime loader path — the .so wasn't being installed, which made
+  # `ros2 run ros_gz_bridge test_*` fail with linker error 127 under
+  # colcon test.
+  add_library(test_utils STATIC
     test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
