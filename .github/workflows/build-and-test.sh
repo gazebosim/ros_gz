@@ -26,10 +26,20 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-arc
   > /etc/apt/sources.list.d/ros2-testing.list
 
 apt-get update -qq
+# Install the build dependencies explicitly rather than relying on rosdep to
+# resolve them against the rolling distribution.yaml — that resolution path
+# was producing "No definition for noble" for gz_*_vendor and the
+# ament/launch test deps on this image.
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
                    libcli11-dev \
-                   ros-$ROS_DISTRO-ros-base
+                   ros-$ROS_DISTRO-ros-base \
+                   ros-$ROS_DISTRO-ament-lint-common \
+                   ros-$ROS_DISTRO-launch-testing-ament-cmake \
+                   ros-$ROS_DISTRO-gz-math-vendor \
+                   ros-$ROS_DISTRO-gz-msgs-vendor \
+                   ros-$ROS_DISTRO-gz-sim-vendor \
+                   ros-$ROS_DISTRO-gz-transport-vendor
 
 rosdep init
 rosdep update
