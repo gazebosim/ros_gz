@@ -24,7 +24,8 @@ jobs:
       matrix:
         include:
           # rolling no longer releases for noble (24.04). Per rosdistro's
-          # rolling/distribution.yaml, release_platforms.ubuntu = [resolute].
+          # rolling/distribution.yaml, release_platforms.ubuntu = [resolute]
+          # (Ubuntu 26.04 LTS).
           - docker-image: "ubuntu:resolute"
             ros-distro: "rolling"
     container:
