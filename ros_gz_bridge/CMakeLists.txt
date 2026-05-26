@@ -213,6 +213,20 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/include
   )
 
+  ament_add_gtest(test_sensor_msgs
+    ${PROJECT_SOURCE_DIR}/src/convert/sensor_msgs_TEST.cpp
+  )
+  target_link_libraries(test_sensor_msgs
+    ${bridge_lib}
+    ${sensor_msgs_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_sensor_msgs
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
   add_library(test_utils
     test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
