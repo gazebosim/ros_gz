@@ -57,12 +57,15 @@ Arguments
     (same schema used by the ``parameter_bridge`` executable).
 
 ``container_name``
-    When composing the bridge into an existing component container, the name
-    of that container.
+    Name of the component container to start (when ``create_own_container=true``)
+    or attach to (when ``create_own_container=false``). Defaults to
+    ``ros_gz_container``.
 
 ``create_own_container``
-    When ``true``, the action starts a fresh component container and loads the
-    bridge into it.  Ignored when ``container_name`` is set.
+    When ``true`` and ``use_composition=true``, the action starts a fresh
+    component container with the name specified by ``container_name``. When
+    ``false`` and ``use_composition=true``, the bridge loads into an existing
+    container with that name. Ignored when ``use_composition=false``.
 
 ``namespace``
     ROS namespace to push the bridge node into.
@@ -72,7 +75,8 @@ Arguments
     standalone process is launched instead.
 
 ``use_respawn``
-    Passes through to the underlying ``Node`` / ``ComposableNode`` action.
+    Whether to respawn the node if it crashes. Only applies when
+    ``use_composition=false`` (respawn is not supported for composable nodes).
 
 ``log_level``
     Log level for the bridge node (e.g. ``"info"``, ``"debug"``).

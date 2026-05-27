@@ -87,14 +87,15 @@ For larger deployments, pass a YAML configuration file via the
      ros_type_name: std_msgs/msg/String
      gz_type_name: gz.msgs.StringMsg
      direction: BIDIRECTIONAL
-     qos:
-       durability: volatile
-       reliability: reliable
-       history: keep_last
-       depth: 10
-   - topic_name: /world/shapes/control
+     qos_profile: SENSOR_DATA
+   - service_name: /world/shapes/control
      ros_type_name: ros_gz_interfaces/srv/ControlWorld
-     gz_type_name: gz.msgs.WorldControl
+     gz_req_type_name: gz.msgs.WorldControl
+     gz_rep_type_name: gz.msgs.Boolean
+
+Supported QoS profiles are:
+``CLOCK``, ``SENSOR_DATA``, ``PARAMETERS``, ``SERVICES``,
+``PARAMETER_EVENTS``, ``ROSOUT``, ``SYSTEM_DEFAULT``, or ``BEST_AVAILABLE``.
 
 See :doc:`user_api` for the corresponding C++ types and
 :doc:`launch_action` for the Python ``RosGzBridge`` launch action.
@@ -117,6 +118,10 @@ Node Parameters
 The parameter bridge recognizes the following ROS parameters:
 
 - ``config_file`` (string, default: ``""``) — path to a YAML config file.
+- ``bridge_names`` (array of strings, default: ``[]``) — list of bridge
+  configuration names to load via parameter namespaces (e.g., ``bridges.<name>.ros_type_name``).
+- ``lazy`` (bool, default: ``false``) — enable lazy subscription mode, where
+  Gazebo subscriptions are only activated when ROS has active subscribers.
 - ``subscription_heartbeat`` (int, default: ``1000``) — period, in
   milliseconds, for the liveliness / lazy-subscription heartbeat.
 - ``expand_gz_topic_names`` (bool, default: ``false``) — when ``true``, Gazebo

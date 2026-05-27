@@ -20,10 +20,12 @@ Declarations are in ``include/ros_gz_bridge/convert_decl.hpp`` and per-type
 specializations are split across headers under ``include/ros_gz_bridge/convert/``:
 
 - ``actuator_msgs.hpp``
+- ``builtin_interfaces.hpp``
 - ``geometry_msgs.hpp``
 - ``gps_msgs.hpp``
 - ``marine_acoustic_msgs.hpp``
 - ``nav_msgs.hpp``
+- ``rcl_interfaces.hpp``
 - ``ros_gz_interfaces.hpp``
 - ``rosgraph_msgs.hpp``
 - ``sensor_msgs.hpp``

@@ -172,9 +172,9 @@ declare the ROS message package:
 
    find_package(example_msgs REQUIRED)
 
-   ament_target_dependencies(${PROJECT_NAME}
+   target_link_libraries(${PROJECT_NAME}
      # ... existing deps ...
-     example_msgs
+     example_msgs::example_msgs
    )
 
 Re-run CMake (``colcon build --packages-select ros_gz_bridge``) and confirm
@@ -266,9 +266,7 @@ block:
    target_link_libraries(test_example_msgs
      ${PROJECT_NAME}
      ${GTEST_LIBRARIES}
-   )
-   ament_target_dependencies(test_example_msgs
-     example_msgs
+     example_msgs::example_msgs
    )
 
 5.3 End-to-end bridge test
