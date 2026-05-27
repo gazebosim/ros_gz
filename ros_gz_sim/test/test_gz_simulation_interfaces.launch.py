@@ -218,6 +218,11 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         request.initial_pose.pose.position.x = 4.0
         request.initial_pose.pose.position.y = -20.0
         request.initial_pose.pose.position.z = 4.0
+        # geometry_msgs/Quaternion defaults to (0,0,0,0) which has zero norm
+        # and gets rejected by Gazebo's create service, causing the model to
+        # spawn at the world origin instead of the requested pose. Send a
+        # valid identity quaternion explicitly.
+        request.initial_pose.pose.orientation.w = 1.0
 
         self.assertTrue(self.call_and_spin(spawn_entity, request))
         time.sleep(2)
