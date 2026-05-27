@@ -248,7 +248,10 @@ convert_gz_to_ros(
   if (gz_msg.has_intrinsics()) {
     const auto & intrinsics = gz_msg.intrinsics();
 
-    for (auto i = 0; i < intrinsics.k_size(); ++i) {
+    // ros_msg.k is std::array<double, 9>; never write past its bounds.
+    const auto k_count =
+      std::min<size_t>(intrinsics.k_size(), ros_msg.k.size());
+    for (size_t i = 0; i < k_count; ++i) {
       ros_msg.k[i] = intrinsics.k(i);
     }
   }
@@ -256,12 +259,18 @@ convert_gz_to_ros(
   if (gz_msg.has_projection()) {
     const auto & projection = gz_msg.projection();
 
-    for (auto i = 0; i < projection.p_size(); ++i) {
+    // ros_msg.p is std::array<double, 12>; never write past its bounds.
+    const auto p_count =
+      std::min<size_t>(projection.p_size(), ros_msg.p.size());
+    for (size_t i = 0; i < p_count; ++i) {
       ros_msg.p[i] = projection.p(i);
     }
   }
 
-  for (auto i = 0; i < gz_msg.rectification_matrix_size(); ++i) {
+  // ros_msg.r is std::array<double, 9>; never write past its bounds.
+  const auto r_count =
+    std::min<size_t>(gz_msg.rectification_matrix_size(), ros_msg.r.size());
+  for (size_t i = 0; i < r_count; ++i) {
     ros_msg.r[i] = gz_msg.rectification_matrix(i);
   }
 }
@@ -338,12 +347,21 @@ convert_ros_to_gz(
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
+  // The JointState spec allows `name`, `velocity`, and `effort` to be empty
+  // or shorter than `position`, so each array is indexed only within its
+  // own bounds.
   for (auto i = 0u; i < ros_msg.position.size(); ++i) {
     auto newJoint = gz_msg.add_joint();
-    newJoint->set_name(ros_msg.name[i]);
+    if (i < ros_msg.name.size()) {
+      newJoint->set_name(ros_msg.name[i]);
+    }
     newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
-    newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
-    newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    if (i < ros_msg.velocity.size()) {
+      newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
+    }
+    if (i < ros_msg.effort.size()) {
+      newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    }
   }
 }
 
@@ -403,8 +421,15 @@ convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
   gz::msgs::LaserScan & gz_msg)
 {
-  const unsigned int num_readings =
+  // Computing count from angle range/increment can disagree with the actual
+  // ranges array (FP rounding); intensities is also optional and frequently
+  // empty. Clamp to the publisher's actual array sizes to stay in bounds.
+  const unsigned int computed_count =
     (ros_msg.angle_max - ros_msg.angle_min) / ros_msg.angle_increment;
+  const unsigned int ranges_count =
+    std::min<size_t>(computed_count, ros_msg.ranges.size());
+  const unsigned int intensities_count =
+    std::min<size_t>(computed_count, ros_msg.intensities.size());
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.set_frame(ros_msg.header.frame_id);
@@ -413,7 +438,7 @@ convert_ros_to_gz(
   gz_msg.set_angle_step(ros_msg.angle_increment);
   gz_msg.set_range_min(ros_msg.range_min);
   gz_msg.set_range_max(ros_msg.range_max);
-  gz_msg.set_count(num_readings);
+  gz_msg.set_count(ranges_count);
 
   // Not supported in sensor_msgs::msg::LaserScan.
   gz_msg.set_vertical_angle_min(0.0);
@@ -421,8 +446,10 @@ convert_ros_to_gz(
   gz_msg.set_vertical_angle_step(0.0);
   gz_msg.set_vertical_count(0u);
 
-  for (auto i = 0u; i < gz_msg.count(); ++i) {
+  for (auto i = 0u; i < ranges_count; ++i) {
     gz_msg.add_ranges(ros_msg.ranges[i]);
+  }
+  for (auto i = 0u; i < intensities_count; ++i) {
     gz_msg.add_intensities(ros_msg.intensities[i]);
   }
 }
@@ -453,18 +480,31 @@ convert_gz_to_ros(
   // If there are multiple vertical beams, use the one in the middle.
   size_t start = (vertical_count / 2) * count;
 
+  // Defensively clamp ranges/intensities to whatever the sender actually
+  // populated — `count` is just a declared field and may exceed the array.
+  const size_t ranges_avail =
+    (start < static_cast<size_t>(gz_msg.ranges_size())) ?
+    (gz_msg.ranges_size() - start) :
+    0u;
+  const size_t intensities_avail =
+    (start < static_cast<size_t>(gz_msg.intensities_size())) ?
+    (gz_msg.intensities_size() - start) :
+    0u;
+  const size_t ranges_count = std::min<size_t>(count, ranges_avail);
+  const size_t intensities_count = std::min<size_t>(count, intensities_avail);
+
   // Copy ranges into ROS message.
-  ros_msg.ranges.resize(count);
+  ros_msg.ranges.resize(ranges_count);
   std::copy(
     gz_msg.ranges().begin() + start,
-    gz_msg.ranges().begin() + start + count,
+    gz_msg.ranges().begin() + start + ranges_count,
     ros_msg.ranges.begin());
 
   // Copy intensities into ROS message.
-  ros_msg.intensities.resize(count);
+  ros_msg.intensities.resize(intensities_count);
   std::copy(
     gz_msg.intensities().begin() + start,
-    gz_msg.intensities().begin() + start + count,
+    gz_msg.intensities().begin() + start + intensities_count,
     ros_msg.intensities.begin());
 }
 
