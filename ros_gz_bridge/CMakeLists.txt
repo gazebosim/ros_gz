@@ -202,9 +202,6 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/include
   )
 
-<<<<<<< HEAD
-  add_library(test_utils
-=======
   ament_add_gtest(test_sensor_msgs
     ${PROJECT_SOURCE_DIR}/src/convert/sensor_msgs_TEST.cpp
   )
@@ -224,7 +221,6 @@ if(BUILD_TESTING)
   # `ros2 run ros_gz_bridge test_*` fail with linker error 127 under
   # colcon test.
   add_library(test_utils STATIC
->>>>>>> 4ca9d9a (sensor_msgs bounds fixes (#882))
     test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
