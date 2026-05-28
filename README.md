@@ -8,13 +8,9 @@ Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | 
 Jazzy | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
 Jazzy | Harmonic | [jazzy](https://github.com/gazebosim/ros_gz/tree/jazzy) | https://packages.ros.org
 Kilted | Ionic | [kilted](https://github.com/gazebosim/ros_gz/tree/kilted) | https://packages.ros.org
-<<<<<<< HEAD
-Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
-=======
 Lyrical | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
 Lyrical | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
 Lyrical | Jetty | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | https://packages.ros.org
->>>>>>> af3515e (Update possible combinantion with Lyrical (#894))
 Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
 
