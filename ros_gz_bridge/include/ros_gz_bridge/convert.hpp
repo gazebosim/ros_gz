@@ -16,15 +16,18 @@
 #define ROS_GZ_BRIDGE__CONVERT_HPP_
 
 #include <ros_gz_bridge/convert/actuator_msgs.hpp>
+#include <ros_gz_bridge/convert/builtin_interfaces.hpp>
 #include <ros_gz_bridge/convert/geometry_msgs.hpp>
 #include <ros_gz_bridge/convert/gps_msgs.hpp>
 #include <ros_gz_bridge/convert/marine_acoustic_msgs.hpp>
 #include <ros_gz_bridge/convert/nav_msgs.hpp>
+#include <ros_gz_bridge/convert/rcl_interfaces.hpp>
 #include <ros_gz_bridge/convert/ros_gz_interfaces.hpp>
 #include <ros_gz_bridge/convert/rosgraph_msgs.hpp>
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
 #include <ros_gz_bridge/convert/std_msgs.hpp>
 #include <ros_gz_bridge/convert/tf2_msgs.hpp>
 #include <ros_gz_bridge/convert/trajectory_msgs.hpp>
+#include <ros_gz_bridge/convert/vision_msgs.hpp>
 
 #endif  // ROS_GZ_BRIDGE__CONVERT_HPP_
