@@ -8,10 +8,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v6
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
@@ -23,16 +23,13 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # rolling no longer releases for noble (24.04). Per rosdistro's
-          # rolling/distribution.yaml, release_platforms.ubuntu = [resolute]
-          # (Ubuntu 26.04 LTS).
           - docker-image: "ubuntu:resolute"
-            ros-distro: "rolling"
+            ros-distro: "lyrical"
     container:
       image: ${{ matrix.docker-image }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Build and Test
         run: .github/workflows/build-and-test.sh
         env:
