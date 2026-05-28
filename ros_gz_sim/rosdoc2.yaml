@@ -1,0 +1,34 @@
+## rosdoc2 configuration for ros_gz_sim.
+
+## This 'attic section' self-documents this file's type and version.
+type: 'rosdoc2 config'
+version: 1
+
+---
+
+settings:
+  always_run_doxygen: true
+  ## Document the Python launch actions alongside the C++ API.
+  always_run_sphinx_apidoc: true
+  python_source: 'ros_gz_sim'
+
+builders:
+    - doxygen: {
+        name: 'ros_gz_sim Public C/C++ API',
+        output_dir: 'generated/doxygen',
+        extra_doxyfile_statements: [
+            'PREDEFINED = DOXYGEN_SHOULD_SKIP_THIS GZ_UTILS_UNIQUE_IMPL_PTR(x)=',
+            'EXTRACT_ALL = YES',
+            'EXTRACT_PRIVATE = NO',
+            'EXTRACT_STATIC = YES',
+            'ENABLE_PREPROCESSING = YES',
+            'QUIET = YES',
+            'EXCLUDE_PATTERNS = */src/* */test/*'
+        ]
+    }
+    - sphinx: {
+        name: 'ros_gz_sim',
+        sphinx_sourcedir: doc,
+        doxygen_xml_directory: 'generated/doxygen/xml',
+        output_dir: ''
+    }
