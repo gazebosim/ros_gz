@@ -8,15 +8,15 @@ Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | 
 Jazzy | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
 Jazzy | Harmonic | [jazzy](https://github.com/gazebosim/ros_gz/tree/jazzy) | https://packages.ros.org
 Kilted | Ionic | [kilted](https://github.com/gazebosim/ros_gz/tree/kilted) | https://packages.ros.org
-Rolling | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
+Lyrical | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
+Lyrical | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
+Lyrical | Jetty | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | https://packages.ros.org
 Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 
 [^1]: Binaries for these pairings are provided from the packages.osrfoundation.org repository. Refer to https://gazebosim.org/docs/latest/ros_installation for installation instructions.
 [^2]: Note that the Gazebo version on this row has reached end-of-life.
 
 For information on ROS 2 and Gazebo compatibility, refer to the [melodic branch README](https://github.com/gazebosim/ros_gz/tree/melodic)
-
-[Details about the renaming process](README_RENAME.md) from `ign` to `gz` .
 
 **Note**: The `ros_ign` prefixed packages are shim packages that redirect to their `ros_gz` counterpart.
 Under most circumstances you want to be using the `ros_gz` counterpart.
