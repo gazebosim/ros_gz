@@ -93,6 +93,7 @@ class RosGzBridge(Action):
         self.__log_level = log_level
         self.__bridge_params = [{'config_file':  self.__config_file}]
         if bridge_params is not None:
+            bridge_params = normalize_typed_substitution(bridge_params, dict)
             # This handling of bridge_params was copied from launch_ros/actions/node.py
             ensure_argument_type(bridge_params, (list), 'bridge_params', 'RosGzBridge')
             # All elements in the list are paths to files with parameters (or substitutions that
