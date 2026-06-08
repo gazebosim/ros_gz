@@ -2,6 +2,13 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.0 (2026-06-08)
+------------------
+* Fixed tests failures (`#900 <https://github.com/gazebosim/ros_gz/issues/900>`_)
+* Added rosdoc2 documentatation for ros_gz_sim (`#876 <https://github.com/gazebosim/ros_gz/issues/876>`_)
+* Restore rolling CI on Ubuntu 26.04 resolute (`#883 <https://github.com/gazebosim/ros_gz/issues/883>`_)
+* Contributors: Alejandro Hernández Cordero, Carlos Agüero
+
 3.0.8 (2026-03-26)
 ------------------
 * ros_gz_bridge improvements (`#850 <https://github.com/gazebosim/ros_gz/issues/850>`_)
