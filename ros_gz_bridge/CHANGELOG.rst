@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.23 (2026-06-08)
+-------------------
+* Added missing headers in convert (`#888 <https://github.com/gazebosim/ros_gz/issues/888>`_) (`#891 <https://github.com/gazebosim/ros_gz/issues/891>`_)
+* sensor_msgs bounds fixes (backport `#882 <https://github.com/gazebosim/ros_gz/issues/882>`_) (`#885 <https://github.com/gazebosim/ros_gz/issues/885>`_)
+* Contributors: mergify[bot]
+
 1.0.22 (2026-03-26)
 -------------------
 * Bridge DVL messages (`#789 <https://github.com/gazebosim/ros_gz/issues/789>`_)
