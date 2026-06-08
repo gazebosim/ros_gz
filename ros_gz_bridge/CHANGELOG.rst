@@ -2,6 +2,15 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.9 (2026-06-08)
+------------------
+* Fix bridge params xml parse (`#903 <https://github.com/gazebosim/ros_gz/issues/903>`_) (`#904 <https://github.com/gazebosim/ros_gz/issues/904>`_)
+* Fix bridge_params TypeError (`#899 <https://github.com/gazebosim/ros_gz/issues/899>`_) (`#901 <https://github.com/gazebosim/ros_gz/issues/901>`_)
+* Added missing headers in convert (`#888 <https://github.com/gazebosim/ros_gz/issues/888>`_) (`#889 <https://github.com/gazebosim/ros_gz/issues/889>`_)
+* sensor_msgs bounds fixes (`#882 <https://github.com/gazebosim/ros_gz/issues/882>`_)
+* Restore rolling CI on Ubuntu 26.04 resolute (`#883 <https://github.com/gazebosim/ros_gz/issues/883>`_)
+* Contributors: Carlos Agüero, mergify[bot]
+
 3.0.8 (2026-03-26)
 ------------------
 * Bridge DVL messages (backport `#789 <https://github.com/gazebosim/ros_gz/issues/789>`_) (`#868 <https://github.com/gazebosim/ros_gz/issues/868>`_)

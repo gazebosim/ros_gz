@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.9 (2026-06-08)
+------------------
+* Restore rolling CI on Ubuntu 26.04 resolute (`#883 <https://github.com/gazebosim/ros_gz/issues/883>`_)
+* Contributors: Carlos Agüero
+
 3.0.8 (2026-03-26)
 ------------------
 * ros_gz_bridge improvements (`#850 <https://github.com/gazebosim/ros_gz/issues/850>`_)
