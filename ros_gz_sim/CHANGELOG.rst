@@ -2,6 +2,9 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.25 (2026-06-08)
+---------------------
+
 0.244.24 (2026-03-26)
 ---------------------
 * Bugfix: `if "false"` is always `True` (`#617 <https://github.com/gazebosim/ros_gz/issues/617>`_) (`#859 <https://github.com/gazebosim/ros_gz/issues/859>`_)
