@@ -31,6 +31,7 @@ def generate_launch_description():
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
     pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
     bridge_config = os.path.join(pkg_ros_gz_sim_demos, 'config', 'multi_robot.yaml')
+    vehicle_sdf = os.path.join(pkg_ros_gz_sim_demos, 'models', 'vehicle', 'model.sdf')
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -51,7 +52,24 @@ def generate_launch_description():
         output='screen'
     )
 
+    spawn_robot = Node(
+        package='ros_gz_sim',
+        executable='create',
+        arguments=[
+            '-world', 'multi_robot',
+            '-file', vehicle_sdf,
+            '-name', 'robot3',
+            '-ns', '__name__ns',
+            '-x', '0.0',
+            '-y', '4.0',
+            '-z', '1.0',
+            '-Y', '0.0',
+        ],
+        output='screen'
+    )
+
     return LaunchDescription([
         gz_sim,
+        spawn_robot,
         bridge,
     ])
