@@ -201,6 +201,97 @@ To try the demo launch:
 
 ![](images/joint_states.png)
 
+## Multi robot
+
+The `multi_robot` demo shows how to start multiple robots from the same robot SDF file, with separate ROS and Gazebo topics for each robot namespace.
+
+To try the demo launch:
+
+```bash
+ros2 launch ros_gz_sim_demos multi_robot.launch.py
+```
+
+The demo can be used as a reference for different ways to start multiple robots.
+
+### 1. Define multiple robots in the world SDF
+
+The `multi_robot.sdf` world defines two robots from the same vehicle model. There are two supported styles.
+
+* Wrap the included model in a `<model>` tag and set the namespace on the wrapper model:
+
+  ```xml
+  <model name="vehicle" namespace="robot1">
+    <self_collide>true</self_collide>
+    <pose>0 0 1 0 0 0</pose>
+    <include merge="true">
+      <uri>package://ros_gz_sim_demos/models/vehicle</uri>
+    </include>
+  </model>
+  ```
+
+* Include the same model directly and set both the model name and namespace in the `<include>` block:
+
+  ```xml
+  <include>
+    <uri>package://ros_gz_sim_demos/models/vehicle</uri>
+    <name>robot2</name>
+    <namespace>__name__</namespace>
+    <pose>0 2 1 0 0 0</pose>
+  </include>
+  ```
+
+  In this example, `__name__` will be resolved to the model name, so the second robot will use the `robot2` namespace.
+
+### 2. Spawn a namespaced robot with `ros_gz_sim create`
+
+The `ros_gz_sim create` executable can spawn robots from the same SDF file and pass the namespace with `-ns`. There are two common ways to use it.
+
+* Use it from a launch file. 
+  The `multi_robot.launch.py` demo uses `ros_gz_sim create` to spawn `robot3` from the same `vehicle_sdf` file and
+  pass a namespace with `-ns`:
+
+  ```python
+  spawn_robot = Node(
+      package='ros_gz_sim',
+      executable='create',
+      arguments=[
+          '-world', 'multi_robot',
+          '-file', vehicle_sdf,
+          '-name', 'robot3',
+          '-ns', '__name__',
+          '-x', '0.0',
+          '-y', '4.0',
+          '-z', '1.0',
+          '-Y', '0.0',
+      ],
+      output='screen'
+  )
+  ```
+
+* Use it from the command line:
+
+  ```bash
+  export VEHICLE_SDF="$(ros2 pkg prefix --share ros_gz_sim_demos)/models/vehicle/model.sdf"
+  ros2 run ros_gz_sim create \
+      -world multi_robot \
+      -file "$VEHICLE_SDF" \
+      -name robot4 \
+      -ns robot4
+  ```
+
+### 3. Spawn a namespaced robot with `gz service`
+
+The Gazebo `create` service can also spawn robots from the same SDF file into the running `multi_robot` world. The model name and namespace can be set in the request:
+
+```bash
+export VEHICLE_SDF="$(ros2 pkg prefix --share ros_gz_sim_demos)/models/vehicle/model.sdf"
+gz service -s /world/multi_robot/create_with_ns/blocking \
+    --reqtype gz.msgs.EntityFactoryWithNs \
+    --reptype gz.msgs.Boolean \
+    --timeout 5000 \
+    --req 'sdf_filename: "'"$VEHICLE_SDF"'", name: "robot5", namespace: {data: "robot5"}'
+```
+
 ## Bridging joint state and pose publishers
 
 The launch file demonstrates bridging Gazebo poses to TFMessage to visualize the pose
