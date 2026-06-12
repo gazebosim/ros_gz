@@ -17,6 +17,7 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_factory_with_ns.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
 #include <sstream>
@@ -45,6 +46,7 @@ DEFINE_string(param, "", "Load XML from a ROS param.");
 DEFINE_string(string, "", "Load XML from a string.");
 DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
 DEFINE_string(name, "", "Name for spawned entity.");
+DEFINE_string(ns, "", "Namespace for spawned entity.");
 DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
 DEFINE_double(x, 0, "X component of initial position, in meters.");
 DEFINE_double(y, 0, "Y component of initial position, in meters.");
@@ -99,6 +101,7 @@ int main(int _argc, char ** _argv)
   // Construct a new argc/argv pair from the flags that weren't parsed by ROS
   // Gflags wants a mutable pointer to argv, which is why we can't use a
   // vector of strings here
+  bool has_ns_arg = false;
   int filtered_argc = filtered_arguments.size();
   char ** filtered_argv = new char *[(filtered_argc + 1)];
   for (int ii = 0; ii < filtered_argc; ++ii) {
@@ -106,13 +109,19 @@ int main(int _argc, char ** _argv)
     snprintf(
       filtered_argv[ii],
       filtered_arguments[ii].size() + 1, "%s", filtered_arguments[ii].c_str());
+      
+    if (filtered_arguments[ii] == "-ns" || filtered_arguments[ii] == "--ns" ||
+        filtered_arguments[ii].rfind("-ns=") == 0 ||
+        filtered_arguments[ii].rfind("--ns=") == 0) {
+      has_ns_arg = true;
+    }
   }
   filtered_argv[filtered_argc] = nullptr;
 
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
     R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
-                       [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
+                       [-string STRING] [-name NAME] [-ns NAMESPACE] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
   gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv, false);
 
@@ -128,6 +137,7 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("string", "");
   ros2_node->declare_parameter("topic", "");
   ros2_node->declare_parameter("name", "");
+  ros2_node->declare_parameter("ns", "");
   ros2_node->declare_parameter("allow_renaming", false);
   ros2_node->declare_parameter("x", static_cast<double>(0));
   ros2_node->declare_parameter("y", static_cast<double>(0));
@@ -176,10 +186,17 @@ int main(int _argc, char ** _argv)
       "World name was not provided. Using [%s] as the default world.",
       world_name.c_str());
   }
-  std::string service{"/world/" + world_name + "/create"};
+
+  std::string service;
+  if (has_ns_arg) {
+    service = "/world/" + world_name + "/create_with_ns";
+  } else {
+    service = "/world/" + world_name + "/create";
+  }
 
   // Request message
   gz::msgs::EntityFactory req;
+  gz::msgs::EntityFactoryWithNs req_with_ns;
 
   // Get ROS parameters
   std::string file_name = ros2_node->get_parameter("file").as_string();
@@ -259,6 +276,16 @@ int main(int _argc, char ** _argv)
   bool allow_renaming = ros2_node->get_parameter("allow_renaming").as_bool();
   req.set_allow_renaming((allow_renaming || FLAGS_allow_renaming));
 
+  if (has_ns_arg) {
+    req_with_ns.ParseFromString(req.SerializeAsString());
+    std::string ns = ros2_node->get_parameter("ns").as_string();
+    if (!ns.empty()) {
+      req_with_ns.mutable_namespace_()->set_data(ns);
+    } else {
+      req_with_ns.mutable_namespace_()->set_data(FLAGS_ns);
+    }
+  }
+
   // Request
   gz::transport::Node node;
   gz::msgs::Boolean rep;
@@ -266,20 +293,30 @@ int main(int _argc, char ** _argv)
   unsigned int timeout = 5000;
 
   while(rclcpp::ok()) {
-    if (node.Request(service, req, timeout, rep, result)) {
+    bool executed = false;
+    std::string debugString;
+    if (has_ns_arg) {
+      executed = node.Request(service, req_with_ns, timeout, rep, result);
+      debugString = req_with_ns.DebugString();
+    } else {
+      executed = node.Request(service, req, timeout, rep, result);
+      debugString = req.DebugString();
+    }
+
+    if (executed) {
       if (result && rep.data()) {
         RCLCPP_INFO(ros2_node->get_logger(), "Entity creation successful.");
         return 0;
       } else {
         RCLCPP_ERROR(
           ros2_node->get_logger(), "Entity creation failed.\n %s",
-          req.DebugString().c_str());
+          debugString.c_str());
         return 1;
       }
     } else {
       RCLCPP_WARN(
         ros2_node->get_logger(), "Waiting for service [%s] to become available ...",
-        service.c_str());
+        debugString.c_str());
     }
   }
   RCLCPP_INFO(ros2_node->get_logger(), "Entity creation was interrupted.");
