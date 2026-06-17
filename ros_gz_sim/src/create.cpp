@@ -16,7 +16,6 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/entity_factory_with_ns.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
@@ -59,7 +58,7 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
 bool set_XML_from_topic(
   const std::string & topic_name, const rclcpp::Node::SharedPtr ros2_node,
-  gz::msgs::EntityFactory & req)
+  gz::msgs::EntityFactoryWithNs & req)
 {
   const auto timeout = std::chrono::seconds(1);
   std::promise<std::string> xml_promise;
@@ -109,10 +108,11 @@ int main(int _argc, char ** _argv)
     snprintf(
       filtered_argv[ii],
       filtered_arguments[ii].size() + 1, "%s", filtered_arguments[ii].c_str());
-      
+
     if (filtered_arguments[ii] == "-ns" || filtered_arguments[ii] == "--ns" ||
-        filtered_arguments[ii].rfind("-ns=") == 0 ||
-        filtered_arguments[ii].rfind("--ns=") == 0) {
+      filtered_arguments[ii].rfind("-ns=") == 0 ||
+      filtered_arguments[ii].rfind("--ns=") == 0)
+    {
       has_ns_arg = true;
     }
   }
@@ -183,16 +183,10 @@ int main(int _argc, char ** _argv)
     world_name = worlds_msg.data(0);
   }
 
-  std::string service;
-  if (has_ns_arg) {
-    service = "/world/" + world_name + "/create_with_ns";
-  } else {
-    service = "/world/" + world_name + "/create";
-  }
+  std::string service{"/world/" + world_name + "/create_with_ns"};
 
   // Request message
-  gz::msgs::EntityFactory req;
-  gz::msgs::EntityFactoryWithNs req_with_ns;
+  gz::msgs::EntityFactoryWithNs req;
 
   // Get ROS parameters
   std::string file_name = ros2_node->get_parameter("file").as_string();
@@ -273,12 +267,11 @@ int main(int _argc, char ** _argv)
   req.set_allow_renaming((allow_renaming || FLAGS_allow_renaming));
 
   if (has_ns_arg) {
-    req_with_ns.ParseFromString(req.SerializeAsString());
     std::string ns = ros2_node->get_parameter("ns").as_string();
     if (!ns.empty()) {
-      req_with_ns.mutable_namespace_()->set_data(ns);
+      req.mutable_namespace_()->set_data(ns);
     } else {
-      req_with_ns.mutable_namespace_()->set_data(FLAGS_ns);
+      req.mutable_namespace_()->set_data(FLAGS_ns);
     }
   }
 
@@ -289,30 +282,20 @@ int main(int _argc, char ** _argv)
   unsigned int timeout = 5000;
 
   while(rclcpp::ok()) {
-    bool executed = false;
-    std::string debugString;
-    if (has_ns_arg) {
-      executed = node.Request(service, req_with_ns, timeout, rep, result);
-      debugString = req_with_ns.DebugString();
-    } else {
-      executed = node.Request(service, req, timeout, rep, result);
-      debugString = req.DebugString();
-    }
-
-    if (executed) {
+    if (node.Request(service, req, timeout, rep, result)) {
       if (result && rep.data()) {
         RCLCPP_INFO(ros2_node->get_logger(), "Entity creation successful.");
         return 0;
       } else {
         RCLCPP_ERROR(
           ros2_node->get_logger(), "Entity creation failed.\n %s",
-          debugString.c_str());
+          req.DebugString().c_str());
         return 1;
       }
     } else {
       RCLCPP_WARN(
         ros2_node->get_logger(), "Waiting for service [%s] to become available ...",
-        debugString.c_str());
+        req.DebugString().c_str());
     }
   }
   RCLCPP_INFO(ros2_node->get_logger(), "Entity creation was interrupted.");
