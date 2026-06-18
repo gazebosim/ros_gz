@@ -146,6 +146,10 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("P", static_cast<double>(0));
   ros2_node->declare_parameter("Y", static_cast<double>(0));
 
+  const auto & parameter_overrides =
+    ros2_node->get_node_parameters_interface()->get_parameter_overrides();
+  const bool has_ns_param = parameter_overrides.find("ns") != parameter_overrides.end();
+
   auto always_shutdown = rcpputils::make_scope_exit(
     []() {rclcpp::shutdown();});
 
@@ -266,7 +270,7 @@ int main(int _argc, char ** _argv)
   bool allow_renaming = ros2_node->get_parameter("allow_renaming").as_bool();
   req.set_allow_renaming((allow_renaming || FLAGS_allow_renaming));
 
-  if (has_ns_arg) {
+  if (has_ns_arg || has_ns_param) {
     std::string ns = ros2_node->get_parameter("ns").as_string();
     if (!ns.empty()) {
       req.mutable_namespace_()->set_data(ns);
