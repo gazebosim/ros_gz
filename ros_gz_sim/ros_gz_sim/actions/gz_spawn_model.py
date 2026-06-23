@@ -197,28 +197,24 @@ class GzSpawnModel(Action):
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
         """Execute the action."""
-        launch_arguments = [
-            ('world', self.__world),
-            ('file', self.__file),
-            ('model_string', self.__model_string),
-            ('topic', self.__topic),
-            ('entity_name', self.__entity_name),
-            ('allow_renaming', self.__allow_renaming),
-            ('x', self.__x),
-            ('y', self.__y),
-            ('z', self.__z),
-            ('roll', self.__roll),
-            ('pitch', self.__pitch),
-            ('yaw', self.__yaw),
-        ]
-        if self.__entity_namespace is not None:
-            launch_arguments.append(('entity_namespace', self.__entity_namespace))
-
         gz_spawn_model_description = IncludeLaunchDescription(
             PythonLaunchDescriptionSource(
                 [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
                                        'launch',
                                        'gz_spawn_model.launch.py'])]),
-            launch_arguments=launch_arguments)
+            launch_arguments=[('world', self.__world),
+                              ('file', self.__file),
+                              ('model_string',   self.__model_string),
+                              ('topic',  self.__topic),
+                              ('entity_name', self.__entity_name),
+                              ('entity_namespace', self.__entity_namespace),
+                              ('allow_renaming', self.__allow_renaming),
+                              ('x',   self.__x),
+                              ('y',  self.__y),
+                              ('z', self.__z),
+                              ('roll', self.__roll),
+                              ('pitch',   self.__pitch),
+                              ('yaw',  self.__yaw)])
+
 
         return [gz_spawn_model_description]

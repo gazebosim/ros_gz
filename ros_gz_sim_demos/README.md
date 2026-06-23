@@ -208,7 +208,7 @@ The `multi_robot` demo shows how to start multiple robots from the same robot SD
 To try the demo launch:
 
 ```bash
-ros2 launch ros_gz_sim_demos multi_robot.launch.py
+ros2 launch ros_gz_sim_demos multi_robot.launch.xml
 ```
 
 The demo can be used as a reference for different ways to start multiple robots.
@@ -246,7 +246,7 @@ The `multi_robot.sdf` world defines two robots from the same vehicle model. Ther
 
 The `ros_gz_sim create` executable can spawn robots and pass the namespace with `-ns`.
 
-If `-ns` is not provided, the namespace behavior follows the source SDF file. Use `-ns` only when you want to explicitly override the namespace at spawn time.
+If `-ns` is not provided or is set to `''`, the namespace behavior follows the source SDF file.If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `-ns '/'`. 
 
 There are two common ways to use it:
 * Use it from a launch file. 
@@ -284,7 +284,7 @@ There are two common ways to use it:
 
 The `gz_spawn_model.launch.py` launch file can spawn robots and pass the namespace with `entity_namespace`.
 
-If `entity_namespace` is not provided, the namespace behavior follows the source SDF file. Use `entity_namespace` only when you want to explicitly override the namespace at spawn time.
+If `entity_namespace` is not provided or is set to `''`, the namespace behavior follows the source SDF file. If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `entity_namespace="/"`.
 
 There are two common ways to use it:
 * Use the `gz_spawn_model` action from the launch file.
@@ -326,7 +326,7 @@ There are two common ways to use it:
 
   The `/gzserver/spawn_entity` service can spawn robots and pass the namespace with `entity_namespace`.
 
-  If `entity_namespace` is not provided, the namespace behavior follows the source SDF file. Use `entity_namespace` only when you want to explicitly override the namespace at spawn time.
+  If `entity_namespace` is not provided, or is set to `''`, the namespace behavior follows the source SDF file. If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `entity_namespace: '/'`.
 
   ``` bash
   export VEHICLE_SDF="$(ros2 pkg prefix --share ros_gz_sim_demos)/models/vehicle/model.sdf"
@@ -334,7 +334,7 @@ There are two common ways to use it:
     name: 'robot7',
     entity_resource: {
       uri: "$VEHICLE_SDF"},
-    entity_namespace: ['__name__'],
+    entity_namespace: '__name__',
     allow_renaming: false,
     initial_pose: {
       pose: {
@@ -349,7 +349,7 @@ There are two common ways to use it:
 
 The Gazebo `create` service can also spawn robots from the same SDF file into the running `multi_robot` world. The model name and namespace can be set in the request.
 
-If `namespace: {data: ...}` is not provided, the namespace behavior follows the source SDF file. Use it only when you want to explicitly set or override the namespace at spawn time.
+If `namespace: ...` is not provided, or if `namespace: ""` is provided, the namespace behavior follows the source SDF file. If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `namespace: "/"`.
 
 ```bash
 export VEHICLE_SDF="$(ros2 pkg prefix --share ros_gz_sim_demos)/models/vehicle/model.sdf"
@@ -359,7 +359,7 @@ gz service -s /world/multi_robot/create_with_ns/blocking \
     --timeout 5000 \
     --req 'sdf_filename: "'"$VEHICLE_SDF"'",
            name: "robot8",
-           namespace: {data: "robot8"},
+           namespace: "robot8",
            pose: {
              position: {x: 0.0, y: 14.0, z: 1.0},
              orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}

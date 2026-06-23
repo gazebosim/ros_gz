@@ -15,46 +15,26 @@
 """Launch create to spawn models in gz sim."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration, TextSubstitution
 from launch_ros.actions import Node
 
-_ENTITY_NAMESPACE_WAS_PROVIDED = '_entity_namespace_was_provided'
-
-def _capture_namespace_state(context):
-    if _ENTITY_NAMESPACE_WAS_PROVIDED not in context.launch_configurations:
-        context.launch_configurations[_ENTITY_NAMESPACE_WAS_PROVIDED] = str(
-            'entity_namespace' in context.launch_configurations
-        )
-    return []
-
-def _load_create_node(context):
-    parameters = {
-        'world': LaunchConfiguration('world'),
-        'file': LaunchConfiguration('file'),
-        'string': LaunchConfiguration('model_string'),
-        'topic': LaunchConfiguration('topic'),
-        'name': LaunchConfiguration('entity_name'),
-        'allow_renaming': LaunchConfiguration('allow_renaming'),
-        'x': LaunchConfiguration('x', default='0.0'),
-        'y': LaunchConfiguration('y', default='0.0'),
-        'z': LaunchConfiguration('z', default='0.0'),
-        'R': LaunchConfiguration('R', default='0.0'),
-        'P': LaunchConfiguration('P', default='0.0'),
-        'Y': LaunchConfiguration('Y', default='0.0'),
-    }
-
-    if context.launch_configurations[_ENTITY_NAMESPACE_WAS_PROVIDED] == 'True':
-        parameters['ns'] = LaunchConfiguration('entity_namespace')
-
-    return [Node(
-        package='ros_gz_sim',
-        executable='create',
-        output='screen',
-        parameters=[parameters],
-    )]
 
 def generate_launch_description():
+
+    world = LaunchConfiguration('world')
+    file = LaunchConfiguration('file')
+    model_string = LaunchConfiguration('model_string')
+    topic = LaunchConfiguration('topic')
+    entity_name = LaunchConfiguration('entity_name')
+    entity_namespace = LaunchConfiguration('entity_namespace')
+    allow_renaming = LaunchConfiguration('allow_renaming')
+    x = LaunchConfiguration('x', default='0.0')
+    y = LaunchConfiguration('y', default='0.0')
+    z = LaunchConfiguration('z', default='0.0')
+    roll = LaunchConfiguration('R', default='0.0')
+    pitch = LaunchConfiguration('P', default='0.0')
+    yaw = LaunchConfiguration('Y', default='0.0')
 
     declare_world_cmd = DeclareLaunchArgument(
         'world', default_value=TextSubstitution(text=''),
@@ -76,7 +56,7 @@ def generate_launch_description():
         description='Name of the entity'
     )
     declare_entity_namespace_cmd = DeclareLaunchArgument(
-        'entity_namespace', default_value='',
+        'entity_namespace', default_value=TextSubstitution(text=''),
         description='Namespace for the spawned entity.'
     )
     declare_allow_renaming_cmd = DeclareLaunchArgument(
@@ -84,11 +64,30 @@ def generate_launch_description():
         description='Whether the entity allows renaming or not'
     )
 
+    load_nodes = Node(
+        package='ros_gz_sim',
+        executable='create',
+        output='screen',
+        parameters=[{'world': world,
+                     'file': file,
+                     'string': model_string,
+                     'topic': topic,
+                     'name': entity_name,
+                     'ns': entity_namespace,
+                     'allow_renaming': allow_renaming,
+                     'x': x,
+                     'y': y,
+                     'z': z,
+                     'R': roll,
+                     'P': pitch,
+                     'Y': yaw,
+                     }],
+    )
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(OpaqueFunction(function=_capture_namespace_state))
     ld.add_action(declare_world_cmd)
     ld.add_action(declare_file_cmd)
     ld.add_action(declare_model_string_cmd)
@@ -97,6 +96,6 @@ def generate_launch_description():
     ld.add_action(declare_entity_namespace_cmd)
     ld.add_action(declare_allow_renaming_cmd)
     # Add the actions to launch all of the create nodes
-    ld.add_action(OpaqueFunction(function=_load_create_node))
+    ld.add_action(load_nodes)
 
     return ld

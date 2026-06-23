@@ -15,50 +15,12 @@
 """Launch gzsim + ros_gz_bridge in a component container."""
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, OpaqueFunction
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, TextSubstitution
 from launch_ros.substitutions import FindPackageShare
 from ros_gz_bridge.actions import RosGzBridge
 
-_ENTITY_NAMESPACE_WAS_PROVIDED = '_entity_namespace_was_provided'
-
-def _capture_namespace_state(context):
-    if _ENTITY_NAMESPACE_WAS_PROVIDED not in context.launch_configurations:
-        context.launch_configurations[_ENTITY_NAMESPACE_WAS_PROVIDED] = str(
-            'entity_namespace' in context.launch_configurations
-        )
-    return []
-
-def _spawn_model_description(context):
-
-    arguments = [
-        ('world', LaunchConfiguration('world')),
-        ('file', LaunchConfiguration('file')),
-        ('model_string', LaunchConfiguration('model_string')),
-        ('topic', LaunchConfiguration('topic')),
-        ('entity_name', LaunchConfiguration('entity_name')),
-        ('allow_renaming', LaunchConfiguration('allow_renaming')),
-        ('x', LaunchConfiguration('x', default='0.0')),
-        ('y', LaunchConfiguration('y', default='0.0')),
-        ('z', LaunchConfiguration('z', default='0.0')),
-        ('R', LaunchConfiguration('R', default='0.0')),
-        ('P', LaunchConfiguration('P', default='0.0')),
-        ('Y', LaunchConfiguration('Y', default='0.0')),
-    ]
-
-    if context.launch_configurations[_ENTITY_NAMESPACE_WAS_PROVIDED] == 'True':
-        arguments.append(('entity_namespace', LaunchConfiguration('entity_namespace')))
-
-    spawn_model_description = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
-                                   'launch',
-                                   'gz_spawn_model.launch.py'])]),
-        launch_arguments=arguments,
-    )
-
-    return spawn_model_description
 
 def generate_launch_description():
 
@@ -71,6 +33,20 @@ def generate_launch_description():
     use_respawn = LaunchConfiguration('use_respawn')
     log_level = LaunchConfiguration('log_level')
     bridge_params = LaunchConfiguration('bridge_params')
+
+    world = LaunchConfiguration('world')
+    file = LaunchConfiguration('file')
+    model_string = LaunchConfiguration('model_string')
+    topic = LaunchConfiguration('topic')
+    entity_name = LaunchConfiguration('entity_name')
+    entity_namespace = LaunchConfiguration('entity_namespace')
+    allow_renaming = LaunchConfiguration('allow_renaming')
+    x = LaunchConfiguration('x', default='0.0')
+    y = LaunchConfiguration('y', default='0.0')
+    z = LaunchConfiguration('z', default='0.0')
+    roll = LaunchConfiguration('R', default='0.0')
+    pitch = LaunchConfiguration('P', default='0.0')
+    yaw = LaunchConfiguration('Y', default='0.0')
 
     declare_bridge_name_cmd = DeclareLaunchArgument(
         'bridge_name', description='Name of the bridge'
@@ -137,10 +113,12 @@ def generate_launch_description():
         'entity_name', default_value=TextSubstitution(text=''),
         description='Name of the entity'
     )
+
     declare_entity_namespace_cmd = DeclareLaunchArgument(
-        'entity_namespace', default_value='',
+        'entity_namespace', default_value=TextSubstitution(text=''),
         description='Namespace for the spawned entity.'
     )
+
     declare_allow_renaming_cmd = DeclareLaunchArgument(
         'allow_renaming', default_value='False',
         description='Whether the entity allows renaming or not'
@@ -158,11 +136,29 @@ def generate_launch_description():
         bridge_params=bridge_params,
     )
 
+    spawn_model_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [PathJoinSubstitution([FindPackageShare('ros_gz_sim'),
+                                   'launch',
+                                   'gz_spawn_model.launch.py'])]),
+        launch_arguments=[('world', world),
+                          ('file', file),
+                          ('model_string', model_string),
+                          ('topic', topic),
+                          ('entity_name', entity_name),
+                          ('entity_namespace', entity_namespace),
+                          ('allow_renaming', allow_renaming),
+                          ('x', x),
+                          ('y', y),
+                          ('z', z),
+                          ('R', roll),
+                          ('P', pitch),
+                          ('Y', yaw), ])
+
     # Create the launch description and populate
     ld = LaunchDescription()
 
     # Declare the launch options
-    ld.add_action(OpaqueFunction(function=_capture_namespace_state))
     ld.add_action(declare_bridge_name_cmd)
     ld.add_action(declare_config_file_cmd)
     ld.add_action(declare_container_name_cmd)
@@ -181,6 +177,6 @@ def generate_launch_description():
     ld.add_action(declare_allow_renaming_cmd)
     # Add the actions to launch all of the bridge + spawn_model nodes
     ld.add_action(ros_gz_bridge_action)
-    ld.add_action(OpaqueFunction(function=_spawn_model_description))
+    ld.add_action(spawn_model_description)
 
     return ld
