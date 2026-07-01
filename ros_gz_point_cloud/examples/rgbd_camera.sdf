@@ -5,9 +5,9 @@
 
   Try it out:
 
-  1. Start ROS core:
+  1. Source your ROS 2 workspace, for example:
 
-          roscore
+          . <ws>/install/setup.bash
 
   2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
      to the path, for example:
@@ -20,7 +20,7 @@
 
   4. Launch RViz to visualize the point cloud:
 
-          rosrun rviz rviz
+          ros2 run rviz2 rviz2
 
   5. On RViz, add the `/custom_params/pc2` topic for `PointCloud2` messages and change the fixed frame
      to `map`. You should see the point cloud from the `custom_params` camera.
@@ -36,28 +36,28 @@
       <real_time_factor>1.0</real_time_factor>
     </physics>
     <plugin
-      filename="ignition-gazebo-physics-system"
-      name="ignition::gazebo::systems::Physics">
+      filename="gz-sim-physics-system"
+      name="gz::sim::systems::Physics">
     </plugin>
     <plugin
-      filename="ignition-gazebo-sensors-system"
-      name="ignition::gazebo::systems::Sensors">
+      filename="gz-sim-sensors-system"
+      name="gz::sim::systems::Sensors">
       <render_engine>ogre2</render_engine>
     </plugin>
     <plugin
-      filename="ignition-gazebo-scene-broadcaster-system"
-      name="ignition::gazebo::systems::SceneBroadcaster">
+      filename="gz-sim-scene-broadcaster-system"
+      name="gz::sim::systems::SceneBroadcaster">
     </plugin>
 
     <gui fullscreen="0">
 
       <!-- 3D scene -->
-      <plugin filename="GzScene3D" name="3D View">
-        <ignition-gui>
+      <plugin filename="MinimalScene" name="3D View">
+        <gz-gui>
           <title>3D View</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="string" key="state">docked</property>
-        </ignition-gui>
+        </gz-gui>
 
         <engine>ogre2</engine>
         <scene>scene</scene>
@@ -66,9 +66,46 @@
         <camera_pose>-6 0 6 0 0.5 0</camera_pose>
       </plugin>
 
+      <!-- Plugins that add functionality to the scene -->
+      <plugin filename="EntityContextMenuPlugin" name="Entity context menu">
+        <gz-gui>
+          <property key="state" type="string">floating</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="GzSceneManager" name="Scene Manager">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="InteractiveViewControl" name="Interactive view control">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+      <plugin filename="CameraTracking" name="Camera Tracking">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
+
       <!-- World control -->
       <plugin filename="WorldControl" name="World control">
-        <ignition-gui>
+        <gz-gui>
           <title>World control</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="bool" key="resizable">false</property>
@@ -81,7 +118,7 @@
             <line own="left" target="left"/>
             <line own="bottom" target="bottom"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
 
         <play_pause>true</play_pause>
         <step>true</step>
@@ -93,7 +130,7 @@
 
       <!-- World statistics -->
       <plugin filename="WorldStats" name="World stats">
-        <ignition-gui>
+        <gz-gui>
           <title>World stats</title>
           <property type="bool" key="showTitleBar">false</property>
           <property type="bool" key="resizable">false</property>
@@ -106,7 +143,7 @@
             <line own="right" target="right"/>
             <line own="bottom" target="bottom"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
 
         <sim_time>true</sim_time>
         <real_time>true</real_time>
@@ -116,7 +153,7 @@
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+        <gz-gui>
           <title>Custom: depth</title>
           <property key="width" type="double">400</property>
           <property key="state" type="string">floating</property>
@@ -124,13 +161,13 @@
             <line own="left" target="left"/>
             <line own="top" target="top"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
         <topic>custom_params/depth_image</topic>
         <topic_picker>false</topic_picker>
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+        <gz-gui>
           <title>Custom: RGB</title>
           <property key="width" type="double">400</property>
           <property key="state" type="string">floating</property>
@@ -138,13 +175,13 @@
             <line own="right" target="right"/>
             <line own="top" target="top"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
         <topic>custom_params/image</topic>
         <topic_picker>false</topic_picker>
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+        <gz-gui>
           <title>Default: depth</title>
           <property key="width" type="double">400</property>
           <property key="height" type="double">315</property>
@@ -153,13 +190,13 @@
             <line own="left" target="left"/>
             <line own="bottom" target="bottom"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
         <topic>rgbd_camera/depth_image</topic>
         <topic_picker>false</topic_picker>
       </plugin>
 
       <plugin filename="ImageDisplay" name="Image Display">
-        <ignition-gui>
+        <gz-gui>
           <title>Default: RGB</title>
           <property key="width" type="double">400</property>
           <property key="height" type="double">315</property>
@@ -168,7 +205,7 @@
             <line own="right" target="right"/>
             <line own="bottom" target="bottom"/>
           </anchors>
-        </ignition-gui>
+        </gz-gui>
         <topic>rgbd_camera/image</topic>
         <topic_picker>false</topic_picker>
       </plugin>
@@ -385,7 +422,7 @@
     <include>
       <pose>0 1 3 0.0 0.0 1.57</pose>
       <uri>
-      https://fuel.ignitionrobotics.org/1.0/openrobotics/models/Construction Cone
+      https://fuel.gazebosim.org/1.0/OpenRobotics/models/Construction Cone
       </uri>
     </include>
 

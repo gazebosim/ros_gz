@@ -1,67 +1,59 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.20)
 
 project(ros_gz_point_cloud)
 
-# Default to C++17
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
-endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra)
 endif()
 
-find_package(catkin REQUIRED COMPONENTS
-  roscpp
-  sensor_msgs)
+find_package(ament_cmake REQUIRED)
+# Provides the ament_cmake_ros_core::ament_ros_cxx_standard interface target,
+# which sets the C++ standard (C++20 on Rolling) used across the ROS 2 core.
+find_package(ament_cmake_ros_core REQUIRED)
+find_package(point_cloud_transport REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
-find_package(ignition-gazebo2 2.1 QUIET REQUIRED)
-set(GZ_SIM_VER ${ignition-gazebo2_VERSION_MAJOR})
-
-find_package(ignition-rendering2 QUIET REQUIRED)
-set(GZ_RENDERING_VER ${ignition-rendering2_VERSION_MAJOR})
-
-find_package(ignition-sensors2 QUIET REQUIRED)
-set(GZ_SENSORS_VER ${ignition-sensors2_VERSION_MAJOR})
-
-catkin_package()
-
-include_directories(
-  include
-  ${catkin_INCLUDE_DIRS}
-)
+find_package(gz_plugin_vendor REQUIRED)
+find_package(gz-plugin REQUIRED)
+find_package(gz_rendering_vendor REQUIRED)
+find_package(gz-rendering REQUIRED)
+find_package(gz_sim_vendor REQUIRED)
+find_package(gz-sim REQUIRED)
 
 set(plugin_name RosGzPointCloud)
 add_library(${plugin_name} SHARED
-  src/point_cloud.cc
+  src/point_cloud.cpp
+)
+target_include_directories(${plugin_name} PRIVATE
+  ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 target_link_libraries(${plugin_name}
-  ignition-gazebo${GZ_SIM_VER}::core
-  ignition-rendering${GZ_RENDERING_VER}::core
-  ignition-sensors${GZ_SENSORS_VER}::core
-  ${catkin_LIBRARIES}
+  ament_cmake_ros_core::ament_ros_cxx_standard
+  gz-plugin::register
+  gz-rendering::gz-rendering
+  gz-sim::gz-sim
+  point_cloud_transport::point_cloud_transport
+  rclcpp::rclcpp
+  ${sensor_msgs_TARGETS}
 )
+
 install(TARGETS ${plugin_name}
-  ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-  RUNTIME DESTINATION ${CATKIN_GLOBAL_BIN_DESTINATION}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
+
 install(
   DIRECTORY
     examples/
   DESTINATION
-    ${CATKIN_PACKAGE_SHARE_DESTINATION}/examples
+    share/${PROJECT_NAME}/examples
 )
 
-# TODO(CH3): Install symlink to deprecated library name. Remove on tock.
-string(REPLACE "RosGz" "RosIgn" plugin_name_ign ${plugin_name})
-if(WIN32)
-  # symlinks on Windows require admin privileges, fallback to copy
-  ADD_CUSTOM_COMMAND(TARGET ${plugin_name} POST_BUILD
-    COMMAND "${CMAKE_COMMAND}" -E copy
-      "$<TARGET_FILE:${plugin_name}>"
-      "$<TARGET_FILE_DIR:${CATKIN_PACKAGE_LIB_DESTINATION}>/${plugin_name_ign}")
-else()
-  file(MAKE_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
-  EXECUTE_PROCESS(COMMAND ${CMAKE_COMMAND} -E create_symlink ${plugin_name} ${plugin_name_ign} WORKING_DIRECTORY "${PROJECT_BINARY_DIR}/lib")
-  INSTALL(FILES ${PROJECT_BINARY_DIR}/lib/${plugin_name_ign} DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION})
+if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
+  ament_lint_auto_find_test_dependencies()
 endif()
+
+ament_package()
