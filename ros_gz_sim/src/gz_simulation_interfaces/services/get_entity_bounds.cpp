@@ -78,7 +78,7 @@ GetEntityBounds::GetEntityBounds(
             // and let them retry on the next tick.
             response->result.result = Result::RESULT_OPERATION_FAILED;
             response->result.error_message =
-              "Bounding box not available yet — enabled, retry";
+            "Bounding box not available yet — enabled, retry";
             return;
           }
           Bounds bounds;

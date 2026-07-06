@@ -29,7 +29,13 @@ from launch_testing.asserts import assertExitCodes
 import rclpy
 import rclpy.action
 from simulation_interfaces.action import SimulateSteps
-from simulation_interfaces.msg import EntityCategory, Result, SimulationState, SimulatorFeatures
+from simulation_interfaces.msg import (
+    Bounds,
+    EntityCategory,
+    Result,
+    SimulationState,
+    SimulatorFeatures,
+)
 import simulation_interfaces.srv as si
 
 # Match name used in launch files
@@ -161,6 +167,23 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             si.ResetSimulation, 'reset_simulation')
         request.scope = si.ResetSimulation.Request.SCOPE_DEFAULT
         return self.call_and_spin(reset_simulation, request)
+
+    def get_entity_bounds(self, entity_name, timeout_sec=15) -> si.GetEntityBounds.Response:
+        get_entity_bounds, request = self.setup_client(
+            si.GetEntityBounds, 'get_entity_bounds')
+        request.entity = entity_name
+        # The first request for an entity enables bounding-box checks; Gazebo's
+        # Physics system fills the AxisAlignedBox component on a later update, so
+        # the service reports a transient RESULT_OPERATION_FAILED until then.
+        # Poll until the bounds become available or we time out.
+        deadline = time.time() + timeout_sec
+        response = None
+        while time.time() < deadline:
+            response = self.call_and_spin(get_entity_bounds, request)
+            if response is not None and response.result.result == Result.RESULT_OK:
+                return response
+            time.sleep(0.5)
+        return response
 
     # tests
 
@@ -373,6 +396,32 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         # Do it again to make sure subsequent actions are handled properly
         send_goal_and_check_results()
         self.assertGreater(self.feedback_cb_count, 1)
+
+    def test_get_entity_bounds(self) -> None:
+        # The "sphere" model has a radius-1 collision, so its axis-aligned
+        # bounding box in the canonical link frame spans [-1, 1] on each axis.
+        # ("box" is deleted by test_delete_entity, which runs earlier, so it is
+        # not a reliable target here.)
+        response = self.get_entity_bounds('sphere')
+        self.assert_result_ok(response)
+        self.assertEqual(response.bounds.type, Bounds.TYPE_BOX)
+        self.assertEqual(len(response.bounds.points), 2)
+
+        min_point, max_point = response.bounds.points
+        self.assertAlmostEqual(min_point.x, -1.0, delta=1e-2)
+        self.assertAlmostEqual(min_point.y, -1.0, delta=1e-2)
+        self.assertAlmostEqual(min_point.z, -1.0, delta=1e-2)
+        self.assertAlmostEqual(max_point.x, 1.0, delta=1e-2)
+        self.assertAlmostEqual(max_point.y, 1.0, delta=1e-2)
+        self.assertAlmostEqual(max_point.z, 1.0, delta=1e-2)
+
+    def test_get_entity_bounds_not_found(self) -> None:
+        get_entity_bounds, request = self.setup_client(
+            si.GetEntityBounds, 'get_entity_bounds')
+        request.entity = 'this_entity_does_not_exist'
+        response = self.call_and_spin(get_entity_bounds, request)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.result.result, Result.RESULT_NOT_FOUND)
 
     def test_get_entity_info(self) -> None:
         get_entity_info, request = self.setup_client(
