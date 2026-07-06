@@ -903,6 +903,24 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::JointWrench> &
   compareTestMsg(std::make_shared<geometry_msgs::msg::Wrench>(_msg->body_2_wrench));
 }
 
+void createTestMsg(ros_gz_interfaces::msg::AirSpeed & _msg)
+{
+  createTestMsg(_msg.header);
+  _msg.diff_pressure = 100;
+  _msg.temperature = 200;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::AirSpeed> & _msg)
+{
+  ros_gz_interfaces::msg::AirSpeed expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.diff_pressure, _msg->diff_pressure);
+  EXPECT_EQ(expected_msg.temperature, _msg->temperature);
+
+  compareTestMsg(_msg->header);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Altimeter & _msg)
 {
   createTestMsg(_msg.header);

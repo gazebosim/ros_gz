@@ -30,6 +30,7 @@ The following message types can be bridged for topics:
 | nav_msgs/msg/Odometry                          | gz.msgs.Odometry                    |
 | nav_msgs/msg/Odometry                          | gz.msgs.OdometryWithCovariance      |
 | rcl_interfaces/msg/ParameterValue              | gz.msgs.Any                         |
+| ros_gz_interfaces/msg/AirSpeed                 | gz.msgs.AirSpeed                    |
 | ros_gz_interfaces/msg/Altimeter                | gz.msgs.Altimeter                   |
 | ros_gz_interfaces/msg/Contact                  | gz.msgs.Contact                     |
 | ros_gz_interfaces/msg/Contacts                 | gz.msgs.Contacts                    |
