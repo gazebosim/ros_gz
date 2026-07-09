@@ -359,6 +359,13 @@ if(BUILD_TESTING)
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_bridge_config rclcpp::rclcpp ${bridge_lib})
 
+  ament_add_gtest(${PROJECT_NAME}_ros_gz_bridge test/ros_gz_bridge.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_include_directories(${PROJECT_NAME}_ros_gz_bridge PRIVATE src)
+
+  ament_target_dependencies(${PROJECT_NAME}_ros_gz_bridge rclcpp)
+  target_link_libraries(${PROJECT_NAME}_ros_gz_bridge ${bridge_lib})
+
   ament_add_gtest(${PROJECT_NAME}_gid_filtering test/test_gid_filtering.cpp)
   target_link_libraries(${PROJECT_NAME}_gid_filtering
     rclcpp::rclcpp
