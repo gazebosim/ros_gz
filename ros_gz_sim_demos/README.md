@@ -294,16 +294,12 @@ There are two common ways to use it:
   <gz_spawn_model
     world="multi_robot"
     file="$(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf"
-    model_string=""
-    topic=""
     entity_name="robot4"
     entity_namespace="{name}"
     allow_renaming="false"
     x="0.0"
     y="6.0"
     z="1.0"
-    roll="0.0"
-    pitch="0.0"
     yaw="0.0">
   </gz_spawn_model>
   ```
