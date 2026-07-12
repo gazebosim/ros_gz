@@ -235,12 +235,12 @@ The `multi_robot.sdf` world defines two robots from the same vehicle model. Ther
   <include>
     <uri>package://ros_gz_sim_demos/models/vehicle</uri>
     <name>robot2</name>
-    <namespace>__name__</namespace>
+    <namespace>{name}</namespace>
     <pose>0 2 1 0 0 0</pose>
   </include>
   ```
 
-  In this example, `__name__` will be resolved to the model name, so the second robot will use the `robot2` namespace.
+  In this example, `{name}` will be resolved to the model name, so the second robot will use the `robot2` namespace.
 
 ### 2. Spawn a namespaced robot with `ros_gz_sim create` node
 
@@ -259,7 +259,7 @@ There are two common ways to use it:
     args="-world multi_robot
           -file $(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf
           -name robot3
-          -ns __name__
+          -ns {name}
           -x 0.0
           -y 4.0
           -z 1.0"
@@ -297,7 +297,7 @@ There are two common ways to use it:
     model_string=""
     topic=""
     entity_name="robot4"
-    entity_namespace="__name__"
+    entity_namespace="{name}"
     allow_renaming="false"
     x="0.0"
     y="6.0"
@@ -316,7 +316,7 @@ There are two common ways to use it:
       world:=multi_robot \
       file:="$VEHICLE_SDF" \
       entity_name:=robot6 \
-      entity_namespace:=__name__ \
+      entity_namespace:={name} \
       x:=0.0 \
       y:=10.0 \
       z:=1.0
@@ -334,7 +334,7 @@ There are two common ways to use it:
     name: 'robot7',
     entity_resource: {
       uri: "$VEHICLE_SDF"},
-    entity_namespace: '__name__',
+    entity_namespace: '{name}',
     allow_renaming: false,
     initial_pose: {
       pose: {

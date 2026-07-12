@@ -1,15 +1,15 @@
 <launch>
   <gz_server
     world_sdf_file="$(find-pkg-share ros_gz_sim_demos)/worlds/multi_robot.sdf"
-    use_composition="False"
-    create_own_container="False" />
+    use_composition="True"
+    create_own_container="True" />
   <node
     pkg="ros_gz_sim"
     exec="create"
     args="-world multi_robot
           -file $(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf
           -name robot3
-          -ns __name__ns
+          -ns {name}ns
           -x 0.0
           -y 4.0
           -z 1.0
@@ -21,7 +21,7 @@
     model_string=""
     topic=""
     entity_name="robot4"
-    entity_namespace="__name__"
+    entity_namespace="{name}"
     allow_renaming="false"
     x="0.0"
     y="6.0"
@@ -33,7 +33,7 @@
   <ros_gz_bridge
     bridge_name="ros_gz_bridge"
     config_file="$(find-pkg-share ros_gz_sim_demos)/config/multi_robot.yaml"
-    use_composition="true">
+    use_composition="True">
   </ros_gz_bridge>
   <executable cmd="gz sim -g" output="screen" />
 </launch>

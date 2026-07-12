@@ -68,7 +68,7 @@ TODO:
     <include>
       <uri>package://ros_gz_sim_demos/models/vehicle</uri>
       <name>robot2</name>
-      <namespace>__name__</namespace>
+      <namespace>{name}</namespace>
       <pose>0 2 1 0 0 0</pose>
     </include>
 
