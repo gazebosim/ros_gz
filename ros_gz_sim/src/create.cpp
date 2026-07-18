@@ -261,9 +261,9 @@ int main(int _argc, char ** _argv)
   // Namespace
   std::string ns = ros2_node->get_parameter("ns").as_string();
   if (!ns.empty()) {
-    req.set_namespace_(ns);
+    req.set_entity_namespace(ns);
   } else if (!FLAGS_ns.empty()) {
-    req.set_namespace_(FLAGS_ns);
+    req.set_entity_namespace(FLAGS_ns);
   }
 
   // Allow Renaming
