@@ -349,8 +349,8 @@ If `namespace: ...` is not provided, or if `namespace: ""` is provided, the name
 
 ```bash
 export VEHICLE_SDF="$(ros2 pkg prefix --share ros_gz_sim_demos)/models/vehicle/model.sdf"
-gz service -s /world/multi_robot/create_with_ns/blocking \
-    --reqtype gz.msgs.EntityFactoryWithNs \
+gz service -s /world/multi_robot/create/blocking \
+    --reqtype gz.msgs.EntityFactory \
     --reptype gz.msgs.Boolean \
     --timeout 5000 \
     --req 'sdf_filename: "'"$VEHICLE_SDF"'",
