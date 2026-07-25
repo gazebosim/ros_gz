@@ -16,7 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
-#include <gz/msgs/entity_factory_with_ns.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
 #include <sstream>
@@ -58,7 +58,7 @@ DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
 bool set_XML_from_topic(
   const std::string & topic_name, const rclcpp::Node::SharedPtr ros2_node,
-  gz::msgs::EntityFactoryWithNs & req)
+  gz::msgs::EntityFactory & req)
 {
   const auto timeout = std::chrono::seconds(1);
   std::promise<std::string> xml_promise;
@@ -179,10 +179,10 @@ int main(int _argc, char ** _argv)
       world_name.c_str());
   }
 
-  std::string service{"/world/" + world_name + "/create_with_ns"};
+  std::string service{"/world/" + world_name + "/create"};
 
   // Request message
-  gz::msgs::EntityFactoryWithNs req;
+  gz::msgs::EntityFactory req;
 
   // Get ROS parameters
   std::string file_name = ros2_node->get_parameter("file").as_string();
