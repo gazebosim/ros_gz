@@ -152,13 +152,14 @@ TEST_F(DynamicBridgeTest, BridgesBidirectionally)
                rosMessages.end();
     }));
 
-  ASSERT_TRUE(gzNode.Subscribe<gz::msgs::StringMsg>(
-    topic,
-      [&mutex, &gzMessages](const gz::msgs::StringMsg & _msg)
-      {
-        std::lock_guard<std::mutex> lock(mutex);
-        gzMessages.push_back(_msg.data());
-    }));
+  std::function<void(const gz::msgs::StringMsg &)> gzCallback =
+    [&mutex, &gzMessages](const gz::msgs::StringMsg & _msg)
+    {
+      std::lock_guard<std::mutex> lock(mutex);
+      gzMessages.push_back(_msg.data());
+    };
+  ASSERT_TRUE(gzNode.Subscribe(topic, gzCallback));
+
   ASSERT_TRUE(this->SpinUntil(
       [this]() {
         return this->rosNode->count_subscribers(
