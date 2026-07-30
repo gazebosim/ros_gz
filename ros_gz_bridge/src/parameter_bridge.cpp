@@ -77,7 +77,9 @@ int main(int argc, char * argv[])
 
   bool create_dynamic_bridges = false;
   bridge_node->get_parameter("create_dynamic_bridges", create_dynamic_bridges);
-  if (filteredArgs.empty() && !create_dynamic_bridges) {
+  std::string config_file;
+  bridge_node->get_parameter("config_file", config_file);
+  if (filteredArgs.empty() && !create_dynamic_bridges && config_file.empty()) {
     usage();
     return -1;
   }
