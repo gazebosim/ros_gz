@@ -52,6 +52,8 @@ public:
     const std::string & gz_rep_type_name,
     const std::string & service_name);
 
+  void create_automated_bridges();
+
 protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
