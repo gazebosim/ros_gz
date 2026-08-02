@@ -81,6 +81,22 @@ protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
 
+  /// \brief Get Gazebo topic information, including type and direction
+  /// \param[in] topic_name Name of the Gazebo topic
+  /// \param[out] gz_type_name Type of the Gazebo topic
+  /// \param[out] direction Direction of the bridge
+  /// \return True if successfully gets the Gazebo topic information
+  bool get_gz_topic_info(const std::string & topic_name,
+    std::string & gz_type_name, BridgeDirection & direction);
+  
+  /// \brief Get ROS topic information, including type
+  /// \param[in] topic_name Name of the ROS topic
+  /// \param[out] ros_type_name Type of the ROS topic
+  /// \param[in] direction Direction of the bridge
+  /// \return True if successfully gets the ROS topic information
+  bool get_ros_topic_info(const std::string & topic_name,
+    std::string & ros_type_name, const BridgeDirection & direction);
+
   /// \brief Log a bridge warning while avoiding repeated messages for the same
   /// topic and warning type.
   /// \param[in] warning_type Type of warning to log.
