@@ -98,12 +98,12 @@ protected:
     std::string & ros_type_name, const BridgeDirection & direction);
 
   /// \brief Log a bridge warning while avoiding repeated messages for the same
-  /// topic and warning type.
-  /// \param[in] warning_type Type of warning to log.
+  /// topic and warning type
+  /// \param[in] warning_type Type of warning to log
   /// \param[in] topic_name Topic associated with the warning.
-  /// \param[in] ros_type_name ROS message type related to the warning, if available.
-  /// \param[in] gz_type_name Gazebo message type related to the warning, if available.
-  /// \param[in] extra_info Additional warning context, such as an exception message.
+  /// \param[in] ros_type_name ROS message type related to the warning
+  /// \param[in] gz_type_name Gazebo message type related to the warning
+  /// \param[in] extra_info Additional warning context
   void log_bridge_warning(
     const BridgeWarningType & warning_type,
     const std::string & topic_name,
