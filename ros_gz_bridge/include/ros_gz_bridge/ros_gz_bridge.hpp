@@ -26,6 +26,29 @@
 
 namespace ros_gz_bridge
 {
+
+/// \brief Enumeration for bridge warning types
+enum class BridgeWarningType
+{
+  /// \brief No warning
+  NONE,
+
+  /// \brief Gazebo topic has multiple types or no types
+  GZ_TYPE_UNDETERMINED,
+
+  /// \brief No mapping found from current Gazebo type to ROS type
+  GZ_TO_ROS_MAPPING_NOT_FOUND,
+
+  /// \brief Failed to discover ROS topic info
+  ROS_TYPE_DISCOVERED_FAILED,
+
+  /// \brief ROS topic has multiple types or no types
+  ROS_TYPE_UNDETERMINED,
+
+  /// \brief Mismatch between the detected Gazebo and ROS types.
+  ROS_GZ_TYPE_MISMATCH,
+};
+
 /// Forward declarations
 class BridgeHandle;
 
@@ -58,6 +81,20 @@ protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
 
+  /// \brief Log a bridge warning while avoiding repeated messages for the same
+  /// topic and warning type.
+  /// \param[in] warning_type Type of warning to log.
+  /// \param[in] topic_name Topic associated with the warning.
+  /// \param[in] ros_type_name ROS message type related to the warning, if available.
+  /// \param[in] gz_type_name Gazebo message type related to the warning, if available.
+  /// \param[in] extra_info Additional warning context, such as an exception message.
+  void log_bridge_warning(
+    const BridgeWarningType & warning_type,
+    const std::string & topic_name,
+    const std::string & ros_type_name = "",
+    const std::string & gz_type_name = "",
+    const std::string & extra_info = "");
+
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
   std::shared_ptr<gz::transport::Node> gz_node_;
@@ -70,6 +107,9 @@ protected:
 
   /// \brief Timer to control periodic callback
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
+
+  /// \brief Map of bridge warnings
+  std::map<std::string, BridgeWarningType> bridge_warnings_;
 };
 }  // namespace ros_gz_bridge
 

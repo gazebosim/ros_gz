@@ -343,7 +343,6 @@ void RosGzBridge::add_service_bridge(
   }
 }
 
-// TODO: Avoid flooding the log with repeated messages during retries.
 void RosGzBridge::create_automated_bridges()
 {
   std::vector<std::string> gz_topics;
@@ -384,17 +383,16 @@ void RosGzBridge::create_automated_bridges()
 
     BridgeDirection direction {BridgeDirection::NONE};
     std::string gz_type_name;
-    if (gz_publisher_types.size() > 1 || gz_subscriber_types.size() > 1)
+    if ((gz_publisher_types.size() > 1 || gz_subscriber_types.size() > 1) ||
+        (gz_publisher_types.size() == 0 && gz_subscriber_types.size() == 0) ||
+        (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1 &&
+         *gz_publisher_types.begin() != *gz_subscriber_types.begin()))
     {
-      RCLCPP_WARN(
-        this->get_logger(),
-        "Skipping automated bridge for topic [%s] for multiple "
-        "Gazebo message types.",
-        gz_topic.c_str());
+      this->log_bridge_warning(
+        BridgeWarningType::GZ_TYPE_UNDETERMINED, gz_topic);
       continue;
     }
-    else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1 &&
-             *gz_publisher_types.begin() == *gz_subscriber_types.begin())
+    else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1)
     {
       gz_type_name = *gz_publisher_types.begin();
       direction = BridgeDirection::BIDIRECTIONAL;
@@ -409,23 +407,13 @@ void RosGzBridge::create_automated_bridges()
       gz_type_name = *gz_subscriber_types.begin();
       direction = BridgeDirection::ROS_TO_GZ;
     }
-    else
-    {
-      RCLCPP_WARN(
-        this->get_logger(),
-        "Skipping automated bridge for topic [%s] for no Gazebo message "
-        "types discovered.", gz_topic.c_str());
-      continue;
-    }
 
     std::vector<std::string> ros_candidate_types;
     if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types))
     {
-      RCLCPP_WARN(
-        this->get_logger(),
-        "Skipping automated bridge for topic [%s] for Gazebo message type "
-        "[%s] with no known ROS message type mapping.",
-        gz_topic.c_str(), gz_type_name.c_str());
+      this->log_bridge_warning(
+        BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic,
+        "", gz_type_name);
       continue;
     }
 
@@ -452,11 +440,9 @@ void RosGzBridge::create_automated_bridges()
       }
       catch(const std::exception& e)
       {
-        RCLCPP_WARN(
-          this->get_logger(),
-          "Skipping automated bridge for topic [%s] for ROS message type "
-          "discovery error: %s",
-          gz_topic.c_str(), e.what());
+        this->log_bridge_warning(
+          BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, gz_topic,
+          "", "", e.what());
         continue;
       }
       
@@ -483,11 +469,9 @@ void RosGzBridge::create_automated_bridges()
       }
       catch(const std::exception& e)
       {
-        RCLCPP_WARN(
-          this->get_logger(),
-          "Skipping automated bridge for topic [%s] for ROS message type "
-          "discovery error: %s",
-          gz_topic.c_str(), e.what());
+        this->log_bridge_warning(
+          BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, gz_topic,
+          "", "", e.what());
         continue;
       }
     }
@@ -539,11 +523,9 @@ void RosGzBridge::create_automated_bridges()
       }
       catch(const std::exception& e)
       {
-        RCLCPP_WARN(
-          this->get_logger(),
-          "Skipping automated bridge for topic [%s] for ROS message type "
-          "discovery error: %s",
-          gz_topic.c_str(), e.what());
+        this->log_bridge_warning(
+          BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, gz_topic,
+          "", "", e.what());
         continue;
       }
     }
@@ -560,11 +542,9 @@ void RosGzBridge::create_automated_bridges()
 
     if (!is_mapping_valid)
     {
-      RCLCPP_WARN(
-        this->get_logger(),
-        "Skipping automated bridge for topic [%s] for ROS message type "
-        "[%s] with no known mapping to Gazebo message type [%s].",
-        gz_topic.c_str(), ros_type_name.c_str(), gz_type_name.c_str());
+      this->log_bridge_warning(
+        BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic,
+        ros_type_name, gz_type_name);
       continue;
     }
 
@@ -577,6 +557,60 @@ void RosGzBridge::create_automated_bridges()
     this->add_bridge(config);
   }
 }
+
+void RosGzBridge::log_bridge_warning(
+  const BridgeWarningType & warning_type,
+  const std::string & topic_name,
+  const std::string & ros_type_name,
+  const std::string & gz_type_name,
+  const std::string & extra_info)
+{
+  auto it = bridge_warnings_.find(topic_name);
+  if (it == bridge_warnings_.end() || it->second != warning_type) {
+    bridge_warnings_[topic_name] = warning_type;
+    switch (warning_type) {
+      case BridgeWarningType::NONE:
+        break;
+      case BridgeWarningType::GZ_TYPE_UNDETERMINED:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for topic [%s] : "
+          "found multiple or no Gazebo message types.",
+          topic_name.c_str());
+        break;
+      case BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for topic [%s] : "
+          "no mapping found for Gazebo message type [%s] .",
+          topic_name.c_str(), gz_type_name.c_str());
+        break;
+      case BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for topic [%s] : "
+          "failed to discover ROS topic info for it: %s",
+          topic_name.c_str(), extra_info.c_str());
+        break;
+      case BridgeWarningType::ROS_TYPE_UNDETERMINED:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for topic [%s] : "
+          "found multiple or zero ROS message types.",
+          topic_name.c_str());
+        break;
+      case BridgeWarningType::ROS_GZ_TYPE_MISMATCH:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for topic [%s] : "
+          "mismatch between the detected "
+          "Gazebo message type [%s] and ROS message type [%s].",
+          topic_name.c_str(), gz_type_name.c_str(), ros_type_name.c_str());
+        break;
+    }
+  }
+}
+
 }  // namespace ros_gz_bridge
 
 #include "rclcpp_components/register_node_macro.hpp"
