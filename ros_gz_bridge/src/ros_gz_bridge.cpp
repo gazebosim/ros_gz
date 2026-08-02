@@ -393,7 +393,8 @@ void RosGzBridge::create_automated_bridges()
         gz_topic.c_str());
       continue;
     }
-    else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1)
+    else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1 &&
+             *gz_publisher_types.begin() == *gz_subscriber_types.begin())
     {
       gz_type_name = *gz_publisher_types.begin();
       direction = BridgeDirection::BIDIRECTIONAL;
@@ -420,7 +421,7 @@ void RosGzBridge::create_automated_bridges()
     std::vector<std::string> ros_candidate_types;
     if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types))
     {
-      RCLCPP_DEBUG(
+      RCLCPP_WARN(
         this->get_logger(),
         "Skipping automated bridge for topic [%s] for Gazebo message type "
         "[%s] with no known ROS message type mapping.",
@@ -559,7 +560,7 @@ void RosGzBridge::create_automated_bridges()
 
     if (!is_mapping_valid)
     {
-      RCLCPP_DEBUG(
+      RCLCPP_WARN(
         this->get_logger(),
         "Skipping automated bridge for topic [%s] for ROS message type "
         "[%s] with no known mapping to Gazebo message type [%s].",
