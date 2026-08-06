@@ -1,8 +1,9 @@
 <?xml version="1.0" ?>
 <sdf version="1.8">
     <model name='vehicle'>
+      <pose>0 0 0.325 0 0 0</pose>
       <link name='chassis'>
-        <pose>-0.151427 -0 0.4 0 -0 0</pose>
+        <pose>-0.151427 -0 0.175 0 -0 0</pose>
         <inertial>
           <mass>1.14395</mass>
           <inertia>
@@ -36,7 +37,7 @@
       </link>
 
       <link name='left_wheel'>
-        <pose>0.554283 0.625029 0.3 -1.5707 0 0</pose>
+        <pose>0.554283 0.625029 -0.025 -1.5707 0 0</pose>
         <inertial>
           <mass>2</mass>
           <inertia>
@@ -70,7 +71,7 @@
       </link>
 
       <link name='right_wheel'>
-        <pose>0.554282 -0.625029 0.3 -1.5707 0 0</pose>
+        <pose>0.554282 -0.625029 -0.025 -1.5707 0 0</pose>
         <inertial>
           <mass>2</mass>
           <inertia>
@@ -104,7 +105,7 @@
       </link>
 
       <link name='caster'>
-        <pose>-0.957138 -0 0.2 0 -0 0</pose>
+        <pose>-0.957138 -0 -0.125 0 -0 0</pose>
         <inertial>
           <mass>1</mass>
           <inertia>
