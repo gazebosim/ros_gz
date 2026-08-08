@@ -216,5 +216,4 @@ class GzSpawnModel(Action):
                               ('pitch',   self.__pitch),
                               ('yaw',  self.__yaw)])
 
-
         return [gz_spawn_model_description]
