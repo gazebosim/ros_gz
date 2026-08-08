@@ -4,6 +4,7 @@
   <arg name="model_string" default="" />
   <arg name="topic" default="" />
   <arg name="entity_name" default="" />
+  <arg name="entity_namespace" default="" />
   <arg name="allow_renaming" default="False" />
   <arg name="x" default="" />
   <arg name="y" default="" />
@@ -17,6 +18,7 @@
     model_string="$(var model_string)"
     topic="$(var topic)"
     entity_name="$(var entity_name)"
+    entity_namespace="$(var entity_namespace)"
     allow_renaming="$(var allow_renaming)"
     x="$(var x)"
     y="$(var y)"
