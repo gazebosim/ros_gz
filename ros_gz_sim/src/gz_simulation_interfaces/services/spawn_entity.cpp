@@ -15,7 +15,7 @@
 #include "spawn_entity.hpp"
 
 #include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_factory_with_ns.pb.h>
 
 #include <memory>
 
@@ -36,7 +36,7 @@ SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  const auto create_service = this->gz_proxy_->PrefixTopic("create/blocking");
+  const auto create_service = this->gz_proxy_->PrefixTopic("create_with_ns/blocking");
   if (!this->gz_proxy_->WaitForGzService(create_service)) {
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
@@ -47,7 +47,7 @@ SpawnEntity::SpawnEntity(
   this->services_handle_ = ros_node->create_service<SpawnEntitySrv>(
     "spawn_entity", [this, create_service](RequestPtr request, ResponsePtr response) {
       using Result = simulation_interfaces::msg::Result;
-      gz::msgs::EntityFactory gz_request;
+      gz::msgs::EntityFactoryWithNs gz_request;
       if (!request->name.empty()) {
         gz_request.set_name(request->name);
       }
