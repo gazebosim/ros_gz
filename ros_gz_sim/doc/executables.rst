@@ -33,7 +33,13 @@ for argument parsing (``--helpshort`` for the full list).
        --world default \
        --file https://fuel.gazebosim.org/1.0/openrobotics/models/Gazebo \
        --name my_gazebo \
+       --ns my_gazebo \
        --x 0 --y 0 --z 0.5
+
+Use ``--ns`` to set the namespace for the spawned entity. If ``--ns`` is not
+set or is set to an empty string, the namespace behavior follows the source SDF
+file. The ``{name}`` placeholder is also supported and will be replaced by the
+final spawned entity name.
 
 ``create`` is preferred over ``spawn_entity`` when you already have a running
 Gazebo transport channel and do not want the ROS service layer.
