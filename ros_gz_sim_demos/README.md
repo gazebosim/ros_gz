@@ -340,3 +340,4 @@ When using the `set_entity_pose` and `delete_entity` commands, you can specify t
 | 4     | VISUAL      |
 | 5     | COLLISION   |
 | 6     | SENSOR      |
+| 7     | JOINT       |

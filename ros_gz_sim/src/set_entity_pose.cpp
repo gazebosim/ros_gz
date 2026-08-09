@@ -167,7 +167,7 @@ int main(int argc, char **argv)
   int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
   app.add_option("--type", entity_type,
                    "Entity type: 0=NONE, 1=LIGHT, 2=MODEL(default), 3=LINK, "
-                   "4=VISUAL, 5=COLLISION, 6=SENSOR");
+                   "4=VISUAL, 5=COLLISION, 6=SENSOR, 7=JOINT");
 
   // Position parameters
   std::vector<double> position = {0.0, 0.0, 0.0};
