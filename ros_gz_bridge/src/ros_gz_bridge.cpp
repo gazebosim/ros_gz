@@ -490,7 +490,7 @@ void RosGzBridge::create_automated_bridges()
     {
       this->log_bridge_warning(
         BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_service, "service",
-        ros_type_name, "req:" + gz_req_type_name + "/rep:" + gz_rep_type_name,
+        ros_type_name, gz_req_type_name + "/" + gz_rep_type_name,
         _e.what());
       continue;
     }
