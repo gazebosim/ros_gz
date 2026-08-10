@@ -51,6 +51,7 @@ enum class BridgeWarningType
 
 /// Forward declarations
 class BridgeHandle;
+class ServiceFactoryInterface;
 
 /// \brief Component container for the ROS-GZ Bridge
 class RosGzBridge : public rclcpp::Node
@@ -69,11 +70,13 @@ public:
   /// \param[in] gz_req_type_name Gazebo service request type
   /// \param[in] gz_rep_type_name Gazebo service response type
   /// \param[in] service_name Address of the service to be bridged
+  /// \param[in] factory Factory to create the service bridge
   void add_service_bridge(
     const std::string & ros_type_name,
     const std::string & gz_req_type_name,
     const std::string & gz_rep_type_name,
-    const std::string & service_name);
+    const std::string & service_name,
+    std::shared_ptr<ServiceFactoryInterface> factory = nullptr);
 
   void create_automated_bridges();
 
@@ -97,16 +100,35 @@ protected:
   bool get_ros_topic_info(const std::string & topic_name,
     std::string & ros_type_name, const BridgeDirection & direction);
 
+  /// \brief Get Gazebo service information, including request and response types
+  /// \param[in] service_name Name of the Gazebo service
+  /// \param[out] gz_req_type_name Type of the Gazebo service request
+  /// \param[out] gz_rep_type_name Type of the Gazebo service response
+  /// \return True if successfully gets the Gazebo service information
+  bool get_gz_service_info(const std::string & service_name,
+    std::string & gz_req_type_name, std::string & gz_rep_type_name);
+
+  /// \brief Get ROS service information, including type
+  /// \param[in] ros_services Map of ROS services and their types
+  /// \param[in] service_name Name of the ROS service
+  /// \param[out] ros_type_name Type of the ROS service
+  /// \return True if successfully gets the ROS service information
+  bool get_ros_service_info(
+    const std::map<std::string, std::vector<std::string>> & ros_services,
+    const std::string & service_name, std::string & ros_type_name);
+
   /// \brief Log a bridge warning while avoiding repeated messages for the same
-  /// topic and warning type
+  /// topic /service and warning type
   /// \param[in] warning_type Type of warning to log
-  /// \param[in] topic_name Topic associated with the warning.
+  /// \param[in] name Topic /service associated with the warning.
+  /// \param[in] resource_type Type of resource (topic or service)
   /// \param[in] ros_type_name ROS message type related to the warning
   /// \param[in] gz_type_name Gazebo message type related to the warning
   /// \param[in] extra_info Additional warning context
   void log_bridge_warning(
     const BridgeWarningType & warning_type,
-    const std::string & topic_name,
+    const std::string & name,
+    const std::string & resource_type = "topic",
     const std::string & ros_type_name = "",
     const std::string & gz_type_name = "",
     const std::string & extra_info = "");

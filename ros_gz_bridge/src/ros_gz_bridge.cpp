@@ -322,7 +322,8 @@ void RosGzBridge::add_service_bridge(
   const std::string & ros_type_name,
   const std::string & gz_req_type_name,
   const std::string & gz_rep_type_name,
-  const std::string & service_name)
+  const std::string & service_name,
+  std::shared_ptr<ServiceFactoryInterface> factory)
 {
   try {
     RCLCPP_INFO(
@@ -330,7 +331,9 @@ void RosGzBridge::add_service_bridge(
       "Creating ROS->GZ service bridge [%s (%s -> %s/%s)]",
       service_name.c_str(), ros_type_name.c_str(),
       gz_req_type_name.c_str(), gz_rep_type_name.c_str());
-    auto factory = get_service_factory(ros_type_name, gz_req_type_name, gz_rep_type_name);
+    if (!factory) {
+      factory = get_service_factory(ros_type_name, gz_req_type_name, gz_rep_type_name);
+    }
     services_.push_back(factory->create_ros_service(shared_from_this(), gz_node_, service_name));
   } catch (std::runtime_error & _e) {
     RCLCPP_WARN(
@@ -379,7 +382,7 @@ void RosGzBridge::create_automated_bridges()
     {
       this->log_bridge_warning(
         BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic,
-        "", gz_type_name);
+        "topic", "", gz_type_name);
       continue;
     }
 
@@ -404,7 +407,7 @@ void RosGzBridge::create_automated_bridges()
     {
       this->log_bridge_warning(
         BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic,
-        ros_type_name, gz_type_name);
+        "topic", ros_type_name, gz_type_name);
       continue;
     }
 
@@ -415,6 +418,77 @@ void RosGzBridge::create_automated_bridges()
     config.gz_topic_name = gz_topic;
     config.direction = direction;
     this->add_bridge(config);
+  }
+
+  std::vector<std::string> gz_services;
+  gz_node_->ServiceList(gz_services);
+
+  std::map<std::string, std::vector<std::string>> ros_services;
+  try
+  {
+    ros_services = this->get_service_names_and_types();
+  }
+  catch(const std::exception& e)
+  {
+    RCLCPP_WARN(
+      this->get_logger(),
+      "Failed to get ROS service names and types: %s", e.what());
+    return;
+  }
+
+  for (const auto & gz_service : gz_services)
+  {
+    // Skip services that are already bridged
+    bool already_bridged = false;
+    for (const auto & service : services_)
+    {
+      if (service->get_service_name() == gz_service)
+      {
+        already_bridged = true;
+        break;
+      }
+    }
+    if (already_bridged)
+    {
+      continue;
+    }
+
+    // Get Gazebo service info
+    std::string gz_req_type_name, gz_rep_type_name;
+    if (!get_gz_service_info(gz_service, gz_req_type_name, gz_rep_type_name))
+    {
+      continue;
+    }
+  
+    // Get ROS service info
+    std::string ros_type_name;
+    if (!get_ros_service_info(ros_services, gz_service, ros_type_name))
+    {
+      continue;
+    }
+
+    std::shared_ptr<ServiceFactoryInterface> factory;
+    try
+    {
+      factory = get_service_factory(ros_type_name,
+                                    gz_req_type_name,
+                                    gz_rep_type_name);
+    }
+    catch (std::runtime_error & _e)
+    {
+      this->log_bridge_warning(
+        BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_service, "service",
+        ros_type_name, "req:" + gz_req_type_name + "/rep:" + gz_rep_type_name,
+        _e.what());
+      continue;
+    }
+
+    this->add_service_bridge(
+      ros_type_name,
+      gz_req_type_name,
+      gz_rep_type_name,
+      gz_service,
+      factory);
   }
 }
 
@@ -490,7 +564,7 @@ bool RosGzBridge::get_ros_topic_info (const std::string & topic_name,
   {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, topic_name,
-      "", "", e.what());
+      "topic", "", "", e.what());
     return false;
   }
 
@@ -529,54 +603,111 @@ bool RosGzBridge::get_ros_topic_info (const std::string & topic_name,
   return true;
 }
 
+bool RosGzBridge::get_gz_service_info(const std::string & service_name,
+  std::string & gz_req_type_name, std::string & gz_rep_type_name)
+{
+  std::vector<gz::transport::ServicePublisher> gz_services_publishers;
+  if (!gz_node_->ServiceInfo(service_name, gz_services_publishers)) {
+    return false;
+  }
+
+  std::set<std::pair<std::string, std::string>> service_types;
+  for (const auto & pub : gz_services_publishers)
+  {
+    service_types.insert(
+      {pub.ReqTypeName(), pub.RepTypeName()});
+  }
+
+  if (service_types.size() != 1)
+  {
+    this->log_bridge_warning(
+      BridgeWarningType::GZ_TYPE_UNDETERMINED, service_name, "service");
+    return false;
+  }
+
+  gz_req_type_name = service_types.begin()->first;
+  gz_rep_type_name = service_types.begin()->second;
+
+  return true;
+}
+
+bool RosGzBridge::get_ros_service_info(
+  const std::map<std::string, std::vector<std::string>> & ros_services,
+  const std::string & service_name, std::string & ros_type_name)
+{
+  const auto ros_service = ros_services.find(service_name);
+  if (ros_service == ros_services.end())
+  {
+    return false;
+  }
+
+  std::set<std::string> ros_service_types(
+    ros_service->second.begin(),
+    ros_service->second.end());
+  
+  if (ros_service_types.size() != 1)
+  {
+    this->log_bridge_warning(
+      BridgeWarningType::ROS_TYPE_UNDETERMINED, service_name, "service");
+    return false;
+  }
+
+  ros_type_name = *ros_service_types.begin();
+  return true;
+}
+
 void RosGzBridge::log_bridge_warning(
   const BridgeWarningType & warning_type,
-  const std::string & topic_name,
+  const std::string & name,
+  const std::string & resource_type,
   const std::string & ros_type_name,
   const std::string & gz_type_name,
   const std::string & extra_info)
 {
-  auto it = bridge_warnings_.find(topic_name);
+  const auto warning_key = resource_type + ":" + name;
+  auto it = bridge_warnings_.find(warning_key);
   if (it == bridge_warnings_.end() || it->second != warning_type) {
-    bridge_warnings_[topic_name] = warning_type;
+    bridge_warnings_[warning_key] = warning_type;
     switch (warning_type) {
       case BridgeWarningType::NONE:
         break;
       case BridgeWarningType::GZ_TYPE_UNDETERMINED:
         RCLCPP_WARN(
           this->get_logger(),
-          "Skipping automated bridge for topic [%s] : "
+          "Skipping automated bridge for %s [%s] : "
           "found multiple or no Gazebo message types.",
-          topic_name.c_str());
+          resource_type.c_str(), name.c_str());
         break;
       case BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND:
         RCLCPP_WARN(
           this->get_logger(),
-          "Skipping automated bridge for topic [%s] : "
+          "Skipping automated bridge for %s [%s] : "
           "no mapping found for Gazebo message type [%s] .",
-          topic_name.c_str(), gz_type_name.c_str());
+          resource_type.c_str(), name.c_str(), gz_type_name.c_str());
         break;
       case BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED:
         RCLCPP_WARN(
           this->get_logger(),
-          "Skipping automated bridge for topic [%s] : "
-          "failed to discover ROS topic info for it: %s",
-          topic_name.c_str(), extra_info.c_str());
+          "Skipping automated bridge for %s [%s] : "
+          "failed to discover ROS %s info for it: %s",
+          resource_type.c_str(), name.c_str(),
+          resource_type.c_str(), extra_info.c_str());
         break;
       case BridgeWarningType::ROS_TYPE_UNDETERMINED:
         RCLCPP_WARN(
           this->get_logger(),
-          "Skipping automated bridge for topic [%s] : "
+          "Skipping automated bridge for %s [%s] : "
           "found multiple or zero ROS message types.",
-          topic_name.c_str());
+          resource_type.c_str(), name.c_str());
         break;
       case BridgeWarningType::ROS_GZ_TYPE_MISMATCH:
         RCLCPP_WARN(
           this->get_logger(),
-          "Skipping automated bridge for topic [%s] : "
+          "Skipping automated bridge for %s [%s] : "
           "mismatch between the detected "
           "Gazebo message type [%s] and ROS message type [%s].",
-          topic_name.c_str(), gz_type_name.c_str(), ros_type_name.c_str());
+          resource_type.c_str(), name.c_str(),
+          gz_type_name.c_str(), ros_type_name.c_str());
         break;
     }
   }
