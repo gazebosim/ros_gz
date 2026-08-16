@@ -27,25 +27,25 @@ namespace ros_gz_bridge
 {
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectoryPoint & ros_msg,
   gz::msgs::JointTrajectoryPoint & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::JointTrajectoryPoint & gz_msg,
   trajectory_msgs::msg::JointTrajectoryPoint & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const trajectory_msgs::msg::JointTrajectory & ros_msg,
   gz::msgs::JointTrajectory & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::JointTrajectory & gz_msg,
   trajectory_msgs::msg::JointTrajectory & ros_msg);

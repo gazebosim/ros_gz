@@ -9,8 +9,6 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
@@ -99,6 +97,13 @@ add_library(${bridge_lib}
   ${generated_files}
 )
 
+include(GenerateExportHeader)
+generate_export_header(${bridge_lib}
+  EXPORT_FILE_NAME
+    "${CMAKE_CURRENT_BINARY_DIR}/include/${PROJECT_NAME}/visibility_control.hpp"
+  EXPORT_MACRO_NAME ROS_GZ_BRIDGE_VISIBLE
+)
+
 target_link_libraries(${bridge_lib}
   PUBLIC
     gz-msgs::core
@@ -126,14 +131,24 @@ target_link_libraries(${bridge_lib}
 target_include_directories(${bridge_lib}
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
   PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
 )
 
+# Many tests do not link ${bridge_lib} even if they include its headers,
+# ensure that ${CMAKE_CURRENT_BINARY_DIR}/include that includes the visibility_control.hpp header
+# is properly visible
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+
 if(MSVC)
   target_compile_options(${bridge_lib} PRIVATE "/bigobj")
+  # This is used to ensure that all the heavy-templated tests
+  # defined in this directory use /bigobj,
+  # without the need to manually specify if for each test
+  add_compile_options("/bigobj")
 endif()
 
 rclcpp_components_register_node(
@@ -149,6 +164,11 @@ install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
+)
+
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/include/${PROJECT_NAME}/visibility_control.hpp"
+  DESTINATION include/${PROJECT_NAME}/${PROJECT_NAME}
 )
 
 install(

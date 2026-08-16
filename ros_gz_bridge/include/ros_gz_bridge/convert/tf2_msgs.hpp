@@ -27,13 +27,13 @@ namespace ros_gz_bridge
 {
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const tf2_msgs::msg::TFMessage & ros_msg,
   gz::msgs::Pose_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose_V & gz_msg,
   tf2_msgs::msg::TFMessage & ros_msg);

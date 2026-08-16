@@ -28,25 +28,25 @@ namespace ros_gz_bridge
 {
 // nav_msgs
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
   gz::msgs::Odometry & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Odometry & gz_msg,
   nav_msgs::msg::Odometry & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const nav_msgs::msg::Odometry & ros_msg,
   gz::msgs::OdometryWithCovariance & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::OdometryWithCovariance & gz_msg,
   nav_msgs::msg::Odometry & ros_msg);
