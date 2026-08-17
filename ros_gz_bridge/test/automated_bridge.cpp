@@ -422,22 +422,33 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
     std::make_shared<gz::msgs::StringMsg>(gz_sub.message()));
 }
 
-TEST_F(AutomatedBridgeTest, RosToGzSkipUntilGzSubAppear)
+TEST_F(AutomatedBridgeTest, RosToGzSkipUntilRosPubAppear)
 {
   const std::string topic_name = "/auto_ros_to_gz_late_sub";
-  RosPublisher<std_msgs::msg::String> ros_pub(this->ros_node_, topic_name);
+  GzSubscriber<gz::msgs::StringMsg> gz_sub(this->gz_node_, topic_name);
+  ASSERT_TRUE(gz_sub.subscribed());
 
   rclcpp::WallRate rate(20.0);
+
+  // Make sure Gazebo discovery has seen the subscriber.
+  for (int i = 0; i < 50; ++i) {
+    if (this->bridge_->check_gz_topic(topic_name)) {
+      break;
+    }
+
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(this->bridge_->check_gz_topic(topic_name));
 
   for (int i = 0; i < 5; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }
-  // There is no Gazebo subscriber yet, so no bridge should be created.
+  // There is no ROS publisher yet, so no bridge should be created.
   EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
 
-  GzSubscriber<gz::msgs::StringMsg> gz_sub(this->gz_node_, topic_name);
-  ASSERT_TRUE(gz_sub.subscribed());
+  RosPublisher<std_msgs::msg::String> ros_pub(this->ros_node_, topic_name);
 
   for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
