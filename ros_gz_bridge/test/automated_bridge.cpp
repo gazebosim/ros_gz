@@ -270,14 +270,25 @@ protected:
     rclcpp::init(0, nullptr);
 
     this->bridge_ = std::make_shared<TestableRosGzBridge>();
-
     this->ros_node_ = std::make_shared<rclcpp::Node>("automated_bridge_test");
+
+    this->bridge_executor_ = std::make_unique<rclcpp::executors::SingleThreadedExecutor>();
+    this->ros_executor_ = std::make_unique<rclcpp::executors::SingleThreadedExecutor>();
+
+    this->bridge_executor_->add_node(this->bridge_);
+    this->ros_executor_->add_node(this->ros_node_);
   }
 
   void TearDown() override
   {
-    this->ros_node_.reset();
+    this->bridge_executor_->remove_node(this->bridge_);
+    this->ros_executor_->remove_node(this->ros_node_);
+
+    this->bridge_executor_.reset();
+    this->ros_executor_.reset();
+
     this->bridge_.reset();
+    this->ros_node_.reset();
 
     if (rclcpp::ok()) {
       rclcpp::shutdown();
@@ -287,6 +298,9 @@ protected:
   std::shared_ptr<TestableRosGzBridge> bridge_;
   rclcpp::Node::SharedPtr ros_node_;
   gz::transport::Node gz_node_;
+
+  std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> bridge_executor_;
+  std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> ros_executor_;
 };
 
 TEST_F(AutomatedBridgeTest, GzToRosWhenRosSubExist)
@@ -315,8 +329,8 @@ TEST_F(AutomatedBridgeTest, GzToRosWhenRosSubExist)
   for (int i = 0; i < 50 && !ros_sub.received(); ++i) {
     gz_pub.Publish(msg);
 
-    rclcpp::spin_some(this->bridge_);
-    rclcpp::spin_some(this->ros_node_);
+    this->bridge_executor_->spin_some();
+    this->ros_executor_->spin_some();
 
     rate.sleep();
   }
@@ -372,8 +386,8 @@ TEST_F(AutomatedBridgeTest, GzToRosSkipUntilRosSubAppear)
   for (int i = 0; i < 50 && !ros_sub.received(); ++i) {
     gz_pub.Publish(msg);
 
-    rclcpp::spin_some(this->bridge_);
-    rclcpp::spin_some(this->ros_node_);
+    this->bridge_executor_->spin_some();
+    this->ros_executor_->spin_some();
 
     rate.sleep();
   }
@@ -411,7 +425,8 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
 
   for (int i = 0; i < 50 && !gz_sub.received(); ++i) {
     ros_pub.Publish(msg);
-    rclcpp::spin_some(this->bridge_);
+
+    this->bridge_executor_->spin_some();
 
     rate.sleep();
   }
@@ -468,7 +483,7 @@ TEST_F(AutomatedBridgeTest, RosToGzSkipUntilRosPubAppear)
   for (int i = 0; i < 50 && !gz_sub.received(); ++i) {
     ros_pub.Publish(msg);
 
-    rclcpp::spin_some(this->bridge_);
+    this->bridge_executor_->spin_some();
 
     rate.sleep();
   }
@@ -514,8 +529,8 @@ TEST_F(AutomatedBridgeTest, ServiceWhenRosClientExist)
   auto future = ros_client.SendRequest();
 
   for (int i = 0; i < 100; ++i) {
-    rclcpp::spin_some(this->bridge_);
-    rclcpp::spin_some(this->ros_node_);
+    this->bridge_executor_->spin_some();
+    this->ros_executor_->spin_some();
 
     if (future.wait_for(0s) == std::future_status::ready) {
       break;
@@ -587,8 +602,8 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
   auto future = ros_client.SendRequest();
 
   for (int i = 0; i < 100; ++i) {
-    rclcpp::spin_some(this->bridge_);
-    rclcpp::spin_some(this->ros_node_);
+    this->bridge_executor_->spin_some();
+    this->ros_executor_->spin_some();
 
     if (future.wait_for(0s) == std::future_status::ready) {
       break;
