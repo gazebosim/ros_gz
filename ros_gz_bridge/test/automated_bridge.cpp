@@ -12,6 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <gtest/gtest.h>
+
+#include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/stringmsg.pb.h>
+#include <gz/msgs/world_control.pb.h>
+
 #include <algorithm>
 #include <chrono>
 #include <future>
@@ -19,14 +25,8 @@
 #include <string>
 #include <vector>
 
-#include <gtest/gtest.h>
-
-#include <rclcpp/rclcpp.hpp>
-
-#include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/stringmsg.pb.h>
-#include <gz/msgs/world_control.pb.h>
 #include <gz/transport.hh>
+#include <rclcpp/rclcpp.hpp>
 
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 #include <ros_gz_interfaces/srv/control_world.hpp>
@@ -61,10 +61,8 @@ public:
   size_t topic_bridge_count(const std::string & topic_name) const
   {
     size_t count = 0;
-    for (const auto & handle : this->handles_)
-    {
-      if (handle->GetConfig().gz_topic_name == topic_name)
-      {
+    for (const auto & handle : this->handles_) {
+      if (handle->GetConfig().gz_topic_name == topic_name) {
         ++count;
       }
     }
@@ -74,10 +72,8 @@ public:
   size_t service_bridge_count(const std::string & service_name) const
   {
     size_t count = 0;
-    for (const auto & service : this->services_)
-    {
-      if (service->get_service_name() == service_name)
-      {
+    for (const auto & service : this->services_) {
+      if (service->get_service_name() == service_name) {
         ++count;
       }
     }
@@ -283,8 +279,7 @@ protected:
     this->ros_node_.reset();
     this->bridge_.reset();
 
-    if (rclcpp::ok())
-    {
+    if (rclcpp::ok()) {
       rclcpp::shutdown();
     }
   }
@@ -302,8 +297,7 @@ TEST_F(AutomatedBridgeTest, GzToRosWhenRosSubExist)
 
   rclcpp::WallRate rate(20.0);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
     if (this->bridge_->topic_bridge_count(topic_name) == 1) {
@@ -318,8 +312,7 @@ TEST_F(AutomatedBridgeTest, GzToRosWhenRosSubExist)
   gz::msgs::StringMsg msg;
   ros_gz_bridge::testing::createTestMsg(msg);
 
-  for (int i = 0; i < 50 && !ros_sub.received(); ++i)
-  {
+  for (int i = 0; i < 50 && !ros_sub.received(); ++i) {
     gz_pub.Publish(msg);
 
     rclcpp::spin_some(this->bridge_);
@@ -342,10 +335,8 @@ TEST_F(AutomatedBridgeTest, GzToRosSkipUntilRosSubAppear)
   rclcpp::WallRate rate(20.0);
 
   // Make sure Gazebo discovery has seen the publisher.
-  for (int i = 0; i < 50; ++i)
-  {
-    if (this->bridge_->check_gz_topic(topic_name))
-    {
+  for (int i = 0; i < 50; ++i) {
+    if (this->bridge_->check_gz_topic(topic_name)) {
       break;
     }
 
@@ -354,8 +345,7 @@ TEST_F(AutomatedBridgeTest, GzToRosSkipUntilRosSubAppear)
 
   ASSERT_TRUE(this->bridge_->check_gz_topic(topic_name));
 
-  for (int i = 0; i < 5; ++i)
-  {
+  for (int i = 0; i < 5; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }
@@ -364,12 +354,10 @@ TEST_F(AutomatedBridgeTest, GzToRosSkipUntilRosSubAppear)
 
   RosSubscriber<std_msgs::msg::String> ros_sub(this->ros_node_, topic_name);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->topic_bridge_count(topic_name) == 1)
-    {
+    if (this->bridge_->topic_bridge_count(topic_name) == 1) {
       break;
     }
 
@@ -381,8 +369,7 @@ TEST_F(AutomatedBridgeTest, GzToRosSkipUntilRosSubAppear)
   gz::msgs::StringMsg msg;
   ros_gz_bridge::testing::createTestMsg(msg);
 
-  for (int i = 0; i < 50 && !ros_sub.received(); ++i)
-  {
+  for (int i = 0; i < 50 && !ros_sub.received(); ++i) {
     gz_pub.Publish(msg);
 
     rclcpp::spin_some(this->bridge_);
@@ -407,12 +394,10 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
 
   rclcpp::WallRate rate(20.0);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->topic_bridge_count(topic_name) == 1)
-    {
+    if (this->bridge_->topic_bridge_count(topic_name) == 1) {
       break;
     }
 
@@ -424,8 +409,7 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
   std_msgs::msg::String msg;
   ros_gz_bridge::testing::createTestMsg(msg);
 
-  for (int i = 0; i < 50 && !gz_sub.received(); ++i)
-  {
+  for (int i = 0; i < 50 && !gz_sub.received(); ++i) {
     ros_pub.Publish(msg);
     rclcpp::spin_some(this->bridge_);
 
@@ -440,13 +424,12 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
 
 TEST_F(AutomatedBridgeTest, RosToGzSkipUntilGzSubAppear)
 {
-  const std::string topic_name ="/auto_ros_to_gz_late_sub";
+  const std::string topic_name = "/auto_ros_to_gz_late_sub";
   RosPublisher<std_msgs::msg::String> ros_pub(this->ros_node_, topic_name);
 
   rclcpp::WallRate rate(20.0);
 
-  for (int i = 0; i < 5; ++i)
-  {
+  for (int i = 0; i < 5; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }
@@ -456,12 +439,10 @@ TEST_F(AutomatedBridgeTest, RosToGzSkipUntilGzSubAppear)
   GzSubscriber<gz::msgs::StringMsg> gz_sub(this->gz_node_, topic_name);
   ASSERT_TRUE(gz_sub.subscribed());
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->topic_bridge_count(topic_name) == 1)
-    {
+    if (this->bridge_->topic_bridge_count(topic_name) == 1) {
       break;
     }
 
@@ -473,8 +454,7 @@ TEST_F(AutomatedBridgeTest, RosToGzSkipUntilGzSubAppear)
   std_msgs::msg::String msg;
   ros_gz_bridge::testing::createTestMsg(msg);
 
-  for (int i = 0; i < 50 && !gz_sub.received(); ++i)
-  {
+  for (int i = 0; i < 50 && !gz_sub.received(); ++i) {
     ros_pub.Publish(msg);
 
     rclcpp::spin_some(this->bridge_);
@@ -502,12 +482,10 @@ TEST_F(AutomatedBridgeTest, ServiceWhenRosClientExist)
 
   rclcpp::WallRate rate(20.0);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->service_bridge_count(service_name) == 1)
-    {
+    if (this->bridge_->service_bridge_count(service_name) == 1) {
       break;
     }
 
@@ -516,8 +494,7 @@ TEST_F(AutomatedBridgeTest, ServiceWhenRosClientExist)
 
   ASSERT_EQ(1, this->bridge_->service_bridge_count(service_name));
 
-  for (int i = 0; i < 50 && !ros_client.available(); ++i)
-  {
+  for (int i = 0; i < 50 && !ros_client.available(); ++i) {
     rate.sleep();
   }
 
@@ -525,13 +502,11 @@ TEST_F(AutomatedBridgeTest, ServiceWhenRosClientExist)
 
   auto future = ros_client.SendRequest();
 
-  for (int i = 0; i < 100; ++i)
-  {
+  for (int i = 0; i < 100; ++i) {
     rclcpp::spin_some(this->bridge_);
     rclcpp::spin_some(this->ros_node_);
 
-    if (future.wait_for(0s) == std::future_status::ready)
-    {
+    if (future.wait_for(0s) == std::future_status::ready) {
       break;
     }
 
@@ -559,10 +534,8 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
   rclcpp::WallRate rate(20.0);
 
   // Make sure the Gazebo service is visible.
-  for (int i = 0; i < 50; ++i)
-  {
-    if (this->bridge_->check_gz_service(service_name))
-    {
+  for (int i = 0; i < 50; ++i) {
+    if (this->bridge_->check_gz_service(service_name)) {
       break;
     }
 
@@ -571,8 +544,7 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
 
   ASSERT_TRUE(this->bridge_->check_gz_service(service_name));
 
-  for (int i = 0; i < 5; ++i)
-  {
+  for (int i = 0; i < 5; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }
@@ -583,12 +555,10 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
   RosClient<ros_gz_interfaces::srv::ControlWorld>
     ros_client(this->ros_node_, service_name);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->service_bridge_count(service_name) == 1)
-    {
+    if (this->bridge_->service_bridge_count(service_name) == 1) {
       break;
     }
 
@@ -597,8 +567,7 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
 
   ASSERT_EQ(1, this->bridge_->service_bridge_count(service_name));
 
-  for (int i = 0; i < 50 && !ros_client.available(); ++i)
-  {
+  for (int i = 0; i < 50 && !ros_client.available(); ++i) {
     rate.sleep();
   }
 
@@ -606,13 +575,11 @@ TEST_F(AutomatedBridgeTest, ServiceSkipUntilRosClientAppear)
 
   auto future = ros_client.SendRequest();
 
-  for (int i = 0; i < 100; ++i)
-  {
+  for (int i = 0; i < 100; ++i) {
     rclcpp::spin_some(this->bridge_);
     rclcpp::spin_some(this->ros_node_);
 
-    if (future.wait_for(0s) == std::future_status::ready)
-    {
+    if (future.wait_for(0s) == std::future_status::ready) {
       break;
     }
 
@@ -638,12 +605,10 @@ TEST_F(AutomatedBridgeTest, AvoidDuplicateCreation)
 
   rclcpp::WallRate rate(20.0);
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->topic_bridge_count(topic_name) == 1)
-    {
+    if (this->bridge_->topic_bridge_count(topic_name) == 1) {
       break;
     }
 
@@ -652,8 +617,7 @@ TEST_F(AutomatedBridgeTest, AvoidDuplicateCreation)
 
   ASSERT_EQ(1, this->bridge_->topic_bridge_count(topic_name));
 
-  for (int i = 0; i < 3; ++i)
-  {
+  for (int i = 0; i < 3; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }
@@ -670,12 +634,10 @@ TEST_F(AutomatedBridgeTest, AvoidDuplicateCreation)
 
   ASSERT_TRUE(gz_server.advertised());
 
-  for (int i = 0; i < 50; ++i)
-  {
+  for (int i = 0; i < 50; ++i) {
     this->bridge_->create_automated_bridges();
 
-    if (this->bridge_->service_bridge_count(service_name) == 1)
-    {
+    if (this->bridge_->service_bridge_count(service_name) == 1) {
       break;
     }
 
@@ -684,8 +646,7 @@ TEST_F(AutomatedBridgeTest, AvoidDuplicateCreation)
 
   ASSERT_EQ(1, this->bridge_->service_bridge_count(service_name));
 
-  for (int i = 0; i < 3; ++i)
-  {
+  for (int i = 0; i < 3; ++i) {
     this->bridge_->create_automated_bridges();
     rate.sleep();
   }

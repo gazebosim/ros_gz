@@ -15,6 +15,7 @@
 #ifndef ROS_GZ_BRIDGE__ROS_GZ_BRIDGE_HPP_
 #define ROS_GZ_BRIDGE__ROS_GZ_BRIDGE_HPP_
 
+#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -89,24 +90,30 @@ protected:
   /// \param[out] gz_type_name Type of the Gazebo topic
   /// \param[out] direction Direction of the bridge
   /// \return True if successfully gets the Gazebo topic information
-  bool get_gz_topic_info(const std::string & topic_name,
-    std::string & gz_type_name, BridgeDirection & direction);
-  
+  bool get_gz_topic_info(
+    const std::string & topic_name,
+    std::string & gz_type_name,
+    BridgeDirection & direction);
+
   /// \brief Get ROS topic information, including type
   /// \param[in] topic_name Name of the ROS topic
   /// \param[out] ros_type_name Type of the ROS topic
   /// \param[in] direction Direction of the bridge
   /// \return True if successfully gets the ROS topic information
-  bool get_ros_topic_info(const std::string & topic_name,
-    std::string & ros_type_name, const BridgeDirection & direction);
+  bool get_ros_topic_info(
+    const std::string & topic_name,
+    std::string & ros_type_name,
+    const BridgeDirection & direction);
 
   /// \brief Get Gazebo service information, including request and response types
   /// \param[in] service_name Name of the Gazebo service
   /// \param[out] gz_req_type_name Type of the Gazebo service request
   /// \param[out] gz_rep_type_name Type of the Gazebo service response
   /// \return True if successfully gets the Gazebo service information
-  bool get_gz_service_info(const std::string & service_name,
-    std::string & gz_req_type_name, std::string & gz_rep_type_name);
+  bool get_gz_service_info(
+    const std::string & service_name,
+    std::string & gz_req_type_name,
+    std::string & gz_rep_type_name);
 
   /// \brief Get ROS service information, including type
   /// \param[in] ros_services Map of ROS services and their types

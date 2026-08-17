@@ -25,7 +25,7 @@ namespace ros_gz_bridge
 bool
 get_gz_to_ros_mapping(const std::string & gz_type_name, std::string & ros_type_name);
 
-bool 
+bool
 get_gz_to_ros_mapping(
   const std::string & gz_type_name,
   std::vector<std::string> & ros_type_names);

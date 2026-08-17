@@ -351,35 +351,30 @@ void RosGzBridge::create_automated_bridges()
   std::vector<std::string> gz_topics;
   gz_node_->TopicList(gz_topics);
 
-  for (const auto & gz_topic : gz_topics)
-  {
+  for (const auto & gz_topic : gz_topics) {
     // Skip topics that are already bridged
     bool already_bridged = false;
-    for (const auto & handle : handles_)
-    {
-      if (handle->GetConfig().gz_topic_name == gz_topic)
-      {
+    for (const auto & handle : handles_) {
+      if (handle->GetConfig().gz_topic_name == gz_topic) {
         already_bridged = true;
         break;
       }
     }
-    if (already_bridged) 
-    {
+
+    if (already_bridged) {
       continue;
     }
 
     // Get Gazebo topic info
     BridgeDirection direction {BridgeDirection::NONE};
     std::string gz_type_name;
-    if (!get_gz_topic_info(gz_topic, gz_type_name, direction))
-    {
+    if (!get_gz_topic_info(gz_topic, gz_type_name, direction)) {
       continue;
     }
 
     // Get candidate ROS types for the Gazebo type
     std::vector<std::string> ros_candidate_types;
-    if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types))
-    {
+    if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types)) {
       this->log_bridge_warning(
         BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic,
         "topic", "", gz_type_name);
@@ -388,23 +383,19 @@ void RosGzBridge::create_automated_bridges()
 
     // Get ROS topic info
     std::string ros_type_name;
-    if (!get_ros_topic_info(gz_topic, ros_type_name, direction))
-    {
+    if (!get_ros_topic_info(gz_topic, ros_type_name, direction)) {
       continue;
     }
 
     bool is_mapping_valid = false;
-    for (const auto & candidate : ros_candidate_types)
-    {
-      if (candidate == ros_type_name)
-      {
+    for (const auto & candidate : ros_candidate_types) {
+      if (candidate == ros_type_name) {
         is_mapping_valid = true;
         break;
       }
     }
 
-    if (!is_mapping_valid)
-    {
+    if (!is_mapping_valid) {
       this->log_bridge_warning(
         BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic,
         "topic", ros_type_name, gz_type_name);
@@ -424,70 +415,57 @@ void RosGzBridge::create_automated_bridges()
   gz_node_->ServiceList(gz_services);
 
   std::map<std::string, std::vector<std::string>> ros_services;
-  try
-  {
+  try {
     const auto graph = this->get_node_graph_interface();
     const auto nodes = graph->get_node_names_and_namespaces();
 
-    for (const auto & node : nodes)
-    {
+    for (const auto & node : nodes) {
       const auto services =
         graph->get_client_names_and_types_by_node(node.first, node.second);
-      for (const auto & service : services)
-      {
+      for (const auto & service : services) {
         auto & types = ros_services[service.first];
         types.insert(types.end(), service.second.begin(), service.second.end());
       }
     }
-  }
-  catch(const std::exception& e)
-  {
+  } catch(const std::exception & e) {
     RCLCPP_WARN(
       this->get_logger(),
       "Failed to get ROS service names and types: %s", e.what());
     return;
   }
 
-  for (const auto & gz_service : gz_services)
-  {
+  for (const auto & gz_service : gz_services) {
     // Skip services that are already bridged
     bool already_bridged = false;
-    for (const auto & service : services_)
-    {
-      if (service->get_service_name() == gz_service)
-      {
+    for (const auto & service : services_) {
+      if (service->get_service_name() == gz_service) {
         already_bridged = true;
         break;
       }
     }
-    if (already_bridged)
-    {
+
+    if (already_bridged) {
       continue;
     }
 
     // Get Gazebo service info
     std::string gz_req_type_name, gz_rep_type_name;
-    if (!get_gz_service_info(gz_service, gz_req_type_name, gz_rep_type_name))
-    {
+    if (!get_gz_service_info(gz_service, gz_req_type_name, gz_rep_type_name)) {
       continue;
     }
-  
+
     // Get ROS service info
     std::string ros_type_name;
-    if (!get_ros_service_info(ros_services, gz_service, ros_type_name))
-    {
+    if (!get_ros_service_info(ros_services, gz_service, ros_type_name)) {
       continue;
     }
 
     std::shared_ptr<ServiceFactoryInterface> factory;
-    try
-    {
+    try {
       factory = get_service_factory(ros_type_name,
                                     gz_req_type_name,
                                     gz_rep_type_name);
-    }
-    catch (std::runtime_error & _e)
-    {
+    } catch (std::runtime_error & _e) {
       this->log_bridge_warning(
         BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_service, "service",
         ros_type_name, gz_req_type_name + "/" + gz_rep_type_name,
@@ -504,8 +482,10 @@ void RosGzBridge::create_automated_bridges()
   }
 }
 
-bool RosGzBridge::get_gz_topic_info(const std::string & topic_name,
-  std::string & gz_type_name, BridgeDirection & direction)
+bool RosGzBridge::get_gz_topic_info(
+  const std::string & topic_name,
+  std::string & gz_type_name,
+  BridgeDirection & direction)
 {
   std::vector<gz::transport::MessagePublisher> gz_publishers;
   std::vector<gz::transport::MessagePublisher> gz_subscribers;
@@ -514,66 +494,52 @@ bool RosGzBridge::get_gz_topic_info(const std::string & topic_name,
   }
 
   std::unordered_set<std::string> gz_publisher_types;
-  for (const auto & pub : gz_publishers)
-  {
+  for (const auto & pub : gz_publishers) {
     gz_publisher_types.insert(pub.MsgTypeName());
   }
   std::unordered_set<std::string> gz_subscriber_types;
-  for (const auto & sub : gz_subscribers)
-  {
+  for (const auto & sub : gz_subscribers) {
     gz_subscriber_types.insert(sub.MsgTypeName());
   }
 
   if ((gz_publisher_types.size() > 1 || gz_subscriber_types.size() > 1) ||
-      (gz_publisher_types.size() == 0 && gz_subscriber_types.size() == 0) ||
-      (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1 &&
-       *gz_publisher_types.begin() != *gz_subscriber_types.begin()))
+    (gz_publisher_types.size() == 0 && gz_subscriber_types.size() == 0) ||
+    (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1 &&
+    *gz_publisher_types.begin() != *gz_subscriber_types.begin()))
   {
     this->log_bridge_warning(
       BridgeWarningType::GZ_TYPE_UNDETERMINED, topic_name);
     return false;
-  }
-  else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1)
-  {
+  } else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 1) {
     gz_type_name = *gz_publisher_types.begin();
     direction = BridgeDirection::BIDIRECTIONAL;
-  }
-  else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 0)
-  {
+  } else if (gz_publisher_types.size() == 1 && gz_subscriber_types.size() == 0) {
     gz_type_name = *gz_publisher_types.begin();
     direction = BridgeDirection::GZ_TO_ROS;
-  }
-  else if (gz_publisher_types.size() == 0 && gz_subscriber_types.size() == 1)
-  {
+  } else if (gz_publisher_types.size() == 0 && gz_subscriber_types.size() == 1) {
     gz_type_name = *gz_subscriber_types.begin();
     direction = BridgeDirection::ROS_TO_GZ;
   }
   return true;
 }
 
-bool RosGzBridge::get_ros_topic_info (const std::string & topic_name,
-  std::string & ros_type_name, const BridgeDirection & direction)
+bool RosGzBridge::get_ros_topic_info(
+  const std::string & topic_name,
+  std::string & ros_type_name,
+  const BridgeDirection & direction)
 {
   std::vector<rclcpp::TopicEndpointInfo> ros_publishers;
   std::vector<rclcpp::TopicEndpointInfo> ros_subscribers;
-  try
-  {
-    if (direction == BridgeDirection::ROS_TO_GZ)
-    {
+  try {
+    if (direction == BridgeDirection::ROS_TO_GZ) {
       ros_publishers = this->get_publishers_info_by_topic(topic_name);
-    }
-    else if (direction == BridgeDirection::GZ_TO_ROS)
-    {
+    } else if (direction == BridgeDirection::GZ_TO_ROS) {
       ros_subscribers = this->get_subscriptions_info_by_topic(topic_name);
-    }
-    else if (direction == BridgeDirection::BIDIRECTIONAL)
-    {
+    } else if (direction == BridgeDirection::BIDIRECTIONAL) {
       ros_publishers = this->get_publishers_info_by_topic(topic_name);
       ros_subscribers = this->get_subscriptions_info_by_topic(topic_name);
     }
-  }
-  catch(const std::exception& e)
-  {
+  } catch(const std::exception & e) {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, topic_name,
       "topic", "", "", e.what());
@@ -581,42 +547,36 @@ bool RosGzBridge::get_ros_topic_info (const std::string & topic_name,
   }
 
   std::unordered_set<std::string> ros_publisher_types;
-  for (const auto & pub : ros_publishers)
-  {
+  for (const auto & pub : ros_publishers) {
     ros_publisher_types.insert(pub.topic_type());
   }
   std::unordered_set<std::string> ros_subscriber_types;
-  for (const auto & sub : ros_subscribers)
-  {
+  for (const auto & sub : ros_subscribers) {
     ros_subscriber_types.insert(sub.topic_type());
   }
 
   if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
-      (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 0) ||
-      (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
-       *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
+    (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 0) ||
+    (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
+    *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
   {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, topic_name);
     return false;
-  }
-  else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1)
-  {
+  } else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1) {
     ros_type_name = *ros_publisher_types.begin();
-  }
-  else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 0)
-  {
+  } else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 0) {
     ros_type_name = *ros_publisher_types.begin();
-  }
-  else if (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 1)
-  {
+  } else if (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 1) {
     ros_type_name = *ros_subscriber_types.begin();
   }
   return true;
 }
 
-bool RosGzBridge::get_gz_service_info(const std::string & service_name,
-  std::string & gz_req_type_name, std::string & gz_rep_type_name)
+bool RosGzBridge::get_gz_service_info(
+  const std::string & service_name,
+  std::string & gz_req_type_name,
+  std::string & gz_rep_type_name)
 {
   std::vector<gz::transport::ServicePublisher> gz_services_publishers;
   if (!gz_node_->ServiceInfo(service_name, gz_services_publishers)) {
@@ -624,14 +584,12 @@ bool RosGzBridge::get_gz_service_info(const std::string & service_name,
   }
 
   std::set<std::pair<std::string, std::string>> service_types;
-  for (const auto & pub : gz_services_publishers)
-  {
+  for (const auto & pub : gz_services_publishers) {
     service_types.insert(
       {pub.ReqTypeName(), pub.RepTypeName()});
   }
 
-  if (service_types.size() != 1)
-  {
+  if (service_types.size() != 1) {
     this->log_bridge_warning(
       BridgeWarningType::GZ_TYPE_UNDETERMINED, service_name, "service");
     return false;
@@ -648,17 +606,15 @@ bool RosGzBridge::get_ros_service_info(
   const std::string & service_name, std::string & ros_type_name)
 {
   const auto ros_service = ros_services.find(service_name);
-  if (ros_service == ros_services.end())
-  {
+  if (ros_service == ros_services.end()) {
     return false;
   }
 
   std::set<std::string> ros_service_types(
     ros_service->second.begin(),
     ros_service->second.end());
-  
-  if (ros_service_types.size() != 1)
-  {
+
+  if (ros_service_types.size() != 1) {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, service_name, "service");
     return false;
