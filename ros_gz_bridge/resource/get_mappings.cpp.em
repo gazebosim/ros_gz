@@ -17,6 +17,7 @@
 @
 #include <map>
 #include <string>
+#include <vector>
 
 #include "get_mappings.hpp"
 
@@ -43,6 +44,23 @@ get_gz_to_ros_mapping(const std::string & gz_type_name, std::string & ros_type_n
 }
 
 bool
+get_gz_to_ros_mapping(
+  const std::string & gz_type_name,
+  std::vector<std::string> & ros_type_names)
+{
+  ros_type_names.clear();
+
+  const auto & mappings = get_all_message_mappings_ros_to_gz();
+  for (const auto & mapping : mappings) {
+    if (mapping.second == gz_type_name) {
+      ros_type_names.push_back(mapping.first);
+    }
+  }
+
+  return !ros_type_names.empty();
+}
+
+bool
 get_ros_to_gz_mapping(const std::string & ros_type_name, std::string & gz_type_name)
 {
 @[if not mappings]@
@@ -59,6 +77,23 @@ get_ros_to_gz_mapping(const std::string & ros_type_name, std::string & gz_type_n
 @[end for]@
 
   return false;
+}
+
+bool
+get_ros_to_gz_mapping(
+  const std::string & ros_type_name,
+  std::vector<std::string> & gz_type_names)
+{
+  gz_type_names.clear();
+
+  const auto & mappings = get_all_message_mappings_ros_to_gz();
+  for (const auto & mapping : mappings) {
+    if (mapping.first == ros_type_name) {
+      gz_type_names.push_back(mapping.second);
+    }
+  }
+
+  return !gz_type_names.empty();
 }
 
 std::multimap<std::string, std::string>

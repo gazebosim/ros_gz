@@ -70,6 +70,10 @@ public:
   /// \return true if lazy
   bool IsLazy() const;
 
+  /// \brief Get the configuration parameters of the bridge
+  /// \return The configuration parameters of the bridge
+  BridgeConfig GetConfig() const;
+
 protected:
   /// \brief Get the number of subscriptions on the output side of the bridge
   virtual size_t NumSubscriptions() const = 0;
