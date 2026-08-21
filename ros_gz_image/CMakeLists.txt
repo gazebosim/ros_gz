@@ -33,7 +33,7 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ${std_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
   image_transport::image_transport
   ros_gz_bridge::ros_gz_bridge
   rclcpp::rclcpp
