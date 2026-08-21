@@ -75,7 +75,14 @@ And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
+<<<<<<< HEAD
 | ros_gz_interfaces/srv/ControlWorld   | ignition.msgs.WorldControl | ignition.msgs.Boolean |
+=======
+| ros_gz_interfaces/srv/ControlWorld   | gz.msgs.WorldControl       | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/DeleteEntity   | gz.msgs.Entity             | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/SpawnEntity    | gz.msgs.EntityFactory      | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/SetEntityPose  | gz.msgs.Pose               | gz.msgs.Boolean       |
+>>>>>>> efe82e5 (Document supported service bridge types (#928))
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
 
