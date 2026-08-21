@@ -27,13 +27,13 @@ namespace ros_gz_bridge
 {
 // actuator_msgs
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const actuator_msgs::msg::Actuators & ros_msg,
   gz::msgs::Actuators & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Actuators & gz_msg,
   actuator_msgs::msg::Actuators & ros_msg);

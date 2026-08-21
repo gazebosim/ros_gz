@@ -18,16 +18,18 @@
 #include <map>
 #include <string>
 
+#include "ros_gz_bridge/visibility_control.hpp"
+
 namespace ros_gz_bridge
 {
 
-bool
+ROS_GZ_BRIDGE_VISIBLE bool
 get_gz_to_ros_mapping(const std::string & gz_type_name, std::string & ros_type_name);
 
-bool
+ROS_GZ_BRIDGE_VISIBLE bool
 get_ros_to_gz_mapping(const std::string & ros_type_name, std::string & gz_type_name);
 
-std::multimap<std::string, std::string>
+ROS_GZ_BRIDGE_VISIBLE std::multimap<std::string, std::string>
 get_all_message_mappings_ros_to_gz();
 
 }  // namespace ros_gz_bridge
