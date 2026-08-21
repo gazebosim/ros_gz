@@ -335,8 +335,9 @@ When using the `set_entity_pose` and `delete_entity` commands, you can specify t
 |-------|-------------|
 | 0     | NONE        |
 | 1     | LIGHT       |
-| 2     | LINK        |
-| 3     | VISUAL      |
-| 4     | COLLISION   |
-| 5     | SENSOR      |
-| 6     | MODEL (default) |
+| 2     | MODEL (default) |
+| 3     | LINK        |
+| 4     | VISUAL      |
+| 5     | COLLISION   |
+| 6     | SENSOR      |
+| 7     | JOINT       |
