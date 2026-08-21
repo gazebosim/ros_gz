@@ -103,7 +103,7 @@ TEST(DeleteEntityTest, DeleteEntityIntegration) {
   {
     std::string entity_name = "test_entity";
     int entity_id = 0;
-    int entity_type = 6;  // MODEL type
+    int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
 
     bool result = deleter->delete_entity(entity_name, entity_id, entity_type);
 
@@ -119,7 +119,7 @@ TEST(DeleteEntityTest, DeleteEntityIntegration) {
   {
     std::string entity_name = "";
     int entity_id = 42;
-    int entity_type = 6;  // MODEL type
+    int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
 
     bool result = deleter->delete_entity(entity_name, entity_id, entity_type);
 
@@ -135,7 +135,7 @@ TEST(DeleteEntityTest, DeleteEntityIntegration) {
   {
     std::string entity_name = "test_light";
     int entity_id = 0;
-    int entity_type = 1;  // LIGHT type
+    int entity_type = ros_gz_interfaces::msg::Entity::LIGHT;
 
     bool result = deleter->delete_entity(entity_name, entity_id, entity_type);
 
@@ -148,9 +148,10 @@ TEST(DeleteEntityTest, DeleteEntityIntegration) {
 
   // Test case 4: Test failure response
   {
+    int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
     test_service->set_response(false);
     std::string entity_name = "nonexistent_entity";
-    bool result = deleter->delete_entity(entity_name, 0, 6);
+    bool result = deleter->delete_entity(entity_name, 0, entity_type);
     EXPECT_FALSE(result);
   }
 
@@ -184,7 +185,8 @@ TEST(DeleteEntityTest, InvalidInputs) {
   std::this_thread::sleep_for(1s);
 
   // Test case: Missing both entity name and ID
-  bool result = deleter->delete_entity("", 0, 6);
+  int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
+  bool result = deleter->delete_entity("", 0, entity_type);
   EXPECT_FALSE(result);
 
   // Clean up
