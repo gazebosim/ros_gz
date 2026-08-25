@@ -324,11 +324,22 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertEqual(restored_state, initial_state)
 
     def test_stop_simulation_state(self) -> None:
-        # Regression test for #919: transitioning from PLAYING to STOPPED must report success.
-        self.set_simulation_state(SimulationState.STATE_PLAYING)
-        self.assertEqual(
-            self.get_simulation_state().state.state,
-            SimulationState.STATE_PLAYING)
+        # Regression coverage for #919. STOPPED must succeed from either active state,
+        # and repeating STOPPED must remain a successful, idempotent public operation.
+        for initial_state in [
+            SimulationState.STATE_PLAYING,
+            SimulationState.STATE_PAUSED,
+        ]:
+            with self.subTest(initial_state=initial_state):
+                self.set_simulation_state(initial_state)
+                self.assertEqual(
+                    self.get_simulation_state().state.state,
+                    initial_state)
+
+                self.set_simulation_state(SimulationState.STATE_STOPPED)
+                self.assertEqual(
+                    self.get_simulation_state().state.state,
+                    SimulationState.STATE_STOPPED)
 
         self.set_simulation_state(SimulationState.STATE_STOPPED)
         self.assertEqual(
