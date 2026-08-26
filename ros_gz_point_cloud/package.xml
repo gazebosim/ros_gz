@@ -17,6 +17,8 @@
   <depend>rclcpp</depend>
   <depend>sensor_msgs</depend>
 
+  <depend>gz_common_vendor</depend>
+  <depend>gz_math_vendor</depend>
   <depend>gz_plugin_vendor</depend>
   <depend>gz_rendering_vendor</depend>
   <depend>gz_sim_vendor</depend>

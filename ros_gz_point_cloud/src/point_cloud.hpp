@@ -23,9 +23,11 @@ namespace ros_gz_point_cloud
 // Forward declarations.
 class PointCloudPrivate;
 
-/// \brief System which publishes ROS PointCloud2 messages for RGBD or GPU lidar sensors.
+/// \brief System which publishes ROS PointCloud2 messages for RGBD cameras, depth cameras
+/// or GPU lidar sensors.
 ///
-/// This plugin should be attached to an RGBD or GPU lidar sensor (i.e. <sensor...><plugin>)
+/// This plugin should be attached to an RGBD camera, depth camera or GPU lidar sensor
+/// (i.e. <sensor...><plugin>)
 ///
 /// Important: load `gz::sim::systems::Sensors` as well, which will create the sensor.
 ///
@@ -34,7 +36,8 @@ class PointCloudPrivate;
 /// * `<topic>`: ROS topic to publish to, defaults to "points"
 /// * `<frame_id>`: TF frame name to populate message header, defaults to sensor scoped name
 /// * `<engine>`: Render engine name, defaults to 'ogre2'
-/// * `<scene>`: Scene name, defaults to 'scene'
+/// * `<scene>`: Scene name, defaults to 'scene'. If the render engine has no scene with
+///   that name, the first scene it loaded is used instead.
 class PointCloud
   : public gz::sim::System,
   public gz::sim::ISystemConfigure,

@@ -8,10 +8,14 @@
 
           . <ws>/install/setup.bash
 
-  2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
+  2. Make sure Gazebo Sim can find the point cloud plugin by adding its lib install directory
      to the path, for example:
 
-          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/ros_gz_point_cloud/lib
+
+     or, if the workspace was built with `--merge-install`:
+
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib
 
   3. Load the example world, unpaused:
 
@@ -21,8 +25,11 @@
 
           ros2 run rviz2 rviz2
 
-  5. On RViz, add the `/depth_camera/points` topic for `PointCloud2` messages and change the fixed frame
-     to `map`. You should see the point cloud.
+  5. On RViz, add the `/ros_gz/custom_params/link/depth_camera/points` topic for `PointCloud2`
+     messages and change the fixed frame to `map`. You should see the point cloud.
+
+     The plugin has no `<namespace>`, so the topic is placed under the sensor's scoped name,
+     `/<world>/<model>/<link>/<sensor>`.
 
 -->
 <sdf version="1.6">

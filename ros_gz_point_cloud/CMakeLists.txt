@@ -14,6 +14,10 @@ find_package(point_cloud_transport REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
+find_package(gz_common_vendor REQUIRED)
+find_package(gz-common REQUIRED)
+find_package(gz_math_vendor REQUIRED)
+find_package(gz-math REQUIRED)
 find_package(gz_plugin_vendor REQUIRED)
 find_package(gz-plugin REQUIRED)
 find_package(gz_rendering_vendor REQUIRED)
@@ -30,6 +34,8 @@ target_include_directories(${plugin_name} PRIVATE
 )
 target_link_libraries(${plugin_name}
   ament_cmake_ros_core::ament_ros_cxx_standard
+  gz-common::gz-common
+  gz-math::gz-math
   gz-plugin::register
   gz-rendering::gz-rendering
   gz-sim::gz-sim

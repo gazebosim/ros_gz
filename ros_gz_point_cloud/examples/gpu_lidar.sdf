@@ -8,10 +8,14 @@
 
           . <ws>/install/setup.bash
 
-  2. Make sure Gazebo Sim can find the point cloud plugin by adding your lib install directory
+  2. Make sure Gazebo Sim can find the point cloud plugin by adding its lib install directory
      to the path, for example:
 
-          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib/
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/ros_gz_point_cloud/lib
+
+     or, if the workspace was built with `--merge-install`:
+
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib
 
   3. Load this world, unpaused:
 
