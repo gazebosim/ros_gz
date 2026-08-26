@@ -60,13 +60,22 @@ Adding a New Conversion
 3. **Implement both directions.**  Add the definitions under
    ``src/convert/<pkg>.cpp``.  The functions should copy every field that has
    a sensible mapping and leave untranslatable fields at their default values.
-4. **Regenerate the factories.**  The code generator in ``bin/`` rebuilds the
-   per-type factory plumbing from ``mappings.py`` on the next CMake
-   configure.
-5. **Update the dependencies.**  Add any new ROS message package to
-   ``package.xml`` and ``CMakeLists.txt``.
-6. **Add tests.**  Extend the gtest suite in ``test/`` with a round-trip test
-   for the new type.
+4. **Update the dependencies.**  Add the ROS message package to ``package.xml``
+   and to the ``BRIDGE_MESSAGE_TYPES`` list in ``CMakeLists.txt``, and link
+   ``${<pkg>_TARGETS}`` into ``${bridge_lib}`` and ``test_utils``.  That list is
+   what pulls ``src/convert/<pkg>.cpp`` and the generated factories into the
+   build; without the entry, the library fails to link.
+5. **Rebuild.**  The code generator in ``bin/`` is wired up through
+   ``add_custom_command``, so the per-type factory plumbing is regenerated from
+   ``mappings.py`` at *build* time, not on CMake configure.  It emits files for
+   every package in ``MAPPINGS``, but only those listed in
+   ``BRIDGE_MESSAGE_TYPES`` are compiled.
+6. **Add tests.**  Add a self-contained round-trip test in
+   ``src/convert/<pkg>_TEST.cpp`` and register it with ``ament_add_gtest``, and
+   add ``createTestMsg`` / ``compareTestMsg`` helpers in ``test/utils`` for the
+   end-to-end bridge tests.
+
+See :doc:`tutorials/adding_a_message` for the full walkthrough.
 
 Header Index
 ------------

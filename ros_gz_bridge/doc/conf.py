@@ -1,17 +1,15 @@
-import inspect
 import os
-import re
+import shutil
 import sys
 import types
 
 # Stub buildtool-only Python modules that rosdoc2 does not mock automatically.
-# ros_gz_bridge/__init__.py imports rosidl_pycommon for build-time code
-# generation; it is not available at documentation build time.
-for _name in ('rosidl_pycommon', 'em'):
-    _mod = types.ModuleType(_name)
-    # __init__.py does: from rosidl_pycommon import expand_template
-    _mod.expand_template = lambda *args, **kwargs: None
-    sys.modules.setdefault(_name, _mod)
+# ros_gz_bridge/__init__.py does `from rosidl_pycommon import expand_template`
+# for build-time code generation; that package is not available at
+# documentation build time.
+_mod = types.ModuleType('rosidl_pycommon')
+_mod.expand_template = lambda *args, **kwargs: None
+sys.modules.setdefault('rosidl_pycommon', _mod)
 
 
 # rosdoc2 overwrites ``autodoc_mock_imports`` with a list derived from
@@ -52,25 +50,41 @@ _install_stub('launch_ros.parameters_type', ['SomeParameters'])
 # expose_action is used as a decorator: @expose_action('name')
 sys.modules['launch.frontend'].expose_action = lambda *a, **k: (lambda cls: cls)
 
-# When rosdoc2 runs sphinx-build, it exec's this file from a generated wrapper.
-# Parse the user_conf_py path out of the call stack and add the package root
-# to sys.path so autodoc can import ros_gz_bridge.
-try:
-    import ros_gz_bridge  # noqa: F401
-except ImportError:
-    for _fi in inspect.stack():
-        for _line in (_fi.code_context or []):
-            _m = re.search(r'exec\(open\("([^"]+)"\)', _line)
-            if _m:
-                _pkg_root = os.path.dirname(os.path.dirname(_m.group(1)))
-                if os.path.isdir(_pkg_root):
-                    sys.path.insert(0, _pkg_root)
-                break
+
+# rosdoc2 copies this file into its own build tree and exec()s it from there,
+# so __file__ points at that copy and offers no way back to the package source.
+# What does: the generated conf.py puts the package root -- the parent of the
+# `python_source` directory named in rosdoc2.yaml -- on sys.path before exec'ing
+# this file, so pick it back out from there.
+def _find_package_root():
+    for _candidate in sys.path:
+        if _candidate \
+                and os.path.isfile(os.path.join(_candidate, 'package.xml')) \
+                and os.path.isdir(os.path.join(_candidate, 'images')):
+            return _candidate
+    return None
+
+
+_pkg_root = _find_package_root()
+
+# rosdoc2 copies README.md into the Sphinx source root but not the images/
+# directory next to it, so the README's `images/...` links resolve to nothing
+# and Sphinx warns "image file not readable".  Copy them in beside the README.
+if _pkg_root:
+    _srcdir = os.path.dirname(os.path.abspath(__file__)) if '__file__' in dir() \
+        else os.getcwd()
+    shutil.copytree(
+        os.path.join(_pkg_root, 'images'),
+        os.path.join(_srcdir, 'images'),
+        dirs_exist_ok=True)
 
 project = 'ros_gz_bridge'
 copyright = '2022, Open Source Robotics Foundation, Inc.'
 author = 'Open Source Robotics Foundation, Inc.'
 
+# 'sphinx.ext.intersphinx' is required, not optional: rosdoc2 raises a
+# RuntimeError if it is missing from `extensions`, and it supplies
+# `intersphinx_mapping` itself, which is why none is set here.
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
@@ -84,8 +98,6 @@ source_suffix = {
     '.rst': 'restructuredtext',
     '.md': 'markdown',
 }
-
-templates_path = ['_templates']
 
 exclude_patterns = [
     '_build',

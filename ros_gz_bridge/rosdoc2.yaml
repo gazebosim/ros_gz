@@ -17,13 +17,10 @@ builders:
         name: 'ros_gz_bridge Public C/C++ API',
         output_dir: 'generated/doxygen',
         extra_doxyfile_statements: [
-            'PREDEFINED = DOXYGEN_SHOULD_SKIP_THIS',
             'EXTRACT_ALL = YES',
             'EXTRACT_PRIVATE = NO',
             'EXTRACT_STATIC = YES',
             'ENABLE_PREPROCESSING = YES',
-            'QUIET = YES',
-            'EXCLUDE_PATTERNS = */src/* */test/* */bin/*'
         ]
     }
     - sphinx: {

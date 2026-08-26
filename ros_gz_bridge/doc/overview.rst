@@ -34,15 +34,25 @@ Architecture
    ├── src/
    │   ├── parameter_bridge.cpp, static_bridge.cpp, bridge_types.cpp
    │   ├── bridge_handle*.cpp  ← per-direction bridge handles
-   │   └── factory*.cpp        ← generated plugin factories
+   │   └── factory*.{hpp,cpp}  ← hand-written factory interfaces + templates
    ├── ros_gz_bridge/          ← Python package
    │   ├── mappings.py         ← ROS ↔ GZ type mapping table
    │   └── actions/ros_gz_bridge.py  ← launch action plugin
    └── launch/                 ← reference launch files
 
+The per-message factories are not checked into ``src/``.  They are emitted at
+build time from ``mappings.py`` into
+``${CMAKE_BINARY_DIR}/generated/factories/<pkg>.cpp``; ``src/`` holds only the
+hand-written ``factory_interface.cpp`` / ``service_factory_interface.cpp`` and
+the ``factory.hpp`` / ``service_factory.hpp`` templates they build on.  See
+:doc:`conversions` for the generation pipeline.
+
 A single :cpp:class:`~ros_gz_bridge::RosGzBridge` node owns one ``gz::transport::Node``
-plus a set of :cpp:class:`BridgeHandle` instances (one per bridged topic) and
-zero or more ``rclcpp::Service`` entries (one per bridged service).
+plus a set of ``BridgeHandle`` instances (one per bridged topic) and zero or
+more ``rclcpp::Service`` entries (one per bridged service).  ``BridgeHandle`` is
+internal to the implementation (``src/bridge_handle.hpp``); the public headers
+only forward-declare it, so Doxygen never indexes it and there is no generated
+API page to link to.
 
 Bridge Directions
 -----------------
@@ -115,13 +125,21 @@ container:
 Node Parameters
 ---------------
 
-The parameter bridge recognizes the following ROS parameters:
+The parameter bridge recognizes the following ROS parameters.  The package
+``README.md`` covers the same parameters and the full YAML schema; keep the two
+in sync when adding or changing one.
 
 - ``config_file`` (string, default: ``""``) — path to a YAML config file.
 - ``bridge_names`` (array of strings, default: ``[]``) — list of bridge
   configuration names to load via parameter namespaces (e.g., ``bridges.<name>.ros_type_name``).
-- ``lazy`` (bool, default: ``false``) — enable lazy subscription mode, where
-  Gazebo subscriptions are only activated when ROS has active subscribers.
+- ``lazy`` (bool, default: ``false``) — enable lazy subscription mode, where the
+  bridge subscribes on the *source* side only while at least one subscriber is
+  present on the *destination* side.  For a ``GZ_TO_ROS`` bridge the Gazebo
+  subscription starts once a ROS subscriber appears; for ``ROS_TO_GZ`` the ROS
+  subscription starts once a Gazebo subscriber connects.  Note that Gazebo
+  transport can only report whether a publisher *has* connections, not how many
+  or whether they are remote, so a bidirectional bridge always counts as having
+  a destination-side subscriber and never goes idle.
 - ``subscription_heartbeat`` (int, default: ``1000``) — period, in
   milliseconds, for the liveliness / lazy-subscription heartbeat.
 - ``expand_gz_topic_names`` (bool, default: ``false``) — when ``true``, Gazebo

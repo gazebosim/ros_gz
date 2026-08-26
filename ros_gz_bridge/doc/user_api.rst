@@ -65,7 +65,7 @@ Key fields:
   queue depths.  When unset, the node-level default is used.
 - ``is_lazy`` — when ``true``, the bridge only forwards messages if there is
   at least one subscriber on the destination side.
-- ``qos_profile`` — optional ROS QoS profile; see :cpp:func:`parseQoS`.
+- ``qos_profile`` — optional ROS QoS profile; see :cpp:func:`ros_gz_bridge::parseQoS`.
 - ``service_name``, ``gz_req_type_name``, ``gz_rep_type_name`` — used for
   service bridges instead of topic fields.
 - ``frame_id`` — when non-empty, overrides the ``frame_id`` of bridged ROS
