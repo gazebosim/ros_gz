@@ -1,0 +1,9 @@
+string child_model_name
+string child_link_name
+uint8 COMMAND_UNSPECIFIED=0
+uint8 ATTACH=1
+uint8 DETACH=2
+uint8 command
+---
+int32 error_code
+string message

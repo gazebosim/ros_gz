@@ -16,6 +16,18 @@
 
 #include <ros_gz_bridge/convert/ros_gz_interfaces.hpp>
 
+#include "service_factories/ros_gz_interfaces.hpp"
+
+TEST(AttachDetachServiceTest, FactoryRegistration)
+{
+  auto factory = ros_gz_bridge::get_service_factory__ros_gz_interfaces(
+    "ros_gz_interfaces/srv/AttachDetach",
+    "gz.msgs.AttachDetachRequest",
+    "gz.msgs.Result");
+
+  ASSERT_NE(nullptr, factory);
+}
+
 // A more specific set of tests for the ros_gz_interfaces/msg/ParamVec to
 // to verify behaviors that couldn't easily be captured by the generic test framework
 struct RosToGzTest : public ::testing::Test
