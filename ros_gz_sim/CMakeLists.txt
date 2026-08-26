@@ -89,6 +89,7 @@ set(gz_simulation_interfaces_sources
   src/gz_simulation_interfaces/services/delete_entity.cpp
   src/gz_simulation_interfaces/services/get_entities.cpp
   src/gz_simulation_interfaces/services/get_entities_states.cpp
+  src/gz_simulation_interfaces/services/get_entity_bounds.cpp
   src/gz_simulation_interfaces/services/get_entity_info.cpp
   src/gz_simulation_interfaces/services/get_entity_state.cpp
   src/gz_simulation_interfaces/services/get_simulation_state.cpp

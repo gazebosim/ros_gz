@@ -41,6 +41,7 @@
 #include "services/delete_entity.hpp"
 #include "services/get_entities.hpp"
 #include "services/get_entities_states.hpp"
+#include "services/get_entity_bounds.hpp"
 #include "services/get_entity_info.hpp"
 #include "services/get_entity_state.hpp"
 #include "services/get_simulation_state.hpp"
@@ -105,6 +106,7 @@ void GzSimulationInterfaces::Implementation::CreateInterfaces()
 
   this->AddInterface<services::DeleteEntity>();
   this->AddInterface<services::GetEntities>();
+  this->AddInterface<services::GetEntityBounds>();
   this->AddInterface<services::GetEntityInfo>();
   this->AddInterface<services::GetEntityState>();
   this->AddInterface<services::GetEntitiesStates>();
