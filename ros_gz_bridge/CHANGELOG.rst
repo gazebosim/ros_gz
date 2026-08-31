@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.26 (2026-08-31)
+---------------------
+* Document all supported service bridge types (backport `#928 <https://github.com/gazebosim/ros_gz/issues/928>`_) (`#945 <https://github.com/gazebosim/ros_gz/issues/945>`_)
+* Correctly initialize std::atomic_flag with ATOMIC_FLAG_INIT (`#929 <https://github.com/gazebosim/ros_gz/issues/929>`_) (`#937 <https://github.com/gazebosim/ros_gz/issues/937>`_)
+* Contributors: mergify[bot]
+
 0.244.25 (2026-06-08)
 ---------------------
 * Added missing headers in convert (`#888 <https://github.com/gazebosim/ros_gz/issues/888>`_) (`#892 <https://github.com/gazebosim/ros_gz/issues/892>`_)
