@@ -2,6 +2,13 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+1.0.24 (2026-08-31)
+-------------------
+* Document supported service bridge types (`#928 <https://github.com/gazebosim/ros_gz/issues/928>`_) (`#944 <https://github.com/gazebosim/ros_gz/issues/944>`_)
+* Correctly initialize std::atomic_flag with ATOMIC_FLAG_INIT (`#929 <https://github.com/gazebosim/ros_gz/issues/929>`_) (`#936 <https://github.com/gazebosim/ros_gz/issues/936>`_)
+* Add AirSpeed message and bridge mapping (`#914 <https://github.com/gazebosim/ros_gz/issues/914>`_) (`#917 <https://github.com/gazebosim/ros_gz/issues/917>`_)
+* Contributors: mergify[bot]
+
 1.0.23 (2026-06-08)
 -------------------
 * Added missing headers in convert (`#888 <https://github.com/gazebosim/ros_gz/issues/888>`_) (`#891 <https://github.com/gazebosim/ros_gz/issues/891>`_)
