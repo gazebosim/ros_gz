@@ -25,19 +25,11 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   const BridgeConfig & config)
 : BridgeHandle(ros_node, gz_node, config)
 {
-<<<<<<< HEAD
-  ros_node_->get_parameter(
-    "override_timestamps_with_wall_time",
-    gz_to_ros_parameters_.override_timestamps_with_wall_time);
-
-  ros_node_->get_parameter(
-=======
   auto node = this->RosNode();
   node->get_parameter(
     "override_timestamps_with_wall_time",
     gz_to_ros_parameters_.override_timestamps_with_wall_time);
   node->get_parameter(
->>>>>>> 43a3203 (Break the parameter bridge handle ownership cycle (#952))
     "override_frame_id",
     gz_to_ros_parameters_.override_frame_id);
 }
