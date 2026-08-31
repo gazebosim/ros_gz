@@ -2,6 +2,12 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.10 (2026-08-31)
+-------------------
+* Fix entity type values in sim tools and docs (`#927 <https://github.com/gazebosim/ros_gz/issues/927>`_) (`#946 <https://github.com/gazebosim/ros_gz/issues/946>`_)
+* Set default spawn pose arguments to 0.0 (`#926 <https://github.com/gazebosim/ros_gz/issues/926>`_) (`#939 <https://github.com/gazebosim/ros_gz/issues/939>`_)
+* Contributors: mergify[bot]
+
 3.0.9 (2026-06-08)
 ------------------
 * Restore rolling CI on Ubuntu 26.04 resolute (`#883 <https://github.com/gazebosim/ros_gz/issues/883>`_)
