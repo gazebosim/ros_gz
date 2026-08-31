@@ -2,6 +2,12 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.18 (2026-08-31)
+-------------------
+* Fix entity type values in sim tools and docs (`#927 <https://github.com/gazebosim/ros_gz/issues/927>`_) (`#947 <https://github.com/gazebosim/ros_gz/issues/947>`_)
+* update vehicle model to spawn above ground (`#921 <https://github.com/gazebosim/ros_gz/issues/921>`_)
+* Contributors: Kimberly McGuire, mergify[bot]
+
 2.1.17 (2026-06-08)
 -------------------
 

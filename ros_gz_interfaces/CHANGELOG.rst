@@ -2,6 +2,11 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+2.1.18 (2026-08-31)
+-------------------
+* Add AirSpeed message and bridge mapping (`#914 <https://github.com/gazebosim/ros_gz/issues/914>`_) (`#916 <https://github.com/gazebosim/ros_gz/issues/916>`_)
+* Contributors: mergify[bot]
+
 2.1.17 (2026-06-08)
 -------------------
 
