@@ -49,133 +49,133 @@ namespace ros_gz_bridge
 
 // sensor_msgs
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::Joy & ros_msg,
   gz::msgs::Joy & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Joy & gz_msg,
   sensor_msgs::msg::Joy & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::FluidPressure & ros_msg,
   gz::msgs::FluidPressure & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::FluidPressure & gz_msg,
   sensor_msgs::msg::FluidPressure & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::Image & ros_msg,
   gz::msgs::Image & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Image & gz_msg,
   sensor_msgs::msg::Image & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::CameraInfo & ros_msg,
   gz::msgs::CameraInfo & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::CameraInfo & gz_msg,
   sensor_msgs::msg::CameraInfo & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::Imu & ros_msg,
   gz::msgs::IMU & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::IMU & gz_msg,
   sensor_msgs::msg::Imu & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::JointState & ros_msg,
   gz::msgs::Model & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Model & gz_msg,
   sensor_msgs::msg::JointState & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
   gz::msgs::LaserScan & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::LaserScan & gz_msg,
   sensor_msgs::msg::LaserScan & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::MagneticField & ros_msg,
   gz::msgs::Magnetometer & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Magnetometer & gz_msg,
   sensor_msgs::msg::MagneticField & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::NavSatFix & ros_msg,
   gz::msgs::NavSat & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::NavSat & gz_msg,
   sensor_msgs::msg::NavSatFix & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::PointCloud2 & ros_msg,
   gz::msgs::PointCloudPacked & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::PointCloudPacked & gz_msg,
   sensor_msgs::msg::PointCloud2 & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const sensor_msgs::msg::BatteryState & ros_msg,
   gz::msgs::BatteryState & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::BatteryState & gz_msg,
   sensor_msgs::msg::BatteryState & ros_msg);

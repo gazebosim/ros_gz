@@ -48,193 +48,193 @@ namespace ros_gz_bridge
 
 // geometry_msgs
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Quaternion & ros_msg,
   gz::msgs::Quaternion & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Quaternion & gz_msg,
   geometry_msgs::msg::Quaternion & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Vector3 & ros_msg,
   gz::msgs::Vector3d & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Vector3 & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Point & ros_msg,
   gz::msgs::Vector3d & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Vector3d & gz_msg,
   geometry_msgs::msg::Point & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Pose & ros_msg,
   gz::msgs::Pose & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Pose & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseArray & ros_msg,
   gz::msgs::Pose_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose_V & gz_msg,
   geometry_msgs::msg::PoseArray & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovariance & ros_msg,
   gz::msgs::PoseWithCovariance & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovarianceStamped & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseWithCovarianceStamped & ros_msg,
   gz::msgs::PoseWithCovariance & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::PoseWithCovariance & gz_msg,
   geometry_msgs::msg::PoseWithCovariance & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::PoseStamped & ros_msg,
   gz::msgs::Pose & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::PoseStamped & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Transform & ros_msg,
   gz::msgs::Pose & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::Transform & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::TransformStamped & ros_msg,
   gz::msgs::Pose & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Pose & gz_msg,
   geometry_msgs::msg::TransformStamped & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Twist & ros_msg,
   gz::msgs::Twist & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Twist & gz_msg,
   geometry_msgs::msg::Twist & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::TwistStamped & ros_msg,
   gz::msgs::Twist & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Twist & gz_msg,
   geometry_msgs::msg::TwistStamped & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovariance & ros_msg,
   gz::msgs::TwistWithCovariance & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovariance & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg,
   gz::msgs::TwistWithCovariance & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::TwistWithCovariance & gz_msg,
   geometry_msgs::msg::TwistWithCovarianceStamped & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::Wrench & ros_msg,
   gz::msgs::Wrench & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::Wrench & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const geometry_msgs::msg::WrenchStamped & ros_msg,
   gz::msgs::Wrench & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Wrench & gz_msg,
   geometry_msgs::msg::WrenchStamped & ros_msg);
