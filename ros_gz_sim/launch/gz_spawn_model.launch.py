@@ -27,6 +27,7 @@ def generate_launch_description():
     model_string = LaunchConfiguration('model_string')
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
+    entity_namespace = LaunchConfiguration('entity_namespace')
     allow_renaming = LaunchConfiguration('allow_renaming')
     x = LaunchConfiguration('x', default='0.0')
     y = LaunchConfiguration('y', default='0.0')
@@ -54,6 +55,10 @@ def generate_launch_description():
         'entity_name', default_value=TextSubstitution(text=''),
         description='Name of the entity'
     )
+    declare_entity_namespace_cmd = DeclareLaunchArgument(
+        'entity_namespace', default_value=TextSubstitution(text=''),
+        description='Namespace for the spawned entity.'
+    )
     declare_allow_renaming_cmd = DeclareLaunchArgument(
         'allow_renaming', default_value='False',
         description='Whether the entity allows renaming or not'
@@ -68,6 +73,7 @@ def generate_launch_description():
                      'string': model_string,
                      'topic': topic,
                      'name': entity_name,
+                     'ns': entity_namespace,
                      'allow_renaming': allow_renaming,
                      'x': x,
                      'y': y,
@@ -87,6 +93,7 @@ def generate_launch_description():
     ld.add_action(declare_model_string_cmd)
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
+    ld.add_action(declare_entity_namespace_cmd)
     ld.add_action(declare_allow_renaming_cmd)
     # Add the actions to launch all of the create nodes
     ld.add_action(load_nodes)
