@@ -15,20 +15,21 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
-  <buildtool_depend>pkg-config</buildtool_depend>
-  <buildtool_depend>rosidl_pycommon</buildtool_depend>
 
   <depend>actuator_msgs</depend>
+  <depend>builtin_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>gps_msgs</depend>
   <depend>launch</depend>
   <depend>launch_ros</depend>
   <depend>marine_acoustic_msgs</depend>
   <depend>nav_msgs</depend>
+  <depend>rcl_interfaces</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>ros_gz_interfaces</depend>
   <depend>rosgraph_msgs</depend>
+  <depend>rosidl_pycommon</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2_msgs</depend>
@@ -43,7 +44,6 @@
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>launch_testing_ament_cmake</test_depend>
-  <test_depend>launch_ros</test_depend>
   <test_depend>launch_testing</test_depend>
 
   <export>
