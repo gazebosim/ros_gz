@@ -67,7 +67,8 @@ SpawnEntity::SpawnEntity(
         return;
       }
 
-      // TODO(azeey) Add support for entity_namespace
+      gz_request.set_entity_namespace(request->entity_namespace);
+
       // TODO(azeey) Reuse code in ros_gz_bridge/convert/geometry_msgs
       auto * pose = gz_request.mutable_pose();
       pose->mutable_position()->set_x(request->initial_pose.pose.position.x);

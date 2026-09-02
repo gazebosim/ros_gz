@@ -1,0 +1,76 @@
+<?xml version="1.0" ?>
+<!--
+  Gazebo Sim sdformat_urdf parser plugin demo
+TODO:
+  Try sending commands:
+
+    gz topic -t "/robot1/cmd_vel" -m gz.msgs.Twist -p "linear: {x: 1.0}, angular: {z: -0.1}"
+    ros2 topic pub /tobot1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.1}}"
+
+  Listen to odometry:
+
+    gz topic -e -t /model/vehicle/odometry
+    ros2 topic echo /model/vehicle/odometry
+
+-->
+<sdf version="1.12">
+  <world name="multi_robot">
+
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <attenuation>
+        <range>1000</range>
+        <constant>0.9</constant>
+        <linear>0.01</linear>
+        <quadratic>0.001</quadratic>
+      </attenuation>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="visual">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>100 100</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.8 0.8 0.8 1</ambient>
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+            <specular>0.8 0.8 0.8 1</specular>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="vehicle" namespace="robot1">
+      <self_collide>true</self_collide>
+      <pose>0 0 1 0 0 0</pose>
+      <include merge="true">
+        <uri>package://ros_gz_sim_demos/models/vehicle</uri>
+      </include>
+    </model>
+
+    <include>
+      <uri>package://ros_gz_sim_demos/models/vehicle</uri>
+      <name>robot2</name>
+      <namespace>{name}</namespace>
+      <pose>0 2 1 0 0 0</pose>
+    </include>
+
+  </world>
+</sdf>

@@ -1,0 +1,35 @@
+<launch>
+  <gz_server
+    world_sdf_file="$(find-pkg-share ros_gz_sim_demos)/worlds/multi_robot.sdf"
+    use_composition="True"
+    create_own_container="True" />
+  <node
+    pkg="ros_gz_sim"
+    exec="create"
+    args="-world multi_robot
+          -file $(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf
+          -name robot3
+          -ns {name}ns
+          -x 0.0
+          -y 4.0
+          -z 1.0
+          -Y 0.0"
+    output="screen" />
+  <gz_spawn_model
+    world="multi_robot"
+    file="$(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf"
+    entity_name="robot4"
+    entity_namespace="{name}"
+    allow_renaming="false"
+    x="0.0"
+    y="6.0"
+    z="1.0"
+    yaw="0.0">
+  </gz_spawn_model>
+  <ros_gz_bridge
+    bridge_name="ros_gz_bridge"
+    config_file="$(find-pkg-share ros_gz_sim_demos)/config/multi_robot.yaml"
+    use_composition="True">
+  </ros_gz_bridge>
+  <executable cmd="gz sim -g" output="screen" />
+</launch>
