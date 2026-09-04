@@ -1,0 +1,31 @@
+## rosdoc2 configuration for ros_gz_bridge.
+
+## This 'attic section' self-documents this file's type and version.
+type: 'rosdoc2 config'
+version: 1
+
+---
+
+settings:
+  always_run_doxygen: true
+  ## Document the Python launch action plugin alongside the C++ API.
+  always_run_sphinx_apidoc: true
+  python_source: 'ros_gz_bridge'
+
+builders:
+    - doxygen: {
+        name: 'ros_gz_bridge Public C/C++ API',
+        output_dir: 'generated/doxygen',
+        extra_doxyfile_statements: [
+            'EXTRACT_ALL = YES',
+            'EXTRACT_PRIVATE = NO',
+            'EXTRACT_STATIC = YES',
+            'ENABLE_PREPROCESSING = YES',
+        ]
+    }
+    - sphinx: {
+        name: 'ros_gz_bridge',
+        sphinx_sourcedir: doc,
+        doxygen_xml_directory: 'generated/doxygen/xml',
+        output_dir: ''
+    }
