@@ -413,6 +413,19 @@ ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a nam
 
 By changing `chatter` to `/chatter` or `~/chatter` you can obtain different results.
 
+## Example 9: Dynamically bridge Gazebo topics
+
+The bridge can discover advertised Gazebo Transport topics and create bridges for
+topics whose Gazebo message types have known ROS mappings:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge --ros-args -p create_dynamic_bridges:=true
+```
+
+By default, dynamically discovered bridges are created from Gazebo to ROS. Set
+`dynamic_bridge_direction` to `BIDIRECTIONAL` or `ROS_TO_GZ` to change the
+direction.
+
 ## API
 
 ROS 2 Parameters:
@@ -426,6 +439,16 @@ ROS 2 Parameters:
     * type: string
     * default: ""
     * description: YAML file to be loaded as the bridge configuration
+* `create_dynamic_bridges`
+    * type: bool
+    * default: false
+    * description: Discover Gazebo topics and automatically create bridges for
+      topics with known Gazebo to ROS message mappings.
+* `dynamic_bridge_direction`
+    * type: string
+    * default: "GZ_TO_ROS"
+    * description: Direction used for dynamically discovered bridges. Supported
+      values are "GZ_TO_ROS", "ROS_TO_GZ", and "BIDIRECTIONAL".
 * `expand_gz_topic_names`
     * type: bool
     * default: false

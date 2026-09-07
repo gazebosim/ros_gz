@@ -16,6 +16,7 @@
 #define ROS_GZ_BRIDGE__ROS_GZ_BRIDGE_HPP_
 
 #include <memory>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -57,6 +58,9 @@ protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
 
+  /// \brief Add bridges for discovered Gazebo topics with known ROS mappings.
+  void add_dynamic_bridges();
+
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
   std::shared_ptr<gz::transport::Node> gz_node_;
@@ -69,6 +73,12 @@ protected:
 
   /// \brief Timer to control periodic callback
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
+
+  /// \brief True after bridge configuration parameters have been processed.
+  bool configured_bridges_created_{false};
+
+  /// \brief Topic/type pairs that have already had bridge creation attempted.
+  std::set<std::string> bridge_topics_;
 };
 }  // namespace ros_gz_bridge
 
