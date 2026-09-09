@@ -6,6 +6,7 @@
   <arg name="use_composition" default="False" description="Use composed bringup if True" />
   <arg name="initial_sim_time" default="0.0" description="The initial simulation time" />
   <arg name="verbosity_level" default="4" description="The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG)" />
+  <arg name="start_paused" default="False" />
   <gz_server
     world_sdf_file="$(var world_sdf_file)"
     world_sdf_string="$(var world_sdf_string)"
@@ -13,6 +14,7 @@
     create_own_container="$(var create_own_container)"
     use_composition="$(var use_composition)"
     initial_sim_time="$(var initial_sim_time)"
-    verbosity_level="$(var verbosity_level)">
+    verbosity_level="$(var verbosity_level)"
+    start_paused="$(var start_paused)">
   </gz_server>
 </launch>

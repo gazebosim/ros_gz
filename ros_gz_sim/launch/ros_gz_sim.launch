@@ -12,6 +12,7 @@
   <arg name="world_sdf_string" default="" description="SDF world string" />
   <arg name="initial_sim_time" default="0.0" description="The initial simulation time" />
   <arg name="verbosity_level" default="4" description="The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG)" />
+  <arg name="start_paused" default="False" description="Start simulation paused if True"/>
 
   <gz_server
     world_sdf_file="$(var world_sdf_file)"
@@ -19,6 +20,7 @@
     container_name="$(var container_name)"
     create_own_container="$(var create_own_container)"
     use_composition="$(var use_composition)"
+    start_paused="$(var start_paused)">
     initial_sim_time="$(var initial_sim_time)"
     verbosity_level="$(var verbosity_level)">
   </gz_server>

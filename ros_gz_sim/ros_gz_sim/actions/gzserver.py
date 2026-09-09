@@ -96,6 +96,7 @@ class GzServer(Action):
         create_own_container: Union[bool, SomeSubstitutionsType] = False,
         use_composition: Union[bool, SomeSubstitutionsType] = False,
         initial_sim_time: Union[float, SomeSubstitutionsType] = 0.0,
+        start_paused: Union[bool, SomeSubstitutionsType] = False,
         verbosity_level: Union[int, SomeSubstitutionsType] = 4,
         **kwargs
     ) -> None:
@@ -110,6 +111,7 @@ class GzServer(Action):
         :param: container_name Name of container that nodes will load in if use composition.
         :param: create_own_container Whether to start a ROS container when using composition.
         :param: use_composition Use composed bringup if True.
+        :param: start_paused Start simulation in a paused state if True.
         :param: initial_sim_time: The initial simulation time.
         :param: verbosity_level: The verbosity level of the Gazebo server (0=FATAL, 4=DEBUG).
         """
@@ -142,6 +144,13 @@ class GzServer(Action):
             )
         else:
             self.__initial_sim_time = normalize_typed_substitution(initial_sim_time, float)
+
+        if isinstance(start_paused, str):
+            self.__start_paused = normalize_typed_substitution(
+                TextSubstitution(text=start_paused), bool
+            )
+        else:
+            self.__start_paused = normalize_typed_substitution(start_paused, bool)
 
         if isinstance(verbosity_level, str):
             self.__verbosity_level = normalize_typed_substitution(
@@ -178,6 +187,9 @@ class GzServer(Action):
         initial_sim_time = entity.get_attr(
             'initial_sim_time', data_type=str,
             optional=True)
+        start_paused = entity.get_attr(
+            'start_paused', data_type=str,
+            optional=True)
 
         verbosity_level = entity.get_attr(
             'verbosity_level', data_type=str,
@@ -207,6 +219,10 @@ class GzServer(Action):
         if isinstance(initial_sim_time, str):
             initial_sim_time = parser.parse_substitution(initial_sim_time)
             kwargs['initial_sim_time'] = initial_sim_time
+
+        if isinstance(start_paused, str):
+            start_paused = parser.parse_substitution(start_paused)
+            kwargs['start_paused'] = start_paused
 
         if isinstance(verbosity_level, str):
             verbosity_level = parser.parse_substitution(verbosity_level)
@@ -248,6 +264,7 @@ class GzServer(Action):
                 parameters=[{'world_sdf_file': self.__world_sdf_file,
                              'world_sdf_string': self.__world_sdf_string,
                              'initial_sim_time': self.__initial_sim_time,
+                             'start_paused': self.__start_paused,
                              'verbosity_level': self.__verbosity_level}],
                 ))
 
@@ -266,6 +283,7 @@ class GzServer(Action):
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
                                      'world_sdf_string': self.__world_sdf_string,
                                      'initial_sim_time': self.__initial_sim_time,
+                                     'start_paused': self.__start_paused,
                                      'verbosity_level': self.__verbosity_level}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),
@@ -285,6 +303,7 @@ class GzServer(Action):
                         parameters=[{'world_sdf_file': self.__world_sdf_file,
                                      'world_sdf_string': self.__world_sdf_string,
                                      'initial_sim_time': self.__initial_sim_time,
+                                     'start_paused': self.__start_paused,
                                      'verbosity_level': self.__verbosity_level}],
                         extra_arguments=[{'use_intra_process_comms': True}],
                         ),

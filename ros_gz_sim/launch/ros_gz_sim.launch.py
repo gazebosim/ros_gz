@@ -75,6 +75,10 @@ def generate_launch_description():
         'world_sdf_string', default_value=TextSubstitution(text=''),
         description='SDF world string'
     )
+    declare_start_paused_cmd = DeclareLaunchArgument(
+        'start_paused', default_value='False',
+        description='Start simulation paused if True'
+    )
 
     declare_initial_sim_time_cmd = DeclareLaunchArgument(
         'initial_sim_time', default_value='0.0',
@@ -92,6 +96,7 @@ def generate_launch_description():
         container_name=LaunchConfiguration('container_name'),
         create_own_container=LaunchConfiguration('create_own_container'),
         use_composition=LaunchConfiguration('use_composition'),
+        start_paused=LaunchConfiguration('start_paused'),
         initial_sim_time=LaunchConfiguration('initial_sim_time'),
         verbosity_level=LaunchConfiguration('verbosity_level'),
     )
@@ -123,6 +128,7 @@ def generate_launch_description():
     ld.add_action(declare_bridge_params_cmd)
     ld.add_action(declare_world_sdf_file_cmd)
     ld.add_action(declare_world_sdf_string_cmd)
+    ld.add_action(declare_start_paused_cmd)
     ld.add_action(declare_initial_sim_time_cmd)
     ld.add_action(declare_verbosity_level_cmd)
     # Add the actions to launch all of the bridge + gz_server nodes
