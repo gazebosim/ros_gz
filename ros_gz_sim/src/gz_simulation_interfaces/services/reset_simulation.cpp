@@ -17,7 +17,6 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
-#include <future>
 #include <memory>
 
 #include "../gazebo_proxy.hpp"
@@ -45,11 +44,6 @@ ResetSimulation::ResetSimulation(
   }
   this->services_handle_ = ros_node->create_service<ResetSimulationSrv>(
     "reset_simulation", [this, control_service](RequestPtr request, ResponsePtr response) {
-      auto reset_detected_future = std::async(std::launch::async, [this]
-      {
-        return this->gz_proxy_->WaitForResetDetected();
-      });
-
       using Result = simulation_interfaces::msg::Result;
       if (
         request->scope != ResetSimulationSrv::Request::SCOPE_DEFAULT &&
@@ -66,6 +60,7 @@ ResetSimulation::ResetSimulation(
       gz_request.mutable_reset()->set_all(true);
       // TODO(azeey) Resetting only the time, state or spawned models is not supported yet in Gazebo
 
+      this->gz_proxy_->ArmResetDetection();
       bool result;
       gz::msgs::Boolean reply;
       bool executed = this->gz_proxy_->GzNode()->Request(
@@ -83,7 +78,7 @@ ResetSimulation::ResetSimulation(
       // Since the "control" service is asynchronous, getting results from the service doesn't mean
       // the request has taken effect. Therefore, we wait here until the desired state is reached or
       // a timeout occurs.
-      if (!reset_detected_future.get()) {
+      if (!this->gz_proxy_->WaitForResetDetected()) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to reset simulation";
       }

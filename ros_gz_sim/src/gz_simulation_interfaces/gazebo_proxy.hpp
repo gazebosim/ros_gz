@@ -129,7 +129,10 @@ public:
   /// \return True if the world stats has been updated before a timeout occurred.
   bool AssertUpdatedWorldStats(simulation_interfaces::msg::Result & result);
 
-  /// \brief Wait until simulation reset is detected
+  /// \brief Arm reset detection before sending a reset request.
+  void ArmResetDetection();
+
+  /// \brief Wait until simulation reset is detected.
   /// \return True if reset was detected.
   bool WaitForResetDetected();
 
