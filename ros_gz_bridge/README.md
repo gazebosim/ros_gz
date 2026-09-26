@@ -96,7 +96,7 @@ Gazebo would be the only `/clock` publisher, the sole source of clock informatio
 You should create an unidirectional `/clock` bridge:
 
 ```bash
-ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock
+ros2 run ros_gz_bridge parameter_bridge /clock@rosgraph_msgs/msg/Clock@gz.msgs.Clock
 ```
 
 An alternative set-up can be using the bridge with the `override_timestamps_with_wall_time` ros parameter set to `true` (default=`false`). In this set-up,
