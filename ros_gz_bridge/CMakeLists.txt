@@ -374,6 +374,13 @@ if(BUILD_TESTING)
     TIMEOUT 200
   )
 
+  ament_add_gtest(${PROJECT_NAME}_automated_bridge test/automated_bridge.cpp)
+  target_include_directories(${PROJECT_NAME}_automated_bridge PRIVATE src test)
+  target_link_libraries(${PROJECT_NAME}_automated_bridge
+    ${bridge_lib}
+    test_utils
+  )
+
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
@@ -385,9 +392,9 @@ if(BUILD_TESTING)
     ${std_msgs_TARGETS}
   )
 
-  ament_add_gtest(${PROJECT_NAME}_automated_bridge test/automated_bridge.cpp)
-  target_include_directories(${PROJECT_NAME}_automated_bridge PRIVATE src test)
-  target_link_libraries(${PROJECT_NAME}_automated_bridge
+  ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
+  target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
+  target_link_libraries(${PROJECT_NAME}_intra_process
     ${bridge_lib}
     test_utils
   )
