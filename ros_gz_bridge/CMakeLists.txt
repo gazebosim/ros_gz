@@ -384,6 +384,13 @@ if(BUILD_TESTING)
     rclcpp::rclcpp
     ${std_msgs_TARGETS}
   )
+
+  ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
+  target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
+  target_link_libraries(${PROJECT_NAME}_intra_process
+    ${bridge_lib}
+    test_utils
+  )
 endif()
 
 # Export old-style CMake variables
