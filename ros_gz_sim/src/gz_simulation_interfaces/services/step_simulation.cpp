@@ -49,6 +49,12 @@ StepSimulation::StepSimulation(
       if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
         return;
       }
+      if (!this->gz_proxy_->Paused()) {
+        response->result.result = Result::RESULT_INCORRECT_STATE;
+        response->result.error_message = "Simulation has to be paused before stepping";
+        return;
+      }
+
       // The spec uses a uint64, but the service provided by Gazebo uses a uint32 so we bail out if
       // the requested number of steps cannot be represented properly.
       if (request->steps > std::numeric_limits<uint32_t>::max()) {
@@ -58,6 +64,7 @@ StepSimulation::StepSimulation(
         return;
       }
 
+      const auto iterations_start = this->gz_proxy_->Iterations();
       gz::msgs::WorldControl gz_request;
       gz_request.set_pause(true);
       gz_request.set_step(true);
@@ -70,6 +77,19 @@ StepSimulation::StepSimulation(
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to step simulation";
       } else if (result && reply.data()) {
+        while (
+          rclcpp::ok() &&
+          this->gz_proxy_->Iterations() - iterations_start < request->steps)
+        {
+          if (!this->gz_proxy_->AssertUpdatedWorldStats(response->result)) {
+            return;
+          }
+        }
+        if (!rclcpp::ok()) {
+          response->result.result = Result::RESULT_OPERATION_FAILED;
+          response->result.error_message = "StepSimulation was interrupted";
+          return;
+        }
         response->result.result = Result::RESULT_OK;
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
