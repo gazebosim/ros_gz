@@ -21,7 +21,45 @@
 
 #include <gtest/gtest.h>
 
+#include <string>
+
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
+
+TEST(ImageRosToGz, PreservesPaddedRows)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.width = 2;
+  ros_msg.height = 2;
+  ros_msg.encoding = "mono8";
+  ros_msg.step = 4;
+  ros_msg.data = {21, 22, 201, 202, 23, 24, 203, 204};
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(4u, gz_msg.step());
+  EXPECT_EQ(
+    std::string(ros_msg.data.begin(), ros_msg.data.end()),
+    gz_msg.data());
+}
+
+TEST(ImageGzToRos, PreservesPaddedRows)
+{
+  gz::msgs::Image gz_msg;
+  gz_msg.set_width(2);
+  gz_msg.set_height(2);
+  gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT8);
+  gz_msg.set_step(4);
+  gz_msg.set_data(std::string("\x15\x16\xc9\xca\x17\x18\xcb\xcc", 8));
+
+  sensor_msgs::msg::Image ros_msg;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
+
+  EXPECT_EQ(4u, ros_msg.step);
+  EXPECT_EQ(8u, ros_msg.data.size());
+  EXPECT_EQ(23u, ros_msg.data[4]);
+  EXPECT_EQ(24u, ros_msg.data[5]);
+}
 
 // ---------------------------------------------------------------------------
 // JointState ROS->GZ : gh issue #118
@@ -105,6 +143,25 @@ TEST(LaserScanRosToGz, EmptyIntensitiesDoesNotOverread)
   ASSERT_NO_FATAL_FAILURE(ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg));
 
   EXPECT_EQ(0, gz_msg.intensities_size());
+}
+
+TEST(LaserScanRosToGz, PreservesInclusiveEndpointSample)
+{
+  sensor_msgs::msg::LaserScan ros_msg;
+  ros_msg.angle_min = 0.0f;
+  ros_msg.angle_max = 0.2f;
+  ros_msg.angle_increment = 0.1f;
+  ros_msg.ranges = {1.0f, 2.0f, 3.0f};
+  ros_msg.intensities = {4.0f, 5.0f, 6.0f};
+
+  gz::msgs::LaserScan gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(3u, gz_msg.count());
+  EXPECT_EQ(3, gz_msg.ranges_size());
+  EXPECT_EQ(3, gz_msg.intensities_size());
+  EXPECT_DOUBLE_EQ(3.0, gz_msg.ranges(2));
+  EXPECT_DOUBLE_EQ(6.0, gz_msg.intensities(2));
 }
 
 // ---------------------------------------------------------------------------
