@@ -121,10 +121,9 @@ SetEntityState::SetEntityState(
           }
 
           if (request->set_twist && !model.Static(ecm)) {
-            // Velocity components are expected to be in the body frame, so transform them from
-            // the world frame using the requested pose when it is being set at the same time.
-            const auto entity_world_pose = request->set_pose ?
-            ConvertPose(request->state.pose) : gz::sim::worldPose(*entity, ecm);
+            // Velocity command components are consumed before the pose command updates the
+            // entity pose, so convert the requested world-frame twist using the current pose.
+            const auto entity_world_pose = gz::sim::worldPose(*entity, ecm);
             const auto linear_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
               ConvertVector3(request->state.twist.linear));
             const auto angular_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
