@@ -18,6 +18,13 @@
 #include <gz/msgs/entity_factory.pb.h>
 
 #include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+#include <gz/sim/components/Model.hh>
+#include <gz/sim/components/Name.hh>
+#include <gz/sim/components/ParentEntity.hh>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
@@ -31,6 +38,7 @@ namespace services
 using SpawnEntitySrv = simulation_interfaces::srv::SpawnEntity;
 using RequestPtr = SpawnEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = SpawnEntitySrv::Response::SharedPtr;
+namespace components = gz::sim::components;
 
 SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -47,6 +55,29 @@ SpawnEntity::SpawnEntity(
   this->services_handle_ = ros_node->create_service<SpawnEntitySrv>(
     "spawn_entity", [this, create_service](RequestPtr request, ResponsePtr response) {
       using Result = simulation_interfaces::msg::Result;
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+
+      std::unordered_set<gz::sim::Entity> models_before;
+      bool requested_name_exists = false;
+      this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+        ecm.Each<components::Name, components::Model, components::ParentEntity>(
+          [&](const gz::sim::Entity & entity, const components::Name * name,
+          const components::Model *, const components::ParentEntity * parent) {
+            if (!ecm.Component<components::Model>(parent->Data())) {
+              models_before.insert(entity);
+              requested_name_exists |= name->Data() == request->name;
+            }
+            return true;
+          });
+      });
+      if (!request->name.empty() && requested_name_exists && !request->allow_renaming) {
+        response->result.result = SpawnEntitySrv::Response::NAME_NOT_UNIQUE;
+        response->result.error_message = "An entity with the requested name already exists";
+        return;
+      }
+
       gz::msgs::EntityFactory gz_request;
       if (!request->name.empty()) {
         gz_request.set_name(request->name);
@@ -87,11 +118,30 @@ SpawnEntity::SpawnEntity(
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to spawn entity";
       } else if (result && reply.data()) {
+        if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+          return;
+        }
+        std::vector<std::string> new_model_names;
+        this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+          ecm.Each<components::Name, components::Model, components::ParentEntity>(
+            [&](const gz::sim::Entity & entity, const components::Name * name,
+            const components::Model *, const components::ParentEntity * parent) {
+              if (
+                !ecm.Component<components::Model>(parent->Data()) &&
+                models_before.count(entity) == 0)
+              {
+                new_model_names.push_back(name->Data());
+              }
+              return true;
+            });
+        });
+        if (new_model_names.size() != 1) {
+          response->result.result = Result::RESULT_OPERATION_FAILED;
+          response->result.error_message = "Unable to identify the newly spawned entity";
+          return;
+        }
+        response->entity_name = new_model_names.front();
         response->result.result = Result::RESULT_OK;
-        // TODO(azeey) Fetch the new name of the entity from our local ECM using `EachNew`.
-        // We'd have to make sure that the ECM has been updated at least once after the `create`
-        // request
-        response->entity_name = request->name;
       } else {
         // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative
         // error messages. However, the `create` service in UserCommands only returns a boolean.

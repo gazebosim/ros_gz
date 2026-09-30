@@ -272,7 +272,30 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
         # Try to spawn the same entity again
         result = self.call_and_spin(spawn_entity, request).result.result
-        self.assertTrue(result, Result.RESULT_OPERATION_FAILED)
+        self.assertEqual(result, si.SpawnEntity.Response.NAME_NOT_UNIQUE)
+
+    def test_spawn_entity_reports_renamed_entity(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_renamed'
+        request.entity_resource.resource_string = """
+            <sdf version='1.12'>
+                <model name='source_name'><link name='link'/></model>
+            </sdf>
+        """
+        request.initial_pose.pose.orientation.w = 1.0
+        self.assert_result_ok(self.call_and_spin(spawn_entity, request))
+
+        request.allow_renaming = True
+        response = self.call_and_spin(spawn_entity, request)
+        self.assert_result_ok(response)
+        self.assertNotEqual(response.entity_name, request.name)
+
+        entities, entities_request = self.setup_client(
+            si.GetEntities, 'get_entities')
+        entities_response = self.call_and_spin(entities, entities_request)
+        self.assert_result_ok(entities_response)
+        self.assertIn(response.entity_name, entities_response.entities)
 
     def test_delete_entity(self) -> None:
         self.delete_entity('box')
