@@ -18,8 +18,11 @@
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
+#include <cmath>
+#include <limits>
 #include <memory>
 #include <string>
+#include <unordered_set>
 
 #include <gz/sim/Model.hh>
 #include <gz/sim/Server.hh>
@@ -61,52 +64,115 @@ SetEntityState::SetEntityState(
         return;
       }
 
+      if (!request->state.header.frame_id.empty() &&
+        request->state.header.frame_id != "world")
+      {
+        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+        response->result.error_message = "Only the world reference frame is supported";
+        return;
+      }
+
+      const auto & orientation = request->state.pose.orientation;
+      const auto orientation_norm_squared =
+        orientation.x * orientation.x + orientation.y * orientation.y +
+        orientation.z * orientation.z + orientation.w * orientation.w;
+      if (
+        request->set_pose &&
+        (!std::isfinite(orientation_norm_squared) ||
+        orientation_norm_squared <= std::numeric_limits<double>::epsilon()))
+      {
+        response->result.result = SetEntityStateSrv::Response::INVALID_POSE;
+        response->result.error_message = "Pose orientation must be a valid quaternion";
+        return;
+      }
+
       gz::msgs::WorldControlState control_msg;
+      bool entity_found = false;
+      bool invalid_static_state = false;
 
       this->gz_proxy_->WithEcm(
         [&](gz::sim::EntityComponentManager & ecm) {
           const auto entity = ecm.EntityByName(request->entity);
+          if (!entity) {
+            return;
+          }
+          entity_found = true;
 
-          // TODO(azeey) Handle frame semantics. For now we assume all commands are in the world
-          // frame.
+          gz::sim::Model model(*entity);
+          const auto nonzero = [](const auto & vector) {
+            return vector.x != 0.0 || vector.y != 0.0 || vector.z != 0.0;
+          };
+          if (
+            model.Static(ecm) &&
+            ((request->set_twist &&
+            (nonzero(request->state.twist.linear) || nonzero(request->state.twist.angular))) ||
+            (request->set_acceleration &&
+            (nonzero(request->state.acceleration.linear) ||
+            nonzero(request->state.acceleration.angular)))))
+          {
+            invalid_static_state = true;
+            return;
+          }
 
-          // Note that since there is no way to tell if a field has been set by the user, there's no
-          // setting just the pose or just the twist. They will both be set according to what's in
-          // the message. If not set by the user, the default values will be used.
-          if (entity) {
-            gz::sim::Model model(*entity);
+          std::unordered_set<gz::sim::ComponentTypeId> component_types;
+          if (request->set_pose) {
             model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
-            if (!model.Static(ecm)) {
-              // Velocity components are expected to be in the body frame, so we'll need to
-              // transform them.
-              // TODO(azeey) Clarify whether the velocities are set in the new pose of the entity
-              auto entityWorldPose = gz::sim::worldPose(*entity, ecm);
-              auto linearVelCmdBody =
-              entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(
-                  request->state.twist.linear));
-              auto angularVelCmdBody =
-              entityWorldPose.Rot().RotateVectorReverse(ConvertVector3(
-                  request->state.twist.angular));
+            component_types.insert(components::WorldPoseCmd::typeId);
+          }
 
-              ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linearVelCmdBody);
-              ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angularVelCmdBody);
-            }
-          } else {
-            // TODO(azeey) Error
+          if (request->set_twist && !model.Static(ecm)) {
+            // Velocity components are expected to be in the body frame, so transform them from
+            // the world frame using the requested pose when it is being set at the same time.
+            const auto entity_world_pose = request->set_pose ?
+            ConvertPose(request->state.pose) : gz::sim::worldPose(*entity, ecm);
+            const auto linear_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+              ConvertVector3(request->state.twist.linear));
+            const auto angular_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+              ConvertVector3(request->state.twist.angular));
+
+            ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linear_vel_cmd_body);
+            ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angular_vel_cmd_body);
+            component_types.insert(components::LinearVelocityCmd::typeId);
+            component_types.insert(components::AngularVelocityCmd::typeId);
+          }
+
+          if (component_types.empty()) {
+            return;
           }
           control_msg.mutable_state()->CopyFrom(ecm.State(
-            {*entity}, {components::WorldPoseCmd::typeId, components::LinearVelocityCmd::typeId,
-              components::AngularVelocityCmd::typeId}));
+            {*entity}, component_types));
         });
+
+      if (!entity_found) {
+        response->result.result = Result::RESULT_NOT_FOUND;
+        response->result.error_message = "Requested entity was not found";
+        return;
+      }
+      if (invalid_static_state) {
+        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.error_message =
+          "Cannot set non-zero twist or acceleration on static entity";
+        return;
+      }
+      if (!request->set_pose && !request->set_twist) {
+        response->result.result = Result::RESULT_OK;
+        return;
+      }
 
       control_msg.mutable_world_control()->set_pause(this->gz_proxy_->Paused());
       bool result;
       gz::msgs::Boolean reply;
-      this->gz_proxy_->GzNode()->Request(control_state_service, control_msg,
-          GazeboProxy::kGzServiceTimeoutMs, reply, result);
-      // TODO(azeey) Handle Error
-      response->result.result = simulation_interfaces::msg::Result::RESULT_OK;
-      // TODO(azeey) Wait for result?
+      const bool executed = this->gz_proxy_->GzNode()->Request(
+        control_state_service, control_msg, GazeboProxy::kGzServiceTimeoutMs, reply, result);
+      if (!executed) {
+        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.error_message = "Timed out while trying to set entity state";
+      } else if (result && reply.data()) {
+        response->result.result = Result::RESULT_OK;
+      } else {
+        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.error_message = "Gazebo failed to set entity state";
+      }
     };
   this->services_handle_ =
     ros_node->create_service<SetEntityStateSrv>("set_entity_state", service_cb);

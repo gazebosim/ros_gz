@@ -19,7 +19,7 @@ import time
 from typing import Any
 import unittest
 
-from geometry_msgs.msg import Twist
+from geometry_msgs.msg import Twist, Vector3
 from launch import LaunchDescription
 from launch.actions import SetEnvironmentVariable
 from launch_ros.actions import Node
@@ -29,7 +29,8 @@ from launch_testing.asserts import assertExitCodes
 import rclpy
 import rclpy.action
 from simulation_interfaces.action import SimulateSteps
-from simulation_interfaces.msg import EntityCategory, Result, SimulationState, SimulatorFeatures
+from simulation_interfaces.msg import (
+    Bounds, EntityCategory, Result, SimulationState, SimulatorFeatures)
 import simulation_interfaces.srv as si
 
 # Match name used in launch files
@@ -170,6 +171,23 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         response = self.call_and_spin(get_entities, request)
         self.assert_result_ok(response)
 
+    def test_get_entities_rejects_unsupported_bounds(self) -> None:
+        for service, name in [
+            (si.GetEntities, 'get_entities'),
+            (si.GetEntitiesStates, 'get_entities_states'),
+        ]:
+            client, request = self.setup_client(service, name)
+            request.filters.bounds.type = Bounds.TYPE_SPHERE
+            request.filters.bounds.points.extend([
+                Vector3(),
+                Vector3(x=1.0),
+            ])
+            response = self.call_and_spin(client, request)
+            self.assertEqual(
+                response.result.result,
+                Result.RESULT_FEATURE_UNSUPPORTED)
+            self.assertEqual(response.entities, [])
+
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
         state = self.get_entity_state('vehicle').state
         self.assertAlmostEqual(state.twist.linear.x, 0, delta=1e-4)
@@ -237,7 +255,10 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         test_entity = 'sphere'
         request.entity = test_entity
         request.state.pose.position.z = 100.0
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
         request.state.twist.linear.x = 5.0
+        request.set_twist = True
         self.assert_result_ok(self.call_and_spin(set_entity_state, request))
         state = self.get_entity_state(test_entity).state
         self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
@@ -247,11 +268,66 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             si.SetEntityState, 'set_entity_state')
         request.entity = 'sphere'
         request.state.pose.position.z = 10.0
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
         for test_state in [SimulationState.STATE_PLAYING, SimulationState.STATE_PAUSED]:
             self.set_simulation_state(test_state)
             self.assertEqual(self.get_simulation_state().state.state, test_state)
             self.assert_result_ok(self.call_and_spin(set_entity_state, request))
             self.assertEqual(self.get_simulation_state().state.state, test_state)
+
+    def test_set_entity_state_rejects_missing_entity(self) -> None:
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'no_such_entity'
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(response.result.result, Result.RESULT_NOT_FOUND)
+
+    def test_set_entity_state_rejects_invalid_pose(self) -> None:
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'sphere'
+        request.state.pose.orientation.w = 0.0
+        request.set_pose = True
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(
+            response.result.result,
+            si.SetEntityState.Response.INVALID_POSE)
+
+    def test_set_entity_state_rejects_unsupported_frame(self) -> None:
+        before = self.get_entity_state('sphere').state.pose
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'sphere'
+        request.state.header.frame_id = 'wall'
+        request.state.pose.position.x = before.position.x + 1.0
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(
+            response.result.result,
+            Result.RESULT_FEATURE_UNSUPPORTED)
+        after = self.get_entity_state('sphere').state.pose
+        self.assertAlmostEqual(after.position.x, before.position.x)
+
+    def test_set_entity_state_rejects_static_twist(self) -> None:
+        before = self.get_entity_state('wall').state.pose
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'wall'
+        request.state.pose.position.x = before.position.x + 1.0
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
+        request.state.twist.linear.x = 1.0
+        request.set_twist = True
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(
+            response.result.result,
+            Result.RESULT_OPERATION_FAILED)
+        after = self.get_entity_state('wall').state.pose
+        self.assertAlmostEqual(after.position.x, before.position.x)
 
     def test_spawn_entity_duplicate_name(self) -> None:
         sdf_string = """
