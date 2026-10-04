@@ -43,6 +43,8 @@ public:
   {
   }
 
+  virtual ~HandlerBase() = default;
+
 protected:
   /// \brief ROS Node
   std::shared_ptr<rclcpp::Node> ros_node_;
