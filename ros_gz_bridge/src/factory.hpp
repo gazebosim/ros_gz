@@ -115,8 +115,9 @@ public:
 
     auto ros_type = ros_type_name_;
     auto gz_type = gz_type_name_;
+    auto logger = ros_node->get_logger();
     std::function<void(std::shared_ptr<const ROS_T>, const rclcpp::MessageInfo &)> fn =
-      [self_pub_gids, gz_pub, ros_type, gz_type, ros_node](
+      [self_pub_gids, gz_pub, ros_type, gz_type, logger](
       std::shared_ptr<const ROS_T> ros_msg,
       const rclcpp::MessageInfo & msg_info) mutable
       {
@@ -127,7 +128,7 @@ public:
             return;
           }
         }
-        ros_callback(ros_msg, gz_pub, ros_type, gz_type, ros_node);
+        ros_callback(ros_msg, gz_pub, ros_type, gz_type, logger);
       };
 
     auto options = rclcpp::SubscriptionOptions();
@@ -170,13 +171,13 @@ protected:
     gz::transport::Node::Publisher & gz_pub,
     const std::string & ros_type_name,
     const std::string & gz_type_name,
-    rclcpp::Node::SharedPtr ros_node)
+    const rclcpp::Logger & logger)
   {
     GZ_T gz_msg;
     convert_ros_to_gz(*ros_msg, gz_msg);
     gz_pub.Publish(gz_msg);
     RCLCPP_INFO_ONCE(
-      ros_node->get_logger(),
+      logger,
       "Passing message from ROS %s to Gazebo %s (showing msg only once per type)",
       ros_type_name.c_str(), gz_type_name.c_str());
   }
