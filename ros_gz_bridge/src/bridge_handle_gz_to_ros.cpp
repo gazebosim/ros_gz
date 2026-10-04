@@ -25,11 +25,13 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   const BridgeConfig & config)
 : BridgeHandle(ros_node, gz_node, config)
 {
-  ros_node_->get_parameter("override_timestamps_with_wall_time",
-      gz_to_ros_parameters_.override_timestamps_with_wall_time);
-
-  ros_node_->get_parameter("override_frame_id",
-      gz_to_ros_parameters_.override_frame_id);
+  auto node = this->RosNode();
+  node->get_parameter(
+    "override_timestamps_with_wall_time",
+    gz_to_ros_parameters_.override_timestamps_with_wall_time);
+  node->get_parameter(
+    "override_frame_id",
+    gz_to_ros_parameters_.override_frame_id);
 }
 
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
@@ -42,11 +44,12 @@ size_t BridgeHandleGzToRos::NumSubscriptions() const
   if (this->ros_publisher_ != nullptr) {
     // Use info_by_topic rather than get_subscription_count
     // to filter out potential bidirectional bridge
-    auto topic_info = this->ros_node_->get_subscriptions_info_by_topic(
+    auto node = this->RosNode();
+    auto topic_info = node->get_subscriptions_info_by_topic(
       this->config_.ros_topic_name);
 
     for (auto & topic : topic_info) {
-      if (topic.node_name() == this->ros_node_->get_name()) {
+      if (topic.node_name() == node->get_name()) {
         continue;
       }
       valid_subscriptions++;
@@ -65,7 +68,7 @@ void BridgeHandleGzToRos::StartPublisher()
 {
   // Start ROS publisher
   this->ros_publisher_ = this->factory_->create_ros_publisher(
-    this->ros_node_,
+    this->RosNode(),
     this->config_.ros_topic_name,
     this->config_.PublisherQoS());
 }

@@ -1118,6 +1118,7 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Image> & _msg)
   EXPECT_EQ(expected_msg.encoding, _msg->encoding);
   EXPECT_EQ(expected_msg.is_bigendian, _msg->is_bigendian);
   EXPECT_EQ(expected_msg.step, _msg->step);
+  EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
 void createTestMsg(sensor_msgs::msg::CameraInfo & _msg)
