@@ -68,11 +68,13 @@ ResetSimulation::ResetSimulation(
       if (!executed) {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to reset simulation";
+        return;
       } else if (result && reply.data()) {
         response->result.result = Result::RESULT_OK;
       } else {
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Unknown error while trying to reset simulation";
+        return;
       }
 
       // Since the "control" service is asynchronous, getting results from the service doesn't mean

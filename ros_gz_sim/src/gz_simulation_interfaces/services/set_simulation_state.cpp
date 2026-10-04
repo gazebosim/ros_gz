@@ -19,6 +19,7 @@
 
 #include <chrono>
 #include <memory>
+#include <rcpputils/scope_exit.hpp>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/set_simulation_state.hpp"
@@ -67,6 +68,10 @@ SetSimulationState::SetSimulationState(
           "Only the states [STATE_STOPPED, STATE_PAUSED, STATE_PLAYING] are supported";
           return;
       }
+
+      this->gz_proxy_->SetPauseTarget(gz_request.pause());
+      const auto clear_pause_target = rcpputils::make_scope_exit(
+        [this] {this->gz_proxy_->SetPauseTarget(std::nullopt);});
 
       bool result;
       gz::msgs::Boolean reply;

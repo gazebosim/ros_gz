@@ -86,15 +86,13 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       // publishes on the scene/info topic every time it's reset. So we'll use that as our signal
       // until we come up with a better way to communicate this from the server.
       std::function<void(const gz::msgs::Scene &)> resetHandler = [this](const auto &) {
-          {
-            std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
-            this->reset_detected_ = true;
-            this->reset_detected_cv_.notify_all();
-          }
+          std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
           // Use std::async since InitializeAllCanonicalLinks eventually makes a service call, which
           // we don't want to do from this callback thread.
           this->initialize_canonical_links_ =
             std::async(std::launch::async, [this] {this->InitializeAllCanonicalLinks();});
+          this->reset_detected_ = true;
+          this->reset_detected_cv_.notify_all();
         };
 
       this->SubscribeToGzTopic(this->PrefixTopic("scene/info"), resetHandler);
@@ -175,9 +173,14 @@ bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
   if (!state_initialized_) {
     return false;
   }
-  if (this->initialize_canonical_links_.valid()) {
-    // Wait if canonical links need to be initialized. This should only happen on reset.
-    this->initialize_canonical_links_.wait_for(timeout);
+  {
+    std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
+    if (this->initialize_canonical_links_.valid()) {
+      // Wait if canonical links need to be initialized. This should only happen on reset.
+      if (this->initialize_canonical_links_.wait_for(timeout) != std::future_status::ready) {
+        return false;
+      }
+    }
   }
   // TODO(azeey): Technically we should subtract the amount of time the `wait_for` above used up
   // from the timeout when we use it for the second `wait_for` below.
@@ -224,6 +227,12 @@ void GazeboProxy::ArmResetDetection()
   this->reset_detected_ = false;
 }
 
+void GazeboProxy::SetPauseTarget(std::optional<bool> target)
+{
+  std::lock_guard<std::mutex> lk(this->pause_target_mutex_);
+  this->pause_target_ = target;
+}
+
 bool GazeboProxy::WaitForResetDetected()
 {
   std::unique_lock lk(this->reset_detected_mutex_);
@@ -232,7 +241,10 @@ bool GazeboProxy::WaitForResetDetected()
   {
     return false;
   }
-  return this->reset_detected_;
+  // Queue pause-preserving synchronization before allowing the caller to resume.
+  return !this->initialize_canonical_links_.valid() ||
+         this->initialize_canonical_links_.wait_for(
+    std::chrono::milliseconds(kGzServiceTimeoutMs)) == std::future_status::ready;
 }
 
 bool GazeboProxy::InitializeGazeboConnection()
@@ -313,11 +325,8 @@ void GazeboProxy::HandleNewEntities()
 void GazeboProxy::InitializeAllCanonicalLinks()
 {
   RCLCPP_INFO(this->ros_node_->get_logger(), "InitializeCanonicalLinks");
-  std::vector<gz::sim::Entity> c_links;
-  {
-    std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-    c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
-  }
+  std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
+  const auto c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
   this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
 }
 
@@ -332,9 +341,10 @@ void GazeboProxy::InitializeCanonicalLinks(
   }
 
   gz::msgs::WorldControlState control_msg;
+  std::lock_guard<std::mutex> lk(this->pause_target_mutex_);
   // Gazebo applies world_control even when this request is only synchronizing state. Preserve the
   // current pause state so canonical-link synchronization doesn't implicitly unpause simulation.
-  control_msg.mutable_world_control()->set_pause(this->Paused());
+  control_msg.mutable_world_control()->set_pause(this->pause_target_.value_or(this->Paused()));
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
         components::WorldAngularVelocity::typeId}));
