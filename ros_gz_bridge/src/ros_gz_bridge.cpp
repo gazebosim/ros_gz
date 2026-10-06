@@ -399,20 +399,15 @@ void RosGzBridge::create_automated_bridges()
       continue;
     }
 
-    bool is_mapping_valid = false;
-    for (const auto & candidate : ros_candidate_types) {
-      if (candidate == ros_type_name) {
-        is_mapping_valid = true;
-        break;
-      }
-    }
-
-    if (!is_mapping_valid) {
+    if (auto mapping_it = std::find(ros_candidate_types.begin(), 
+              ros_candidate_types.end(), ros_type_name); 
+              mapping_it == ros_candidate_types.end()) {
       this->log_bridge_warning(
-        BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic_name,
-        "topic", ros_type_name, gz_type_name);
-      continue;
-    }
+          BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic_name,
+          "topic", ros_type_name, gz_type_name);
+        continue;
+   }
+   
 
     BridgeConfig config;
     config.ros_type_name = ros_type_name;
