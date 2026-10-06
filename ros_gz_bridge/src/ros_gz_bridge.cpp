@@ -354,21 +354,24 @@ void RosGzBridge::add_service_bridge(
 
 void RosGzBridge::create_automated_bridges()
 {
-  std::vector<std::string> gz_topics;
-  gz_node_->TopicList(gz_topics);
+  std::vector<gz::transport::TopicInfo> gz_topics;
+  if (!gz_node_->AllTopicInfo(gz_topics)) {
+    RCLCPP_WARN(this->get_logger(), "Failed to get all topic info");
+  }
 
   for (const auto & gz_topic : gz_topics) {
     // Skip topics that match any of the exclude patterns
-    if (is_excluded_from_automated_bridging(gz_topic)) {
+    const auto gz_topic_name = gz_topic.topicName;
+    if (is_excluded_from_automated_bridging(gz_topic_name)) {
       this->log_bridge_warning(
-        BridgeWarningType::EXCLUDE_PATTERN_MATCHED, gz_topic, "topic");
+        BridgeWarningType::EXCLUDE_PATTERN_MATCHED, gz_topic_name, "topic");
       continue;
     }
 
     // Skip topics that are already bridged
     bool already_bridged = false;
     for (const auto & handle : handles_) {
-      if (handle->GetConfig().gz_topic_name == gz_topic) {
+      if (handle->GetConfig().gz_topic_name == gz_topic_name) {
         already_bridged = true;
         break;
       }
@@ -389,14 +392,14 @@ void RosGzBridge::create_automated_bridges()
     std::vector<std::string> ros_candidate_types;
     if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types)) {
       this->log_bridge_warning(
-        BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic,
+        BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic_name,
         "topic", "", gz_type_name);
       continue;
     }
 
     // Get ROS topic info
     std::string ros_type_name;
-    if (!get_ros_topic_info(gz_topic, ros_type_name, direction)) {
+    if (!get_ros_topic_info(gz_topic_name, ros_type_name, direction)) {
       continue;
     }
 
@@ -410,16 +413,16 @@ void RosGzBridge::create_automated_bridges()
 
     if (!is_mapping_valid) {
       this->log_bridge_warning(
-        BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic,
+        BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic_name,
         "topic", ros_type_name, gz_type_name);
       continue;
     }
 
     BridgeConfig config;
     config.ros_type_name = ros_type_name;
-    config.ros_topic_name = gz_topic;
+    config.ros_topic_name = gz_topic_name;
     config.gz_type_name = gz_type_name;
-    config.gz_topic_name = gz_topic;
+    config.gz_topic_name = gz_topic_name;
     config.direction = direction;
     this->add_bridge(config);
   }
@@ -528,15 +531,13 @@ bool RosGzBridge::is_excluded_from_automated_bridging(const std::string & name) 
 }
 
 bool RosGzBridge::get_gz_topic_info(
-  const std::string & topic_name,
+  const gz::transport::TopicInfo & topic_info,
   std::string & gz_type_name,
   BridgeDirection & direction)
 {
-  std::vector<gz::transport::MessagePublisher> gz_publishers;
-  std::vector<gz::transport::MessagePublisher> gz_subscribers;
-  if (!gz_node_->TopicInfo(topic_name, gz_publishers, gz_subscribers)) {
-    return false;
-  }
+  std::vector<gz::transport::MessagePublisher> gz_publishers = topic_info.publishers;
+  std::vector<gz::transport::MessagePublisher> gz_subscribers = topic_info.subscribers;
+  std::string topic_name = topic_info.topicName;
 
   std::unordered_set<std::string> gz_publisher_types;
   for (const auto & pub : gz_publishers) {

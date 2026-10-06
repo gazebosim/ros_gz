@@ -103,12 +103,12 @@ protected:
   bool is_excluded_from_automated_bridging(const std::string & name) const;
 
   /// \brief Get Gazebo topic information, including type and direction
-  /// \param[in] topic_name Name of the Gazebo topic
+  /// \param[in] topic_info Unprocessed information about the Gazebo topic
   /// \param[out] gz_type_name Type of the Gazebo topic
   /// \param[out] direction Direction of the bridge
   /// \return True if successfully gets the Gazebo topic information
   bool get_gz_topic_info(
-    const std::string & topic_name,
+    const gz::transport::TopicInfo & topic_info,
     std::string & gz_type_name,
     BridgeDirection & direction);
 
