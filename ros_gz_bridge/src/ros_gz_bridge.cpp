@@ -587,11 +587,11 @@ bool RosGzBridge::get_ros_topic_info(
     ros_subscriber_types.insert(sub.topic_type());
   }
 
-  if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
-    (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 0) ||
+  if (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 0) {
+    return false;
+  } else if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
     (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
-    *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
-  {
+    *ros_publisher_types.begin() != *ros_subscriber_types.begin())) {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, topic_name);
     return false;
@@ -697,7 +697,7 @@ void RosGzBridge::log_bridge_warning(
         RCLCPP_WARN(
           this->get_logger(),
           "Skipping automated bridge for %s [%s] : "
-          "found multiple or zero ROS message types.",
+          "found multiple ROS message types.",
           resource_type.c_str(), name.c_str());
         break;
       case BridgeWarningType::ROS_GZ_TYPE_MISMATCH:
