@@ -417,7 +417,7 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 Automated bridging creates bridges for topics and services that appear on both ROS and Gazebo with matching names and compatible types.
 
-The `automated_bridge_exclude_patterns` parameter accepts [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
+The `automated_bridge.exclude_patterns` parameter accepts [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
 Automated bridging skips topics and services that match any of these patterns.
 
 ### Command line
@@ -426,8 +426,8 @@ Start `parameter_bridge` without listing individual topics or services:
 
 ```bash
 ros2 run ros_gz_bridge parameter_bridge \
-  --ros-args -p enable_automated_bridge:=true \
-  -p "automated_bridge_exclude_patterns:=['/clock', '/world/.*/stats']"
+  --ros-args -p automated_bridge.enable:=true \
+  -p "automated_bridge.exclude_patterns:=['/clock', '/world/.*/stats']"
 ```
 
 The exclusion parameter is optional. You can also pass manually configured topic or service arguments to the same command.
@@ -439,10 +439,11 @@ Save the parameters in `auto_bridge_params.yaml`:
 ```yaml
 ros_gz_bridge:
   ros__parameters:
-    enable_automated_bridge: true
-    automated_bridge_exclude_patterns:
-      - /clock
-      - /world/.*/stats
+    automated_bridge:
+      enable: true
+      exclude_patterns:
+        - /clock
+        - /world/.*/stats
 ```
 
 Start the bridge with the parameter file:
@@ -461,8 +462,8 @@ Pass the parameters inside the `<ros_gz_bridge>` tag:
 ```xml
 <launch>
   <ros_gz_bridge bridge_name="auto_bridge">
-    <param name="enable_automated_bridge" value="true" />
-    <param name="automated_bridge_exclude_patterns"
+    <param name="automated_bridge.enable" value="true" />
+    <param name="automated_bridge.exclude_patterns"
            value="['/clock', '/world/.*/stats']" />
   </ros_gz_bridge>
 </launch>
@@ -477,8 +478,8 @@ Node(
     package="ros_gz_bridge",
     executable="parameter_bridge",
     parameters=[{
-        "enable_automated_bridge": True,
-        "automated_bridge_exclude_patterns": [
+        "automated_bridge.enable": True,
+        "automated_bridge.exclude_patterns": [
             "/clock",
             "/world/.*/stats",
         ],
@@ -514,12 +515,12 @@ ROS 2 Parameters:
     * default: ""
     * direction: GZ to ROS
     * description: Override the `header.frame_id` field with a new string value.
-* `enable_automated_bridge`
+* `automated_bridge.enable`
     * type: bool
     * default: false
     * description: Periodically discover matching ROS and Gazebo topics and
       services, and create bridges for them.
-* `automated_bridge_exclude_patterns`
+* `automated_bridge.exclude_patterns`
     * type: string array
     * default: []
     * description: Regular expressions that match complete topic or service

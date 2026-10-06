@@ -41,11 +41,11 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter<bool>("override_timestamps_with_wall_time", false);
   this->declare_parameter<std::string>("override_frame_id", "");
   this->declare_parameter("bridge_names", std::vector<std::string>());
-  this->declare_parameter("enable_automated_bridge", false);
-  this->declare_parameter("automated_bridge_exclude_patterns", std::vector<std::string>());
+  this->declare_parameter("automated_bridge.enable", false);
+  this->declare_parameter("automated_bridge.exclude_patterns", std::vector<std::string>());
   const auto names = this->get_parameter("bridge_names").as_string_array();
   const auto exclude_patterns =
-    this->get_parameter("automated_bridge_exclude_patterns").as_string_array();
+    this->get_parameter("automated_bridge.exclude_patterns").as_string_array();
 
   this->set_automated_bridge_exclude_patterns(exclude_patterns);
 
@@ -245,7 +245,7 @@ void RosGzBridge::spin()
   }
 
   bool enable_automated_bridge = false;
-  this->get_parameter("enable_automated_bridge", enable_automated_bridge);
+  this->get_parameter("automated_bridge.enable", enable_automated_bridge);
   if (enable_automated_bridge) {
     create_automated_bridges();
   }
@@ -514,7 +514,7 @@ void RosGzBridge::set_automated_bridge_exclude_patterns(const std::vector<std::s
     } catch (const std::regex_error & e) {
       RCLCPP_ERROR(
         this->get_logger(),
-        "Invalid regex pattern '%s' in parameter 'automated_bridge_exclude_patterns': %s",
+        "Invalid regex pattern '%s' in parameter 'automated_bridge.exclude_patterns': %s",
         pattern.c_str(), e.what());
     }
   }
