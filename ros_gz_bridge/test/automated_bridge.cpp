@@ -58,13 +58,11 @@ public:
 
   size_t topic_bridge_count(const std::string & topic_name) const
   {
-    size_t count = 0;
-    for (const auto & handle : this->handles_) {
-      if (handle->GetConfig().gz_topic_name == topic_name) {
-        ++count;
-      }
-    }
-    return count;
+    return std::count_if(
+      this->handles_.begin(), this->handles_.end(),
+      [&topic_name](const auto & handle) {
+        return handle->GetConfig().gz_topic_name == topic_name;
+      });
   }
 
   size_t service_bridge_count(const std::string & service_name) const

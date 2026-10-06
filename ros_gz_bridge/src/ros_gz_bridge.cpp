@@ -14,6 +14,7 @@
 
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 
+#include <algorithm>
 #include <cstddef>
 #include <memory>
 #include <regex>
@@ -369,15 +370,10 @@ void RosGzBridge::create_automated_bridges()
     }
 
     // Skip topics that are already bridged
-    bool already_bridged = false;
-    for (const auto & handle : handles_) {
-      if (handle->GetConfig().gz_topic_name == gz_topic_name) {
-        already_bridged = true;
-        break;
-      }
-    }
-
-    if (already_bridged) {
+    if (std::any_of(handles_.begin(), handles_.end(),
+      [&gz_topic_name](const auto & handle) {
+        return handle->GetConfig().gz_topic_name == gz_topic_name;
+      })) {
       continue;
     }
 
@@ -459,15 +455,10 @@ void RosGzBridge::create_automated_bridges()
     }
 
     // Skip services that are already bridged
-    bool already_bridged = false;
-    for (const auto & service : services_) {
-      if (service->get_service_name() == gz_service) {
-        already_bridged = true;
-        break;
-      }
-    }
-
-    if (already_bridged) {
+    if (std::any_of(services_.begin(), services_.end(),
+      [&gz_service](const auto & service) {
+        return service->get_service_name() == gz_service;
+      })) {
       continue;
     }
 
