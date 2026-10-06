@@ -587,7 +587,7 @@ bool RosGzBridge::get_ros_topic_info(
     }
   } catch(const std::exception & e) {
     this->log_bridge_warning(
-      BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED, topic_name,
+      BridgeWarningType::ROS_TYPE_DISCOVERY_FAILED, topic_name,
       "topic", "", "", e.what());
     return false;
   }
@@ -699,7 +699,7 @@ void RosGzBridge::log_bridge_warning(
           "no mapping found for Gazebo message type [%s] .",
           resource_type.c_str(), name.c_str(), gz_type_name.c_str());
         break;
-      case BridgeWarningType::ROS_TYPE_DISCOVERED_FAILED:
+      case BridgeWarningType::ROS_TYPE_DISCOVERY_FAILED:
         RCLCPP_WARN(
           this->get_logger(),
           "Skipping automated bridge for %s [%s] : "

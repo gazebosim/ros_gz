@@ -43,7 +43,7 @@ enum class BridgeWarningType
   GZ_TO_ROS_MAPPING_NOT_FOUND,
 
   /// \brief Failed to discover ROS topic info
-  ROS_TYPE_DISCOVERED_FAILED,
+  ROS_TYPE_DISCOVERY_FAILED,
 
   /// \brief ROS topic has multiple types or no types
   ROS_TYPE_UNDETERMINED,
