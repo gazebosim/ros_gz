@@ -595,11 +595,9 @@ bool RosGzBridge::get_ros_topic_info(
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, topic_name);
     return false;
-  } else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1) {
+  } else if (ros_publisher_types.size() == 1) {
     ros_type_name = *ros_publisher_types.begin();
-  } else if (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 0) {
-    ros_type_name = *ros_publisher_types.begin();
-  } else if (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 1) {
+  } else if (ros_publisher_types.size() == 0) {
     ros_type_name = *ros_subscriber_types.begin();
   }
   return true;
