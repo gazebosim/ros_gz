@@ -62,7 +62,7 @@ void usage()
     "Automatically discover bridges:\n" <<
     "    parameter_bridge --ros-args -p enable_automated_bridge:=true\n" <<
     "Automatic and manually specified bridges can be used together.\n"
-    << std::endl;
+            << std::endl;
 }
 
 using RosGzBridge = ros_gz_bridge::RosGzBridge;
