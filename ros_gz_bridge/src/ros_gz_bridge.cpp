@@ -373,7 +373,8 @@ void RosGzBridge::create_automated_bridges()
     if (std::any_of(handles_.begin(), handles_.end(),
       [&gz_topic_name](const auto & handle) {
         return handle->GetConfig().gz_topic_name == gz_topic_name;
-      })) {
+      }))
+    {
       continue;
     }
 
@@ -399,15 +400,15 @@ void RosGzBridge::create_automated_bridges()
       continue;
     }
 
-    if (auto mapping_it = std::find(ros_candidate_types.begin(), 
-              ros_candidate_types.end(), ros_type_name); 
-              mapping_it == ros_candidate_types.end()) {
+    if (auto mapping_it = std::find(ros_candidate_types.begin(),
+              ros_candidate_types.end(), ros_type_name);
+      mapping_it == ros_candidate_types.end())
+    {
       this->log_bridge_warning(
           BridgeWarningType::ROS_GZ_TYPE_MISMATCH, gz_topic_name,
           "topic", ros_type_name, gz_type_name);
-        continue;
-   }
-   
+      continue;
+    }
 
     BridgeConfig config;
     config.ros_type_name = ros_type_name;
@@ -438,7 +439,8 @@ void RosGzBridge::create_automated_bridges()
     if (std::any_of(services_.begin(), services_.end(),
       [&gz_service](const auto & service) {
         return service->get_service_name() == gz_service;
-      })) {
+      }))
+    {
       continue;
     }
 
@@ -576,7 +578,8 @@ bool RosGzBridge::get_ros_topic_info(
     return false;
   } else if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
     (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
-    *ros_publisher_types.begin() != *ros_subscriber_types.begin())) {
+    *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
+  {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, topic_name);
     return false;
