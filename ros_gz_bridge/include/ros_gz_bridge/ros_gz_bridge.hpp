@@ -141,6 +141,12 @@ protected:
     const std::map<std::string, std::vector<std::string>> & ros_services,
     const std::string & service_name, std::string & ros_type_name);
 
+  /// \brief Get ROS service names and their associated types from the ROS graph.
+  /// \param[out] ros_services Map from service names to their ROS service types.
+  /// \return True if the ROS service information was retrieved successfully, false otherwise.
+  bool get_ros_services(
+    std::map<std::string, std::vector<std::string>> & ros_services);
+
   /// \brief Log a bridge warning while avoiding repeated messages for the same
   /// topic /service and warning type
   /// \param[in] warning_type Type of warning to log

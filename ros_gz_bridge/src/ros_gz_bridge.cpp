@@ -422,22 +422,7 @@ void RosGzBridge::create_automated_bridges()
   gz_node_->ServiceList(gz_services);
 
   std::map<std::string, std::vector<std::string>> ros_services;
-  try {
-    const auto graph = this->get_node_graph_interface();
-    const auto nodes = graph->get_node_names_and_namespaces();
-
-    for (const auto & node : nodes) {
-      const auto services =
-        graph->get_client_names_and_types_by_node(node.first, node.second);
-      for (const auto & service : services) {
-        auto & types = ros_services[service.first];
-        types.insert(types.end(), service.second.begin(), service.second.end());
-      }
-    }
-  } catch(const std::exception & e) {
-    RCLCPP_WARN(
-      this->get_logger(),
-      "Failed to get ROS service names and types: %s", e.what());
+  if (!get_ros_services(ros_services)) {
     return;
   }
 
@@ -651,6 +636,32 @@ bool RosGzBridge::get_ros_service_info(
   }
 
   ros_type_name = *ros_service_types.begin();
+  return true;
+}
+
+bool RosGzBridge::get_ros_services(
+  std::map<std::string, std::vector<std::string>> & ros_services)
+{
+  try {
+    const auto graph = this->get_node_graph_interface();
+    const auto nodes = graph->get_node_names_and_namespaces();
+
+    for (const auto & node : nodes) {
+      const auto services =
+        graph->get_client_names_and_types_by_node(node.first, node.second);
+
+      for (const auto & service : services) {
+        auto & types = ros_services[service.first];
+        types.insert(types.end(), service.second.begin(), service.second.end());
+      }
+    }
+  } catch (const std::exception & e) {
+    RCLCPP_WARN(
+      this->get_logger(),
+      "Failed to get ROS service names and types: %s", e.what());
+    return false;
+  }
+
   return true;
 }
 
