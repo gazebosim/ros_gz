@@ -87,10 +87,10 @@ get_ros_to_gz_mapping(
   gz_type_names.clear();
 
   const auto & mappings = get_all_message_mappings_ros_to_gz();
-  for (const auto & mapping : mappings) {
-    if (mapping.first == ros_type_name) {
-      gz_type_names.push_back(mapping.second);
-    }
+  const auto range = mappings.equal_range(ros_type_name);
+
+  for (auto it = range.first; it != range.second; ++it) {
+    gz_type_names.push_back(it->second);
   }
 
   return !gz_type_names.empty();
