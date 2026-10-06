@@ -417,6 +417,8 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 
 Automated bridging creates bridges for topics and services that appear on both ROS and Gazebo with matching names and compatible types.
 
+**NOTE**: CLI tools such as `ros2 topic echo` and `gz topic -e` may not work as expected when used as endpoints to trigger automated bridging. `ros2 topic echo` may fail if no ROS publisher exists yet, before the automated bridge is created. `gz topic -e` creates a raw subscription whose discovered Gazebo message type is `google.protobuf.Message`, so the automated bridge cannot determine the corresponding ROS-Gazebo type mapping.
+
 The `automated_bridge.exclude_patterns` parameter accepts [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
 Automated bridging skips topics and services that match any of these patterns.
 
