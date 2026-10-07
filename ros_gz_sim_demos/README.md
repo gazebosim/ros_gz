@@ -203,7 +203,7 @@ To try the demo launch:
 
 ## Multi robot
 
-The `multi_robot` demo shows how to start multiple robots from the same robot SDF file, with separate ROS and Gazebo topics for each robot namespace.
+The `multi_robot` demo shows how to start multiple robots from the same robot SDF file, with separate ROS and Gazebo topics for each robot namespace, and bridge their interfaces using automated bridging.
 
 To try the demo launch:
 
@@ -361,6 +361,23 @@ gz service -s /world/multi_robot/create/blocking \
              orientation: {x: 0.0, y: 0.0, z: 0.0, w: 1.0}
            }'
 ```
+
+### 6. Bridge namespaced topics automatically
+
+The `multi_robot.launch.xml` demo enables automated bridging for the namespaced robot interfaces:
+
+```xml
+<ros_gz_bridge
+  bridge_name="ros_gz_bridge"
+  config_file="$(find-pkg-share ros_gz_sim_demos)/config/multi_robot.yaml"
+  use_composition="True">
+  <param name="automated_bridge.enable" value="true" />
+  <param name="automated_bridge.exclude_patterns"
+         value="['/clock', '.*camera.*']" />
+</ros_gz_bridge>
+```
+
+The bridges configured in `multi_robot.yaml` are created first, and automated bridging then creates bridges for the remaining compatible interfaces. The demo excludes `/clock` and interfaces matching `.*camera.*` from automated bridging.
 
 ## Bridging joint state and pose publishers
 
