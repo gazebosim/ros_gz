@@ -246,7 +246,7 @@ The `multi_robot.sdf` world defines two robots from the same vehicle model. Ther
 
 The `ros_gz_sim create` executable can spawn robots and pass the namespace with `-ns`.
 
-If `-ns` is not provided or is set to `''`, the namespace behavior follows the source SDF file. If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `-ns '/'`. 
+If `-ns` is not provided or is set to `''`, the namespace behavior follows the source SDF file. If you do not want to use any namespace, including namespaces already defined in the source SDF file, set `-ns '/'`.
 
 There are two common ways to use it:
 * Use it from a launch file.
