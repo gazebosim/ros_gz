@@ -28,7 +28,7 @@
   <ros_gz_bridge
     bridge_name="ros_gz_bridge"
     config_file="$(find-pkg-share ros_gz_sim_demos)/config/multi_robot.yaml"
-    use_composition="True">
+    use_composition="False">
     <param name="automated_bridge.enable" value="true" />
     <param name="automated_bridge.exclude_patterns"
            value="['/clock', '.*camera.*', '.*tf']" />
