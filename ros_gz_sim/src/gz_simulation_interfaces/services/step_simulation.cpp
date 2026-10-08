@@ -50,7 +50,8 @@ StepSimulation::StepSimulation(
         return;
       }
       if (!this->gz_proxy_->Paused()) {
-        response->result.result = Result::RESULT_INCORRECT_STATE;
+        // StepSimulation.srv requires OPERATION_FAILED when the simulation is not paused.
+        response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Simulation has to be paused before stepping";
         return;
       }

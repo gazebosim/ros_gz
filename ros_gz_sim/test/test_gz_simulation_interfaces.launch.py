@@ -304,6 +304,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         set_request.entity = 'sphere'
         set_request.state.pose.position.z = 10.0
         set_request.state.pose.orientation.w = 1.0
+        set_request.set_pose = True
         self.assert_result_ok(self.call_and_spin(set_entity_state, set_request))
         before = self.get_entity_state('sphere').state.pose.position.z
 
@@ -322,7 +323,7 @@ class TestGzSimulationInterfaces(unittest.TestCase):
                 si.StepSimulation, 'step_simulation')
             request.steps = 1
             response = self.call_and_spin(step_simulation, request)
-            self.assertEqual(response.result.result, Result.RESULT_INCORRECT_STATE)
+            self.assertEqual(response.result.result, Result.RESULT_OPERATION_FAILED)
         finally:
             self.set_simulation_state(SimulationState.STATE_PAUSED)
 
