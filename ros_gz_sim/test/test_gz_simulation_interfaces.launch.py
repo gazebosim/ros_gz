@@ -297,6 +297,58 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assert_result_ok(entities_response)
         self.assertIn(response.entity_name, entities_response.entities)
 
+    def test_spawn_entity_reports_all_top_level_entity_types(self) -> None:
+        resources = {
+            'test_spawned_model': """
+                <sdf version='1.12'>
+                    <model name='test_spawned_model'><link name='link'/></model>
+                </sdf>
+            """,
+            'test_spawned_light': """
+                <sdf version='1.12'>
+                    <light name='test_spawned_light' type='point'>
+                        <direction>0 0 -1</direction>
+                    </light>
+                </sdf>
+            """,
+            'test_spawned_actor': """
+                <sdf version='1.12'>
+                    <actor name='test_spawned_actor'>
+                        <script><loop>false</loop></script>
+                        <link name='link'/>
+                    </actor>
+                </sdf>
+            """,
+        }
+        for expected_name, resource in resources.items():
+            spawn_entity, request = self.setup_client(
+                si.SpawnEntity, 'spawn_entity')
+            request.entity_resource.resource_string = resource
+            request.initial_pose.pose.orientation.w = 1.0
+            response = self.call_and_spin(spawn_entity, request)
+            self.assert_result_ok(response)
+            self.assertEqual(response.entity_name, expected_name)
+
+    def test_spawn_entity_concurrent_requests(self) -> None:
+        requests = []
+        for name in ['test_concurrent_a', 'test_concurrent_b']:
+            client, request = self.setup_client(si.SpawnEntity, 'spawn_entity')
+            request.name = name
+            request.entity_resource.resource_string = f"""
+                <sdf version='1.12'>
+                    <model name='{name}'><link name='link'/></model>
+                </sdf>
+            """
+            request.initial_pose.pose.orientation.w = 1.0
+            requests.append((name, client.call_async(request)))
+
+        for expected_name, future in requests:
+            rclpy.spin_until_future_complete(self.node, future, timeout_sec=5)
+            self.assertTrue(future.done())
+            response = future.result()
+            self.assert_result_ok(response)
+            self.assertEqual(response.entity_name, expected_name)
+
     def test_delete_entity(self) -> None:
         self.delete_entity('box')
 
