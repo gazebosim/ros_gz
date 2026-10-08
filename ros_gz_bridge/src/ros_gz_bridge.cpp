@@ -120,7 +120,7 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
 void RosGzBridge::spin()
 {
-  if (handles_.empty()) {
+  if (handles_.empty() && services_.empty()) {
     std::string config_file;
     this->get_parameter("config_file", config_file);
     bool expand_names;
