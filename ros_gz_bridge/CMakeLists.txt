@@ -341,6 +341,15 @@ if(BUILD_TESTING)
   target_include_directories(test_launch_action_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
+  add_executable(test_dynamic_bridge test/test_dynamic_bridge.cpp)
+  target_link_libraries(test_dynamic_bridge
+    ${GTEST_LIBRARIES}
+    gz-msgs::core
+    gz-transport::core
+    rclcpp::rclcpp
+    ${std_msgs_TARGETS}
+  )
+
   install(TARGETS
     test_launch_action_subscriber
     test_ros_publisher
@@ -349,6 +358,7 @@ if(BUILD_TESTING)
     test_gz_subscriber
     test_gz_server
     test_ros_client
+    test_dynamic_bridge
     DESTINATION lib/${PROJECT_NAME}
   )
 
@@ -372,6 +382,22 @@ if(BUILD_TESTING)
 
   add_launch_test(test/launch/test_launch_action_classic.launch.py
     TIMEOUT 200
+  )
+
+  add_launch_test(test/launch/test_dynamic_bridge.launch.py
+    TARGET test_dynamic_bridge_gz_to_ros
+    TIMEOUT 200
+    ARGS
+      "direction:=GZ_TO_ROS"
+      "gtest_filter:=-DynamicBridgeTest.BridgesBidirectionally"
+  )
+
+  add_launch_test(test/launch/test_dynamic_bridge.launch.py
+    TARGET test_dynamic_bridge_bidirectional
+    TIMEOUT 200
+    ARGS
+      "direction:=BIDIRECTIONAL"
+      "gtest_filter:=DynamicBridgeTest.BridgesBidirectionally"
   )
 
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
