@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import math
 import os
 from pathlib import Path
 import re
@@ -295,6 +296,41 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertEqual(
             response.result.result,
             si.SetEntityState.Response.INVALID_POSE)
+
+        request.state.pose.orientation.w = 1.0
+        request.state.pose.position.x = float('nan')
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(
+            response.result.result,
+            si.SetEntityState.Response.INVALID_POSE)
+
+    def test_set_entity_state_normalizes_orientation(self) -> None:
+        self.assert_result_ok(self.reset_simulation())
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'sphere'
+        request.state.pose.orientation.w = 2.0
+        request.set_pose = True
+        self.assert_result_ok(self.call_and_spin(set_entity_state, request))
+        orientation = self.get_entity_state('sphere').state.pose.orientation
+        self.assertAlmostEqual(orientation.w, 1.0, delta=1e-4)
+
+    def test_set_entity_state_world_twist_with_new_orientation(self) -> None:
+        self.assert_result_ok(self.reset_simulation())
+        self.set_simulation_state(SimulationState.STATE_PLAYING)
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'sphere'
+        request.state.pose.position.z = 5.0
+        request.state.pose.orientation.z = math.sin(math.pi / 4)
+        request.state.pose.orientation.w = math.cos(math.pi / 4)
+        request.set_pose = True
+        request.state.twist.linear.x = 5.0
+        request.set_twist = True
+        self.assert_result_ok(self.call_and_spin(set_entity_state, request))
+        state = self.get_entity_state('sphere').state
+        self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
+        self.assertAlmostEqual(state.twist.linear.y, 0.0, delta=1e-1)
 
     def test_set_entity_state_rejects_unsupported_frame(self) -> None:
         before = self.get_entity_state('sphere').state.pose

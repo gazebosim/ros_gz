@@ -72,17 +72,25 @@ SetEntityState::SetEntityState(
         return;
       }
 
+      if (!request->set_pose && !request->set_twist && !request->set_acceleration) {
+        RCLCPP_WARN_ONCE(
+          this->ros_node_->get_logger(),
+          "SetEntityState request ignored because all set_* flags are false");
+      }
+
+      const auto & position = request->state.pose.position;
       const auto & orientation = request->state.pose.orientation;
       const auto orientation_norm_squared =
         orientation.x * orientation.x + orientation.y * orientation.y +
         orientation.z * orientation.z + orientation.w * orientation.w;
       if (
         request->set_pose &&
-        (!std::isfinite(orientation_norm_squared) ||
+        (!std::isfinite(position.x) || !std::isfinite(position.y) ||
+        !std::isfinite(position.z) || !std::isfinite(orientation_norm_squared) ||
         orientation_norm_squared <= std::numeric_limits<double>::epsilon()))
       {
         response->result.result = SetEntityStateSrv::Response::INVALID_POSE;
-        response->result.error_message = "Pose orientation must be a valid quaternion";
+        response->result.error_message = "Pose must have a finite position and valid orientation";
         return;
       }
 
@@ -116,7 +124,9 @@ SetEntityState::SetEntityState(
 
           std::unordered_set<gz::sim::ComponentTypeId> component_types;
           if (request->set_pose) {
-            model.SetWorldPoseCmd(ecm, ConvertPose(request->state.pose));
+            auto pose = ConvertPose(request->state.pose);
+            pose.Rot().Normalize();
+            model.SetWorldPoseCmd(ecm, pose);
             component_types.insert(components::WorldPoseCmd::typeId);
           }
 
