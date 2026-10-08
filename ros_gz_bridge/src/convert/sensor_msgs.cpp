@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstdint>
+#include <cstring>
+#include <iostream>
 #include <limits>
+#include <string>
+
+#include <sensor_msgs/image_encodings.hpp>
 
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/sensor_msgs.hpp"
@@ -25,6 +31,45 @@
 
 namespace ros_gz_bridge
 {
+
+namespace
+{
+// Resolve the row step of an image and check it against the data buffer.
+// A step of 0 is treated as unset and replaced by the tightly packed step.
+// Returns false if the step is too small for the width, or if the buffer
+// holds fewer than step * height bytes.
+bool resolve_image_step(
+  const std::string & encoding, uint32_t width, uint32_t height,
+  uint32_t step, size_t data_size, uint32_t & resolved_step)
+{
+  const uint64_t min_step = static_cast<uint64_t>(width) *
+    sensor_msgs::image_encodings::numChannels(encoding) *
+    (sensor_msgs::image_encodings::bitDepth(encoding) / 8);
+
+  if (step == 0) {
+    if (min_step > std::numeric_limits<uint32_t>::max()) {
+      std::cerr << "Image width [" << width << "] is too large" << std::endl;
+      return false;
+    }
+    step = static_cast<uint32_t>(min_step);
+  }
+
+  if (step < min_step) {
+    std::cerr << "Image step [" << step << "] is smaller than width [" << width <<
+      "] requires for encoding [" << encoding << "]" << std::endl;
+    return false;
+  }
+
+  if (static_cast<uint64_t>(step) * height > data_size) {
+    std::cerr << "Image data size [" << data_size << "] is smaller than step [" <<
+      step << "] * height [" << height << "]" << std::endl;
+    return false;
+  }
+
+  resolved_step = step;
+  return true;
+}
+}  // namespace
 
 template<>
 void
@@ -91,7 +136,17 @@ convert_ros_to_gz(
     return;
   }
 
-  gz_msg.set_step(ros_msg.step);
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, ros_msg.step,
+      ros_msg.data.size(), step))
+  {
+    gz_msg.set_step(0);
+    gz_msg.clear_data();
+    return;
+  }
+
+  gz_msg.set_step(step);
   gz_msg.set_data(ros_msg.data.data(), ros_msg.data.size());
 }
 
@@ -138,7 +193,18 @@ convert_gz_to_ros(
   }
 
   ros_msg.is_bigendian = false;
-  ros_msg.step = gz_msg.step();
+
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, gz_msg.step(),
+      gz_msg.data().size(), step))
+  {
+    ros_msg.step = 0;
+    ros_msg.data.clear();
+    return;
+  }
+
+  ros_msg.step = step;
   ros_msg.data.resize(gz_msg.data().size());
 
   // Prefer memcpy over std::copy for performance reasons,

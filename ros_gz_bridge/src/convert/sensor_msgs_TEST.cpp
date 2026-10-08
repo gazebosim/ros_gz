@@ -61,6 +61,85 @@ TEST(ImageGzToRos, PreservesPaddedRows)
   EXPECT_EQ(24u, ros_msg.data[5]);
 }
 
+TEST(ImageRosToGz, UnsetStepIsComputed)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.width = 2;
+  ros_msg.height = 2;
+  ros_msg.encoding = "rgb8";
+  ros_msg.step = 0;
+  ros_msg.data.assign(12, 7);
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(6u, gz_msg.step());
+  EXPECT_EQ(12u, gz_msg.data().size());
+}
+
+TEST(ImageGzToRos, UnsetStepIsComputed)
+{
+  gz::msgs::Image gz_msg;
+  gz_msg.set_width(2);
+  gz_msg.set_height(2);
+  gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT16);
+  gz_msg.set_data(std::string(8, '\x07'));
+
+  sensor_msgs::msg::Image ros_msg;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
+
+  EXPECT_EQ(4u, ros_msg.step);
+  EXPECT_EQ(8u, ros_msg.data.size());
+}
+
+TEST(ImageRosToGz, StepSmallerThanWidthIsRejected)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.width = 4;
+  ros_msg.height = 2;
+  ros_msg.encoding = "mono8";
+  ros_msg.step = 2;
+  ros_msg.data.assign(8, 7);
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(0u, gz_msg.step());
+  EXPECT_TRUE(gz_msg.data().empty());
+}
+
+TEST(ImageRosToGz, TruncatedDataIsRejected)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.width = 640;
+  ros_msg.height = 480;
+  ros_msg.encoding = "rgb8";
+  ros_msg.step = 1920;
+  ros_msg.data.assign(1000, 7);
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(0u, gz_msg.step());
+  EXPECT_TRUE(gz_msg.data().empty());
+}
+
+TEST(ImageGzToRos, TruncatedDataIsRejected)
+{
+  gz::msgs::Image gz_msg;
+  gz_msg.set_width(640);
+  gz_msg.set_height(480);
+  gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT8);
+  gz_msg.set_step(1920);
+  gz_msg.set_data(std::string(1000, '\x07'));
+
+  sensor_msgs::msg::Image ros_msg;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
+
+  EXPECT_EQ(0u, ros_msg.step);
+  EXPECT_TRUE(ros_msg.data.empty());
+}
+
 // ---------------------------------------------------------------------------
 // JointState ROS->GZ : gh issue #118
 //
@@ -104,12 +183,11 @@ TEST(JointStateRosToGz, NameShorterThanPositionDoesNotOverread)
 }
 
 // ---------------------------------------------------------------------------
-// LaserScan ROS->GZ : count is computed from angle range / increment,
-// which can disagree with the actual array sizes due to FP rounding.
-// Many lidars also publish no intensities at all. The bridge must clamp
-// to the actual array sizes instead of trusting the computed count.
+// LaserScan ROS->GZ : count comes from the ranges array, not from the angle
+// range / increment, which can disagree with the array due to FP rounding.
+// Many lidars also publish no intensities at all.
 // ---------------------------------------------------------------------------
-TEST(LaserScanRosToGz, ComputedCountLargerThanRangesArrayIsClamped)
+TEST(LaserScanRosToGz, CountFollowsRangesArrayNotAngles)
 {
   sensor_msgs::msg::LaserScan ros_msg;
   ros_msg.angle_min = 0.0f;
@@ -124,10 +202,11 @@ TEST(LaserScanRosToGz, ComputedCountLargerThanRangesArrayIsClamped)
   gz::msgs::LaserScan gz_msg;
   ASSERT_NO_FATAL_FAILURE(ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg));
 
-  EXPECT_LE(static_cast<size_t>(gz_msg.ranges_size()), ros_msg.ranges.size());
-  EXPECT_LE(
-    static_cast<size_t>(gz_msg.intensities_size()),
-    ros_msg.intensities.size());
+  EXPECT_EQ(ros_msg.ranges.size(), gz_msg.count());
+  EXPECT_EQ(ros_msg.ranges.size(), static_cast<size_t>(gz_msg.ranges_size()));
+  EXPECT_EQ(
+    ros_msg.intensities.size(),
+    static_cast<size_t>(gz_msg.intensities_size()));
 }
 
 TEST(LaserScanRosToGz, EmptyIntensitiesDoesNotOverread)
