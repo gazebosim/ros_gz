@@ -57,8 +57,8 @@ TEST_F(ServiceOnlyConfigTest, ServiceOnlyConfigIsLoadedOnce)
 {
   rclcpp::NodeOptions options;
   options.parameter_overrides({
-    rclcpp::Parameter("config_file", "test/config/service_only.yaml"),
-    rclcpp::Parameter("subscription_heartbeat", 60000)
+      rclcpp::Parameter("config_file", "test/config/service_only.yaml"),
+      rclcpp::Parameter("subscription_heartbeat", 60000)
   });
   auto bridge = std::make_shared<TestRosGzBridge>(options);
 
