@@ -31,7 +31,7 @@
     use_composition="True">
     <param name="automated_bridge.enable" value="true" />
     <param name="automated_bridge.exclude_patterns"
-           value="['/clock', '.*camera.*']" />
+           value="['/clock', '.*camera.*', '.*tf']" />
   </ros_gz_bridge>
   <executable cmd="gz sim -g" output="screen" />
 </launch>
