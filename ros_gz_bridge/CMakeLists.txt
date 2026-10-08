@@ -392,6 +392,9 @@ if(BUILD_TESTING)
     ${std_msgs_TARGETS}
   )
 
+  ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
+  target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
+
   ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
   target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_intra_process
