@@ -584,9 +584,11 @@ convert_gz_to_ros(
   ros_msg.min_range = gz_msg.range_min();
   ros_msg.max_range = gz_msg.range_max();
 
-  ros_msg.range = ros_msg.max_range + 1.0;
+  // REP 117: +Inf when no ray detected anything. The previous sentinel
+  // (max_range + 1) also let a single out-of-range ray collapse to that
+  // value, so take the plain minimum over the rays instead.
+  ros_msg.range = std::numeric_limits<double>::infinity();
 
-  // Set range to the minimum of the ray ranges
   // For single rays, this will just be the range of the ray
   for (double range : gz_msg.ranges()) {
     if (range < ros_msg.range) {
