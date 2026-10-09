@@ -297,11 +297,35 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.delete_entity('test_empty')
 
     def test_step_simulation(self) -> None:
+        self.set_simulation_state(SimulationState.STATE_PAUSED)
+
+        set_entity_state, set_request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        set_request.entity = 'sphere'
+        set_request.state.pose.position.z = 10.0
+        set_request.state.pose.orientation.w = 1.0
+        set_request.set_pose = True
+        self.assert_result_ok(self.call_and_spin(set_entity_state, set_request))
+        before = self.get_entity_state('sphere').state.pose.position.z
+
         step_simulation, request = self.setup_client(
             si.StepSimulation, 'step_simulation')
-        request.steps = 5
-        response = self.call_and_spin(step_simulation, request)
-        self.assert_result_ok(response)
+        request.steps = 100
+        self.assert_result_ok(self.call_and_spin(step_simulation, request))
+
+        after = self.get_entity_state('sphere').state.pose.position.z
+        self.assertLess(after, before)
+
+    def test_step_simulation_rejects_playing_state(self) -> None:
+        self.set_simulation_state(SimulationState.STATE_PLAYING)
+        try:
+            step_simulation, request = self.setup_client(
+                si.StepSimulation, 'step_simulation')
+            request.steps = 1
+            response = self.call_and_spin(step_simulation, request)
+            self.assertEqual(response.result.result, Result.RESULT_OPERATION_FAILED)
+        finally:
+            self.set_simulation_state(SimulationState.STATE_PAUSED)
 
     def test_reset_simulation(self) -> None:
         self.assert_result_ok(self.reset_simulation())
