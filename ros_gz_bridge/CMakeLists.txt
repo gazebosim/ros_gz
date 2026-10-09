@@ -231,6 +231,7 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_gz_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   ament_add_gtest(test_sensor_msgs
