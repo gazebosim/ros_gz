@@ -418,7 +418,7 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 ROS 2 Parameters:
 
 * `subscription_heartbeat`
-    * type: double
+    * type: int
     * default: 1000
     * description: Period (ms) at which the node checks for new subscribers for
       lazy bridges.
