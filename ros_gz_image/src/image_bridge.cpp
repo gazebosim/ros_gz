@@ -18,6 +18,7 @@
 #include <chrono>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -70,6 +71,14 @@ public:
     }
   }
 
+  /// \brief Destructor. Blocks until any in-flight OnImage call finishes,
+  /// then prevents later callbacks from touching members.
+  ~Handler()
+  {
+    std::lock_guard<std::mutex> lock(cb_mutex_);
+    closed_ = true;
+  }
+
   /// \brief Manage Gazebo subscription lifecycle based on ROS subscriber count.
   /// Only active when lazy mode is enabled.
   void CheckSubscribers()
@@ -104,6 +113,10 @@ private:
   /// \param[in] _gz_msg Gazebo message
   void OnImage(const gz::msgs::Image & _gz_msg)
   {
+    std::lock_guard<std::mutex> lock(cb_mutex_);
+    if (closed_) {
+      return;
+    }
     sensor_msgs::msg::Image ros_msg;
     ros_gz_bridge::convert_gz_to_ros(_gz_msg, ros_msg);
     this->ros_pub_.publish(ros_msg);
@@ -120,6 +133,14 @@ private:
 
   /// \brief Whether currently subscribed to Gazebo topic
   std::atomic<bool> has_subscriber_{false};
+
+  /// \brief Held for the whole OnImage body and in ~Handler, so a callback
+  /// already running finishes before member teardown and a callback that
+  /// arrives during teardown sees closed_ and returns.
+  std::mutex cb_mutex_;
+
+  /// \brief Set in ~Handler; OnImage no-ops once teardown has started.
+  bool closed_{false};
 
   /// \brief ROS image publisher
   image_transport::Publisher ros_pub_;
