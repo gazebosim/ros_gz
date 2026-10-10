@@ -15,7 +15,9 @@
 #ifndef ROS_GZ_BRIDGE__ROS_GZ_BRIDGE_HPP_
 #define ROS_GZ_BRIDGE__ROS_GZ_BRIDGE_HPP_
 
+#include <map>
 #include <memory>
+#include <regex>
 #include <string>
 #include <vector>
 
@@ -27,8 +29,35 @@
 
 namespace ros_gz_bridge
 {
+
+/// \brief Enumeration for bridge warning types
+enum class BridgeWarningType
+{
+  /// \brief No warning
+  NONE,
+
+  /// \brief Gazebo topic has multiple types or no types
+  GZ_TYPE_UNDETERMINED,
+
+  /// \brief No mapping found from current Gazebo type to ROS type
+  GZ_TO_ROS_MAPPING_NOT_FOUND,
+
+  /// \brief Failed to discover ROS topic info
+  ROS_TYPE_DISCOVERY_FAILED,
+
+  /// \brief ROS topic has multiple types or no types
+  ROS_TYPE_UNDETERMINED,
+
+  /// \brief Mismatch between the detected Gazebo and ROS types.
+  ROS_GZ_TYPE_MISMATCH,
+
+  /// \brief Topic/service name matches an exclude pattern
+  EXCLUDE_PATTERN_MATCHED,
+};
+
 /// Forward declarations
 class BridgeHandle;
+class ServiceFactoryInterface;
 
 /// \brief Component container for the ROS-GZ Bridge
 class ROS_GZ_BRIDGE_VISIBLE RosGzBridge : public rclcpp::Node
@@ -47,15 +76,92 @@ public:
   /// \param[in] gz_req_type_name Gazebo service request type
   /// \param[in] gz_rep_type_name Gazebo service response type
   /// \param[in] service_name Address of the service to be bridged
+  /// \param[in] factory Factory to create the service bridge
   void add_service_bridge(
     const std::string & ros_type_name,
     const std::string & gz_req_type_name,
     const std::string & gz_rep_type_name,
-    const std::string & service_name);
+    const std::string & service_name,
+    std::shared_ptr<ServiceFactoryInterface> factory = nullptr);
+
+  /// \brief Discover compatible ROS and Gazebo endpoints and create non-excluded bridges
+  /// automatically
+  void create_automated_bridges();
+
+  /// \brief Set regex patterns to exclude topics/services from automated bridging
+  /// \param[in] patterns List of regex patterns to exclude topics/services from automated bridging
+  void set_automated_bridge_exclude_patterns(const std::vector<std::string> & patterns);
 
 protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
+
+  /// \brief Check if a topic/service name matches any of the exclude patterns
+  /// for automated bridging
+  /// \param[in] name Topic/service name to check
+  /// \return True if the name matches any exclude pattern, false otherwise
+  bool is_excluded_from_automated_bridging(const std::string & name) const;
+
+  /// \brief Get Gazebo topic information, including type and direction
+  /// \param[in] topic_info Unprocessed information about the Gazebo topic
+  /// \param[out] gz_type_name Type of the Gazebo topic
+  /// \param[out] direction Direction of the bridge
+  /// \return True if successfully gets the Gazebo topic information
+  bool get_gz_topic_info(
+    const gz::transport::TopicInfo & topic_info,
+    std::string & gz_type_name,
+    BridgeDirection & direction);
+
+  /// \brief Get ROS topic information, including type
+  /// \param[in] topic_name Name of the ROS topic
+  /// \param[out] ros_type_name Type of the ROS topic
+  /// \param[in] direction Direction of the bridge
+  /// \return True if successfully gets the ROS topic information
+  bool get_ros_topic_info(
+    const std::string & topic_name,
+    std::string & ros_type_name,
+    const BridgeDirection & direction);
+
+  /// \brief Get Gazebo service information, including request and response types
+  /// \param[in] service_name Name of the Gazebo service
+  /// \param[out] gz_req_type_name Type of the Gazebo service request
+  /// \param[out] gz_rep_type_name Type of the Gazebo service response
+  /// \return True if successfully gets the Gazebo service information
+  bool get_gz_service_info(
+    const std::string & service_name,
+    std::string & gz_req_type_name,
+    std::string & gz_rep_type_name);
+
+  /// \brief Get ROS service information, including type
+  /// \param[in] ros_services Map of ROS services and their types
+  /// \param[in] service_name Name of the ROS service
+  /// \param[out] ros_type_name Type of the ROS service
+  /// \return True if successfully gets the ROS service information
+  bool get_ros_service_info(
+    const std::map<std::string, std::vector<std::string>> & ros_services,
+    const std::string & service_name, std::string & ros_type_name);
+
+  /// \brief Get ROS service names and their associated types from the ROS graph.
+  /// \param[out] ros_services Map from service names to their ROS service types.
+  /// \return True if the ROS service information was retrieved successfully, false otherwise.
+  bool get_ros_services(
+    std::map<std::string, std::vector<std::string>> & ros_services);
+
+  /// \brief Log a bridge warning while avoiding repeated messages for the same
+  /// topic /service and warning type
+  /// \param[in] warning_type Type of warning to log
+  /// \param[in] name Topic /service associated with the warning.
+  /// \param[in] resource_type Type of resource (topic or service)
+  /// \param[in] ros_type_name ROS message type related to the warning
+  /// \param[in] gz_type_name Gazebo message type related to the warning
+  /// \param[in] extra_info Additional warning context
+  void log_bridge_warning(
+    const BridgeWarningType & warning_type,
+    const std::string & name,
+    const std::string & resource_type = "topic",
+    const std::string & ros_type_name = "",
+    const std::string & gz_type_name = "",
+    const std::string & extra_info = "");
 
 protected:
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
@@ -69,6 +175,12 @@ protected:
 
   /// \brief Timer to control periodic callback
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
+
+  /// \brief Regex patterns to exclude topics/services from automated bridging
+  std::vector<std::regex> automated_bridge_exclude_patterns_;
+
+  /// \brief Map of bridge warnings
+  std::map<std::string, BridgeWarningType> bridge_warnings_;
 };
 }  // namespace ros_gz_bridge
 
