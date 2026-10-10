@@ -175,6 +175,7 @@ int main(int argc, char * argv[])
 
   // ROS 2 spinner
   rclcpp::spin(bridge_node);
+  rclcpp::shutdown();
 
   return 0;
 }
