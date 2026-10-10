@@ -379,11 +379,21 @@ if(BUILD_TESTING)
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_bridge_config rclcpp::rclcpp ${bridge_lib})
 
+  ament_add_gtest(${PROJECT_NAME}_service_only_config test/test_service_only_config.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_link_libraries(${PROJECT_NAME}_service_only_config
+    rclcpp::rclcpp
+    ${bridge_lib}
+  )
+
   ament_add_gtest(${PROJECT_NAME}_gid_filtering test/test_gid_filtering.cpp)
   target_link_libraries(${PROJECT_NAME}_gid_filtering
     rclcpp::rclcpp
     ${std_msgs_TARGETS}
   )
+
+  ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
+  target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
 
   ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
   target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
