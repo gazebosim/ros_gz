@@ -137,6 +137,11 @@ def launch_gz(context, *args, **kwargs):
     else:
         debug_prefix = None
 
+    # Replace the intermediate shell so launch can signal and reap Gazebo.
+    # Keep Windows and debugger-prefix execution unchanged.
+    if os.name == 'posix' and debug_prefix is None:
+        exec = 'exec ' + exec
+
     if on_exit_shutdown != 'false':
         on_exit = Shutdown()
     else:

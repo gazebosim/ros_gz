@@ -19,7 +19,9 @@ from importlib.util import module_from_spec, spec_from_loader
 import json
 import os
 from pathlib import Path
+import select
 import shlex
+import signal
 import subprocess
 import sys
 from types import SimpleNamespace
@@ -38,13 +40,13 @@ def subject():
     return module
 
 
-def command(subject, executable, legacy=False, platform_name='posix'):
+def command(subject, executable, legacy=False, platform_name='posix', debugger=False):
     # Do not patch the process-wide os.name: pathlib and launch also use it.
     subject.os = SimpleNamespace(**{**os.__dict__, 'name': platform_name})
     context = LaunchContext()
     context.launch_configurations.update(
         gz_args='-s -r empty.sdf', gz_version='10', ign_args='',
-        ign_version='6' if legacy else '', debugger='false',
+        ign_version='6' if legacy else '', debugger=str(debugger).lower(),
         on_exit_shutdown='false', debug_env='false')
     with patch.object(subject.shutil, 'which', return_value=executable), \
             patch.object(subject.GazeboRosPaths, 'get_paths', return_value=('', '')):
@@ -78,10 +80,10 @@ def test_executable_is_one_literal_shell_argument(subject, tmp_path, directory, 
 
 
 @pytest.mark.parametrize('legacy', [False, True])
-def test_plain_posix_command_is_unchanged(subject, legacy):
+def test_plain_posix_command_replaces_shell_without_changing_arguments(subject, legacy):
     name = 'ign' if legacy else 'gz'
     assert command(subject, '/usr/bin/' + name, legacy) == (
-        'ruby /usr/bin/' + name + (' gazebo' if legacy else ' sim') +
+        'exec ruby /usr/bin/' + name + (' gazebo' if legacy else ' sim') +
         ' -s -r empty.sdf --force-version ' + ('6' if legacy else '10'))
 
 
@@ -94,3 +96,49 @@ def test_windows_command_keeps_existing_bat_handling(subject, legacy, suffix):
     assert command(subject, path + suffix, legacy, 'nt') == (
         'ruby ' + path + (' gazebo' if legacy else ' sim') +
         ' -s -r empty.sdf --force-version ' + ('6' if legacy else '10'))
+
+
+@pytest.mark.parametrize('legacy', [False, True])
+@pytest.mark.parametrize('platform_name', ['posix', 'nt'])
+def test_debugger_keeps_existing_command(subject, legacy, platform_name):
+    name = 'ign' if legacy else 'gz'
+    assert command(subject, '/usr/bin/' + name, legacy, platform_name, True) == (
+        'x-terminal-emulator -e gdb -ex run --args ruby /usr/bin/' + name +
+        (' gazebo' if legacy else ' sim') +
+        ' -s -r empty.sdf --force-version ' + ('6' if legacy else '10'))
+
+
+@pytest.mark.skipif(os.name != 'posix', reason='Requires POSIX signals and a shell')
+@pytest.mark.parametrize('legacy', [False, True])
+@pytest.mark.parametrize('signum', [signal.SIGINT, signal.SIGTERM, getattr(signal, 'SIGKILL', 9)])
+def test_launch_pid_owns_process_and_receives_shutdown_signal(
+        subject, tmp_path, legacy, signum):
+    # A stand-in, not Gazebo: prove that signalling the launch-owned PID cannot
+    # stop only an intermediate shell and leave its executable behind.
+    program = (
+        'import json, os, signal\n'
+        'signal.signal(signal.SIGINT, signal.SIG_DFL)\n'
+        'print(json.dumps({"pid": os.getpid()}), flush=True)\n'
+        'while True: signal.pause()\n')
+    ruby = tmp_path / 'ruby'
+    ruby.write_text('#!/bin/sh\nexec ' + shlex.quote(sys.executable) +
+                    ' -c ' + shlex.quote(program) + ' "$@"\n')
+    ruby.chmod(0o755)
+    executable = str(tmp_path / 'Application Support' / ('ign' if legacy else 'gz'))
+    process = subprocess.Popen(
+        command(subject, executable, legacy), shell=True, executable='/bin/sh',
+        env={**os.environ, 'PATH': str(tmp_path) + os.pathsep + os.environ['PATH']},
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, start_new_session=True)
+    try:
+        assert select.select([process.stdout], [], [], 10)[0], 'Stand-in did not start'
+        assert json.loads(process.stdout.readline())['pid'] == process.pid
+        process.send_signal(signum)
+        process.communicate(timeout=5)
+        assert process.returncode == -signum
+    finally:
+        # Clean up the isolated group even when checking an unfixed launch file.
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        process.communicate(timeout=5)
