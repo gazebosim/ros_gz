@@ -84,6 +84,11 @@ def get_executable_path(command):
         return os.path.splitext(path)[0]
     return path
 
+def build_gz_cmd(exec_cmd, exec_args, gz_version, use_shell):
+    if use_shell != 'false':
+        return [exec_cmd, exec_args, '--force-version', gz_version]
+    return shlex.split(exec_cmd) + shlex.split(exec_args) + ['--force-version', gz_version]
+
 def launch_gz(context, *args, **kwargs):
     model_paths, plugin_paths = GazeboRosPaths.get_paths()
 
@@ -136,11 +141,7 @@ def launch_gz(context, *args, **kwargs):
     else:
         on_exit = None
 
-    if use_shell != 'false':
-        cmd = [exec, exec_args, '--force-version', gz_version]
-    else:
-        # Split the strings ourselves, since shell=False won't do it.
-        cmd = shlex.split(exec) + shlex.split(exec_args) + ['--force-version', gz_version]
+    cmd = build_gz_cmd(exec, exec_args, gz_version, use_shell)
 
     ld = [ExecuteProcess(
                 cmd=cmd,
