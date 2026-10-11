@@ -17,7 +17,7 @@
 import os
 from os import environ
 import shutil
-
+import shlex
 from ament_index_python.packages import get_package_share_directory
 from catkin_pkg.package import InvalidPackage, PACKAGE_MANIFEST_FILENAME, parse_package
 from ros2pkg.api import get_package_names
@@ -109,6 +109,7 @@ def launch_gz(context, *args, **kwargs):
     ign_version = LaunchConfiguration('ign_version').perform(context)
     debugger = LaunchConfiguration('debugger').perform(context)
     on_exit_shutdown = LaunchConfiguration('on_exit_shutdown').perform(context)
+    use_shell = LaunchConfiguration('shell').perform(context)
     debug_env = LaunchConfiguration('debug_env').perform(context)
 
     if not len(gz_args) and len(ign_args):
@@ -135,12 +136,18 @@ def launch_gz(context, *args, **kwargs):
     else:
         on_exit = None
 
+    if use_shell != 'false':
+        cmd = [exec, exec_args, '--force-version', gz_version]
+    else:
+        # Split the strings ourselves, since shell=False won't do it.
+        cmd = shlex.split(exec) + shlex.split(exec_args) + ['--force-version', gz_version]
+
     ld = [ExecuteProcess(
-                cmd=[exec, exec_args, '--force-version', gz_version],
+                cmd=cmd,
                 name='gazebo',
                 output='screen',
                 additional_env=env,
-                shell=True,
+                shell=(use_shell != 'false'),
                 prefix=debug_prefix,
                 on_exit=on_exit
                 )
@@ -175,7 +182,7 @@ def generate_launch_description():
             'debug_env', default_value='false',
             description='Debug environment variables'),
         DeclareLaunchArgument(
-            'on_exit_shutdown', default_value='false',
-            description='Shutdown on gz-sim exit'),
+            'shell', default_value='true',
+            description='Run Gazebo through a shell (true) or directly (false)'),
         OpaqueFunction(function = launch_gz),
     ])
