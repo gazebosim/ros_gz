@@ -43,6 +43,10 @@ public:
   {
   }
 
+  /// \brief Destructor. Virtual because handlers are owned through HandlerBase
+  /// pointers, so derived members (e.g. action servers) must be destroyed too.
+  virtual ~HandlerBase() = default;
+
 protected:
   /// \brief ROS Node
   std::shared_ptr<rclcpp::Node> ros_node_;
