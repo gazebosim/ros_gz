@@ -129,7 +129,10 @@ public:
   /// \return True if the world stats has been updated before a timeout occurred.
   bool AssertUpdatedWorldStats(simulation_interfaces::msg::Result & result);
 
-  /// \brief Wait until simulation reset is detected
+  /// \brief Arm reset detection before sending a reset request.
+  void ArmResetDetection();
+
+  /// \brief Wait until simulation reset is detected.
   /// \return True if reset was detected.
   bool WaitForResetDetected();
 
@@ -232,9 +235,6 @@ private:
   /// \brief Records whether the state has been initialized when this class was first instantiated.
   bool state_initialized_{false};
 
-  /// \brief Holds the future returned by a std::async call made when a sim reset occurs.
-  std::future<void> initialize_canonical_links_;
-
   /// \brief Whether simulation reset was detected
   bool reset_detected_{false};
 
@@ -243,6 +243,9 @@ private:
 
   /// \brief Conditional variable used for waiting on reset detected.
   std::condition_variable reset_detected_cv_;
+
+  /// \brief Joins reset initialization before synchronization members are destroyed.
+  std::future<void> initialize_canonical_links_;
 
   /// \brief gz-transport subscription handles
   /// \TODO(azeey): Using a std::map here instead of a std::vector due to a bug in gz-transport
