@@ -595,6 +595,14 @@ convert_gz_to_ros(
       ros_msg.range = range;
     }
   }
+
+  // REP 117: report readings outside [min_range, max_range] as +Inf (nothing
+  // detected within range) or -Inf (detected too close to measure).
+  if (ros_msg.range > ros_msg.max_range) {
+    ros_msg.range = std::numeric_limits<float>::infinity();
+  } else if (ros_msg.range < ros_msg.min_range) {
+    ros_msg.range = -std::numeric_limits<float>::infinity();
+  }
 }
 
 template<>
