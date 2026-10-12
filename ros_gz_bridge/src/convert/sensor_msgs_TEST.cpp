@@ -334,12 +334,12 @@ sensor_msgs::msg::Range ScanToRange(std::initializer_list<double> ranges)
   return ros_msg;
 }
 
-constexpr double kInf = std::numeric_limits<double>::infinity();
+constexpr double kInfinity = std::numeric_limits<double>::infinity();
 }  // namespace
 
 TEST(LaserScanGzToRange, NoDetectionIsPositiveInfinity)
 {
-  const auto ros_msg = ScanToRange({kInf, kInf, kInf});
+  const auto ros_msg = ScanToRange({kInfinity, kInfinity, kInfinity});
   EXPECT_TRUE(std::isinf(ros_msg.range));
   EXPECT_GT(ros_msg.range, 0.0f);
 }
@@ -353,12 +353,12 @@ TEST(LaserScanGzToRange, EmptyScanIsPositiveInfinity)
 
 TEST(LaserScanGzToRange, ClosestDetectionWins)
 {
-  EXPECT_FLOAT_EQ(1.5f, ScanToRange({kInf, 1.5, 1.8}).range);
+  EXPECT_FLOAT_EQ(1.5f, ScanToRange({kInfinity, 1.5, 1.8}).range);
 }
 
 TEST(LaserScanGzToRange, TooCloseIsNegativeInfinity)
 {
-  const auto ros_msg = ScanToRange({-kInf, 1.0});
+  const auto ros_msg = ScanToRange({-kInfinity, 1.0});
   EXPECT_TRUE(std::isinf(ros_msg.range));
   EXPECT_LT(ros_msg.range, 0.0f);
 }
