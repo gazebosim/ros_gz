@@ -27,6 +27,7 @@
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/SemanticCategory.hh>
 #include <gz/sim/components/SemanticTags.hh>
+#include <simulation_interfaces/msg/bounds.hpp>
 #include <simulation_interfaces/msg/entity_category.hpp>
 #include <simulation_interfaces/msg/result.hpp>
 #include <simulation_interfaces/msg/tags_filter.hpp>
@@ -56,6 +57,11 @@ GetEntities::GetEntities(
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
       if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+      if (request->filters.bounds.type != simulation_interfaces::msg::Bounds::TYPE_EMPTY) {
+        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+        response->result.error_message = "Entity bounds filtering is not supported";
         return;
       }
       this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {

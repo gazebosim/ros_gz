@@ -17,7 +17,19 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
 
+#include <chrono>
 #include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+#include <gz/sim/components/Name.hh>
+#include <gz/sim/components/ParentEntity.hh>
+#include <gz/sim/components/World.hh>
+#include <sdf/Actor.hh>
+#include <sdf/Light.hh>
+#include <sdf/Model.hh>
+#include <sdf/Root.hh>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
@@ -31,6 +43,7 @@ namespace services
 using SpawnEntitySrv = simulation_interfaces::srv::SpawnEntity;
 using RequestPtr = SpawnEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = SpawnEntitySrv::Response::SharedPtr;
+namespace components = gz::sim::components;
 
 SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -67,6 +80,46 @@ SpawnEntity::SpawnEntity(
         return;
       }
 
+      std::string expected_name = request->name;
+      if (expected_name.empty()) {
+        sdf::Root root;
+        if (!resource.uri.empty()) {
+          root.Load(resource.uri);
+        } else {
+          root.LoadSdfString(resource.resource_string);
+        }
+        if (root.Model()) {
+          expected_name = root.Model()->Name();
+        } else if (root.Light()) {
+          expected_name = root.Light()->Name();
+        } else if (root.Actor()) {
+          expected_name = root.Actor()->Name();
+        }
+      }
+
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+
+      std::unordered_set<gz::sim::Entity> entities_before;
+      bool expected_name_exists = false;
+      this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+        ecm.Each<components::Name, components::ParentEntity>(
+          [&](const gz::sim::Entity & entity, const components::Name * name,
+          const components::ParentEntity * parent) {
+            if (ecm.Component<components::World>(parent->Data())) {
+              entities_before.insert(entity);
+              expected_name_exists |= name->Data() == expected_name;
+            }
+            return true;
+          });
+      });
+      if (!expected_name.empty() && expected_name_exists && !request->allow_renaming) {
+        response->result.result = SpawnEntitySrv::Response::NAME_NOT_UNIQUE;
+        response->result.error_message = "An entity with the requested name already exists";
+        return;
+      }
+
       // TODO(azeey) Add support for entity_namespace
       // TODO(azeey) Reuse code in ros_gz_bridge/convert/geometry_msgs
       auto * pose = gz_request.mutable_pose();
@@ -87,11 +140,43 @@ SpawnEntity::SpawnEntity(
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to spawn entity";
       } else if (result && reply.data()) {
-        response->result.result = Result::RESULT_OK;
-        // TODO(azeey) Fetch the new name of the entity from our local ECM using `EachNew`.
-        // We'd have to make sure that the ECM has been updated at least once after the `create`
-        // request
-        response->entity_name = request->name;
+        const auto deadline = std::chrono::steady_clock::now() +
+        std::chrono::milliseconds(GazeboProxy::kGzStateUpdatedTimeoutMs);
+        while (true) {
+          std::vector<std::string> matching_names;
+          this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+            ecm.Each<components::Name, components::ParentEntity>(
+              [&](const gz::sim::Entity & entity, const components::Name * name,
+              const components::ParentEntity * parent) {
+                const bool name_matches = expected_name.empty() ||
+                (request->allow_renaming ?
+                name->Data().compare(0, expected_name.size(), expected_name) == 0 :
+                name->Data() == expected_name);
+                if (
+                  ecm.Component<components::World>(parent->Data()) &&
+                  entities_before.count(entity) == 0 && name_matches)
+                {
+                  matching_names.push_back(name->Data());
+                }
+                return true;
+              });
+          });
+          if (matching_names.size() == 1) {
+            response->entity_name = matching_names.front();
+            response->result.result = Result::RESULT_OK;
+            return;
+          }
+          if (matching_names.size() > 1 || std::chrono::steady_clock::now() >= deadline) {
+            response->result.result = Result::RESULT_OPERATION_FAILED;
+            response->result.error_message = "Unable to identify the newly spawned entity";
+            return;
+          }
+          simulation_interfaces::msg::Result state_result;
+          if (!this->gz_proxy_->AssertUpdatedState(state_result)) {
+            response->result = state_result;
+            return;
+          }
+        }
       } else {
         // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative
         // error messages. However, the `create` service in UserCommands only returns a boolean.

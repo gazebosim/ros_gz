@@ -127,7 +127,11 @@ SimulateSteps::SimulateSteps(
                 auto iterations = this->gz_proxy_->Iterations();
                 feedback->completed_steps = iterations - num_iters_start;
                 feedback->remaining_steps = goal->steps - feedback->completed_steps;
-                goal_handle->publish_feedback(feedback);
+                // World statistics can arrive before the queued step request takes effect.
+                // Feedback describes completed steps, so don't publish the initial zero count.
+                if (feedback->completed_steps > 0) {
+                  goal_handle->publish_feedback(feedback);
+                }
                 // TODO(azeey) There is a bug in Gazebo where the stepping field is set to true only
                 // once immediately after the request to step instead of being true for the whole
                 // duration of steps. So we can't use this right now to determine if we need to
