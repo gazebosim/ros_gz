@@ -227,12 +227,6 @@ void GazeboProxy::ArmResetDetection()
   this->reset_detected_ = false;
 }
 
-void GazeboProxy::SetPauseTarget(std::optional<bool> target)
-{
-  std::lock_guard<std::mutex> lk(this->pause_target_mutex_);
-  this->pause_target_ = target;
-}
-
 bool GazeboProxy::WaitForResetDetected()
 {
   std::unique_lock lk(this->reset_detected_mutex_);
@@ -341,10 +335,6 @@ void GazeboProxy::InitializeCanonicalLinks(
   }
 
   gz::msgs::WorldControlState control_msg;
-  std::lock_guard<std::mutex> lk(this->pause_target_mutex_);
-  // Gazebo applies world_control even when this request is only synchronizing state. Preserve the
-  // current pause state so canonical-link synchronization doesn't implicitly unpause simulation.
-  control_msg.mutable_world_control()->set_pause(this->pause_target_.value_or(this->Paused()));
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
         components::WorldAngularVelocity::typeId}));

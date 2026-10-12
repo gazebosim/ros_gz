@@ -24,7 +24,6 @@
 #include <map>
 #include <memory>
 #include <mutex>
-#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -132,10 +131,6 @@ public:
 
   /// \brief Arm reset detection before sending a reset request.
   void ArmResetDetection();
-
-  /// \brief Preserve an active state transition's pause target during entity synchronization.
-  /// \param[in] target Desired pause value, or nullopt after the transition finishes.
-  void SetPauseTarget(std::optional<bool> target);
 
   /// \brief Wait until simulation reset is detected.
   /// \return True if reset was detected.
@@ -248,12 +243,6 @@ private:
 
   /// \brief Conditional variable used for waiting on reset detected.
   std::condition_variable reset_detected_cv_;
-
-  /// \brief Serializes pause target changes with canonical-link synchronization requests.
-  std::mutex pause_target_mutex_;
-
-  /// \brief Requested pause value during a state transition; not an observed simulation state.
-  std::optional<bool> pause_target_;
 
   /// \brief Joins reset initialization before synchronization members are destroyed.
   std::future<void> initialize_canonical_links_;
