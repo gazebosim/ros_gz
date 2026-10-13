@@ -113,6 +113,13 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
+  if (heartbeat <= 0) {
+    RCLCPP_WARN(
+      this->get_logger(),
+      "Invalid subscription_heartbeat [%d], it must be positive. Using default of 1000 ms.",
+      heartbeat);
+    heartbeat = 1000;
+  }
   heartbeat_timer_ = this->create_wall_timer(
     std::chrono::milliseconds(heartbeat),
     std::bind(&RosGzBridge::spin, this));
@@ -120,7 +127,10 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
 void RosGzBridge::spin()
 {
-  if (handles_.empty() && services_.empty()) {
+  // Configure bridges only once, even if some or all of them failed to be
+  // created, or if other bridges were already added through add_bridge().
+  if (!bridges_configured_) {
+    bridges_configured_ = true;
     std::string config_file;
     this->get_parameter("config_file", config_file);
     bool expand_names;

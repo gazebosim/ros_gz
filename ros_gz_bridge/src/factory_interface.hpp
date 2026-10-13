@@ -58,7 +58,7 @@ public:
     gz::transport::Node::Publisher & gz_pub) = 0;
 
   virtual
-  void
+  gz::transport::Node::Subscriber
   create_gz_subscriber(
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,

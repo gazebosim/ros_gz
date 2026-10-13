@@ -53,6 +53,24 @@ DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
 DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
 DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
 
+// Declares a pose parameter that accepts integers as well as doubles, since
+// launch turns values such as `x:=1` into integer parameters.
+void declare_pose_parameter(const rclcpp::Node::SharedPtr ros2_node, const std::string & name)
+{
+  rcl_interfaces::msg::ParameterDescriptor descriptor;
+  descriptor.dynamic_typing = true;
+  ros2_node->declare_parameter(name, rclcpp::ParameterValue(0.0), descriptor);
+}
+
+double get_pose_parameter(const rclcpp::Node::SharedPtr ros2_node, const std::string & name)
+{
+  const auto param = ros2_node->get_parameter(name);
+  if (param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER) {
+    return static_cast<double>(param.as_int());
+  }
+  return param.as_double();
+}
+
 // Utility Function to avoid code duplication
 
 bool set_XML_from_topic(
@@ -129,12 +147,12 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("topic", "");
   ros2_node->declare_parameter("name", "");
   ros2_node->declare_parameter("allow_renaming", false);
-  ros2_node->declare_parameter("x", static_cast<double>(0));
-  ros2_node->declare_parameter("y", static_cast<double>(0));
-  ros2_node->declare_parameter("z", static_cast<double>(0));
-  ros2_node->declare_parameter("R", static_cast<double>(0));
-  ros2_node->declare_parameter("P", static_cast<double>(0));
-  ros2_node->declare_parameter("Y", static_cast<double>(0));
+  declare_pose_parameter(ros2_node, "x");
+  declare_pose_parameter(ros2_node, "y");
+  declare_pose_parameter(ros2_node, "z");
+  declare_pose_parameter(ros2_node, "R");
+  declare_pose_parameter(ros2_node, "P");
+  declare_pose_parameter(ros2_node, "Y");
 
   auto always_shutdown = rcpputils::make_scope_exit(
     []() {rclcpp::shutdown();});
@@ -231,12 +249,12 @@ int main(int _argc, char ** _argv)
   }
 
   // Pose
-  double x_coords = ros2_node->get_parameter("x").as_double();
-  double y_coords = ros2_node->get_parameter("y").as_double();
-  double z_coords = ros2_node->get_parameter("z").as_double();
-  double roll = ros2_node->get_parameter("R").as_double();
-  double pitch = ros2_node->get_parameter("P").as_double();
-  double yaw = ros2_node->get_parameter("Y").as_double();
+  double x_coords = get_pose_parameter(ros2_node, "x");
+  double y_coords = get_pose_parameter(ros2_node, "y");
+  double z_coords = get_pose_parameter(ros2_node, "z");
+  double roll = get_pose_parameter(ros2_node, "R");
+  double pitch = get_pose_parameter(ros2_node, "P");
+  double yaw = get_pose_parameter(ros2_node, "Y");
 
   FLAGS_x = (x_coords != 0.0) ? x_coords : FLAGS_x;
   FLAGS_y = (y_coords != 0.0) ? y_coords : FLAGS_y;
