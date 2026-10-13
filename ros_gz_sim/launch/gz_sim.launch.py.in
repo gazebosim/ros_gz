@@ -16,6 +16,7 @@
 
 import os
 from os import environ
+import shlex
 import shutil
 
 from ament_index_python.packages import get_package_share_directory
@@ -25,6 +26,7 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.actions import ExecuteProcess, Shutdown
 from launch.actions import LogInfo
+from launch.conditions import evaluate_condition_expression
 from launch.substitutions import LaunchConfiguration
 
 # Copied from https://github.com/ros-simulation/gazebo_ros_pkgs/blob/79fd94c6da76781a91499bc0f54b70560b90a9d2/gazebo_ros/scripts/gazebo_ros_paths.py
@@ -80,9 +82,19 @@ class GazeboRosPaths:
 
 def get_executable_path(command):
     path = shutil.which(command)
+    if path is None:
+        raise RuntimeError(
+            f"Could not find the '{command}' executable in PATH. Is Gazebo installed?")
     if path.lower().endswith('.bat'):
-        return os.path.splitext(path)[0]
-    return path
+        path = os.path.splitext(path)[0]
+    # The command is run through a shell, so quote paths with spaces.
+    if os.name == 'nt':
+        return f'"{path}"' if ' ' in path else path
+    return shlex.quote(path)
+
+def launch_argument_as_bool(context, name):
+    # Accepts 'true'/'false'/'1'/'0' in any case, like IfCondition.
+    return evaluate_condition_expression(context, [LaunchConfiguration(name)])
 
 def launch_gz(context, *args, **kwargs):
     model_paths, plugin_paths = GazeboRosPaths.get_paths()
@@ -107,9 +119,9 @@ def launch_gz(context, *args, **kwargs):
     gz_version = LaunchConfiguration('gz_version').perform(context)
     ign_args = LaunchConfiguration('ign_args').perform(context)
     ign_version = LaunchConfiguration('ign_version').perform(context)
-    debugger = LaunchConfiguration('debugger').perform(context)
-    on_exit_shutdown = LaunchConfiguration('on_exit_shutdown').perform(context)
-    debug_env = LaunchConfiguration('debug_env').perform(context)
+    debugger = launch_argument_as_bool(context, 'debugger')
+    on_exit_shutdown = launch_argument_as_bool(context, 'on_exit_shutdown')
+    debug_env = launch_argument_as_bool(context, 'debug_env')
 
     if not len(gz_args) and len(ign_args):
         print("ign_args is deprecated, migrate to gz_args!")
@@ -125,12 +137,12 @@ def launch_gz(context, *args, **kwargs):
     else:
         exec = 'ruby ' + get_executable_path('gz') + ' sim'
 
-    if debugger != 'false':
+    if debugger:
         debug_prefix = 'x-terminal-emulator -e gdb -ex run --args'
     else:
         debug_prefix = None
 
-    if on_exit_shutdown != 'false':
+    if on_exit_shutdown:
         on_exit = Shutdown()
     else:
         on_exit = None
@@ -145,7 +157,7 @@ def launch_gz(context, *args, **kwargs):
                 on_exit=on_exit
                 )
     ]
-    if debug_env == 'true':
+    if debug_env:
         ld.insert(0, LogInfo(f"Launching gazebo with the environment variables: {env}"))
 
     return ld

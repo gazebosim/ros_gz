@@ -167,6 +167,7 @@ target_link_libraries(remove
   gz-msgs::core
   gz-transport::core
   rclcpp::rclcpp
+  rcpputils::rcpputils
   ${std_msgs_TARGETS}
 )
 

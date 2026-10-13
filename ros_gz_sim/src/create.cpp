@@ -17,7 +17,6 @@
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
-#include <gz/msgs/stringmsg_v.pb.h>
 
 #include <sstream>
 #include <string>
@@ -33,6 +32,8 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rcpputils/scope_exit.hpp>
 #include <std_msgs/msg/string.hpp>
+
+#include "world_name.hpp"
 
 // ROS interface for spawning entities into Gazebo.
 // Suggested for use with roslaunch and loading entities from ROS param.
@@ -146,31 +147,12 @@ int main(int _argc, char ** _argv)
   }
   if (world_name.empty()) {
     // If caller doesn't provide a world name, get list of worlds from gz-sim server
-    gz::transport::Node node;
-
-    bool executed{false};
-    bool result{false};
-    unsigned int timeout{5000};
-    std::string service{"/gazebo/worlds"};
-    gz::msgs::StringMsg_V worlds_msg;
-
-    // This loop is here to allow the server time to download resources.
-    while (rclcpp::ok() && !executed) {
-      RCLCPP_INFO(ros2_node->get_logger(), "Requesting list of world names.");
-      executed = node.Request(service, timeout, worlds_msg, result);
-    }
-
-    if (!executed) {
-      RCLCPP_INFO(ros2_node->get_logger(), "Timed out when getting world names.");
+    const auto retrieved_world_name = retrieve_world_name(ros2_node);
+    if (!retrieved_world_name) {
       return -1;
     }
 
-    if (!result || worlds_msg.data().empty()) {
-      RCLCPP_INFO(ros2_node->get_logger(), "Failed to get world names.");
-      return -1;
-    }
-
-    world_name = worlds_msg.data(0);
+    world_name = *retrieved_world_name;
     RCLCPP_WARN(
       ros2_node->get_logger(),
       "World name was not provided. Using [%s] as the default world.",
@@ -283,5 +265,5 @@ int main(int _argc, char ** _argv)
     }
   }
   RCLCPP_INFO(ros2_node->get_logger(), "Entity creation was interrupted.");
-  return 0;
+  return 1;
 }
