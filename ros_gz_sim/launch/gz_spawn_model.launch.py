@@ -73,7 +73,7 @@ def generate_launch_description():
                      'string': model_string,
                      'topic': topic,
                      'name': entity_name,
-                     'ns': entity_namespace,
+                     'entity_namespace': entity_namespace,
                      'allow_renaming': allow_renaming,
                      'x': x,
                      'y': y,

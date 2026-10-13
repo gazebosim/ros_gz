@@ -45,7 +45,7 @@ DEFINE_string(param, "", "Load XML from a ROS param.");
 DEFINE_string(string, "", "Load XML from a string.");
 DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
 DEFINE_string(name, "", "Name for spawned entity.");
-DEFINE_string(ns, "", "Namespace for spawned entity.");
+DEFINE_string(entity_namespace, "", "Namespace for spawned entity.");
 DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
 DEFINE_double(x, 0, "X component of initial position, in meters.");
 DEFINE_double(y, 0, "Y component of initial position, in meters.");
@@ -113,7 +113,8 @@ int main(int _argc, char ** _argv)
   gflags::AllowCommandLineReparsing();
   gflags::SetUsageMessage(
     R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
-                       [-string STRING] [-name NAME] [-ns NAMESPACE] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
+                       [-string STRING] [-name NAME] [-entity_namespace NAMESPACE]
+                       [-allow_renaming] [-x X] [-y Y] [-z Z]
                        [-R ROLL] [-P PITCH] [-Y YAW])");
   gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv, false);
 
@@ -129,7 +130,7 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("string", "");
   ros2_node->declare_parameter("topic", "");
   ros2_node->declare_parameter("name", "");
-  ros2_node->declare_parameter("ns", "");
+  ros2_node->declare_parameter("entity_namespace", "");
   ros2_node->declare_parameter("allow_renaming", false);
   ros2_node->declare_parameter("x", static_cast<double>(0));
   ros2_node->declare_parameter("y", static_cast<double>(0));
@@ -259,11 +260,11 @@ int main(int _argc, char ** _argv)
   }
 
   // Namespace
-  std::string ns = ros2_node->get_parameter("ns").as_string();
+  std::string ns = ros2_node->get_parameter("entity_namespace").as_string();
   if (!ns.empty()) {
     req.set_entity_namespace(ns);
-  } else if (!FLAGS_ns.empty()) {
-    req.set_entity_namespace(FLAGS_ns);
+  } else if (!FLAGS_entity_namespace.empty()) {
+    req.set_entity_namespace(FLAGS_entity_namespace);
   }
 
   // Allow Renaming
