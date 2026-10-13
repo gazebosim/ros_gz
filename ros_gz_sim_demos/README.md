@@ -259,7 +259,7 @@ There are two common ways to use it:
     args="-world multi_robot
           -file $(find-pkg-share ros_gz_sim_demos)/models/vehicle/model.sdf
           -name robot3
-          -ns {name}_ns
+          -entity_namespace {name}_ns
           -x 0.0
           -y 4.0
           -z 1.0"
@@ -274,7 +274,7 @@ There are two common ways to use it:
       -world multi_robot \
       -file "$VEHICLE_SDF" \
       -name robot5 \
-      -ns {name}_ns \
+      -entity_namespace {name}_ns \
       -x 0.0 \
       -y 8.0 \
       -z 1.0
