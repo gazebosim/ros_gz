@@ -2,6 +2,9 @@
 Changelog for package ros1_gz_sim_demos
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.11 (2026-10-13)
+-------------------
+
 3.0.10 (2026-08-31)
 -------------------
 * Fix entity type values in sim tools and docs (`#927 <https://github.com/gazebosim/ros_gz/issues/927>`_) (`#946 <https://github.com/gazebosim/ros_gz/issues/946>`_)
