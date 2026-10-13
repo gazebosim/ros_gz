@@ -20,6 +20,7 @@
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -45,7 +46,8 @@ public:
     bool _lazy = false)
   : topic_(_topic),
     gz_node_(_gz_node),
-    is_lazy_(_lazy)
+    is_lazy_(_lazy),
+    logger_(_node->get_logger())
   {
     // Get QoS profile from parameter
     rclcpp::QoS qos_profile = rclcpp::QoS(10);
@@ -114,7 +116,11 @@ private:
         // The handler is alive here: ~Handler blocks on guard->mutex.
         this->OnImage(_gz_msg);
       };
-    gz_node_->Subscribe(topic_, cb);
+    if (!gz_node_->Subscribe(topic_, cb)) {
+      // Leave has_subscriber_ unset so that lazy mode retries on the next check.
+      RCLCPP_ERROR(logger_, "Failed to subscribe to Gazebo topic [%s]", topic_.c_str());
+      return;
+    }
     has_subscriber_ = true;
   }
 
@@ -146,6 +152,9 @@ private:
 
   /// \brief Whether currently subscribed to Gazebo topic
   std::atomic<bool> has_subscriber_{false};
+
+  /// \brief Logger of the ROS node
+  rclcpp::Logger logger_;
 
   /// \brief State shared between the handler and its Gazebo callback.
   struct CallbackGuard
@@ -216,9 +225,20 @@ int main(int argc, char * argv[])
   ++argv;
   --argc;
   auto args = rclcpp::remove_ros_arguments(argc, argv);
+  if (args.empty()) {
+    usage();
+    rclcpp::shutdown();
+    return -1;
+  }
 
   // Create publishers (and subscribers if not lazy)
+  std::set<std::string> bridged_topics;
   for (const auto & topic : args) {
+    // Handlers share the Gazebo node, so a duplicate would unsubscribe both.
+    if (!bridged_topics.insert(topic).second) {
+      RCLCPP_WARN(node_->get_logger(), "Topic [%s] is already bridged, skipping", topic.c_str());
+      continue;
+    }
     handlers.push_back(std::make_shared<Handler>(topic, node_, gz_node, lazy));
   }
 
