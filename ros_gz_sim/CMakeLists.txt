@@ -37,15 +37,12 @@ find_package(tf2_ros REQUIRED)
 # Needed in launch/gz_sim.launch.py.in
 set(GZ_SIM_VER ${gz-sim_VERSION_MAJOR})
 
-gz_find_package(gflags REQUIRED PKGCONFIG gflags)
-
 # Install the python module for this package
 ament_python_install_package(${PROJECT_NAME})
 
 # create
 add_executable(create src/create.cpp)
 target_link_libraries(create
-  gflags
   gz-math::core
   gz-msgs::core
   gz-transport::core
@@ -53,6 +50,7 @@ target_link_libraries(create
   rcpputils::rcpputils
   ${std_msgs_TARGETS}
 )
+target_include_directories(create PRIVATE ${CLI11_INCLUDE_DIRS})
 
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
