@@ -223,7 +223,12 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
   auto ret = std::vector<BridgeConfig>();
 
   YAML::Node yaml_node;
-  yaml_node = YAML::Load(in);
+  try {
+    yaml_node = YAML::Load(in);
+  } catch (const YAML::Exception & e) {
+    RCLCPP_ERROR(logger, "Could not parse config: %s", e.what());
+    return ret;
+  }
 
   if (!yaml_node.IsSequence()) {
     RCLCPP_ERROR(
@@ -233,7 +238,15 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
   }
 
   for (auto it : yaml_node) {
-    auto entry = parseEntry(it);
+    // Values of the wrong type (e.g. `lazy: maybe`) throw on conversion. Skip
+    // the entry instead of letting the exception terminate the process.
+    std::optional<BridgeConfig> entry;
+    try {
+      entry = parseEntry(it);
+    } catch (const YAML::Exception & e) {
+      RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+      continue;
+    }
     if (entry) {
       ret.push_back(entry.value());
     }
