@@ -200,8 +200,8 @@ class GzSpawnModel(Action):
                               ('x',   self.__x),
                               ('y',  self.__y),
                               ('z', self.__z),
-                              ('roll', self.__roll),
-                              ('pitch',   self.__pitch),
-                              ('yaw',  self.__yaw), ])
+                              ('R', self.__roll),
+                              ('P', self.__pitch),
+                              ('Y', self.__yaw), ])
 
         return [gz_spawn_model_description]

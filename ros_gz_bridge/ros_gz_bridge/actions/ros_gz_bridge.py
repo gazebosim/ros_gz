@@ -205,8 +205,12 @@ class RosGzBridge(Action):
             )
             for param, param_type in optional_params:
                 p = child.get_attr(param, data_type=param_type, optional=True)
-                if isinstance(p, param_type):
+                # Integer attributes are already converted by the frontend, only
+                # strings (e.g. substitutions) need to be parsed.
+                if isinstance(p, str):
                     bridge[param] = parser.parse_substitution(p)
+                elif p is not None:
+                    bridge[param] = p
             bridges['bridge_{}'.format(len(bridges))] = bridge
 
         for child in (entity.get_attr('service', data_type=List[Entity], optional=True) or {}):

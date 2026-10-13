@@ -76,7 +76,7 @@ void BridgeHandleGzToRos::StartPublisher()
 bool BridgeHandleGzToRos::HasSubscriber() const
 {
   // Return Gazebo subscriber status
-  return this->gz_subscriber_ != nullptr;
+  return this->gz_subscriber_.Valid();
 }
 
 void BridgeHandleGzToRos::StartSubscriber()
@@ -85,25 +85,29 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->gz_to_ros_parameters_.override_frame_id = this->config_.frame_id;
   }
   // Start Gazebo subscriber
-  this->factory_->create_gz_subscriber(
+  this->gz_subscriber_ = this->factory_->create_gz_subscriber(
     this->gz_node_,
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
     this->gz_to_ros_parameters_);
 
-  this->gz_subscriber_ = this->gz_node_;
+  if (!this->gz_subscriber_.Valid()) {
+    RCLCPP_ERROR(
+      this->RosNode()->get_logger(),
+      "Failed to subscribe to Gazebo topic [%s]",
+      this->config_.gz_topic_name.c_str());
+  }
 }
 
 void BridgeHandleGzToRos::StopSubscriber()
 {
-  // Stop Gazebo subscriber
-  if (!this->gz_subscriber_) {
-    return;
+  // Stop Gazebo subscriber. Only this bridge's handler is removed, so other
+  // bridges on the same Gazebo topic keep receiving messages.
+  if (this->gz_subscriber_.Valid()) {
+    this->gz_subscriber_.Unsubscribe();
   }
-
-  this->gz_subscriber_->Unsubscribe(this->config_.gz_topic_name);
-  this->gz_subscriber_.reset();
+  this->gz_subscriber_ = gz::transport::Node::Subscriber();
 }
 
 }  // namespace ros_gz_bridge

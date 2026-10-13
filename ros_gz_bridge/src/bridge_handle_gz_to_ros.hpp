@@ -61,8 +61,8 @@ protected:
   void StopSubscriber() override;
 
 protected:
-  /// \brief Gazebo subscriber, populated when subscriber active
-  std::shared_ptr<gz::transport::Node> gz_subscriber_ = {nullptr};
+  /// \brief Gazebo subscriber, valid when subscriber active
+  gz::transport::Node::Subscriber gz_subscriber_;
 
   /// \brief ROS publisher, populated when publisher active
   rclcpp::PublisherBase::SharedPtr ros_publisher_ = {nullptr};
