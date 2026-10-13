@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+0.244.27 (2026-10-13)
+---------------------
+* Break the parameter bridge handle ownership cycle (backport `#952 <https://github.com/gazebosim/ros_gz/issues/952>`_) (`#956 <https://github.com/gazebosim/ros_gz/issues/956>`_)
+* Contributors: mergify[bot]
+
 0.244.26 (2026-08-31)
 ---------------------
 * Document all supported service bridge types (backport `#928 <https://github.com/gazebosim/ros_gz/issues/928>`_) (`#945 <https://github.com/gazebosim/ros_gz/issues/945>`_)
