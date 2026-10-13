@@ -24,8 +24,9 @@ larger launch file.
 create
 ------
 
-Spawns an entity using the Gazebo transport protocol directly.  Uses ``gflags``
-for argument parsing (``--helpshort`` for the full list).
+Spawns an entity using the Gazebo transport protocol directly.  Takes either
+ROS parameters or command line flags (``--help`` for the full list).  Flags
+also accept the single-dash form, e.g. ``-world default``.
 
 .. code-block:: bash
 

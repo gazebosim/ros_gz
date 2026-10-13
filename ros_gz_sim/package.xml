@@ -20,7 +20,6 @@
   <!-- Build‑tool dependencies -->
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
-  <buildtool_depend>pkg-config</buildtool_depend>
 
   <!-- Build-only dependencies (header-only) -->
   <build_depend>cli11</build_depend>
@@ -32,7 +31,6 @@
   <depend>gz_msgs_vendor</depend>
   <depend>gz_sim_vendor</depend>
   <depend>gz_transport_vendor</depend>
-  <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>

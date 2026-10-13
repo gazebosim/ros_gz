@@ -12,19 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <gflags/gflags.h>
-
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
+#include <algorithm>
 #include <sstream>
 #include <string>
 #include <chrono>
 #include <future>
 #include <functional>
 #include <memory>
+#include <set>
+#include <vector>
+
+#include <CLI/CLI.hpp>
 
 #include <gz/math/Pose3.hh>
 #include <gz/msgs/Utility.hh>
@@ -38,20 +41,65 @@
 // Suggested for use with roslaunch and loading entities from ROS param.
 // If these are not needed, just use the `gz service` command line instead.
 
-// \TODO(anyone) Remove GFlags in ROS-J
-DEFINE_string(world, "", "World name.");
-DEFINE_string(file, "", "Load XML from a file.");
-DEFINE_string(param, "", "Load XML from a ROS param.");
-DEFINE_string(string, "", "Load XML from a string.");
-DEFINE_string(topic, "", "Load XML from a ROS string publisher.");
-DEFINE_string(name, "", "Name for spawned entity.");
-DEFINE_bool(allow_renaming, false, "Rename entity if name already used.");
-DEFINE_double(x, 0, "X component of initial position, in meters.");
-DEFINE_double(y, 0, "Y component of initial position, in meters.");
-DEFINE_double(z, 0, "Z component of initial position, in meters.");
-DEFINE_double(R, 0, "Roll component of initial orientation, in radians.");
-DEFINE_double(P, 0, "Pitch component of initial orientation, in radians.");
-DEFINE_double(Y, 0, "Yaw component of initial orientation, in radians.");
+// Command line flags, used when ROS parameters aren't set.
+struct CommandLineFlags
+{
+  std::string world;
+  std::string file;
+  std::string param;
+  std::string string;
+  std::string topic;
+  std::string name;
+  bool allow_renaming{false};
+  double x{0};
+  double y{0};
+  double z{0};
+  double R{0};
+  double P{0};
+  double Y{0};
+};
+
+// Rewrite the gflags syntax this tool historically accepted (`-flag value`,
+// `--flag value`, `-flag=value`, a bare `-allow_renaming`, `-noallow_renaming`
+// and `-help`/`--helpshort`) into `--flag=value`, which CLI11 parses unambiguously,
+// including negative numbers such as `-x -1.5`.
+std::vector<std::string> normalize_gflags_arguments(const std::vector<std::string> & args)
+{
+  static const std::set<std::string> kValueFlags{
+    "world", "file", "param", "string", "topic", "name", "x", "y", "z", "R", "P", "Y"};
+
+  std::vector<std::string> normalized;
+  for (size_t i = 0; i < args.size(); ++i) {
+    const std::string & arg = args[i];
+    if (arg.size() < 2 || arg[0] != '-') {
+      normalized.push_back(arg);
+      continue;
+    }
+    const std::string body = arg.substr(arg.rfind("--", 0) == 0 ? 2 : 1);
+    const auto eq = body.find('=');
+    const std::string key = body.substr(0, eq);
+    const bool has_value = eq != std::string::npos;
+
+    if (kValueFlags.count(key) > 0) {
+      if (has_value) {
+        normalized.push_back("--" + body);
+      } else if (i + 1 < args.size()) {
+        normalized.push_back("--" + key + "=" + args[++i]);
+      } else {
+        normalized.push_back("--" + key);
+      }
+    } else if (key == "allow_renaming") {
+      normalized.push_back(has_value ? "--" + body : "--allow_renaming=true");
+    } else if (key == "noallow_renaming" && !has_value) {
+      normalized.push_back("--allow_renaming=false");
+    } else if (key == "help" || key == "helpshort") {
+      normalized.push_back("--help");
+    } else {
+      normalized.push_back(arg);
+    }
+  }
+  return normalized;
+}
 
 // Utility Function to avoid code duplication
 
@@ -96,31 +144,34 @@ int main(int _argc, char ** _argv)
   auto filtered_arguments = rclcpp::init_and_remove_ros_arguments(_argc, _argv);
   auto ros2_node = rclcpp::Node::make_shared("ros_gz_sim");
 
-  // Construct a new argc/argv pair from the flags that weren't parsed by ROS
-  // Gflags wants a mutable pointer to argv, which is why we can't use a
-  // vector of strings here
-  int filtered_argc = filtered_arguments.size();
-  char ** filtered_argv = new char *[(filtered_argc + 1)];
-  for (int ii = 0; ii < filtered_argc; ++ii) {
-    filtered_argv[ii] = new char[filtered_arguments[ii].size() + 1];
-    snprintf(
-      filtered_argv[ii],
-      filtered_arguments[ii].size() + 1, "%s", filtered_arguments[ii].c_str());
-  }
-  filtered_argv[filtered_argc] = nullptr;
+  // Parse the arguments that weren't consumed by ROS
+  CommandLineFlags flags;
+  CLI::App app{
+    "Spawn an entity in Gazebo. ROS parameters take precedence over these flags.", "create"};
+  app.add_option("--world", flags.world, "World name.");
+  app.add_option("--file", flags.file, "Load XML from a file.");
+  app.add_option("--param", flags.param, "Load XML from a ROS param.");
+  app.add_option("--string", flags.string, "Load XML from a string.");
+  app.add_option("--topic", flags.topic, "Load XML from a ROS string publisher.");
+  app.add_option("--name", flags.name, "Name for spawned entity.");
+  app.add_option("--allow_renaming", flags.allow_renaming, "Rename entity if name already used.");
+  app.add_option("--x", flags.x, "X component of initial position, in meters.");
+  app.add_option("--y", flags.y, "Y component of initial position, in meters.");
+  app.add_option("--z", flags.z, "Z component of initial position, in meters.");
+  app.add_option("--R", flags.R, "Roll component of initial orientation, in radians.");
+  app.add_option("--P", flags.P, "Pitch component of initial orientation, in radians.");
+  app.add_option("--Y", flags.Y, "Yaw component of initial orientation, in radians.");
 
-  gflags::AllowCommandLineReparsing();
-  gflags::SetUsageMessage(
-    R"(Usage: create -world [arg] [-file FILE] [-param PARAM] [-topic TOPIC]
-                       [-string STRING] [-name NAME] [-allow_renaming RENAMING] [-x X] [-y Y] [-z Z]
-                       [-R ROLL] [-P PITCH] [-Y YAW])");
-  gflags::ParseCommandLineFlags(&filtered_argc, &filtered_argv, false);
-
-  // Free our temporary argc/argv pair
-  for (size_t ii = 0; filtered_argv[ii] != nullptr; ++ii) {
-    delete[] filtered_argv[ii];
+  std::vector<std::string> cli_args = normalize_gflags_arguments(
+    std::vector<std::string>(filtered_arguments.begin() + 1, filtered_arguments.end()));
+  // CLI11 parses a vector in reverse order
+  std::reverse(cli_args.begin(), cli_args.end());
+  try {
+    app.parse(cli_args);
+  } catch (const CLI::ParseError & e) {
+    rclcpp::shutdown();
+    return app.exit(e);
   }
-  delete[] filtered_argv;
 
   // Declare ROS 2 parameters to be passed from launch file
   ros2_node->declare_parameter("world", "");
@@ -141,8 +192,8 @@ int main(int _argc, char ** _argv)
 
   // World
   std::string world_name = ros2_node->get_parameter("world").as_string();
-  if (world_name.empty() && !FLAGS_world.empty()) {
-    world_name = FLAGS_world;
+  if (world_name.empty() && !flags.world.empty()) {
+    world_name = flags.world;
   }
   if (world_name.empty()) {
     // If caller doesn't provide a world name, get list of worlds from gz-sim server
@@ -196,25 +247,25 @@ int main(int _argc, char ** _argv)
       return -1;
     }
   } else if (filtered_arguments.size() > 1) {
-    // Revert to Gflags, if ROS parameters aren't specified
+    // Revert to command line flags, if ROS parameters aren't specified
     // File
-    if (!FLAGS_file.empty()) {
-      req.set_sdf_filename(FLAGS_file);
-    } else if (!FLAGS_param.empty()) {  // Param
-      ros2_node->declare_parameter<std::string>(FLAGS_param);
+    if (!flags.file.empty()) {
+      req.set_sdf_filename(flags.file);
+    } else if (!flags.param.empty()) {  // Param
+      ros2_node->declare_parameter<std::string>(flags.param);
       std::string xmlStr;
-      if (ros2_node->get_parameter(FLAGS_param, xmlStr)) {
+      if (ros2_node->get_parameter(flags.param, xmlStr)) {
         req.set_sdf(xmlStr);
       } else {
         RCLCPP_ERROR(
-          ros2_node->get_logger(), "Failed to get XML from param [%s].", FLAGS_param.c_str());
+          ros2_node->get_logger(), "Failed to get XML from param [%s].", flags.param.c_str());
         return -1;
       }
-    } else if (!FLAGS_string.empty()) {  // string
-      req.set_sdf(FLAGS_string);
-    } else if (!FLAGS_topic.empty()) {  // topic
+    } else if (!flags.string.empty()) {  // string
+      req.set_sdf(flags.string);
+    } else if (!flags.topic.empty()) {  // topic
       // set XML string by fetching it from the given topic
-      if (!set_XML_from_topic(FLAGS_topic, ros2_node, req)) {
+      if (!set_XML_from_topic(flags.topic, ros2_node, req)) {
         return -1;
       }
     } else {
@@ -222,8 +273,6 @@ int main(int _argc, char ** _argv)
         ros2_node->get_logger(), "Must specify either -file, -param, -string or -topic");
       return -1;
     }
-    // TODO(azeey) Deprecate use of command line flags in ROS 2 K-turtle in
-    // favor of ROS 2 parameters.
   } else {
     RCLCPP_ERROR(
       ros2_node->get_logger(), "Must specify either file, string or topic as ROS 2 parameters");
@@ -238,13 +287,13 @@ int main(int _argc, char ** _argv)
   double pitch = ros2_node->get_parameter("P").as_double();
   double yaw = ros2_node->get_parameter("Y").as_double();
 
-  FLAGS_x = (x_coords != 0.0) ? x_coords : FLAGS_x;
-  FLAGS_y = (y_coords != 0.0) ? y_coords : FLAGS_y;
-  FLAGS_z = (z_coords != 0.0) ? z_coords : FLAGS_z;
-  FLAGS_R = (roll != 0.0) ? roll : FLAGS_R;
-  FLAGS_P = (pitch != 0.0) ? pitch : FLAGS_P;
-  FLAGS_Y = (yaw != 0.0) ? yaw : FLAGS_Y;
-  gz::math::Pose3d pose{FLAGS_x, FLAGS_y, FLAGS_z, FLAGS_R, FLAGS_P, FLAGS_Y};
+  flags.x = (x_coords != 0.0) ? x_coords : flags.x;
+  flags.y = (y_coords != 0.0) ? y_coords : flags.y;
+  flags.z = (z_coords != 0.0) ? z_coords : flags.z;
+  flags.R = (roll != 0.0) ? roll : flags.R;
+  flags.P = (pitch != 0.0) ? pitch : flags.P;
+  flags.Y = (yaw != 0.0) ? yaw : flags.Y;
+  gz::math::Pose3d pose{flags.x, flags.y, flags.z, flags.R, flags.P, flags.Y};
   gz::msgs::Set(req.mutable_pose(), pose);
 
   // Name
@@ -252,12 +301,12 @@ int main(int _argc, char ** _argv)
   if (!entity_name.empty()) {
     req.set_name(entity_name);
   } else {
-    req.set_name(FLAGS_name);
+    req.set_name(flags.name);
   }
 
   // Allow Renaming
   bool allow_renaming = ros2_node->get_parameter("allow_renaming").as_bool();
-  req.set_allow_renaming((allow_renaming || FLAGS_allow_renaming));
+  req.set_allow_renaming((allow_renaming || flags.allow_renaming));
 
   // Request
   gz::transport::Node node;
