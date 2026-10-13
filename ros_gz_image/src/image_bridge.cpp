@@ -16,8 +16,10 @@
 
 #include <atomic>
 #include <chrono>
+#include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -70,6 +72,14 @@ public:
     }
   }
 
+  /// \brief Destructor. Blocks until any in-flight OnImage call finishes,
+  /// then prevents later callbacks from touching this handler.
+  ~Handler()
+  {
+    std::lock_guard<std::mutex> lock(guard_->mutex);
+    guard_->closed = true;
+  }
+
   /// \brief Manage Gazebo subscription lifecycle based on ROS subscriber count.
   /// Only active when lazy mode is enabled.
   void CheckSubscribers()
@@ -90,12 +100,28 @@ public:
 private:
   void StartSubscriber()
   {
-    gz_node_->Subscribe(topic_, &Handler::OnImage, this);
+    // Gazebo transport does not wait for in-flight callbacks on Unsubscribe or
+    // ~Node, so a callback can still run after this handler is destroyed. The
+    // callback co-owns the guard, which therefore outlives the handler.
+    auto guard = guard_;
+    std::function<void(const gz::msgs::Image &)> cb =
+      [this, guard](const gz::msgs::Image & _gz_msg)
+      {
+        std::lock_guard<std::mutex> lock(guard->mutex);
+        if (guard->closed) {
+          return;
+        }
+        // The handler is alive here: ~Handler blocks on guard->mutex.
+        this->OnImage(_gz_msg);
+      };
+    gz_node_->Subscribe(topic_, cb);
     has_subscriber_ = true;
   }
 
   void StopSubscriber()
   {
+    // A callback still in flight after Unsubscribe is harmless: the handler
+    // stays alive, and its destructor waits for the callback to finish.
     gz_node_->Unsubscribe(topic_);
     has_subscriber_ = false;
   }
@@ -120,6 +146,19 @@ private:
 
   /// \brief Whether currently subscribed to Gazebo topic
   std::atomic<bool> has_subscriber_{false};
+
+  /// \brief State shared between the handler and its Gazebo callback.
+  struct CallbackGuard
+  {
+    /// \brief Held while a callback runs and in ~Handler.
+    std::mutex mutex;
+
+    /// \brief Set in ~Handler; callbacks no-op once teardown has started.
+    bool closed{false};
+  };
+
+  /// \brief Guard co-owned by the Gazebo callback so it outlives the handler.
+  std::shared_ptr<CallbackGuard> guard_{std::make_shared<CallbackGuard>()};
 
   /// \brief ROS image publisher
   image_transport::Publisher ros_pub_;
@@ -197,6 +236,12 @@ int main(int argc, char * argv[])
 
   // Spin ROS and Gz until shutdown
   rclcpp::spin(node_);
+
+  // Tear down explicitly: destroy the handlers, which stops their callbacks,
+  // before the Gazebo node that delivers them.
+  heartbeat_timer.reset();
+  handlers.clear();
+  gz_node.reset();
 
   return 0;
 }
