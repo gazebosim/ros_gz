@@ -28,12 +28,12 @@ def generate_launch_description():
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
-    x = LaunchConfiguration('x', default='0.0')
-    y = LaunchConfiguration('y', default='0.0')
-    z = LaunchConfiguration('z', default='0.0')
-    roll = LaunchConfiguration('R', default='0.0')
-    pitch = LaunchConfiguration('P', default='0.0')
-    yaw = LaunchConfiguration('Y', default='0.0')
+    x = LaunchConfiguration('x')
+    y = LaunchConfiguration('y')
+    z = LaunchConfiguration('z')
+    roll = LaunchConfiguration('roll')
+    pitch = LaunchConfiguration('pitch')
+    yaw = LaunchConfiguration('yaw')
 
     declare_world_cmd = DeclareLaunchArgument(
         'world', default_value=TextSubstitution(text=''),
@@ -58,6 +58,25 @@ def generate_launch_description():
         'allow_renaming', default_value='False',
         description='Whether the entity allows renaming or not'
     )
+    declare_x_cmd = DeclareLaunchArgument(
+        'x', default_value='0.0',
+        description='X position of the entity')
+    declare_y_cmd = DeclareLaunchArgument(
+        'y', default_value='0.0',
+        description='Y position of the entity')
+    declare_z_cmd = DeclareLaunchArgument(
+        'z', default_value='0.0',
+        description='Z position of the entity')
+    # 'R', 'P' and 'Y' are the deprecated names, kept for backwards compatibility.
+    declare_roll_cmd = DeclareLaunchArgument(
+        'roll', default_value=LaunchConfiguration('R', default='0.0'),
+        description='Roll orientation of the entity')
+    declare_pitch_cmd = DeclareLaunchArgument(
+        'pitch', default_value=LaunchConfiguration('P', default='0.0'),
+        description='Pitch orientation of the entity')
+    declare_yaw_cmd = DeclareLaunchArgument(
+        'yaw', default_value=LaunchConfiguration('Y', default='0.0'),
+        description='Yaw orientation of the entity')
 
     load_nodes = Node(
         package='ros_gz_sim',
@@ -88,6 +107,12 @@ def generate_launch_description():
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
+    ld.add_action(declare_x_cmd)
+    ld.add_action(declare_y_cmd)
+    ld.add_action(declare_z_cmd)
+    ld.add_action(declare_roll_cmd)
+    ld.add_action(declare_pitch_cmd)
+    ld.add_action(declare_yaw_cmd)
     # Add the actions to launch all of the create nodes
     ld.add_action(load_nodes)
 

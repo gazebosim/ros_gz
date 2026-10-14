@@ -40,19 +40,19 @@ def generate_launch_description():
     topic = LaunchConfiguration('topic')
     entity_name = LaunchConfiguration('entity_name')
     allow_renaming = LaunchConfiguration('allow_renaming')
-    x = LaunchConfiguration('x', default='0.0')
-    y = LaunchConfiguration('y', default='0.0')
-    z = LaunchConfiguration('z', default='0.0')
-    roll = LaunchConfiguration('R', default='0.0')
-    pitch = LaunchConfiguration('P', default='0.0')
-    yaw = LaunchConfiguration('Y', default='0.0')
+    x = LaunchConfiguration('x')
+    y = LaunchConfiguration('y')
+    z = LaunchConfiguration('z')
+    roll = LaunchConfiguration('roll')
+    pitch = LaunchConfiguration('pitch')
+    yaw = LaunchConfiguration('yaw')
 
     declare_bridge_name_cmd = DeclareLaunchArgument(
         'bridge_name', description='Name of the bridge'
     )
 
     declare_config_file_cmd = DeclareLaunchArgument(
-        'config_file', description='YAML config file'
+        'config_file', description='Bridge YAML config file'
     )
 
     declare_container_name_cmd = DeclareLaunchArgument(
@@ -82,7 +82,7 @@ def generate_launch_description():
     )
 
     declare_log_level_cmd = DeclareLaunchArgument(
-        'log_level', default_value='info', description='log level'
+        'log_level', default_value='info', description='Bridge log level'
     )
 
     declare_bridge_params_cmd = DeclareLaunchArgument(
@@ -118,6 +118,26 @@ def generate_launch_description():
         description='Whether the entity allows renaming or not'
     )
 
+    declare_x_cmd = DeclareLaunchArgument(
+        'x', default_value='0.0',
+        description='X position of the entity')
+    declare_y_cmd = DeclareLaunchArgument(
+        'y', default_value='0.0',
+        description='Y position of the entity')
+    declare_z_cmd = DeclareLaunchArgument(
+        'z', default_value='0.0',
+        description='Z position of the entity')
+    # 'R', 'P' and 'Y' are the deprecated names, kept for backwards compatibility.
+    declare_roll_cmd = DeclareLaunchArgument(
+        'roll', default_value=LaunchConfiguration('R', default='0.0'),
+        description='Roll orientation of the entity')
+    declare_pitch_cmd = DeclareLaunchArgument(
+        'pitch', default_value=LaunchConfiguration('P', default='0.0'),
+        description='Pitch orientation of the entity')
+    declare_yaw_cmd = DeclareLaunchArgument(
+        'yaw', default_value=LaunchConfiguration('Y', default='0.0'),
+        description='Yaw orientation of the entity')
+
     ros_gz_bridge_action = RosGzBridge(
         bridge_name=bridge_name,
         config_file=config_file,
@@ -144,9 +164,9 @@ def generate_launch_description():
                           ('x', x),
                           ('y', y),
                           ('z', z),
-                          ('R', roll),
-                          ('P', pitch),
-                          ('Y', yaw), ])
+                          ('roll', roll),
+                          ('pitch', pitch),
+                          ('yaw', yaw), ])
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -167,6 +187,12 @@ def generate_launch_description():
     ld.add_action(declare_topic_cmd)
     ld.add_action(declare_entity_name_cmd)
     ld.add_action(declare_allow_renaming_cmd)
+    ld.add_action(declare_x_cmd)
+    ld.add_action(declare_y_cmd)
+    ld.add_action(declare_z_cmd)
+    ld.add_action(declare_roll_cmd)
+    ld.add_action(declare_pitch_cmd)
+    ld.add_action(declare_yaw_cmd)
     # Add the actions to launch all of the bridge + spawn_model nodes
     ld.add_action(ros_gz_bridge_action)
     ld.add_action(spawn_model_description)
