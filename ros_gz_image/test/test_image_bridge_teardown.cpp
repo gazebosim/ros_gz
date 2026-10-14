@@ -18,6 +18,7 @@
 // so a frame delivered during teardown used to reach a destroyed Handler.
 
 #include <gtest/gtest.h>
+#include <gz/msgs/image.pb.h>
 
 #include <signal.h>
 #include <spawn.h>
@@ -30,7 +31,6 @@
 #include <string>
 #include <thread>
 
-#include <gz/msgs/image.pb.h>
 #include <gz/transport/Node.hh>
 
 extern char ** environ;

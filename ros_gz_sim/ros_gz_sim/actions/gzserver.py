@@ -82,6 +82,32 @@ class GazeboRosPaths:
 
         return gazebo_model_path, gazebo_plugin_path
 
+    @staticmethod
+    def get_env() -> Dict[str, str]:
+        """
+        Return the Gazebo plugin and resource path variables to set.
+
+        Each variable extends its current value with the paths exported by packages.
+        Plugins are also searched for in LD_LIBRARY_PATH, where ROS packages such as
+        gz_ros2_control install them.
+        """
+        model_paths, plugin_paths = GazeboRosPaths.get_paths()
+        return {
+            'GZ_SIM_SYSTEM_PLUGIN_PATH': _join_paths(
+                os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', ''),
+                os.environ.get('LD_LIBRARY_PATH', ''),
+                plugin_paths),
+            'GZ_SIM_RESOURCE_PATH': _join_paths(
+                os.environ.get('GZ_SIM_RESOURCE_PATH', ''),
+                model_paths),
+        }
+
+
+def _join_paths(*path_lists: str) -> str:
+    """Join path lists, dropping the empty entries that unset variables would add."""
+    return os.pathsep.join(
+        path for path_list in path_lists for path in path_list.split(os.pathsep) if path)
+
 
 @expose_action('gz_server')
 class GzServer(Action):
@@ -218,20 +244,8 @@ class GzServer(Action):
         """Execute the action."""
         launch_descriptions: List[Action] = []
 
-        model_paths, plugin_paths = GazeboRosPaths.get_paths()
-        launch_descriptions.append(SetEnvironmentVariable(
-            'GZ_SIM_SYSTEM_PLUGIN_PATH',
-            os.pathsep.join([
-                os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
-                os.environ.get('LD_LIBRARY_PATH', default=''),
-                plugin_paths,
-            ])))
-        launch_descriptions.append(SetEnvironmentVariable(
-            'GZ_SIM_RESOURCE_PATH',
-            os.pathsep.join([
-                os.environ.get('GZ_SIM_RESOURCE_PATH', default=''),
-                model_paths,
-            ])))
+        for name, value in GazeboRosPaths.get_env().items():
+            launch_descriptions.append(SetEnvironmentVariable(name, value))
 
         use_composition_eval = perform_typed_substitution(
             context, self.__use_composition, bool
