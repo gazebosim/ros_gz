@@ -2,14 +2,11 @@ cmake_minimum_required(VERSION 3.5)
 
 project(ros_gz_bridge)
 
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 17)
-endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(yaml_cpp_vendor REQUIRED)
@@ -106,6 +103,7 @@ generate_export_header(${bridge_lib}
 
 target_link_libraries(${bridge_lib}
   PUBLIC
+    ament_cmake_ros_core::ament_ros_defaults
     gz-msgs::core
     gz-transport::core
     rclcpp::rclcpp
@@ -187,6 +185,7 @@ foreach(bridge ${bridge_executables})
     src/${bridge}.cpp
   )
   target_link_libraries(${bridge}
+    ament_cmake_ros_core::ament_ros_defaults
     ${bridge_lib}
     rclcpp::rclcpp
   )
@@ -208,6 +207,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src/convert/rcl_interfaces_TEST.cpp
   )
   target_link_libraries(test_rcl_interfaces
+    ament_cmake_ros_core::ament_ros_defaults
     gz-msgs::core
     ${rcl_interfaces_TARGETS}
     gtest
@@ -223,6 +223,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src/convert/ros_gz_interfaces_TEST.cpp
   )
   target_link_libraries(test_ros_gz_interfaces
+    ament_cmake_ros_core::ament_ros_defaults
     ${bridge_lib}
     ${ros_gz_interfaces_TARGETS}
     gtest
@@ -237,6 +238,7 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src/convert/sensor_msgs_TEST.cpp
   )
   target_link_libraries(test_sensor_msgs
+    ament_cmake_ros_core::ament_ros_defaults
     ${bridge_lib}
     ${sensor_msgs_TARGETS}
     gtest
@@ -260,6 +262,7 @@ if(BUILD_TESTING)
     PUBLIC test ${GTEST_INCLUDE_DIRS} include
   )
   target_link_libraries(test_utils
+    ament_cmake_ros_core::ament_ros_defaults
     ${GTEST_LIBRARIES}
     gz-msgs::core
     gz-transport::core
@@ -317,27 +320,27 @@ if(BUILD_TESTING)
     COMMENT "Generating test helpers")
 
   add_executable(test_gz_publisher ${generated_path}/gz_publisher.cpp)
-  target_link_libraries(test_gz_publisher test_utils)
+  target_link_libraries(test_gz_publisher ament_cmake_ros_core::ament_ros_defaults test_utils)
 
   add_executable(test_ros_publisher ${generated_path}/ros_publisher.cpp)
-  target_link_libraries(test_ros_publisher test_utils)
+  target_link_libraries(test_ros_publisher ament_cmake_ros_core::ament_ros_defaults test_utils)
 
   add_executable(test_gz_subscriber ${generated_path}/gz_subscriber.cpp)
-  target_link_libraries(test_gz_subscriber test_utils)
+  target_link_libraries(test_gz_subscriber ament_cmake_ros_core::ament_ros_defaults test_utils)
 
   add_executable(test_gz_server test/serverclient/gz_server.cpp)
-  target_link_libraries(test_gz_server test_utils)
+  target_link_libraries(test_gz_server ament_cmake_ros_core::ament_ros_defaults test_utils)
 
   add_executable(test_ros_client test/serverclient/ros_client.cpp)
-  target_link_libraries(test_ros_client test_utils)
+  target_link_libraries(test_ros_client ament_cmake_ros_core::ament_ros_defaults test_utils)
 
   add_executable(test_ros_subscriber ${ros_subscriber_files})
-  target_link_libraries(test_ros_subscriber test_utils)
+  target_link_libraries(test_ros_subscriber ament_cmake_ros_core::ament_ros_defaults test_utils)
   target_include_directories(test_ros_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
   add_executable(test_launch_action_subscriber test/subscribers/launch_action_subscriber.cpp)
-  target_link_libraries(test_launch_action_subscriber test_utils)
+  target_link_libraries(test_launch_action_subscriber ament_cmake_ros_core::ament_ros_defaults test_utils)
   target_include_directories(test_launch_action_subscriber
     PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/test/subscribers)
 
@@ -377,27 +380,30 @@ if(BUILD_TESTING)
   ament_add_gtest(${PROJECT_NAME}_bridge_config test/bridge_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
-  target_link_libraries(${PROJECT_NAME}_bridge_config rclcpp::rclcpp ${bridge_lib})
+  target_link_libraries(${PROJECT_NAME}_bridge_config ament_cmake_ros_core::ament_ros_defaults rclcpp::rclcpp ${bridge_lib})
 
   ament_add_gtest(${PROJECT_NAME}_service_only_config test/test_service_only_config.cpp
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
   target_link_libraries(${PROJECT_NAME}_service_only_config
+    ament_cmake_ros_core::ament_ros_defaults
     rclcpp::rclcpp
     ${bridge_lib}
   )
 
   ament_add_gtest(${PROJECT_NAME}_gid_filtering test/test_gid_filtering.cpp)
   target_link_libraries(${PROJECT_NAME}_gid_filtering
+    ament_cmake_ros_core::ament_ros_defaults
     rclcpp::rclcpp
     ${std_msgs_TARGETS}
   )
 
   ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
-  target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
+  target_link_libraries(${PROJECT_NAME}_node_lifetime ament_cmake_ros_core::ament_ros_defaults ${bridge_lib} rclcpp::rclcpp)
 
   ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
   target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_intra_process
+    ament_cmake_ros_core::ament_ros_defaults
     ${bridge_lib}
     test_utils
   )
@@ -411,6 +417,7 @@ ament_export_libraries(${bridge_lib})
 ament_export_targets(export_${PROJECT_NAME})
 
 # specific order: dependents before dependencies
+ament_export_dependencies(ament_cmake_ros_core)
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(rclcpp_components)
 ament_export_dependencies(gz_msgs_vendor)
