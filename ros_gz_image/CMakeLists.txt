@@ -22,8 +22,6 @@ find_package(gz-transport REQUIRED)
 find_package(gz_msgs_vendor REQUIRED)
 find_package(gz-msgs REQUIRED)
 
-include_directories(include)
-
 set(executable
   image_bridge
 )
@@ -64,40 +62,6 @@ if(BUILD_TESTING)
     )
     add_dependencies(test_image_bridge_teardown ${executable})
   endif()
-
-  # find_package(rostest REQUIRED)
-  #
-  # set(test_publishers
-  #   gz_publisher
-  # )
-  #
-  # set(test_subscribers
-  #   ros_subscriber
-  # )
-  #
-  # foreach(test_publisher ${test_publishers})
-  #   add_executable(${test_publisher}_image
-  #     test/publishers/${test_publisher}.cpp
-  #   )
-  #   target_link_libraries(${test_publisher}_image
-  #     ${catkin_LIBRARIES}
-  #     $gz-msgs$::core
-  #     $gz-transport::core
-  #     gtest
-  #     gtest_main
-  #   )
-  # endforeach(test_publisher)
-  #
-  # foreach(test_subscriber ${test_subscribers})
-  #   add_rostest_gtest(test_${test_subscriber}_image
-  #     test/${test_subscriber}.test
-  #     test/subscribers/${test_subscriber}.cpp)
-  #   target_link_libraries(test_${test_subscriber}_image
-  #     ${catkin_LIBRARIES}
-  #     $gz-msgs::core
-  #     $gz-transport::core
-  #   )
-  # endforeach(test_subscriber)
 endif()
 
 ament_package()
