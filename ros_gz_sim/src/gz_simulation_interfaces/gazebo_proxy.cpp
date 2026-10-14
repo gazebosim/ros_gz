@@ -43,8 +43,8 @@ namespace gz_simulation_interfaces
 {
 namespace components = gz::sim::components;
 
-GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node)
-: world_name_(world_name), ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
+GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
+: ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
 {
   if (!this->InitializeGazeboConnection()) {
     throw std::runtime_error("Could not initialize Gazebo connection");

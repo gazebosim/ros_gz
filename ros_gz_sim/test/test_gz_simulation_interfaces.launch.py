@@ -386,6 +386,39 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         result = self.call_and_spin(spawn_entity, request).result.result
         self.assertEqual(result, si.SpawnEntity.Response.NAME_NOT_UNIQUE)
 
+    def test_spawn_entity_rejects_unsupported_frame(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_unsupported_frame'
+        request.entity_resource.resource_string = """
+            <sdf version='1.12'>
+                <model name='test_unsupported_frame'><link name='link'/></model>
+            </sdf>
+        """
+        request.initial_pose.header.frame_id = 'wall'
+        request.initial_pose.pose.orientation.w = 1.0
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(
+            response.result.result,
+            Result.RESULT_FEATURE_UNSUPPORTED)
+
+    def test_spawn_entity_rejects_unknown_package_uri(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_unknown_package'
+        request.entity_resource.uri = 'package://this_package_does_not_exist/model.sdf'
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(response.result.result, Result.RESULT_NOT_FOUND)
+
+    def test_spawn_entity_rejects_empty_resource(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_empty_resource'
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(
+            response.result.result,
+            si.SpawnEntity.Response.NO_RESOURCE)
+
     def test_spawn_entity_reports_renamed_entity(self) -> None:
         spawn_entity, request = self.setup_client(
             si.SpawnEntity, 'spawn_entity')
