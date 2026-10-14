@@ -84,6 +84,10 @@ int main(int argc, char * argv[])
   bridge_node->declare_parameter<bool>("lazy", false);
   bridge_node->get_parameter("lazy", lazy_subscription);
 
+  bool expand_gz_topic_names = false;
+  bridge_node->get_parameter("expand_gz_topic_names", expand_gz_topic_names);
+  std::string ns = bridge_node->get_namespace();
+
   const std::string delim = "@";
   const std::string delimGzToROS = "[";
   const std::string delimROSToGz = "]";
@@ -101,6 +105,21 @@ int main(int argc, char * argv[])
     config.ros_topic_name = arg.substr(0, delimPos);
     config.gz_topic_name = arg.substr(0, delimPos);
     arg.erase(0, delimPos + delim.size());
+
+    if (expand_gz_topic_names) {
+      std::string gz_topic = config.gz_topic_name;
+      // Strip leading slash from the topic to prevent double slashes (e.g., /demo//chatter)
+      if (!gz_topic.empty() && gz_topic.front() == '/') {
+        gz_topic.erase(0, 1);
+      }
+      
+      // Safely append the namespace
+      if (ns == "/") {
+        config.gz_topic_name = "/" + gz_topic;
+      } else {
+        config.gz_topic_name = ns + "/" + gz_topic;
+      }
+    }
 
     // Get the direction delimiter, which should be one of:
     //   @ == bidirectional, or
