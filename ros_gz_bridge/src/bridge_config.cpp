@@ -16,6 +16,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <fstream>
+#include <set>
 #include <string>
 #include <vector>
 
@@ -80,6 +81,18 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
       logger,
       "Could not parse entry: entry must be a YAML map");
     return {};
+  }
+
+  // Warn about keys that would otherwise be silently ignored, such as typos.
+  static const std::set<std::string> kKnownKeys{
+    kServiceName, kTopicName, kRosTopicName, kGzTopicName, kRosTypeName, kGzTypeName,
+    kDirection, kPublisherQueue, kSubscriberQueue, kQosProfile, kLazy, kGzReqTypeName,
+    kGzRepTypeName, kFrameId};
+  for (const auto & item : yaml_node) {
+    const auto key = item.first.as<std::string>();
+    if (kKnownKeys.count(key) == 0) {
+      RCLCPP_WARN(logger, "Ignoring unknown key [%s] in bridge entry", key.c_str());
+    }
   }
 
   auto getValue = [yaml_node](const char * key) -> std::string

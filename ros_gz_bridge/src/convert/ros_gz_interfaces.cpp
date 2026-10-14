@@ -14,6 +14,8 @@
 
 #include "ros_gz_bridge/convert/ros_gz_interfaces.hpp"
 
+#include "convert/logging.hpp"
+
 namespace ros_gz_bridge
 {
 
@@ -127,7 +129,7 @@ convert_ros_to_gz(
       gz_msg.set_type(gz::msgs::Entity::JOINT);
       break;
     default:
-      std::cerr << "Unsupported entity type [" << ros_msg.type << "]\n";
+      ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported entity type [" << ros_msg.type << "]");
   }
 }
 
@@ -167,8 +169,8 @@ convert_gz_to_ros(
   } else if (gz_msg.type() == gz::msgs::Entity::JOINT) {
     ros_msg.type = ros_gz_interfaces::msg::Entity::JOINT;
   } else {
-    std::cerr << "Unsupported Entity [" <<
-      gz_msg.type() << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported Entity [" <<
+      gz_msg.type() << "]");
   }
 }
 
@@ -190,8 +192,7 @@ convert_ros_to_gz(
     has_clone_name);
 
   if (provided_two) {
-    std::cout << "Warning: You should only provide ONE of sdf, sdf_filname, or clone_name" <<
-      std::endl;
+    ROS_GZ_BRIDGE_CONVERT_WARN("You should only provide ONE of sdf, sdf_filname, or clone_name");
   }
 
   if(has_sdf) {
@@ -201,7 +202,7 @@ convert_ros_to_gz(
   } else if(has_clone_name) {
     gz_msg.set_clone_name(ros_msg.clone_name);
   } else {
-    std::cerr << "Must provide one of: sdf, sdf_filname, or clone_name" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Must provide one of: sdf, sdf_filname, or clone_name");
   }
 
   convert_ros_to_gz(ros_msg.pose, *gz_msg.mutable_pose());
@@ -370,11 +371,11 @@ convert_gz_to_ros(
       try {
         ros_msg.rssi = std::stod(header.data(i).value(0));
       } catch (const std::invalid_argument &) {
-        std::cerr << "RSSI value is invalid (" <<
-          header.data(i).value(0) << ")" << std::endl;
+        ROS_GZ_BRIDGE_CONVERT_ERROR("RSSI value is invalid (" <<
+          header.data(i).value(0) << ")");
       } catch (const std::out_of_range &) {
-        std::cerr << "RSSI value is out of range (" <<
-          header.data(i).value(0) << ")" << std::endl;
+        ROS_GZ_BRIDGE_CONVERT_ERROR("RSSI value is out of range (" <<
+          header.data(i).value(0) << ")");
       }
     }
   }
@@ -507,8 +508,8 @@ convert_ros_to_gz(
       gz_msg.set_entity_match(EntityMatch::MaterialColor_EntityMatch_ALL);
       break;
     default:
-      std::cerr << "Unsupported entity match type ["
-                << ros_msg.entity_match << "]\n";
+      ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported entity match type ["
+                << ros_msg.entity_match << "]");
   }
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
@@ -536,8 +537,8 @@ convert_gz_to_ros(
 /* *INDENT-ON* */
     ros_msg.entity_match = ros_gz_interfaces::msg::MaterialColor::ALL;
   } else {
-    std::cerr << "Unsupported EntityMatch [" <<
-      gz_msg.entity_match() << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported EntityMatch [" <<
+      gz_msg.entity_match() << "]");
   }
   convert_gz_to_ros(gz_msg.header(), ros_msg.header);
   convert_gz_to_ros(gz_msg.entity(), ros_msg.entity);
