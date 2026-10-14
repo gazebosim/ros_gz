@@ -17,13 +17,16 @@
 // Every test in this file targets a specific out-of-bounds read or write
 // reachable from a *spec-conformant* input message. Without the
 // corresponding fixes these tests either crash (under AddressSanitizer)
-// or produce garbage values.
+// or produce garbage values. The image round-trip test at the end checks
+// that supported encodings convert both ways without loss.
 
 #include <gtest/gtest.h>
 
 #include <cmath>
 #include <limits>
 #include <string>
+
+#include <sensor_msgs/image_encodings.hpp>
 
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
 
@@ -382,3 +385,42 @@ TEST(LaserScanGzToRange, BoundaryValuesAreKept)
   EXPECT_FLOAT_EQ(2.0f, ScanToRange({2.0}).range);
   EXPECT_FLOAT_EQ(0.1f, ScanToRange({0.1, 1.0}).range);
 }
+
+// Every encoding the bridge supports survives a ROS -> gz -> ROS round-trip
+// unchanged, including the header and padded rows.
+class ImageRoundTrip : public ::testing::TestWithParam<std::string> {};
+
+TEST_P(ImageRoundTrip, RosToGzToRosIsLossless)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.header.stamp.sec = 12;
+  ros_msg.header.stamp.nanosec = 345;
+  ros_msg.header.frame_id = "camera_link";
+  ros_msg.width = 3;
+  ros_msg.height = 2;
+  ros_msg.encoding = GetParam();
+  const uint32_t row_size = ros_msg.width *
+    sensor_msgs::image_encodings::numChannels(ros_msg.encoding) *
+    (sensor_msgs::image_encodings::bitDepth(ros_msg.encoding) / 8);
+  // Pad each row by 2 bytes so the step is not just width * pixel size.
+  ros_msg.step = row_size + 2;
+  ros_msg.data.resize(ros_msg.step * ros_msg.height);
+  for (size_t i = 0; i < ros_msg.data.size(); ++i) {
+    ros_msg.data[i] = static_cast<uint8_t>(i * 7 + 1);
+  }
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+  ASSERT_NE(gz::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT, gz_msg.pixel_format_type());
+
+  sensor_msgs::msg::Image round_trip;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, round_trip);
+
+  EXPECT_EQ(ros_msg, round_trip);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+  SupportedEncodings, ImageRoundTrip,
+  ::testing::Values(
+    "mono8", "mono16", "rgb8", "rgba8", "bgra8", "rgb16", "bgr8", "bgr16",
+    "32FC1", "bayer_rggb8", "bayer_bggr8", "bayer_gbrg8", "bayer_grbg8"));
