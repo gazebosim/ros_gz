@@ -2,6 +2,16 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.2 (2026-10-13)
+------------------
+* Fix consistent failure in CI (`#984 <https://github.com/gazebosim/ros_gz/issues/984>`_)
+* Enforce simulation state and query contracts (`#974 <https://github.com/gazebosim/ros_gz/issues/974>`_)
+* Fix SpawnEntity result contracts (`#973 <https://github.com/gazebosim/ros_gz/issues/973>`_)
+* Fix StepSimulation state and completion semantics (`#972 <https://github.com/gazebosim/ros_gz/issues/972>`_)
+* Publish step action feedback after progress begins (`#976 <https://github.com/gazebosim/ros_gz/issues/976>`_)
+* Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
+* Contributors: Alejandro Hernández Cordero, Yuhx141, Yuu
+
 4.0.1 (2026-08-31)
 ------------------
 * Fix entity type values in sim tools and docs (`#927 <https://github.com/gazebosim/ros_gz/issues/927>`_)
