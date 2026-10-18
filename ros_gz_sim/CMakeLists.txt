@@ -322,6 +322,9 @@ if(BUILD_TESTING)
   add_launch_test(test/test_create_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_remove_node.launch.py TIMEOUT 200)
   add_launch_test(test/test_gz_simulation_interfaces.launch.py TIMEOUT 300)
+
+  find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(test_gz_sim_cmd test/test_gz_sim_cmd.py)
 endif()
 
 ament_package()
