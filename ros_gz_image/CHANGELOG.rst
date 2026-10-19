@@ -2,6 +2,12 @@
 Changelog for package ros1_ign_image
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.2 (2026-10-13)
+------------------
+* image_bridge: guard OnImage against teardown race (`#981 <https://github.com/gazebosim/ros_gz/issues/981>`_)
+* Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
+* Contributors: Alejandro Hernández Cordero, Yuu
+
 4.0.1 (2026-08-31)
 ------------------
 

@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <cstddef>
@@ -1370,6 +1371,9 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg)
 {
   sensor_msgs::msg::Range expected_msg;
   createTestMsg(expected_msg);
+  // The Gazebo LaserScan test message has ranges of 0, below its range_min of 1,
+  // which REP 117 reports as -Inf (detected too close to measure).
+  expected_msg.range = -std::numeric_limits<float>::infinity();
 
   compareTestMsg(_msg->header);
   EXPECT_EQ(expected_msg.radiation_type, _msg->radiation_type);

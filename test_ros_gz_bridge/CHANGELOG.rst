@@ -2,6 +2,11 @@
 Changelog for package test_ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.2 (2026-10-13)
+------------------
+* Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
+* Contributors: Alejandro Hernández Cordero
+
 4.0.1 (2026-08-31)
 ------------------
 
