@@ -60,7 +60,7 @@ This branch supports ROS Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Rolling binaries are available for Jetty.
+Rolling binaries are available for Rotary.
 They are hosted at https://packages.ros.org.
 
 1. Add https://packages.ros.org with the `ros2-apt-source` package
