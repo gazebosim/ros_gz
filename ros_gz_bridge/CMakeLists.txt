@@ -351,6 +351,9 @@ if(BUILD_TESTING)
     rclcpp::rclcpp
     ${std_msgs_TARGETS}
   )
+
+  ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
+  target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
 endif()
 
 # Export old-style CMake variables
