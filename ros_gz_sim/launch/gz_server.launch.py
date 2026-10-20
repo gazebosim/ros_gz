@@ -37,6 +37,9 @@ def generate_launch_description():
     declare_use_composition_cmd = DeclareLaunchArgument(
         'use_composition', default_value='False',
         description='Use composed bringup if True')
+    declare_start_paused_cmd = DeclareLaunchArgument(
+        'start_paused', default_value='False',
+        description='Start simulation paused if True')
     declare_initial_sim_time_cmd = DeclareLaunchArgument(
         'initial_sim_time', default_value='0.0',
         description='The initial simulation time')
@@ -50,6 +53,7 @@ def generate_launch_description():
         container_name=LaunchConfiguration('container_name'),
         create_own_container=LaunchConfiguration('create_own_container'),
         use_composition=LaunchConfiguration('use_composition'),
+        start_paused=LaunchConfiguration('start_paused'),
         initial_sim_time=LaunchConfiguration('initial_sim_time'),
         verbosity_level=LaunchConfiguration('verbosity_level'),
     )
@@ -63,6 +67,7 @@ def generate_launch_description():
     ld.add_action(declare_container_name_cmd)
     ld.add_action(declare_create_own_container_cmd)
     ld.add_action(declare_use_composition_cmd)
+    ld.add_action(declare_start_paused_cmd)
     ld.add_action(declare_initial_sim_time_cmd)
     ld.add_action(declare_verbosity_level_cmd)
     # Add the gz_server action

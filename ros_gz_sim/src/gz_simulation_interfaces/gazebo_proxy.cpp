@@ -283,6 +283,13 @@ bool GazeboProxy::WaitForCriticalServices()
 
 void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 {
+  if (msg.has_stats()) {
+    std::lock_guard<std::mutex> lk(this->world_stats_sync_mutex_);
+    this->world_stats_ = msg.stats();
+    this->world_stats_updated_ = true;
+  }
+  this->world_stats_cv_.notify_all();
+
   {
     std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
     this->ecm_.SetState(msg.state());
@@ -336,6 +343,8 @@ void GazeboProxy::InitializeCanonicalLinks(
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
         components::WorldAngularVelocity::typeId}));
+  // Preserve the pause state while synchronizing components with Gazebo.
+  control_msg.mutable_world_control()->set_pause(this->Paused());
 
   bool result{false};
   gz::msgs::Boolean controlReply;
