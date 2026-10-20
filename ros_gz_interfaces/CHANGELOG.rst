@@ -2,6 +2,11 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.2 (2026-10-13)
+------------------
+* Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
+* Contributors: Alejandro Hernández Cordero
+
 4.0.1 (2026-08-31)
 ------------------
 * Add AirSpeed message and bridge mapping (`#914 <https://github.com/gazebosim/ros_gz/issues/914>`_)
