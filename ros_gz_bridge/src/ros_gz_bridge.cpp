@@ -44,11 +44,15 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
   this->declare_parameter("bridge_names", std::vector<std::string>());
   this->declare_parameter("automated_bridge.enable", false);
   this->declare_parameter("automated_bridge.exclude_patterns", std::vector<std::string>());
+  this->declare_parameter("automated_bridge.include_patterns", std::vector<std::string>());
   const auto names = this->get_parameter("bridge_names").as_string_array();
   const auto exclude_patterns =
     this->get_parameter("automated_bridge.exclude_patterns").as_string_array();
+  const auto include_patterns =
+    this->get_parameter("automated_bridge.include_patterns").as_string_array();
 
   this->set_automated_bridge_exclude_patterns(exclude_patterns);
+  this->set_automated_bridge_include_patterns(include_patterns);
 
   using rclcpp::PARAMETER_STRING;
   using rclcpp::PARAMETER_NOT_SET;
@@ -361,20 +365,10 @@ void RosGzBridge::create_automated_bridges()
   }
 
   for (const auto & gz_topic : gz_topics) {
-    // Skip topics that match any of the exclude patterns
     const auto gz_topic_name = gz_topic.topicName;
-    if (is_excluded_from_automated_bridging(gz_topic_name)) {
-      this->log_bridge_warning(
-        BridgeWarningType::EXCLUDE_PATTERN_MATCHED, gz_topic_name, "topic");
-      continue;
-    }
-
-    // Skip topics that are already bridged
-    if (std::any_of(handles_.begin(), handles_.end(),
-      [&gz_topic_name](const auto & handle) {
-        return handle->GetConfig().gz_topic_name == gz_topic_name;
-      }))
-    {
+    // Skip topics that are already bridged or match any of the exclude patterns
+    // or do not match any of the include patterns
+    if (!should_bridge(gz_topic_name, true)) {
       continue;
     }
 
@@ -428,19 +422,9 @@ void RosGzBridge::create_automated_bridges()
   }
 
   for (const auto & gz_service : gz_services) {
-    // Skip services that match any of the exclude patterns
-    if (is_excluded_from_automated_bridging(gz_service)) {
-      this->log_bridge_warning(
-        BridgeWarningType::EXCLUDE_PATTERN_MATCHED, gz_service, "service");
-      continue;
-    }
-
-    // Skip services that are already bridged
-    if (std::any_of(services_.begin(), services_.end(),
-      [&gz_service](const auto & service) {
-        return service->get_service_name() == gz_service;
-      }))
-    {
+    // Skip services that are already bridged or match any of the exclude patterns
+    // or do not match any of the include patterns
+    if (!should_bridge(gz_service, false)) {
       continue;
     }
 
@@ -478,30 +462,85 @@ void RosGzBridge::create_automated_bridges()
   }
 }
 
-void RosGzBridge::set_automated_bridge_exclude_patterns(const std::vector<std::string> & patterns)
+void RosGzBridge::set_automated_bridge_exclude_patterns(
+  const std::vector<std::string> & raw_patterns)
 {
-  automated_bridge_exclude_patterns_.clear();
+  set_automated_bridge_patterns(raw_patterns, automated_bridge_exclude_patterns_);
+}
+
+void RosGzBridge::set_automated_bridge_include_patterns(
+  const std::vector<std::string> & raw_patterns)
+{
+  set_automated_bridge_patterns(raw_patterns, automated_bridge_include_patterns_);
+}
+
+void RosGzBridge::set_automated_bridge_patterns(
+  const std::vector<std::string> & patterns,
+  std::vector<std::regex> & regex_patterns)
+{
+  regex_patterns.clear();
   for (const auto & pattern : patterns) {
     try {
-      automated_bridge_exclude_patterns_.emplace_back(pattern);
+      regex_patterns.emplace_back(pattern);
     } catch (const std::regex_error & e) {
       RCLCPP_ERROR(
         this->get_logger(),
-        "Invalid regex pattern '%s' in parameter 'automated_bridge.exclude_patterns': %s",
+        "Invalid regex pattern '%s': %s",
         pattern.c_str(), e.what());
     }
   }
 }
 
-bool RosGzBridge::is_excluded_from_automated_bridging(const std::string & name) const
+bool RosGzBridge::should_bridge(const std::string & name, const bool is_topic)
 {
-  for (const auto & pattern : automated_bridge_exclude_patterns_) {
-    if (std::regex_match(name, pattern)) {
-      return true;
+  // Skip topics/services that are already bridged
+  if (is_topic) {
+    if (std::any_of(handles_.begin(), handles_.end(),
+      [&name](const auto & handle) {
+        return handle->GetConfig().gz_topic_name == name;
+      }))
+    {
+      return false;
+    }
+  } else {
+    if (std::any_of(services_.begin(), services_.end(),
+      [&name](const auto & service) {
+        return service->get_service_name() == name;
+      }))
+    {
+      return false;
     }
   }
-  return false;
+
+  // Skip topics/services that match any of the exclude patterns
+  for (const auto & pattern : automated_bridge_exclude_patterns_) {
+    if (std::regex_match(name, pattern)) {
+      this->log_bridge_warning(
+        BridgeWarningType::EXCLUDE_PATTERN_MATCHED, name, is_topic ? "topic" : "service");
+      return false;
+    }
+  }
+
+  // If include patterns are specified, skip topics/services
+  // that do not match any of the include patterns
+  if (!automated_bridge_include_patterns_.empty()) {
+    bool matche = false;
+    for (const auto & pattern : automated_bridge_include_patterns_) {
+      if (std::regex_match(name, pattern)) {
+        matche = true;
+        break;
+      }
+    }
+    if (!matche) {
+      this->log_bridge_warning(
+        BridgeWarningType::INCLUDE_PATTERN_NOT_MATCHED, name, is_topic ? "topic" : "service");
+      return false;
+    }
+  }
+
+  return true;
 }
+
 
 bool RosGzBridge::get_gz_topic_info(
   const gz::transport::TopicInfo & topic_info,
@@ -578,8 +617,7 @@ bool RosGzBridge::get_ros_topic_info(
     return false;
   } else if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
     (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
-    *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
-  {
+    *ros_publisher_types.begin() != *ros_subscriber_types.begin())) {
     this->log_bridge_warning(
       BridgeWarningType::ROS_TYPE_UNDETERMINED, topic_name);
     return false;
@@ -726,6 +764,13 @@ void RosGzBridge::log_bridge_warning(
           this->get_logger(),
           "Skipping automated bridge for %s [%s] : "
           "matches an exclusion pattern.",
+          resource_type.c_str(), name.c_str());
+        break;
+      case BridgeWarningType::INCLUDE_PATTERN_NOT_MATCHED:
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Skipping automated bridge for %s [%s] : "
+          "does not match any inclusion pattern.",
           resource_type.c_str(), name.c_str());
         break;
     }

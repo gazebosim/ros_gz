@@ -419,8 +419,9 @@ Automated bridging creates bridges for topics and services that appear on both R
 
 **NOTE**: CLI tools such as `ros2 topic echo` and `gz topic -e` may not work as expected when used as endpoints to trigger automated bridging. `ros2 topic echo` may fail if no ROS publisher exists yet, before the automated bridge is created. `gz topic -e` creates a raw subscription whose discovered Gazebo message type is `google.protobuf.Message`, so the automated bridge cannot determine the corresponding ROS-Gazebo type mapping.
 
-The `automated_bridge.exclude_patterns` parameter accepts [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
-Automated bridging skips topics and services that match any of these patterns.
+The `automated_bridge.include_patterns` and `automated_bridge.exclude_patterns` parameters accept [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
+
+Automated bridging only considers topics and services that match at least one of the include patterns (if specified), and skips any that match an exclude pattern. Exclude patterns take priority over include patterns.
 
 ### Command line
 
@@ -429,7 +430,8 @@ Start `parameter_bridge` without listing individual topics or services:
 ```bash
 ros2 run ros_gz_bridge parameter_bridge \
   --ros-args -p automated_bridge.enable:=true \
-  -p "automated_bridge.exclude_patterns:=['/clock', '/world/.*/stats']"
+  -p "automated_bridge.exclude_patterns:=['/clock', '/world/.*/stats']" \
+  -p "automated_bridge.include_patterns:=['/robot1/.*']"
 ```
 
 The exclusion parameter is optional. You can also pass manually configured topic or service arguments to the same command.
@@ -446,6 +448,8 @@ ros_gz_bridge:
       exclude_patterns:
         - /clock
         - /world/.*/stats
+      include_patterns:
+        - /robot.*
 ```
 
 Start the bridge with the parameter file:
@@ -467,6 +471,8 @@ Pass the parameters inside the `<ros_gz_bridge>` tag:
     <param name="automated_bridge.enable" value="true" />
     <param name="automated_bridge.exclude_patterns"
            value="['/clock', '/world/.*/stats']" />
+    <param name="automated_bridge.include_patterns"
+           value="['/robot1.*']" />
   </ros_gz_bridge>
 </launch>
 ```
@@ -484,6 +490,9 @@ Node(
         "automated_bridge.exclude_patterns": [
             "/clock",
             "/world/.*/stats",
+        ],
+        "automated_bridge.include_patterns": [
+            "/robot1.*",
         ],
     }],
 ),
@@ -527,3 +536,8 @@ ROS 2 Parameters:
     * default: []
     * description: Regular expressions that match complete topic or service
       names to exclude from automated bridging. Read when the node starts.
+* `automated_bridge.include_patterns`
+    * type: string array
+    * default: []
+    * description: Regular expressions that matche complete topic or service
+      names eligible for automated bridging. Read when the node starts.

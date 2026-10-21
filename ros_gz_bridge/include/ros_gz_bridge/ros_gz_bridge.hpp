@@ -53,6 +53,9 @@ enum class BridgeWarningType
 
   /// \brief Topic/service name matches an exclude pattern
   EXCLUDE_PATTERN_MATCHED,
+
+  /// \brief Topic/service name does not match any include pattern
+  INCLUDE_PATTERN_NOT_MATCHED,
 };
 
 /// Forward declarations
@@ -88,19 +91,32 @@ public:
   /// automatically
   void create_automated_bridges();
 
-  /// \brief Set regex patterns to exclude topics/services from automated bridging
-  /// \param[in] patterns List of regex patterns to exclude topics/services from automated bridging
-  void set_automated_bridge_exclude_patterns(const std::vector<std::string> & patterns);
+  /// \brief Set the regex patterns used to exclude topics/services from automated bridging
+  /// \param[in] raw_patterns List of raw regex patterns to be converted to std::regex
+  void set_automated_bridge_exclude_patterns(const std::vector<std::string> & raw_patterns);
+
+  /// \brief Set the regex patterns used to include topics/services in automated bridging
+  /// \param[in] raw_patterns List of raw regex patterns to be converted to std::regex
+  void set_automated_bridge_include_patterns(const std::vector<std::string> & raw_patterns);
 
 protected:
   /// \brief Periodic callback to check connectivity and liveliness
   void spin();
 
-  /// \brief Check if a topic/service name matches any of the exclude patterns
-  /// for automated bridging
+  /// \brief Set regex patterns to exclude or include topics/services for automated bridging
+  /// \param[in] raw_patterns List of raw regex patterns to be converted to std::regex
+  /// \param[out] regex_patterns Vector of compiled regex patterns
+  void set_automated_bridge_patterns(
+    const std::vector<std::string> & raw_patterns,
+    std::vector<std::regex> & regex_patterns);
+
+  /// \brief Check if a topic/service should be bridged. Only topics/services that are not already
+  /// bridged and do not match any of the exclude patterns and match any of the include patterns
+  /// will be bridged.
   /// \param[in] name Topic/service name to check
-  /// \return True if the name matches any exclude pattern, false otherwise
-  bool is_excluded_from_automated_bridging(const std::string & name) const;
+  /// \param[in] is_topic True if the name is a topic, false if it's a service
+  /// \return True if the name should be bridged, false otherwise
+  bool should_bridge(const std::string & name, const bool is_topic);
 
   /// \brief Get Gazebo topic information, including type and direction
   /// \param[in] topic_info Unprocessed information about the Gazebo topic
@@ -178,6 +194,9 @@ protected:
 
   /// \brief Regex patterns to exclude topics/services from automated bridging
   std::vector<std::regex> automated_bridge_exclude_patterns_;
+
+  /// \brief Regex patterns to include topics/services in automated bridging
+  std::vector<std::regex> automated_bridge_include_patterns_;
 
   /// \brief Map of bridge warnings
   std::map<std::string, BridgeWarningType> bridge_warnings_;

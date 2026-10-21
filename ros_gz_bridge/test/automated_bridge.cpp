@@ -291,6 +291,63 @@ protected:
     }
   }
 
+  void TestBridgePatterns()
+  {
+    const std::string excluded_topic = "/auto_excluded_topic";
+    const std::string included_topic = "/auto_included_topic";
+    const std::string excluded_service = "/auto_excluded_service";
+    const std::string included_service = "/auto_included_service";
+
+    GzPublisher<gz::msgs::StringMsg> excluded_gz_pub(this->gz_node_, excluded_topic);
+    GzPublisher<gz::msgs::StringMsg> included_gz_pub(this->gz_node_, included_topic);
+
+    RosSubscriber<std_msgs::msg::String> excluded_ros_sub(this->ros_node_, excluded_topic);
+    RosSubscriber<std_msgs::msg::String> included_ros_sub(this->ros_node_, included_topic);
+
+    GzServer<gz::msgs::WorldControl, gz::msgs::Boolean>
+    excluded_gz_server(this->gz_node_, excluded_service);
+    GzServer<gz::msgs::WorldControl, gz::msgs::Boolean>
+    included_gz_server(this->gz_node_, included_service);
+
+    RosClient<ros_gz_interfaces::srv::ControlWorld>
+    excluded_ros_client(this->ros_node_, excluded_service);
+    RosClient<ros_gz_interfaces::srv::ControlWorld>
+    included_ros_client(this->ros_node_, included_service);
+
+    rclcpp::WallRate rate(20.0);
+
+    // Wait for the endpoints to be discovered.
+    bool endpoints_discovered = false;
+    for (int i = 0; i < 50; ++i) {
+      endpoints_discovered =
+        this->bridge_->check_gz_topic(excluded_topic) &&
+        this->bridge_->check_gz_topic(included_topic) &&
+        this->bridge_->check_gz_service(excluded_service) &&
+        this->bridge_->check_gz_service(included_service) &&
+        this->bridge_->count_subscribers(excluded_topic) > 0 &&
+        this->bridge_->count_subscribers(included_topic) > 0 &&
+        this->bridge_->count_clients(excluded_service) > 0 &&
+        this->bridge_->count_clients(included_service) > 0;
+
+      if (endpoints_discovered) {
+        break;
+      }
+      rate.sleep();
+    }
+
+    ASSERT_TRUE(endpoints_discovered);
+
+    for (int i = 0; i < 3; ++i) {
+      this->bridge_->create_automated_bridges();
+      rate.sleep();
+    }
+
+    EXPECT_EQ(1, this->bridge_->topic_bridge_count(included_topic));
+    EXPECT_EQ(1, this->bridge_->service_bridge_count(included_service));
+    EXPECT_EQ(0, this->bridge_->topic_bridge_count(excluded_topic));
+    EXPECT_EQ(0, this->bridge_->service_bridge_count(excluded_service));
+  }
+
   std::shared_ptr<TestableRosGzBridge> bridge_;
   rclcpp::Node::SharedPtr ros_node_;
   gz::transport::Node gz_node_;
@@ -678,59 +735,12 @@ TEST_F(AutomatedBridgeTest, AvoidDuplicateCreation)
 
 TEST_F(AutomatedBridgeTest, ExcludePatterns)
 {
-  const std::string excluded_topic = "/auto_excluded_topic";
-  const std::string included_topic = "/auto_included_topic";
-  const std::string excluded_service = "/auto_excluded_service";
-  const std::string included_service = "/auto_included_service";
+  this->bridge_->set_automated_bridge_exclude_patterns({".*excluded.*"});
+  this->TestBridgePatterns();
+}
 
-  this->bridge_->set_automated_bridge_exclude_patterns(
-    {".*excluded.*"});
-
-  GzPublisher<gz::msgs::StringMsg> excluded_gz_pub(this->gz_node_, excluded_topic);
-  GzPublisher<gz::msgs::StringMsg> included_gz_pub(this->gz_node_, included_topic);
-
-  RosSubscriber<std_msgs::msg::String> excluded_ros_sub(this->ros_node_, excluded_topic);
-  RosSubscriber<std_msgs::msg::String> included_ros_sub(this->ros_node_, included_topic);
-
-  GzServer<gz::msgs::WorldControl, gz::msgs::Boolean>
-    excluded_gz_server(this->gz_node_, excluded_service);
-  GzServer<gz::msgs::WorldControl, gz::msgs::Boolean>
-    included_gz_server(this->gz_node_, included_service);
-
-  RosClient<ros_gz_interfaces::srv::ControlWorld>
-    excluded_ros_client(this->ros_node_, excluded_service);
-  RosClient<ros_gz_interfaces::srv::ControlWorld>
-    included_ros_client(this->ros_node_, included_service);
-
-  rclcpp::WallRate rate(20.0);
-
-  // Wait for the endpoints to be discovered
-  bool endpoints_discovered = false;
-  for (int i = 0; i < 50; ++i) {
-    endpoints_discovered =
-      this->bridge_->check_gz_topic(excluded_topic) &&
-      this->bridge_->check_gz_topic(included_topic) &&
-      this->bridge_->check_gz_service(excluded_service) &&
-      this->bridge_->check_gz_service(included_service) &&
-      this->bridge_->count_subscribers(excluded_topic) > 0 &&
-      this->bridge_->count_subscribers(included_topic) > 0 &&
-      this->bridge_->count_clients(excluded_service) > 0 &&
-      this->bridge_->count_clients(included_service) > 0;
-
-    if (endpoints_discovered) {
-      break;
-    }
-    rate.sleep();
-  }
-  ASSERT_TRUE(endpoints_discovered);
-
-  for (int i = 0; i < 3; i++) {
-    this->bridge_->create_automated_bridges();
-    rate.sleep();
-  }
-
-  EXPECT_EQ(1, this->bridge_->topic_bridge_count(included_topic));
-  EXPECT_EQ(1, this->bridge_->service_bridge_count(included_service));
-  EXPECT_EQ(0, this->bridge_->topic_bridge_count(excluded_topic));
-  EXPECT_EQ(0, this->bridge_->service_bridge_count(excluded_service));
+TEST_F(AutomatedBridgeTest, IncludePatterns)
+{
+  this->bridge_->set_automated_bridge_include_patterns({".*included.*"});
+  this->TestBridgePatterns();
 }
