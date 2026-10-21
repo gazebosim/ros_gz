@@ -372,12 +372,14 @@ The `multi_robot.launch.xml` demo enables automated bridging for the namespaced 
   config_file="$(find-pkg-share ros_gz_sim_demos)/config/multi_robot.yaml"
   use_composition="True">
   <param name="automated_bridge.enable" value="true" />
+  <param name="automated_bridge.include_patterns"
+         value="['/robot.*']" />
   <param name="automated_bridge.exclude_patterns"
-         value="['/clock', '.*camera.*']" />
+         value="['.*camera.*']" />
 </ros_gz_bridge>
 ```
 
-The bridges configured in `multi_robot.yaml` are created first, and automated bridging then creates bridges for the remaining compatible interfaces. The demo excludes `/clock` and interfaces matching `.*camera.*` from automated bridging.
+The bridges configured in `multi_robot.yaml` are created first, and automated bridging then creates bridges for the remaining compatible interfaces. The demo uses `include_patterns` and `exclude_patterns` to only consider interfaces whose names start with `/robot` and do not contain `camera` in their names.
 
 ## Bridging joint state and pose publishers
 
