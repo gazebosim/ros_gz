@@ -2,6 +2,12 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+3.0.12 (2026-10-22)
+-------------------
+* Fix service-only YAML reload loop (`#969 <https://github.com/gazebosim/ros_gz/issues/969>`_) (`#1004 <https://github.com/gazebosim/ros_gz/issues/1004>`_)
+* Release bridge nodes and complete ROS shutdown before exit (`#977 <https://github.com/gazebosim/ros_gz/issues/977>`_) (`#989 <https://github.com/gazebosim/ros_gz/issues/989>`_)
+* Contributors: Kenji Brameld (TRACLabs), mergify[bot]
+
 3.0.11 (2026-10-13)
 -------------------
 * Break the parameter bridge handle ownership cycle (`#952 <https://github.com/gazebosim/ros_gz/issues/952>`_) (`#953 <https://github.com/gazebosim/ros_gz/issues/953>`_)
