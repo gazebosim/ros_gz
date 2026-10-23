@@ -413,6 +413,91 @@ ros2 topic pub /demo/chatter std_msgs/msg/String "data: 'Hi from inside of a nam
 
 By changing `chatter` to `/chatter` or `~/chatter` you can obtain different results.
 
+## Example 9: Automated bridging
+
+Automated bridging creates bridges for topics and services that appear on both ROS and Gazebo with matching names and compatible types.
+
+**NOTE**: CLI tools such as `ros2 topic echo` and `gz topic -e` may not work as expected when used as endpoints to trigger automated bridging. `ros2 topic echo` may fail if no ROS publisher exists yet, before the automated bridge is created. `gz topic -e` creates a raw subscription whose discovered Gazebo message type is `google.protobuf.Message`, so the automated bridge cannot determine the corresponding ROS-Gazebo type mapping.
+
+The `automated_bridge.include_patterns` and `automated_bridge.exclude_patterns` parameters accept [regular expression](https://en.wikipedia.org/wiki/Regular_expression) patterns.
+
+Automated bridging only considers topics and services that match at least one of the include patterns (if specified), and skips any that match an exclude pattern. Exclude patterns take priority over include patterns.
+
+### Command line
+
+Start `parameter_bridge` without listing individual topics or services:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge \
+  --ros-args -p automated_bridge.enable:=true \
+  -p "automated_bridge.exclude_patterns:=['/clock', '/world/.*/stats']" \
+  -p "automated_bridge.include_patterns:=['/robot1/.*']"
+```
+
+The exclusion parameter is optional. You can also pass manually configured topic or service arguments to the same command.
+
+### ROS parameter YAML file
+
+Save the parameters in `auto_bridge_params.yaml`:
+
+```yaml
+ros_gz_bridge:
+  ros__parameters:
+    automated_bridge:
+      enable: true
+      exclude_patterns:
+        - /clock
+        - /world/.*/stats
+      include_patterns:
+        - /robot.*
+```
+
+Start the bridge with the parameter file:
+
+```bash
+ros2 run ros_gz_bridge parameter_bridge \
+  --ros-args --params-file auto_bridge_params.yaml
+```
+
+This ROS parameter file is different from the bridge configuration YAML file passed through `config_file` in Example 5.
+
+### XML launch
+
+Pass the parameters inside the `<ros_gz_bridge>` tag:
+
+```xml
+<launch>
+  <ros_gz_bridge bridge_name="auto_bridge">
+    <param name="automated_bridge.enable" value="true" />
+    <param name="automated_bridge.exclude_patterns"
+           value="['/clock', '/world/.*/stats']" />
+    <param name="automated_bridge.include_patterns"
+           value="['/robot1.*']" />
+  </ros_gz_bridge>
+</launch>
+```
+
+### Python launch
+
+Pass the parameters to `parameter_bridge` through a launch `Node`:
+
+```python
+Node(
+    package="ros_gz_bridge",
+    executable="parameter_bridge",
+    parameters=[{
+        "automated_bridge.enable": True,
+        "automated_bridge.exclude_patterns": [
+            "/clock",
+            "/world/.*/stats",
+        ],
+        "automated_bridge.include_patterns": [
+            "/robot1.*",
+        ],
+    }],
+),
+```
+
 ## API
 
 ROS 2 Parameters:
@@ -441,3 +526,18 @@ ROS 2 Parameters:
     * default: ""
     * direction: GZ to ROS
     * description: Override the `header.frame_id` field with a new string value.
+* `automated_bridge.enable`
+    * type: bool
+    * default: false
+    * description: Periodically discover matching ROS and Gazebo topics and
+      services, and create bridges for them.
+* `automated_bridge.exclude_patterns`
+    * type: string array
+    * default: []
+    * description: Regular expressions that match complete topic or service
+      names to exclude from automated bridging. Read when the node starts.
+* `automated_bridge.include_patterns`
+    * type: string array
+    * default: []
+    * description: Regular expressions that matche complete topic or service
+      names eligible for automated bridging. Read when the node starts.
