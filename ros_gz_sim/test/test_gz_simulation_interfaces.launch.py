@@ -508,6 +508,8 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         set_request.state.pose.position.z = 10.0
         set_request.state.pose.orientation.w = 1.0
         set_request.set_pose = True
+        # Earlier tests can leave the sphere moving. Start it at rest so the
+        # only motion while stepping comes from gravity.
         set_request.set_twist = True
         self.assert_result_ok(self.call_and_spin(set_entity_state, set_request))
         before = self.get_entity_state('sphere').state.pose.position.z

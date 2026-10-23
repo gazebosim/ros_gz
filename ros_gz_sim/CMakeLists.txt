@@ -266,6 +266,9 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_create test/test_create.cpp)
   ament_add_gtest_executable(test_remove test/test_remove.cpp)
   ament_add_gtest_executable(test_spawn_entity test/test_spawn_entity.cpp)
+  ament_add_gtest_executable(
+    test_gz_simulation_interfaces_spawn_entity
+    test/test_gz_simulation_interfaces_spawn_entity.cpp)
   ament_add_gtest_executable(test_set_entity_pose test/test_set_entity_pose.cpp)
   ament_add_gtest_executable(test_delete_entity test/test_delete_entity.cpp)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
@@ -277,6 +280,11 @@ if(BUILD_TESTING)
     test_spawn_entity
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
+  target_include_directories(
+    test_gz_simulation_interfaces_spawn_entity
+    PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
   target_include_directories(
     test_set_entity_pose
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -296,6 +304,12 @@ if(BUILD_TESTING)
                         rclcpp::rclcpp
                         tf2::tf2
                         tf2_ros::tf2_ros)
+  target_link_libraries(test_gz_simulation_interfaces_spawn_entity
+                        gzserver_component
+                        gz-msgs::core
+                        gz-transport::core
+                        ${simulation_interfaces_TARGETS}
+                        rclcpp::rclcpp)
   target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose
                         ${builtin_interfaces_TARGETS}
                         ${geometry_msgs_TARGETS}
@@ -312,6 +326,7 @@ if(BUILD_TESTING)
       test_create
       test_remove
       test_spawn_entity
+      test_gz_simulation_interfaces_spawn_entity
       test_set_entity_pose
       test_delete_entity
       test_stopwatch
@@ -320,6 +335,7 @@ if(BUILD_TESTING)
 
   ament_add_gtest_test(test_stopwatch)
   ament_add_gtest_test(test_spawn_entity)
+  ament_add_gtest_test(test_gz_simulation_interfaces_spawn_entity)
   ament_add_gtest_test(test_set_entity_pose)
   ament_add_gtest_test(test_delete_entity)
 

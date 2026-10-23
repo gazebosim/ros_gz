@@ -21,6 +21,8 @@
 
 #include <gtest/gtest.h>
 
+#include <cmath>
+#include <limits>
 #include <string>
 
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
@@ -311,4 +313,72 @@ TEST(CameraInfoGzToRos, IntrinsicsLongerThanRosArrayDoesNotOverflow)
   for (size_t i = 0; i < ros_msg.r.size(); ++i) {
     EXPECT_DOUBLE_EQ(static_cast<double>(i), ros_msg.r[i]);
   }
+}
+
+// ---------------------------------------------------------------------------
+// LaserScan GZ->Range ROS : gh issue #959. REP 117 reports +Inf when nothing
+// is detected within range and -Inf when a detection is too close to measure.
+// ---------------------------------------------------------------------------
+namespace
+{
+sensor_msgs::msg::Range ScanToRange(std::initializer_list<double> ranges)
+{
+  gz::msgs::LaserScan gz_msg;
+  gz_msg.set_range_min(0.1);
+  gz_msg.set_range_max(2.0);
+  for (const double range : ranges) {
+    gz_msg.add_ranges(range);
+  }
+  sensor_msgs::msg::Range ros_msg;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
+  return ros_msg;
+}
+
+constexpr double kInfinity = std::numeric_limits<double>::infinity();
+}  // namespace
+
+TEST(LaserScanGzToRange, NoDetectionIsPositiveInfinity)
+{
+  const auto ros_msg = ScanToRange({kInfinity, kInfinity, kInfinity});
+  EXPECT_TRUE(std::isinf(ros_msg.range));
+  EXPECT_GT(ros_msg.range, 0.0f);
+}
+
+TEST(LaserScanGzToRange, EmptyScanIsPositiveInfinity)
+{
+  const auto ros_msg = ScanToRange({});
+  EXPECT_TRUE(std::isinf(ros_msg.range));
+  EXPECT_GT(ros_msg.range, 0.0f);
+}
+
+TEST(LaserScanGzToRange, ClosestDetectionWins)
+{
+  EXPECT_FLOAT_EQ(1.5f, ScanToRange({kInfinity, 1.5, 1.8}).range);
+}
+
+TEST(LaserScanGzToRange, TooCloseIsNegativeInfinity)
+{
+  const auto ros_msg = ScanToRange({-kInfinity, 1.0});
+  EXPECT_TRUE(std::isinf(ros_msg.range));
+  EXPECT_LT(ros_msg.range, 0.0f);
+}
+
+TEST(LaserScanGzToRange, FiniteBeyondMaxRangeIsPositiveInfinity)
+{
+  const auto ros_msg = ScanToRange({2.01, 5.0});
+  EXPECT_TRUE(std::isinf(ros_msg.range));
+  EXPECT_GT(ros_msg.range, 0.0f);
+}
+
+TEST(LaserScanGzToRange, FiniteBelowMinRangeIsNegativeInfinity)
+{
+  const auto ros_msg = ScanToRange({0.05, 1.0});
+  EXPECT_TRUE(std::isinf(ros_msg.range));
+  EXPECT_LT(ros_msg.range, 0.0f);
+}
+
+TEST(LaserScanGzToRange, BoundaryValuesAreKept)
+{
+  EXPECT_FLOAT_EQ(2.0f, ScanToRange({2.0}).range);
+  EXPECT_FLOAT_EQ(0.1f, ScanToRange({0.1, 1.0}).range);
 }

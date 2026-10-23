@@ -60,13 +60,16 @@ This branch supports ROS Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Rolling binaries are available for Fortress.
+Rolling binaries are available for Rotary.
 They are hosted at https://packages.ros.org.
 
-1. Add https://packages.ros.org
+1. Add https://packages.ros.org with the `ros2-apt-source` package
+   (see the [ROS installation instructions](https://docs.ros.org/en/rolling/Get-Started/Installation/Ubuntu-Install-Debs.html)):
 
-        sudo sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-        curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+        sudo apt-get update && sudo apt-get install -y curl
+        export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+        curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+        sudo dpkg -i /tmp/ros2-apt-source.deb
         sudo apt-get update
 
 1. Install `ros_gz`
