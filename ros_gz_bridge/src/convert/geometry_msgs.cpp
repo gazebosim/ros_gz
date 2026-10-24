@@ -236,6 +236,7 @@ convert_ros_to_gz(
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   convert_ros_to_gz(ros_msg.transform, gz_msg);
+  gz_msg.set_name(ros_msg.child_frame_id);
 
   auto newPair = gz_msg.mutable_header()->add_data();
   newPair->set_key("child_frame_id");
@@ -256,6 +257,9 @@ convert_gz_to_ros(
       ros_msg.child_frame_id = frame_id_gz_to_ros(aPair.value(0));
       break;
     }
+  }
+  if (ros_msg.child_frame_id.empty() && !gz_msg.name().empty()) {
+    ros_msg.child_frame_id = frame_id_gz_to_ros(gz_msg.name());
   }
 }
 
