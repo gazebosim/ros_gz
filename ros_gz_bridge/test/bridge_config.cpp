@@ -393,6 +393,39 @@ TEST_F(BridgeConfig, EmptyYAML)
     g_last_log_event.message);
 }
 
+TEST_F(BridgeConfig, InvalidYamlSyntax)
+{
+  auto yaml = R"(
+- topic_name: foo
+  ros_type_name: [bar)";
+
+  auto results = ros_gz_bridge::readFromYamlString(yaml);
+  EXPECT_EQ(0u, results.size());
+  EXPECT_EQ(0u, g_last_log_event.message.rfind("Could not parse config: ", 0));
+}
+
+TEST_F(BridgeConfig, InvalidValueTypeSkipsEntry)
+{
+  // An entry with a value of the wrong type is skipped, the rest are kept
+  auto yaml =
+    R"(
+- topic_name: foo
+  ros_type_name: std_msgs/msg/Bool
+  gz_type_name: gz.msgs.Boolean
+  lazy: maybe
+- topic_name: baz
+  ros_type_name: std_msgs/msg/Bool
+  gz_type_name: gz.msgs.Boolean
+  publisher_queue: not_a_number
+- topic_name: qux
+  ros_type_name: std_msgs/msg/Bool
+  gz_type_name: gz.msgs.Boolean)";
+
+  auto results = ros_gz_bridge::readFromYamlString(yaml);
+  ASSERT_EQ(1u, results.size());
+  EXPECT_EQ("qux", results[0].ros_topic_name);
+}
+
 // Verify that BridgeHandle::IsLazy() falls back to kDefaultLazy when
 // BridgeConfig::is_lazy is std::nullopt, and returns the explicit value
 // when it is set.
