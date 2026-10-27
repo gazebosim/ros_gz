@@ -2,6 +2,11 @@
 Changelog for package ros_gz_interfaces
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.3 (2026-10-22)
+------------------
+* Update ros_gz_interfaces README and Rolling install instructions (`#994 <https://github.com/gazebosim/ros_gz/issues/994>`_)
+* Contributors: Alejandro Hernández Cordero
+
 4.0.2 (2026-10-13)
 ------------------
 * Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
