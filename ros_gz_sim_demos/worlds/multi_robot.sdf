@@ -1,16 +1,26 @@
 <?xml version="1.0" ?>
 <!--
-  Gazebo Sim sdformat_urdf parser plugin demo
-TODO:
-  Try sending commands:
+  Multi-robot demo.
 
-    gz topic -t "/robot1/cmd_vel" -m gz.msgs.Twist -p "linear: {x: 1.0}, angular: {z: -0.1}"
-    ros2 topic pub /tobot1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 5.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: -0.1}}"
+  The world contains two vehicles with different namespaces, configured
+  using the <model> namespace attribute and the <include> <namespace> element.
+
+  To control the first robot (robot1_ns):
+
+    gz topic -t /robot1_ns/cmd_vel -m gz.msgs.Twist -p 'linear: {x: 1.0}, angular: {z: -0.1}'
+    ros2 topic pub /robot1_ns/cmd_vel geometry_msgs/msg/Twist '{linear: {x: 1.0}, angular: {z: -0.1}}'
+
+  To control the second robot (robot2_ns):
+
+    gz topic -t /robot2_ns/cmd_vel -m gz.msgs.Twist -p 'linear: {x: 1.0}, angular: {z: -0.1}'
+    ros2 topic pub /robot2_ns/cmd_vel geometry_msgs/msg/Twist '{linear: {x: 1.0}, angular: {z: -0.1}}'
 
   Listen to odometry:
 
-    gz topic -e -t /model/vehicle/odometry
-    ros2 topic echo /model/vehicle/odometry
+    gz topic -e -t /robot1_ns/odometry
+    ros2 topic echo /robot1_ns/odometry
+    gz topic -e -t /robot2_ns/odometry
+    ros2 topic echo /robot2_ns/odometry
 
 -->
 <sdf version="1.12">
