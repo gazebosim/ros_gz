@@ -8,10 +8,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.x'
 
       - name: Run pre-commit
         uses: pre-commit/action@v3.0.1
@@ -25,14 +27,15 @@ jobs:
         include:
           # rolling no longer releases for noble (24.04). Per rosdistro's
           # rolling/distribution.yaml, release_platforms.ubuntu = [resolute]
-          # (Ubuntu 26.04 LTS).
+          # (Ubuntu 26.04 LTS). packages.osrfoundation.org only has Gazebo
+          # Jetty for resolute, so this is the only combination to test.
           - docker-image: "ubuntu:resolute"
             ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
       - name: Build and Test
         run: .github/workflows/build-and-test.sh
         env:

@@ -34,9 +34,9 @@ def generate_launch_description():
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')
         ),
-        # launch_arguments={
-        #    'gz_args': '-r depth_camera.sdf'
-        # }.items(),
+        launch_arguments={
+            'gz_args': '-r depth_camera_sensor.sdf'
+        }.items(),
     )
 
     # RQt
@@ -47,31 +47,18 @@ def generate_launch_description():
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
-    # RViz
-    rviz = Node(
-        package='rviz2',
-        executable='rviz2',
-        # FIXME: Generate new RViz config once this demo is usable again
-        # arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'depth_camera.rviz')],
-        condition=IfCondition(LaunchConfiguration('rviz'))
-    )
-
     # Bridge
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/depth_camera@sensor_msgs/msg/Image@gz.msgs.Image'],
+        arguments=['/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (depth_camera.sdf) inside ros_gz_point_cloud
     return LaunchDescription([
         gz_sim,
-        DeclareLaunchArgument('rviz', default_value='true',
-                              description='Open RViz.'),
         DeclareLaunchArgument('rqt', default_value='true',
                               description='Open RQt.'),
         bridge,
-        rviz,
         rqt
     ])
