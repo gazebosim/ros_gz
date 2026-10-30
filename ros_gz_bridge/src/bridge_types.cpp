@@ -14,6 +14,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <iterator>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -30,6 +31,19 @@ bool get_flag_option(const std::vector<std::string> & args, const std::string & 
 {
   auto it = std::find(args.begin(), args.end(), option);
   return it != args.end();
+}
+
+/// \brief Get the value that follows an option.
+/// \return False if the option is missing or is the last argument.
+bool get_option_value(
+  const std::vector<std::string> & args, const std::string & option, std::string & value)
+{
+  auto it = std::find(args.begin(), args.end(), option);
+  if (it == args.end() || std::next(it) == args.end()) {
+    return false;
+  }
+  value = *std::next(it);
+  return true;
 }
 
 int main(int argc, char * argv[])
@@ -54,34 +68,36 @@ int main(int argc, char * argv[])
   }
 
   if (get_flag_option(args, "--get-ros-to-gz")) {
-    if (args.size() < 3) {
-      std::cout << "get-ros-to-gz requires an argument" << std::endl;
+    std::string type_name;
+    if (!get_option_value(args, "--get-ros-to-gz", type_name)) {
+      std::cout << "--get-ros-to-gz requires an argument" << std::endl;
       return 1;
     }
 
     std::string gz_type_name;
-    auto found = ros_gz_bridge::get_ros_to_gz_mapping(args[2], gz_type_name);
+    auto found = ros_gz_bridge::get_ros_to_gz_mapping(type_name, gz_type_name);
     if (found) {
       std::cout << gz_type_name << std::endl;
       return 0;
     } else {
-      std::cout << "Type [" << args[2] <<
+      std::cout << "Type [" << type_name <<
         "] has no mapping, use --print-ros to see supported types" << std::endl;
       return 1;
     }
   } else if (get_flag_option(args, "--get-gz-to-ros")) {
-    if (args.size() < 3) {
+    std::string type_name;
+    if (!get_option_value(args, "--get-gz-to-ros", type_name)) {
       std::cout << "--get-gz-to-ros requires an argument" << std::endl;
       return 1;
     }
 
     std::string ros_type_name;
-    auto found = ros_gz_bridge::get_gz_to_ros_mapping(args[2], ros_type_name);
+    auto found = ros_gz_bridge::get_gz_to_ros_mapping(type_name, ros_type_name);
     if (found) {
       std::cout << ros_type_name << std::endl;
       return 0;
     } else {
-      std::cout << "Type [" << args[2] <<
+      std::cout << "Type [" << type_name <<
         "] has no mapping, use --print-gz to see supported types" << std::endl;
       return 1;
     }
