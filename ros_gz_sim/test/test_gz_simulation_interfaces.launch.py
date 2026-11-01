@@ -332,19 +332,35 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.assertAlmostEqual(state.twist.linear.x, 5.0, delta=1e-1)
         self.assertAlmostEqual(state.twist.linear.y, 0.0, delta=1e-1)
 
-    def test_set_entity_state_rejects_unsupported_frame(self) -> None:
-        before = self.get_entity_state('sphere').state.pose
+    def test_set_entity_state_relative_frame(self) -> None:
+        self.assert_result_ok(self.reset_simulation())
+        self.set_simulation_state(SimulationState.STATE_PLAYING)
+        wall_pose = self.get_entity_state('wall').state.pose
         set_entity_state, request = self.setup_client(
             si.SetEntityState, 'set_entity_state')
         request.entity = 'sphere'
         request.state.header.frame_id = 'wall'
+        request.state.pose.position.x = 2.0
+        request.state.pose.position.z = 10.0
+        request.state.pose.orientation.w = 1.0
+        request.set_pose = True
+        response = self.call_and_spin(set_entity_state, request)
+        self.assertEqual(response.result.result, Result.RESULT_OK)
+        after = self.get_entity_state('sphere').state.pose
+        self.assertAlmostEqual(
+            after.position.x, wall_pose.position.x + 2.0, delta=1e-2)
+
+    def test_set_entity_state_rejects_missing_frame(self) -> None:
+        before = self.get_entity_state('sphere').state.pose
+        set_entity_state, request = self.setup_client(
+            si.SetEntityState, 'set_entity_state')
+        request.entity = 'sphere'
+        request.state.header.frame_id = 'missing_frame'
         request.state.pose.position.x = before.position.x + 1.0
         request.state.pose.orientation.w = 1.0
         request.set_pose = True
         response = self.call_and_spin(set_entity_state, request)
-        self.assertEqual(
-            response.result.result,
-            Result.RESULT_FEATURE_UNSUPPORTED)
+        self.assertEqual(response.result.result, Result.RESULT_NOT_FOUND)
         after = self.get_entity_state('sphere').state.pose
         self.assertAlmostEqual(after.position.x, before.position.x)
 

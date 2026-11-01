@@ -64,14 +64,6 @@ SetEntityState::SetEntityState(
         return;
       }
 
-      if (!request->state.header.frame_id.empty() &&
-        request->state.header.frame_id != "world")
-      {
-        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
-        response->result.error_message = "Only the world reference frame is supported";
-        return;
-      }
-
       if (!request->set_pose && !request->set_twist && !request->set_acceleration) {
         RCLCPP_WARN_ONCE(
           this->ros_node_->get_logger(),
@@ -96,6 +88,7 @@ SetEntityState::SetEntityState(
 
       gz::msgs::WorldControlState control_msg;
       bool entity_found = false;
+      bool frame_found = true;
       bool invalid_static_state = false;
 
       this->gz_proxy_->WithEcm(
@@ -105,6 +98,17 @@ SetEntityState::SetEntityState(
             return;
           }
           entity_found = true;
+
+          gz::math::Pose3d frame_world_pose = gz::math::Pose3d::Zero;
+          const auto & frame_id = request->state.header.frame_id;
+          if (!frame_id.empty() && frame_id != "world") {
+            const auto frame_entity = ecm.EntityByName(frame_id);
+            if (!frame_entity) {
+              frame_found = false;
+              return;
+            }
+            frame_world_pose = gz::sim::worldPose(*frame_entity, ecm);
+          }
 
           gz::sim::Model model(*entity);
           const auto nonzero = [](const auto & vector) {
@@ -126,18 +130,22 @@ SetEntityState::SetEntityState(
           if (request->set_pose) {
             auto pose = ConvertPose(request->state.pose);
             pose.Rot().Normalize();
+            pose = frame_world_pose * pose;
             model.SetWorldPoseCmd(ecm, pose);
             component_types.insert(components::WorldPoseCmd::typeId);
           }
 
           if (request->set_twist && !model.Static(ecm)) {
-            // Velocity command components are consumed before the pose command updates the
-            // entity pose, so convert the requested world-frame twist using the current pose.
             const auto entity_world_pose = gz::sim::worldPose(*entity, ecm);
-            const auto linear_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+            const auto world_linear_vel = frame_world_pose.Rot().RotateVector(
               ConvertVector3(request->state.twist.linear));
-            const auto angular_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+            const auto world_angular_vel = frame_world_pose.Rot().RotateVector(
               ConvertVector3(request->state.twist.angular));
+
+            const auto linear_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+              world_linear_vel);
+            const auto angular_vel_cmd_body = entity_world_pose.Rot().RotateVectorReverse(
+              world_angular_vel);
 
             ecm.SetComponentData<components::LinearVelocityCmd>(*entity, linear_vel_cmd_body);
             ecm.SetComponentData<components::AngularVelocityCmd>(*entity, angular_vel_cmd_body);
@@ -155,6 +163,11 @@ SetEntityState::SetEntityState(
       if (!entity_found) {
         response->result.result = Result::RESULT_NOT_FOUND;
         response->result.error_message = "Requested entity was not found";
+        return;
+      }
+      if (!frame_found) {
+        response->result.result = Result::RESULT_NOT_FOUND;
+        response->result.error_message = "Requested reference frame entity was not found";
         return;
       }
       if (invalid_static_state) {
