@@ -43,7 +43,7 @@ def generate_launch_description():
     rqt = Node(
         package='rqt_image_view',
         executable='rqt_image_view',
-        arguments=['/camera'],
+        arguments=['/depth_camera'],
         condition=IfCondition(LaunchConfiguration('rqt'))
     )
 
