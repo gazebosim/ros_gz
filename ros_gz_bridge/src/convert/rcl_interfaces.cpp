@@ -17,6 +17,8 @@
 #include <limits>
 #include <string>
 
+#include "convert/logging.hpp"
+
 namespace ros_gz_bridge
 {
 
@@ -47,10 +49,10 @@ convert_ros_to_gz(
 
       if (ros_msg.integer_value > kIntMax) {
         gz_msg.set_int_value(kIntMax);
-        std::cerr << "ParameterValue INTEGER clamped to INT32_MAX\n";
+        ROS_GZ_BRIDGE_CONVERT_WARN("ParameterValue INTEGER clamped to INT32_MAX");
       } else if (ros_msg.integer_value < kIntMin) {
         gz_msg.set_int_value(kIntMin);
-        std::cerr << "ParameterValue INTEGER clamped to INT32_MIN\n";
+        ROS_GZ_BRIDGE_CONVERT_WARN("ParameterValue INTEGER clamped to INT32_MIN");
       } else {
         gz_msg.set_int_value(ros_msg.integer_value);
       }
@@ -84,8 +86,8 @@ convert_ros_to_gz(
   }
 
   if (!unsupported_type.empty()) {
-    std::cerr << "Converting unsupported ParameterValue [" <<
-      unsupported_type << "] failed\n";
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Converting unsupported ParameterValue [" <<
+      unsupported_type << "] failed");
   }
 }
 
@@ -140,8 +142,8 @@ convert_gz_to_ros(
   }
 
   if (!unsupported_type.empty()) {
-    std::cerr << "Converting unsupported gz::msgs::Any [" <<
-      unsupported_type << "] failed\n";
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Converting unsupported gz::msgs::Any [" <<
+      unsupported_type << "] failed");
   }
 }
 }  // namespace ros_gz_bridge

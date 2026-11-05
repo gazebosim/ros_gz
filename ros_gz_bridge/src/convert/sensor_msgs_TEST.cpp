@@ -24,8 +24,11 @@
 #include <cmath>
 #include <limits>
 #include <string>
+#include <utility>
+#include <vector>
 
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
+#include <sensor_msgs/image_encodings.hpp>
 
 TEST(ImageRosToGz, PreservesPaddedRows)
 {
@@ -61,6 +64,56 @@ TEST(ImageGzToRos, PreservesPaddedRows)
   EXPECT_EQ(8u, ros_msg.data.size());
   EXPECT_EQ(23u, ros_msg.data[4]);
   EXPECT_EQ(24u, ros_msg.data[5]);
+}
+
+// ROS encodings without a dedicated name map to the Gazebo format with the
+// same layout.
+TEST(ImageRosToGz, GenericEncodingsAreSupported)
+{
+  const std::vector<std::pair<std::string, gz::msgs::PixelFormatType>> cases{
+    {"8UC1", gz::msgs::PixelFormatType::L_INT8},
+    {"8UC3", gz::msgs::PixelFormatType::RGB_INT8},
+    {"16UC1", gz::msgs::PixelFormatType::L_INT16},
+    {"32FC3", gz::msgs::PixelFormatType::RGB_FLOAT32},
+  };
+  for (const auto & [encoding, pixel_format] : cases) {
+    sensor_msgs::msg::Image ros_msg;
+    ros_msg.width = 2;
+    ros_msg.height = 1;
+    ros_msg.encoding = encoding;
+    const auto pixel_size = sensor_msgs::image_encodings::numChannels(encoding) *
+      sensor_msgs::image_encodings::bitDepth(encoding) / 8;
+    ros_msg.data.assign(2 * pixel_size, 7);
+
+    gz::msgs::Image gz_msg;
+    ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+    EXPECT_EQ(pixel_format, gz_msg.pixel_format_type()) << encoding;
+    EXPECT_EQ(static_cast<uint32_t>(2 * pixel_size), gz_msg.step()) << encoding;
+    EXPECT_EQ(
+      std::string(ros_msg.data.begin(), ros_msg.data.end()),
+      gz_msg.data()) << encoding;
+  }
+}
+
+TEST(ImageGzToRos, RgbFloat32IsSupported)
+{
+  gz::msgs::Image gz_msg;
+  gz_msg.set_width(2);
+  gz_msg.set_height(1);
+  gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_FLOAT32);
+  std::string data(24, '\0');
+  for (size_t i = 0; i < data.size(); ++i) {
+    data[i] = static_cast<char>(i);
+  }
+  gz_msg.set_data(data);
+
+  sensor_msgs::msg::Image ros_msg;
+  ros_gz_bridge::convert_gz_to_ros(gz_msg, ros_msg);
+
+  EXPECT_EQ("32FC3", ros_msg.encoding);
+  EXPECT_EQ(24u, ros_msg.step);
+  EXPECT_EQ(data, std::string(ros_msg.data.begin(), ros_msg.data.end()));
 }
 
 TEST(ImageRosToGz, UnsetStepIsComputed)

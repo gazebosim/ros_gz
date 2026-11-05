@@ -246,6 +246,25 @@ TEST_F(BridgeConfig, FrameIdGz)
   }
 }
 
+TEST_F(BridgeConfig, UnknownKeyIsWarned)
+{
+  // A misspelled key still parses, but is reported
+  auto yaml =
+    R"(
+- topic_name: foo
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+  directoin: GZ_TO_ROS)";
+
+  auto results = ros_gz_bridge::readFromYamlString(yaml);
+  ASSERT_EQ(1u, results.size());
+  EXPECT_EQ(ros_gz_bridge::BridgeDirection::BIDIRECTIONAL, results[0].direction);
+  EXPECT_EQ(RCUTILS_LOG_SEVERITY_WARN, g_last_log_event.level);
+  EXPECT_EQ(
+    "Ignoring unknown key [directoin] in bridge entry",
+    g_last_log_event.message);
+}
+
 TEST_F(BridgeConfig, InvalidSetTwoRos)
 {
   // Cannot set topic_name and ros_topic_name

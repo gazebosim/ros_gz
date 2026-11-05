@@ -210,12 +210,14 @@ if(BUILD_TESTING)
   target_link_libraries(test_rcl_interfaces
     gz-msgs::core
     ${rcl_interfaces_TARGETS}
+    rclcpp::rclcpp
     gtest
     gtest_main
   )
   target_include_directories(test_rcl_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   ament_add_gtest(test_ros_gz_interfaces
@@ -231,6 +233,7 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_gz_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   ament_add_gtest(test_sensor_msgs
