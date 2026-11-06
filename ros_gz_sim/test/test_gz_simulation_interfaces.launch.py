@@ -20,6 +20,7 @@ import time
 from typing import Any
 import unittest
 
+from action_msgs.msg import GoalStatus
 from geometry_msgs.msg import Twist, Vector3
 from launch import LaunchDescription
 from launch.actions import SetEnvironmentVariable
@@ -163,6 +164,21 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             si.ResetSimulation, 'reset_simulation')
         request.scope = si.ResetSimulation.Request.SCOPE_DEFAULT
         return self.call_and_spin(reset_simulation, request)
+
+    def assert_simulation_advances(self) -> None:
+        # Two advances distinguish sustained PLAYING from a queued pause after one step.
+        for _ in range(2):
+            initial_stamp = self.get_entity_state('vehicle').state.header.stamp
+            deadline = time.monotonic() + 5
+            while time.monotonic() < deadline:
+                stamp = self.get_entity_state('vehicle').state.header.stamp
+                if (stamp.sec, stamp.nanosec) > (initial_stamp.sec, initial_stamp.nanosec):
+                    break
+            else:
+                self.fail('Simulation stopped advancing after resumption')
+            self.assertEqual(
+                self.get_simulation_state().state.state,
+                SimulationState.STATE_PLAYING)
 
     # tests
 
@@ -517,8 +533,71 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         finally:
             self.set_simulation_state(SimulationState.STATE_PAUSED)
 
+    def test_rejected_step_does_not_defer_spawn_synchronization(self) -> None:
+        spawned = False
+        self.set_simulation_state(SimulationState.STATE_PLAYING)
+        try:
+            step, request = self.setup_client(si.StepSimulation, 'step_simulation')
+            request.steps = 1
+            self.assertEqual(
+                self.call_and_spin(step, request).result.result, Result.RESULT_OPERATION_FAILED)
+            spawn, request = self.setup_client(si.SpawnEntity, 'spawn_entity')
+            request.name = 'rejected_step_entity'
+            request.entity_resource.resource_string = (
+                '<sdf version="1.12"><model name="rejected_step_entity">'
+                '<link name="body"/></model></sdf>')
+            request.initial_pose.pose.position.z = 10.0
+            request.initial_pose.pose.orientation.w = 1.0
+            self.assert_result_ok(self.call_and_spin(spawn, request))
+            spawned = True
+            time.sleep(0.2)
+            self.assertGreater(
+                self.get_entity_state('rejected_step_entity').state.pose.position.z, 0.0)
+        finally:
+            if spawned:
+                self.delete_entity('rejected_step_entity')
+            self.set_simulation_state(SimulationState.STATE_PAUSED)
+
     def test_reset_simulation(self) -> None:
         self.assert_result_ok(self.reset_simulation())
+
+    def test_reset_unsupported_scope(self) -> None:
+        reset_simulation, request = self.setup_client(
+            si.ResetSimulation, 'reset_simulation')
+        request.scope = si.ResetSimulation.Request.SCOPE_TIME
+        response = self.call_and_spin(reset_simulation, request)
+        self.assertIsNotNone(response)
+        self.assertEqual(response.result.result, Result.RESULT_FEATURE_UNSUPPORTED)
+
+    def test_resume_after_stop(self) -> None:
+        try:
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
+            self.set_simulation_state(SimulationState.STATE_STOPPED)
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
+            self.assertEqual(
+                self.get_simulation_state().state.state,
+                SimulationState.STATE_PLAYING)
+            # Resumption must persist after pending synchronization is processed.
+            self.assert_simulation_advances()
+        finally:
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
+
+    def test_spawn_then_resume(self) -> None:
+        try:
+            self.set_simulation_state(SimulationState.STATE_PAUSED)
+            spawn_entity, request = self.setup_client(si.SpawnEntity, 'spawn_entity')
+            request.name = 'pause_resume_probe'
+            request.entity_resource.resource_string = """
+                <sdf version='1.12'>
+                    <model name='pause_resume_probe'><link name='link'/></model>
+                </sdf>
+            """
+            request.initial_pose.pose.orientation.w = 1.0
+            self.assert_result_ok(self.call_and_spin(spawn_entity, request))
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
+            self.assert_simulation_advances()
+        finally:
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
 
     def test_toggle_simulation_state(self) -> None:
         initial_state = self.get_simulation_state().state.state
@@ -536,6 +615,23 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         self.set_simulation_state(initial_state)
         restored_state = self.get_simulation_state().state.state
         self.assertEqual(restored_state, initial_state)
+
+    def test_stop_simulation_state(self) -> None:
+        # Regression test for #919: transitioning from PLAYING to STOPPED must report success.
+        try:
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
+            self.assertEqual(
+                self.get_simulation_state().state.state,
+                SimulationState.STATE_PLAYING)
+
+            for _ in range(2):
+                self.set_simulation_state(SimulationState.STATE_STOPPED)
+                self.assertEqual(
+                    self.get_simulation_state().state.state,
+                    SimulationState.STATE_STOPPED)
+        finally:
+            # Avoid leaking STOPPED even when an assertion fails.
+            self.set_simulation_state(SimulationState.STATE_PLAYING)
 
     def test_playing_when_already_playing(self) -> None:
         # Try to set it to the same state twice
@@ -587,6 +683,80 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         # Do it again to make sure subsequent actions are handled properly
         send_goal_and_check_results()
         self.assertGreater(self.feedback_cb_count, 1)
+
+    def test_spawn_during_simulate_steps(self) -> None:
+        self.spawn_during_simulate_steps(cancel=False)
+
+    def test_spawn_during_canceled_simulate_steps(self) -> None:
+        self.spawn_during_simulate_steps(cancel=True)
+
+    def spawn_during_simulate_steps(self, cancel: bool) -> None:
+        self.set_simulation_state(SimulationState.STATE_PAUSED)
+        action_client = rclpy.action.ActionClient(
+            self.node, SimulateSteps, f'{GZ_SERVER_NODE_NAME}/simulate_steps')
+        goal_handle = None
+        spawned = False
+        try:
+            self.assertTrue(action_client.wait_for_server(timeout_sec=5))
+            completed = []
+            goal = SimulateSteps.Goal()
+            goal.steps = 1000
+            send = action_client.send_goal_async(
+                goal, feedback_callback=lambda msg: completed.append(msg.feedback.completed_steps))
+            rclpy.spin_until_future_complete(self.node, send, timeout_sec=5)
+            self.assertTrue(send.done())
+            goal_handle = send.result()
+            self.assertTrue(goal_handle.accepted)
+            result = goal_handle.get_result_async()
+            deadline = time.monotonic() + 5
+            while not completed and not result.done() and time.monotonic() < deadline:
+                rclpy.spin_once(self.node, timeout_sec=0.05)
+            self.assertTrue(completed)
+            self.assertFalse(result.done(), 'Spawn must overlap an active step request')
+
+            spawn, request = self.setup_client(si.SpawnEntity, 'spawn_entity')
+            request.name = 'step_sync_entity'
+            request.entity_resource.resource_string = (
+                '<sdf version="1.12"><model name="step_sync_entity">'
+                '<link name="body"/></model></sdf>')
+            request.initial_pose.pose.position.z = 10.0
+            request.initial_pose.pose.orientation.w = 1.0
+            self.assert_result_ok(self.call_and_spin(spawn, request))
+            spawned = True
+            if cancel:
+                before_cancel = self.get_entity_state('step_sync_entity').state.header.stamp
+                cancellation = goal_handle.cancel_goal_async()
+                rclpy.spin_until_future_complete(self.node, cancellation, timeout_sec=5)
+                self.assertTrue(cancellation.done())
+            rclpy.spin_until_future_complete(self.node, result, timeout_sec=5)
+            self.assertTrue(result.done())
+            self.assert_result_ok(result.result().result)
+            self.assertEqual(
+                result.result().status,
+                GoalStatus.STATUS_CANCELED if cancel else GoalStatus.STATUS_SUCCEEDED)
+            # Canceling the ROS goal does not cancel Gazebo's remaining steps.
+            deadline = time.monotonic() + 5
+            while self.get_simulation_state().state.state != SimulationState.STATE_PAUSED:
+                self.assertLess(time.monotonic(), deadline)
+                rclpy.spin_once(self.node, timeout_sec=0.05)
+            # Deferred synchronization must not restart simulation after the final step.
+            state = self.get_entity_state('step_sync_entity').state
+            self.assertGreater(state.pose.position.z, 0.0)
+            before = state.header.stamp
+            if cancel:
+                self.assertGreater(
+                    (before.sec, before.nanosec), (before_cancel.sec, before_cancel.nanosec))
+            time.sleep(0.2)
+            after = self.get_entity_state('step_sync_entity').state.header.stamp
+            self.assertEqual((after.sec, after.nanosec), (before.sec, before.nanosec))
+        finally:
+            if goal_handle is not None:
+                cancel = goal_handle.cancel_goal_async()
+                rclpy.spin_until_future_complete(self.node, cancel, timeout_sec=5)
+            action_client.destroy()
+            if spawned:
+                self.delete_entity('step_sync_entity')
+            self.set_simulation_state(SimulationState.STATE_PAUSED)
 
     def test_get_entity_info(self) -> None:
         get_entity_info, request = self.setup_client(

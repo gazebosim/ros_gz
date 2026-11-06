@@ -259,6 +259,10 @@ if(BUILD_TESTING)
   find_package(launch_testing_ament_cmake REQUIRED)
   ament_find_gtest()
 
+  ament_add_gtest(test_handler_lifetime test/test_handler_lifetime.cpp)
+  target_include_directories(test_handler_lifetime PRIVATE src/gz_simulation_interfaces)
+  target_link_libraries(test_handler_lifetime rclcpp::rclcpp)
+
   ament_add_gtest_executable(test_create test/test_create.cpp)
   ament_add_gtest_executable(test_remove test/test_remove.cpp)
   ament_add_gtest_executable(test_spawn_entity test/test_spawn_entity.cpp)

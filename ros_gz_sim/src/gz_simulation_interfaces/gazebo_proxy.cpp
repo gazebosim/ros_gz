@@ -87,15 +87,13 @@ GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::N
       // publishes on the scene/info topic every time it's reset. So we'll use that as our signal
       // until we come up with a better way to communicate this from the server.
       std::function<void(const gz::msgs::Scene &)> resetHandler = [this](const auto &) {
-          {
-            std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
-            this->reset_detected_ = true;
-            this->reset_detected_cv_.notify_all();
-          }
+          std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
           // Use std::async since InitializeAllCanonicalLinks eventually makes a service call, which
           // we don't want to do from this callback thread.
           this->initialize_canonical_links_ =
             std::async(std::launch::async, [this] {this->InitializeAllCanonicalLinks();});
+          this->reset_detected_ = true;
+          this->reset_detected_cv_.notify_all();
         };
 
       this->SubscribeToGzTopic(this->PrefixTopic("scene/info"), resetHandler);
@@ -176,9 +174,14 @@ bool GazeboProxy::WaitForUpdatedState(const std::chrono::milliseconds & timeout)
   if (!state_initialized_) {
     return false;
   }
-  if (this->initialize_canonical_links_.valid()) {
-    // Wait if canonical links need to be initialized. This should only happen on reset.
-    this->initialize_canonical_links_.wait_for(timeout);
+  {
+    std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
+    if (this->initialize_canonical_links_.valid()) {
+      // Wait if canonical links need to be initialized. This should only happen on reset.
+      if (this->initialize_canonical_links_.wait_for(timeout) != std::future_status::ready) {
+        return false;
+      }
+    }
   }
   // TODO(azeey): Technically we should subtract the amount of time the `wait_for` above used up
   // from the timeout when we use it for the second `wait_for` below.
@@ -219,16 +222,24 @@ bool GazeboProxy::AssertUpdatedWorldStats(simulation_interfaces::msg::Result & r
   return true;
 }
 
+void GazeboProxy::ArmResetDetection()
+{
+  std::lock_guard<std::mutex> lk(this->reset_detected_mutex_);
+  this->reset_detected_ = false;
+}
+
 bool GazeboProxy::WaitForResetDetected()
 {
   std::unique_lock lk(this->reset_detected_mutex_);
-  this->reset_detected_ = false;
-  if(!this->reset_detected_cv_.wait_for(
+  if (!this->reset_detected_cv_.wait_for(
     lk, std::chrono::milliseconds(kGzServiceTimeoutMs), [this] {return this->reset_detected_;}))
   {
     return false;
   }
-  return this->reset_detected_;
+  // Queue pause-preserving synchronization before allowing the caller to resume.
+  return !this->initialize_canonical_links_.valid() ||
+         this->initialize_canonical_links_.wait_for(
+    std::chrono::milliseconds(kGzServiceTimeoutMs)) == std::future_status::ready;
 }
 
 bool GazeboProxy::InitializeGazeboConnection()
