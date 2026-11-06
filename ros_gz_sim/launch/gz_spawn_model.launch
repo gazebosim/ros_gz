@@ -4,19 +4,21 @@
   <arg name="model_string" default="" />
   <arg name="topic" default="" />
   <arg name="entity_name" default="" />
+  <arg name="entity_namespace" default="" />
   <arg name="allow_renaming" default="False" />
-  <arg name="x" default="" />
-  <arg name="y" default="" />
-  <arg name="z" default="" />
-  <arg name="roll" default="" />
-  <arg name="pitch" default="" />
-  <arg name="yaw" default="" />
+  <arg name="x" default="0.0" />
+  <arg name="y" default="0.0" />
+  <arg name="z" default="0.0" />
+  <arg name="roll" default="0.0" />
+  <arg name="pitch" default="0.0" />
+  <arg name="yaw" default="0.0" />
   <gz_spawn_model
     world="$(var world)"
     file="$(var file)"
     model_string="$(var model_string)"
     topic="$(var topic)"
     entity_name="$(var entity_name)"
+    entity_namespace="$(var entity_namespace)"
     allow_renaming="$(var allow_renaming)"
     x="$(var x)"
     y="$(var y)"

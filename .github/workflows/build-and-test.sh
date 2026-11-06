@@ -8,22 +8,35 @@ export DEBIAN_FRONTEND=noninteractive
 export ROS_PYTHON_VERSION=3
 
 apt update -qq
-apt install -qq -y lsb-release wget curl build-essential
+apt install -qq -y lsb-release wget curl gnupg build-essential ca-certificates
 
-echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list
-wget https://packages.osrfoundation.org/gazebo.key -O - | apt-key add -
+# Use signed-by keyring files. `apt-key add` is removed on Ubuntu 24.04
+# (noble), so the previous form silently produced untrusted apt sources
+# and `ros-rolling-*` was never installable.
+install -d -m 0755 /etc/apt/keyrings
 
-# Dependencies.
-echo "deb http://packages.ros.org/ros2-testing/ubuntu `lsb_release -cs` main" > /etc/apt/sources.list.d/ros2-testing.list
-curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | apt-key add -
+curl -fsSL https://packages.osrfoundation.org/gazebo.gpg \
+  -o /etc/apt/keyrings/pkgs-osrf-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" \
+  > /etc/apt/sources.list.d/gazebo-stable.list
+
+curl -fsSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key \
+  -o /etc/apt/keyrings/ros-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2-testing/ubuntu $(lsb_release -cs) main" \
+  > /etc/apt/sources.list.d/ros2-testing.list
+
 apt-get update -qq
+# Bootstrap: tools rosdep itself needs, plus `ros-base` so /opt/ros/$ROS_DISTRO
+# exists to source. Every workspace dependency is then resolved by rosdep
+# against the rolling distribution.yaml.
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
-                   libcli11-dev
+                   libcli11-dev \
+                   ros-$ROS_DISTRO-ros-base
 
 rosdep init
-rosdep update
-rosdep install --from-paths ./ -i -y -r --rosdistro $ROS_DISTRO $ROSDEP_ARGS
+rosdep update --rosdistro $ROS_DISTRO
+rosdep install --from-paths ./ -i -y --rosdistro $ROS_DISTRO $ROSDEP_ARGS
 
 # Build.
 source /opt/ros/$ROS_DISTRO/setup.bash

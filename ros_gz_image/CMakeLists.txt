@@ -33,7 +33,7 @@ add_executable(${executable}
 )
 
 target_link_libraries(${executable}
-  ${std_msgs_TARGETS}
+  ${sensor_msgs_TARGETS}
   image_transport::image_transport
   ros_gz_bridge::ros_gz_bridge
   rclcpp::rclcpp
@@ -48,6 +48,22 @@ install(TARGETS ${executable}
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+  if(UNIX)
+    find_package(ament_cmake_gtest REQUIRED)
+    ament_add_gtest(test_image_bridge_teardown
+      test/test_image_bridge_teardown.cpp
+      TIMEOUT 120
+    )
+    target_compile_definitions(test_image_bridge_teardown PRIVATE
+      IMAGE_BRIDGE_EXECUTABLE="$<TARGET_FILE:${executable}>"
+    )
+    target_link_libraries(test_image_bridge_teardown
+      gz-msgs::core
+      gz-transport::core
+    )
+    add_dependencies(test_image_bridge_teardown ${executable})
+  endif()
 
   # find_package(rostest REQUIRED)
   #

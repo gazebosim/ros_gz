@@ -24,6 +24,7 @@
 #include <future>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <stdexcept>
 #include <string>
 #include <thread>
@@ -277,19 +278,27 @@ bool GazeboProxy::WaitForCriticalServices()
 
 void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
 {
+  std::optional<gz::msgs::WorldControlState> canonical_links_state;
   {
     std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
     this->ecm_.SetState(msg.state());
 
-    this->HandleNewEntities();
+    canonical_links_state = this->HandleNewEntities();
     this->ecm_.ClearRemovedComponents();
     this->ecm_.ClearNewlyCreatedEntities();
     this->ecm_.ProcessRemoveEntityRequests();
     this->state_updated_ = true;
   }
   this->state_cv_.notify_all();
+
+  // Send the request without holding the lock, so that state updates and service callbacks
+  // aren't blocked on a Gazebo service call.
+  if (canonical_links_state) {
+    this->SendCanonicalLinksState(*canonical_links_state);
+  }
 }
-void GazeboProxy::HandleNewEntities()
+
+std::optional<gz::msgs::WorldControlState> GazeboProxy::HandleNewEntities()
 {
   std::unordered_set<gz::sim::Entity> canonicalLinkEntities;
   this->ecm_.EachNew<components::CanonicalLink>(
@@ -299,24 +308,27 @@ void GazeboProxy::HandleNewEntities()
     });
 
   if (canonicalLinkEntities.empty()) {
-    return;
+    return std::nullopt;
   }
 
-  this->InitializeCanonicalLinks(canonicalLinkEntities);
+  return this->PrepareCanonicalLinks(canonicalLinkEntities);
 }
 
 void GazeboProxy::InitializeAllCanonicalLinks()
 {
   RCLCPP_INFO(this->ros_node_->get_logger(), "InitializeCanonicalLinks");
-  std::vector<gz::sim::Entity> c_links;
+  gz::msgs::WorldControlState control_msg;
   {
+    // This runs on its own thread (see the scene/info subscription), concurrently with state
+    // updates and service callbacks, so the ECM must only be touched with the lock held.
     std::lock_guard<std::mutex> lk(this->state_sync_mutex_);
-    c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
+    const auto c_links = this->ecm_.EntitiesByComponents(components::CanonicalLink());
+    control_msg = this->PrepareCanonicalLinks({c_links.begin(), c_links.end()});
   }
-  this->InitializeCanonicalLinks({c_links.begin(), c_links.end()});
+  this->SendCanonicalLinksState(control_msg);
 }
 
-void GazeboProxy::InitializeCanonicalLinks(
+gz::msgs::WorldControlState GazeboProxy::PrepareCanonicalLinks(
   const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities)
 {
   // TODO(azeey) Computing velocities at every timestep might have a performance impact
@@ -330,7 +342,11 @@ void GazeboProxy::InitializeCanonicalLinks(
   control_msg.mutable_state()->CopyFrom(this->ecm_.State(
     canonicalLinkEntities, {components::WorldPose::typeId, components::WorldLinearVelocity::typeId,
         components::WorldAngularVelocity::typeId}));
+  return control_msg;
+}
 
+void GazeboProxy::SendCanonicalLinksState(const gz::msgs::WorldControlState & control_msg)
+{
   bool result{false};
   gz::msgs::Boolean controlReply;
   this->gz_node_->Request(

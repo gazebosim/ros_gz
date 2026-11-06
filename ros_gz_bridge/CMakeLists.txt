@@ -9,8 +9,6 @@ endif()
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
-set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
-
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(rclcpp_components REQUIRED)
@@ -99,6 +97,13 @@ add_library(${bridge_lib}
   ${generated_files}
 )
 
+include(GenerateExportHeader)
+generate_export_header(${bridge_lib}
+  EXPORT_FILE_NAME
+    "${CMAKE_CURRENT_BINARY_DIR}/include/${PROJECT_NAME}/visibility_control.hpp"
+  EXPORT_MACRO_NAME ROS_GZ_BRIDGE_VISIBLE
+)
+
 target_link_libraries(${bridge_lib}
   PUBLIC
     gz-msgs::core
@@ -126,14 +131,24 @@ target_link_libraries(${bridge_lib}
 target_include_directories(${bridge_lib}
   PUBLIC
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/include>"
     "$<INSTALL_INTERFACE:include/${PROJECT_NAME}>"
   PRIVATE
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}/generated>"
 )
 
+# Many tests do not link ${bridge_lib} even if they include its headers,
+# ensure that ${CMAKE_CURRENT_BINARY_DIR}/include that includes the visibility_control.hpp header
+# is properly visible
+include_directories(${CMAKE_CURRENT_BINARY_DIR}/include)
+
 if(MSVC)
   target_compile_options(${bridge_lib} PRIVATE "/bigobj")
+  # This is used to ensure that all the heavy-templated tests
+  # defined in this directory use /bigobj,
+  # without the need to manually specify if for each test
+  add_compile_options("/bigobj")
 endif()
 
 rclcpp_components_register_node(
@@ -149,6 +164,11 @@ install(TARGETS ${bridge_lib} EXPORT export_${PROJECT_NAME}
 install(
   DIRECTORY include/
   DESTINATION include/${PROJECT_NAME}
+)
+
+install(
+  FILES "${CMAKE_CURRENT_BINARY_DIR}/include/${PROJECT_NAME}/visibility_control.hpp"
+  DESTINATION include/${PROJECT_NAME}/${PROJECT_NAME}
 )
 
 install(
@@ -214,7 +234,25 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src
   )
 
-  add_library(test_utils
+  ament_add_gtest(test_sensor_msgs
+    ${PROJECT_SOURCE_DIR}/src/convert/sensor_msgs_TEST.cpp
+  )
+  target_link_libraries(test_sensor_msgs
+    ${bridge_lib}
+    ${sensor_msgs_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_sensor_msgs
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
+  # Static so the installed test binaries don't need libtest_utils.so on
+  # their runtime loader path — the .so wasn't being installed, which made
+  # `ros2 run ros_gz_bridge test_*` fail with linker error 127 under
+  # colcon test.
+  add_library(test_utils STATIC
     test/utils/gz_test_msg.cpp
     test/utils/ros_test_msg.cpp
   )
@@ -342,10 +380,27 @@ if(BUILD_TESTING)
   target_include_directories(${PROJECT_NAME}_bridge_config PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_bridge_config rclcpp::rclcpp ${bridge_lib})
 
+  ament_add_gtest(${PROJECT_NAME}_service_only_config test/test_service_only_config.cpp
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+  target_link_libraries(${PROJECT_NAME}_service_only_config
+    rclcpp::rclcpp
+    ${bridge_lib}
+  )
+
   ament_add_gtest(${PROJECT_NAME}_gid_filtering test/test_gid_filtering.cpp)
   target_link_libraries(${PROJECT_NAME}_gid_filtering
     rclcpp::rclcpp
     ${std_msgs_TARGETS}
+  )
+
+  ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
+  target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
+
+  ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
+  target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
+  target_link_libraries(${PROJECT_NAME}_intra_process
+    ${bridge_lib}
+    test_utils
   )
 endif()
 

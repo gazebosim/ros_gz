@@ -49,6 +49,7 @@
 #include <gps_msgs/msg/gps_fix.hpp>
 #include <marine_acoustic_msgs/msg/dvl.hpp>
 #include <nav_msgs/msg/odometry.hpp>
+#include <ros_gz_interfaces/msg/air_speed.hpp>
 #include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/entity.hpp>
 #include <ros_gz_interfaces/msg/entity_factory.hpp>
@@ -409,6 +410,14 @@ void createTestMsg(ros_gz_interfaces::msg::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(ros_gz_interfaces::msg::AirSpeed & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::AirSpeed> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

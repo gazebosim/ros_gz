@@ -27,13 +27,13 @@ namespace ros_gz_bridge
 {
 // marine_acoustic_msgs
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const marine_acoustic_msgs::msg::Dvl & ros_msg,
   gz::msgs::DVLVelocityTracking & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::DVLVelocityTracking & gz_msg,
   marine_acoustic_msgs::msg::Dvl & ros_msg);

@@ -1,6 +1,6 @@
 [![Build Status](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml/badge.svg?branch=ros2)](https://github.com/gazebosim/ros_gz/actions/workflows/ros2-ci.yml)
 
-Package Build Status: [![Package Build Status](https://build.ros2.org/buildStatus/icon?job=Rbin_uN64__ros_gz_bridge__ubuntu_noble_amd64__binary)](https://build.ros2.org/job/Rbin_uN64__ros_gz_bridge__ubuntu_noble_amd64__binary/)
+Package Build Status: [![Package Build Status](https://build.ros2.org/buildStatus/icon?job=Rbin_uR64__ros_gz_bridge__ubuntu_resolute_amd64__binary)](https://build.ros2.org/job/Rbin_uR64__ros_gz_bridge__ubuntu_resolute_amd64__binary/)
 
 
 ROS 2 version | Gazebo version | Branch | Binaries hosted at
@@ -11,6 +11,9 @@ Humble | Harmonic | [humble](https://github.com/gazebosim/ros_gz/tree/humble) | 
 Jazzy | Garden | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source [^2]
 Jazzy | Harmonic | [jazzy](https://github.com/gazebosim/ros_gz/tree/jazzy) | https://packages.ros.org
 Kilted | Ionic | [kilted](https://github.com/gazebosim/ros_gz/tree/kilted) | https://packages.ros.org
+Lyrical | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
+Lyrical | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | only from source
+Lyrical | Jetty | [ros2](https://github.com/gazebosim/ros_gz/tree/lyrical) | https://packages.ros.org
 Rolling | Harmonic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Ionic | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | only from source
 Rolling | Jetty | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https://packages.ros.org
@@ -19,8 +22,6 @@ Rolling | Jetty | [ros2](https://github.com/gazebosim/ros_gz/tree/ros2) | https:
 [^2]: Note that the Gazebo version on this row has reached end-of-life.
 
 For information on ROS(1) and Gazebo compatibility, refer to the [noetic branch README](https://github.com/gazebosim/ros_gz/tree/noetic)
-
-[Details about the renaming process](README_RENAME.md) from `ign` to `gz` .
 
 **Note**: The `ros_ign` prefixed packages are shim packages that redirect to their `ros_gz` counterpart.
 Under most circumstances you want to be using the `ros_gz` counterpart.
@@ -59,13 +60,16 @@ This branch supports ROS Rolling. See above for other ROS versions.
 
 ### Binaries
 
-Rolling binaries are available for Fortress.
+Rolling binaries are available for Rotary.
 They are hosted at https://packages.ros.org.
 
-1. Add https://packages.ros.org
+1. Add https://packages.ros.org with the `ros2-apt-source` package
+   (see the [ROS installation instructions](https://docs.ros.org/en/rolling/Get-Started/Installation/Ubuntu-Install-Debs.html)):
 
-        sudo sh -c 'echo "deb [arch=$(dpkg --print-architecture)] http://packages.ros.org/ros2/ubuntu $(lsb_release -cs) main" > /etc/apt/sources.list.d/ros2-latest.list'
-        curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+        sudo apt-get update && sudo apt-get install -y curl
+        export ROS_APT_SOURCE_VERSION=$(curl -s https://api.github.com/repos/ros-infrastructure/ros-apt-source/releases/latest | grep -F "tag_name" | awk -F\" '{print $4}')
+        curl -L -o /tmp/ros2-apt-source.deb "https://github.com/ros-infrastructure/ros-apt-source/releases/download/${ROS_APT_SOURCE_VERSION}/ros2-apt-source_${ROS_APT_SOURCE_VERSION}.$(. /etc/os-release && echo ${UBUNTU_CODENAME:-${VERSION_CODENAME}})_all.deb"
+        sudo dpkg -i /tmp/ros2-apt-source.deb
         sudo apt-get update
 
 1. Install `ros_gz`

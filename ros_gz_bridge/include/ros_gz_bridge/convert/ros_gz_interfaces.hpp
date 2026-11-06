@@ -16,6 +16,7 @@
 #define ROS_GZ_BRIDGE__CONVERT__ROS_GZ_INTERFACES_HPP_
 
 // Gazebo Msgs
+#include <gz/msgs/air_speed.pb.h>
 #include <gz/msgs/altimeter.pb.h>
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
@@ -40,6 +41,7 @@
 #include <gz/msgs/world_stats.pb.h>
 
 // ROS 2 messages
+#include <ros_gz_interfaces/msg/air_speed.hpp>
 #include <ros_gz_interfaces/msg/altimeter.hpp>
 #include <ros_gz_interfaces/msg/contact.hpp>
 #include <ros_gz_interfaces/msg/contacts.hpp>
@@ -70,284 +72,296 @@ namespace ros_gz_bridge
 {
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::JointWrench & ros_msg,
   gz::msgs::JointWrench & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::JointWrench & gz_msg,
   ros_gz_interfaces::msg::JointWrench & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
+convert_ros_to_gz(
+  const ros_gz_interfaces::msg::AirSpeed & ros_msg,
+  gz::msgs::AirSpeed & gz_msg);
+
+template<>
+ROS_GZ_BRIDGE_VISIBLE void
+convert_gz_to_ros(
+  const gz::msgs::AirSpeed & gz_msg,
+  ros_gz_interfaces::msg::AirSpeed & ros_msg);
+
+template<>
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Altimeter & ros_msg,
   gz::msgs::Altimeter & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Altimeter & gz_msg,
   ros_gz_interfaces::msg::Altimeter & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Entity & ros_msg,
   gz::msgs::Entity & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Entity & ros_msg,
   gz::msgs::Pose & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Entity & gz_msg,
   ros_gz_interfaces::msg::Entity & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::EntityFactory & ros_msg,
   gz::msgs::EntityFactory & gz_msg);
 
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::EntityFactory & gz_msg,
   ros_gz_interfaces::msg::EntityFactory & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::EntityWrench & ros_msg,
   gz::msgs::EntityWrench & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::EntityWrench & gz_msg,
   ros_gz_interfaces::msg::EntityWrench & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Contact & ros_msg,
   gz::msgs::Contact & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Contact & gz_msg,
   ros_gz_interfaces::msg::Contact & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Contacts & ros_msg,
   gz::msgs::Contacts & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Contacts & gz_msg,
   ros_gz_interfaces::msg::Contacts & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Dataframe & ros_msg,
   gz::msgs::Dataframe & ign_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Dataframe & ign_msg,
   ros_gz_interfaces::msg::Dataframe & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::GuiCamera & ros_msg,
   gz::msgs::GUICamera & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::GUICamera & gz_msg,
   ros_gz_interfaces::msg::GuiCamera & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Light & ros_msg,
   gz::msgs::Light & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Light & gz_msg,
   ros_gz_interfaces::msg::Light & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::MaterialColor & ros_msg,
   gz::msgs::MaterialColor & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::MaterialColor & gz_msg,
   ros_gz_interfaces::msg::MaterialColor & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::SensorNoise & ros_msg,
   gz::msgs::SensorNoise & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::SensorNoise & gz_msg,
   ros_gz_interfaces::msg::SensorNoise & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::StringVec & ros_msg,
   gz::msgs::StringMsg_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::StringMsg_V & gz_msg,
   ros_gz_interfaces::msg::StringVec & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::ParamVec & ros_msg,
   gz::msgs::Param & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Param & gz_msg,
   ros_gz_interfaces::msg::ParamVec & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::ParamVec & ros_msg,
   gz::msgs::Param_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Param_V & gz_msg,
   ros_gz_interfaces::msg::ParamVec & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::TrackVisual & ros_msg,
   gz::msgs::TrackVisual & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::TrackVisual & gz_msg,
   ros_gz_interfaces::msg::TrackVisual & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::VideoRecord & ros_msg,
   gz::msgs::VideoRecord & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::VideoRecord & gz_msg,
   ros_gz_interfaces::msg::VideoRecord & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::WorldControl & ros_msg,
   gz::msgs::WorldControl & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::WorldControl & gz_msg,
   ros_gz_interfaces::msg::WorldControl & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::WorldReset & ros_msg,
   gz::msgs::WorldReset & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::WorldReset & gz_msg,
   ros_gz_interfaces::msg::WorldReset & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::WorldStatistics & gz_msg,
   ros_gz_interfaces::msg::WorldStatistics & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::WorldStatistics & ros_msg,
   gz::msgs::WorldStatistics & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::Float32Array & ros_msg,
   gz::msgs::Float_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Float_V & gz_msg,
   ros_gz_interfaces::msg::Float32Array & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::LogicalCameraImage & ros_msg,
   gz::msgs::LogicalCameraImage & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::LogicalCameraImage & gz_msg,
   ros_gz_interfaces::msg::LogicalCameraImage & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg,
   gz::msgs::LogPlaybackStatistics & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::LogPlaybackStatistics & gz_msg,
   ros_gz_interfaces::msg::LogPlaybackStatistics & ros_msg);

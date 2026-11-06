@@ -30,6 +30,7 @@ The following message types can be bridged for topics:
 | nav_msgs/msg/Odometry                          | gz.msgs.Odometry                    |
 | nav_msgs/msg/Odometry                          | gz.msgs.OdometryWithCovariance      |
 | rcl_interfaces/msg/ParameterValue              | gz.msgs.Any                         |
+| ros_gz_interfaces/msg/AirSpeed                 | gz.msgs.AirSpeed                    |
 | ros_gz_interfaces/msg/Altimeter                | gz.msgs.Altimeter                   |
 | ros_gz_interfaces/msg/Contact                  | gz.msgs.Contact                     |
 | ros_gz_interfaces/msg/Contacts                 | gz.msgs.Contacts                    |
@@ -42,6 +43,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
 | ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/LogPlaybackStatistics    | gz.msgs.LogPlaybackStatistics       |
+| ros_gz_interfaces/msg/MaterialColor            | gz.msgs.MaterialColor               |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
@@ -75,14 +77,17 @@ The following message types can be bridged for topics:
 | trajectory_msgs/msg/JointTrajectory            | gz.msgs.JointTrajectory             |
 | vision_msgs/msg/Detection2D                    | gz.msgs.AnnotatedAxisAligned2DBox   |
 | vision_msgs/msg/Detection2DArray               | gz.msgs.AnnotatedAxisAligned2DBox_V |
-| vision_msgs/msg/Detection3D                    | gz::msgs::AnnotatedOriented3DBox    |
-| vision_msgs/msg/Detection3DArray               | gz::msgs::AnnotatedOriented3DBox_V  |
+| vision_msgs/msg/Detection3D                    | gz.msgs.AnnotatedOriented3DBox      |
+| vision_msgs/msg/Detection3DArray               | gz.msgs.AnnotatedOriented3DBox_V    |
 
 And the following for services:
 
 | ROS type                             | Gazebo request             | Gazebo response       |
 |--------------------------------------|:--------------------------:| --------------------- |
 | ros_gz_interfaces/srv/ControlWorld   | gz.msgs.WorldControl       | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/DeleteEntity   | gz.msgs.Entity             | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/SpawnEntity    | gz.msgs.EntityFactory      | gz.msgs.Boolean       |
+| ros_gz_interfaces/srv/SetEntityPose  | gz.msgs.Pose               | gz.msgs.Boolean       |
 
 Run `ros2 run ros_gz_bridge parameter_bridge -h` for instructions.
 

@@ -20,6 +20,7 @@
 
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/components/Name.hh>
+#include <simulation_interfaces/msg/bounds.hpp>
 #include <simulation_interfaces/srv/get_entities_states.hpp>
 
 #include "../gazebo_proxy.hpp"
@@ -47,6 +48,11 @@ GetEntitiesStates::GetEntitiesStates(
 {
   auto service_cb = [this](RequestPtr request, ResponsePtr response) {
       if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+      if (request->filters.bounds.type != simulation_interfaces::msg::Bounds::TYPE_EMPTY) {
+        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+        response->result.error_message = "Entity bounds filtering is not supported";
         return;
       }
       const auto stats = this->gz_proxy_->Stats();

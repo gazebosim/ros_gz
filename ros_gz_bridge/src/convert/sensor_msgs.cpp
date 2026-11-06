@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstdint>
+#include <cstring>
+#include <iostream>
 #include <limits>
+#include <string>
+
+#include <sensor_msgs/image_encodings.hpp>
 
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/sensor_msgs.hpp"
@@ -25,6 +31,45 @@
 
 namespace ros_gz_bridge
 {
+
+namespace
+{
+// Resolve the row step of an image and check it against the data buffer.
+// A step of 0 is treated as unset and replaced by the tightly packed step.
+// Returns false if the step is too small for the width, or if the buffer
+// holds fewer than step * height bytes.
+bool resolve_image_step(
+  const std::string & encoding, uint32_t width, uint32_t height,
+  uint32_t step, size_t data_size, uint32_t & resolved_step)
+{
+  const uint64_t min_step = static_cast<uint64_t>(width) *
+    sensor_msgs::image_encodings::numChannels(encoding) *
+    (sensor_msgs::image_encodings::bitDepth(encoding) / 8);
+
+  if (step == 0) {
+    if (min_step > std::numeric_limits<uint32_t>::max()) {
+      std::cerr << "Image width [" << width << "] is too large" << std::endl;
+      return false;
+    }
+    step = static_cast<uint32_t>(min_step);
+  }
+
+  if (step < min_step) {
+    std::cerr << "Image step [" << step << "] is smaller than width [" << width <<
+      "] requires for encoding [" << encoding << "]" << std::endl;
+    return false;
+  }
+
+  if (static_cast<uint64_t>(step) * height > data_size) {
+    std::cerr << "Image data size [" << data_size << "] is smaller than step [" <<
+      step << "] * height [" << height << "]" << std::endl;
+    return false;
+  }
+
+  resolved_step = step;
+  return true;
+}
+}  // namespace
 
 template<>
 void
@@ -59,70 +104,50 @@ convert_ros_to_gz(
   gz_msg.set_width(ros_msg.width);
   gz_msg.set_height(ros_msg.height);
 
-  unsigned int num_channels;
-  unsigned int octets_per_channel;
-
   if (ros_msg.encoding == "mono8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "mono16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT16);
-    num_channels = 1;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "rgb8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT8);
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "rgba8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGBA_INT8);
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bgra8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGRA_INT8);
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "rgb16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT16);
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "bgr8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGR_INT8);
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bgr16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGR_INT16);
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "32FC1") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::R_FLOAT32);
-    num_channels = 1;
-    octets_per_channel = 4u;
   } else if (ros_msg.encoding == "bayer_rggb8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_RGGB8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_bggr8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_BGGR8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_gbrg8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GBRG8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_grbg8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GRBG8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
     std::cerr << "Unsupported pixel format [" << ros_msg.encoding << "]" << std::endl;
     return;
   }
 
-  gz_msg.set_step(gz_msg.width() * num_channels * octets_per_channel);
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, ros_msg.step,
+      ros_msg.data.size(), step))
+  {
+    gz_msg.set_step(0);
+    gz_msg.clear_data();
+    return;
+  }
 
-  gz_msg.set_data(&(ros_msg.data[0]), gz_msg.step() * gz_msg.height());
+  gz_msg.set_step(step);
+  gz_msg.set_data(ros_msg.data.data(), ros_msg.data.size());
 }
 
 template<>
@@ -136,69 +161,51 @@ convert_gz_to_ros(
   ros_msg.height = gz_msg.height();
   ros_msg.width = gz_msg.width();
 
-  unsigned int num_channels;
-  unsigned int octets_per_channel;
-
   if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::L_INT8) {
     ros_msg.encoding = "mono8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::L_INT16) {
     ros_msg.encoding = "mono16";
-    num_channels = 1;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGB_INT8) {
     ros_msg.encoding = "rgb8";
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGBA_INT8) {
     ros_msg.encoding = "rgba8";
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGRA_INT8) {
     ros_msg.encoding = "bgra8";
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGB_INT16) {
     ros_msg.encoding = "rgb16";
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGR_INT8) {
     ros_msg.encoding = "bgr8";
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGR_INT16) {
     ros_msg.encoding = "bgr16";
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::R_FLOAT32) {
     ros_msg.encoding = "32FC1";
-    num_channels = 1;
-    octets_per_channel = 4u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_RGGB8) {
     ros_msg.encoding = "bayer_rggb8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_BGGR8) {
     ros_msg.encoding = "bayer_bggr8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GBRG8) {
     ros_msg.encoding = "bayer_gbrg8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GRBG8) {
     ros_msg.encoding = "bayer_grbg8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else {
     std::cerr << "Unsupported pixel format [" << gz_msg.pixel_format_type() << "]" << std::endl;
     return;
   }
 
   ros_msg.is_bigendian = false;
-  ros_msg.step = ros_msg.width * num_channels * octets_per_channel;
-  ros_msg.data.resize(ros_msg.step * ros_msg.height);
+
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, gz_msg.step(),
+      gz_msg.data().size(), step))
+  {
+    ros_msg.step = 0;
+    ros_msg.data.clear();
+    return;
+  }
+
+  ros_msg.step = step;
+  ros_msg.data.resize(gz_msg.data().size());
 
   // Prefer memcpy over std::copy for performance reasons,
   // see https://github.com/gazebosim/ros_gz/pull/565
@@ -278,7 +285,10 @@ convert_gz_to_ros(
   if (gz_msg.has_intrinsics()) {
     const auto & intrinsics = gz_msg.intrinsics();
 
-    for (auto i = 0; i < intrinsics.k_size(); ++i) {
+    // ros_msg.k is std::array<double, 9>; never write past its bounds.
+    const auto k_count =
+      std::min<size_t>(intrinsics.k_size(), ros_msg.k.size());
+    for (size_t i = 0; i < k_count; ++i) {
       ros_msg.k[i] = intrinsics.k(i);
     }
   }
@@ -286,12 +296,18 @@ convert_gz_to_ros(
   if (gz_msg.has_projection()) {
     const auto & projection = gz_msg.projection();
 
-    for (auto i = 0; i < projection.p_size(); ++i) {
+    // ros_msg.p is std::array<double, 12>; never write past its bounds.
+    const auto p_count =
+      std::min<size_t>(projection.p_size(), ros_msg.p.size());
+    for (size_t i = 0; i < p_count; ++i) {
       ros_msg.p[i] = projection.p(i);
     }
   }
 
-  for (auto i = 0; i < gz_msg.rectification_matrix_size(); ++i) {
+  // ros_msg.r is std::array<double, 9>; never write past its bounds.
+  const auto r_count =
+    std::min<size_t>(gz_msg.rectification_matrix_size(), ros_msg.r.size());
+  for (size_t i = 0; i < r_count; ++i) {
     ros_msg.r[i] = gz_msg.rectification_matrix(i);
   }
 }
@@ -362,12 +378,21 @@ convert_ros_to_gz(
 {
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
 
+  // The JointState spec allows `name`, `velocity`, and `effort` to be empty
+  // or shorter than `position`, so each array is indexed only within its
+  // own bounds.
   for (auto i = 0u; i < ros_msg.position.size(); ++i) {
     auto newJoint = gz_msg.add_joint();
-    newJoint->set_name(ros_msg.name[i]);
+    if (i < ros_msg.name.size()) {
+      newJoint->set_name(ros_msg.name[i]);
+    }
     newJoint->mutable_axis1()->set_position(ros_msg.position[i]);
-    newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
-    newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    if (i < ros_msg.velocity.size()) {
+      newJoint->mutable_axis1()->set_velocity(ros_msg.velocity[i]);
+    }
+    if (i < ros_msg.effort.size()) {
+      newJoint->mutable_axis1()->set_force(ros_msg.effort[i]);
+    }
   }
 }
 
@@ -429,8 +454,11 @@ convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
   gz::msgs::LaserScan & gz_msg)
 {
-  const unsigned int num_readings =
-    (ros_msg.angle_max - ros_msg.angle_min) / ros_msg.angle_increment;
+  // The arrays are authoritative: deriving their length from floating-point
+  // angle metadata can lose the inclusive endpoint.
+  const size_t ranges_count = ros_msg.ranges.size();
+  const size_t intensities_count =
+    std::min(ranges_count, ros_msg.intensities.size());
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.set_frame(ros_msg.header.frame_id);
@@ -439,7 +467,7 @@ convert_ros_to_gz(
   gz_msg.set_angle_step(ros_msg.angle_increment);
   gz_msg.set_range_min(ros_msg.range_min);
   gz_msg.set_range_max(ros_msg.range_max);
-  gz_msg.set_count(num_readings);
+  gz_msg.set_count(ranges_count);
 
   // Not supported in sensor_msgs::msg::LaserScan.
   gz_msg.set_vertical_angle_min(0.0);
@@ -447,8 +475,10 @@ convert_ros_to_gz(
   gz_msg.set_vertical_angle_step(0.0);
   gz_msg.set_vertical_count(0u);
 
-  for (auto i = 0u; i < gz_msg.count(); ++i) {
+  for (auto i = 0u; i < ranges_count; ++i) {
     gz_msg.add_ranges(ros_msg.ranges[i]);
+  }
+  for (auto i = 0u; i < intensities_count; ++i) {
     gz_msg.add_intensities(ros_msg.intensities[i]);
   }
 }
@@ -479,18 +509,31 @@ convert_gz_to_ros(
   // If there are multiple vertical beams, use the one in the middle.
   size_t start = (vertical_count / 2) * count;
 
+  // Defensively clamp ranges/intensities to whatever the sender actually
+  // populated — `count` is just a declared field and may exceed the array.
+  const size_t ranges_avail =
+    (start < static_cast<size_t>(gz_msg.ranges_size())) ?
+    (gz_msg.ranges_size() - start) :
+    0u;
+  const size_t intensities_avail =
+    (start < static_cast<size_t>(gz_msg.intensities_size())) ?
+    (gz_msg.intensities_size() - start) :
+    0u;
+  const size_t ranges_count = std::min<size_t>(count, ranges_avail);
+  const size_t intensities_count = std::min<size_t>(count, intensities_avail);
+
   // Copy ranges into ROS message.
-  ros_msg.ranges.resize(count);
+  ros_msg.ranges.resize(ranges_count);
   std::copy(
     gz_msg.ranges().begin() + start,
-    gz_msg.ranges().begin() + start + count,
+    gz_msg.ranges().begin() + start + ranges_count,
     ros_msg.ranges.begin());
 
   // Copy intensities into ROS message.
-  ros_msg.intensities.resize(count);
+  ros_msg.intensities.resize(intensities_count);
   std::copy(
     gz_msg.intensities().begin() + start,
-    gz_msg.intensities().begin() + start + count,
+    gz_msg.intensities().begin() + start + intensities_count,
     ros_msg.intensities.begin());
 }
 
@@ -541,14 +584,24 @@ convert_gz_to_ros(
   ros_msg.min_range = gz_msg.range_min();
   ros_msg.max_range = gz_msg.range_max();
 
-  ros_msg.range = ros_msg.max_range + 1.0;
+  // REP 117: +Inf when no ray detected anything. The previous sentinel
+  // (max_range + 1) also let a single out-of-range ray collapse to that
+  // value, so take the plain minimum over the rays instead.
+  ros_msg.range = std::numeric_limits<double>::infinity();
 
-  // Set range to the minimum of the ray ranges
   // For single rays, this will just be the range of the ray
   for (double range : gz_msg.ranges()) {
     if (range < ros_msg.range) {
       ros_msg.range = range;
     }
+  }
+
+  // REP 117: report readings outside [min_range, max_range] as +Inf (nothing
+  // detected within range) or -Inf (detected too close to measure).
+  if (ros_msg.range > ros_msg.max_range) {
+    ros_msg.range = std::numeric_limits<float>::infinity();
+  } else if (ros_msg.range < ros_msg.min_range) {
+    ros_msg.range = -std::numeric_limits<float>::infinity();
   }
 }
 

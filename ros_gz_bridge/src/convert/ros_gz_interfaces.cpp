@@ -50,6 +50,28 @@ convert_gz_to_ros(
 template<>
 void
 convert_ros_to_gz(
+  const ros_gz_interfaces::msg::AirSpeed & ros_msg,
+  gz::msgs::AirSpeed & gz_msg)
+{
+  convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
+  gz_msg.set_diff_pressure(ros_msg.diff_pressure);
+  gz_msg.set_temperature(ros_msg.temperature);
+}
+
+template<>
+void
+convert_gz_to_ros(
+  const gz::msgs::AirSpeed & gz_msg,
+  ros_gz_interfaces::msg::AirSpeed & ros_msg)
+{
+  convert_gz_to_ros(gz_msg.header(), ros_msg.header);
+  ros_msg.diff_pressure = gz_msg.diff_pressure();
+  ros_msg.temperature = gz_msg.temperature();
+}
+
+template<>
+void
+convert_ros_to_gz(
   const ros_gz_interfaces::msg::Altimeter & ros_msg,
   gz::msgs::Altimeter & gz_msg)
 {

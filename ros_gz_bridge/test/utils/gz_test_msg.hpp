@@ -16,6 +16,7 @@
 #define UTILS__GZ_TEST_MSG_HPP_
 
 #include <gz/msgs/actuators.pb.h>
+#include <gz/msgs/air_speed.pb.h>
 #include <gz/msgs/altimeter.pb.h>
 #include <gz/msgs/any.pb.h>
 #include <gz/msgs/axis.pb.h>
@@ -313,6 +314,14 @@ void createTestMsg(gz::msgs::JointWrench & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::JointWrench> & _msg);
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(gz::msgs::AirSpeed & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<gz::msgs::AirSpeed> & _msg);
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.

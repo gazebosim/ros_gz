@@ -164,10 +164,10 @@ int main(int argc, char **argv)
   id_option->excludes(name_option);
 
   // Entity type option
-  int entity_type = 6;    // Default to MODEL type
+  int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
   app.add_option("--type", entity_type,
-                "Entity type: 0=NONE, 1=LIGHT, 2=LINK, 3=VISUAL, 4=COLLISION, "
-                "5=SENSOR, 6=MODEL(default)");
+                   "Entity type: 0=NONE, 1=LIGHT, 2=MODEL(default), 3=LINK, "
+                   "4=VISUAL, 5=COLLISION, 6=SENSOR, 7=JOINT");
 
   // Position parameters
   std::vector<double> position = {0.0, 0.0, 0.0};

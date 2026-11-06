@@ -16,6 +16,7 @@
 
 #include <gtest/gtest.h>
 
+#include <limits>
 #include <memory>
 #include <string>
 #include <cstddef>
@@ -903,6 +904,24 @@ void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::JointWrench> &
   compareTestMsg(std::make_shared<geometry_msgs::msg::Wrench>(_msg->body_2_wrench));
 }
 
+void createTestMsg(ros_gz_interfaces::msg::AirSpeed & _msg)
+{
+  createTestMsg(_msg.header);
+  _msg.diff_pressure = 100;
+  _msg.temperature = 200;
+}
+
+void compareTestMsg(const std::shared_ptr<ros_gz_interfaces::msg::AirSpeed> & _msg)
+{
+  ros_gz_interfaces::msg::AirSpeed expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.diff_pressure, _msg->diff_pressure);
+  EXPECT_EQ(expected_msg.temperature, _msg->temperature);
+
+  compareTestMsg(_msg->header);
+}
+
 void createTestMsg(ros_gz_interfaces::msg::Altimeter & _msg)
 {
   createTestMsg(_msg.header);
@@ -1100,6 +1119,7 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Image> & _msg)
   EXPECT_EQ(expected_msg.encoding, _msg->encoding);
   EXPECT_EQ(expected_msg.is_bigendian, _msg->is_bigendian);
   EXPECT_EQ(expected_msg.step, _msg->step);
+  EXPECT_EQ(expected_msg.data, _msg->data);
 }
 
 void createTestMsg(sensor_msgs::msg::CameraInfo & _msg)
@@ -1351,6 +1371,9 @@ void compareTestMsg(const std::shared_ptr<sensor_msgs::msg::Range> & _msg)
 {
   sensor_msgs::msg::Range expected_msg;
   createTestMsg(expected_msg);
+  // The Gazebo LaserScan test message has ranges of 0, below its range_min of 1,
+  // which REP 117 reports as -Inf (detected too close to measure).
+  expected_msg.range = -std::numeric_limits<float>::infinity();
 
   compareTestMsg(_msg->header);
   EXPECT_EQ(expected_msg.radiation_type, _msg->radiation_type);

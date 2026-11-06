@@ -15,17 +15,19 @@
 #ifndef ROS_GZ_BRIDGE__CONVERT_DECL_HPP_
 #define ROS_GZ_BRIDGE__CONVERT_DECL_HPP_
 
+#include "ros_gz_bridge/visibility_control.hpp"
+
 namespace ros_gz_bridge
 {
 
 template<typename ROS_T, typename GZ_T>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const ROS_T & ros_msg,
   GZ_T & gz_msg);
 
 template<typename ROS_T, typename GZ_T>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const GZ_T & gz_msg,
   ROS_T & ros_msg);

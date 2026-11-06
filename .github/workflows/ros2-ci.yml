@@ -23,7 +23,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - docker-image: "ubuntu:24.04"
+          # rolling no longer releases for noble (24.04). Per rosdistro's
+          # rolling/distribution.yaml, release_platforms.ubuntu = [resolute]
+          # (Ubuntu 26.04 LTS).
+          - docker-image: "ubuntu:resolute"
             ros-distro: "rolling"
     container:
       image: ${{ matrix.docker-image }}
