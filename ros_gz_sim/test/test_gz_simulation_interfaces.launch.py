@@ -190,6 +190,13 @@ class TestGzSimulationInterfaces(unittest.TestCase):
             self.assertEqual(response.entities, [])
 
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
+        # 'box' is a dynamic model at rest at (5, 5, 0.5); its pose must be
+        # reported accurately even before it has ever moved.
+        box_state = self.get_entity_state('box').state
+        self.assertAlmostEqual(box_state.pose.position.x, 5.0, delta=1e-3)
+        self.assertAlmostEqual(box_state.pose.position.y, 5.0, delta=1e-3)
+        self.assertAlmostEqual(box_state.pose.position.z, 0.5, delta=1e-3)
+
         state = self.get_entity_state('vehicle').state
         self.assertAlmostEqual(state.twist.linear.x, 0, delta=1e-4)
 
