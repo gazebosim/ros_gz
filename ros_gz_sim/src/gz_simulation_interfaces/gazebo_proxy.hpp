@@ -53,10 +53,9 @@ namespace gz_simulation_interfaces
 class GazeboProxy
 {
 public:
-  /// \brief Constructor.
-  /// \param[in] world_name The name of the Gazebo world that is being simulated.
+  /// \brief Constructor. The name of the simulated world is discovered from the Gazebo server.
   /// \param[in] ros_node ROS node.
-  GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node);
+  explicit GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node);
 
   /// \brief Prefixes a given topic with the world name.
   /// \param[in] topic The topic to be prefixed.
