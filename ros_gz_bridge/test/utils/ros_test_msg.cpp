@@ -16,11 +16,6 @@
 
 #include <gtest/gtest.h>
 
-<<<<<<< HEAD
-=======
-#include <cmath>
-#include <limits>
->>>>>>> 4421d03 (Fix resolute CI (#1019))
 #include <memory>
 #include <string>
 #include <cstddef>
