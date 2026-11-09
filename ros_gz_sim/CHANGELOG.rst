@@ -2,6 +2,11 @@
 Changelog for package ros_gz_sim
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.3 (2026-10-22)
+------------------
+* Add entity_namespace support for spawned entities (`#925 <https://github.com/gazebosim/ros_gz/issues/925>`_)
+* Contributors: Jiayi Cai
+
 4.0.2 (2026-10-13)
 ------------------
 * Fix consistent failure in CI (`#984 <https://github.com/gazebosim/ros_gz/issues/984>`_)

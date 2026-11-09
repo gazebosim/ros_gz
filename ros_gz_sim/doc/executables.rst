@@ -33,7 +33,13 @@ for argument parsing (``--helpshort`` for the full list).
        --world default \
        --file https://fuel.gazebosim.org/1.0/openrobotics/models/Gazebo \
        --name my_gazebo \
+       --entity_namespace my_gazebo \
        --x 0 --y 0 --z 0.5
+
+Use ``--entity_namespace`` to set the namespace for the spawned entity. If
+``--entity_namespace`` is not set or is set to an empty string, the namespace
+behavior follows the source SDF file. The ``{name}`` placeholder is also
+supported and will be replaced by the final spawned entity name.
 
 ``create`` is preferred over ``spawn_entity`` when you already have a running
 Gazebo transport channel and do not want the ROS service layer.
@@ -48,21 +54,23 @@ files because it plays nicely with ROS event handlers and parameters.
 .. code-block:: bash
 
    ros2 run ros_gz_sim spawn_entity \
-       --name my_robot --file /path/to/robot.sdf \
-       --x 0 --y 0 --z 0.1
+       --name my_robot --sdf_filename /path/to/robot.sdf \
+       --pos 0 0 0.1
 
-Orientation may be passed either as a quaternion (``--qx --qy --qz --qw``) or
-Euler angles (``--roll --pitch --yaw``).  See
+Orientation may be passed either as a quaternion (``--quat X Y Z W``) or
+Euler angles in radians (``--euler ROLL PITCH YAW``), but not both.  See
 :cpp:func:`parse_arguments`.
 
 remove
 ------
 
-Removes an entity via Gazebo transport.  Mirrors ``create``:
+Removes an entity via Gazebo transport.  Takes the ROS parameters ``world``
+(optional; the first world reported by Gazebo is used if omitted) and
+``entity_name``:
 
 .. code-block:: bash
 
-   ros2 run ros_gz_sim remove -world default -entity my_gazebo
+   ros2 run ros_gz_sim remove --ros-args -p world:=default -p entity_name:=my_gazebo
 
 delete_entity
 -------------
@@ -86,10 +94,11 @@ Invokes :cpp:class:`EntityPoseSetter` against
 .. code-block:: bash
 
    ros2 run ros_gz_sim set_entity_pose \
-       --entity my_robot --x 1 --y 2 --z 0.5
+       --name my_robot --pos 1 2 0.5
 
-Pass ``--use-quaternion=false`` to interpret the orientation arguments as
-Euler angles.
+The entity is identified by ``--name`` or ``--id``.  Orientation may be passed
+either as a quaternion (``--quat X Y Z W``) or Euler angles in radians
+(``--euler ROLL PITCH YAW``), but not both.
 
 Reference Launch Files
 ----------------------

@@ -2,6 +2,9 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.3 (2026-10-22)
+------------------
+
 4.0.2 (2026-10-13)
 ------------------
 * convert: report +Inf in Range when LaserScan detects nothing (`#982 <https://github.com/gazebosim/ros_gz/issues/982>`_)
