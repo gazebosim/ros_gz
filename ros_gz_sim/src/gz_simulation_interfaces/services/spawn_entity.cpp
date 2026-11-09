@@ -16,6 +16,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/stringmsg.pb.h>
 
 #include <chrono>
 #include <memory>
@@ -23,6 +24,8 @@
 #include <unordered_set>
 #include <vector>
 
+#include <ament_index_cpp/get_package_prefix.hpp>
+#include <ament_index_cpp/get_package_share_path.hpp>
 #include <gz/sim/components/Name.hh>
 #include <gz/sim/components/ParentEntity.hh>
 #include <gz/sim/components/World.hh>
@@ -44,6 +47,54 @@ using SpawnEntitySrv = simulation_interfaces::srv::SpawnEntity;
 using RequestPtr = SpawnEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = SpawnEntitySrv::Response::SharedPtr;
 namespace components = gz::sim::components;
+
+namespace
+{
+const char kPackagePrefix[] = "package://";
+
+/// Resolve a resource URI to something Gazebo and libsdformat can load.
+/// `package://` URIs are resolved with the ament index. Other URIs, such as
+/// `model://` or relative paths, are resolved by Gazebo using its resource
+/// paths. If Gazebo can't resolve them they are passed through unchanged.
+/// Returns false and sets `error` only if a `package://` URI can't be resolved.
+bool ResolveUri(
+  const std::shared_ptr<GazeboProxy> & gz_proxy, const std::string & uri,
+  std::string & resolved, std::string & error)
+{
+  resolved = uri;
+  if (uri.rfind(kPackagePrefix, 0) == 0) {
+    const auto path = uri.substr(sizeof(kPackagePrefix) - 1);
+    const auto slash = path.find('/');
+    const auto package = path.substr(0, slash);
+    try {
+      resolved = ament_index_cpp::get_package_share_path(package).string();
+    } catch (const ament_index_cpp::PackageNotFoundError &) {
+      error = "Package [" + package + "] in uri [" + uri + "] not found";
+      return false;
+    }
+    if (slash != std::string::npos) {
+      resolved += path.substr(slash);
+    }
+    return true;
+  }
+  // Fuel URLs are handled by Gazebo directly.
+  if (uri.rfind("http://", 0) == 0 || uri.rfind("https://", 0) == 0) {
+    return true;
+  }
+
+  gz::msgs::StringMsg request;
+  request.set_data(uri);
+  gz::msgs::StringMsg reply;
+  bool result = false;
+  if (gz_proxy->GzNode()->Request(
+      "/gazebo/resource_paths/resolve", request, GazeboProxy::kGzServiceTimeoutMs, reply,
+      result) && result && !reply.data().empty())
+  {
+    resolved = reply.data();
+  }
+  return true;
+}
+}  // namespace
 
 SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
@@ -67,14 +118,28 @@ SpawnEntity::SpawnEntity(
       gz_request.set_allow_renaming(request->allow_renaming);
       const auto & resource = request->entity_resource;
 
+      if (!request->initial_pose.header.frame_id.empty() &&
+      request->initial_pose.header.frame_id != "world")
+      {
+        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+        response->result.error_message = "Only the world reference frame is supported";
+        return;
+      }
+
+      // The `sdf_filename` field requires a path Gazebo can load, so resolve the uri first.
+      std::string resolved_uri;
       if (!resource.uri.empty()) {
-        // TODO(azeey) The `sdf_filename` field requires absolute paths to the file.
-        // Consider resolving the uri using the `/gazebo/resource_paths/resolve`
-        gz_request.set_sdf_filename(resource.uri);
+        std::string error;
+        if (!ResolveUri(this->gz_proxy_, resource.uri, resolved_uri, error)) {
+          response->result.result = Result::RESULT_NOT_FOUND;
+          response->result.error_message = error;
+          return;
+        }
+        gz_request.set_sdf_filename(resolved_uri);
       } else if (!resource.resource_string.empty()) {
         gz_request.set_sdf(resource.resource_string);
       } else {
-        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.result = SpawnEntitySrv::Response::NO_RESOURCE;
         response->result.error_message =
         "One of the fields [uri] or [resource_string] must be specified";
         return;
@@ -83,8 +148,8 @@ SpawnEntity::SpawnEntity(
       std::string expected_name = request->name;
       if (expected_name.empty()) {
         sdf::Root root;
-        if (!resource.uri.empty()) {
-          root.Load(resource.uri);
+        if (!resolved_uri.empty()) {
+          root.Load(resolved_uri);
         } else {
           root.LoadSdfString(resource.resource_string);
         }

@@ -395,6 +395,16 @@ if(BUILD_TESTING)
   ament_add_gtest(${PROJECT_NAME}_node_lifetime test/test_node_lifetime.cpp)
   target_link_libraries(${PROJECT_NAME}_node_lifetime ${bridge_lib} rclcpp::rclcpp)
 
+  ament_add_gtest(${PROJECT_NAME}_bridge_node test/test_bridge_node.cpp TIMEOUT 120)
+  target_link_libraries(${PROJECT_NAME}_bridge_node
+    ament_cmake_ros_core::ament_ros_defaults
+    ${bridge_lib}
+    gz-msgs::core
+    gz-transport::core
+    rclcpp::rclcpp
+    ${std_msgs_TARGETS}
+  )
+
   ament_add_gtest(${PROJECT_NAME}_intra_process test/test_intra_process.cpp)
   target_include_directories(${PROJECT_NAME}_intra_process PRIVATE src)
   target_link_libraries(${PROJECT_NAME}_intra_process
