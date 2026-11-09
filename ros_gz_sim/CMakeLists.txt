@@ -247,7 +247,20 @@ install(
   RUNTIME DESTINATION bin)
 
 ament_export_targets(${PROJECT_NAME})
-ament_export_dependencies(rclcpp tf2 tf2_ros)
+ament_export_dependencies(
+  builtin_interfaces
+  geometry_msgs
+  gz_sim_vendor
+  gz-sim
+  rclcpp
+  rclcpp_action
+  rclcpp_components
+  ros_gz_interfaces
+  simulation_interfaces
+  std_msgs
+  tf2
+  tf2_ros
+)
 
 # Tests
 if(BUILD_TESTING)
