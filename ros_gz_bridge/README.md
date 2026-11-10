@@ -33,6 +33,7 @@ The following message types can be bridged for topics:
 | geometry_msgs/msg/TwistWithCovariance       | ignition::msgs::TwistWithCovariance         |
 | geometry_msgs/msg/TwistWithCovarianceStamped| ignition::msgs::TwistWithCovariance         |
 | gps_msgs/GPSFix                             | ignition::msgs::NavSat                      |
+| marine_acoustic_msgs/msg/Dvl                | ignition.msgs.DVLVelocityTracking           |
 | nav_msgs/msg/Odometry                       | ignition::msgs::Odometry                    |
 | nav_msgs/msg/Odometry                       | ignition::msgs::OdometryWithCovariance      |
 | rcl_interfaces/msg/ParameterValue           | ignition::msgs::Any                         |
