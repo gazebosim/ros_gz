@@ -14,6 +14,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 find_package(CLI11 REQUIRED)
 find_package(ament_cmake REQUIRED)
+find_package(ament_index_cpp REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(gz_math_vendor REQUIRED)
@@ -102,6 +103,7 @@ set(gz_simulation_interfaces_sources
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp ${gz_simulation_interfaces_sources})
 target_link_libraries(gzserver_component PUBLIC
+  ament_index_cpp::ament_index_cpp
   ${std_msgs_TARGETS}
   ${simulation_interfaces_TARGETS}
   gz-sim::core

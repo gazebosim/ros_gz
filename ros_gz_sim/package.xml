@@ -7,8 +7,8 @@
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
 
   <!-- Maintainers -->
-  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
-  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <license>Apache 2.0</license>
 
@@ -26,6 +26,7 @@
   <build_depend>cli11</build_depend>
 
   <!-- Build and run-time dependencies -->
+  <depend>ament_index_cpp</depend>
   <depend>builtin_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>gz_math_vendor</depend>
