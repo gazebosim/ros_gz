@@ -3,7 +3,8 @@
   <version>0.244.27</version>
   <description>Demos using Gazebo Sim simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
