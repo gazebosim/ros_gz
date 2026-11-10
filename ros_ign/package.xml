@@ -4,7 +4,8 @@
   <name>ros_ign</name>
   <version>0.244.27</version>
   <description>Shim meta-package to redirect to <a href="https://github.com/gazebosim/ros_gz/tree/ros2/ros_gz">ros_gz</a>.</description>
-  <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
   <license>Apache 2.0</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

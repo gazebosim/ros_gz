@@ -3,7 +3,8 @@
   <version>0.7.0</version>
   <description>Point cloud utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="louise@openrobotics.org">Louise Poubel</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <buildtool_depend>catkin</buildtool_depend>
 

@@ -3,7 +3,8 @@
   <version>0.244.27</version>
   <description>Shim package to redirect to ros_gz_sim_demos.</description>
   <license>Apache 2.0</license>
-  <maintainer email="brandon@openrobotics.org">Brandon Ong</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <exec_depend>ros_gz_sim_demos</exec_depend>
