@@ -91,15 +91,13 @@ And
 Depth camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_gz_bridge` or `ros_gz_image`
-* `sensor_msgs/msg/PointCloud2`, through `ros_gz_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through `ros_gz_bridge`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
     ros2 launch ros_gz_sim_demos image_bridge.launch.py image_topic:=/depth_camera
 
-*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
-
-Using Gazebo Sim plugin:
+Using the regular bridge, with the depth image shown in RQt:
 
     ros2 launch ros_gz_sim_demos depth_camera.launch.py
 
@@ -110,15 +108,13 @@ Using Gazebo Sim plugin:
 GPU lidar data can be obtained as:
 
 * `sensor_msgs/msg/LaserScan`, through the `ros_gz_bridge`
-* `sensor_msgs/msg/PointCloud2`, through the `ros_gz_bridge` or `ros_gz_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through the `ros_gz_bridge`
 
-Using the bridge:
+Using the bridge, with the `gz_server` and `ros_gz_bridge` launch actions:
 
     ros2 launch ros_gz_sim_demos gpu_lidar_bridge.launch.xml
 
-*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
-
-Using Gazebo Sim plugin:
+Or from a Python launch file:
 
     ros2 launch ros_gz_sim_demos gpu_lidar.launch.py
 
@@ -160,7 +156,7 @@ GNSS information can be obtained as:
 RGBD camera data can be obtained as:
 
 * `sensor_msgs/msg/Image`, through `ros_gz_bridge` or `ros_gz_image`
-* `sensor_msgs/msg/PointCloud2`, through `ros_gz_bridge` or `ros_gz_point_cloud`
+* `sensor_msgs/msg/PointCloud2`, through `ros_gz_bridge`
 
 Using the image bridge (unidirectional, uses [image_transport](http://wiki.ros.org/image_transport)):
 
@@ -173,9 +169,7 @@ Using the regular bridge:
 
     ros2 launch ros_gz_sim_demos rgbd_camera_bridge.launch.xml
 
-*TODO*: Blocked by `ros_gz_point_cloud` [issue](https://github.com/gazebosim/ros_gz/issues/40).
-
-Using Gazebo Sim plugin:
+Or from a Python launch file:
 
     ros2 launch ros_gz_sim_demos rgbd_camera.launch.py
 

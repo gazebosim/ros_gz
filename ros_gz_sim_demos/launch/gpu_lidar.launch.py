@@ -29,37 +29,46 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        # launch_arguments={
-        #    'gz_args': '-r gpu_lidar.sdf'
-        # }.items(),
+        launch_arguments={
+            'gz_args': '-r gpu_lidar_sensor.sdf'
+        }.items(),
     )
 
     # RViz
     rviz = Node(
-       package='rviz2',
-       executable='rviz2',
-       # FIXME: Generate new RViz config once this demo is usable again
-       # arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'gpu_lidar.rviz')],
-       condition=IfCondition(LaunchConfiguration('rviz'))
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'gpu_lidar_bridge.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
+
+    # Place the lidar at its pose in gpu_lidar_sensor.sdf, in the RViz fixed frame
+    lidar_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['--frame-id', 'map', '--child-frame-id', 'model_with_lidar/link/gpu_lidar',
+                   '--x', '3.95', '--y', '-0.05', '--z', '0.55', '--yaw', '3.14'],
     )
 
     # Bridge
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/lidar@sensor_msgs/msg/LaserScan@gz.msgs.LaserScan/'],
+        arguments=['/lidar@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+                   '/lidar/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (gpu_lidar.sdf) inside ros_gz_point_cloud/
     return LaunchDescription([
         gz_sim,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         bridge,
+        lidar_tf,
         rviz
     ])
