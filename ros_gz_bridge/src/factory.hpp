@@ -44,6 +44,16 @@ struct has_header<T, std::void_t<decltype(T::header)>>: std::true_type
 {
 };
 
+template<class T, class = void>
+struct has_transforms : std::false_type
+{
+};
+
+template<class T>
+struct has_transforms<T, std::void_t<decltype(T::transforms)>>: std::true_type
+{
+};
+
 namespace ros_gz_bridge
 {
 
@@ -202,6 +212,12 @@ protected:
       }
       if (!gz_to_ros_parameters.override_frame_id.empty()) {
         ros_msg->header.frame_id = gz_to_ros_parameters.override_frame_id;
+      }
+    } else if constexpr (has_transforms<ROS_T>::value) {
+      if (!gz_to_ros_parameters.override_frame_id.empty()) {
+        for (auto & tf : ros_msg.transforms) {
+          tf.header.frame_id = gz_to_ros_parameters.override_frame_id;
+        }
       }
     }
     ros_pub->publish(std::move(ros_msg));
