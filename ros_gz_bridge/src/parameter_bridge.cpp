@@ -58,7 +58,11 @@ void usage()
     "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld\n" <<
     "Or equivalently:\n" <<
     "    parameter_bridge /world/default/control@ros_gz_interfaces/srv/ControlWorld@"
-    "gz.msgs.WorldControl@gz.msgs.Boolean\n" << std::endl;
+    "gz.msgs.WorldControl@gz.msgs.Boolean\n"
+    "Automatically discover bridges:\n" <<
+    "    parameter_bridge --ros-args -p automated_bridge.enable:=true\n" <<
+    "Automatic and manually specified bridges can be used together.\n"
+            << std::endl;
 }
 
 using RosGzBridge = ros_gz_bridge::RosGzBridge;
