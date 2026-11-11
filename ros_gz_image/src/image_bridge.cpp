@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rmw/qos_profiles.h>
-
 #include <atomic>
 #include <chrono>
 #include <functional>
@@ -201,7 +199,7 @@ int main(int argc, char * argv[])
   if (lazy && heartbeat_ms <= 0) {
     RCLCPP_ERROR(
       node_->get_logger(),
-      "subscription_heartbeat must be a positive integer (got %d). Using default of 1000 ms.",
+      "subscription_heartbeat must be a positive integer (got %d).",
       heartbeat_ms);
     rclcpp::shutdown();
     return -1;
