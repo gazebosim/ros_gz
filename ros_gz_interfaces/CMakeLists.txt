@@ -48,6 +48,7 @@ set(srv_files
   "srv/DeleteEntity.srv"
   "srv/SetEntityPose.srv"
   "srv/SpawnEntity.srv"
+  "srv/AttachDetach.srv"
 )
 
 rosidl_generate_interfaces(${PROJECT_NAME}
