@@ -191,6 +191,12 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
         state = self.get_entity_state('vehicle').state
+        # 'vehicle' starts at rest at (0, 0, 0.325); without seeding WorldPose
+        # on the canonical link ('chassis', at (-0.151427, 0, 0.175) in the
+        # model frame), GetEntityState would report (+0.151427, 0, -0.175).
+        self.assertAlmostEqual(state.pose.position.x, 0.0, delta=1e-3)
+        self.assertAlmostEqual(state.pose.position.y, 0.0, delta=1e-3)
+        self.assertAlmostEqual(state.pose.position.z, 0.325, delta=1e-3)
         self.assertAlmostEqual(state.twist.linear.x, 0, delta=1e-4)
 
         # Send a velocity command to vehicle
@@ -385,6 +391,39 @@ class TestGzSimulationInterfaces(unittest.TestCase):
         # Try to spawn the same entity again
         result = self.call_and_spin(spawn_entity, request).result.result
         self.assertEqual(result, si.SpawnEntity.Response.NAME_NOT_UNIQUE)
+
+    def test_spawn_entity_rejects_unsupported_frame(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_unsupported_frame'
+        request.entity_resource.resource_string = """
+            <sdf version='1.12'>
+                <model name='test_unsupported_frame'><link name='link'/></model>
+            </sdf>
+        """
+        request.initial_pose.header.frame_id = 'wall'
+        request.initial_pose.pose.orientation.w = 1.0
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(
+            response.result.result,
+            Result.RESULT_FEATURE_UNSUPPORTED)
+
+    def test_spawn_entity_rejects_unknown_package_uri(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_unknown_package'
+        request.entity_resource.uri = 'package://this_package_does_not_exist/model.sdf'
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(response.result.result, Result.RESULT_NOT_FOUND)
+
+    def test_spawn_entity_rejects_empty_resource(self) -> None:
+        spawn_entity, request = self.setup_client(
+            si.SpawnEntity, 'spawn_entity')
+        request.name = 'test_empty_resource'
+        response = self.call_and_spin(spawn_entity, request)
+        self.assertEqual(
+            response.result.result,
+            si.SpawnEntity.Response.NO_RESOURCE)
 
     def test_spawn_entity_reports_renamed_entity(self) -> None:
         spawn_entity, request = self.setup_client(

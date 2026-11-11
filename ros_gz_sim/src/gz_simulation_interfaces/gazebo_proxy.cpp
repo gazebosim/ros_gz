@@ -31,6 +31,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <gz/sim/Util.hh>
 #include <gz/sim/components/AngularVelocity.hh>
 #include <gz/sim/components/CanonicalLink.hh>
 #include <gz/sim/components/LinearVelocity.hh>
@@ -43,8 +44,8 @@ namespace gz_simulation_interfaces
 {
 namespace components = gz::sim::components;
 
-GazeboProxy::GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node)
-: world_name_(world_name), ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
+GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
+: ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
 {
   if (!this->InitializeGazeboConnection()) {
     throw std::runtime_error("Could not initialize Gazebo connection");
@@ -333,7 +334,12 @@ gz::msgs::WorldControlState GazeboProxy::PrepareCanonicalLinks(
 {
   // TODO(azeey) Computing velocities at every timestep might have a performance impact
   for (const auto & link : canonicalLinkEntities) {
-    this->ecm_.CreateComponent(link, components::WorldPose());
+    // Seed WorldPose with the link's current world pose (matching
+    // gz::sim::Link::EnableVelocityChecks). The Physics system only writes to
+    // WorldPose on steps where the link's pose changes, so a default-constructed
+    // identity pose would persist forever for links that are already at rest.
+    this->ecm_.CreateComponent(
+      link, components::WorldPose(gz::sim::worldPose(link, this->ecm_)));
     this->ecm_.CreateComponent(link, components::WorldLinearVelocity());
     this->ecm_.CreateComponent(link, components::WorldAngularVelocity());
   }
