@@ -18,12 +18,14 @@
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
+#include <gz/msgs/world_control_state.pb.h>
 
 #include <chrono>
 #include <condition_variable>
 #include <map>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -169,15 +171,26 @@ private:
 
   /// \brief Handle newly created entities
   /// For example, this is responsible for creating necessary ECM Components on newly created
-  /// entities, so that the Physics system can populate them.
-  void HandleNewEntities();
+  /// entities, so that the Physics system can populate them. Must be called with
+  /// state_sync_mutex_ held.
+  /// \return The state to send to Gazebo with SendCanonicalLinksState, if there were new
+  /// canonical links.
+  std::optional<gz::msgs::WorldControlState> HandleNewEntities();
 
   /// \brief Initialize all canonical link entities by creating necessary ECM components on them.
   void InitializeAllCanonicalLinks();
 
-  /// \brief Initialize canonical link entities by creating necessary ECM components on them.
+  /// \brief Create the necessary ECM components on canonical link entities. Must be called with
+  /// state_sync_mutex_ held.
   /// \param[in] canonicalLinkEntities A set of canonical links to initialize.
-  void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
+  /// \return The state to send to Gazebo with SendCanonicalLinksState.
+  gz::msgs::WorldControlState PrepareCanonicalLinks(
+    const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
+
+  /// \brief Send canonical link components to Gazebo. Must be called without state_sync_mutex_
+  /// held, since it makes a blocking service call.
+  /// \param[in] control_msg State returned by PrepareCanonicalLinks.
+  void SendCanonicalLinksState(const gz::msgs::WorldControlState & control_msg);
 
   /// \brief Subscribe to a Gazebo topic and store the subscription handler so that topics are
   /// automatically unsubscribed during destruction.
