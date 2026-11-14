@@ -16,11 +16,15 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/details/world_stats.pb.h>
+#include <gz/msgs/empty.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/scene.pb.h>
 
+#include <algorithm>
 #include <chrono>
+#include <condition_variable>
+#include <functional>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -29,6 +33,7 @@
 #include <string>
 #include <thread>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include <gz/sim/Util.hh>
@@ -44,8 +49,12 @@ namespace gz_simulation_interfaces
 {
 namespace components = gz::sim::components;
 
-GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
-: ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
+GazeboProxy::GazeboProxy(
+  std::shared_ptr<rclcpp::Node> ros_node,
+  const std::atomic<bool> * stop_requested)
+: ros_node_(ros_node),
+  stop_requested_(stop_requested),
+  gz_node_(std::make_shared<gz::transport::Node>())
 {
   if (!this->InitializeGazeboConnection()) {
     throw std::runtime_error("Could not initialize Gazebo connection");
@@ -63,7 +72,7 @@ GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
   // initialized
   gz::msgs::SerializedStepMap reply;
   bool result;
-  if (!this->gz_node_->Request(this->PrefixTopic("state"), kGzServiceTimeoutMs, reply, result)) {
+  if (!this->RequestWithStop(this->PrefixTopic("state"), gz::msgs::Empty(), reply, result)) {
     RCLCPP_ERROR(
       ros_node->get_logger(),
       "Simulation interface timed out while waiting for Gazebo to initialize");
@@ -123,6 +132,56 @@ GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
   this->InitializeAllCanonicalLinks();
 }
 
+template<typename ReqT, typename ReplyT>
+bool GazeboProxy::RequestWithStop(
+  const std::string & service, const ReqT & req, ReplyT & reply, bool & result)
+{
+  if (this->ShouldStop()) {
+    throw ShutdownRequested();
+  }
+  struct SharedRequestState
+  {
+    std::mutex mutex;
+    std::condition_variable cv;
+    bool done{false};
+    ReplyT reply;
+    bool result{false};
+  };
+  auto state = std::make_shared<SharedRequestState>();
+  std::function<void(const ReplyT &, const bool)> callback =
+    [state](const ReplyT & rep, const bool res)
+    {
+      {
+        std::lock_guard<std::mutex> lock(state->mutex);
+        state->reply = rep;
+        state->result = res;
+        state->done = true;
+      }
+      state->cv.notify_all();
+    };
+  if (!this->gz_node_->Request(service, req, callback)) {
+    return false;
+  }
+  const auto deadline =
+    std::chrono::steady_clock::now() + std::chrono::milliseconds(kGzServiceTimeoutMs);
+  std::unique_lock<std::mutex> lock(state->mutex);
+  while (!state->done) {
+    if (this->ShouldStop()) {
+      throw ShutdownRequested();
+    }
+    const auto now = std::chrono::steady_clock::now();
+    if (now >= deadline) {
+      return false;
+    }
+    state->cv.wait_until(
+      lock, std::min(deadline, now + std::chrono::milliseconds(50)),
+      [&state] {return state->done;});
+  }
+  reply = std::move(state->reply);
+  result = state->result;
+  return true;
+}
+
 std::string GazeboProxy::PrefixTopic(const char * topic) const
 {
   return "world/" + this->world_name_ + "/" + topic;
@@ -135,10 +194,16 @@ bool GazeboProxy::WaitForGzService(
   const auto start_time = std::chrono::system_clock::now();
   bool found_service = false;
   while (true) {
+    if (this->ShouldStop()) {
+      throw ShutdownRequested();
+    }
     this->GzNode()->ServiceInfo(service, publishers);
     if (!publishers.empty()) {
       found_service = true;
       break;
+    }
+    if (this->ShouldStop()) {
+      throw ShutdownRequested();
     }
     const auto now = std::chrono::system_clock::now();
     if (now > start_time + timeout) {break;}
@@ -236,9 +301,7 @@ bool GazeboProxy::InitializeGazeboConnection()
 {
   gz::msgs::StringMsg_V worlds_msg;
   bool result;
-  if (this->gz_node_->Request(
-        "gazebo/worlds", GazeboProxy::kGzServiceTimeoutMs, worlds_msg, result))
-  {
+  if (this->RequestWithStop("gazebo/worlds", gz::msgs::Empty(), worlds_msg, result)) {
     if (result && !worlds_msg.data().empty()) {
       this->world_name_ = worlds_msg.data(0);
       return true;
@@ -295,7 +358,11 @@ void GazeboProxy::UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg)
   // Send the request without holding the lock, so that state updates and service callbacks
   // aren't blocked on a Gazebo service call.
   if (canonical_links_state) {
-    this->SendCanonicalLinksState(*canonical_links_state);
+    try {
+      this->SendCanonicalLinksState(*canonical_links_state);
+    } catch (const ShutdownRequested &) {
+      // Shutting down; the request is no longer needed.
+    }
   }
 }
 
@@ -355,9 +422,7 @@ void GazeboProxy::SendCanonicalLinksState(const gz::msgs::WorldControlState & co
 {
   bool result{false};
   gz::msgs::Boolean controlReply;
-  this->gz_node_->Request(
-    this->PrefixTopic("control/state"), control_msg, GazeboProxy::kGzServiceTimeoutMs, controlReply,
-    result);
+  this->RequestWithStop(this->PrefixTopic("control/state"), control_msg, controlReply, result);
   if (!result || !controlReply.data()) {
     RCLCPP_ERROR_THROTTLE(
       this->ros_node_->get_logger(), *this->ros_node_->get_clock(), 1000,

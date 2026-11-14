@@ -20,6 +20,7 @@
 #include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
+#include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <map>
@@ -53,9 +54,15 @@ namespace gz_simulation_interfaces
 class GazeboProxy
 {
 public:
+  /// \brief Thrown to unwind initialization when shutdown is requested.
+  struct ShutdownRequested {};
+
   /// \brief Constructor. The name of the simulated world is discovered from the Gazebo server.
   /// \param[in] ros_node ROS node.
-  explicit GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node);
+  /// \param[in] stop_requested Optional flag set when shutdown/destruction is requested.
+  explicit GazeboProxy(
+    std::shared_ptr<rclcpp::Node> ros_node,
+    const std::atomic<bool> * stop_requested = nullptr);
 
   /// \brief Prefixes a given topic with the world name.
   /// \param[in] topic The topic to be prefixed.
@@ -141,6 +148,12 @@ public:
   static constexpr unsigned int kGzStateUpdatedTimeoutMs{1000};
 
 private:
+  bool ShouldStop() const {return this->stop_requested_ && this->stop_requested_->load();}
+
+  template<typename ReqT, typename ReplyT>
+  bool RequestWithStop(
+    const std::string & service, const ReqT & req, ReplyT & reply, bool & result);
+
   /// \brief Establish initial connection to the Gazebo server.
   ///
   /// This makes the initial service request to Gazebo to receive the name of the world being
@@ -212,6 +225,9 @@ private:
 
   /// \brief ROS node
   std::shared_ptr<rclcpp::Node> ros_node_;
+
+  /// \brief Optional external stop flag owned by GzSimulationInterfaces
+  const std::atomic<bool> * stop_requested_{nullptr};
 
   /// \brief Gazebo Node
   std::shared_ptr<gz::transport::Node> gz_node_;

@@ -20,6 +20,7 @@
 #include <gz/msgs/world_control.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 
+#include <atomic>
 #include <memory>
 #include <string>
 #include <thread>
@@ -62,6 +63,7 @@ class GzSimulationInterfaces::Implementation
 {
 public:
   explicit Implementation(std::shared_ptr<rclcpp::Node> node);
+  ~Implementation();
 
   void Run();
   void CreateInterfaces();
@@ -70,9 +72,11 @@ public:
   void AddInterface();
 
 private:
+  std::atomic<bool> stop_requested_{false};
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::shared_ptr<GazeboProxy> gz_proxy_;
   std::vector<std::unique_ptr<HandlerBase>> sim_interface_handles_;
+  std::thread init_thread_;
 };
 
 GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::Node> node)
@@ -80,18 +84,30 @@ GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::N
 {
 }
 
+GzSimulationInterfaces::Implementation::~Implementation()
+{
+  this->stop_requested_.store(true);
+  if (this->init_thread_.joinable()) {
+    this->init_thread_.join();
+  }
+  this->sim_interface_handles_.clear();
+  this->gz_proxy_.reset();
+  this->ros_node_.reset();
+}
+
 void GzSimulationInterfaces::Implementation::Run()
 {
-  auto thread = std::thread([&] {
+  this->init_thread_ = std::thread([this] {
         try {
-          this->gz_proxy_ = std::make_shared<GazeboProxy>(this->ros_node_);
+          this->gz_proxy_ = std::make_shared<GazeboProxy>(
+            this->ros_node_, &this->stop_requested_);
           this->CreateInterfaces();
+        } catch (const GazeboProxy::ShutdownRequested &) {
+          // Shutdown was requested; stop initializing quietly.
         } catch (const std::exception & e) {
           RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
         }
   });
-
-  thread.detach();
 }
 
 void GzSimulationInterfaces::Implementation::CreateInterfaces()
