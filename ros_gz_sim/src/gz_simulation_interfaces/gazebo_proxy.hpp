@@ -20,6 +20,7 @@
 #include <gz/msgs/stringmsg_v.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 
+#include <atomic>
 #include <chrono>
 #include <condition_variable>
 #include <map>
@@ -55,7 +56,10 @@ class GazeboProxy
 public:
   /// \brief Constructor. The name of the simulated world is discovered from the Gazebo server.
   /// \param[in] ros_node ROS node.
-  explicit GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node);
+  /// \param[in] stop_requested Optional flag set when shutdown/destruction is requested.
+  explicit GazeboProxy(
+    std::shared_ptr<rclcpp::Node> ros_node,
+    const std::atomic<bool> * stop_requested = nullptr);
 
   /// \brief Prefixes a given topic with the world name.
   /// \param[in] topic The topic to be prefixed.
@@ -141,6 +145,24 @@ public:
   static constexpr unsigned int kGzStateUpdatedTimeoutMs{1000};
 
 private:
+  /// \brief Check whether shutdown was requested or the ROS context is no longer valid.
+  /// \return True if initialization/waiting should abort.
+  bool ShouldStop() const;
+
+  /// \brief Send an asynchronous empty-request Gazebo service call and wait up to \p timeout,
+  /// aborting early if \ref ShouldStop becomes true.
+  /// \param[in] service Service name.
+  /// \param[in] timeout Maximum time to wait for a response.
+  /// \param[out] reply Service reply message.
+  /// \param[out] result Service result flag.
+  /// \return True if a reply was received before timeout or stop.
+  template<typename ReplyT>
+  bool RequestWithStop(
+    const std::string & service,
+    const std::chrono::milliseconds & timeout,
+    ReplyT & reply,
+    bool & result);
+
   /// \brief Establish initial connection to the Gazebo server.
   ///
   /// This makes the initial service request to Gazebo to receive the name of the world being
@@ -212,6 +234,9 @@ private:
 
   /// \brief ROS node
   std::shared_ptr<rclcpp::Node> ros_node_;
+
+  /// \brief Optional external stop flag owned by GzSimulationInterfaces
+  const std::atomic<bool> * stop_requested_{nullptr};
 
   /// \brief Gazebo Node
   std::shared_ptr<gz::transport::Node> gz_node_;
