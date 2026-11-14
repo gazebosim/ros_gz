@@ -16,11 +16,16 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/details/world_stats.pb.h>
+#include <gz/msgs/empty.pb.h>
 #include <gz/msgs/world_control_state.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/scene.pb.h>
 
+#include <algorithm>
+#include <atomic>
 #include <chrono>
+#include <condition_variable>
+#include <functional>
 #include <future>
 #include <memory>
 #include <mutex>
@@ -29,6 +34,7 @@
 #include <string>
 #include <thread>
 #include <unordered_set>
+#include <utility>
 #include <vector>
 
 #include <gz/sim/Util.hh>
@@ -44,26 +50,41 @@ namespace gz_simulation_interfaces
 {
 namespace components = gz::sim::components;
 
-GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
-: ros_node_(ros_node), gz_node_(std::make_shared<gz::transport::Node>())
+GazeboProxy::GazeboProxy(
+  std::shared_ptr<rclcpp::Node> ros_node,
+  const std::atomic<bool> * stop_requested)
+: ros_node_(ros_node),
+  stop_requested_(stop_requested),
+  gz_node_(std::make_shared<gz::transport::Node>())
 {
   if (!this->InitializeGazeboConnection()) {
     throw std::runtime_error("Could not initialize Gazebo connection");
   }
 
   if (!this->WaitForCriticalServices()) {
+    if (this->ShouldStop()) {
+      return;
+    }
     RCLCPP_ERROR(
       ros_node->get_logger(),
       "Critical services from Gazebo are not available. ROS Simulation Interfaces will not "
       "function properly.");
+  }
+  if (this->ShouldStop()) {
+    return;
   }
   // TODO(azeey) Consider adding the UserCommands system if not already present.
   // TODO(azeey) Wait for critical services to be available (e.g. /world/*/create,
   // /world/*/control) Request the initial state of the world. This will block until Gazebo is
   // initialized
   gz::msgs::SerializedStepMap reply;
-  bool result;
-  if (!this->gz_node_->Request(this->PrefixTopic("state"), kGzServiceTimeoutMs, reply, result)) {
+  bool result{false};
+  if (!this->RequestWithStop(
+        this->PrefixTopic("state"), std::chrono::milliseconds(kGzServiceTimeoutMs), reply, result))
+  {
+    if (this->ShouldStop()) {
+      return;
+    }
     RCLCPP_ERROR(
       ros_node->get_logger(),
       "Simulation interface timed out while waiting for Gazebo to initialize");
@@ -115,12 +136,76 @@ GazeboProxy::GazeboProxy(std::shared_ptr<rclcpp::Node> ros_node)
     this->SubscribeToGzTopic(this->PrefixTopic("stats"), updateStats);
   }
 
+  if (this->ShouldStop()) {
+    return;
+  }
   // Before creating the services, we need to add the `[Angular/Linear]Velocity` components to all
   // the entities available. Currently, we're treating entities are models, but Gazebo doesn't
   // update velocity components of models. Therefore, we have to set the component on the canonical
   // link and compute the velocity of the model entity manually here.
   // TODO(azeey): Compute model velocities on the Gazebo server.
   this->InitializeAllCanonicalLinks();
+}
+
+bool GazeboProxy::ShouldStop() const
+{
+  if (this->stop_requested_ != nullptr && this->stop_requested_->load()) {
+    return true;
+  }
+  return !rclcpp::ok(this->ros_node_->get_node_base_interface()->get_context());
+}
+
+template<typename ReplyT>
+bool GazeboProxy::RequestWithStop(
+  const std::string & service,
+  const std::chrono::milliseconds & timeout,
+  ReplyT & reply,
+  bool & result)
+{
+  struct SharedRequestState
+  {
+    std::mutex mutex;
+    std::condition_variable cv;
+    bool done{false};
+    ReplyT reply;
+    bool result{false};
+  };
+
+  auto state = std::make_shared<SharedRequestState>();
+  std::function<void(const ReplyT &, const bool)> callback =
+    [state](const ReplyT & rep, const bool res)
+    {
+      {
+        std::lock_guard<std::mutex> lock(state->mutex);
+        state->reply = rep;
+        state->result = res;
+        state->done = true;
+      }
+      state->cv.notify_all();
+    };
+
+  if (!this->gz_node_->Request(service, gz::msgs::Empty(), callback)) {
+    return false;
+  }
+
+  const auto deadline = std::chrono::steady_clock::now() + timeout;
+  std::unique_lock<std::mutex> lock(state->mutex);
+  while (!state->done && !this->ShouldStop()) {
+    const auto now = std::chrono::steady_clock::now();
+    if (now >= deadline) {
+      break;
+    }
+    state->cv.wait_until(
+      lock, std::min(deadline, now + std::chrono::milliseconds(50)),
+      [&state] {return state->done;});
+  }
+
+  if (!state->done) {
+    return false;
+  }
+  reply = std::move(state->reply);
+  result = state->result;
+  return true;
 }
 
 std::string GazeboProxy::PrefixTopic(const char * topic) const
@@ -132,19 +217,19 @@ bool GazeboProxy::WaitForGzService(
   const std::string & service, const std::chrono::milliseconds & timeout)
 {
   std::vector<gz::transport::ServicePublisher> publishers;
-  const auto start_time = std::chrono::system_clock::now();
+  const auto start_time = std::chrono::steady_clock::now();
   bool found_service = false;
-  while (true) {
+  while (!this->ShouldStop()) {
     this->GzNode()->ServiceInfo(service, publishers);
     if (!publishers.empty()) {
       found_service = true;
       break;
     }
-    const auto now = std::chrono::system_clock::now();
-    if (now > start_time + timeout) {break;}
+    const auto now = std::chrono::steady_clock::now();
+    if (now - start_time >= timeout) {break;}
 
     using namespace std::chrono_literals;  // NOLINT
-    std::this_thread::sleep_for(500ms);
+    std::this_thread::sleep_for(50ms);
   }
   return found_service;
 }
@@ -235,9 +320,10 @@ bool GazeboProxy::WaitForResetDetected()
 bool GazeboProxy::InitializeGazeboConnection()
 {
   gz::msgs::StringMsg_V worlds_msg;
-  bool result;
-  if (this->gz_node_->Request(
-        "gazebo/worlds", GazeboProxy::kGzServiceTimeoutMs, worlds_msg, result))
+  bool result{false};
+  if (this->RequestWithStop(
+        "gazebo/worlds", std::chrono::milliseconds(GazeboProxy::kGzServiceTimeoutMs),
+        worlds_msg, result))
   {
     if (result && !worlds_msg.data().empty()) {
       this->world_name_ = worlds_msg.data(0);
@@ -254,6 +340,9 @@ bool GazeboProxy::WaitForCriticalServices()
   {
     const auto state_service = this->PrefixTopic("state");
     if (!this->WaitForGzService(state_service)) {
+      if (this->ShouldStop()) {
+        return false;
+      }
       RCLCPP_ERROR_STREAM(
         this->ros_node_->get_logger(),
         "Required Gazebo service ["
@@ -263,9 +352,16 @@ bool GazeboProxy::WaitForCriticalServices()
     }
   }
 
+  if (this->ShouldStop()) {
+    return false;
+  }
+
   {
     const auto control_service = this->PrefixTopic("control/state");
     if (!this->WaitForGzService(control_service)) {
+      if (this->ShouldStop()) {
+        return false;
+      }
       RCLCPP_ERROR_STREAM(
         this->ros_node_->get_logger(),
         "Gazebo service [" << control_service << "] is not available.");
