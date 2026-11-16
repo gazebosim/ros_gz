@@ -4,8 +4,8 @@
   <name>ros_gz_bridge</name>
   <version>4.0.3</version>
   <description>Bridge communication between ROS and Gazebo Transport</description>
-  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
-  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <license>Apache 2.0</license>
 
