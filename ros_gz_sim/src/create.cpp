@@ -14,7 +14,7 @@
 
 #include <gz/msgs/boolean.pb.h>
 #include <gz/msgs/entity.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_factory_with_ns.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
 
 #include <algorithm>
@@ -50,6 +50,7 @@ struct CommandLineFlags
   std::string string;
   std::string topic;
   std::string name;
+  std::string entity_namespace;
   bool allow_renaming{false};
   double x{0};
   double y{0};
@@ -66,7 +67,8 @@ struct CommandLineFlags
 std::vector<std::string> normalize_gflags_arguments(const std::vector<std::string> & args)
 {
   static const std::set<std::string> kValueFlags{
-    "world", "file", "param", "string", "topic", "name", "x", "y", "z", "R", "P", "Y"};
+    "world", "file", "param", "string", "topic", "name", "entity_namespace",
+    "x", "y", "z", "R", "P", "Y"};
 
   std::vector<std::string> normalized;
   for (size_t i = 0; i < args.size(); ++i) {
@@ -105,7 +107,7 @@ std::vector<std::string> normalize_gflags_arguments(const std::vector<std::strin
 
 bool set_XML_from_topic(
   const std::string & topic_name, const rclcpp::Node::SharedPtr ros2_node,
-  gz::msgs::EntityFactory & req)
+  gz::msgs::EntityFactoryWithNs & req)
 {
   const auto timeout = std::chrono::seconds(1);
   std::promise<std::string> xml_promise;
@@ -154,6 +156,8 @@ int main(int _argc, char ** _argv)
   app.add_option("--string", flags.string, "Load XML from a string.");
   app.add_option("--topic", flags.topic, "Load XML from a ROS string publisher.");
   app.add_option("--name", flags.name, "Name for spawned entity.");
+  app.add_option(
+    "--entity_namespace", flags.entity_namespace, "Namespace for spawned entity.");
   app.add_option("--allow_renaming", flags.allow_renaming, "Rename entity if name already used.");
   app.add_option("--x", flags.x, "X component of initial position, in meters.");
   app.add_option("--y", flags.y, "Y component of initial position, in meters.");
@@ -179,6 +183,7 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("string", "");
   ros2_node->declare_parameter("topic", "");
   ros2_node->declare_parameter("name", "");
+  ros2_node->declare_parameter("entity_namespace", "");
   ros2_node->declare_parameter("allow_renaming", false);
   ros2_node->declare_parameter("x", static_cast<double>(0));
   ros2_node->declare_parameter("y", static_cast<double>(0));
@@ -227,10 +232,11 @@ int main(int _argc, char ** _argv)
       "World name was not provided. Using [%s] as the default world.",
       world_name.c_str());
   }
-  std::string service{"/world/" + world_name + "/create"};
+
+  std::string service{"/world/" + world_name + "/create_with_ns"};
 
   // Request message
-  gz::msgs::EntityFactory req;
+  gz::msgs::EntityFactoryWithNs req;
 
   // Get ROS parameters
   std::string file_name = ros2_node->get_parameter("file").as_string();
@@ -302,6 +308,14 @@ int main(int _argc, char ** _argv)
     req.set_name(entity_name);
   } else {
     req.set_name(flags.name);
+  }
+
+  // Namespace
+  std::string ns = ros2_node->get_parameter("entity_namespace").as_string();
+  if (!ns.empty()) {
+    req.set_entity_namespace(ns);
+  } else if (!flags.entity_namespace.empty()) {
+    req.set_entity_namespace(flags.entity_namespace);
   }
 
   // Allow Renaming
