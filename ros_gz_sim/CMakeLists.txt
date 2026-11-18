@@ -2,11 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 
 project(ros_gz_sim)
 
-# Default to C++14
-if(NOT CMAKE_CXX_STANDARD)
-  set(CMAKE_CXX_STANDARD 14)
-endif()
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic")
 endif()
@@ -14,6 +9,7 @@ set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 find_package(CLI11 REQUIRED)
 find_package(ament_cmake REQUIRED)
+find_package(ament_cmake_ros_core REQUIRED)
 find_package(ament_index_cpp REQUIRED)
 find_package(builtin_interfaces REQUIRED)
 find_package(geometry_msgs REQUIRED)
@@ -46,6 +42,7 @@ ament_python_install_package(${PROJECT_NAME})
 # create
 add_executable(create src/create.cpp)
 target_link_libraries(create
+  ament_cmake_ros_core::ament_ros_defaults
   gflags
   gz-math::core
   gz-msgs::core
@@ -58,6 +55,7 @@ target_link_libraries(create
 # delete_entity library
 add_library(${PROJECT_NAME}_delete_entity SHARED src/delete_entity.cpp)
 target_link_libraries(${PROJECT_NAME}_delete_entity
+                      ament_cmake_ros_core::ament_ros_defaults
                       ${builtin_interfaces_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
                       rclcpp::rclcpp)
@@ -69,7 +67,7 @@ target_include_directories(
 
 # delete_entity
 add_executable(delete_entity src/delete_entity.cpp)
-target_link_libraries(delete_entity ${PROJECT_NAME}_delete_entity
+target_link_libraries(delete_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_delete_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
@@ -103,6 +101,7 @@ set(gz_simulation_interfaces_sources
 # gzserver_component
 add_library(gzserver_component SHARED src/gzserver.cpp ${gz_simulation_interfaces_sources})
 target_link_libraries(gzserver_component PUBLIC
+  ament_cmake_ros_core::ament_ros_defaults
   ament_index_cpp::ament_index_cpp
   ${std_msgs_TARGETS}
   ${simulation_interfaces_TARGETS}
@@ -126,6 +125,7 @@ target_include_directories(
 # spawn_entity library
 add_library(${PROJECT_NAME}_spawn_entity SHARED src/spawn_entity.cpp)
 target_link_libraries(${PROJECT_NAME}_spawn_entity
+                      ament_cmake_ros_core::ament_ros_defaults
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
@@ -141,6 +141,7 @@ target_include_directories(
 # set_entity_pose library
 add_library(${PROJECT_NAME}_set_entity_pose SHARED src/set_entity_pose.cpp)
 target_link_libraries(${PROJECT_NAME}_set_entity_pose
+                      ament_cmake_ros_core::ament_ros_defaults
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
@@ -156,6 +157,7 @@ target_include_directories(
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
 target_link_libraries(${PROJECT_NAME}
+  ament_cmake_ros_core::ament_ros_defaults
   rclcpp::rclcpp
 )
 target_include_directories(
@@ -166,6 +168,7 @@ target_include_directories(
 # remove
 add_executable(remove src/remove.cpp)
 target_link_libraries(remove
+  ament_cmake_ros_core::ament_ros_defaults
   gz-msgs::core
   gz-transport::core
   rclcpp::rclcpp
@@ -175,7 +178,7 @@ target_link_libraries(remove
 # set_entity_pose
 add_executable(set_entity_pose src/set_entity_pose.cpp)
 target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
-target_link_libraries(set_entity_pose ${PROJECT_NAME}_set_entity_pose
+target_link_libraries(set_entity_pose ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_set_entity_pose
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
@@ -185,7 +188,7 @@ target_link_libraries(set_entity_pose ${PROJECT_NAME}_set_entity_pose
 
 # spawn_entity executable
 add_executable(spawn_entity src/spawn_entity.cpp)
-target_link_libraries(spawn_entity ${PROJECT_NAME}_spawn_entity
+target_link_libraries(spawn_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_spawn_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
@@ -250,6 +253,7 @@ install(
 
 ament_export_targets(${PROJECT_NAME})
 ament_export_dependencies(
+  ament_cmake_ros_core
   builtin_interfaces
   geometry_msgs
   gz_sim_vendor
@@ -305,10 +309,10 @@ if(BUILD_TESTING)
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
 
-  target_link_libraries(test_stopwatch ${PROJECT_NAME} rclcpp::rclcpp)
-  target_link_libraries(test_create gz-transport::core)
-  target_link_libraries(test_remove gz-transport::core)
-  target_link_libraries(test_spawn_entity ${PROJECT_NAME}_spawn_entity
+  target_link_libraries(test_stopwatch ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME} rclcpp::rclcpp)
+  target_link_libraries(test_create ament_cmake_ros_core::ament_ros_defaults gz-transport::core)
+  target_link_libraries(test_remove ament_cmake_ros_core::ament_ros_defaults gz-transport::core)
+  target_link_libraries(test_spawn_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_spawn_entity
                         ${builtin_interfaces_TARGETS}
                         ${geometry_msgs_TARGETS}
                         ${ros_gz_interfaces_TARGETS}
@@ -316,19 +320,20 @@ if(BUILD_TESTING)
                         tf2::tf2
                         tf2_ros::tf2_ros)
   target_link_libraries(test_gz_simulation_interfaces_spawn_entity
+                        ament_cmake_ros_core::ament_ros_defaults
                         gzserver_component
                         gz-msgs::core
                         gz-transport::core
                         ${simulation_interfaces_TARGETS}
                         rclcpp::rclcpp)
-  target_link_libraries(test_set_entity_pose ${PROJECT_NAME}_set_entity_pose
+  target_link_libraries(test_set_entity_pose ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_set_entity_pose
                         ${builtin_interfaces_TARGETS}
                         ${geometry_msgs_TARGETS}
                         ${ros_gz_interfaces_TARGETS}
                         rclcpp::rclcpp
                         tf2::tf2
                         tf2_ros::tf2_ros)
-  target_link_libraries(test_delete_entity ${PROJECT_NAME}_delete_entity
+  target_link_libraries(test_delete_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_delete_entity
                         ${builtin_interfaces_TARGETS}
                         ${ros_gz_interfaces_TARGETS}
                         rclcpp::rclcpp)
