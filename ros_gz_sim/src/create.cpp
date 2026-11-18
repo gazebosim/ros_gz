@@ -90,10 +90,8 @@ std::vector<std::string> normalize_gflags_arguments(const std::vector<std::strin
       } else {
         normalized.push_back("--" + key);
       }
-    } else if (key == "allow_renaming") {
-      normalized.push_back(has_value ? "--" + body : "--allow_renaming=true");
-    } else if (key == "noallow_renaming" && !has_value) {
-      normalized.push_back("--allow_renaming=false");
+    } else if (key == "allow_renaming" || key == "noallow_renaming") {
+      normalized.push_back("--" + body);
     } else if (key == "help" || key == "helpshort") {
       normalized.push_back("--help");
     } else {
@@ -158,7 +156,9 @@ int main(int _argc, char ** _argv)
   app.add_option("--name", flags.name, "Name for spawned entity.");
   app.add_option(
     "--entity_namespace", flags.entity_namespace, "Namespace for spawned entity.");
-  app.add_option("--allow_renaming", flags.allow_renaming, "Rename entity if name already used.");
+  app.add_flag(
+    "--allow_renaming,!--noallow_renaming", flags.allow_renaming,
+    "Rename entity if name already used.");
   app.add_option("--x", flags.x, "X component of initial position, in meters.");
   app.add_option("--y", flags.y, "Y component of initial position, in meters.");
   app.add_option("--z", flags.z, "Z component of initial position, in meters.");
