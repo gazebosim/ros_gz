@@ -16,6 +16,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <fstream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -223,7 +224,12 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
   auto ret = std::vector<BridgeConfig>();
 
   YAML::Node yaml_node;
-  yaml_node = YAML::Load(in);
+  try {
+    yaml_node = YAML::Load(in);
+  } catch (const YAML::Exception & e) {
+    RCLCPP_ERROR(logger, "Could not parse config: %s", e.what());
+    return ret;
+  }
 
   if (!yaml_node.IsSequence()) {
     RCLCPP_ERROR(
@@ -233,7 +239,13 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
   }
 
   for (auto it : yaml_node) {
-    auto entry = parseEntry(it);
+    std::optional<BridgeConfig> entry;
+    try {
+      entry = parseEntry(it);
+    } catch (const YAML::Exception & e) {
+      // A value has the wrong type, e.g. "lazy: maybe"
+      RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
+    }
     if (entry) {
       ret.push_back(entry.value());
     }

@@ -2,16 +2,17 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>test_ros_gz_bridge</name>
-  <version>4.0.2</version>
+  <version>4.0.3</version>
   <description>Bridge communication between ROS and Gazebo Transport</description>
-  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
-  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <license>Apache 2.0</license>
 
   <author>Michael Carroll</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
 
   <depend>ros_gz_bridge</depend>
 
