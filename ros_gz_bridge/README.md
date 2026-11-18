@@ -43,6 +43,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
 | ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/LogPlaybackStatistics    | gz.msgs.LogPlaybackStatistics       |
+| ros_gz_interfaces/msg/MaterialColor            | gz.msgs.MaterialColor               |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
@@ -76,8 +77,8 @@ The following message types can be bridged for topics:
 | trajectory_msgs/msg/JointTrajectory            | gz.msgs.JointTrajectory             |
 | vision_msgs/msg/Detection2D                    | gz.msgs.AnnotatedAxisAligned2DBox   |
 | vision_msgs/msg/Detection2DArray               | gz.msgs.AnnotatedAxisAligned2DBox_V |
-| vision_msgs/msg/Detection3D                    | gz::msgs::AnnotatedOriented3DBox    |
-| vision_msgs/msg/Detection3DArray               | gz::msgs::AnnotatedOriented3DBox_V  |
+| vision_msgs/msg/Detection3D                    | gz.msgs.AnnotatedOriented3DBox      |
+| vision_msgs/msg/Detection3DArray               | gz.msgs.AnnotatedOriented3DBox_V    |
 
 And the following for services:
 
