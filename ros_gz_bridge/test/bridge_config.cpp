@@ -395,35 +395,67 @@ TEST_F(BridgeConfig, EmptyYAML)
 
 TEST_F(BridgeConfig, InvalidYamlSyntax)
 {
+  // An unclosed flow sequence is not valid YAML
   auto yaml = R"(
-- topic_name: foo
-  ros_type_name: [bar)";
+- topic_name: [foo
+  ros_type_name: std_msgs/msg/String)";
 
   auto results = ros_gz_bridge::readFromYamlString(yaml);
   EXPECT_EQ(0u, results.size());
-  EXPECT_EQ(0u, g_last_log_event.message.rfind("Could not parse config: ", 0));
+  EXPECT_EQ(0u, g_last_log_event.message.rfind("Could not parse config: ", 0))
+    << g_last_log_event.message;
 }
 
-TEST_F(BridgeConfig, InvalidValueTypeSkipsEntry)
+TEST_F(BridgeConfig, InvalidEntryNotMap)
 {
-  // An entry with a value of the wrong type is skipped, the rest are kept
-  auto yaml =
-    R"(
-- topic_name: foo
-  ros_type_name: std_msgs/msg/Bool
-  gz_type_name: gz.msgs.Boolean
-  lazy: maybe
-- topic_name: baz
-  ros_type_name: std_msgs/msg/Bool
-  gz_type_name: gz.msgs.Boolean
-  publisher_queue: not_a_number
-- topic_name: qux
-  ros_type_name: std_msgs/msg/Bool
-  gz_type_name: gz.msgs.Boolean)";
+  auto yaml = R"(
+- foo)";
 
   auto results = ros_gz_bridge::readFromYamlString(yaml);
-  ASSERT_EQ(1u, results.size());
-  EXPECT_EQ("qux", results[0].ros_topic_name);
+  EXPECT_EQ(0u, results.size());
+  EXPECT_EQ("Could not parse entry: entry must be a YAML map", g_last_log_event.message);
+}
+
+TEST_F(BridgeConfig, InvalidValueTypes)
+{
+  // Values that don't convert to the expected type reject the entry
+  const std::string entry =
+    R"(
+- topic_name: foo
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+  )";
+  for (const std::string field : {"lazy: maybe", "publisher_queue: lots",
+      "subscriber_queue: [1, 2]"})
+  {
+    const auto yaml = entry + field;
+
+    auto results = ros_gz_bridge::readFromYamlString(yaml);
+    EXPECT_EQ(0u, results.size()) << field;
+    EXPECT_EQ(0u, g_last_log_event.message.rfind("Could not parse entry: ", 0))
+      << field << ": " << g_last_log_event.message;
+  }
+}
+
+TEST_F(BridgeConfig, InvalidEntryDoesNotDropValidOnes)
+{
+  auto yaml =
+    R"(
+- topic_name: good_before
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+- topic_name: bad
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+  lazy: maybe
+- topic_name: good_after
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg)";
+
+  auto results = ros_gz_bridge::readFromYamlString(yaml);
+  ASSERT_EQ(2u, results.size());
+  EXPECT_EQ("good_before", results[0].ros_topic_name);
+  EXPECT_EQ("good_after", results[1].ros_topic_name);
 }
 
 // Verify that BridgeHandle::IsLazy() falls back to kDefaultLazy when

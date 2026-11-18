@@ -16,6 +16,7 @@
 #include <yaml-cpp/yaml.h>
 
 #include <fstream>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -238,14 +239,12 @@ std::vector<BridgeConfig> readFromYaml(std::istream & in)
   }
 
   for (auto it : yaml_node) {
-    // Values of the wrong type (e.g. `lazy: maybe`) throw on conversion. Skip
-    // the entry instead of letting the exception terminate the process.
     std::optional<BridgeConfig> entry;
     try {
       entry = parseEntry(it);
     } catch (const YAML::Exception & e) {
+      // A value has the wrong type, e.g. "lazy: maybe"
       RCLCPP_ERROR(logger, "Could not parse entry: %s", e.what());
-      continue;
     }
     if (entry) {
       ret.push_back(entry.value());

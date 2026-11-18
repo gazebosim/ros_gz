@@ -197,8 +197,11 @@ protected:
         auto now = std::chrono::system_clock::now().time_since_epoch();
         auto ns =
           std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
-        ros_msg->header.stamp.sec = ns / 1e9;
-        ros_msg->header.stamp.nanosec = ns - ros_msg->header.stamp.sec * 1e9;
+        // Integer math: converting ns to double loses precision and can make
+        // nanosec negative.
+        constexpr int64_t kNsPerSec = 1000000000;
+        ros_msg->header.stamp.sec = static_cast<int32_t>(ns / kNsPerSec);
+        ros_msg->header.stamp.nanosec = static_cast<uint32_t>(ns % kNsPerSec);
       }
       if (!gz_to_ros_parameters.override_frame_id.empty()) {
         ros_msg->header.frame_id = gz_to_ros_parameters.override_frame_id;

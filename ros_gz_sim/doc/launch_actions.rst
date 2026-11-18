@@ -92,6 +92,7 @@ XML form
          world="default"
          file="$(find-pkg-share my_pkg)/models/robot.sdf"
          entity_name="robot"
+         entity_namespace="robot"
          x="0.0" y="0.0" z="0.5"
          yaw="1.5707"/>
    </launch>
@@ -107,6 +108,7 @@ Python form
        world='default',
        file='/path/to/robot.sdf',
        entity_name='robot',
+       entity_namespace='robot',
        x='0.0', y='0.0', z='0.5', yaw='1.5707',
    )
 
@@ -128,6 +130,11 @@ Arguments
 
 ``entity_name``
     Desired entity name in the simulation.
+
+``entity_namespace``
+    Namespace for the spawned entity. If empty or not set, the namespace
+    behavior follows the source SDF file. The ``{name}`` placeholder is also
+    supported and will be replaced by the final spawned entity name.
 
 ``allow_renaming``
     If ``true``, Gazebo appends a suffix when ``entity_name`` is already

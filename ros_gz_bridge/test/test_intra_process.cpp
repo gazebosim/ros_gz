@@ -207,6 +207,7 @@ TEST_F(IntraProcessTest, AppliesHeaderOverrides)
   EXPECT_EQ("overridden_frame", ros_msg->header.frame_id);
   EXPECT_GE(ros_msg->header.stamp.sec, before);
   EXPECT_LE(ros_msg->header.stamp.sec, after);
+  EXPECT_LT(ros_msg->header.stamp.nanosec, 1000000000u);
 }
 
 // The bridged message is handed to the single owning intra-process subscriber
