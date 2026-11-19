@@ -24,7 +24,7 @@ from launch.actions import ExecuteProcess, Shutdown
 from launch.actions import LogInfo
 from launch.conditions import evaluate_condition_expression
 from launch.substitutions import LaunchConfiguration
-from ros_gz_sim.actions.gzserver import GazeboRosPaths
+from ros_gz_sim.paths import GazeboRosPaths
 
 def get_executable_path(command):
     path = shutil.which(command)
