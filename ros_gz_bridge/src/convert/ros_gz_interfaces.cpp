@@ -192,7 +192,7 @@ convert_ros_to_gz(
     has_clone_name);
 
   if (provided_two) {
-    ROS_GZ_BRIDGE_CONVERT_WARN("You should only provide ONE of sdf, sdf_filname, or clone_name");
+    ROS_GZ_BRIDGE_CONVERT_WARN("You should only provide ONE of sdf, sdf_filename, or clone_name");
   }
 
   if(has_sdf) {
@@ -202,7 +202,7 @@ convert_ros_to_gz(
   } else if(has_clone_name) {
     gz_msg.set_clone_name(ros_msg.clone_name);
   } else {
-    ROS_GZ_BRIDGE_CONVERT_ERROR("Must provide one of: sdf, sdf_filname, or clone_name");
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Must provide one of: sdf, sdf_filename, or clone_name");
   }
 
   convert_ros_to_gz(ros_msg.pose, *gz_msg.mutable_pose());

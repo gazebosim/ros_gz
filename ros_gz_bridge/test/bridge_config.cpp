@@ -265,6 +265,26 @@ TEST_F(BridgeConfig, UnknownKeyIsWarned)
     g_last_log_event.message);
 }
 
+TEST_F(BridgeConfig, NonScalarKeyIsWarned)
+{
+  // A key that isn't a string is reported without dropping the entry
+  auto yaml =
+    R"(
+- topic_name: foo
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+  ? [a, b]
+  : x)";
+
+  auto results = ros_gz_bridge::readFromYamlString(yaml);
+  ASSERT_EQ(1u, results.size());
+  EXPECT_EQ("foo", results[0].ros_topic_name);
+  EXPECT_EQ(RCUTILS_LOG_SEVERITY_WARN, g_last_log_event.level);
+  EXPECT_EQ(
+    "Ignoring unknown key [[a, b]] in bridge entry",
+    g_last_log_event.message);
+}
+
 TEST_F(BridgeConfig, InvalidSetTwoRos)
 {
   // Cannot set topic_name and ros_topic_name

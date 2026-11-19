@@ -90,9 +90,9 @@ std::optional<BridgeConfig> parseEntry(const YAML::Node & yaml_node)
     kDirection, kPublisherQueue, kSubscriberQueue, kQosProfile, kLazy, kGzReqTypeName,
     kGzRepTypeName, kFrameId};
   for (const auto & item : yaml_node) {
-    const auto key = item.first.as<std::string>();
-    if (kKnownKeys.count(key) == 0) {
-      RCLCPP_WARN(logger, "Ignoring unknown key [%s] in bridge entry", key.c_str());
+    if (!item.first.IsScalar() || kKnownKeys.count(item.first.Scalar()) == 0) {
+      RCLCPP_WARN(
+        logger, "Ignoring unknown key [%s] in bridge entry", YAML::Dump(item.first).c_str());
     }
   }
 

@@ -137,7 +137,8 @@ private:
   /// \param[in] _gz_msg Gazebo message
   void OnImage(const gz::msgs::Image & _gz_msg)
   {
-    // Publish by unique_ptr so intra-process subscribers get the image without a copy.
+    // Publish by unique_ptr so that, if intra-process communication is enabled,
+    // subscribers in the same process can get the image without a copy.
     auto ros_msg = std::make_unique<sensor_msgs::msg::Image>();
     ros_gz_bridge::convert_gz_to_ros(_gz_msg, *ros_msg);
     this->ros_pub_.publish(std::move(ros_msg));

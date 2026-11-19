@@ -128,9 +128,6 @@ convert_ros_to_gz(
   } else if (ros_msg.encoding == "16UC1") {
     // Typically a depth image in millimeters.
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT16);
-  } else if (ros_msg.encoding == "8UC3") {
-    // The channel order of 8UC3 is unspecified; treat it as RGB.
-    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT8);
   } else if (ros_msg.encoding == "bayer_rggb8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_RGGB8);
   } else if (ros_msg.encoding == "bayer_bggr8") {

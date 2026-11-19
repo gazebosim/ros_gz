@@ -31,7 +31,6 @@
 #include <sensor_msgs/image_encodings.hpp>
 
 #include <ros_gz_bridge/convert/sensor_msgs.hpp>
-#include <sensor_msgs/image_encodings.hpp>
 
 TEST(ImageRosToGz, PreservesPaddedRows)
 {
@@ -75,7 +74,6 @@ TEST(ImageRosToGz, GenericEncodingsAreSupported)
 {
   const std::vector<std::pair<std::string, gz::msgs::PixelFormatType>> cases{
     {"8UC1", gz::msgs::PixelFormatType::L_INT8},
-    {"8UC3", gz::msgs::PixelFormatType::RGB_INT8},
     {"16UC1", gz::msgs::PixelFormatType::L_INT16},
     {"32FC3", gz::msgs::PixelFormatType::RGB_FLOAT32},
   };
@@ -97,6 +95,23 @@ TEST(ImageRosToGz, GenericEncodingsAreSupported)
       std::string(ros_msg.data.begin(), ros_msg.data.end()),
       gz_msg.data()) << encoding;
   }
+}
+
+// 8UC3 doesn't say whether the channels are RGB or BGR (OpenCV images are
+// usually BGR), so like cv_bridge it isn't converted.
+TEST(ImageRosToGz, Generic8UC3IsUnsupported)
+{
+  sensor_msgs::msg::Image ros_msg;
+  ros_msg.width = 2;
+  ros_msg.height = 1;
+  ros_msg.encoding = "8UC3";
+  ros_msg.data.assign(6, 7);
+
+  gz::msgs::Image gz_msg;
+  ros_gz_bridge::convert_ros_to_gz(ros_msg, gz_msg);
+
+  EXPECT_EQ(gz::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT, gz_msg.pixel_format_type());
+  EXPECT_TRUE(gz_msg.data().empty());
 }
 
 TEST(ImageGzToRos, RgbFloat32IsSupported)

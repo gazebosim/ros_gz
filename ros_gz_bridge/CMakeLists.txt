@@ -237,6 +237,20 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/src
   )
 
+  ament_add_gtest(test_convert_logging
+    ${PROJECT_SOURCE_DIR}/src/convert/logging_TEST.cpp
+  )
+  target_link_libraries(test_convert_logging
+    ament_cmake_ros_core::ament_ros_defaults
+    rclcpp::rclcpp
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_convert_logging
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
+  )
+
   ament_add_gtest(test_sensor_msgs
     ${PROJECT_SOURCE_DIR}/src/convert/sensor_msgs_TEST.cpp
   )

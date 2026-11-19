@@ -162,7 +162,7 @@ int main(int argc, char * argv[])
     // A topic needs a direction delimiter before its Gazebo type, otherwise
     // the bridge would be created with no direction and do nothing.
     if (config.direction == BridgeDirection::NONE) {
-      std::cerr << "Missing direction and Gazebo type in [" << filteredArg << "]\n" << std::endl;
+      std::cerr << "Missing direction and Gazebo type in [" << filteredArg << "]" << std::endl;
       usage();
       return -1;
     }
