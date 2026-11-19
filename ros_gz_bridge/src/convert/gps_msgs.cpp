@@ -52,7 +52,7 @@ convert_gz_to_ros(
   ros_msg.speed = sqrt(
     gz_msg.velocity_east() * gz_msg.velocity_east() +
     gz_msg.velocity_north() * gz_msg.velocity_north());
-  ros_msg.track = atan2(gz_msg.velocity_north(), gz_msg.velocity_east());
+  ros_msg.track = 90.0 - (180.0 / M_PI) * atan2(gz_msg.velocity_north(), gz_msg.velocity_east());
   ros_msg.climb = gz_msg.velocity_up();
 
   // position_covariance is not supported in gz::msgs::NavSat.
