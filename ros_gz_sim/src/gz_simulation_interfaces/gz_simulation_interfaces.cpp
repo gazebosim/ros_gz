@@ -72,7 +72,9 @@ public:
   void AddInterface();
 
 private:
-  /// \brief Wakes up the initialization thread's waits for Gazebo on destruction.
+  /// \brief Wakes up the initialization thread's waits for Gazebo on destruction. Declared first
+  /// so reverse member destruction order keeps it alive until after `sim_interface_handles_` and
+  /// `gz_proxy_` are destroyed.
   std::shared_ptr<StopSignal> stop_signal_{std::make_shared<StopSignal>()};
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::shared_ptr<GazeboProxy> gz_proxy_;
@@ -91,9 +93,6 @@ GzSimulationInterfaces::Implementation::~Implementation()
   if (this->init_thread_.joinable()) {
     this->init_thread_.join();
   }
-  this->sim_interface_handles_.clear();
-  this->gz_proxy_.reset();
-  this->ros_node_.reset();
 }
 
 void GzSimulationInterfaces::Implementation::Run()

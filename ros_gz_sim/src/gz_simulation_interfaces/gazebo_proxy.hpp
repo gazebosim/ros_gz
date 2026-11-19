@@ -56,12 +56,18 @@ class GazeboProxy
 {
 public:
   /// \brief Thrown to unwind initialization when shutdown is requested.
+  ///
+  /// Deliberately does not derive from `std::exception` so `catch (const std::exception &)`
+  /// handlers do not catch or log it; callers must catch it before a ROS executor or transport
+  /// callback boundary, as letting it escape would terminate the process.
   struct ShutdownRequested {};
 
   /// \brief Constructor. The name of the simulated world is discovered from the Gazebo server.
   /// \param[in] ros_node ROS node.
   /// \param[in] stop_signal Optional shutdown request that interrupts the waits for Gazebo. If
   /// null, the waits can only end by success or timeout.
+  /// \throws ShutdownRequested If shutdown is requested via \p stop_signal while waiting for
+  /// Gazebo.
   explicit GazeboProxy(
     std::shared_ptr<rclcpp::Node> ros_node,
     std::shared_ptr<StopSignal> stop_signal = nullptr);
@@ -76,6 +82,7 @@ public:
   /// \param[in] service Full name of the service.
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the service was found before a timeout occurred.
+  /// \throws ShutdownRequested If shutdown is requested while waiting.
   bool WaitForGzService(
     const std::string & service,
     const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
@@ -150,6 +157,16 @@ public:
   static constexpr unsigned int kGzStateUpdatedTimeoutMs{1000};
 
 private:
+  /// \brief Send an asynchronous Gazebo service request and wait up to `kGzServiceTimeoutMs`.
+  ///
+  /// If the service is advertised in-process, gz-transport computes the reply synchronously inside
+  /// `Request()`, which cannot be interrupted by `stop_signal_`.
+  /// \param[in] service Service name.
+  /// \param[in] req Request message.
+  /// \param[out] reply Reply message; only written when returning true.
+  /// \param[out] result Service result flag; only written when returning true.
+  /// \return True if a reply was received before timeout, false on timeout or request failure.
+  /// \throws ShutdownRequested If shutdown is requested before or while waiting for the reply.
   template<typename ReqT, typename ReplyT>
   bool RequestWithStop(
     const std::string & service, const ReqT & req, ReplyT & reply, bool & result);

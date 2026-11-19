@@ -49,6 +49,26 @@ protected:
   }
 };
 
+TEST_F(GzSimulationInterfacesShutdownTest, DestroysImmediatelyAfterConstruction)
+{
+  auto parent_node = std::make_shared<rclcpp::Node>("test_gzserver_immediate_destroy");
+  const auto baseline_node_base_use_count =
+    parent_node->get_node_base_interface().use_count();
+
+  for (int i = 0; i < 20; ++i) {
+    auto sub_node = parent_node->create_sub_node(parent_node->get_name());
+    std::weak_ptr<rclcpp::Node> weak_sub_node = sub_node;
+    {
+      ros_gz_sim::gz_simulation_interfaces::GzSimulationInterfaces sim_interfaces(
+        std::move(sub_node));
+    }
+    EXPECT_TRUE(weak_sub_node.expired());
+    EXPECT_EQ(
+      parent_node->get_node_base_interface().use_count(),
+      baseline_node_base_use_count);
+  }
+}
+
 TEST_F(GzSimulationInterfacesShutdownTest, DestroysPromptlyAndReleasesSubNodeWithoutGazebo)
 {
   auto parent_node = std::make_shared<rclcpp::Node>("test_gzserver");
