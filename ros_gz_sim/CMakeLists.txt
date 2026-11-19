@@ -289,6 +289,7 @@ if(BUILD_TESTING)
   ament_add_gtest_executable(test_set_entity_pose test/test_set_entity_pose.cpp)
   ament_add_gtest_executable(test_delete_entity test/test_delete_entity.cpp)
   ament_add_gtest_executable(test_stopwatch test/test_stopwatch.cpp)
+  ament_add_gtest_executable(test_stop_signal test/test_stop_signal.cpp)
 
   target_include_directories(
     test_stopwatch PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -307,6 +308,9 @@ if(BUILD_TESTING)
     PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>)
   target_include_directories(
+    test_stop_signal
+    PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>)
+  target_include_directories(
     test_set_entity_pose
     PUBLIC $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>)
@@ -316,6 +320,7 @@ if(BUILD_TESTING)
     $<INSTALL_INTERFACE:include>)
 
   target_link_libraries(test_stopwatch ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME} rclcpp::rclcpp)
+  target_link_libraries(test_stop_signal ament_cmake_ros_core::ament_ros_defaults)
   target_link_libraries(test_create ament_cmake_ros_core::ament_ros_defaults gz-transport::core)
   target_link_libraries(test_remove ament_cmake_ros_core::ament_ros_defaults gz-transport::core)
   target_link_libraries(test_spawn_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_spawn_entity
@@ -357,10 +362,12 @@ if(BUILD_TESTING)
       test_set_entity_pose
       test_delete_entity
       test_stopwatch
+      test_stop_signal
     DESTINATION
       lib/${PROJECT_NAME})
 
   ament_add_gtest_test(test_stopwatch)
+  ament_add_gtest_test(test_stop_signal)
   ament_add_gtest_test(test_spawn_entity)
   ament_add_gtest_test(test_gz_simulation_interfaces_spawn_entity)
   ament_add_gtest_test(test_gz_simulation_interfaces_shutdown)

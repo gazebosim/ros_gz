@@ -21,9 +21,7 @@
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/scene.pb.h>
 
-#include <algorithm>
 #include <chrono>
-#include <condition_variable>
 #include <functional>
 #include <future>
 #include <memory>
@@ -51,9 +49,9 @@ namespace components = gz::sim::components;
 
 GazeboProxy::GazeboProxy(
   std::shared_ptr<rclcpp::Node> ros_node,
-  const std::atomic<bool> * stop_requested)
+  std::shared_ptr<StopSignal> stop_signal)
 : ros_node_(ros_node),
-  stop_requested_(stop_requested),
+  stop_signal_(stop_signal ? std::move(stop_signal) : std::make_shared<StopSignal>()),
   gz_node_(std::make_shared<gz::transport::Node>())
 {
   if (!this->InitializeGazeboConnection()) {
@@ -136,47 +134,42 @@ template<typename ReqT, typename ReplyT>
 bool GazeboProxy::RequestWithStop(
   const std::string & service, const ReqT & req, ReplyT & reply, bool & result)
 {
-  if (this->ShouldStop()) {
+  if (this->stop_signal_->Requested()) {
     throw ShutdownRequested();
   }
+  // Shared with the callback, which may still run after a timeout or shutdown (late reply). Written
+  // through stop_signal_->UpdateAndNotify() so that the reply wakes up the waiter below.
   struct SharedRequestState
   {
-    std::mutex mutex;
-    std::condition_variable cv;
     bool done{false};
     ReplyT reply;
     bool result{false};
   };
   auto state = std::make_shared<SharedRequestState>();
   std::function<void(const ReplyT &, const bool)> callback =
-    [state](const ReplyT & rep, const bool res)
+    [state, stop_signal = this->stop_signal_](const ReplyT & rep, const bool res)
     {
-      {
-        std::lock_guard<std::mutex> lock(state->mutex);
-        state->reply = rep;
-        state->result = res;
-        state->done = true;
-      }
-      state->cv.notify_all();
+      stop_signal->UpdateAndNotify(
+        [&] {
+          state->reply = rep;
+          state->result = res;
+          state->done = true;
+        });
     };
   if (!this->gz_node_->Request(service, req, callback)) {
     return false;
   }
   const auto deadline =
     std::chrono::steady_clock::now() + std::chrono::milliseconds(kGzServiceTimeoutMs);
-  std::unique_lock<std::mutex> lock(state->mutex);
-  while (!state->done) {
-    if (this->ShouldStop()) {
+  switch (this->stop_signal_->WaitUntil(deadline, [&state] {return state->done;})) {
+    case StopSignal::WaitResult::kStopped:
       throw ShutdownRequested();
-    }
-    const auto now = std::chrono::steady_clock::now();
-    if (now >= deadline) {
+    case StopSignal::WaitResult::kTimeout:
       return false;
-    }
-    state->cv.wait_until(
-      lock, std::min(deadline, now + std::chrono::milliseconds(50)),
-      [&state] {return state->done;});
+    case StopSignal::WaitResult::kReady:
+      break;
   }
+  // The reply has been received, so the callback no longer writes to state.
   reply = std::move(state->reply);
   result = state->result;
   return true;
@@ -194,7 +187,7 @@ bool GazeboProxy::WaitForGzService(
   const auto start_time = std::chrono::system_clock::now();
   bool found_service = false;
   while (true) {
-    if (this->ShouldStop()) {
+    if (this->stop_signal_->Requested()) {
       throw ShutdownRequested();
     }
     this->GzNode()->ServiceInfo(service, publishers);
@@ -202,14 +195,14 @@ bool GazeboProxy::WaitForGzService(
       found_service = true;
       break;
     }
-    if (this->ShouldStop()) {
-      throw ShutdownRequested();
-    }
     const auto now = std::chrono::system_clock::now();
     if (now > start_time + timeout) {break;}
 
+    // Poll every 500 ms; a shutdown request ends the wait immediately.
     using namespace std::chrono_literals;  // NOLINT
-    std::this_thread::sleep_for(500ms);
+    if (this->stop_signal_->SleepUntil(std::chrono::steady_clock::now() + 500ms)) {
+      throw ShutdownRequested();
+    }
   }
   return found_service;
 }

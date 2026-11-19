@@ -20,7 +20,6 @@
 #include <gz/msgs/world_control.pb.h>
 #include <gz/msgs/world_stats.pb.h>
 
-#include <atomic>
 #include <memory>
 #include <string>
 #include <thread>
@@ -51,6 +50,7 @@
 #include "services/set_simulation_state.hpp"
 #include "services/spawn_entity.hpp"
 #include "services/step_simulation.hpp"
+#include "stop_signal.hpp"
 
 namespace components = gz::sim::components;
 
@@ -72,7 +72,8 @@ public:
   void AddInterface();
 
 private:
-  std::atomic<bool> stop_requested_{false};
+  /// \brief Wakes up the initialization thread's waits for Gazebo on destruction.
+  std::shared_ptr<StopSignal> stop_signal_{std::make_shared<StopSignal>()};
   std::shared_ptr<rclcpp::Node> ros_node_;
   std::shared_ptr<GazeboProxy> gz_proxy_;
   std::vector<std::unique_ptr<HandlerBase>> sim_interface_handles_;
@@ -86,7 +87,7 @@ GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::N
 
 GzSimulationInterfaces::Implementation::~Implementation()
 {
-  this->stop_requested_.store(true);
+  this->stop_signal_->Request();
   if (this->init_thread_.joinable()) {
     this->init_thread_.join();
   }
@@ -100,7 +101,7 @@ void GzSimulationInterfaces::Implementation::Run()
   this->init_thread_ = std::thread([this] {
         try {
           this->gz_proxy_ = std::make_shared<GazeboProxy>(
-            this->ros_node_, &this->stop_requested_);
+            this->ros_node_, this->stop_signal_);
           this->CreateInterfaces();
         } catch (const GazeboProxy::ShutdownRequested &) {
           // Shutdown was requested; stop initializing quietly.

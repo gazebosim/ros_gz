@@ -13,13 +13,18 @@
 // limitations under the License.
 
 #include <gtest/gtest.h>
+#include <gz/msgs/stringmsg_v.pb.h>
 
+#include <algorithm>
 #include <chrono>
 #include <cstdlib>
+#include <functional>
 #include <memory>
 #include <thread>
 #include <utility>
+#include <vector>
 
+#include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 
 #include "ros_gz_sim/gz_simulation_interfaces.hpp"
@@ -69,6 +74,40 @@ TEST_F(GzSimulationInterfacesShutdownTest, DestroysPromptlyAndReleasesSubNodeWit
   EXPECT_EQ(
     parent_node->get_node_base_interface().use_count(),
     baseline_node_base_use_count);
+}
+
+// A fake in-process Gazebo answers gazebo/worlds but provides none of the world services, so
+// GazeboProxy parks in WaitForGzService(). Destruction must not wait for its polling sleep.
+TEST_F(GzSimulationInterfacesShutdownTest, DestroysPromptlyWhileWaitingForGazeboServices)
+{
+  gz::transport::Node fake_gazebo;
+  std::function<bool(gz::msgs::StringMsg_V &)> worlds_cb =
+    [](gz::msgs::StringMsg_V & reply)
+    {
+      reply.add_data("world_without_services");
+      return true;
+    };
+  ASSERT_TRUE(fake_gazebo.Advertise("/gazebo/worlds", worlds_cb));
+  // The first ServiceInfo() call in a process blocks until gz-transport discovery is initialized,
+  // which cannot be interrupted. Do it here so that the test measures GazeboProxy's own waits.
+  std::vector<gz::transport::ServicePublisher> publishers;
+  fake_gazebo.ServiceInfo("/gazebo/worlds", publishers);
+
+  auto parent_node = std::make_shared<rclcpp::Node>("test_gzserver_wait_for_services");
+  auto max_elapsed = std::chrono::steady_clock::duration::zero();
+  // Destroy at several points of the polling cycle.
+  for (const auto delay : {100ms, 200ms, 300ms, 400ms}) {
+    auto sim_interfaces =
+      std::make_unique<ros_gz_sim::gz_simulation_interfaces::GzSimulationInterfaces>(
+        parent_node->create_sub_node(parent_node->get_name()));
+    std::this_thread::sleep_for(delay);
+
+    const auto start = std::chrono::steady_clock::now();
+    sim_interfaces.reset();
+    max_elapsed = std::max(max_elapsed, std::chrono::steady_clock::now() - start);
+  }
+  EXPECT_LT(max_elapsed, 200ms) << "max destruction time: " <<
+    std::chrono::duration_cast<std::chrono::milliseconds>(max_elapsed).count() << " ms";
 }
 
 int main(int argc, char ** argv)
