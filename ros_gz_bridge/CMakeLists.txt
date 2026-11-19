@@ -210,12 +210,14 @@ if(BUILD_TESTING)
     ament_cmake_ros_core::ament_ros_defaults
     gz-msgs::core
     ${rcl_interfaces_TARGETS}
+    rclcpp::rclcpp
     gtest
     gtest_main
   )
   target_include_directories(test_rcl_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   ament_add_gtest(test_ros_gz_interfaces
@@ -232,6 +234,21 @@ if(BUILD_TESTING)
   target_include_directories(test_ros_gz_interfaces
     PRIVATE
     ${PROJECT_SOURCE_DIR}/include
+    ${PROJECT_SOURCE_DIR}/src
+  )
+
+  ament_add_gtest(test_convert_logging
+    ${PROJECT_SOURCE_DIR}/src/convert/logging_TEST.cpp
+  )
+  target_link_libraries(test_convert_logging
+    ament_cmake_ros_core::ament_ros_defaults
+    rclcpp::rclcpp
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_convert_logging
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/src
   )
 
   ament_add_gtest(test_sensor_msgs
