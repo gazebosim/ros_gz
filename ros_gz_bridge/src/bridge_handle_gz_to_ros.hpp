@@ -64,6 +64,10 @@ protected:
   /// \brief Gazebo subscriber, valid when subscriber active
   gz::transport::Node::Subscriber gz_subscriber_;
 
+  /// \brief Whether a failure to subscribe to Gazebo was already logged.
+  /// Lazy bridges retry on every heartbeat, so this avoids logging each time.
+  bool gz_subscriber_error_logged_ = false;
+
   /// \brief ROS publisher, populated when publisher active
   rclcpp::PublisherBase::SharedPtr ros_publisher_ = {nullptr};
 

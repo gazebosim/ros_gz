@@ -92,11 +92,14 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->ros_publisher_,
     this->gz_to_ros_parameters_);
 
-  if (!this->gz_subscriber_.Valid()) {
+  if (this->gz_subscriber_.Valid()) {
+    this->gz_subscriber_error_logged_ = false;
+  } else if (!this->gz_subscriber_error_logged_) {
     RCLCPP_ERROR(
       this->RosNode()->get_logger(),
       "Failed to subscribe to Gazebo topic [%s]",
       this->config_.gz_topic_name.c_str());
+    this->gz_subscriber_error_logged_ = true;
   }
 }
 
@@ -104,6 +107,8 @@ void BridgeHandleGzToRos::StopSubscriber()
 {
   // Stop Gazebo subscriber. Only this bridge's handler is removed, so other
   // bridges on the same Gazebo topic keep receiving messages.
+  // The explicit Unsubscribe() is required: assigning a new Subscriber does not
+  // unsubscribe the old handler, so messages would keep arriving.
   if (this->gz_subscriber_.Valid()) {
     this->gz_subscriber_.Unsubscribe();
   }

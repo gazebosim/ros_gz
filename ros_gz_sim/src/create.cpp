@@ -23,6 +23,7 @@
 #include <future>
 #include <functional>
 #include <memory>
+#include <optional>
 #include <set>
 #include <vector>
 
@@ -104,20 +105,29 @@ std::vector<std::string> normalize_gflags_arguments(const std::vector<std::strin
 
 // Declares a pose parameter that accepts integers as well as doubles, since
 // launch turns values such as `x:=1` into integer parameters.
-void declare_pose_parameter(const rclcpp::Node::SharedPtr ros2_node, const std::string & name)
+void declare_pose_parameter(rclcpp::Node & ros2_node, const std::string & name)
 {
   rcl_interfaces::msg::ParameterDescriptor descriptor;
   descriptor.dynamic_typing = true;
-  ros2_node->declare_parameter(name, rclcpp::ParameterValue(0.0), descriptor);
+  ros2_node.declare_parameter(name, rclcpp::ParameterValue(0.0), descriptor);
 }
 
-double get_pose_parameter(const rclcpp::Node::SharedPtr ros2_node, const std::string & name)
+// Returns the value of a pose parameter, or std::nullopt after logging an
+// error if it isn't a number (e.g. `x:=foo`).
+std::optional<double> get_pose_parameter(rclcpp::Node & ros2_node, const std::string & name)
 {
-  const auto param = ros2_node->get_parameter(name);
-  if (param.get_type() == rclcpp::ParameterType::PARAMETER_INTEGER) {
-    return static_cast<double>(param.as_int());
+  const auto param = ros2_node.get_parameter(name);
+  switch (param.get_type()) {
+    case rclcpp::ParameterType::PARAMETER_DOUBLE:
+      return param.as_double();
+    case rclcpp::ParameterType::PARAMETER_INTEGER:
+      return static_cast<double>(param.as_int());
+    default:
+      RCLCPP_ERROR(
+        ros2_node.get_logger(), "Parameter [%s] must be a number, got [%s].",
+        name.c_str(), param.value_to_string().c_str());
+      return std::nullopt;
   }
-  return param.as_double();
 }
 
 // Utility Function to avoid code duplication
@@ -204,12 +214,12 @@ int main(int _argc, char ** _argv)
   ros2_node->declare_parameter("name", "");
   ros2_node->declare_parameter("entity_namespace", "");
   ros2_node->declare_parameter("allow_renaming", false);
-  declare_pose_parameter(ros2_node, "x");
-  declare_pose_parameter(ros2_node, "y");
-  declare_pose_parameter(ros2_node, "z");
-  declare_pose_parameter(ros2_node, "R");
-  declare_pose_parameter(ros2_node, "P");
-  declare_pose_parameter(ros2_node, "Y");
+  declare_pose_parameter(*ros2_node, "x");
+  declare_pose_parameter(*ros2_node, "y");
+  declare_pose_parameter(*ros2_node, "z");
+  declare_pose_parameter(*ros2_node, "R");
+  declare_pose_parameter(*ros2_node, "P");
+  declare_pose_parameter(*ros2_node, "Y");
 
   auto always_shutdown = rcpputils::make_scope_exit(
     []() {rclcpp::shutdown();});
@@ -286,19 +296,22 @@ int main(int _argc, char ** _argv)
   }
 
   // Pose
-  double x_coords = get_pose_parameter(ros2_node, "x");
-  double y_coords = get_pose_parameter(ros2_node, "y");
-  double z_coords = get_pose_parameter(ros2_node, "z");
-  double roll = get_pose_parameter(ros2_node, "R");
-  double pitch = get_pose_parameter(ros2_node, "P");
-  double yaw = get_pose_parameter(ros2_node, "Y");
+  const auto x_coords = get_pose_parameter(*ros2_node, "x");
+  const auto y_coords = get_pose_parameter(*ros2_node, "y");
+  const auto z_coords = get_pose_parameter(*ros2_node, "z");
+  const auto roll = get_pose_parameter(*ros2_node, "R");
+  const auto pitch = get_pose_parameter(*ros2_node, "P");
+  const auto yaw = get_pose_parameter(*ros2_node, "Y");
+  if (!x_coords || !y_coords || !z_coords || !roll || !pitch || !yaw) {
+    return -1;
+  }
 
-  flags.x = (x_coords != 0.0) ? x_coords : flags.x;
-  flags.y = (y_coords != 0.0) ? y_coords : flags.y;
-  flags.z = (z_coords != 0.0) ? z_coords : flags.z;
-  flags.R = (roll != 0.0) ? roll : flags.R;
-  flags.P = (pitch != 0.0) ? pitch : flags.P;
-  flags.Y = (yaw != 0.0) ? yaw : flags.Y;
+  flags.x = (*x_coords != 0.0) ? *x_coords : flags.x;
+  flags.y = (*y_coords != 0.0) ? *y_coords : flags.y;
+  flags.z = (*z_coords != 0.0) ? *z_coords : flags.z;
+  flags.R = (*roll != 0.0) ? *roll : flags.R;
+  flags.P = (*pitch != 0.0) ? *pitch : flags.P;
+  flags.Y = (*yaw != 0.0) ? *yaw : flags.Y;
   gz::math::Pose3d pose{flags.x, flags.y, flags.z, flags.R, flags.P, flags.Y};
   gz::msgs::Set(req.mutable_pose(), pose);
 
