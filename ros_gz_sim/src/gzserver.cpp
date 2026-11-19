@@ -39,24 +39,11 @@ class GzServer::Implementation
 public:
   std::thread thread;
   std::unique_ptr<gz_simulation_interfaces::GzSimulationInterfaces> sim_interfaces;
+  std::unique_ptr<gz::sim::Server> server;
 };
 
 GzServer::GzServer(const rclcpp::NodeOptions & options)
 : Node("gzserver", options), dataPtr(gz::utils::MakeUniqueImpl<Implementation>())
-{
-  rclcpp::uninstall_signal_handlers();
-  this->dataPtr->thread = std::thread(std::bind(&GzServer::OnStart, this));
-}
-
-GzServer::~GzServer()
-{
-  // Make sure to join the thread on shutdown.
-  if (this->dataPtr->thread.joinable()) {
-    this->dataPtr->thread.join();
-  }
-}
-
-void GzServer::OnStart()
 {
   auto world_sdf_file = this->declare_parameter("world_sdf_file", "");
   auto world_sdf_string = this->declare_parameter("world_sdf_string", "");
@@ -77,17 +64,32 @@ void GzServer::OnStart()
   }
   server_config.SetInitialSimTime(initial_sim_time);
 
-  auto server = std::make_unique<gz::sim::Server>(server_config);
+  this->dataPtr->server = std::make_unique<gz::sim::Server>(server_config);
   // TODO(azeey) Think about whether it makes sense to RunOnce paused here or wait for some
   // critical services from Gazebo to become available before starting the ROS services
-  server->RunOnce(true);
+  this->dataPtr->server->RunOnce(true);
+
+  rclcpp::uninstall_signal_handlers();
+  this->dataPtr->thread = std::thread(std::bind(&GzServer::OnStart, this));
+}
+
+GzServer::~GzServer()
+{
+  // Make sure to join the thread on shutdown.
+  if (this->dataPtr->thread.joinable()) {
+    this->dataPtr->thread.join();
+  }
+}
+
+void GzServer::OnStart()
+{
   // TODO(azeey) Allow disabling simulation interfaces
 
   this->dataPtr->sim_interfaces =
     std::make_unique<gz_simulation_interfaces::GzSimulationInterfaces>(
       this->create_sub_node(this->get_name()));
-  server->Run(true /*blocking*/, 0, false /*paused*/);
-  server.reset();
+  this->dataPtr->server->Run(true /*blocking*/, 0, false /*paused*/);
+  this->dataPtr->server.reset();
   // Call shutdown before resetting sim_interfaces so that threads in sim_interfaces can gracefully
   // exit before being destructed.
   rclcpp::shutdown();
