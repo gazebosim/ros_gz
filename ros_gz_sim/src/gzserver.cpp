@@ -14,7 +14,6 @@
 
 #include "ros_gz_sim/gzserver.hpp"
 
-#include <functional>
 #include <memory>
 #include <string>
 #include <thread>
@@ -34,11 +33,14 @@ namespace ros_gz_sim
 
 class GzServer::Implementation
 {
-  /// \brief We don't want to block the ROS thread.
-
 public:
+  /// \brief Thread to run the simulation so we don't block the ROS thread.
   std::thread thread;
+
+  /// \brief ROS simulation interfaces handler.
   std::unique_ptr<gz_simulation_interfaces::GzSimulationInterfaces> sim_interfaces;
+
+  /// \brief Gazebo Sim server instance.
   std::unique_ptr<gz::sim::Server> server;
 };
 
@@ -64,13 +66,17 @@ GzServer::GzServer(const rclcpp::NodeOptions & options)
   }
   server_config.SetInitialSimTime(initial_sim_time);
 
+  // Must happen before gz::sim::Server is constructed, which installs its own signal handlers.
+  rclcpp::uninstall_signal_handlers();
+
+  // Construct the server and run one iteration on the main thread because macOS requires
+  // rendering contexts (e.g., initialized in Sensors::Update) to be created on the main thread.
   this->dataPtr->server = std::make_unique<gz::sim::Server>(server_config);
   // TODO(azeey) Think about whether it makes sense to RunOnce paused here or wait for some
   // critical services from Gazebo to become available before starting the ROS services
   this->dataPtr->server->RunOnce(true);
 
-  rclcpp::uninstall_signal_handlers();
-  this->dataPtr->thread = std::thread(std::bind(&GzServer::OnStart, this));
+  this->dataPtr->thread = std::thread(&GzServer::OnStart, this);
 }
 
 GzServer::~GzServer()
@@ -83,6 +89,10 @@ GzServer::~GzServer()
 
 void GzServer::OnStart()
 {
+  if (!this->dataPtr->server) {
+    return;
+  }
+
   // TODO(azeey) Allow disabling simulation interfaces
 
   this->dataPtr->sim_interfaces =
