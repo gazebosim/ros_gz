@@ -67,13 +67,11 @@ public:
 
   size_t service_bridge_count(const std::string & service_name) const
   {
-    size_t count = 0;
-    for (const auto & service : this->services_) {
-      if (service->get_service_name() == service_name) {
-        ++count;
-      }
-    }
-    return count;
+    return std::count_if(
+      this->services_.begin(), this->services_.end(),
+      [&service_name](const auto & service) {
+        return service->get_service_name() == service_name;
+      });
   }
 
   bool check_gz_topic(const std::string & topic_name) const
@@ -492,7 +490,7 @@ TEST_F(AutomatedBridgeTest, RosToGzWhenGzSubExist)
 
 TEST_F(AutomatedBridgeTest, RosToGzSkipUntilRosPubAppear)
 {
-  const std::string topic_name = "/auto_ros_to_gz_late_sub";
+  const std::string topic_name = "/auto_ros_to_gz_late_pub";
   GzSubscriber<gz::msgs::StringMsg> gz_sub(this->gz_node_, topic_name);
   ASSERT_TRUE(gz_sub.subscribed());
 

@@ -439,7 +439,7 @@ ros2 run ros_gz_bridge parameter_bridge \
   -p "automated_bridge.include_patterns:=['/robot1/.*']"
 ```
 
-The exclusion parameter is optional. You can also pass manually configured topic or service arguments to the same command.
+Both `include_patterns` and `exclude_patterns` are optional. You can also pass manually configured topic or service arguments to the same command.
 
 ### ROS parameter YAML file
 
@@ -544,5 +544,5 @@ ROS 2 Parameters:
 * `automated_bridge.include_patterns`
     * type: string array
     * default: []
-    * description: Regular expressions that matche complete topic or service
+    * description: Regular expressions that match complete topic or service
       names eligible for automated bridging. Read when the node starts.

@@ -72,7 +72,7 @@ public:
 
   /// \brief Get the configuration parameters of the bridge
   /// \return The configuration parameters of the bridge
-  BridgeConfig GetConfig() const;
+  const BridgeConfig & GetConfig() const;
 
 protected:
   /// \brief Get the number of subscriptions on the output side of the bridge

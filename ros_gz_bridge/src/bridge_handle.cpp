@@ -50,7 +50,7 @@ bool BridgeHandle::IsLazy() const
   return config_.is_lazy.value_or(kDefaultLazy);
 }
 
-BridgeConfig BridgeHandle::GetConfig() const
+const BridgeConfig & BridgeHandle::GetConfig() const
 {
   return config_;
 }
