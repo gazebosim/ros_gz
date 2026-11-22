@@ -248,13 +248,13 @@
       </joint>
 
       <plugin
-        filename="ignition-gazebo-joint-state-publisher-system"
-        name="ignition::gazebo::systems::JointStatePublisher">
+        filename="gz-sim-joint-state-publisher-system"
+        name="gz::sim::systems::JointStatePublisher">
       </plugin>
 
       <plugin
-        filename="ignition-gazebo-pose-publisher-system"
-        name="ignition::gazebo::systems::PosePublisher">
+        filename="gz-sim-pose-publisher-system"
+        name="gz::sim::systems::PosePublisher">
         <publish_link_pose>true</publish_link_pose>
 
         <use_pose_vector_msg>true</use_pose_vector_msg>

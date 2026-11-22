@@ -191,6 +191,12 @@ class TestGzSimulationInterfaces(unittest.TestCase):
 
     def test_get_entity_state(self, proc_output, bridge_node) -> None:
         state = self.get_entity_state('vehicle').state
+        # 'vehicle' starts at rest at (0, 0, 0.325); without seeding WorldPose
+        # on the canonical link ('chassis', at (-0.151427, 0, 0.175) in the
+        # model frame), GetEntityState would report (+0.151427, 0, -0.175).
+        self.assertAlmostEqual(state.pose.position.x, 0.0, delta=1e-3)
+        self.assertAlmostEqual(state.pose.position.y, 0.0, delta=1e-3)
+        self.assertAlmostEqual(state.pose.position.z, 0.325, delta=1e-3)
         self.assertAlmostEqual(state.twist.linear.x, 0, delta=1e-4)
 
         # Send a velocity command to vehicle
