@@ -787,3 +787,57 @@ TEST_F(AutomatedBridgeTest, InvalidIncludePatterns)
   EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
   EXPECT_EQ(0, this->bridge_->service_bridge_count(service_name));
 }
+
+TEST_F(AutomatedBridgeTest, AvoidDuplicateManualBridge)
+{
+  // Manual bridges may use topic names without a leading '/', while
+  // AllTopicInfo() returns names with a leading '/'. Verify that automated
+  // bridging recognizes the existing manual bridge and avoids duplicates.
+  const std::string manual_topic_name = "auto_manual_bridge_topic";
+  const std::string topic_name = '/' + manual_topic_name;
+
+  GzPublisher<gz::msgs::StringMsg> gz_pub(this->gz_node_, topic_name);
+  RosSubscriber<std_msgs::msg::String> ros_sub(this->ros_node_, topic_name);
+
+  // Create a manual bridge without the leading '/' in the Gazebo topic name.
+  ros_gz_bridge::BridgeConfig config;
+  config.ros_type_name = "std_msgs/msg/String";
+  config.ros_topic_name = "/manual_bridge_output";
+  config.gz_type_name = "gz.msgs.StringMsg";
+  config.gz_topic_name = manual_topic_name;
+  config.direction = ros_gz_bridge::BridgeDirection::GZ_TO_ROS;
+
+  this->bridge_->add_bridge(config);
+
+  ASSERT_EQ(1, this->bridge_->topic_bridge_count());
+  ASSERT_EQ(1, this->bridge_->topic_bridge_count(manual_topic_name));
+  ASSERT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
+
+  rclcpp::WallRate rate(20.0);
+
+  // Wait for the Gazebo topic and ROS subscriber to be discovered.
+  bool endpoints_discovered = false;
+  for (int i = 0; i < 50; ++i) {
+    endpoints_discovered =
+      this->bridge_->check_gz_topic(topic_name) &&
+      this->bridge_->count_subscribers(topic_name) > 0;
+
+    if (endpoints_discovered) {
+      break;
+    }
+
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(endpoints_discovered);
+
+  // Automated bridging should recognize the existing manual bridge.
+  for (int i = 0; i < 3; ++i) {
+    this->bridge_->create_automated_bridges();
+    rate.sleep();
+  }
+
+  EXPECT_EQ(1, this->bridge_->topic_bridge_count());
+  EXPECT_EQ(1, this->bridge_->topic_bridge_count(manual_topic_name));
+  EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
+}

@@ -25,6 +25,8 @@
 #include <unordered_map>
 #include <utility>
 
+#include <gz/transport/TopicUtils.hh>
+
 #include "bridge_handle_ros_to_gz.hpp"
 #include "bridge_handle_gz_to_ros.hpp"
 #include "get_mappings.hpp"
@@ -507,7 +509,14 @@ bool RosGzBridge::should_bridge(const std::string & name, const bool is_topic)
   if (is_topic) {
     if (std::any_of(handles_.begin(), handles_.end(),
       [&name](const auto & handle) {
-        return handle->GetConfig().gz_topic_name == name;
+        // Manual bridge topic names may omit the leading '/', while AllTopicInfo()
+        // always returns names with a leading '/'. Normalize them before comparing.
+        auto topic_name = gz::transport::TopicUtils::AsValidTopic(
+          handle->GetConfig().gz_topic_name);
+        if (!topic_name.empty() && topic_name.front() != '/') {
+          topic_name.insert(0, "/");
+        }
+        return topic_name == name;
       }))
     {
       return false;
@@ -515,6 +524,7 @@ bool RosGzBridge::should_bridge(const std::string & name, const bool is_topic)
   } else {
     if (std::any_of(services_.begin(), services_.end(),
       [&name](const auto & service) {
+        // Service names are already fully qualified, so no normalization is needed.
         return service->get_service_name() == name;
       }))
     {
