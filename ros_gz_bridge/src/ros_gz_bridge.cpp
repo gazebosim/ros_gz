@@ -480,12 +480,18 @@ void RosGzBridge::set_automated_bridge_include_patterns(
 
 void RosGzBridge::set_automated_bridge_patterns(
   const std::vector<std::string> & patterns,
-  std::vector<std::regex> & regex_patterns)
+  std::optional<std::vector<std::regex>> & regex_patterns)
 {
-  regex_patterns.clear();
+  if (patterns.empty()) {
+    regex_patterns.reset();
+    return;
+  }
+
+  regex_patterns.emplace();
+
   for (const auto & pattern : patterns) {
     try {
-      regex_patterns.emplace_back(pattern);
+      regex_patterns->emplace_back(pattern);
     } catch (const std::regex_error & e) {
       RCLCPP_ERROR(
         this->get_logger(),
@@ -517,9 +523,9 @@ bool RosGzBridge::should_bridge(const std::string & name, const bool is_topic)
   }
 
   // Skip topics/services that match any of the exclude patterns
-  if (std::any_of(
-      automated_bridge_exclude_patterns_.begin(),
-      automated_bridge_exclude_patterns_.end(),
+  if (automated_bridge_exclude_patterns_ && std::any_of(
+      automated_bridge_exclude_patterns_->begin(),
+      automated_bridge_exclude_patterns_->end(),
       [&name](const auto & pattern) {
         return std::regex_match(name, pattern);
       }))
@@ -531,10 +537,9 @@ bool RosGzBridge::should_bridge(const std::string & name, const bool is_topic)
 
   // If include patterns are specified, skip topics/services
   // that do not match any of the include patterns
-  if (!automated_bridge_include_patterns_.empty() &&
-    !std::any_of(
-      automated_bridge_include_patterns_.begin(),
-      automated_bridge_include_patterns_.end(),
+  if (automated_bridge_include_patterns_ && !std::any_of(
+      automated_bridge_include_patterns_->begin(),
+      automated_bridge_include_patterns_->end(),
       [&name](const auto & pattern) {
         return std::regex_match(name, pattern);
       }))
@@ -621,7 +626,9 @@ bool RosGzBridge::get_ros_topic_info(
 
   if (ros_publisher_types.size() == 0 && ros_subscriber_types.size() == 0) {
     return false;
-  } else if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
+  }
+
+  if ((ros_publisher_types.size() > 1 || ros_subscriber_types.size() > 1) ||
     (ros_publisher_types.size() == 1 && ros_subscriber_types.size() == 1 &&
     *ros_publisher_types.begin() != *ros_subscriber_types.begin()))
   {

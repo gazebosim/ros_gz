@@ -742,3 +742,48 @@ TEST_F(AutomatedBridgeTest, IncludePatterns)
   this->bridge_->set_automated_bridge_include_patterns({".*included.*"});
   this->TestBridgePatterns();
 }
+
+TEST_F(AutomatedBridgeTest, InvalidIncludePatterns)
+{
+  this->bridge_->set_automated_bridge_include_patterns({"(.*invalid.*"});
+
+  const std::string topic_name = "/auto_invalid_include_topic";
+  const std::string service_name = "/auto_invalid_include_service";
+
+  GzPublisher<gz::msgs::StringMsg> gz_pub(this->gz_node_, topic_name);
+  RosSubscriber<std_msgs::msg::String> ros_sub(this->ros_node_, topic_name);
+
+  GzServer<gz::msgs::WorldControl, gz::msgs::Boolean>
+    gz_server(this->gz_node_, service_name);
+  RosClient<ros_gz_interfaces::srv::ControlWorld>
+    ros_client(this->ros_node_, service_name);
+
+  ASSERT_TRUE(gz_server.advertised());
+
+  rclcpp::WallRate rate(20.0);
+
+  // Wait for the endpoints to be discovered.
+  bool endpoints_discovered = false;
+  for (int i = 0; i < 50; ++i) {
+    endpoints_discovered =
+      this->bridge_->check_gz_topic(topic_name) &&
+      this->bridge_->check_gz_service(service_name) &&
+      this->bridge_->count_subscribers(topic_name) > 0 &&
+      this->bridge_->count_clients(service_name) > 0;
+
+    if (endpoints_discovered) {
+      break;
+    }
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(endpoints_discovered);
+
+  for (int i = 0; i < 3; ++i) {
+    this->bridge_->create_automated_bridges();
+    rate.sleep();
+  }
+
+  EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
+  EXPECT_EQ(0, this->bridge_->service_bridge_count(service_name));
+}

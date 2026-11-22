@@ -17,6 +17,7 @@
 
 #include <map>
 #include <memory>
+#include <optional>
 #include <regex>
 #include <string>
 #include <vector>
@@ -108,7 +109,7 @@ protected:
   /// \param[out] regex_patterns Vector of compiled regex patterns
   void set_automated_bridge_patterns(
     const std::vector<std::string> & raw_patterns,
-    std::vector<std::regex> & regex_patterns);
+    std::optional<std::vector<std::regex>> & regex_patterns);
 
   /// \brief Check if a topic/service should be bridged. Only topics/services that are not already
   /// bridged and do not match any of the exclude patterns and match any of the include patterns
@@ -193,10 +194,10 @@ protected:
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
 
   /// \brief Regex patterns to exclude topics/services from automated bridging
-  std::vector<std::regex> automated_bridge_exclude_patterns_;
+  std::optional<std::vector<std::regex>> automated_bridge_exclude_patterns_;
 
   /// \brief Regex patterns to include topics/services in automated bridging
-  std::vector<std::regex> automated_bridge_include_patterns_;
+  std::optional<std::vector<std::regex>> automated_bridge_include_patterns_;
 
   /// \brief Map of bridge warnings
   std::map<std::string, BridgeWarningType> bridge_warnings_;
