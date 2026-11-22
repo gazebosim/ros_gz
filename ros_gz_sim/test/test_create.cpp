@@ -23,7 +23,7 @@
 #include <gz/transport/Node.hh>
 
 // Simple application that provides a `/create` service and prints out the
-// sdf_filename of the request. This works in conjection with
+// sdf_filename of the request. This works in conjunction with
 // test_create_node.launch.py
 int main()
 {
