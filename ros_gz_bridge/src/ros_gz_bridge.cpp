@@ -707,17 +707,26 @@ bool RosGzBridge::get_ros_service_info(
 bool RosGzBridge::get_ros_services(
   std::map<std::string, std::vector<std::string>> & ros_services)
 {
+  ros_services.clear();
+
   try {
     const auto graph = this->get_node_graph_interface();
     const auto nodes = graph->get_node_names_and_namespaces();
 
     for (const auto & node : nodes) {
-      const auto services =
-        graph->get_client_names_and_types_by_node(node.first, node.second);
+      try {
+        const auto services =
+          graph->get_client_names_and_types_by_node(node.first, node.second);
 
-      for (const auto & service : services) {
-        auto & types = ros_services[service.first];
-        types.insert(types.end(), service.second.begin(), service.second.end());
+        for (const auto & service : services) {
+          auto & types = ros_services[service.first];
+          types.insert(types.end(), service.second.begin(), service.second.end());
+        }
+      } catch (const std::exception & e) {
+        RCLCPP_WARN(
+          this->get_logger(),
+          "Failed to get ROS service names and types for node [%s] in namespace [%s]: %s",
+          node.first.c_str(), node.second.c_str(), e.what());
       }
     }
   } catch (const std::exception & e) {
