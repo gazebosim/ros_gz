@@ -41,7 +41,7 @@ ros2 run ros_gz_sim create -world default -file 'https://fuel.gazebosim.org/1.0/
 See more options with:
 
 ```
-ros2 run ros_gz_sim create --helpshort
+ros2 run ros_gz_sim create --help
 ```
 
 ### Using `<gazebo_ros>` to export model paths in `package.xml`
