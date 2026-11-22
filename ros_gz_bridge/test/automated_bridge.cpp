@@ -19,9 +19,11 @@
 #include <gz/msgs/world_control.pb.h>
 
 #include <algorithm>
+#include <atomic>
 #include <chrono>
 #include <future>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <vector>
 
@@ -176,20 +178,25 @@ public:
 
   bool received() const
   {
+    std::lock_guard<std::mutex> lock(this->mutex_);
     return this->received_;
   }
 
   T message() const
   {
+    std::lock_guard<std::mutex> lock(this->mutex_);
     return this->msg_;
   }
 
 private:
   void OnMessage(const T & msg)
   {
+    std::lock_guard<std::mutex> lock(this->mutex_);
     this->msg_ = msg;
     this->received_ = true;
   }
+
+  mutable std::mutex mutex_;
 
   bool subscribed_{false};
   bool received_{false};
@@ -215,19 +222,19 @@ public:
 
   bool called() const
   {
-    return this->called_;
+    return this->called_.load();
   }
 
 private:
   bool HandleRequest(const ReqT &, RepT & response)
   {
     response.set_data(true);
-    this->called_ = true;
+    this->called_.store(true);
     return true;
   }
 
   bool advertised_{false};
-  bool called_{false};
+  std::atomic<bool> called_{false};
 };
 
 template<typename T>
