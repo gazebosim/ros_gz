@@ -23,8 +23,12 @@ import launch_testing
 
 def generate_test_description():
     expected_file_name = 'nonexistent/long/file_name'
+    expected_entity_namespace = 'test_ns'
     create = Node(package='ros_gz_sim', executable='create',
-                  parameters=[{'world': 'default', 'file': expected_file_name}], output='screen')
+                  parameters=[{'world': 'default',
+                               'file': expected_file_name,
+                               'entity_namespace': expected_entity_namespace}],
+                  output='screen')
     test_create = Node(package='ros_gz_sim', executable='test_create', output='screen')
     return LaunchDescription([
         create,
@@ -43,5 +47,8 @@ class WaitForTests(unittest.TestCase):
 @launch_testing.post_shutdown_test()
 class CreateTest(unittest.TestCase):
 
-    def test_output(self, expected_file_name, test_create, proc_output):
-        launch_testing.asserts.assertInStdout(proc_output, expected_file_name, test_create)
+    def test_output(self, expected_file_name, expected_entity_namespace, test_create, proc_output):
+        launch_testing.asserts.assertInStdout(
+            proc_output, f'sdf_filename: {expected_file_name}', test_create)
+        launch_testing.asserts.assertInStdout(
+            proc_output, f'entity_namespace: {expected_entity_namespace}', test_create)

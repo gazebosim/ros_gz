@@ -36,7 +36,8 @@ int main()
     [&](
       const gz::msgs::EntityFactory & _req,
       gz::msgs::Boolean & _res) -> bool {
-      std::cout << _req.sdf_filename() << std::endl;
+      std::cout << "sdf_filename: " << _req.sdf_filename() << std::endl;
+      std::cout << "entity_namespace: " << _req.entity_namespace() << std::endl;
       _res.set_data(true);
 
       {
