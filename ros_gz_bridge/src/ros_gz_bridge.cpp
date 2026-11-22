@@ -385,18 +385,18 @@ void RosGzBridge::create_automated_bridges()
       continue;
     }
 
+    // Get ROS topic info
+    std::string ros_type_name;
+    if (!get_ros_topic_info(gz_topic_name, ros_type_name, direction)) {
+      continue;
+    }
+
     // Get candidate ROS types for the Gazebo type
     std::vector<std::string> ros_candidate_types;
     if (!get_gz_to_ros_mapping(gz_type_name, ros_candidate_types)) {
       this->log_bridge_warning(
         BridgeWarningType::GZ_TO_ROS_MAPPING_NOT_FOUND, gz_topic_name,
         "topic", "", gz_type_name);
-      continue;
-    }
-
-    // Get ROS topic info
-    std::string ros_type_name;
-    if (!get_ros_topic_info(gz_topic_name, ros_type_name, direction)) {
       continue;
     }
 
