@@ -794,14 +794,14 @@ void RosGzBridge::log_bridge_warning(
           extra_info.empty() ? "." : ": ", extra_info.c_str());
         break;
       case BridgeWarningType::EXCLUDE_PATTERN_MATCHED:
-        RCLCPP_WARN(
+        RCLCPP_DEBUG(
           this->get_logger(),
           "Skipping automated bridge for %s [%s] : "
           "matches an exclusion pattern.",
           resource_type.c_str(), name.c_str());
         break;
       case BridgeWarningType::INCLUDE_PATTERN_NOT_MATCHED:
-        RCLCPP_WARN(
+        RCLCPP_DEBUG(
           this->get_logger(),
           "Skipping automated bridge for %s [%s] : "
           "does not match any inclusion pattern.",
