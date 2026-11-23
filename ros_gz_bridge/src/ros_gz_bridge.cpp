@@ -621,7 +621,7 @@ bool RosGzBridge::get_gz_topic_info(
 bool RosGzBridge::get_ros_topic_info(
   const std::string & topic_name,
   std::string & ros_type_name,
-  const BridgeDirection & direction)
+  BridgeDirection & direction)
 {
   std::vector<rclcpp::TopicEndpointInfo> ros_publishers;
   std::vector<rclcpp::TopicEndpointInfo> ros_subscribers;
@@ -665,6 +665,14 @@ bool RosGzBridge::get_ros_topic_info(
     ros_type_name = *ros_publisher_types.begin();
   } else if (ros_publisher_types.size() == 0) {
     ros_type_name = *ros_subscriber_types.begin();
+  }
+
+  if (direction == BridgeDirection::BIDIRECTIONAL) {
+    if (ros_publisher_types.size() == 0) {
+      direction = BridgeDirection::GZ_TO_ROS;
+    } else if (ros_subscriber_types.size() == 0) {
+      direction = BridgeDirection::ROS_TO_GZ;
+    }
   }
   return true;
 }

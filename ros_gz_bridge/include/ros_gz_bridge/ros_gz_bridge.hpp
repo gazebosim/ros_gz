@@ -130,12 +130,13 @@ protected:
   /// \brief Get ROS topic information, including type
   /// \param[in] topic_name Name of the ROS topic
   /// \param[out] ros_type_name Type of the ROS topic
-  /// \param[in] direction Direction of the bridge
+  /// \param[in,out] direction Initial direction based on Gazebo endpoints,
+  /// updated based on matching ROS endpoints
   /// \return True if successfully gets the ROS topic information
   bool get_ros_topic_info(
     const std::string & topic_name,
     std::string & ros_type_name,
-    const BridgeDirection & direction);
+    BridgeDirection & direction);
 
   /// \brief Get Gazebo service information, including request and response types
   /// \param[in] service_name Name of the Gazebo service
