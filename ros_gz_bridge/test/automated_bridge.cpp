@@ -361,6 +361,56 @@ protected:
   std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> ros_executor_;
 };
 
+TEST_F(AutomatedBridgeTest, GenericGzSubscriber)
+{
+  // Skip automated bridging when a Gazebo topic has multiple message types.
+  // However, generic subscribers (e.g., created by `gz topic -e`) should be
+  // ignored, allowing bridging if only one non-generic type exists.
+  const std::string topic_name = "/auto_generic_gz_subscriber";
+
+  GzPublisher<gz::msgs::StringMsg> gz_pub(this->gz_node_, topic_name);
+  RosSubscriber<std_msgs::msg::String> ros_sub(this->ros_node_, topic_name);
+
+  // Create a generic Gazebo subscriber.
+  gz::transport::Node raw_node;
+  const bool subscribed = raw_node.SubscribeRaw(
+    topic_name,
+    [](const char *, size_t, const gz::transport::MessageInfo &) {});
+
+  ASSERT_TRUE(subscribed);
+
+  rclcpp::WallRate rate(20.0);
+
+  for (int i = 0; i < 50; ++i) {
+    this->bridge_->create_automated_bridges();
+
+    if (this->bridge_->topic_bridge_count(topic_name) == 1) {
+      break;
+    }
+
+    rate.sleep();
+  }
+
+  ASSERT_EQ(1, this->bridge_->topic_bridge_count(topic_name));
+
+  gz::msgs::StringMsg msg;
+  ros_gz_bridge::testing::createTestMsg(msg);
+
+  for (int i = 0; i < 50 && !ros_sub.received(); ++i) {
+    gz_pub.Publish(msg);
+
+    this->bridge_executor_->spin_some();
+    this->ros_executor_->spin_some();
+
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(ros_sub.received());
+
+  ros_gz_bridge::testing::compareTestMsg(
+    std::make_shared<std_msgs::msg::String>(ros_sub.message()));
+}
+
 TEST_F(AutomatedBridgeTest, GzToRosWhenRosSubExist)
 {
   const std::string topic_name = "/auto_gz_to_ros";

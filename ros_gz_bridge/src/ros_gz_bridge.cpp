@@ -578,7 +578,9 @@ bool RosGzBridge::get_gz_topic_info(
   }
   std::unordered_set<std::string> gz_subscriber_types;
   for (const auto & sub : gz_subscribers) {
-    gz_subscriber_types.insert(sub.MsgTypeName());
+    if (sub.MsgTypeName() != gz::transport::kGenericMessageType) {
+      gz_subscriber_types.insert(sub.MsgTypeName());
+    }
   }
 
   if ((gz_publisher_types.size() > 1 || gz_subscriber_types.size() > 1) ||
