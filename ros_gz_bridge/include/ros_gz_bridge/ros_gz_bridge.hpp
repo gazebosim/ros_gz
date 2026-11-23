@@ -80,13 +80,11 @@ public:
   /// \param[in] gz_req_type_name Gazebo service request type
   /// \param[in] gz_rep_type_name Gazebo service response type
   /// \param[in] service_name Address of the service to be bridged
-  /// \param[in] factory Factory to create the service bridge
   void add_service_bridge(
     const std::string & ros_type_name,
     const std::string & gz_req_type_name,
     const std::string & gz_rep_type_name,
-    const std::string & service_name,
-    std::shared_ptr<ServiceFactoryInterface> factory = nullptr);
+    const std::string & service_name);
 
   /// \brief Discover compatible ROS and Gazebo endpoints and create non-excluded bridges
   /// automatically
@@ -181,6 +179,19 @@ protected:
     const std::string & extra_info = "");
 
 protected:
+  /// \brief Create a new ROS-GZ bridge for a service
+  /// \param[in] ros_type_name Name of the ROS service (eg ros_gz_interfaces/srv/ControlWorld)
+  /// \param[in] gz_req_type_name Gazebo service request type
+  /// \param[in] gz_rep_type_name Gazebo service response type
+  /// \param[in] service_name Address of the service to be bridged
+  /// \param[in] factory Factory to create the service bridge
+  void add_service_bridge(
+    const std::string & ros_type_name,
+    const std::string & gz_req_type_name,
+    const std::string & gz_rep_type_name,
+    const std::string & service_name,
+    std::shared_ptr<ServiceFactoryInterface> factory);
+
   /// \brief Pointer to Gazebo node used to create publishers/subscribers
   std::shared_ptr<gz::transport::Node> gz_node_;
 

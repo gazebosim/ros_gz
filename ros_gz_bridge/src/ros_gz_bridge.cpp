@@ -339,6 +339,20 @@ void RosGzBridge::add_service_bridge(
   const std::string & ros_type_name,
   const std::string & gz_req_type_name,
   const std::string & gz_rep_type_name,
+  const std::string & service_name)
+{
+  this->add_service_bridge(
+    ros_type_name,
+    gz_req_type_name,
+    gz_rep_type_name,
+    service_name,
+    nullptr);
+}
+
+void RosGzBridge::add_service_bridge(
+  const std::string & ros_type_name,
+  const std::string & gz_req_type_name,
+  const std::string & gz_rep_type_name,
   const std::string & service_name,
   std::shared_ptr<ServiceFactoryInterface> factory)
 {
