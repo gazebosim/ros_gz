@@ -15,6 +15,9 @@
 #include <gtest/gtest.h>
 
 #include <gz/msgs/boolean.pb.h>
+#include <gz/msgs/odometry.pb.h>
+#include <gz/msgs/odometry_with_covariance.pb.h>
+#include <gz/msgs/twist.pb.h>
 #include <gz/msgs/stringmsg.pb.h>
 #include <gz/msgs/world_control.pb.h>
 
@@ -30,6 +33,9 @@
 #include <gz/transport.hh>
 #include <rclcpp/rclcpp.hpp>
 
+#include <geometry_msgs/msg/twist.hpp>
+#include <geometry_msgs/msg/twist_stamped.hpp>
+#include <nav_msgs/msg/odometry.hpp>
 #include <ros_gz_bridge/ros_gz_bridge.hpp>
 #include <ros_gz_interfaces/srv/control_world.hpp>
 #include <std_msgs/msg/string.hpp>
@@ -360,6 +366,85 @@ protected:
   std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> bridge_executor_;
   std::unique_ptr<rclcpp::executors::SingleThreadedExecutor> ros_executor_;
 };
+
+TEST_F(AutomatedBridgeTest, MultipleGzTypesOnSameTopic)
+{
+  const std::string topic_name = "/auto_multiple_gz_types";
+
+  GzPublisher<gz::msgs::Odometry> odom_gz_pub(this->gz_node_, topic_name);
+
+  // Use separate Gazebo nodes to advertise different message types
+  // on the same topic.
+  gz::transport::Node another_gz_node;
+  GzPublisher<gz::msgs::OdometryWithCovariance> odomCov_gz_pub(another_gz_node, topic_name);
+
+  RosSubscriber<nav_msgs::msg::Odometry>
+    ros_sub(this->ros_node_, topic_name);
+
+  rclcpp::WallRate rate(20.0);
+
+  // Wait for all endpoints to be discovered.
+  bool endpoints_discovered = false;
+  for (int i = 0; i < 50; ++i) {
+    std::vector<gz::transport::MessagePublisher> publishers;
+    std::vector<gz::transport::MessagePublisher> subscribers;
+
+    endpoints_discovered =
+      this->gz_node_.TopicInfo(topic_name, publishers, subscribers) &&
+      publishers.size() >= 2 &&
+      this->bridge_->count_subscribers(topic_name) > 0;
+
+    if (endpoints_discovered) {
+      break;
+    }
+
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(endpoints_discovered);
+
+  for (int i = 0; i < 3; ++i) {
+    this->bridge_->create_automated_bridges();
+    rate.sleep();
+  }
+
+  // The bridge should not be created because there are multiple Gazebo types on the same topic.
+  EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
+}
+
+TEST_F(AutomatedBridgeTest, TypeMismatch)
+{
+  const std::string topic_name = "/auto_type_mismatch";
+
+  GzPublisher<gz::msgs::Pose> gz_pub(this->gz_node_, topic_name);
+  RosSubscriber<std_msgs::msg::String> ros_sub(this->ros_node_, topic_name);
+
+  rclcpp::WallRate rate(20.0);
+
+  // Wait for both endpoints to be discovered.
+  bool endpoints_discovered = false;
+  for (int i = 0; i < 50; ++i) {
+    endpoints_discovered =
+      this->bridge_->check_gz_topic(topic_name) &&
+      this->bridge_->count_subscribers(topic_name) > 0;
+
+    if (endpoints_discovered) {
+      break;
+    }
+
+    rate.sleep();
+  }
+
+  ASSERT_TRUE(endpoints_discovered);
+
+  for (int i = 0; i < 3; ++i) {
+    this->bridge_->create_automated_bridges();
+    rate.sleep();
+  }
+
+  // The bridge should not be created because the Gazebo and ROS types are incompatible.
+  EXPECT_EQ(0, this->bridge_->topic_bridge_count(topic_name));
+}
 
 TEST_F(AutomatedBridgeTest, GenericGzSubscriber)
 {
@@ -797,6 +882,14 @@ TEST_F(AutomatedBridgeTest, ExcludePatterns)
 TEST_F(AutomatedBridgeTest, IncludePatterns)
 {
   this->bridge_->set_automated_bridge_include_patterns({".*included.*"});
+  this->TestBridgePatterns();
+}
+
+TEST_F(AutomatedBridgeTest, ExcludeOverridesInclude)
+{
+  this->bridge_->set_automated_bridge_include_patterns({".*auto_.*"});
+  this->bridge_->set_automated_bridge_exclude_patterns({".*excluded.*"});
+
   this->TestBridgePatterns();
 }
 
