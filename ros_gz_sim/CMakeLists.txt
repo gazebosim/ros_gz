@@ -61,16 +61,16 @@ target_include_directories(
   ${PROJECT_NAME}_delete_entity
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+  $<INSTALL_INTERFACE:include>)
 
 # delete_entity
-add_executable(delete_entity src/delete_entity.cpp)
+add_executable(delete_entity src/delete_entity_main.cpp)
 target_link_libraries(delete_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_delete_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
                       ${ros_gz_interfaces_TARGETS}
                       rclcpp::rclcpp)
-target_include_directories(delete_entity PUBLIC ${CLI11_INCLUDE_DIRS})
+target_include_directories(delete_entity PRIVATE ${CLI11_INCLUDE_DIRS})
 
 set(gz_simulation_interfaces_sources
   src/gz_simulation_interfaces/gazebo_proxy.cpp
@@ -134,7 +134,8 @@ target_include_directories(
   ${PROJECT_NAME}_spawn_entity
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+  $<INSTALL_INTERFACE:include>)
+target_include_directories(${PROJECT_NAME}_spawn_entity PRIVATE ${CLI11_INCLUDE_DIRS})
 
 # set_entity_pose library
 add_library(${PROJECT_NAME}_set_entity_pose SHARED src/set_entity_pose.cpp)
@@ -150,7 +151,7 @@ target_include_directories(
   ${PROJECT_NAME}_set_entity_pose
   PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-  $<INSTALL_INTERFACE:include> ${CLI11_INCLUDE_DIRS})
+  $<INSTALL_INTERFACE:include>)
 
 # project library (Stopwatch)
 add_library(${PROJECT_NAME} SHARED src/Stopwatch.cpp)
@@ -175,8 +176,8 @@ target_link_libraries(remove
 )
 
 # set_entity_pose
-add_executable(set_entity_pose src/set_entity_pose.cpp)
-target_include_directories(set_entity_pose PUBLIC ${CLI11_INCLUDE_DIRS})
+add_executable(set_entity_pose src/set_entity_pose_main.cpp)
+target_include_directories(set_entity_pose PRIVATE ${CLI11_INCLUDE_DIRS})
 target_link_libraries(set_entity_pose ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_set_entity_pose
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
@@ -186,7 +187,7 @@ target_link_libraries(set_entity_pose ament_cmake_ros_core::ament_ros_defaults $
                       tf2_ros::tf2_ros)
 
 # spawn_entity executable
-add_executable(spawn_entity src/spawn_entity.cpp)
+add_executable(spawn_entity src/spawn_entity_main.cpp)
 target_link_libraries(spawn_entity ament_cmake_ros_core::ament_ros_defaults ${PROJECT_NAME}_spawn_entity
                       ${builtin_interfaces_TARGETS}
                       ${geometry_msgs_TARGETS}
@@ -360,6 +361,7 @@ if(BUILD_TESTING)
   add_launch_test(test/test_gz_simulation_interfaces.launch.py TIMEOUT 300)
 
   find_package(ament_cmake_pytest REQUIRED)
+  ament_add_pytest_test(test_gazebo_ros_paths test/test_gazebo_ros_paths.py)
   ament_add_pytest_test(test_xml_launch_files test/test_xml_launch_files.py)
 endif()
 
