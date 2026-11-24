@@ -7,7 +7,6 @@
   <arg name="use_composition" default="False" />
   <arg name="use_respawn" default="False" />
   <arg name="log_level" default="info" />
-  <arg name="bridge_params" default="" />
   <arg name="world" default="" />
   <arg name="file" default="" />
   <arg name="model_string" default="" />
@@ -30,8 +29,7 @@
     namespace="$(var namespace)"
     use_composition="$(var use_composition)"
     use_respawn="$(var use_respawn)"
-    log_level="$(var log_level)"
-    bridge_params="$(var bridge_params)">
+    log_level="$(var log_level)">
   </ros_gz_bridge>
 
   <gz_spawn_model
