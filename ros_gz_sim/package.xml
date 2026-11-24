@@ -49,10 +49,10 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>python3-catkin-pkg-modules</exec_depend>
-  <exec_depend>ros2pkg</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
 
   <!-- Test dependencies -->
+  <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>launch_testing</test_depend>

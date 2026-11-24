@@ -69,6 +69,9 @@ protected:
 
   /// \brief Timer to control periodic callback
   rclcpp::TimerBase::SharedPtr heartbeat_timer_;
+
+  /// \brief Whether the bridges from the config file and parameters were added
+  bool bridges_configured_ {false};
 };
 }  // namespace ros_gz_bridge
 
