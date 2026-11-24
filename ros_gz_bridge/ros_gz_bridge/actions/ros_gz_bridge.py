@@ -22,7 +22,8 @@ from launch.launch_context import LaunchContext
 from launch.some_substitutions_type import SomeSubstitutionsType
 from launch.substitutions import TextSubstitution
 from launch.utilities import ensure_argument_type
-from launch.utilities.type_utils import normalize_typed_substitution, perform_typed_substitution
+from launch.utilities.type_utils import is_substitution, normalize_typed_substitution
+from launch.utilities.type_utils import perform_typed_substitution
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
 from launch_ros.parameters_type import SomeParameters
@@ -93,6 +94,8 @@ class RosGzBridge(Action):
         self.__log_level = log_level
         self.__bridge_params = [{'config_file':  self.__config_file}]
         if bridge_params is not None:
+            if is_substitution(bridge_params):
+                bridge_params = normalize_typed_substitution(bridge_params, dict)
             # This handling of bridge_params was copied from launch_ros/actions/node.py
             ensure_argument_type(bridge_params, (list), 'bridge_params', 'RosGzBridge')
             # All elements in the list are paths to files with parameters (or substitutions that
@@ -202,8 +205,12 @@ class RosGzBridge(Action):
             )
             for param, param_type in optional_params:
                 p = child.get_attr(param, data_type=param_type, optional=True)
-                if isinstance(p, param_type):
+                # Literal integers are converted by the frontend. Anything else
+                # (e.g. substitutions) is returned as a string and must be parsed.
+                if isinstance(p, str):
                     bridge[param] = parser.parse_substitution(p)
+                elif p is not None:
+                    bridge[param] = p
             bridges['bridge_{}'.format(len(bridges))] = bridge
 
         for child in (entity.get_attr('service', data_type=List[Entity], optional=True) or {}):

@@ -405,6 +405,23 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Vector3d> & _msg)
   EXPECT_EQ(expected_msg.z(), _msg->z());
 }
 
+void createTestMsg(gz::msgs::AirSpeed & _msg)
+{
+  createTestMsg(*_msg.mutable_header());
+  _msg.set_diff_pressure(100);
+  _msg.set_temperature(200);
+}
+
+void compareTestMsg(const std::shared_ptr<gz::msgs::AirSpeed> & _msg)
+{
+  gz::msgs::AirSpeed expected_msg;
+  createTestMsg(expected_msg);
+
+  EXPECT_EQ(expected_msg.diff_pressure(), _msg->diff_pressure());
+  EXPECT_EQ(expected_msg.temperature(), _msg->temperature());
+  compareTestMsg(std::make_shared<gz::msgs::Header>(_msg->header()));
+}
+
 void createTestMsg(gz::msgs::Altimeter & _msg)
 {
   createTestMsg(*_msg.mutable_header());

@@ -31,7 +31,6 @@ apt-get update -qq
 # against the rolling distribution.yaml.
 apt-get install -y python3-colcon-common-extensions \
                    python3-rosdep \
-                   libcli11-dev \
                    ros-$ROS_DISTRO-ros-base
 
 rosdep init

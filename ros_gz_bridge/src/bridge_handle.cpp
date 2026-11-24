@@ -14,6 +14,8 @@
 //
 #include "bridge_handle.hpp"
 
+#include <stdexcept>
+
 #include <memory>
 #include <string>
 
@@ -33,6 +35,15 @@ BridgeHandle::BridgeHandle(
 }
 
 BridgeHandle::~BridgeHandle() = default;
+
+rclcpp::Node::SharedPtr BridgeHandle::RosNode() const
+{
+  auto node = this->ros_node_.lock();
+  if (!node) {
+    throw std::runtime_error("ROS node expired while bridge handle was active");
+  }
+  return node;
+}
 
 bool BridgeHandle::IsLazy() const
 {
@@ -58,13 +69,13 @@ void BridgeHandle::Spin()
 
   if (this->HasSubscriber() && this->NumSubscriptions() == 0) {
     RCLCPP_DEBUG(
-      this->ros_node_->get_logger(),
+      this->RosNode()->get_logger(),
       "Bridge [%s] - No subscriptions found, stopping bridge",
       config_.ros_topic_name.c_str());
     this->StopSubscriber();
   } else if (!this->HasSubscriber() && this->NumSubscriptions() > 0) {
     RCLCPP_DEBUG(
-      this->ros_node_->get_logger(),
+      this->RosNode()->get_logger(),
       "Bridge [%s] - Subscriptions found, starting bridge",
       config_.ros_topic_name.c_str());
     this->StartSubscriber();

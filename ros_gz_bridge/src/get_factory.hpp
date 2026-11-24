@@ -20,16 +20,17 @@
 
 #include "factory_interface.hpp"
 #include "service_factory_interface.hpp"
+#include "ros_gz_bridge/visibility_control.hpp"
 
 namespace ros_gz_bridge
 {
 
-std::shared_ptr<FactoryInterface>
+ROS_GZ_BRIDGE_VISIBLE std::shared_ptr<FactoryInterface>
 get_factory(
   const std::string & ros_type_name,
   const std::string & gz_type_name);
 
-std::shared_ptr<ServiceFactoryInterface>
+ROS_GZ_BRIDGE_VISIBLE std::shared_ptr<ServiceFactoryInterface>
 get_service_factory(
   const std::string & ros_type_name,
   const std::string & gz_req_type_name,

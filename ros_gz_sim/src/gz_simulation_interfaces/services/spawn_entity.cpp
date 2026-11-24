@@ -15,9 +15,24 @@
 #include "spawn_entity.hpp"
 
 #include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/entity_factory.pb.h>
+#include <gz/msgs/entity_factory_with_ns.pb.h>
+#include <gz/msgs/stringmsg.pb.h>
 
+#include <chrono>
 #include <memory>
+#include <string>
+#include <unordered_set>
+#include <vector>
+
+#include <ament_index_cpp/get_package_prefix.hpp>
+#include <ament_index_cpp/get_package_share_path.hpp>
+#include <gz/sim/components/Name.hh>
+#include <gz/sim/components/ParentEntity.hh>
+#include <gz/sim/components/World.hh>
+#include <sdf/Actor.hh>
+#include <sdf/Light.hh>
+#include <sdf/Model.hh>
+#include <sdf/Root.hh>
 
 #include "../gazebo_proxy.hpp"
 #include "simulation_interfaces/srv/spawn_entity.hpp"
@@ -31,12 +46,61 @@ namespace services
 using SpawnEntitySrv = simulation_interfaces::srv::SpawnEntity;
 using RequestPtr = SpawnEntitySrv::Request::ConstSharedPtr;
 using ResponsePtr = SpawnEntitySrv::Response::SharedPtr;
+namespace components = gz::sim::components;
+
+namespace
+{
+const char kPackagePrefix[] = "package://";
+
+/// Resolve a resource URI to something Gazebo and libsdformat can load.
+/// `package://` URIs are resolved with the ament index. Other URIs, such as
+/// `model://` or relative paths, are resolved by Gazebo using its resource
+/// paths. If Gazebo can't resolve them they are passed through unchanged.
+/// Returns false and sets `error` only if a `package://` URI can't be resolved.
+bool ResolveUri(
+  const std::shared_ptr<GazeboProxy> & gz_proxy, const std::string & uri,
+  std::string & resolved, std::string & error)
+{
+  resolved = uri;
+  if (uri.rfind(kPackagePrefix, 0) == 0) {
+    const auto path = uri.substr(sizeof(kPackagePrefix) - 1);
+    const auto slash = path.find('/');
+    const auto package = path.substr(0, slash);
+    try {
+      resolved = ament_index_cpp::get_package_share_path(package).string();
+    } catch (const ament_index_cpp::PackageNotFoundError &) {
+      error = "Package [" + package + "] in uri [" + uri + "] not found";
+      return false;
+    }
+    if (slash != std::string::npos) {
+      resolved += path.substr(slash);
+    }
+    return true;
+  }
+  // Fuel URLs are handled by Gazebo directly.
+  if (uri.rfind("http://", 0) == 0 || uri.rfind("https://", 0) == 0) {
+    return true;
+  }
+
+  gz::msgs::StringMsg request;
+  request.set_data(uri);
+  gz::msgs::StringMsg reply;
+  bool result = false;
+  if (gz_proxy->GzNode()->Request(
+      "/gazebo/resource_paths/resolve", request, GazeboProxy::kGzServiceTimeoutMs, reply,
+      result) && result && !reply.data().empty())
+  {
+    resolved = reply.data();
+  }
+  return true;
+}
+}  // namespace
 
 SpawnEntity::SpawnEntity(
   std::shared_ptr<rclcpp::Node> ros_node, std::shared_ptr<GazeboProxy> gz_proxy)
 : HandlerBase(ros_node, gz_proxy)
 {
-  const auto create_service = this->gz_proxy_->PrefixTopic("create/blocking");
+  const auto create_service = this->gz_proxy_->PrefixTopic("create_with_ns/blocking");
   if (!this->gz_proxy_->WaitForGzService(create_service)) {
     RCLCPP_ERROR_STREAM(
       this->ros_node_->get_logger(),
@@ -47,27 +111,82 @@ SpawnEntity::SpawnEntity(
   this->services_handle_ = ros_node->create_service<SpawnEntitySrv>(
     "spawn_entity", [this, create_service](RequestPtr request, ResponsePtr response) {
       using Result = simulation_interfaces::msg::Result;
-      gz::msgs::EntityFactory gz_request;
+      gz::msgs::EntityFactoryWithNs gz_request;
       if (!request->name.empty()) {
         gz_request.set_name(request->name);
       }
       gz_request.set_allow_renaming(request->allow_renaming);
       const auto & resource = request->entity_resource;
 
+      if (!request->initial_pose.header.frame_id.empty() &&
+      request->initial_pose.header.frame_id != "world")
+      {
+        response->result.result = Result::RESULT_FEATURE_UNSUPPORTED;
+        response->result.error_message = "Only the world reference frame is supported";
+        return;
+      }
+
+      // The `sdf_filename` field requires a path Gazebo can load, so resolve the uri first.
+      std::string resolved_uri;
       if (!resource.uri.empty()) {
-        // TODO(azeey) The `sdf_filename` field requires absolute paths to the file.
-        // Consider resolving the uri using the `/gazebo/resource_paths/resolve`
-        gz_request.set_sdf_filename(resource.uri);
+        std::string error;
+        if (!ResolveUri(this->gz_proxy_, resource.uri, resolved_uri, error)) {
+          response->result.result = Result::RESULT_NOT_FOUND;
+          response->result.error_message = error;
+          return;
+        }
+        gz_request.set_sdf_filename(resolved_uri);
       } else if (!resource.resource_string.empty()) {
         gz_request.set_sdf(resource.resource_string);
       } else {
-        response->result.result = Result::RESULT_OPERATION_FAILED;
+        response->result.result = SpawnEntitySrv::Response::NO_RESOURCE;
         response->result.error_message =
         "One of the fields [uri] or [resource_string] must be specified";
         return;
       }
 
-      // TODO(azeey) Add support for entity_namespace
+      std::string expected_name = request->name;
+      if (expected_name.empty()) {
+        sdf::Root root;
+        if (!resolved_uri.empty()) {
+          root.Load(resolved_uri);
+        } else {
+          root.LoadSdfString(resource.resource_string);
+        }
+        if (root.Model()) {
+          expected_name = root.Model()->Name();
+        } else if (root.Light()) {
+          expected_name = root.Light()->Name();
+        } else if (root.Actor()) {
+          expected_name = root.Actor()->Name();
+        }
+      }
+
+      if (!this->gz_proxy_->AssertUpdatedState(response->result)) {
+        return;
+      }
+
+      std::unordered_set<gz::sim::Entity> entities_before;
+      bool expected_name_exists = false;
+      this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+        ecm.Each<components::Name, components::ParentEntity>(
+          [&](const gz::sim::Entity & entity, const components::Name * name,
+          const components::ParentEntity * parent) {
+            if (ecm.Component<components::World>(parent->Data())) {
+              entities_before.insert(entity);
+              expected_name_exists |= name->Data() == expected_name;
+            }
+            return true;
+          });
+      });
+      if (!expected_name.empty() && expected_name_exists && !request->allow_renaming) {
+        response->result.result = SpawnEntitySrv::Response::NAME_NOT_UNIQUE;
+        response->result.error_message = "An entity with the requested name already exists";
+        return;
+      }
+
+      gz_request.set_entity_namespace(request->entity_namespace);
+
       // TODO(azeey) Reuse code in ros_gz_bridge/convert/geometry_msgs
       auto * pose = gz_request.mutable_pose();
       pose->mutable_position()->set_x(request->initial_pose.pose.position.x);
@@ -87,11 +206,43 @@ SpawnEntity::SpawnEntity(
         response->result.result = Result::RESULT_OPERATION_FAILED;
         response->result.error_message = "Timed out while trying to spawn entity";
       } else if (result && reply.data()) {
-        response->result.result = Result::RESULT_OK;
-        // TODO(azeey) Fetch the new name of the entity from our local ECM using `EachNew`.
-        // We'd have to make sure that the ECM has been updated at least once after the `create`
-        // request
-        response->entity_name = request->name;
+        const auto deadline = std::chrono::steady_clock::now() +
+        std::chrono::milliseconds(GazeboProxy::kGzStateUpdatedTimeoutMs);
+        while (true) {
+          std::vector<std::string> matching_names;
+          this->gz_proxy_->WithEcm([&](const gz::sim::EntityComponentManager & ecm) {
+            ecm.Each<components::Name, components::ParentEntity>(
+              [&](const gz::sim::Entity & entity, const components::Name * name,
+              const components::ParentEntity * parent) {
+                const bool name_matches = expected_name.empty() ||
+                (request->allow_renaming ?
+                name->Data().compare(0, expected_name.size(), expected_name) == 0 :
+                name->Data() == expected_name);
+                if (
+                  ecm.Component<components::World>(parent->Data()) &&
+                  entities_before.count(entity) == 0 && name_matches)
+                {
+                  matching_names.push_back(name->Data());
+                }
+                return true;
+              });
+          });
+          if (matching_names.size() == 1) {
+            response->entity_name = matching_names.front();
+            response->result.result = Result::RESULT_OK;
+            return;
+          }
+          if (matching_names.size() > 1 || std::chrono::steady_clock::now() >= deadline) {
+            response->result.result = Result::RESULT_OPERATION_FAILED;
+            response->result.error_message = "Unable to identify the newly spawned entity";
+            return;
+          }
+          simulation_interfaces::msg::Result state_result;
+          if (!this->gz_proxy_->AssertUpdatedState(state_result)) {
+            response->result = state_result;
+            return;
+          }
+        }
       } else {
         // TODO(azeey) SpawnEntity has additional error codes to allow surfacing more informative
         // error messages. However, the `create` service in UserCommands only returns a boolean.

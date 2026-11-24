@@ -26,13 +26,13 @@
 namespace ros_gz_bridge
 {
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const gps_msgs::msg::GPSFix & ros_msg,
   gz::msgs::NavSat & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::NavSat & gz_msg,
   gps_msgs::msg::GPSFix & ros_msg);

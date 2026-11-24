@@ -61,7 +61,7 @@ void BridgeHandleRosToGz::StartSubscriber()
 {
   // Start ROS subscriber
   this->ros_subscriber_ = this->factory_->create_ros_subscriber(
-    this->ros_node_,
+    this->RosNode(),
     this->config_.ros_topic_name,
     this->config_.SubscriberQoS(),
     this->gz_publisher_);

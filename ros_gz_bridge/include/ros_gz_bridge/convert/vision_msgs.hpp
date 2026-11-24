@@ -27,49 +27,49 @@
 namespace ros_gz_bridge
 {
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2D & ros_msg,
   gz::msgs::AnnotatedAxisAligned2DBox & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::AnnotatedAxisAligned2DBox & gz_msg,
   vision_msgs::msg::Detection2D & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection2DArray & ros_msg,
   gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::AnnotatedAxisAligned2DBox_V & gz_msg,
   vision_msgs::msg::Detection2DArray & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection3D & ros_msg,
   gz::msgs::AnnotatedOriented3DBox & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::AnnotatedOriented3DBox & gz_msg,
   vision_msgs::msg::Detection3D & ros_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const vision_msgs::msg::Detection3DArray & ros_msg,
   gz::msgs::AnnotatedOriented3DBox_V & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::AnnotatedOriented3DBox_V & gz_msg,
   vision_msgs::msg::Detection3DArray & ros_msg);

@@ -22,6 +22,7 @@
 #include <memory>
 #include <string>
 #include <type_traits>
+#include <utility>
 #include <vector>
 
 #include <gz/transport/Node.hh>
@@ -114,8 +115,9 @@ public:
 
     auto ros_type = ros_type_name_;
     auto gz_type = gz_type_name_;
+    auto logger = ros_node->get_logger();
     std::function<void(std::shared_ptr<const ROS_T>, const rclcpp::MessageInfo &)> fn =
-      [self_pub_gids, gz_pub, ros_type, gz_type, ros_node](
+      [self_pub_gids, gz_pub, ros_type, gz_type, logger](
       std::shared_ptr<const ROS_T> ros_msg,
       const rclcpp::MessageInfo & msg_info) mutable
       {
@@ -126,7 +128,7 @@ public:
             return;
           }
         }
-        ros_callback(ros_msg, gz_pub, ros_type, gz_type, ros_node);
+        ros_callback(ros_msg, gz_pub, ros_type, gz_type, logger);
       };
 
     auto options = rclcpp::SubscriptionOptions();
@@ -138,7 +140,7 @@ public:
     return subscription;
   }
 
-  void
+  gz::transport::Node::Subscriber
   create_gz_subscriber(
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,
@@ -148,7 +150,7 @@ public:
   {
     auto pub = std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub == nullptr) {
-      return;
+      return {};
     }
     std::function<void(const GZ_T &)> subCb =
       [this, pub, gz_to_ros_parameters](const GZ_T & _msg)
@@ -159,7 +161,9 @@ public:
     // Ignore messages that are published from this bridge.
     gz::transport::SubscribeOptions opts;
     opts.SetIgnoreLocalMessages(true);
-    node->Subscribe(topic_name, subCb, opts);
+    // Return a per-subscription handle so that stopping this bridge does not
+    // unsubscribe other bridges sharing the same node and Gazebo topic.
+    return node->CreateSubscriber(topic_name, subCb, opts);
   }
 
 protected:
@@ -169,13 +173,13 @@ protected:
     gz::transport::Node::Publisher & gz_pub,
     const std::string & ros_type_name,
     const std::string & gz_type_name,
-    rclcpp::Node::SharedPtr ros_node)
+    const rclcpp::Logger & logger)
   {
     GZ_T gz_msg;
     convert_ros_to_gz(*ros_msg, gz_msg);
     gz_pub.Publish(gz_msg);
     RCLCPP_INFO_ONCE(
-      ros_node->get_logger(),
+      logger,
       "Passing message from ROS %s to Gazebo %s (showing msg only once per type)",
       ros_type_name.c_str(), gz_type_name.c_str());
   }
@@ -186,21 +190,26 @@ protected:
     std::shared_ptr<rclcpp::Publisher<ROS_T>> ros_pub,
     const BridgeHandleGzToRosParameters & gz_to_ros_parameters)
   {
-    ROS_T ros_msg;
-    convert_gz_to_ros(gz_msg, ros_msg);
+    // Publish by unique_ptr, not const ref: with intra-process comms enabled,
+    // publish(const T &) first makes a full heap copy of the message.
+    auto ros_msg = std::make_unique<ROS_T>();
+    convert_gz_to_ros(gz_msg, *ros_msg);
     if constexpr (has_header<ROS_T>::value) {
       if (gz_to_ros_parameters.override_timestamps_with_wall_time) {
         auto now = std::chrono::system_clock::now().time_since_epoch();
         auto ns =
           std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
-        ros_msg.header.stamp.sec = ns / 1e9;
-        ros_msg.header.stamp.nanosec = ns - ros_msg.header.stamp.sec * 1e9;
+        // Integer math: converting ns to double loses precision and can make
+        // nanosec negative.
+        constexpr int64_t kNsPerSec = 1000000000;
+        ros_msg->header.stamp.sec = static_cast<int32_t>(ns / kNsPerSec);
+        ros_msg->header.stamp.nanosec = static_cast<uint32_t>(ns % kNsPerSec);
       }
       if (!gz_to_ros_parameters.override_frame_id.empty()) {
-        ros_msg.header.frame_id = gz_to_ros_parameters.override_frame_id;
+        ros_msg->header.frame_id = gz_to_ros_parameters.override_frame_id;
       }
     }
-    ros_pub->publish(ros_msg);
+    ros_pub->publish(std::move(ros_msg));
   }
 
 public:

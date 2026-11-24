@@ -25,11 +25,13 @@ BridgeHandleGzToRos::BridgeHandleGzToRos(
   const BridgeConfig & config)
 : BridgeHandle(ros_node, gz_node, config)
 {
-  ros_node_->get_parameter("override_timestamps_with_wall_time",
-      gz_to_ros_parameters_.override_timestamps_with_wall_time);
-
-  ros_node_->get_parameter("override_frame_id",
-      gz_to_ros_parameters_.override_frame_id);
+  auto node = this->RosNode();
+  node->get_parameter(
+    "override_timestamps_with_wall_time",
+    gz_to_ros_parameters_.override_timestamps_with_wall_time);
+  node->get_parameter(
+    "override_frame_id",
+    gz_to_ros_parameters_.override_frame_id);
 }
 
 BridgeHandleGzToRos::~BridgeHandleGzToRos() = default;
@@ -42,11 +44,12 @@ size_t BridgeHandleGzToRos::NumSubscriptions() const
   if (this->ros_publisher_ != nullptr) {
     // Use info_by_topic rather than get_subscription_count
     // to filter out potential bidirectional bridge
-    auto topic_info = this->ros_node_->get_subscriptions_info_by_topic(
+    auto node = this->RosNode();
+    auto topic_info = node->get_subscriptions_info_by_topic(
       this->config_.ros_topic_name);
 
     for (auto & topic : topic_info) {
-      if (topic.node_name() == this->ros_node_->get_name()) {
+      if (topic.node_name() == node->get_name()) {
         continue;
       }
       valid_subscriptions++;
@@ -65,7 +68,7 @@ void BridgeHandleGzToRos::StartPublisher()
 {
   // Start ROS publisher
   this->ros_publisher_ = this->factory_->create_ros_publisher(
-    this->ros_node_,
+    this->RosNode(),
     this->config_.ros_topic_name,
     this->config_.PublisherQoS());
 }
@@ -73,7 +76,7 @@ void BridgeHandleGzToRos::StartPublisher()
 bool BridgeHandleGzToRos::HasSubscriber() const
 {
   // Return Gazebo subscriber status
-  return this->gz_subscriber_ != nullptr;
+  return this->gz_subscriber_.Valid();
 }
 
 void BridgeHandleGzToRos::StartSubscriber()
@@ -82,25 +85,34 @@ void BridgeHandleGzToRos::StartSubscriber()
     this->gz_to_ros_parameters_.override_frame_id = this->config_.frame_id;
   }
   // Start Gazebo subscriber
-  this->factory_->create_gz_subscriber(
+  this->gz_subscriber_ = this->factory_->create_gz_subscriber(
     this->gz_node_,
     this->config_.gz_topic_name,
     this->config_.subscriber_queue_size.value_or(kDefaultSubscriberQueue),
     this->ros_publisher_,
     this->gz_to_ros_parameters_);
 
-  this->gz_subscriber_ = this->gz_node_;
+  if (this->gz_subscriber_.Valid()) {
+    this->gz_subscriber_error_logged_ = false;
+  } else if (!this->gz_subscriber_error_logged_) {
+    RCLCPP_ERROR(
+      this->RosNode()->get_logger(),
+      "Failed to subscribe to Gazebo topic [%s]",
+      this->config_.gz_topic_name.c_str());
+    this->gz_subscriber_error_logged_ = true;
+  }
 }
 
 void BridgeHandleGzToRos::StopSubscriber()
 {
-  // Stop Gazebo subscriber
-  if (!this->gz_subscriber_) {
-    return;
+  // Stop Gazebo subscriber. Only this bridge's handler is removed, so other
+  // bridges on the same Gazebo topic keep receiving messages.
+  // The explicit Unsubscribe() is required: assigning a new Subscriber does not
+  // unsubscribe the old handler, so messages would keep arriving.
+  if (this->gz_subscriber_.Valid()) {
+    this->gz_subscriber_.Unsubscribe();
   }
-
-  this->gz_subscriber_->Unsubscribe(this->config_.gz_topic_name);
-  this->gz_subscriber_.reset();
+  this->gz_subscriber_ = gz::transport::Node::Subscriber();
 }
 
 }  // namespace ros_gz_bridge
