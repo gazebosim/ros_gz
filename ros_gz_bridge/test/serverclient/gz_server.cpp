@@ -27,7 +27,7 @@
 #include "utils/gz_test_msg.hpp"
 
 /// \brief Flag used to break the waiting loop and terminate the program.
-static std::atomic_flag g_terminateSrv(false);
+static std::atomic_flag g_terminateSrv = ATOMIC_FLAG_INIT;
 
 //////////////////////////////////////////////////
 /// \brief Function callback executed when a SIGINT or SIGTERM signals are

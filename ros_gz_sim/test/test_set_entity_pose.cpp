@@ -107,7 +107,7 @@ TEST(SetEntityPoseTest, SetEntityPoseIntegration) {
   {
     std::string entity_name = "test_entity";
     int entity_id = 0;
-    int entity_type = 6;  // MODEL type
+    int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
     double x = 1.0, y = 2.0, z = 3.0;
     double qx = 0.1, qy = 0.2, qz = 0.3, qw = 0.9165;
     bool use_quaternion = true;
@@ -134,7 +134,7 @@ TEST(SetEntityPoseTest, SetEntityPoseIntegration) {
   {
     std::string entity_name = "";
     int entity_id = 42;
-    int entity_type = 6;  // MODEL type
+    int entity_type = ros_gz_interfaces::msg::Entity::MODEL;
     double x = 4.0, y = 5.0, z = 6.0;
     double roll = 0.1, pitch = 0.2, yaw = 0.3;  // Euler angles in radians
     bool use_quaternion = false;

@@ -26,13 +26,18 @@
 
 namespace ros_gz_bridge
 {
+namespace
+{
+/// \brief Default period, in milliseconds, of the lazy bridges' subscription checks
+constexpr int kDefaultSubscriptionHeartbeatMs = 1000;
+}  // namespace
 
 RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 : rclcpp::Node("ros_gz_bridge", options)
 {
   gz_node_ = std::make_shared<gz::transport::Node>();
 
-  this->declare_parameter<int>("subscription_heartbeat", 1000);
+  this->declare_parameter<int>("subscription_heartbeat", kDefaultSubscriptionHeartbeatMs);
   this->declare_parameter<std::string>("config_file", "");
   this->declare_parameter<bool>("lazy", kDefaultLazy);
   this->declare_parameter<bool>("expand_gz_topic_names", false);
@@ -113,6 +118,13 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
   int heartbeat;
   this->get_parameter("subscription_heartbeat", heartbeat);
+  if (heartbeat <= 0) {
+    RCLCPP_WARN(
+      this->get_logger(),
+      "Invalid subscription_heartbeat [%d], it must be positive. Using default of %d ms.",
+      heartbeat, kDefaultSubscriptionHeartbeatMs);
+    heartbeat = kDefaultSubscriptionHeartbeatMs;
+  }
   heartbeat_timer_ = this->create_wall_timer(
     std::chrono::milliseconds(heartbeat),
     std::bind(&RosGzBridge::spin, this));
@@ -120,7 +132,10 @@ RosGzBridge::RosGzBridge(const rclcpp::NodeOptions & options)
 
 void RosGzBridge::spin()
 {
-  if (handles_.empty()) {
+  // Configure bridges only once, even if some or all of them failed to be
+  // created, or if other bridges were already added through add_bridge().
+  if (!bridges_configured_) {
+    bridges_configured_ = true;
     std::string config_file;
     this->get_parameter("config_file", config_file);
     bool expand_names;

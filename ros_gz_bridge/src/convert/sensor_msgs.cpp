@@ -12,8 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include <cstdint>
 #include <limits>
+#include <string>
 
+#include <sensor_msgs/image_encodings.hpp>
+
+#include "convert/logging.hpp"
 #include "convert/utils.hpp"
 #include "ros_gz_bridge/convert/sensor_msgs.hpp"
 
@@ -25,6 +30,45 @@
 
 namespace ros_gz_bridge
 {
+
+namespace
+{
+// Resolve the row step of an image and check it against the data buffer.
+// A step of 0 is treated as unset and replaced by the tightly packed step.
+// Returns false if the step is too small for the width, or if the buffer
+// holds fewer than step * height bytes.
+bool resolve_image_step(
+  const std::string & encoding, uint32_t width, uint32_t height,
+  uint32_t step, size_t data_size, uint32_t & resolved_step)
+{
+  const uint64_t min_step = static_cast<uint64_t>(width) *
+    sensor_msgs::image_encodings::numChannels(encoding) *
+    (sensor_msgs::image_encodings::bitDepth(encoding) / 8);
+
+  if (step == 0) {
+    if (min_step > std::numeric_limits<uint32_t>::max()) {
+      ROS_GZ_BRIDGE_CONVERT_ERROR("Image width [" << width << "] is too large");
+      return false;
+    }
+    step = static_cast<uint32_t>(min_step);
+  }
+
+  if (step < min_step) {
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Image step [" << step << "] is smaller than width [" << width <<
+      "] requires for encoding [" << encoding << "]");
+    return false;
+  }
+
+  if (static_cast<uint64_t>(step) * height > data_size) {
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Image data size [" << data_size << "] is smaller than step [" <<
+      step << "] * height [" << height << "]");
+    return false;
+  }
+
+  resolved_step = step;
+  return true;
+}
+}  // namespace
 
 template<>
 void
@@ -59,70 +103,57 @@ convert_ros_to_gz(
   gz_msg.set_width(ros_msg.width);
   gz_msg.set_height(ros_msg.height);
 
-  unsigned int num_channels;
-  unsigned int octets_per_channel;
-
   if (ros_msg.encoding == "mono8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "mono16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT16);
-    num_channels = 1;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "rgb8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT8);
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "rgba8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGBA_INT8);
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bgra8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGRA_INT8);
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "rgb16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_INT16);
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "bgr8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGR_INT8);
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bgr16") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BGR_INT16);
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (ros_msg.encoding == "32FC1") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::R_FLOAT32);
-    num_channels = 1;
-    octets_per_channel = 4u;
+  } else if (ros_msg.encoding == "32FC3") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::RGB_FLOAT32);
+  } else if (ros_msg.encoding == "8UC1") {
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT8);
+  } else if (ros_msg.encoding == "16UC1") {
+    // Typically a depth image in millimeters.
+    gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::L_INT16);
   } else if (ros_msg.encoding == "bayer_rggb8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_RGGB8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_bggr8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_BGGR8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_gbrg8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GBRG8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (ros_msg.encoding == "bayer_grbg8") {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::BAYER_GRBG8);
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else {
     gz_msg.set_pixel_format_type(gz::msgs::PixelFormatType::UNKNOWN_PIXEL_FORMAT);
-    std::cerr << "Unsupported pixel format [" << ros_msg.encoding << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported pixel format [" << ros_msg.encoding << "]");
     return;
   }
 
-  gz_msg.set_step(gz_msg.width() * num_channels * octets_per_channel);
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, ros_msg.step,
+      ros_msg.data.size(), step))
+  {
+    gz_msg.set_step(0);
+    gz_msg.clear_data();
+    return;
+  }
 
-  gz_msg.set_data(&(ros_msg.data[0]), gz_msg.step() * gz_msg.height());
+  gz_msg.set_step(step);
+  gz_msg.set_data(ros_msg.data.data(), ros_msg.data.size());
 }
 
 template<>
@@ -136,73 +167,58 @@ convert_gz_to_ros(
   ros_msg.height = gz_msg.height();
   ros_msg.width = gz_msg.width();
 
-  unsigned int num_channels;
-  unsigned int octets_per_channel;
-
   if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::L_INT8) {
     ros_msg.encoding = "mono8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::L_INT16) {
     ros_msg.encoding = "mono16";
-    num_channels = 1;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGB_INT8) {
     ros_msg.encoding = "rgb8";
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGBA_INT8) {
     ros_msg.encoding = "rgba8";
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGRA_INT8) {
     ros_msg.encoding = "bgra8";
-    num_channels = 4;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGB_INT16) {
     ros_msg.encoding = "rgb16";
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGR_INT8) {
     ros_msg.encoding = "bgr8";
-    num_channels = 3;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BGR_INT16) {
     ros_msg.encoding = "bgr16";
-    num_channels = 3;
-    octets_per_channel = 2u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::R_FLOAT32) {
     ros_msg.encoding = "32FC1";
-    num_channels = 1;
-    octets_per_channel = 4u;
+  } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::RGB_FLOAT32) {
+    ros_msg.encoding = "32FC3";
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_RGGB8) {
     ros_msg.encoding = "bayer_rggb8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_BGGR8) {
     ros_msg.encoding = "bayer_bggr8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GBRG8) {
     ros_msg.encoding = "bayer_gbrg8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else if (gz_msg.pixel_format_type() == gz::msgs::PixelFormatType::BAYER_GRBG8) {
     ros_msg.encoding = "bayer_grbg8";
-    num_channels = 1;
-    octets_per_channel = 1u;
   } else {
-    std::cerr << "Unsupported pixel format [" << gz_msg.pixel_format_type() << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported pixel format [" << gz_msg.pixel_format_type() << "]");
     return;
   }
 
   ros_msg.is_bigendian = false;
-  ros_msg.step = ros_msg.width * num_channels * octets_per_channel;
-  ros_msg.data.resize(ros_msg.step * ros_msg.height);
 
-  // Prefer memcpy over std::copy for performance reasons,
-  // see https://github.com/gazebosim/ros_gz/pull/565
-  memcpy(ros_msg.data.data(), gz_msg.data().c_str(), gz_msg.data().size());
+  uint32_t step;
+  if (!resolve_image_step(
+      ros_msg.encoding, ros_msg.width, ros_msg.height, gz_msg.step(),
+      gz_msg.data().size(), step))
+  {
+    ros_msg.step = 0;
+    ros_msg.data.clear();
+    return;
+  }
+
+  ros_msg.step = step;
+
+  // Copy from a uint8_t range so that the copy is a single memmove, without
+  // zero-filling the buffer first as resize() would.
+  // See https://github.com/gazebosim/ros_gz/pull/565
+  const auto * data = reinterpret_cast<const uint8_t *>(gz_msg.data().data());
+  ros_msg.data.assign(data, data + gz_msg.data().size());
 }
 
 template<>
@@ -224,7 +240,8 @@ convert_ros_to_gz(
   } else if (ros_msg.distortion_model == "equidistant") {
     distortion->set_model(gz::msgs::CameraInfo::Distortion::EQUIDISTANT);
   } else {
-    std::cerr << "Unsupported distortion model [" << ros_msg.distortion_model << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported distortion model [" << ros_msg.distortion_model <<
+        "]");
   }
 
   for (double i : ros_msg.d) {
@@ -266,7 +283,7 @@ convert_gz_to_ros(
     } else if (distortion.model() == gz::msgs::CameraInfo::Distortion::EQUIDISTANT) {
       ros_msg.distortion_model = "equidistant";
     } else {
-      std::cerr << "Unsupported distortion model [" << distortion.model() << "]" << std::endl;
+      ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported distortion model [" << distortion.model() << "]");
     }
 
     ros_msg.d.resize(distortion.k_size());
@@ -447,15 +464,11 @@ convert_ros_to_gz(
   const sensor_msgs::msg::LaserScan & ros_msg,
   gz::msgs::LaserScan & gz_msg)
 {
-  // Computing count from angle range/increment can disagree with the actual
-  // ranges array (FP rounding); intensities is also optional and frequently
-  // empty. Clamp to the publisher's actual array sizes to stay in bounds.
-  const unsigned int computed_count =
-    (ros_msg.angle_max - ros_msg.angle_min) / ros_msg.angle_increment;
-  const unsigned int ranges_count =
-    std::min<size_t>(computed_count, ros_msg.ranges.size());
-  const unsigned int intensities_count =
-    std::min<size_t>(computed_count, ros_msg.intensities.size());
+  // The arrays are authoritative: deriving their length from floating-point
+  // angle metadata can lose the inclusive endpoint.
+  const size_t ranges_count = ros_msg.ranges.size();
+  const size_t intensities_count =
+    std::min(ranges_count, ros_msg.intensities.size());
 
   convert_ros_to_gz(ros_msg.header, (*gz_msg.mutable_header()));
   gz_msg.set_frame(ros_msg.header.frame_id);
@@ -581,14 +594,24 @@ convert_gz_to_ros(
   ros_msg.min_range = gz_msg.range_min();
   ros_msg.max_range = gz_msg.range_max();
 
-  ros_msg.range = ros_msg.max_range + 1.0;
+  // REP 117: +Inf when no ray detected anything. The previous sentinel
+  // (max_range + 1) also let a single out-of-range ray collapse to that
+  // value, so take the plain minimum over the rays instead.
+  ros_msg.range = std::numeric_limits<double>::infinity();
 
-  // Set range to the minimum of the ray ranges
   // For single rays, this will just be the range of the ray
   for (double range : gz_msg.ranges()) {
     if (range < ros_msg.range) {
       ros_msg.range = range;
     }
+  }
+
+  // REP 117: report readings outside [min_range, max_range] as +Inf (nothing
+  // detected within range) or -Inf (detected too close to measure).
+  if (ros_msg.range > ros_msg.max_range) {
+    ros_msg.range = std::numeric_limits<float>::infinity();
+  } else if (ros_msg.range < ros_msg.min_range) {
+    ros_msg.range = -std::numeric_limits<float>::infinity();
   }
 }
 
@@ -663,8 +686,7 @@ convert_ros_to_gz(
   gz_msg.set_point_step(ros_msg.point_step);
   gz_msg.set_row_step(ros_msg.row_step);
   gz_msg.set_is_dense(ros_msg.is_dense);
-  gz_msg.mutable_data()->resize(ros_msg.data.size());
-  memcpy(gz_msg.mutable_data()->data(), ros_msg.data.data(), ros_msg.data.size());
+  gz_msg.set_data(ros_msg.data.data(), ros_msg.data.size());
 
   for (const auto & field : ros_msg.fields) {
     gz::msgs::PointCloudPacked::Field * pf = gz_msg.add_field();
@@ -715,8 +737,8 @@ convert_gz_to_ros(
   ros_msg.point_step = gz_msg.point_step();
   ros_msg.row_step = gz_msg.row_step();
   ros_msg.is_dense = gz_msg.is_dense();
-  ros_msg.data.resize(gz_msg.data().size());
-  memcpy(ros_msg.data.data(), gz_msg.data().c_str(), gz_msg.data().size());
+  const auto * data = reinterpret_cast<const uint8_t *>(gz_msg.data().data());
+  ros_msg.data.assign(data, data + gz_msg.data().size());
 
   for (int i = 0; i < gz_msg.field_size(); ++i) {
     sensor_msgs::msg::PointField pf;
@@ -785,7 +807,8 @@ convert_ros_to_gz(
       gz_msg.set_power_supply_status(gz::msgs::BatteryState::FULL);
       break;
     default:
-      std::cerr << "Unsupported power supply status [" << ros_msg.power_supply_status << "]\n";
+      ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported power supply status [" <<
+        ros_msg.power_supply_status << "]");
   }
 }
 
@@ -815,8 +838,8 @@ convert_gz_to_ros(
   } else if (gz_msg.power_supply_status() == gz::msgs::BatteryState::FULL) {
     ros_msg.power_supply_status = sensor_msgs::msg::BatteryState::POWER_SUPPLY_STATUS_FULL;
   } else {
-    std::cerr << "Unsupported power supply status [" <<
-      gz_msg.power_supply_status() << "]" << std::endl;
+    ROS_GZ_BRIDGE_CONVERT_ERROR("Unsupported power supply status [" <<
+      gz_msg.power_supply_status() << "]");
   }
 
   ros_msg.power_supply_health = sensor_msgs::msg::BatteryState::POWER_SUPPLY_HEALTH_UNKNOWN;

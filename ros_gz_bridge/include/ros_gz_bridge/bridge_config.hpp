@@ -21,6 +21,8 @@
 
 #include <rclcpp/qos.hpp>
 
+#include "ros_gz_bridge/visibility_control.hpp"
+
 namespace ros_gz_bridge
 {
 
@@ -49,9 +51,9 @@ static constexpr BridgeDirection kDefaultDirection = BridgeDirection::BIDIRECTIO
 /// \param[in] qos_profile Uppercase string, e.g. "SENSOR_DATA".
 /// \return The corresponding QoS profile.
 /// \throws std::invalid_argument if the profile cannot be parsed.
-rclcpp::QoS parseQoS(const std::string & qos_profile);
+ROS_GZ_BRIDGE_VISIBLE rclcpp::QoS parseQoS(const std::string & qos_profile);
 
-struct BridgeConfig
+struct ROS_GZ_BRIDGE_VISIBLE BridgeConfig
 {
   /// \brief The ROS message type (eg std_msgs/msg/String)
   std::string ros_type_name;
@@ -105,12 +107,12 @@ struct BridgeConfig
 /// \brief Generate a group of BridgeConfigs from a YAML String
 /// \param[in] data string containing YAML of bridge configurations
 /// \return Vector of bridge configurations
-std::vector<BridgeConfig> readFromYamlString(const std::string & data);
+ROS_GZ_BRIDGE_VISIBLE std::vector<BridgeConfig> readFromYamlString(const std::string & data);
 
 /// \brief Generate a group of BridgeConfigs from a YAML File
 /// \param[in] filename name of file containing YAML of bridge configurations
 /// \return Vector of bridge configurations
-std::vector<BridgeConfig> readFromYamlFile(const std::string & filename);
+ROS_GZ_BRIDGE_VISIBLE std::vector<BridgeConfig> readFromYamlFile(const std::string & filename);
 
 }  // namespace ros_gz_bridge
 

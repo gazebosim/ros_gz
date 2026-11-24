@@ -91,7 +91,11 @@ protected:
 
 protected:
   /// \brief The ROS node used to create publishers/subscriptions
-  rclcpp::Node::SharedPtr ros_node_;
+  rclcpp::Node::SharedPtr RosNode() const;
+
+  // RosGzBridge owns its bridge handles. Keep the back-reference weak so the
+  // handle vector does not form a reference cycle with the owning node.
+  rclcpp::Node::WeakPtr ros_node_;
 
   /// \brief The Gazebo node used to create publishers/subscriptions
   std::shared_ptr<gz::transport::Node> gz_node_;

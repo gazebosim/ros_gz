@@ -25,13 +25,13 @@ namespace ros_gz_bridge
 {
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_ros_to_gz(
   const builtin_interfaces::msg::Time & ros_msg,
   gz::msgs::Time & gz_msg);
 
 template<>
-void
+ROS_GZ_BRIDGE_VISIBLE void
 convert_gz_to_ros(
   const gz::msgs::Time & gz_msg,
   builtin_interfaces::msg::Time & ros_msg);

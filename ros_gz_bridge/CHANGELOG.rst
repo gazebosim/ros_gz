@@ -2,6 +2,28 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.0.3 (2026-10-22)
+------------------
+
+4.0.2 (2026-10-13)
+------------------
+* convert: report +Inf in Range when LaserScan detects nothing (`#982 <https://github.com/gazebosim/ros_gz/issues/982>`_)
+* Fix service-only YAML reload loop (`#969 <https://github.com/gazebosim/ros_gz/issues/969>`_)
+* Release bridge nodes and complete ROS shutdown before exit (`#977 <https://github.com/gazebosim/ros_gz/issues/977>`_)
+* Preserve image rows and scan endpoints (`#975 <https://github.com/gazebosim/ros_gz/issues/975>`_)
+* Avoid an extra-copy of data when using intra-process (`#957 <https://github.com/gazebosim/ros_gz/issues/957>`_)
+* Fixed package xml deps (`#938 <https://github.com/gazebosim/ros_gz/issues/938>`_)
+* Contributors: Alejandro Hernández Cordero, Jaimin Solanki, Jose Luis Rivero, Yuhx141, Yuu
+
+4.0.1 (2026-08-31)
+------------------
+* Break the parameter bridge handle ownership cycle (`#952 <https://github.com/gazebosim/ros_gz/issues/952>`_)
+* Document supported service bridge types (`#928 <https://github.com/gazebosim/ros_gz/issues/928>`_)
+* ros_gz_bridge: Explicitly handle visibility of exported symbols (`#930 <https://github.com/gazebosim/ros_gz/issues/930>`_)
+* Correctly initialize std::atomic_flag with ATOMIC_FLAG_INIT (`#929 <https://github.com/gazebosim/ros_gz/issues/929>`_)
+* Add AirSpeed message and bridge mapping (`#914 <https://github.com/gazebosim/ros_gz/issues/914>`_)
+* Contributors: Jiayi Cai, Sammy Dabbas, Silvio Traversaro, yeseorizi
+
 4.0.0 (2026-06-08)
 ------------------
 * Fix bridge params xml parse (`#903 <https://github.com/gazebosim/ros_gz/issues/903>`_)

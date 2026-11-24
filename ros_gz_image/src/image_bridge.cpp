@@ -12,13 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rmw/qos_profiles.h>
-
 #include <atomic>
 #include <chrono>
+#include <functional>
 #include <iostream>
 #include <memory>
+#include <mutex>
+#include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <gz/transport/Node.hh>
@@ -43,7 +45,8 @@ public:
     bool _lazy = false)
   : topic_(_topic),
     gz_node_(_gz_node),
-    is_lazy_(_lazy)
+    is_lazy_(_lazy),
+    logger_(_node->get_logger())
   {
     // Get QoS profile from parameter
     rclcpp::QoS qos_profile = rclcpp::QoS(10);
@@ -70,6 +73,14 @@ public:
     }
   }
 
+  /// \brief Destructor. Blocks until any in-flight OnImage call finishes,
+  /// then prevents later callbacks from touching this handler.
+  ~Handler()
+  {
+    std::lock_guard<std::mutex> lock(guard_->mutex);
+    guard_->closed = true;
+  }
+
   /// \brief Manage Gazebo subscription lifecycle based on ROS subscriber count.
   /// Only active when lazy mode is enabled.
   void CheckSubscribers()
@@ -90,12 +101,32 @@ public:
 private:
   void StartSubscriber()
   {
-    gz_node_->Subscribe(topic_, &Handler::OnImage, this);
+    // Gazebo transport does not wait for in-flight callbacks on Unsubscribe or
+    // ~Node, so a callback can still run after this handler is destroyed. The
+    // callback co-owns the guard, which therefore outlives the handler.
+    auto guard = guard_;
+    std::function<void(const gz::msgs::Image &)> cb =
+      [this, guard](const gz::msgs::Image & _gz_msg)
+      {
+        std::lock_guard<std::mutex> lock(guard->mutex);
+        if (guard->closed) {
+          return;
+        }
+        // The handler is alive here: ~Handler blocks on guard->mutex.
+        this->OnImage(_gz_msg);
+      };
+    if (!gz_node_->Subscribe(topic_, cb)) {
+      // Leave has_subscriber_ unset so that lazy mode retries on the next check.
+      RCLCPP_ERROR(logger_, "Failed to subscribe to Gazebo topic [%s]", topic_.c_str());
+      return;
+    }
     has_subscriber_ = true;
   }
 
   void StopSubscriber()
   {
+    // A callback still in flight after Unsubscribe is harmless: the handler
+    // stays alive, and its destructor waits for the callback to finish.
     gz_node_->Unsubscribe(topic_);
     has_subscriber_ = false;
   }
@@ -104,9 +135,11 @@ private:
   /// \param[in] _gz_msg Gazebo message
   void OnImage(const gz::msgs::Image & _gz_msg)
   {
-    sensor_msgs::msg::Image ros_msg;
-    ros_gz_bridge::convert_gz_to_ros(_gz_msg, ros_msg);
-    this->ros_pub_.publish(ros_msg);
+    // Publish by unique_ptr so that, if intra-process communication is enabled,
+    // subscribers in the same process can get the image without a copy.
+    auto ros_msg = std::make_unique<sensor_msgs::msg::Image>();
+    ros_gz_bridge::convert_gz_to_ros(_gz_msg, *ros_msg);
+    this->ros_pub_.publish(std::move(ros_msg));
   }
 
   /// \brief Image topic name
@@ -120,6 +153,22 @@ private:
 
   /// \brief Whether currently subscribed to Gazebo topic
   std::atomic<bool> has_subscriber_{false};
+
+  /// \brief Logger of the ROS node
+  rclcpp::Logger logger_;
+
+  /// \brief State shared between the handler and its Gazebo callback.
+  struct CallbackGuard
+  {
+    /// \brief Held while a callback runs and in ~Handler.
+    std::mutex mutex;
+
+    /// \brief Set in ~Handler; callbacks no-op once teardown has started.
+    bool closed{false};
+  };
+
+  /// \brief Guard co-owned by the Gazebo callback so it outlives the handler.
+  std::shared_ptr<CallbackGuard> guard_{std::make_shared<CallbackGuard>()};
 
   /// \brief ROS image publisher
   image_transport::Publisher ros_pub_;
@@ -162,7 +211,7 @@ int main(int argc, char * argv[])
   if (lazy && heartbeat_ms <= 0) {
     RCLCPP_ERROR(
       node_->get_logger(),
-      "subscription_heartbeat must be a positive integer (got %d). Using default of 1000 ms.",
+      "subscription_heartbeat must be a positive integer (got %d).",
       heartbeat_ms);
     rclcpp::shutdown();
     return -1;
@@ -177,9 +226,20 @@ int main(int argc, char * argv[])
   ++argv;
   --argc;
   auto args = rclcpp::remove_ros_arguments(argc, argv);
+  if (args.empty()) {
+    usage();
+    rclcpp::shutdown();
+    return -1;
+  }
 
   // Create publishers (and subscribers if not lazy)
+  std::set<std::string> bridged_topics;
   for (const auto & topic : args) {
+    // Handlers share the Gazebo node, so a duplicate would unsubscribe both.
+    if (!bridged_topics.insert(topic).second) {
+      RCLCPP_WARN(node_->get_logger(), "Topic [%s] is already bridged, skipping", topic.c_str());
+      continue;
+    }
     handlers.push_back(std::make_shared<Handler>(topic, node_, gz_node, lazy));
   }
 
@@ -197,6 +257,12 @@ int main(int argc, char * argv[])
 
   // Spin ROS and Gz until shutdown
   rclcpp::spin(node_);
+
+  // Tear down explicitly: destroy the handlers, which stops their callbacks,
+  // before the Gazebo node that delivers them.
+  heartbeat_timer.reset();
+  handlers.clear();
+  gz_node.reset();
 
   return 0;
 }
