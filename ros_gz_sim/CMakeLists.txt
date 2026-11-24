@@ -218,6 +218,7 @@ install(
         launch/gz_spawn_model.launch.py
         launch/ros_gz_sim.launch
         launch/ros_gz_sim.launch.py
+        launch/ros_gz_spawn_model.launch
         launch/ros_gz_spawn_model.launch.py
   DESTINATION share/${PROJECT_NAME}/launch)
 
@@ -361,6 +362,7 @@ if(BUILD_TESTING)
 
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(test_gazebo_ros_paths test/test_gazebo_ros_paths.py)
+  ament_add_pytest_test(test_xml_launch_files test/test_xml_launch_files.py)
 endif()
 
 ament_package()
