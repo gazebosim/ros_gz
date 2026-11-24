@@ -18,6 +18,8 @@
 #include <algorithm>
 #include <atomic>
 #include <chrono>
+#include <filesystem>
+#include <fstream>
 #include <functional>
 #include <memory>
 #include <string>
@@ -37,8 +39,10 @@ namespace
 class TestBridge : public ros_gz_bridge::RosGzBridge
 {
 public:
-  TestBridge()
-  : RosGzBridge(rclcpp::NodeOptions().parameter_overrides({{"subscription_heartbeat", 3600000}}))
+  explicit TestBridge(const std::string & config_file = "")
+  : RosGzBridge(
+      rclcpp::NodeOptions().parameter_overrides(
+        {{"subscription_heartbeat", 3600000}, {"config_file", config_file}}))
   {
   }
 
@@ -213,4 +217,86 @@ TEST_F(BridgeNodeTest, TwoBridgesOnOneGzTopic)
     });
   EXPECT_TRUE(received_a);
   EXPECT_TRUE(received_b);
+}
+
+// Stopping a lazy bridge removes only its own Gazebo subscription, so a
+// sibling bridge on the same Gazebo topic keeps receiving messages.
+TEST_F(BridgeNodeTest, StoppingLazyBridgeKeepsSiblingSubscribed)
+{
+  bridge_->add_bridge(
+    StringBridge(
+      "/sibling_eager", "/sibling_gz_topic", ros_gz_bridge::BridgeDirection::GZ_TO_ROS, false));
+  bridge_->add_bridge(
+    StringBridge(
+      "/sibling_lazy", "/sibling_gz_topic", ros_gz_bridge::BridgeDirection::GZ_TO_ROS, true));
+
+  gz::transport::Node gz_node;
+  auto gz_pub = gz_node.Advertise<gz::msgs::StringMsg>("/sibling_gz_topic");
+  gz::msgs::StringMsg gz_msg;
+  gz_msg.set_data("sibling");
+
+  // Start the lazy bridge and wait until it delivers a message.
+  std::atomic<bool> lazy_received{false};
+  auto lazy_sub = test_node_->create_subscription<std_msgs::msg::String>(
+    "/sibling_lazy", 10, [&lazy_received](const std_msgs::msg::String &) {lazy_received = true;});
+  ASSERT_TRUE(
+    WaitFor(
+      [&lazy_received] {return lazy_received.load();},
+      [&] {
+        bridge_->spin();
+        gz_pub.Publish(gz_msg);
+        executor_->spin_some();
+      }));
+
+  // Stop the lazy bridge.
+  lazy_sub.reset();
+  ASSERT_TRUE(
+    WaitFor(
+      [this] {return bridge_->count_subscribers("/sibling_lazy") == 0u;},
+      [this] {bridge_->spin();}));
+  WaitFor([] {return false;}, [this] {bridge_->spin();}, 200ms);
+
+  // The eager sibling still receives messages.
+  std::atomic<bool> eager_received{false};
+  auto eager_sub = test_node_->create_subscription<std_msgs::msg::String>(
+    "/sibling_eager", 10,
+    [&eager_received](const std_msgs::msg::String &) {eager_received = true;});
+  EXPECT_TRUE(
+    WaitFor(
+      [&eager_received] {return eager_received.load();},
+      [&] {
+        gz_pub.Publish(gz_msg);
+        executor_->spin_some();
+      }));
+}
+
+// Bridges from the config file are created on the first heartbeat even if
+// another bridge was already added through add_bridge().
+TEST_F(BridgeNodeTest, ConfigFileLoadedAfterAddBridge)
+{
+  const auto config_file = std::filesystem::temp_directory_path() /
+    ("test_bridge_node_" +
+    std::to_string(std::chrono::steady_clock::now().time_since_epoch().count()) + ".yaml");
+  {
+    std::ofstream file(config_file);
+    file <<
+      R"(
+- ros_topic_name: /config_chatter
+  gz_topic_name: /config_chatter
+  ros_type_name: std_msgs/msg/String
+  gz_type_name: gz.msgs.StringMsg
+  direction: GZ_TO_ROS
+  lazy: false
+)";
+  }
+  bridge_ = std::make_shared<TestBridge>(config_file.string());
+
+  bridge_->add_bridge(
+    StringBridge(
+      "/api_chatter", "/api_chatter", ros_gz_bridge::BridgeDirection::GZ_TO_ROS, false));
+  bridge_->spin();
+  std::filesystem::remove(config_file);
+
+  EXPECT_TRUE(bridge_->GzSubscribes("/api_chatter"));
+  EXPECT_TRUE(bridge_->GzSubscribes("/config_chatter"));
 }
