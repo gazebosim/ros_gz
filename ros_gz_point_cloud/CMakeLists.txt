@@ -7,8 +7,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 find_package(ament_cmake REQUIRED)
-# Provides the ament_cmake_ros_core::ament_ros_cxx_standard interface target,
-# which sets the C++ standard (C++20 on Rolling) used across the ROS 2 core.
 find_package(ament_cmake_ros_core REQUIRED)
 find_package(point_cloud_transport REQUIRED)
 find_package(rclcpp REQUIRED)
@@ -33,7 +31,7 @@ target_include_directories(${plugin_name} PRIVATE
   ${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 target_link_libraries(${plugin_name}
-  ament_cmake_ros_core::ament_ros_cxx_standard
+  ament_cmake_ros_core::ament_ros_defaults
   gz-common::gz-common
   gz-math::gz-math
   gz-plugin::register
@@ -60,6 +58,11 @@ install(
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
   ament_lint_auto_find_test_dependencies()
+
+  find_package(ament_cmake_gtest REQUIRED)
+  ament_add_gtest(test_rgba test/rgba_TEST.cpp)
+  target_include_directories(test_rgba PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/src)
+  target_link_libraries(test_rgba ament_cmake_ros_core::ament_ros_defaults)
 endif()
 
 ament_package()

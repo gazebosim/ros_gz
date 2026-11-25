@@ -42,6 +42,8 @@
 #include <sensor_msgs/msg/point_cloud2.hpp>
 #include <sensor_msgs/point_cloud2_iterator.hpp>
 
+#include "rgba.hpp"
+
 GZ_ADD_PLUGIN(
   ros_gz_point_cloud::PointCloud,
   gz::sim::System,
@@ -249,10 +251,17 @@ public:
 public:
   std::string scene_name_;
 
-  /// \brief Type of sensor which this plugin is attached to.
+  /// \brief Type of sensor which this plugin is attached to. Only meaningful
+  /// once `configured_` is true.
 
 public:
-  SensorType type_;
+  SensorType type_{SensorType::DEPTH_CAMERA};
+
+  /// \brief True once `Configure` succeeded. Otherwise `PostUpdate` does
+  /// nothing, since there is no sensor type, node or publisher to use.
+
+public:
+  bool configured_{false};
 
   /// \brief Protects the members which are written from the simulation thread
   /// in `PostUpdate` and read from the rendering thread in the frame callbacks.
@@ -333,6 +342,8 @@ void PointCloud::Configure(
   // Rendering engine and scene
   this->dataPtr->engine_name_ = _sdf->Get<std::string>("engine", "ogre2").first;
   this->dataPtr->scene_name_ = _sdf->Get<std::string>("scene", "scene").first;
+
+  this->dataPtr->configured_ = true;
 }
 
 //////////////////////////////////////////////////
@@ -340,6 +351,10 @@ void PointCloud::PostUpdate(
   const gz::sim::UpdateInfo & _info,
   const gz::sim::EntityComponentManager & _ecm)
 {
+  if (!this->dataPtr->configured_) {
+    return;
+  }
+
   // The frame callbacks run on the rendering thread, so everything they read
   // is written under this lock.
   const std::lock_guard<std::mutex> lock(this->dataPtr->mutex_);
@@ -537,12 +552,11 @@ void PointCloudPrivate::OnNewRgbPointCloud(
       msg.is_dense = false;
     }
 
-    // The 4th float packs the colour; its bytes are R, G, B, A.
-    const float rgba = cloud[i + 3];
-    const auto * color = reinterpret_cast<const uint8_t *>(&rgba);
-    *iter_r = color[0];
-    *iter_g = color[1];
-    *iter_b = color[2];
+    // The 4th float packs the colour.
+    const auto color = ros_gz_point_cloud::decodePackedRgba(cloud[i + 3]);
+    *iter_r = color.r;
+    *iter_g = color.g;
+    *iter_b = color.b;
   }
 
   this->pc_pub_.publish(msg);
