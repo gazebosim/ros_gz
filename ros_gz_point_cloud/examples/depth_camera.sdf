@@ -13,7 +13,7 @@
 
           export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/ros_gz_point_cloud/lib
 
-     or, if the workspace was built with `--merge-install`:
+     or, if the workspace was built with colcon's merge install option:
 
           export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib
 
@@ -27,6 +27,10 @@
 
   5. On RViz, add the `/ros_gz/custom_params/link/depth_camera/points` topic for `PointCloud2`
      messages and change the fixed frame to `map`. You should see the point cloud.
+
+     The plugin publishes with a best effort QoS, like other sensor data, so in the display's
+     `Topic` settings set `Reliability Policy` to `Best Effort`. With RViz's default, `Reliable`,
+     no messages are received.
 
      The plugin has no `<namespace>`, so the topic is placed under the sensor's scoped name,
      `/<world>/<model>/<link>/<sensor>`.
