@@ -32,8 +32,10 @@ convert_ros_to_gz(
   gz_msg.set_altitude(ros_msg.altitude);
   gz_msg.set_frame_id(ros_msg.header.frame_id);
 
-  gz_msg.set_velocity_east(cos(ros_msg.track) * ros_msg.speed);
-  gz_msg.set_velocity_north(sin(ros_msg.track) * ros_msg.speed);
+  // GPSFix track is in degrees clockwise from North.
+  const double track_rad = ros_msg.track * M_PI / 180.0;
+  gz_msg.set_velocity_east(std::sin(track_rad) * ros_msg.speed);
+  gz_msg.set_velocity_north(std::cos(track_rad) * ros_msg.speed);
   gz_msg.set_velocity_up(ros_msg.climb);
 }
 
@@ -49,9 +51,10 @@ convert_gz_to_ros(
   ros_msg.longitude = gz_msg.longitude_deg();
   ros_msg.altitude = gz_msg.altitude();
 
-  ros_msg.speed = sqrt(
+  ros_msg.speed = std::sqrt(
     gz_msg.velocity_east() * gz_msg.velocity_east() +
     gz_msg.velocity_north() * gz_msg.velocity_north());
+  // GPSFix track is in degrees clockwise from North, in [0, 360).
   ros_msg.track = std::fmod(
     std::atan2(gz_msg.velocity_east(), gz_msg.velocity_north()) * 180.0 / M_PI + 360.0,
     360.0);
