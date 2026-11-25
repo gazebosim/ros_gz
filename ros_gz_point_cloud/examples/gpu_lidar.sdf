@@ -1,6 +1,12 @@
 <?xml version="1.0" ?>
 <!--
-  Example publishing point cloud messages to ROS from Gazebo.
+  Example publishing point cloud messages to ROS from a Gazebo GPU lidar.
+
+  The `custom_params` model has a GPU lidar with the `ros_gz_point_cloud` plugin, which
+  publishes the lidar scans as `sensor_msgs/msg/PointCloud2` messages.
+
+  The plugin only renders the sensor and publishes while its ROS topic has subscribers, such as
+  RViz or `ros2 topic hz`.
 
   Try it out:
 
@@ -9,28 +15,36 @@
           . <ws>/install/setup.bash
 
   2. Make sure Gazebo Sim can find the point cloud plugin by adding its lib install directory
-     to the path, for example:
+     to the path:
 
-          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/ros_gz_point_cloud/lib
+          export GZ_SIM_SYSTEM_PLUGIN_PATH=$(ros2 pkg prefix ros_gz_point_cloud)/lib
 
-     or, if the workspace was built with colcon's merge install option:
+  3. Load the example world, unpaused:
 
-          export GZ_SIM_SYSTEM_PLUGIN_PATH=<ws>/install/lib
+          gz sim -r $(ros2 pkg prefix ros_gz_point_cloud)/share/ros_gz_point_cloud/examples/gpu_lidar.sdf
 
-  3. Load this world, unpaused:
+  4. In another terminal, source the workspace as in step 1 and check that point clouds are
+     published:
 
-          gz sim -r examples/gpu_lidar.sdf
+          ros2 topic hz /custom_params/pc2
 
-  4. Launch RViz to visualize the point cloud:
+     The sensor updates at 10 Hz of simulation time, so the rate is lower when the
+     simulation runs slower than real time.
+
+     The plugin sets `<namespace>` to `custom_params` and `<topic>` to `pc2`.
+
+  5. Launch RViz to visualize the point cloud:
 
           ros2 run rviz2 rviz2
 
-  5. On RViz, add the `/custom_params/pc2` topic for `PointCloud2` messages and change the fixed frame
-     to `custom_params/link`. You should see the point cloud.
+  6. On RViz, add a `PointCloud2` display for the topic below and change the fixed frame to
+     `custom_params/link`:
 
-     The plugin publishes with a best effort QoS, like other sensor data, so in the display's
-     `Topic` settings set `Reliability Policy` to `Best Effort`. With RViz's default, `Reliable`,
-     no messages are received.
+          /custom_params/pc2
+
+     In the display's `Topic` settings, set `Reliability Policy` to `Best Effort`: the plugin
+     publishes with a best effort QoS, like other sensor data, and with RViz's default,
+     `Reliable`, no messages are received. You should see the point cloud.
 
 -->
 <sdf version="1.6">
