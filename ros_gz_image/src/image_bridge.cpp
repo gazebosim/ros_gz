@@ -12,15 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <rmw/qos_profiles.h>
-
 #include <atomic>
 #include <chrono>
 #include <functional>
 #include <iostream>
 #include <memory>
 #include <mutex>
+#include <set>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <gz/transport/Node.hh>
@@ -45,7 +45,8 @@ public:
     bool _lazy = false)
   : topic_(_topic),
     gz_node_(_gz_node),
-    is_lazy_(_lazy)
+    is_lazy_(_lazy),
+    logger_(_node->get_logger())
   {
     // Get QoS profile from parameter
     rclcpp::QoS qos_profile = rclcpp::QoS(10);
@@ -114,7 +115,11 @@ private:
         // The handler is alive here: ~Handler blocks on guard->mutex.
         this->OnImage(_gz_msg);
       };
-    gz_node_->Subscribe(topic_, cb);
+    if (!gz_node_->Subscribe(topic_, cb)) {
+      // Leave has_subscriber_ unset so that lazy mode retries on the next check.
+      RCLCPP_ERROR(logger_, "Failed to subscribe to Gazebo topic [%s]", topic_.c_str());
+      return;
+    }
     has_subscriber_ = true;
   }
 
@@ -130,9 +135,11 @@ private:
   /// \param[in] _gz_msg Gazebo message
   void OnImage(const gz::msgs::Image & _gz_msg)
   {
-    sensor_msgs::msg::Image ros_msg;
-    ros_gz_bridge::convert_gz_to_ros(_gz_msg, ros_msg);
-    this->ros_pub_.publish(ros_msg);
+    // Publish by unique_ptr so that, if intra-process communication is enabled,
+    // subscribers in the same process can get the image without a copy.
+    auto ros_msg = std::make_unique<sensor_msgs::msg::Image>();
+    ros_gz_bridge::convert_gz_to_ros(_gz_msg, *ros_msg);
+    this->ros_pub_.publish(std::move(ros_msg));
   }
 
   /// \brief Image topic name
@@ -146,6 +153,9 @@ private:
 
   /// \brief Whether currently subscribed to Gazebo topic
   std::atomic<bool> has_subscriber_{false};
+
+  /// \brief Logger of the ROS node
+  rclcpp::Logger logger_;
 
   /// \brief State shared between the handler and its Gazebo callback.
   struct CallbackGuard
@@ -201,7 +211,7 @@ int main(int argc, char * argv[])
   if (lazy && heartbeat_ms <= 0) {
     RCLCPP_ERROR(
       node_->get_logger(),
-      "subscription_heartbeat must be a positive integer (got %d). Using default of 1000 ms.",
+      "subscription_heartbeat must be a positive integer (got %d).",
       heartbeat_ms);
     rclcpp::shutdown();
     return -1;
@@ -216,9 +226,20 @@ int main(int argc, char * argv[])
   ++argv;
   --argc;
   auto args = rclcpp::remove_ros_arguments(argc, argv);
+  if (args.empty()) {
+    usage();
+    rclcpp::shutdown();
+    return -1;
+  }
 
   // Create publishers (and subscribers if not lazy)
+  std::set<std::string> bridged_topics;
   for (const auto & topic : args) {
+    // Handlers share the Gazebo node, so a duplicate would unsubscribe both.
+    if (!bridged_topics.insert(topic).second) {
+      RCLCPP_WARN(node_->get_logger(), "Topic [%s] is already bridged, skipping", topic.c_str());
+      continue;
+    }
     handlers.push_back(std::make_shared<Handler>(topic, node_, gz_node, lazy));
   }
 

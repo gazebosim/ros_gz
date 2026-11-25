@@ -25,7 +25,7 @@ Package Contents
    │   ├── set_entity_pose.hpp         ← EntityPoseSetter node
    │   └── delete_entity.hpp           ← EntityDeleter node
    ├── src/
-   │   ├── create.cpp / remove.cpp     ← gflags CLI tools
+   │   ├── create.cpp / remove.cpp     ← Gazebo transport CLI tools
    │   ├── spawn_entity.cpp, delete_entity.cpp, set_entity_pose.cpp
    │   ├── gzserver.cpp                ← gzserver executable + component
    │   └── gz_simulation_interfaces/   ← service / action implementations

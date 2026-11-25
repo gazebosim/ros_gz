@@ -140,7 +140,7 @@ public:
     return subscription;
   }
 
-  void
+  gz::transport::Node::Subscriber
   create_gz_subscriber(
     std::shared_ptr<gz::transport::Node> node,
     const std::string & topic_name,
@@ -150,7 +150,7 @@ public:
   {
     auto pub = std::dynamic_pointer_cast<rclcpp::Publisher<ROS_T>>(ros_pub);
     if (pub == nullptr) {
-      return;
+      return {};
     }
     std::function<void(const GZ_T &)> subCb =
       [this, pub, gz_to_ros_parameters](const GZ_T & _msg)
@@ -161,7 +161,9 @@ public:
     // Ignore messages that are published from this bridge.
     gz::transport::SubscribeOptions opts;
     opts.SetIgnoreLocalMessages(true);
-    node->Subscribe(topic_name, subCb, opts);
+    // Return a per-subscription handle so that stopping this bridge does not
+    // unsubscribe other bridges sharing the same node and Gazebo topic.
+    return node->CreateSubscriber(topic_name, subCb, opts);
   }
 
 protected:
@@ -197,8 +199,11 @@ protected:
         auto now = std::chrono::system_clock::now().time_since_epoch();
         auto ns =
           std::chrono::duration_cast<std::chrono::nanoseconds>(now).count();
-        ros_msg->header.stamp.sec = ns / 1e9;
-        ros_msg->header.stamp.nanosec = ns - ros_msg->header.stamp.sec * 1e9;
+        // Integer math: converting ns to double loses precision and can make
+        // nanosec negative.
+        constexpr int64_t kNsPerSec = 1000000000;
+        ros_msg->header.stamp.sec = static_cast<int32_t>(ns / kNsPerSec);
+        ros_msg->header.stamp.nanosec = static_cast<uint32_t>(ns % kNsPerSec);
       }
       if (!gz_to_ros_parameters.override_frame_id.empty()) {
         ros_msg->header.frame_id = gz_to_ros_parameters.override_frame_id;
