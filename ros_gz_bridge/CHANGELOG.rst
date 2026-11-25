@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix ``gps_msgs/GPSFix`` ``track`` conversion to follow the message definition
+  (degrees clockwise from North, in [0, 360)) in both directions.
+
 4.0.3 (2026-10-22)
 ------------------
 
