@@ -14,13 +14,18 @@
 
 #include "point_cloud.hpp"
 
+#include <gz/msgs/image.pb.h>
+#include <gz/msgs/laserscan.pb.h>
+
 #include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <functional>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <span>  // NOLINT
 #include <string>
 
@@ -35,7 +40,9 @@
 #include <gz/sim/components/DepthCamera.hh>
 #include <gz/sim/components/GpuLidar.hh>
 #include <gz/sim/components/RgbdCamera.hh>
+#include <gz/sim/components/Sensor.hh>
 #include <gz/sim/Util.hh>
+#include <gz/transport/Node.hh>
 
 #include <point_cloud_transport/point_cloud_transport.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -55,6 +62,10 @@ using ros_gz_point_cloud::PointCloudPrivate;
 
 namespace
 {
+/// \brief How often, in simulation time, to check whether the ROS topic has
+/// subscribers. The check isn't free and `PostUpdate` runs at every step.
+constexpr std::chrono::milliseconds kSubscriberCheckPeriod{500};
+
 /// \brief Make a Gazebo scoped name usable as a ROS name. Each '/' separated
 /// token must match `[a-zA-Z_][a-zA-Z0-9_]*`, so characters which are not
 /// alphanumeric or '_' are replaced by '_' and tokens starting with a digit
@@ -181,6 +192,18 @@ public:
 public:
   void LoadGpuRays(const gz::sim::EntityComponentManager & _ecm);
 
+  /// \brief Keep the sensor rendering while the ROS topic has subscribers.
+  ///
+  /// gz-sim only renders a sensor which has subscribers on its Gazebo topics.
+  /// This plugin gets its data from the rendering sensor instead, so without
+  /// another Gazebo subscriber, such as an image display in the GUI, the
+  /// sensor would never render and no point cloud would be published. While
+  /// there are ROS subscribers, subscribe to the sensor's Gazebo topic.
+  /// \param[in] _ecm Immutable reference to ECM.
+
+public:
+  void UpdateSensorSubscription(const gz::sim::EntityComponentManager & _ecm);
+
   /// \brief Rendering scene which manages the cameras.
 
 public:
@@ -262,6 +285,28 @@ public:
 
 public:
   bool configured_{false};
+
+  /// \brief Gazebo node which subscribes to the sensor's topic, to keep the
+  /// sensor rendering.
+
+public:
+  gz::transport::Node gz_node_;
+
+  /// \brief The sensor's Gazebo topic which `gz_node_` subscribes to. Empty
+  /// until gz-sim has created the sensor.
+
+public:
+  std::string gz_topic_;
+
+  /// \brief Whether `gz_node_` is subscribed to `gz_topic_`.
+
+public:
+  bool gz_subscribed_{false};
+
+  /// \brief Simulation time of the last check for ROS subscribers.
+
+public:
+  std::optional<std::chrono::steady_clock::duration> last_subscriber_check_;
 
   /// \brief Protects the members which are written from the simulation thread
   /// in `PostUpdate` and read from the rendering thread in the frame callbacks.
@@ -361,6 +406,8 @@ void PointCloud::PostUpdate(
 
   this->dataPtr->current_time_ = _info.simTime;
 
+  this->dataPtr->UpdateSensorSubscription(_ecm);
+
   using enum SensorType;
 
   // Find engine / scene
@@ -377,9 +424,10 @@ void PointCloud::PostUpdate(
     }
 
     this->dataPtr->scene_ = engine->SceneByName(this->dataPtr->scene_name_);
-    if (!this->dataPtr->scene_) {
+    if (!this->dataPtr->scene_ && engine->SceneCount() > 0) {
       // `gz::sim::systems::Sensors` may have created the scene under a
       // different name, in which case fall back to the only scene it loaded.
+      // Only once there is one: `SceneByIndex` logs an error otherwise.
       this->dataPtr->scene_ = engine->SceneByIndex(0);
     }
     if (!this->dataPtr->scene_) {
@@ -405,6 +453,63 @@ void PointCloud::PostUpdate(
     this->dataPtr->type_ == GPU_LIDAR)
   {
     this->dataPtr->LoadGpuRays(_ecm);
+  }
+}
+
+//////////////////////////////////////////////////
+void PointCloudPrivate::UpdateSensorSubscription(
+  const gz::sim::EntityComponentManager & _ecm)
+{
+  if (this->last_subscriber_check_.has_value() &&
+    this->current_time_ >= *this->last_subscriber_check_ &&
+    this->current_time_ - *this->last_subscriber_check_ < kSubscriberCheckPeriod)
+  {
+    return;
+  }
+  this->last_subscriber_check_ = this->current_time_;
+
+  if (this->gz_topic_.empty()) {
+    // gz-sim sets the topic, defaulting it if the SDF has none, once it has
+    // created the rendering sensor.
+    const auto * topic = _ecm.Component<gz::sim::components::SensorTopic>(this->entity_);
+    if (nullptr == topic || topic->Data().empty()) {
+      return;
+    }
+    this->gz_topic_ = topic->Data();
+    // An RGBD camera publishes under its topic; its depth image is rendered
+    // for every frame anyway.
+    if (this->type_ == SensorType::RGBD_CAMERA) {
+      this->gz_topic_ += "/depth_image";
+    }
+  }
+
+  const bool has_ros_subscribers = this->pc_pub_.getNumSubscribers() > 0;
+  if (has_ros_subscribers == this->gz_subscribed_) {
+    return;
+  }
+
+  if (!has_ros_subscribers) {
+    this->gz_node_.Unsubscribe(this->gz_topic_);
+    this->gz_subscribed_ = false;
+    return;
+  }
+
+  // The messages themselves aren't needed: the point cloud is built from the
+  // rendering sensor's frame events.
+  if (this->type_ == SensorType::GPU_LIDAR) {
+    this->gz_subscribed_ = this->gz_node_.Subscribe(
+      this->gz_topic_, std::function<void(const gz::msgs::LaserScan &)>(
+        [](const gz::msgs::LaserScan &) {}));
+  } else {
+    this->gz_subscribed_ = this->gz_node_.Subscribe(
+      this->gz_topic_, std::function<void(const gz::msgs::Image &)>(
+        [](const gz::msgs::Image &) {}));
+  }
+  if (!this->gz_subscribed_) {
+    RCLCPP_ERROR_ONCE(
+      rclcpp::get_logger("ros_gz_point_cloud"),
+      "Failed to subscribe to Gazebo topic [%s]; the sensor may not render, so no "
+      "point cloud would be published.", this->gz_topic_.c_str());
   }
 }
 

@@ -16,12 +16,16 @@ find_package(gz_common_vendor REQUIRED)
 find_package(gz-common REQUIRED)
 find_package(gz_math_vendor REQUIRED)
 find_package(gz-math REQUIRED)
+find_package(gz_msgs_vendor REQUIRED)
+find_package(gz-msgs REQUIRED)
 find_package(gz_plugin_vendor REQUIRED)
 find_package(gz-plugin REQUIRED)
 find_package(gz_rendering_vendor REQUIRED)
 find_package(gz-rendering REQUIRED)
 find_package(gz_sim_vendor REQUIRED)
 find_package(gz-sim REQUIRED)
+find_package(gz_transport_vendor REQUIRED)
+find_package(gz-transport REQUIRED)
 
 set(plugin_name RosGzPointCloud)
 add_library(${plugin_name} SHARED
@@ -34,9 +38,11 @@ target_link_libraries(${plugin_name}
   ament_cmake_ros_core::ament_ros_defaults
   gz-common::gz-common
   gz-math::gz-math
+  gz-msgs::core
   gz-plugin::register
   gz-rendering::gz-rendering
   gz-sim::gz-sim
+  gz-transport::core
   point_cloud_transport::point_cloud_transport
   rclcpp::rclcpp
   ${sensor_msgs_TARGETS}
