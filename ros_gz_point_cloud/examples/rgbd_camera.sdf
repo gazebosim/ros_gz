@@ -32,6 +32,12 @@
      The sensor updates at 30 Hz of simulation time, so the rate is lower when the
      simulation runs slower than real time.
 
+     Each coloured point cloud is about 2.5 MB. With the default Fast DDS settings, such
+     large messages may be dropped and the rate is much lower. If so, enable Fast DDS's
+     large data transport in both terminals before steps 3 and 4:
+
+          export FASTDDS_BUILTIN_TRANSPORTS=LARGE_DATA
+
      The `custom_params` camera's plugin sets `<namespace>` to `custom_params` and `<topic>` to
      `pc2`.
 

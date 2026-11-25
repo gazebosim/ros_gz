@@ -423,19 +423,19 @@ void PointCloud::PostUpdate(
       return;
     }
 
-    this->dataPtr->scene_ = engine->SceneByName(this->dataPtr->scene_name_);
-    if (!this->dataPtr->scene_ && engine->SceneCount() > 0) {
+    auto scene = engine->SceneByName(this->dataPtr->scene_name_);
+    if (!scene && engine->SceneCount() > 0) {
       // `gz::sim::systems::Sensors` may have created the scene under a
       // different name, in which case fall back to the only scene it loaded.
       // Only once there is one: `SceneByIndex` logs an error otherwise.
-      this->dataPtr->scene_ = engine->SceneByIndex(0);
+      scene = engine->SceneByIndex(0);
     }
-    if (!this->dataPtr->scene_) {
+    // Only keep the scene once it is ready, otherwise the next update would
+    // skip this check and use it.
+    if (!scene || !scene->IsInitialized()) {
       return;
     }
-    if (!this->dataPtr->scene_->IsInitialized()) {
-      return;
-    }
+    this->dataPtr->scene_ = scene;
   }
 
   // Get rendering objects
