@@ -93,8 +93,9 @@ def test_windows_command_keeps_existing_bat_handling(subject, legacy, suffix):
     # Command construction only: this does not run cmd.exe on a POSIX host.
     name = 'ign' if legacy else 'gz'
     path = 'C:\\Program Files\\Gazebo\\' + name
+    # The path has a space, so it is wrapped in double quotes on Windows.
     assert command(subject, path + suffix, legacy, 'nt') == (
-        'ruby ' + path + (' gazebo' if legacy else ' sim') +
+        'ruby "' + path + '"' + (' gazebo' if legacy else ' sim') +
         ' -s -r empty.sdf --force-version ' + ('6' if legacy else '10'))
 
 

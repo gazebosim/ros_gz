@@ -1,14 +1,15 @@
 <package format="3">
   <name>ros_gz_image</name>
-  <version>4.0.1</version>
+  <version>4.0.3</version>
   <description>Image utilities for Gazebo simulation with ROS.</description>
   <license>Apache 2.0</license>
-  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
-  <maintainer email="ahcorde@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <author>Louise Poubel</author>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
 
   <depend>image_transport</depend>
   <depend>ros_gz_bridge</depend>
@@ -18,6 +19,7 @@
   <depend>gz_msgs_vendor</depend>
   <depend>gz_transport_vendor</depend>
 
+  <test_depend>ament_cmake_gtest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <export>

@@ -18,12 +18,14 @@
 #include <gz/msgs/world_stats.pb.h>
 #include <gz/msgs/serialized_map.pb.h>
 #include <gz/msgs/stringmsg_v.pb.h>
+#include <gz/msgs/world_control_state.pb.h>
 
 #include <chrono>
 #include <condition_variable>
 #include <map>
 #include <memory>
 #include <mutex>
+#include <optional>
 #include <string>
 #include <unordered_set>
 #include <utility>
@@ -35,6 +37,8 @@
 #include <gz/transport/Node.hh>
 #include <rclcpp/rclcpp.hpp>
 #include <simulation_interfaces/msg/result.hpp>
+
+#include "stop_signal.hpp"
 
 namespace ros_gz_sim
 {
@@ -51,10 +55,22 @@ namespace gz_simulation_interfaces
 class GazeboProxy
 {
 public:
-  /// \brief Constructor.
-  /// \param[in] world_name The name of the Gazebo world that is being simulated.
+  /// \brief Thrown to unwind initialization when shutdown is requested.
+  ///
+  /// Deliberately does not derive from `std::exception` so `catch (const std::exception &)`
+  /// handlers do not catch or log it; callers must catch it before a ROS executor or transport
+  /// callback boundary, as letting it escape would terminate the process.
+  struct ShutdownRequested {};
+
+  /// \brief Constructor. The name of the simulated world is discovered from the Gazebo server.
   /// \param[in] ros_node ROS node.
-  GazeboProxy(const std::string world_name, std::shared_ptr<rclcpp::Node> ros_node);
+  /// \param[in] stop_signal Optional shutdown request that interrupts the waits for Gazebo. If
+  /// null, the waits can only end by success or timeout.
+  /// \throws ShutdownRequested If shutdown is requested via \p stop_signal while waiting for
+  /// Gazebo.
+  explicit GazeboProxy(
+    std::shared_ptr<rclcpp::Node> ros_node,
+    std::shared_ptr<StopSignal> stop_signal = nullptr);
 
   /// \brief Prefixes a given topic with the world name.
   /// \param[in] topic The topic to be prefixed.
@@ -66,6 +82,7 @@ public:
   /// \param[in] service Full name of the service.
   /// \param[in] timeout Amount of time to wait before giving up.
   /// \return True if the service was found before a timeout occurred.
+  /// \throws ShutdownRequested If shutdown is requested while waiting.
   bool WaitForGzService(
     const std::string & service,
     const std::chrono::milliseconds & timeout = std::chrono::milliseconds(kGzServiceTimeoutMs));
@@ -140,6 +157,20 @@ public:
   static constexpr unsigned int kGzStateUpdatedTimeoutMs{1000};
 
 private:
+  /// \brief Send an asynchronous Gazebo service request and wait up to `kGzServiceTimeoutMs`.
+  ///
+  /// If the service is advertised in-process, gz-transport computes the reply synchronously inside
+  /// `Request()`, which cannot be interrupted by `stop_signal_`.
+  /// \param[in] service Service name.
+  /// \param[in] req Request message.
+  /// \param[out] reply Reply message; only written when returning true.
+  /// \param[out] result Service result flag; only written when returning true.
+  /// \return True if a reply was received before timeout, false on timeout or request failure.
+  /// \throws ShutdownRequested If shutdown is requested before or while waiting for the reply.
+  template<typename ReqT, typename ReplyT>
+  bool RequestWithStop(
+    const std::string & service, const ReqT & req, ReplyT & reply, bool & result);
+
   /// \brief Establish initial connection to the Gazebo server.
   ///
   /// This makes the initial service request to Gazebo to receive the name of the world being
@@ -169,15 +200,26 @@ private:
 
   /// \brief Handle newly created entities
   /// For example, this is responsible for creating necessary ECM Components on newly created
-  /// entities, so that the Physics system can populate them.
-  void HandleNewEntities();
+  /// entities, so that the Physics system can populate them. Must be called with
+  /// state_sync_mutex_ held.
+  /// \return The state to send to Gazebo with SendCanonicalLinksState, if there were new
+  /// canonical links.
+  std::optional<gz::msgs::WorldControlState> HandleNewEntities();
 
   /// \brief Initialize all canonical link entities by creating necessary ECM components on them.
   void InitializeAllCanonicalLinks();
 
-  /// \brief Initialize canonical link entities by creating necessary ECM components on them.
+  /// \brief Create the necessary ECM components on canonical link entities. Must be called with
+  /// state_sync_mutex_ held.
   /// \param[in] canonicalLinkEntities A set of canonical links to initialize.
-  void InitializeCanonicalLinks(const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
+  /// \return The state to send to Gazebo with SendCanonicalLinksState.
+  gz::msgs::WorldControlState PrepareCanonicalLinks(
+    const std::unordered_set<gz::sim::Entity> & canonicalLinkEntities);
+
+  /// \brief Send canonical link components to Gazebo. Must be called without state_sync_mutex_
+  /// held, since it makes a blocking service call.
+  /// \param[in] control_msg State returned by PrepareCanonicalLinks.
+  void SendCanonicalLinksState(const gz::msgs::WorldControlState & control_msg);
 
   /// \brief Subscribe to a Gazebo topic and store the subscription handler so that topics are
   /// automatically unsubscribed during destruction.
@@ -200,6 +242,9 @@ private:
 
   /// \brief ROS node
   std::shared_ptr<rclcpp::Node> ros_node_;
+
+  /// \brief Shutdown request shared with GzSimulationInterfaces (never null).
+  std::shared_ptr<StopSignal> stop_signal_;
 
   /// \brief Gazebo Node
   std::shared_ptr<gz::transport::Node> gz_node_;

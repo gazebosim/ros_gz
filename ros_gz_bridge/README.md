@@ -43,6 +43,7 @@ The following message types can be bridged for topics:
 | ros_gz_interfaces/msg/Light                    | gz.msgs.Light                       |
 | ros_gz_interfaces/msg/LogicalCameraImage       | gz.msgs.LogicalCameraImage          |
 | ros_gz_interfaces/msg/LogPlaybackStatistics    | gz.msgs.LogPlaybackStatistics       |
+| ros_gz_interfaces/msg/MaterialColor            | gz.msgs.MaterialColor               |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param                       |
 | ros_gz_interfaces/msg/ParamVec                 | gz.msgs.Param_V                     |
 | ros_gz_interfaces/msg/SensorNoise              | gz.msgs.SensorNoise                 |
@@ -76,8 +77,8 @@ The following message types can be bridged for topics:
 | trajectory_msgs/msg/JointTrajectory            | gz.msgs.JointTrajectory             |
 | vision_msgs/msg/Detection2D                    | gz.msgs.AnnotatedAxisAligned2DBox   |
 | vision_msgs/msg/Detection2DArray               | gz.msgs.AnnotatedAxisAligned2DBox_V |
-| vision_msgs/msg/Detection3D                    | gz::msgs::AnnotatedOriented3DBox    |
-| vision_msgs/msg/Detection3DArray               | gz::msgs::AnnotatedOriented3DBox_V  |
+| vision_msgs/msg/Detection3D                    | gz.msgs.AnnotatedOriented3DBox      |
+| vision_msgs/msg/Detection3DArray               | gz.msgs.AnnotatedOriented3DBox_V    |
 
 And the following for services:
 
@@ -321,6 +322,10 @@ bridge may be specified:
   frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
+`subscriber_queue` and `publisher_queue` only apply to the ROS side of the
+bridge. Gazebo Transport has no queue size setting, so they have no effect on
+the Gazebo publisher or subscriber.
+
 To run the bridge node with the above configuration:
 ```bash
 ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
@@ -418,7 +423,7 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 ROS 2 Parameters:
 
 * `subscription_heartbeat`
-    * type: double
+    * type: int
     * default: 1000
     * description: Period (ms) at which the node checks for new subscribers for
       lazy bridges.

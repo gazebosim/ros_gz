@@ -14,11 +14,8 @@
 
 """Module for the GzServer action."""
 
-import os
 from typing import Dict, List, Optional, Union
 
-from ament_index_python.packages import get_package_share_directory
-from catkin_pkg.package import InvalidPackage, PACKAGE_MANIFEST_FILENAME, parse_package
 from launch.action import Action
 from launch.actions import SetEnvironmentVariable
 from launch.frontend import Entity, expose_action, Parser
@@ -28,59 +25,9 @@ from launch.substitutions import TextSubstitution
 from launch.utilities.type_utils import normalize_typed_substitution, perform_typed_substitution
 from launch_ros.actions import ComposableNodeContainer, LoadComposableNodes, Node
 from launch_ros.descriptions import ComposableNode
-from ros2pkg.api import get_package_names
 
-
-"""
-Search for model, plugin and media paths exported by packages.
-
-e.g.  <export>
-          <gazebo_ros gazebo_model_path="${prefix}/../"/>
-          <gazebo_ros gazebo_media_path="${prefix}/../"/>
-      </export>
-${prefix} is replaced by package's share directory in install.
-
-Thus the required directory needs to be installed from CMakeLists.txt
-e.g.  install(DIRECTORY models
-          DESTINATION share/${PROJECT_NAME})
-"""
-
-
-class GazeboRosPaths:
-
-    @staticmethod
-    def get_paths():
-        gazebo_model_path = []
-        gazebo_plugin_path = []
-        gazebo_media_path = []
-
-        for package_name in get_package_names():
-            package_share_path = get_package_share_directory(package_name)
-            package_file_path = os.path.join(package_share_path, PACKAGE_MANIFEST_FILENAME)
-            if os.path.isfile(package_file_path):
-                try:
-                    package = parse_package(package_file_path)
-                except InvalidPackage:
-                    continue
-                for export in package.exports:
-                    if export.tagname == 'gazebo_ros':
-                        if 'gazebo_model_path' in export.attributes:
-                            xml_path = export.attributes['gazebo_model_path']
-                            xml_path = xml_path.replace('${prefix}', package_share_path)
-                            gazebo_model_path.append(xml_path)
-                        if 'plugin_path' in export.attributes:
-                            xml_path = export.attributes['plugin_path']
-                            xml_path = xml_path.replace('${prefix}', package_share_path)
-                            gazebo_plugin_path.append(xml_path)
-                        if 'gazebo_media_path' in export.attributes:
-                            xml_path = export.attributes['gazebo_media_path']
-                            xml_path = xml_path.replace('${prefix}', package_share_path)
-                            gazebo_media_path.append(xml_path)
-
-        gazebo_model_path = os.pathsep.join(gazebo_model_path + gazebo_media_path)
-        gazebo_plugin_path = os.pathsep.join(gazebo_plugin_path)
-
-        return gazebo_model_path, gazebo_plugin_path
+# GazeboRosPaths is also re-exported from here for existing users.
+from ..paths import GazeboRosPaths
 
 
 @expose_action('gz_server')
@@ -218,20 +165,8 @@ class GzServer(Action):
         """Execute the action."""
         launch_descriptions: List[Action] = []
 
-        model_paths, plugin_paths = GazeboRosPaths.get_paths()
-        launch_descriptions.append(SetEnvironmentVariable(
-            'GZ_SIM_SYSTEM_PLUGIN_PATH',
-            os.pathsep.join([
-                os.environ.get('GZ_SIM_SYSTEM_PLUGIN_PATH', default=''),
-                os.environ.get('LD_LIBRARY_PATH', default=''),
-                plugin_paths,
-            ])))
-        launch_descriptions.append(SetEnvironmentVariable(
-            'GZ_SIM_RESOURCE_PATH',
-            os.pathsep.join([
-                os.environ.get('GZ_SIM_RESOURCE_PATH', default=''),
-                model_paths,
-            ])))
+        for name, value in GazeboRosPaths.get_env().items():
+            launch_descriptions.append(SetEnvironmentVariable(name, value))
 
         use_composition_eval = perform_typed_substitution(
             context, self.__use_composition, bool

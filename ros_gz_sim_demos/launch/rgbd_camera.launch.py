@@ -19,7 +19,9 @@ from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.actions import IncludeLaunchDescription
+from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.substitutions import LaunchConfiguration
 
 from launch_ros.actions import Node
 
@@ -27,37 +29,47 @@ from launch_ros.actions import Node
 def generate_launch_description():
 
     pkg_ros_gz_sim = get_package_share_directory('ros_gz_sim')
+    pkg_ros_gz_sim_demos = get_package_share_directory('ros_gz_sim_demos')
 
     gz_sim = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_ros_gz_sim, 'launch', 'gz_sim.launch.py')),
-        # launch_arguments={
-        #     'gz_args': '-r rgbd_camera.sdf'
-        # }.items(),
+        launch_arguments={
+            'gz_args': '-r sensors_demo.sdf'
+        }.items(),
     )
 
-    # FIXME: need rviz configuration migration
-    # rviz = Node(
-    #    package='rviz2',
-    #    executable='rviz2',
-    #    arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'rgbd_camera.rviz')],
-    #    condition=IfCondition(LaunchConfiguration('rviz'))
-    # )
+    # RViz
+    rviz = Node(
+        package='rviz2',
+        executable='rviz2',
+        arguments=['-d', os.path.join(pkg_ros_gz_sim_demos, 'rviz', 'rgbd_camera_bridge.rviz')],
+        condition=IfCondition(LaunchConfiguration('rviz'))
+    )
+
+    # Connect the RViz fixed frame to the frame of the camera data
+    camera_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['--frame-id', 'rgbd_camera',
+                   '--child-frame-id', 'rgbd_camera/link/rgbd_camera'],
+    )
 
     # Bridge
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
-        arguments=['/rgbd_camera/image@sensor_msgs/msg/Image@gz.msgs.Image',
-                   '/rgbd_camera/depth_image@sensor_msgs/msg/Image@gz.msgs.Image'],
+        arguments=['/rgbd_camera/image@sensor_msgs/msg/Image[gz.msgs.Image',
+                   '/rgbd_camera/depth_image@sensor_msgs/msg/Image[gz.msgs.Image',
+                   '/rgbd_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked'],
         output='screen'
     )
 
-    # FIXME: need a SDF file (depth_camera.sdf) inside ros_gz_point_cloud/
     return LaunchDescription([
         gz_sim,
         DeclareLaunchArgument('rviz', default_value='true',
                               description='Open RViz.'),
         bridge,
-        # rviz,
+        camera_tf,
+        rviz,
     ])
