@@ -15,15 +15,19 @@
 """
 Search for model, plugin and media paths exported by packages.
 
-e.g.  <export>
-          <gazebo_ros gazebo_model_path="${prefix}/../"/>
-          <gazebo_ros gazebo_media_path="${prefix}/../"/>
-      </export>
-${prefix} is replaced by package's share directory in install.
+For example, in ``package.xml``::
 
-Thus the required directory needs to be installed from CMakeLists.txt
-e.g.  install(DIRECTORY models
-          DESTINATION share/${PROJECT_NAME})
+    <export>
+      <gazebo_ros gazebo_model_path="${prefix}/../"/>
+      <gazebo_ros gazebo_media_path="${prefix}/../"/>
+    </export>
+
+``${prefix}`` is replaced by the package's share directory in install.
+
+Thus the required directory needs to be installed from ``CMakeLists.txt``::
+
+    install(DIRECTORY models
+      DESTINATION share/${PROJECT_NAME})
 """
 
 import os
