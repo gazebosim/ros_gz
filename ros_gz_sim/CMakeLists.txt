@@ -383,6 +383,7 @@ if(BUILD_TESTING)
   find_package(ament_cmake_pytest REQUIRED)
   ament_add_pytest_test(test_gazebo_ros_paths test/test_gazebo_ros_paths.py)
   ament_add_pytest_test(test_xml_launch_files test/test_xml_launch_files.py)
+  ament_add_pytest_test(test_gz_sim_cmd test/test_gz_sim_cmd.py)
 endif()
 
 ament_package()

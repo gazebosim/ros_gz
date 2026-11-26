@@ -42,6 +42,11 @@ def launch_argument_as_bool(context, name):
     # Accepts 'true'/'false'/'1'/'0' in any case, like IfCondition.
     return evaluate_condition_expression(context, [LaunchConfiguration(name)])
 
+def build_gz_cmd(exec_cmd, exec_args, gz_version, use_shell):
+    if use_shell != 'false':
+        return [exec_cmd, exec_args, '--force-version', gz_version]
+    return shlex.split(exec_cmd) + shlex.split(exec_args) + ['--force-version', gz_version]
+
 def launch_gz(context, *args, **kwargs):
     env = GazeboRosPaths.get_env()
 
@@ -51,6 +56,7 @@ def launch_gz(context, *args, **kwargs):
     ign_version = LaunchConfiguration('ign_version').perform(context)
     debugger = launch_argument_as_bool(context, 'debugger')
     on_exit_shutdown = launch_argument_as_bool(context, 'on_exit_shutdown')
+    use_shell = LaunchConfiguration('shell').perform(context)
     debug_env = launch_argument_as_bool(context, 'debug_env')
 
     if not len(gz_args) and len(ign_args):
@@ -77,12 +83,14 @@ def launch_gz(context, *args, **kwargs):
     else:
         on_exit = None
 
+    cmd = build_gz_cmd(exec, exec_args, gz_version, use_shell)
+
     ld = [ExecuteProcess(
-                cmd=[exec, exec_args, '--force-version', gz_version],
+                cmd=cmd,
                 name='gazebo',
                 output='screen',
                 additional_env=env,
-                shell=True,
+                shell=(use_shell != 'false'),
                 prefix=debug_prefix,
                 on_exit=on_exit
                 )
@@ -119,5 +127,8 @@ def generate_launch_description():
         DeclareLaunchArgument(
             'on_exit_shutdown', default_value='false',
             description='Shutdown on gz-sim exit'),
+        DeclareLaunchArgument(
+            'shell', default_value='true',
+            description='Run Gazebo through a shell (true) or directly (false)'),
         OpaqueFunction(function = launch_gz),
     ])
