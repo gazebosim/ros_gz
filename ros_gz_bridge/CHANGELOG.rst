@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix ``gps_msgs/GPSFix`` ``track`` conversion to follow the message definition
+  (degrees clockwise from North, in [0, 360)) in both directions.
+
 3.0.12 (2026-10-22)
 -------------------
 * Fix service-only YAML reload loop (`#969 <https://github.com/gazebosim/ros_gz/issues/969>`_) (`#1004 <https://github.com/gazebosim/ros_gz/issues/1004>`_)
