@@ -14,7 +14,7 @@
 
 
 #include <gz/msgs/boolean.pb.h>
-#include <gz/msgs/entity_factory_with_ns.pb.h>
+#include <gz/msgs/entity_factory.pb.h>
 #include <csignal>
 #include <chrono>
 #include <condition_variable>
@@ -22,8 +22,8 @@
 #include <mutex>
 #include <gz/transport/Node.hh>
 
-// Simple application that provides a `/create_with_ns` service and prints out the
-// sdf_filename of the request. This works in conjection with
+// Simple application that provides a `/create` service and prints out the
+// sdf_filename of the request. This works in conjunction with
 // test_create_node.launch.py
 int main()
 {
@@ -34,9 +34,10 @@ int main()
   gz::transport::Node node;
   auto cb = std::function(
     [&](
-      const gz::msgs::EntityFactoryWithNs & _req,
+      const gz::msgs::EntityFactory & _req,
       gz::msgs::Boolean & _res) -> bool {
-      std::cout << _req.sdf_filename() << std::endl;
+      std::cout << "sdf_filename: " << _req.sdf_filename() << std::endl;
+      std::cout << "entity_namespace: " << _req.entity_namespace() << std::endl;
       _res.set_data(true);
 
       {
@@ -47,7 +48,7 @@ int main()
       return true;
     });
 
-  node.Advertise("/world/default/create_with_ns", cb);
+  node.Advertise("/world/default/create", cb);
   // wait until we receive a message.
   std::unique_lock<std::mutex> lk(m);
   cv.wait(lk, [&] {return test_complete;});
