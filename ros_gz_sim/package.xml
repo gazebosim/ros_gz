@@ -7,8 +7,8 @@
   <description>Tools for using Gazebo Sim simulation with ROS.</description>
 
   <!-- Maintainers -->
-  <maintainer email="adityapande@intrinsic.ai">Aditya Pande</maintainer>
-  <maintainer email="alejandro@openrobotics.org">Alejandro Hernandez</maintainer>
+  <maintainer email="acordero@honurobotics.com">Alejandro Hernandez</maintainer>
+  <maintainer email="caguero@honurobotics.com">Carlos Agüero</maintainer>
 
   <license>Apache 2.0</license>
 
@@ -19,20 +19,21 @@
 
   <!-- Build‑tool dependencies -->
   <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_ros_core</buildtool_depend>
+  <buildtool_export_depend>ament_cmake_ros_core</buildtool_export_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>
-  <buildtool_depend>pkg-config</buildtool_depend>
 
   <!-- Build-only dependencies (header-only) -->
   <build_depend>cli11</build_depend>
 
   <!-- Build and run-time dependencies -->
+  <depend>ament_index_cpp</depend>
   <depend>builtin_interfaces</depend>
   <depend>geometry_msgs</depend>
   <depend>gz_math_vendor</depend>
   <depend>gz_msgs_vendor</depend>
   <depend>gz_sim_vendor</depend>
   <depend>gz_transport_vendor</depend>
-  <depend>libgflags-dev</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>
@@ -48,10 +49,10 @@
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>python3-catkin-pkg-modules</exec_depend>
-  <exec_depend>ros2pkg</exec_depend>
   <exec_depend>ros_gz_bridge</exec_depend>
 
   <!-- Test dependencies -->
+  <test_depend>ament_cmake_pytest</test_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
   <test_depend>launch_testing</test_depend>

@@ -322,6 +322,10 @@ bridge may be specified:
   frame_id: "map"           # Optional: Override the frame_id in the ROS message header
 ```
 
+`subscriber_queue` and `publisher_queue` only apply to the ROS side of the
+bridge. Gazebo Transport has no queue size setting, so they have no effect on
+the Gazebo publisher or subscriber.
+
 To run the bridge node with the above configuration:
 ```bash
 ros2 run ros_gz_bridge parameter_bridge --ros-args -p config_file:=$WORKSPACE/ros_gz/ros_gz_bridge/test/config/full.yaml
@@ -419,7 +423,7 @@ By changing `chatter` to `/chatter` or `~/chatter` you can obtain different resu
 ROS 2 Parameters:
 
 * `subscription_heartbeat`
-    * type: double
+    * type: int
     * default: 1000
     * description: Period (ms) at which the node checks for new subscribers for
       lazy bridges.

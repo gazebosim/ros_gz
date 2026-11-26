@@ -50,6 +50,7 @@
 #include "services/set_simulation_state.hpp"
 #include "services/spawn_entity.hpp"
 #include "services/step_simulation.hpp"
+#include "stop_signal.hpp"
 
 namespace components = gz::sim::components;
 
@@ -62,21 +63,23 @@ class GzSimulationInterfaces::Implementation
 {
 public:
   explicit Implementation(std::shared_ptr<rclcpp::Node> node);
+  ~Implementation();
 
   void Run();
-  void UpdateStateFromMsg(const gz::msgs::SerializedStepMap & msg);
   void CreateInterfaces();
 
   template<typename Handler>
   void AddInterface();
 
-  bool InitializeGazeboParameters();
-
 private:
+  /// \brief Wakes up the initialization thread's waits for Gazebo on destruction. Declared first
+  /// so reverse member destruction order keeps it alive until after `sim_interface_handles_` and
+  /// `gz_proxy_` are destroyed.
+  std::shared_ptr<StopSignal> stop_signal_{std::make_shared<StopSignal>()};
   std::shared_ptr<rclcpp::Node> ros_node_;
-  std::string world_name_;
   std::shared_ptr<GazeboProxy> gz_proxy_;
   std::vector<std::unique_ptr<HandlerBase>> sim_interface_handles_;
+  std::thread init_thread_;
 };
 
 GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::Node> node)
@@ -84,18 +87,27 @@ GzSimulationInterfaces::Implementation::Implementation(std::shared_ptr<rclcpp::N
 {
 }
 
+GzSimulationInterfaces::Implementation::~Implementation()
+{
+  this->stop_signal_->Request();
+  if (this->init_thread_.joinable()) {
+    this->init_thread_.join();
+  }
+}
+
 void GzSimulationInterfaces::Implementation::Run()
 {
-  auto thread = std::thread([&] {
+  this->init_thread_ = std::thread([this] {
         try {
-          this->gz_proxy_ = std::make_shared<GazeboProxy>(this->world_name_, this->ros_node_);
+          this->gz_proxy_ = std::make_shared<GazeboProxy>(
+            this->ros_node_, this->stop_signal_);
           this->CreateInterfaces();
+        } catch (const GazeboProxy::ShutdownRequested &) {
+          // Shutdown was requested; stop initializing quietly.
         } catch (const std::exception & e) {
           RCLCPP_ERROR_STREAM(this->ros_node_->get_logger(), e.what());
         }
   });
-
-  thread.detach();
 }
 
 void GzSimulationInterfaces::Implementation::CreateInterfaces()
