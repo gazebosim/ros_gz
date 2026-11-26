@@ -2,6 +2,11 @@
 Changelog for package ros_gz_bridge
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* Fix ``gps_msgs/GPSFix`` ``track`` conversion to follow the message definition
+  (degrees clockwise from North, in [0, 360)) in both directions.
+
 0.244.27 (2026-10-13)
 ---------------------
 * Break the parameter bridge handle ownership cycle (backport `#952 <https://github.com/gazebosim/ros_gz/issues/952>`_) (`#956 <https://github.com/gazebosim/ros_gz/issues/956>`_)
