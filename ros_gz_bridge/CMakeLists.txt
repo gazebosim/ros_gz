@@ -222,6 +222,20 @@ if(BUILD_TESTING)
     ${PROJECT_SOURCE_DIR}/include
   )
 
+  ament_add_gtest(test_gps_msgs
+    ${PROJECT_SOURCE_DIR}/src/convert/gps_msgs_TEST.cpp
+  )
+  target_link_libraries(test_gps_msgs
+    ${bridge_lib}
+    ${gps_msgs_TARGETS}
+    gtest
+    gtest_main
+  )
+  target_include_directories(test_gps_msgs
+    PRIVATE
+    ${PROJECT_SOURCE_DIR}/include
+  )
+
   # Static so the installed test binaries don't need libtest_utils.so on
   # their runtime loader path — the .so wasn't being installed, which made
   # `ros2 run ros_gz_bridge test_*` fail with linker error 127 under
