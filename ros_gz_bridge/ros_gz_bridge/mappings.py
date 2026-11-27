@@ -125,7 +125,7 @@ MAPPINGS_8_4_0 = {
     ],
 }
 
-MAPPINGS_9_0_0 = {
+MAPPINGS_10_0_0 = {
     'marine_acoustic_msgs': [
         Mapping('Dvl', 'DVLVelocityTracking'),
     ],

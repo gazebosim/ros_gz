@@ -16,7 +16,7 @@ from dataclasses import dataclass
 
 import os
 
-from ros_gz_bridge.mappings import MAPPINGS, MAPPINGS_10_1_0, MAPPINGS_8_4_0, MAPPINGS_9_0_0
+from ros_gz_bridge.mappings import MAPPINGS, MAPPINGS_10_0_0, MAPPINGS_10_1_0, MAPPINGS_8_4_0
 
 from rosidl_cmake import expand_template
 
@@ -75,8 +75,8 @@ def mappings(gz_msgs_ver):
                     ros2_message_name=mapping.ros_type,
                     gz_message_name=mapping.gz_type
                 ))
-    if gz_msgs_ver >= (9, 0, 0):
-        for (ros2_package_name, mappings) in MAPPINGS_9_0_0.items():
+    if gz_msgs_ver >= (10, 0, 0):
+        for (ros2_package_name, mappings) in MAPPINGS_10_0_0.items():
             for mapping in sorted(mappings):
                 data.append(MessageMapping(
                     ros2_package_name=ros2_package_name,

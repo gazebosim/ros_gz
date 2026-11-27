@@ -83,8 +83,8 @@ set(BRIDGE_MESSAGE_TYPES
   vision_msgs
 )
 
-# DVLVelocityTracking is available from gz-msgs 9 (Garden) forward
-if(GZ_MSGS_VERSION_MAJOR GREATER_EQUAL 9)
+# DVL bridging is available from gz-msgs 10 (Harmonic) forward
+if(GZ_MSGS_VERSION_MAJOR GREATER_EQUAL 10)
   list(APPEND BRIDGE_MESSAGE_TYPES marine_acoustic_msgs)
 endif()
 
