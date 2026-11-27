@@ -20,7 +20,6 @@
 #include <string>
 #include <cstddef>
 
-#include <marine_acoustic_msgs/msg/dvl.hpp>
 
 #include "gz/msgs/config.hh"
 
@@ -555,6 +554,7 @@ void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg)
   }
 }
 
+#if HAVE_DVL
 void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
 {
   createTestMsg(_msg.header);
@@ -568,8 +568,9 @@ void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg)
 
   _msg.altitude = 10;
   _msg.course_gnd = std::atan2(_msg.velocity.y, _msg.velocity.x);
-  _msg.speed_gnd = std::sqrt(_msg.velocity.x * _msg.velocity.x + _msg.velocity.y *
-      _msg.velocity.y);
+  _msg.speed_gnd = std::sqrt(
+    _msg.velocity.x * _msg.velocity.x + _msg.velocity.y *
+    _msg.velocity.y);
 
   _msg.num_good_beams = 4;
   _msg.sound_speed = -1;
@@ -625,6 +626,7 @@ void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg
     EXPECT_DOUBLE_EQ(expected_msg.beam_velocity_covar[i], _msg->beam_velocity_covar[i]);
   }
 }
+#endif  // HAVE_DVL
 
 void createTestMsg(ros_gz_interfaces::msg::Light & _msg)
 {

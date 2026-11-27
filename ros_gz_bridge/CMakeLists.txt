@@ -72,7 +72,6 @@ set(BRIDGE_MESSAGE_TYPES
   actuator_msgs
   geometry_msgs
   gps_msgs
-  marine_acoustic_msgs
   nav_msgs
   rcl_interfaces
   ros_gz_interfaces
@@ -83,6 +82,11 @@ set(BRIDGE_MESSAGE_TYPES
   trajectory_msgs
   vision_msgs
 )
+
+# DVLVelocityTracking is available from gz-msgs 9 (Garden) forward
+if(GZ_MSGS_VERSION_MAJOR GREATER_EQUAL 9)
+  list(APPEND BRIDGE_MESSAGE_TYPES marine_acoustic_msgs)
+endif()
 
 set(generated_path "${CMAKE_BINARY_DIR}/generated")
 set(generated_files "${generated_path}/get_factory.cpp")

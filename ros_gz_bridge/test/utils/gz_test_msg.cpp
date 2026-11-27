@@ -13,11 +13,6 @@
 // limitations under the License.
 
 #include <gtest/gtest.h>
-#include <gz/msgs/dvl_beam_state.pb.h>
-#include <gz/msgs/dvl_kinematic_estimate.pb.h>
-#include <gz/msgs/dvl_range_estimate.pb.h>
-#include <gz/msgs/dvl_tracking_target.pb.h>
-#include <gz/msgs/dvl_velocity_tracking.pb.h>
 
 #include <cstddef>
 #include <memory>
@@ -81,6 +76,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg)
   EXPECT_EQ(expected_msg.a(), _msg->a());
 }
 
+#if HAVE_DVL
 void createTestMsg(gz::msgs::DVLBeamState & _msg)
 {
   _msg.set_id(1.0);
@@ -167,7 +163,7 @@ void createTestMsg(gz::msgs::DVLVelocityTracking & _msg)
   createTestMsg(*_msg.mutable_velocity());
   uint8_t numBeams = 4u;
   for (auto i = 0; i < numBeams; ++i) {
-    auto *beam = _msg.add_beams();
+    auto * beam = _msg.add_beams();
     createTestMsg(*beam);
     beam->set_id(i + 1);
   }
@@ -228,6 +224,7 @@ void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg)
 
   EXPECT_EQ(expected_msg.status(), _msg->status());
 }
+#endif  // HAVE_DVL
 
 void createTestMsg(gz::msgs::Empty &)
 {

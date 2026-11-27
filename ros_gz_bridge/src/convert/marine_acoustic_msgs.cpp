@@ -44,7 +44,7 @@ convert_ros_to_gz(
   // Beams
   uint8_t beamId = 1u;
   for (auto i = 0; i < ros_msg.num_good_beams; ++i) {
-    gz::msgs::DVLBeamState *beam = gz_msg.add_beams();
+    gz::msgs::DVLBeamState * beam = gz_msg.add_beams();
     beam->set_id(beamId++);
 
     beam->mutable_velocity()->set_reference(
@@ -147,8 +147,9 @@ convert_gz_to_ros(
     ros_msg.altitude = -1;
   }
   ros_msg.course_gnd = std::atan2(ros_msg.velocity.y, ros_msg.velocity.x);
-  ros_msg.speed_gnd = std::sqrt(ros_msg.velocity.x * ros_msg.velocity.x + ros_msg.velocity.y *
-      ros_msg.velocity.y);
+  ros_msg.speed_gnd = std::sqrt(
+    ros_msg.velocity.x * ros_msg.velocity.x + ros_msg.velocity.y *
+    ros_msg.velocity.y);
 
   // Unsupported in Gazebo.
   ros_msg.sound_speed = -1;

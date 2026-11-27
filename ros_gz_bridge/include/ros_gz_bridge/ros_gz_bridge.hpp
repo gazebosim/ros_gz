@@ -43,6 +43,12 @@
 #define HAVE_MATERIALCOLOR true
 #endif
 
+// DVLVelocityTracking is available from versions 9.0.0 (Garden) forward
+// This can be removed when the minimum supported version passes 9.0.0
+#if GZ_MSGS_MAJOR_VERSION >= 9
+#define HAVE_DVL true
+#endif
+
 namespace ros_gz_bridge
 {
 /// Forward declarations

@@ -50,9 +50,6 @@ MAPPINGS = {
     'gps_msgs': [
         Mapping('GPSFix', 'NavSat'),
     ],
-    'marine_acoustic_msgs': [
-        Mapping('Dvl', 'DVLVelocityTracking'),
-    ],
     'nav_msgs': [
         Mapping('Odometry', 'Odometry'),
         Mapping('Odometry', 'OdometryWithCovariance'),
@@ -125,6 +122,12 @@ MAPPINGS = {
 MAPPINGS_8_4_0 = {
     'ros_gz_interfaces': [
         Mapping('Dataframe', 'Dataframe'),
+    ],
+}
+
+MAPPINGS_9_0_0 = {
+    'marine_acoustic_msgs': [
+        Mapping('Dvl', 'DVLVelocityTracking'),
     ],
 }
 

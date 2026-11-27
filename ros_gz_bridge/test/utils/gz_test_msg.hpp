@@ -26,7 +26,6 @@
 #include <gz/msgs/color.pb.h>
 #include <gz/msgs/contact.pb.h>
 #include <gz/msgs/contacts.pb.h>
-#include <gz/msgs/dvl_velocity_tracking.pb.h>
 #include <gz/msgs/double.pb.h>
 #include <gz/msgs/empty.pb.h>
 #include <gz/msgs/entity.pb.h>
@@ -79,6 +78,14 @@
 #include <gz/msgs/dataframe.pb.h>
 #endif  // HAVE_DATAFRAME
 
+#if HAVE_DVL
+#include <gz/msgs/dvl_beam_state.pb.h>
+#include <gz/msgs/dvl_kinematic_estimate.pb.h>
+#include <gz/msgs/dvl_range_estimate.pb.h>
+#include <gz/msgs/dvl_tracking_target.pb.h>
+#include <gz/msgs/dvl_velocity_tracking.pb.h>
+#endif  // HAVE_DVL
+
 #if HAVE_MATERIALCOLOR
 #include <gz/msgs/material_color.pb.h>
 #endif  // HAVE_MATERIALCOLOR
@@ -111,6 +118,7 @@ void createTestMsg(gz::msgs::Color & _msg);
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::Color> & _msg);
 
+#if HAVE_DVL
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
 void createTestMsg(gz::msgs::DVLBeamState & _msg);
@@ -150,6 +158,7 @@ void createTestMsg(gz::msgs::DVLVelocityTracking & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gz::msgs::DVLVelocityTracking> & _msg);
+#endif  // HAVE_DVL
 
 /// \brief Create a message used for testing.
 /// \param[out] _msg The message populated.
