@@ -43,6 +43,12 @@
 #define HAVE_MATERIALCOLOR true
 #endif
 
+// DVL bridging is available from versions 10.0.0 (Harmonic) forward
+// This can be removed when the minimum supported version passes 10.0.0
+#if GZ_MSGS_MAJOR_VERSION >= 10
+#define HAVE_DVL true
+#endif
+
 namespace ros_gz_bridge
 {
 /// Forward declarations

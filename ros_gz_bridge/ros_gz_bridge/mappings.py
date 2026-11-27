@@ -125,6 +125,12 @@ MAPPINGS_8_4_0 = {
     ],
 }
 
+MAPPINGS_10_0_0 = {
+    'marine_acoustic_msgs': [
+        Mapping('Dvl', 'DVLVelocityTracking'),
+    ],
+}
+
 MAPPINGS_10_1_0 = {
     'ros_gz_interfaces': [
         Mapping('MaterialColor', 'MaterialColor'),

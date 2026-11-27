@@ -83,6 +83,11 @@ set(BRIDGE_MESSAGE_TYPES
   vision_msgs
 )
 
+# DVL bridging is available from gz-msgs 10 (Harmonic) forward
+if(GZ_MSGS_VERSION_MAJOR GREATER_EQUAL 10)
+  list(APPEND BRIDGE_MESSAGE_TYPES marine_acoustic_msgs)
+endif()
+
 set(generated_path "${CMAKE_BINARY_DIR}/generated")
 set(generated_files "${generated_path}/get_factory.cpp")
 list(APPEND generated_files "${generated_path}/get_mappings.cpp")

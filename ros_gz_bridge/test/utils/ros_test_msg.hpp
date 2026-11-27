@@ -63,6 +63,9 @@
 #if HAVE_MATERIALCOLOR
 #include <ros_gz_interfaces/msg/material_color.hpp>
 #endif  // HAVE_MATERIALCOLOR
+#if HAVE_DVL
+#include <marine_acoustic_msgs/msg/dvl.hpp>
+#endif  // HAVE_DVL
 #include <ros_gz_interfaces/msg/log_playback_statistics.hpp>
 #include <ros_gz_interfaces/msg/param_vec.hpp>
 #include <ros_gz_interfaces/msg/sensor_noise.hpp>
@@ -358,6 +361,18 @@ void createTestMsg(gps_msgs::msg::GPSFix & _msg);
 /// \brief Compare a message with the populated for testing.
 /// \param[in] _msg The message to compare.
 void compareTestMsg(const std::shared_ptr<gps_msgs::msg::GPSFix> & _msg);
+
+#if HAVE_DVL
+/// marine_acoustic_msgs
+
+/// \brief Create a message used for testing.
+/// \param[out] _msg The message populated.
+void createTestMsg(marine_acoustic_msgs::msg::Dvl & _msg);
+
+/// \brief Compare a message with the populated for testing.
+/// \param[in] _msg The message to compare.
+void compareTestMsg(const std::shared_ptr<marine_acoustic_msgs::msg::Dvl> & _msg);
+#endif  // HAVE_DVL
 
 /// tf2_msgs
 
